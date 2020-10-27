@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter_tech_sales/core/functions/covert_to_hex.dart';
+import 'package:flutter_tech_sales/core/functions/convert_to_hex.dart';
 
 abstract class ColorConstants {
 

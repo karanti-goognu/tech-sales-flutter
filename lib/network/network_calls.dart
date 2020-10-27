@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_tech_sales/utils/url_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:http/http.dart';
 
 class NetworkCalls {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/size/size_config.dart';
-import 'package:flutter_tech_sales/utils/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -97,9 +98,9 @@ class LoginScreenPageState extends State<LoginScreen> {
                       return null;
                     },
                     style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                    ),
+                        fontSize: 18,
+                        color: ColorConstants.inputBoxHintColor,
+                        fontFamily: "Muli"),
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
@@ -134,12 +135,15 @@ class LoginScreenPageState extends State<LoginScreen> {
                       if (value.isEmpty) {
                         return 'Please enter mobile number ';
                       }
+                      if (value.length <= 9) {
+                        return 'Mobile number is incorrect';
+                      }
                       return null;
                     },
                     style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                    ),
+                        fontSize: 18,
+                        color: ColorConstants.inputBoxHintColor,
+                        fontFamily: "Muli"),
                     keyboardType: TextInputType.phone,
                     maxLength: 10,
                     decoration: InputDecoration(
@@ -187,9 +191,9 @@ class LoginScreenPageState extends State<LoginScreen> {
                       padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                       child: Text(
                         'CONTINUE',
-                        style: TextStyle(
+                        style: GoogleFonts.roboto(
+                            fontSize: 16,
                             color: Colors.white,
-                            fontSize: 14,
                             letterSpacing: 1.25),
                       ),
                     ),

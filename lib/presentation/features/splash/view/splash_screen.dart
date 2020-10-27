@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/animations/routes_animation.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
-import 'package:flutter_tech_sales/utils/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,7 +20,7 @@ class SplashScreenPageState extends State<SplashScreen> {
     Timer(
         Duration(seconds: 3),
         () => Navigator.of(context)
-            .push(RoutesAnimation.createRoute(LoginScreen())));
+            .pushReplacement(RoutesAnimation.createRoute(LoginScreen())));
   }
 
   @override
@@ -30,7 +30,10 @@ class SplashScreenPageState extends State<SplashScreen> {
       body: Center(
           child: Text(
         "TSO App",
-        style: TextStyle(color: ColorConstants.blackColor, fontSize: 32,fontFamily: "Raleway"),
+        style: TextStyle(
+            color: ColorConstants.blackColor,
+            fontSize: 32,
+            fontFamily: "Raleway"),
       )),
     );
   }
