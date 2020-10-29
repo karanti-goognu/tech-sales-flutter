@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,10 +11,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<menuDetailsModel> list = [
-    new menuDetailsModel("Leads"),
-    new menuDetailsModel("Sites"),
-    new menuDetailsModel("Influencers"),
-    new menuDetailsModel("My Team")
+    new menuDetailsModel("Leads" , "assets/images/img2.png"),
+    new menuDetailsModel("Sites","assets/images/img3.png"),
+    new menuDetailsModel("Influencers" , "assets/images/img4.png"),
+    new menuDetailsModel("My Team","assets/images/img1.png")
   ];
 
   String _status = "check_in";
@@ -31,36 +33,54 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: HexColor("#4973AB"),
+        backgroundColor: ColorConstants.backgroundColorBlue,
         appBar: AppBar(
           // titleSpacing: 50,
-          backgroundColor: HexColor("#22316C"),
+          backgroundColor: ColorConstants.appBarColor,
           toolbarHeight: 100,
           centerTitle: false,
           title: Text(
             "Home",
             style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 27, color: Colors.white),
+                fontWeight: FontWeight.normal, fontSize: 34, color: Colors.white ,
+                fontFamily: "Muli"),
           ),
           automaticallyImplyLeading: true,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 20.0, top: 20),
+              padding: const EdgeInsets.only(right:25.0,top: 20),
               child: Column(
                 children: [
                   GestureDetector(
                     onTap: () {
                       print("Notification");
                     },
-                    child: Icon(
-                      Icons.circle_notifications,
-                      color: Colors.white,
-                      size: 50,
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                     // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.black, width: 0.0),
+                        borderRadius: new BorderRadius.all(Radius.circular(70)),
+                      ),
+                      child: Icon(Icons.notifications_none_outlined,
+                      color: HexColor("#FFCD00"),
+                      size: 30,),
                     ),
+
+
+                    // Icon(
+                    //   Icons.circle_notifications,
+                    //
+                    //   color: Colors.white,
+                    //   size: 50,
+                    // ),
                   ),
                   Text(
                     "Notification",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white,
+                    fontSize: 14),
                   )
                 ],
               ),
@@ -82,17 +102,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.normal,
+                        fontFamily: "Muli"),
                   ),
                   Text("Here are today's",
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.7),
                         fontSize: 15,
+                          fontFamily: "Muli"
                       )),
                   Text("recommended actions for you",
                       style: TextStyle(
-                          color: Colors.white.withOpacity(0.7), fontSize: 15)),
+                          color: Colors.white.withOpacity(0.7), fontSize: 15,
+                          fontFamily: "Muli")),
                 ],
               ),
             ),
@@ -117,11 +140,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        color: Colors.green,
-                        child: Text("Check-in",
+                        color: ColorConstants.checkinColor,
+                        child: Text("CHECK-IN",
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                fontFamily: "Muli",
                                 fontSize: 18)),
                       ),
                     )
@@ -134,10 +157,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         alignment: Alignment.center,
                         color: Colors.red,
-                        child: Text("Check-out",
+                        child: Text("CHECK-OUT",
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                fontFamily: "Muli",
                                 fontSize: 18)),
                       ),
                     )
@@ -153,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Text("Journey-Ended",
                         style: TextStyle(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                            fontFamily: "Muli",
                             fontSize: 18)),
                   ),
                 ),
@@ -182,11 +205,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.no_photography_outlined,
-                        size: 90,
-                        color: Colors.black12,
+                      Container(
+                        height: 60,
+                        width: 60,
+                         margin: EdgeInsets.only(left: 10),
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          // border: Border.all(color: Colors.black, width: 0.0),
+                          // borderRadius: new BorderRadius.all(Radius.circular(70)),
+                        ),
+                        child: Image.asset(list[index].imgURL),
                       ),
+                      // Icon(
+                      //   Icons.no_photography_outlined,
+                      //   size: 90,
+                      //   color: Colors.black12,
+                      // ),
                       SizedBox(
                         width: 10,
                       ),
@@ -195,6 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                           fontSize: 25,
                           fontFamily: "Muli",
+                          fontWeight: FontWeight.bold
                           //fontWeight: FontWeight.normal
                         ),
                       ),
@@ -206,6 +241,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: GestureDetector(
                     onTap: () {
                       print(list[index].value + " Page");
+                      if(list[index].value == "Leads"){
+                        Navigator.push(context, new CupertinoPageRoute(builder: (BuildContext context) => LeadScreen()));
+                      }
                     },
                     child: Icon(
                       Icons.navigate_next,
@@ -222,6 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class menuDetailsModel {
   String value;
+  String imgURL;
 
-  menuDetailsModel(this.value);
+  menuDetailsModel(this.value,this.imgURL);
 }
