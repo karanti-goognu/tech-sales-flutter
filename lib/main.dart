@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.normal),
             ),
           ),
-          home: new SplashScreen(),
+          home: new HomeScreen(),
         ));
   }
 }
