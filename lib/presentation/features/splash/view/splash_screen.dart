@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/animations/routes_animation.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
+import 'package:flutter_tech_sales/utils/animations/routes_animation.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 
 class SplashScreen extends StatefulWidget {

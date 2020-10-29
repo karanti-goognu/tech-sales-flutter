@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter_tech_sales/core/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 
 abstract class ColorConstants {
 
@@ -15,5 +15,8 @@ abstract class ColorConstants {
   static Color inputBoxHintColorDark = const Color(0x00000000).withOpacity(0.6);
   static Color buttonPressedColor = const Color(0x006200EE).withOpacity(1);
   static Color buttonNormalColor = const Color(0x001c99d4).withOpacity(1);
+  static Color buttonDisableColor = const Color(0x0000000).withOpacity(0.3);
+  static Color darkTextColor = const Color.fromRGBO(0, 0, 0, 0.87);
+  static Color focusedInputTextColor = const Color.fromRGBO(141, 198, 63, 1);
 
 }

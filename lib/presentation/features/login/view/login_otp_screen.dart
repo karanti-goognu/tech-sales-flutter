@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
@@ -8,9 +9,7 @@ import 'package:flutter_tech_sales/core/glitch/no_internet_glitch.dart';
 import 'package:flutter_tech_sales/core/security/read_device_info.dart';
 import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
 import 'package:flutter_tech_sales/getIt.dart';
-import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
 import 'package:flutter_tech_sales/provider/login_provider.dart';
-import 'package:flutter_tech_sales/utils/animations/routes_animation.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -18,23 +17,58 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginOtpScreen extends StatefulWidget {
+  final String mobileNumber;
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return LoginScreenPageState();
+    return LoginOtpScreenPageState(this.mobileNumber);
   }
+
+  // In the constructor, require a Todo.
+  LoginOtpScreen({Key key, @required this.mobileNumber}) : super(key: key);
 }
 
-class LoginScreenPageState extends State<LoginScreen> {
+class LoginOtpScreenPageState extends State<LoginOtpScreen> {
+  String mobileNumber;
+  FocusNode _focusNode;
   final _formKey = GlobalKey<FormState>();
   final provider = getIt<LoginProvider>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
+  Timer _timer;
+  int _start = 180;
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) => setState(
+        () {
+          if (_start < 1) {
+            timer.cancel();
+          } else {
+            _start = _start - 1;
+          }
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
+    startTimer();
     initPlatformState();
   }
 
@@ -73,10 +107,17 @@ class LoginScreenPageState extends State<LoginScreen> {
         ));
   }
 
-  Widget _buildLoginInterface(BuildContext context) {
-    var mobileNumber = "8860080067";
+  void _requestFocus() {
+    setState(() {
+      FocusScope.of(context).requestFocus(_focusNode);
+    });
+  }
 
+  Widget _buildLoginInterface(BuildContext context) {
     SizeConfig().init(context);
+    var secToMin = Duration(seconds: _start).inMinutes; // 2 mins
+    var sec = _start % 60;
+    var timeFormat = secToMin.toString() + ":" + sec.toString();
 
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
@@ -109,9 +150,9 @@ class LoginScreenPageState extends State<LoginScreen> {
             Text(
               "Welcome, please login ",
               style: TextStyle(
-                  color: const Color(0xFF000000).withOpacity(1),
+                  color: ColorConstants.darkTextColor,
                   fontFamily: "Muli-Bold.ttf",
-                  fontSize: 24,
+                  fontSize: 20,
                   letterSpacing: .30,
                   fontWeight: FontWeight.bold),
             ),
@@ -119,10 +160,22 @@ class LoginScreenPageState extends State<LoginScreen> {
               height: 16,
             ),
             Text(
-              "Continue to TSO App",
+              "Enter the 6 - digit OTP sent to you at",
               style: TextStyle(
                   fontFamily: "Muli",
-                  fontSize: 20,
+                  fontSize: 16,
+                  letterSpacing: .5,
+                  color: const Color(0xFF000000).withOpacity(0.6)),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Text(
+              "+91 $mobileNumber.",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Muli",
+                  fontSize: 16,
                   letterSpacing: .5,
                   color: const Color(0xFF000000).withOpacity(0.6)),
             ),
@@ -136,55 +189,15 @@ class LoginScreenPageState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
+                    onTap: _requestFocus,
+                    focusNode: _focusNode,
                     validator: (value) {
                       if (value.isEmpty) {
-                        return "Employee ID can't be empty";
+                        return 'Enter the code';
                       }
-                      return null;
-                    },
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: ColorConstants.inputBoxHintColor,
-                        fontFamily: "Muli"),
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: ColorConstants.inputBoxBorderSideColor,
-                            width: 1.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: ColorConstants.inputBoxBorderSideColor,
-                            width: 1.0),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: ColorConstants.inputBoxBorderSideColor,
-                            width: 1.0),
-                      ),
-                      labelText: "Employee ID",
-                      filled: true,
-                      focusColor: Colors.black,
-                      labelStyle: TextStyle(
-                          fontFamily: "Muli",
-                          color: ColorConstants.inputBoxHintColorDark,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16.0),
-                      fillColor: ColorConstants.backgroundColor,
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter mobile number ';
+                      if (value.length <= 6) {
+                        return 'Otp code is incorrect';
                       }
-                      if (value.length <= 9) {
-                        return 'Mobile number is incorrect';
-                      }
-
-                      mobileNumber = value;
                       return null;
                     },
                     style: TextStyle(
@@ -192,11 +205,11 @@ class LoginScreenPageState extends State<LoginScreen> {
                         color: ColorConstants.inputBoxHintColor,
                         fontFamily: "Muli"),
                     keyboardType: TextInputType.phone,
-                    maxLength: 10,
+                    maxLength: 6,
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: const Color(0xFF000000).withOpacity(0.4),
+                            color: ColorConstants.focusedInputTextColor,
                             width: 1.0),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -209,13 +222,16 @@ class LoginScreenPageState extends State<LoginScreen> {
                             color: const Color(0xFF000000).withOpacity(0.4),
                             width: 1.0),
                       ),
-                      labelText: "Register Mobile Number",
+                      labelText: "Enter the code",
                       filled: true,
                       focusColor: Colors.black,
                       labelStyle: TextStyle(
                           fontFamily: "Muli",
-                          color: ColorConstants.inputBoxHintColorDark,
+                          color: (_focusNode.hasFocus)
+                              ? ColorConstants.focusedInputTextColor
+                              : ColorConstants.inputBoxHintColorDark,
                           fontWeight: FontWeight.normal,
+                          letterSpacing: 0.5,
                           fontSize: 16.0),
                       fillColor: ColorConstants.backgroundColor,
                     ),
@@ -223,29 +239,87 @@ class LoginScreenPageState extends State<LoginScreen> {
                   SizedBox(
                     height: 16,
                   ),
-                  RaisedButton(
-                    color: (connectionStatus == ConnectivityStatus.Offline)
-                        ? ColorConstants.buttonDisableColor
-                        : ColorConstants.buttonNormalColor,
-                    highlightColor: ColorConstants.buttonPressedColor,
-                    onPressed: () {
-                      // Validate returns true if the form is valid, or false
-                      // otherwise.
-                      (connectionStatus == ConnectivityStatus.Offline)
-                          ? CustomDialogs()
-                              .showNoInternetConnectionDialog(context)
-                          : afterRequestLayout(mobileNumber);
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
-                      child: Text(
-                        'CONTINUE',
-                        style: GoogleFonts.roboto(
-                            fontSize: 16,
-                            color: Colors.white,
-                            letterSpacing: 1.25),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: Container(
+                            child: new Text(
+                          "Resend OTP in $timeFormat",
+                          style: TextStyle(
+                              fontFamily: "Muli",
+                              fontSize: 14,
+                              letterSpacing: .25,
+                              color: ColorConstants.darkTextColor),
+                        )),
+                        flex: 2,
                       ),
-                    ),
+                      Expanded(
+                        child: Container(
+                            child: RaisedButton(
+                              elevation: 4,
+                              color: (connectionStatus ==
+                                      ConnectivityStatus.Offline)
+                                  ? ColorConstants.buttonDisableColor
+                                  : ColorConstants.buttonNormalColor,
+                              highlightColor: ColorConstants.buttonPressedColor,
+                              onPressed: () {
+                                // Validate returns true if the form is valid, or false
+                                // otherwise.
+                                (connectionStatus == ConnectivityStatus.Offline)
+                                    ? CustomDialogs()
+                                        .showNoInternetConnectionDialog(context)
+                                    : afterRequestLayout();
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                child: Text(
+                                  'VERIFY',
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      letterSpacing: 1.25),
+                                ),
+                              ),
+                            ),
+                            alignment: Alignment.centerRight),
+                        flex: 2,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: Container(
+                            child: new Text(
+                          "Didn't received the sms?",
+                          style: TextStyle(
+                              fontFamily: "Muli",
+                              fontSize: 14,
+                              letterSpacing: .25,
+                              color: ColorConstants.darkTextColor),
+                        )),
+                        flex: 2,
+                      ),
+                      Expanded(
+                        child: Container(
+                            alignment: Alignment.topLeft,
+                            child: new Text(
+                              "Request OTP via call",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontFamily: "Muli",
+                                  fontSize: 14,
+                                  letterSpacing: .25,
+                                  color: ColorConstants.buttonNormalColor),
+                            )),
+                        flex: 2,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -254,20 +328,11 @@ class LoginScreenPageState extends State<LoginScreen> {
         ));
   }
 
-  void afterRequestLayout(String mobileNumber) {
+  void afterRequestLayout() {
     if (_formKey.currentState.validate()) {
       // If the form is valid, display a Snackbar.
       //CustomDialogs().showEmpIdAndNoNotMatchDialog(context);
       //provider.getLoginStatus();
-      Navigator.push(
-        context,
-        RoutesAnimation.createRoute(
-          LoginOtpScreen(
-            mobileNumber: mobileNumber,
-          ),
-        ),
-      );
-      //
       provider.getLoginStatus();
 
       provider.loginStream.listen((snapshot) {
@@ -287,4 +352,6 @@ class LoginScreenPageState extends State<LoginScreen> {
       });
     }
   }
+
+  LoginOtpScreenPageState(this.mobileNumber);
 }

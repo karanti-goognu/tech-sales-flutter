@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
+import 'package:flutter_tech_sales/getIt.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
+import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 import 'package:provider/provider.dart';
 
-import 'core/enums/connectivity_status.dart';
-import 'core/services/connectivity_service.dart';
-
 void main() async {
+  setup();
   runApp(MyApp());
 }
 
