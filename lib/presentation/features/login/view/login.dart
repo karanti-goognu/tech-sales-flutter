@@ -1,21 +1,19 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tech_sales/core/glitch/no_internet_glitch.dart';
 import 'package:flutter_tech_sales/core/security/read_device_info.dart';
 import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
-import 'package:flutter_tech_sales/getIt.dart';
+import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
-import 'package:flutter_tech_sales/provider/login_provider.dart';
-import 'package:flutter_tech_sales/utils/animations/routes_animation.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -28,7 +26,6 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenPageState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final provider = getIt<LoginProvider>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
@@ -75,6 +72,7 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   Widget _buildLoginInterface(BuildContext context) {
     var mobileNumber = "8860080067";
+    var empId = "EMP12345533";
 
     SizeConfig().init(context);
 
@@ -140,6 +138,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                       if (value.isEmpty) {
                         return "Employee ID can't be empty";
                       }
+                      empId = value;
                       return null;
                     },
                     style: TextStyle(
@@ -194,21 +193,12 @@ class LoginScreenPageState extends State<LoginScreen> {
                     keyboardType: TextInputType.phone,
                     maxLength: 10,
                     decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: const Color(0xFF000000).withOpacity(0.4),
-                            width: 1.0),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: const Color(0xFF000000).withOpacity(0.4),
-                            width: 1.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: const Color(0xFF000000).withOpacity(0.4),
-                            width: 1.0),
-                      ),
+                      focusedBorder:
+                          InputBordersDecorations.outLineInputBorderFocused,
+                      errorBorder:
+                          InputBordersDecorations.outLineInputBorderError,
+                      enabledBorder:
+                          InputBordersDecorations.outLineInputBorderEnabled,
                       labelText: "Register Mobile Number",
                       filled: true,
                       focusColor: Colors.black,
@@ -231,19 +221,18 @@ class LoginScreenPageState extends State<LoginScreen> {
                     onPressed: () {
                       // Validate returns true if the form is valid, or false
                       // otherwise.
-                      (connectionStatus == ConnectivityStatus.Offline)
-                          ? CustomDialogs()
-                              .showNoInternetConnectionDialog(context)
-                          : afterRequestLayout(mobileNumber);
+                      if (_formKey.currentState.validate()) {
+                        (connectionStatus == ConnectivityStatus.Offline)
+                            ? CustomDialogs()
+                                .showNoInternetConnectionDialog(context)
+                            : afterRequestLayout(empId, mobileNumber);
+                      }
                     },
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                       child: Text(
                         'CONTINUE',
-                        style: GoogleFonts.roboto(
-                            fontSize: 16,
-                            color: Colors.white,
-                            letterSpacing: 1.25),
+                        style: ButtonStyles.buttonStyleBlue,
                       ),
                     ),
                   ),
@@ -254,37 +243,20 @@ class LoginScreenPageState extends State<LoginScreen> {
         ));
   }
 
-  void afterRequestLayout(String mobileNumber) {
-    if (_formKey.currentState.validate()) {
-      // If the form is valid, display a Snackbar.
-      //CustomDialogs().showEmpIdAndNoNotMatchDialog(context);
-      //provider.getLoginStatus();
-      Navigator.push(
-        context,
-        RoutesAnimation.createRoute(
-          LoginOtpScreen(
+  void afterRequestLayout(String empId, String mobileNumber) {
+    print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
+    GetX<LoginController>(
+        init: Get.find<LoginController>().getAccessKey(empId, mobileNumber),
+        builder: (_) {
+          return LoginOtpScreen(
             mobileNumber: mobileNumber,
-          ),
-        ),
-      );
-      //
-      provider.getLoginStatus();
+          );
+        });
+  }
 
-      provider.loginStream.listen((snapshot) {
-        snapshot.fold((l) {
-          if (l is NoInternetGlitch) {
-            Color randomColor = Color.fromRGBO(Random().nextInt(255),
-                Random().nextInt(255), Random().nextInt(255), 1);
-            //catPhotos.add(CatPhotoErrorTile(randomColor, "Unable to Connect"));
-            print("No Internet");
-          }
-        },
-            (r) => {
-                  print("${r.respCode}"),
-                });
-
-        setState(() {});
-      });
-    }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/bindings/splash_binding.dart';
 import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
-import 'package:flutter_tech_sales/getIt.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import 'utils/constants/app_theme.dart';
+
 void main() async {
-  setup();
   runApp(MyApp());
 }
 
@@ -15,32 +18,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<ConnectivityStatus>(
         builder: (context) => ConnectivityService().connectionStatusController,
-        child: new MaterialApp(
+        child: new GetMaterialApp(
           debugShowCheckedModeBanner: false,
+          initialBinding: SplashBinding(),
+          initialRoute: Routes.INITIAL,
+          defaultTransition: Transition.fade,
+          getPages: AppPages.pages,
+          home: SplashScreen(),
           title: 'TSO App',
-          theme: ThemeData(
-            // Define the default brightness and colors.
-            brightness: Brightness.light,
-            primaryColor: Colors.white,
-            accentColor: Colors.white70,
-
-            // Define the default font family.
-            fontFamily: 'muli',
-
-            // Define the default TextTheme. Use this to specify the default
-            // text styling for headlines, titles, bodies of text, and more.
-            textTheme: TextTheme(
-              headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-              headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-              bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Raleway'),
-              bodyText1: TextStyle(fontSize: 21, fontFamily: 'Raleway'),
-              subtitle1: TextStyle(
-                  fontSize: 16.0,
-                  fontFamily: 'Raleway',
-                  fontWeight: FontWeight.normal),
-            ),
-          ),
-          home: new SplashScreen(),
+          theme: appThemeData,
         ));
   }
 }

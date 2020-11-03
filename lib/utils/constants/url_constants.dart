@@ -4,7 +4,12 @@ import 'package:http/http.dart';
 final client = Client();
 
 abstract class UrlConstants {
-  static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
+
+  //Base Url
+  //static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
+  static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
+
+  //End points
   static const String loginCheck = '$baseUrl/login/login-otp';
-  static const String allCountries = '$baseUrl/countries';
+  static const String getAccessKey = '$baseUrl/validation/generate-access-key';
 }

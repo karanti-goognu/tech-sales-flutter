@@ -1,19 +1,16 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tech_sales/core/glitch/no_internet_glitch.dart';
 import 'package:flutter_tech_sales/core/security/read_device_info.dart';
 import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
-import 'package:flutter_tech_sales/getIt.dart';
-import 'package:flutter_tech_sales/provider/login_provider.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -27,14 +24,13 @@ class LoginOtpScreen extends StatefulWidget {
   }
 
   // In the constructor, require a Todo.
-  LoginOtpScreen({Key key, @required this.mobileNumber}) : super(key: key);
+  LoginOtpScreen({Key key, this.mobileNumber}) : super(key: key);
 }
 
 class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   String mobileNumber;
   FocusNode _focusNode;
   final _formKey = GlobalKey<FormState>();
-  final provider = getIt<LoginProvider>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
@@ -269,7 +265,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                                 (connectionStatus == ConnectivityStatus.Offline)
                                     ? CustomDialogs()
                                         .showNoInternetConnectionDialog(context)
-                                    : afterRequestLayout();
+                                    : afterRequestLayout(mobileNumber);
                               },
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
@@ -328,12 +324,13 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
         ));
   }
 
-  void afterRequestLayout() {
+  void afterRequestLayout(String mobileNumber) {
     if (_formKey.currentState.validate()) {
+      Get.to(LoginOtpScreen(mobileNumber: mobileNumber));
       // If the form is valid, display a Snackbar.
       //CustomDialogs().showEmpIdAndNoNotMatchDialog(context);
-      //provider.getLoginStatus();
-      provider.getLoginStatus();
+      //presentation.features.login.data.provider.getLoginStatus();
+      /*provider.getLoginStatus();
 
       provider.loginStream.listen((snapshot) {
         snapshot.fold((l) {
@@ -349,7 +346,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                 });
 
         setState(() {});
-      });
+      });*/
     }
   }
 
