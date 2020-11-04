@@ -1,8 +1,23 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/size/size_config.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/core/security/read_device_info.dart';
+import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
+import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -14,25 +29,57 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenPageState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  Map<String, dynamic> _deviceData = <String, dynamic>{};
 
   @override
   void initState() {
     super.initState();
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    Map<String, dynamic> deviceData;
+
+    try {
+      if (Platform.isAndroid) {
+        deviceData = readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+      } else if (Platform.isIOS) {
+        deviceData = readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
+      }
+    } on PlatformException {
+      deviceData = <String, dynamic>{
+        'Error:': 'Failed to get platform version.'
+      };
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _deviceData = deviceData;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false, //
-      backgroundColor: ColorConstants.backgroundColor,
-      body: SingleChildScrollView(
-        child: _buildLoginInterface(context),
-      ),
-    );
+    return StreamProvider<ConnectivityStatus>(
+        builder: (context) => ConnectivityService().connectionStatusController,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false, //
+          backgroundColor: ColorConstants.backgroundColor,
+          body: SingleChildScrollView(
+            child: _buildLoginInterface(context),
+          ),
+        ));
   }
 
   Widget _buildLoginInterface(BuildContext context) {
+    var mobileNumber = "8860080067";
+    var empId = "EMP12345533";
+
     SizeConfig().init(context);
+
+    var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     return Padding(
         padding: EdgeInsets.all(16),
@@ -61,7 +108,7 @@ class LoginScreenPageState extends State<LoginScreen> {
               ),*/
             ),
             Text(
-              "Welcome, please login",
+              "Welcome, please login ",
               style: TextStyle(
                   color: const Color(0xFF000000).withOpacity(1),
                   fontFamily: "Muli-Bold.ttf",
@@ -94,7 +141,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                       if (value.isEmpty) {
                         return "Employee ID can't be empty";
                       }
-                      //leagueSize = int.parse(value);
+                      empId = value;
                       return null;
                     },
                     style: TextStyle(
@@ -138,6 +185,8 @@ class LoginScreenPageState extends State<LoginScreen> {
                       if (value.length <= 9) {
                         return 'Mobile number is incorrect';
                       }
+
+                      mobileNumber = value;
                       return null;
                     },
                     style: TextStyle(
@@ -147,21 +196,12 @@ class LoginScreenPageState extends State<LoginScreen> {
                     keyboardType: TextInputType.phone,
                     maxLength: 10,
                     decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: const Color(0xFF000000).withOpacity(0.4),
-                            width: 1.0),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: const Color(0xFF000000).withOpacity(0.4),
-                            width: 1.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: const Color(0xFF000000).withOpacity(0.4),
-                            width: 1.0),
-                      ),
+                      focusedBorder:
+                          InputBordersDecorations.outLineInputBorderFocused,
+                      errorBorder:
+                          InputBordersDecorations.outLineInputBorderError,
+                      enabledBorder:
+                          InputBordersDecorations.outLineInputBorderEnabled,
                       labelText: "Register Mobile Number",
                       filled: true,
                       focusColor: Colors.black,
@@ -177,24 +217,28 @@ class LoginScreenPageState extends State<LoginScreen> {
                     height: 16,
                   ),
                   RaisedButton(
-                    color: ColorConstants.buttonNormalColor,
+                    color: (connectionStatus == ConnectivityStatus.Offline)
+                        ? ColorConstants.buttonDisableColor
+                        : ColorConstants.buttonNormalColor,
                     highlightColor: ColorConstants.buttonPressedColor,
                     onPressed: () {
                       // Validate returns true if the form is valid, or false
                       // otherwise.
                       if (_formKey.currentState.validate()) {
-                        // If the form is valid, display a Snackbar.
-                        CustomDialogs().showEmpIdAndNoNotMatchDialog(context);
+                        FirebaseAnalytics().logEvent(
+                            name: FirebaseEventsConstants.loginButtonClick,
+                            parameters: null);
+                        (connectionStatus == ConnectivityStatus.Offline)
+                            ? CustomDialogs().errorDialog(
+                                StringConstants.noInternetConnectionError)
+                            : afterRequestLayout(empId, mobileNumber);
                       }
                     },
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                       child: Text(
                         'CONTINUE',
-                        style: GoogleFonts.roboto(
-                            fontSize: 16,
-                            color: Colors.white,
-                            letterSpacing: 1.25),
+                        style: ButtonStyles.buttonStyleBlue,
                       ),
                     ),
                   ),
@@ -203,5 +247,28 @@ class LoginScreenPageState extends State<LoginScreen> {
             ),
           ],
         ));
+  }
+
+  void afterRequestLayout(String empId, String mobileNumber) {
+    print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
+    try {
+      GetX<LoginController>(
+          initState:
+              Get.find<LoginController>().getAccessKey(empId, mobileNumber, 1),
+          builder: (_) {
+            print("We are in builder");
+            return LoginOtpScreen(
+              mobileNumber: mobileNumber,
+            );
+          });
+    } catch (_) {
+      print('Exception');
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "969429555297",
+    "firebase_url": "https://tsoapp-a9b64.firebaseio.com",
+    "project_id": "tsoapp-a9b64",
+    "storage_bucket": "tsoapp-a9b64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969429555297:android:095a3138973b317e843220",
+        "android_client_info": {
+          "package_name": "com.dalmia.techsales"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969429555297-tbj5212iegoq8ci14cf6ss8rvvm47404.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD64fl2LNKpVJkZODbMgP1Q8MMYy2FQy9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969429555297-tbj5212iegoq8ci14cf6ss8rvvm47404.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969429555297:android:f2f8915ff985dfc2",
+        "android_client_info": {
+          "package_name": "com.dalmiabharat.techapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969429555297-2occcqio2qs17dd4ddst4rbv2hmki2kq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dalmiabharat.techapp",
+            "certificate_hash": "6c20a0d574f3d327e8377f9dfc53247bc5fea969"
+          }
+        },
+        {
+          "client_id": "969429555297-tbj5212iegoq8ci14cf6ss8rvvm47404.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD64fl2LNKpVJkZODbMgP1Q8MMYy2FQy9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969429555297-tbj5212iegoq8ci14cf6ss8rvvm47404.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

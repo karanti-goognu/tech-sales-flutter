@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter_tech_sales/core/enums/connectivity_status.dart';
+import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 
 class ConnectivityService {
   // Create our public controller
