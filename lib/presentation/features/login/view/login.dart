@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/security/read_device_info.dart';
@@ -8,6 +9,8 @@ import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
@@ -222,9 +225,12 @@ class LoginScreenPageState extends State<LoginScreen> {
                       // Validate returns true if the form is valid, or false
                       // otherwise.
                       if (_formKey.currentState.validate()) {
+                        FirebaseAnalytics().logEvent(
+                            name: FirebaseEventsConstants.loginButtonClick,
+                            parameters: null);
                         (connectionStatus == ConnectivityStatus.Offline)
-                            ? CustomDialogs()
-                                .showNoInternetConnectionDialog(context)
+                            ? CustomDialogs().errorDialog(
+                                StringConstants.noInternetConnectionError)
                             : afterRequestLayout(empId, mobileNumber);
                       }
                     },
@@ -245,13 +251,19 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   void afterRequestLayout(String empId, String mobileNumber) {
     print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
-    GetX<LoginController>(
-        init: Get.find<LoginController>().getAccessKey(empId, mobileNumber),
-        builder: (_) {
-          return LoginOtpScreen(
-            mobileNumber: mobileNumber,
-          );
-        });
+    try {
+      GetX<LoginController>(
+          initState:
+              Get.find<LoginController>().getAccessKey(empId, mobileNumber, 1),
+          builder: (_) {
+            print("We are in builder");
+            return LoginOtpScreen(
+              mobileNumber: mobileNumber,
+            );
+          });
+    } catch (_) {
+      print('Exception');
+    }
   }
 
   @override

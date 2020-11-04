@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/Access
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 
@@ -20,22 +21,21 @@ class LoginController extends GetxController {
 
   final _loginResponse = LoginModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
+  final _phoneNumber = "8860080067".obs;
 
   get loginResponse => this._loginResponse.value;
 
   get accessKeyResponse => this._accessKeyResponse.value;
 
+  get phoneNumber => this._phoneNumber.value;
+
   set loginResponse(value) => this._loginResponse.value = value;
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
 
-  checkLoginStatus(String empId, String mobileNumber, String accessKey) {
-    repository.checkLoginStatus(empId, mobileNumber, accessKey).then((data) {
-      this.loginResponse = data;
-    });
-  }
+  set phoneNumber(value) => this._phoneNumber.value = value;
 
-  getAccessKey(String empId, String mobileNumber) {
+  getAccessKey(String empId, String mobileNumber, int requestId) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -43,7 +43,25 @@ class LoginController extends GetxController {
     repository.getAccessKey().then((data) {
       Get.back();
       this.accessKeyResponse = data;
-      checkLoginStatus(empId, mobileNumber, this.accessKeyResponse.accessKey);
+      switch (requestId) {
+        case 1:
+          checkLoginStatus(
+              empId, mobileNumber, this.accessKeyResponse.accessKey);
+          break;
+      }
+    });
+  }
+
+  //{"resp-code":null,"resp-msg":null,"otp-sms-time":null,"otp-retry-sms-time":null}
+  checkLoginStatus(String empId, String mobileNumber, String accessKey) {
+    repository.checkLoginStatus(empId, mobileNumber, accessKey).then((data) {
+      this.loginResponse = data;
+      if (loginResponse.respCode == "DM1011") {
+        this.phoneNumber = mobileNumber;
+        openOtpVerificationPage(mobileNumber);
+      } else {
+        Get.dialog(CustomDialogs().errorDialog(loginResponse.respMsg));
+      }
     });
   }
 

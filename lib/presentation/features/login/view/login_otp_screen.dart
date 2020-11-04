@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/security/read_device_info.dart';
 import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
+import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -110,6 +112,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   }
 
   Widget _buildLoginInterface(BuildContext context) {
+    LoginController _loginController = Get.find();
     SizeConfig().init(context);
     var secToMin = Duration(seconds: _start).inMinutes; // 2 mins
     var sec = _start % 60;
@@ -166,15 +169,15 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
             SizedBox(
               height: 8,
             ),
-            Text(
-              "+91 $mobileNumber.",
+            Obx(() => Text(
+              "+91 ${_loginController.phoneNumber}.",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: "Muli",
                   fontSize: 16,
                   letterSpacing: .5,
                   color: const Color(0xFF000000).withOpacity(0.6)),
-            ),
+            )),
             SizedBox(
               height: 20,
             ),
@@ -264,7 +267,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                                 // otherwise.
                                 (connectionStatus == ConnectivityStatus.Offline)
                                     ? CustomDialogs()
-                                        .showNoInternetConnectionDialog(context)
+                                .errorDialog(StringConstants.noInternetConnectionError)
                                     : afterRequestLayout(mobileNumber);
                               },
                               child: Padding(
@@ -326,27 +329,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
 
   void afterRequestLayout(String mobileNumber) {
     if (_formKey.currentState.validate()) {
-      Get.to(LoginOtpScreen(mobileNumber: mobileNumber));
-      // If the form is valid, display a Snackbar.
-      //CustomDialogs().showEmpIdAndNoNotMatchDialog(context);
-      //presentation.features.login.data.provider.getLoginStatus();
-      /*provider.getLoginStatus();
-
-      provider.loginStream.listen((snapshot) {
-        snapshot.fold((l) {
-          if (l is NoInternetGlitch) {
-            Color randomColor = Color.fromRGBO(Random().nextInt(255),
-                Random().nextInt(255), Random().nextInt(255), 1);
-            //catPhotos.add(CatPhotoErrorTile(randomColor, "Unable to Connect"));
-            print("No Internet");
-          }
-        },
-            (r) => {
-                  print("${r.respCode}"),
-                });
-
-        setState(() {});
-      });*/
     }
   }
 
