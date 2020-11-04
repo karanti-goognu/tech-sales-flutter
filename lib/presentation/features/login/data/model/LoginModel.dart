@@ -15,6 +15,7 @@ class LoginModel {
   static LoginModel fromMap(Map<String, dynamic> json) {
     if (json == null) return null;
 
+    //{"resp-code":"DM1011","resp-msg":"OTP generated successfully","otp-sms-time":"900000","otp-retry-sms-time":"180000"}
     return LoginModel(
         respCode: json['resp-code'],
         respMsg: json['resp-msg'],
