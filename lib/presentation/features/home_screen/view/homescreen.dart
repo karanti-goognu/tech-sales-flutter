@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:slider_button/slider_button.dart';
 
 class HomeScreen extends StatefulWidget {

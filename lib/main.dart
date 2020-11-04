@@ -16,17 +16,15 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<ConnectivityStatus>(
-        builder: (context) => ConnectivityService().connectionStatusController,
-        child: new GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          initialBinding: SplashBinding(),
-          initialRoute: Routes.INITIAL,
-          defaultTransition: Transition.fade,
-          getPages: AppPages.pages,
-          home: SplashScreen(),
-          title: 'TSO App',
-          theme: appThemeData,
-        ));
+    return new GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialBinding: SplashBinding(),
+      initialRoute: Routes.INITIAL,
+      defaultTransition: Transition.fade,
+      getPages: AppPages.pages,
+      home: SplashScreen(),
+      title: 'TSO App',
+      theme: appThemeData,
+    );
   }
 }

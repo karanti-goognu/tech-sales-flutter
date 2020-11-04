@@ -62,15 +62,13 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<ConnectivityStatus>(
-        builder: (context) => ConnectivityService().connectionStatusController,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false, //
-          backgroundColor: ColorConstants.backgroundColor,
-          body: SingleChildScrollView(
-            child: _buildLoginInterface(context),
-          ),
-        ));
+    return Scaffold(
+      resizeToAvoidBottomInset: false, //
+      backgroundColor: ColorConstants.backgroundColor,
+      body: SingleChildScrollView(
+        child: _buildLoginInterface(context),
+      ),
+    );
   }
 
   Widget _buildLoginInterface(BuildContext context) {
