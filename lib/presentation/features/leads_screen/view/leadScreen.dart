@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:intl/intl.dart';
 
@@ -172,7 +173,10 @@ class _LeadScreenState extends State<LeadScreen> {
             child: Icon(
               Icons.add,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, new CupertinoPageRoute(builder: (BuildContext context) => AddNewLeadForm()));
+
+            },
           ),
         ),
       ),
@@ -234,7 +238,7 @@ class _LeadScreenState extends State<LeadScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.mail,
+                          Icons.drafts,
                           color:  Colors.white60,
                         ),
                         // Text(
@@ -308,6 +312,10 @@ class _LeadScreenState extends State<LeadScreen> {
     );
   }
 
+
+
+
+
   Widget leadsDetailWidget() {
     return ListView.builder(
         itemCount: list.length,
@@ -321,137 +329,170 @@ class _LeadScreenState extends State<LeadScreen> {
             elevation: 6,
             margin: EdgeInsets.all(10.0),
             color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            child: Container(
+              child: Stack(
+                children: [
+                  Positioned(
+                      top: 0,
+                      left: 200,
+                      right: 0,
+                      child: Container(
+                          color: Colors.white,
+                          child: Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/Container.png',
+                                fit: BoxFit.fitHeight,
+                              ),
+                            ],
+                          ))),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                     Text(list[index].date,
-                     //  textAlign: TextAlign.start,
-                       style: TextStyle(
-                           fontSize: 11,
-                           fontFamily: "Muli",
-                           fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                           Padding(
+                             padding: const EdgeInsets.all(2.0),
+                             child: Text(list[index].date,
+                             //  textAlign: TextAlign.start,
+                               style: TextStyle(
+                                   fontSize: 11,
+                                   fontFamily: "Muli",
+                                   fontWeight: FontWeight.bold,
 
-                         //fontWeight: FontWeight.normal
-                       ),),
-                      Text("Lead-Id(" + list[index].leadID + ")",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: "Muli",
-                            fontWeight: FontWeight.bold
-                          //fontWeight: FontWeight.normal
-                        ),
-                      ),
-                      Text("District: " + list[index].district ,
-                        style: TextStyle(
-                            color: Colors.black38,
-                            fontSize: 14,
-                            fontFamily: "Muli",
-                            fontWeight: FontWeight.bold
-                          //fontWeight: FontWeight.normal
-                        ),
-                      ),
-                      Text("Site-Potential: " + list[index].sitePotential.toString() + "MT",
-                        style: TextStyle(
-                          color: Colors.black38,
-                            fontSize: 14,
-                            fontFamily: "Muli",
-                            fontWeight: FontWeight.bold
-                          //fontWeight: FontWeight.normal
+                                 //fontWeight: FontWeight.normal
+                               ),),
+                           ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text("Lead-Id(" + list[index].leadID + ")",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.bold
+                                  //fontWeight: FontWeight.normal
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text("District: " + list[index].district ,
+                                style: TextStyle(
+                                    color: Colors.black38,
+                                    fontSize: 14,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.bold
+                                  //fontWeight: FontWeight.normal
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text("Site-Potential: " + list[index].sitePotential.toString() + "MT",
+                                style: TextStyle(
+                                  color: Colors.black38,
+                                    fontSize: 14,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.bold
+                                  //fontWeight: FontWeight.normal
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left:8.0),
+                              child: Chip(
+                                  shape: StadiumBorder(side: BorderSide(
+                                    color: HexColor("#6200EE")
+                                  )),
+                                backgroundColor: HexColor("#6200EE").withOpacity(0.1),
+                                label: Text("Active",
+                                  style: TextStyle(
+                                      color: HexColor("#6200EE"),
+                                      fontSize: 14,
+                                      fontFamily: "Muli",
+                                      fontWeight: FontWeight.bold
+                                    //fontWeight: FontWeight.normal
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left:8.0),
-                        child: Chip(
-                            shape: StadiumBorder(side: BorderSide(
-                              color: HexColor("#6200EE")
-                            )),
-                          backgroundColor: HexColor("#6200EE").withOpacity(0.1),
-                          label: Text("Active",
-                            style: TextStyle(
-                                color: HexColor("#6200EE"),
-                                fontSize: 14,
-                                fontFamily: "Muli",
-                                fontWeight: FontWeight.bold
-                              //fontWeight: FontWeight.normal
+                        padding: const EdgeInsets.only(right:15.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            !list[index].verifiedStatus ? Chip(
+                              // shape: StadiumBorder(side: BorderSide(
+                              //     color: HexColor("#6200EE")
+                              // )),
+                              backgroundColor: HexColor("#F9A61A"),
+                              label: Text("NON VERIFIED",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.bold
+                                  //fontWeight: FontWeight.normal
+                                ),
+                              ),
+                            ) : Chip(
+                              // shape: StadiumBorder(side: BorderSide(
+                              //     color: HexColor("#6200EE")
+                              // )),
+                              backgroundColor: HexColor("#00ADEE"),
+                              label: Text("TELE VERIFIED",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.bold
+                                  //fontWeight: FontWeight.normal
+                                ),
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Text("Call Contractor",
+                              style: TextStyle(
+                                 // color: Colors.white,
+                                  fontSize: 11,
+                                  fontFamily: "Muli",
+                                  fontWeight: FontWeight.bold
+                                //fontWeight: FontWeight.normal
+                              ),),
+                            Row(
+                              children: [
+                                Icon(Icons.call,
+                                color: HexColor("#8DC63F"),),
+                                Text(list[index].ownerNumber.toString(),
+                                  style: TextStyle(
+                                      color: HexColor("#1C99D4"),
+                                      fontSize: 18,
+                                      fontFamily: "Muli",
+                                      fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic
+                                    //fontWeight: FontWeight.normal
+                                  ),),
+                              ],
+                            ),
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right:15.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      !list[index].verifiedStatus ? Chip(
-                        // shape: StadiumBorder(side: BorderSide(
-                        //     color: HexColor("#6200EE")
-                        // )),
-                        backgroundColor: HexColor("#F9A61A"),
-                        label: Text("NON VERIFIED",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontFamily: "Muli",
-                              fontWeight: FontWeight.bold
-                            //fontWeight: FontWeight.normal
-                          ),
-                        ),
-                      ) : Chip(
-                        // shape: StadiumBorder(side: BorderSide(
-                        //     color: HexColor("#6200EE")
-                        // )),
-                        backgroundColor: HexColor("#00ADEE"),
-                        label: Text("TELE VERIFIED",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontFamily: "Muli",
-                              fontWeight: FontWeight.bold
-                            //fontWeight: FontWeight.normal
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text("Call Contractor",
-                        style: TextStyle(
-                           // color: Colors.white,
-                            fontSize: 11,
-                            fontFamily: "Muli",
-                            fontWeight: FontWeight.bold
-                          //fontWeight: FontWeight.normal
-                        ),),
-                      Row(
-                        children: [
-                          Icon(Icons.call,
-                          color: HexColor("#8DC63F"),),
-                          Text(list[index].ownerNumber.toString(),
-                            style: TextStyle(
-                                color: HexColor("#1C99D4"),
-                                fontSize: 18,
-                                fontFamily: "Muli",
-                                fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic
-                              //fontWeight: FontWeight.normal
-                            ),),
-                        ],
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         });

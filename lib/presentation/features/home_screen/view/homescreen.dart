@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:slider_button/slider_button.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,10 +12,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<menuDetailsModel> list = [
-    new menuDetailsModel("Leads" , "assets/images/img2.png"),
-    new menuDetailsModel("Sites","assets/images/img3.png"),
-    new menuDetailsModel("Influencers" , "assets/images/img4.png"),
-    new menuDetailsModel("My Team","assets/images/img1.png")
+    new menuDetailsModel("Leads", "assets/images/img2.png"),
+    new menuDetailsModel("Sites", "assets/images/img3.png"),
+    new menuDetailsModel("Influencers", "assets/images/img4.png"),
+    new menuDetailsModel("My Team", "assets/images/img1.png")
   ];
 
   String _status = "check_in";
@@ -42,13 +43,15 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text(
             "Home",
             style: TextStyle(
-                fontWeight: FontWeight.normal, fontSize: 34, color: Colors.white ,
+                fontWeight: FontWeight.normal,
+                fontSize: 34,
+                color: Colors.white,
                 fontFamily: "Muli"),
           ),
           automaticallyImplyLeading: true,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right:25.0,top: 20),
+              padding: const EdgeInsets.only(right: 25.0, top: 20),
               child: Column(
                 children: [
                   GestureDetector(
@@ -58,17 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       height: 50,
                       width: 50,
-                     // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                      // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                       decoration: new BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.black, width: 0.0),
                         borderRadius: new BorderRadius.all(Radius.circular(70)),
                       ),
-                      child: Icon(Icons.notifications_none_outlined,
-                      color: HexColor("#FFCD00"),
-                      size: 30,),
+                      child: Icon(
+                        Icons.notifications_none_outlined,
+                        color: HexColor("#FFCD00"),
+                        size: 30,
+                      ),
                     ),
-
 
                     // Icon(
                     //   Icons.circle_notifications,
@@ -79,8 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Text(
                     "Notification",
-                    style: TextStyle(color: Colors.white,
-                    fontSize: 14),
+                    style: TextStyle(color: Colors.white, fontSize: 14),
                   )
                 ],
               ),
@@ -108,13 +111,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text("Here are today's",
                       textAlign: TextAlign.start,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
-                        fontSize: 15,
-                          fontFamily: "Muli"
-                      )),
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 15,
+                          fontFamily: "Muli")),
                   Text("recommended actions for you",
                       style: TextStyle(
-                          color: Colors.white.withOpacity(0.7), fontSize: 15,
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 15,
                           fontFamily: "Muli")),
                 ],
               ),
@@ -132,39 +135,113 @@ class _HomeScreenState extends State<HomeScreen> {
           width: 100,
           child: _status == "check_in" || _status == "check_out"
               ? _status == "check_in"
-                  ? GestureDetector(
-                      onTap: () {
+                  ? SliderButton(
+                      action: () {
                         setState(() {
                           _status = "check_out";
                         });
+
+                        ///Do something here OnSlide
                       },
-                      child: Container(
-                        alignment: Alignment.center,
-                        color: ColorConstants.checkinColor,
-                        child: Text("CHECK-IN",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Muli",
-                                fontSize: 18)),
+
+                      ///Put label over here
+                      label: Text(
+                        "Slide to Check-In !",
+                        style: TextStyle(
+                            color: Color(0xff4a4a4a),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17),
                       ),
+                      icon: Center(
+                          child: Icon(
+                        Icons.arrow_forward_outlined,
+                        color: Colors.white,
+                        size: 40.0,
+                        //  semanticLabel: 'Text to announce in accessibility modes',
+                      )),
+
+                      ///Change All the color and size from here.
+                      alignLabel: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      radius: 10,
+                      buttonColor: ColorConstants.checkinColor,
+                      backgroundColor: ColorConstants.checkinColor,
+                      highlightedColor: Colors.grey,
+                      baseColor: Colors.white,
+                      vibrationFlag: true,
+                     dismissible: false,
                     )
-                  : GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _status = "Journey_Ended";
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        color: Colors.red,
-                        child: Text("CHECK-OUT",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Muli",
-                                fontSize: 18)),
-                      ),
-                    )
-              : GestureDetector(
+                  // GestureDetector(
+                  //             onTap: () {
+                  //               setState(() {
+                  //                 _status = "check_out";
+                  //               });
+                  //             },
+                  //             child: Container(
+                  //               alignment: Alignment.center,
+                  //               color: ColorConstants.checkinColor,
+                  //               child: Text("CHECK-IN",
+                  //                   style: TextStyle(
+                  //                       color: Colors.white,
+                  //                       fontFamily: "Muli",
+                  //                       fontSize: 18)),
+                  //             ),
+                  //           )
+                  :
+          SliderButton(
+            action: () {
+              setState(() {
+                _status = "Journey_Ended";
+              });
+
+              ///Do something here OnSlide
+            },
+
+            ///Put label over here
+            label: Text(
+              "Slide to Check-Out !",
+              style: TextStyle(
+                  color: Color(0xff4a4a4a),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17),
+            ),
+            icon: Center(
+                child: Icon(
+                  Icons.arrow_forward_outlined,
+                  color: Colors.white,
+                  size: 40.0,
+                  //  semanticLabel: 'Text to announce in accessibility modes',
+                )),
+
+            ///Change All the color and size from here.
+            alignLabel: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            radius: 10,
+            buttonColor: HexColor("#F9A61A"),
+            backgroundColor: HexColor("#F9A61A"),
+            highlightedColor: Colors.grey,
+            baseColor: Colors.white,
+            vibrationFlag: true,
+            dismissible: false,
+          )
+          // GestureDetector(
+          //             onTap: () {
+          //               setState(() {
+          //                 _status = "Journey_Ended";
+          //               });
+          //             },
+          //             child: Container(
+          //               alignment: Alignment.center,
+          //               color: Colors.red,
+          //               child: Text("CHECK-OUT",
+          //                   style: TextStyle(
+          //                       color: Colors.white,
+          //                       fontFamily: "Muli",
+          //                       fontSize: 18)),
+          //             ),
+          //           )
+              :
+          GestureDetector(
                   onTap: () {
                     setState(() {
                       _status = "check_in";
@@ -182,8 +259,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
         ));
   }
-
-
 
   Widget userMenuWidget() {
     return ListView.builder(
@@ -208,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         height: 60,
                         width: 60,
-                         margin: EdgeInsets.only(left: 10),
+                        margin: EdgeInsets.only(left: 10),
                         decoration: new BoxDecoration(
                           color: Colors.white,
                           // border: Border.all(color: Colors.black, width: 0.0),
@@ -227,11 +302,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         list[index].value,
                         style: TextStyle(
-                          fontSize: 25,
-                          fontFamily: "Muli",
-                          fontWeight: FontWeight.bold
-                          //fontWeight: FontWeight.normal
-                        ),
+                            fontSize: 25,
+                            fontFamily: "Muli",
+                            fontWeight: FontWeight.bold
+                            //fontWeight: FontWeight.normal
+                            ),
                       ),
                     ],
                   ),
@@ -241,8 +316,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: GestureDetector(
                     onTap: () {
                       print(list[index].value + " Page");
-                      if(list[index].value == "Leads"){
-                        Navigator.push(context, new CupertinoPageRoute(builder: (BuildContext context) => LeadScreen()));
+                      if (list[index].value == "Leads") {
+                        Navigator.push(
+                            context,
+                            new CupertinoPageRoute(
+                                builder: (BuildContext context) =>
+                                    LeadScreen()));
                       }
                     },
                     child: Icon(
@@ -262,5 +341,5 @@ class menuDetailsModel {
   String value;
   String imgURL;
 
-  menuDetailsModel(this.value,this.imgURL);
+  menuDetailsModel(this.value, this.imgURL);
 }
