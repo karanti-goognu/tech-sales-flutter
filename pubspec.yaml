@@ -39,7 +39,6 @@ dependencies:
   google_maps_flutter: ^0.5.30
   google_map_location_picker: ^3.3.4
   firebase_core: ^0.4.0+9
-
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^5.0.2
   dartz: ^0.8.9
