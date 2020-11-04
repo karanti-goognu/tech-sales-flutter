@@ -5,15 +5,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_map_location_picker/generated/l10n.dart'
-    as location_picker;
-import 'package:google_map_location_picker/google_map_location_picker.dart';
-//import 'package:google_map_location_picker_example/keys.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-//import 'generated/i18n.dart';
 
 
 class AddNewLeadForm extends StatefulWidget {
@@ -183,24 +175,24 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Positioned(
-                top: 0,
-                left: 200,
-                right: 0,
-                child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/images/Container.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ],
-                    ))),
-            Form(
+      body: Stack(
+        children: [
+          Positioned(
+              top: 0,
+              left: 200,
+              right: 0,
+              child: Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/images/Container.png',
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ],
+                  ))),
+          SingleChildScrollView(
+            child: Form(
               key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -936,10 +928,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),)
                       ],
                     ),
+                    SizedBox(height: 16),
                     Divider(
                       color: Colors.black26,
                       thickness: 1,
                     ),
+                    SizedBox(height: 16),
                     TextFormField(
 
                       validator: (value) {
@@ -1032,8 +1026,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
