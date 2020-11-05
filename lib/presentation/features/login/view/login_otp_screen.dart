@@ -298,7 +298,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   }
 
   void retryOtpRequest() {
-    _loginController.loginResponse
+    /*_loginController.loginResponse*/
   }
 
   void afterRequestLayout(String mobileNumber) {
