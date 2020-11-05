@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/core/security/read_device_info.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
@@ -247,8 +248,12 @@ class LoginScreenPageState extends State<LoginScreen> {
   void afterRequestLayout(String empId, String mobileNumber) {
     print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
 
+    LoginController _loginController = Get.find();
+
     try {
-      Get.find<LoginController>().getAccessKeyWithEmpId(empId, mobileNumber,1);
+      _loginController.empId = empId;
+      _loginController.phoneNumber = mobileNumber;
+      _loginController.getAccessKey(RequestIds.LOGIN_REQUEST);
     } catch (_) {
       print('Exception');
     }

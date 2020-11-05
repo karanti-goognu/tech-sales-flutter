@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -35,7 +37,7 @@ class MyApiClient {
     }
   }
 
-  checkLoginStatus(String empId, String mobileNumber,String accessKey) async {
+  checkLoginStatus(String empId, String mobileNumber, String accessKey) async {
     try {
       AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
       var bodyEncrypted = {
@@ -48,18 +50,18 @@ class MyApiClient {
         //"device-id": " 18e86276-d1e2-4e36-bcc2-26036be5065e",
         "device-id": build.androidId,
         "device-type": build.manufacturer,
-        "app-name" : StringConstants.appName,
-        "app-version" : StringConstants.appVersion,
+        "app-name": StringConstants.appName,
+        "app-version": StringConstants.appVersion,
       };
       var body = {
         //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
-        "reference-id":empId,
-        "mobile-number":mobileNumber,
+        "reference-id": empId,
+        "mobile-number": mobileNumber,
         //"device-id": " 18e86276-d1e2-4e36-bcc2-26036be5065e",
         "device-id": build.androidId,
         "device-type": build.manufacturer,
-        "app-name" : StringConstants.appName,
-        "app-version" : StringConstants.appVersion,
+        "app-name": StringConstants.appName,
+        "app-version": StringConstants.appVersion,
       };
 
       debugPrint('request with encryption: $bodyEncrypted');
@@ -79,6 +81,74 @@ class MyApiClient {
         LoginModel loginModel = LoginModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
         return loginModel;
+      } else
+        print('error in else');
+    } catch (_) {
+      print('error in catch${_.toString()}');
+    }
+  }
+
+  retryOtp(String empId, String mobileNumber, String accessKey,
+      String otpTokenId) async {
+    try {
+      AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
+      var body = {
+        "reference-id": empId,
+        "mobile-number": mobileNumber,
+        "device-id": build.androidId,
+        "device-type": build.manufacturer,
+        "app-name": StringConstants.appName,
+        "app-version": StringConstants.appVersion,
+        "otp-token-id ": otpTokenId,
+      };
+
+      debugPrint('request without encryption: $body');
+      final response = await post(Uri.parse(UrlConstants.retryOtp),
+          headers: requestHeadersWithAccessKey(accessKey),
+          body: json.encode(body),
+          encoding: Encoding.getByName("utf-8"));
+      //var response = await httpClient.post(UrlConstants.loginCheck);
+      print('response is :  ${response.body}');
+      if (response.statusCode == 200) {
+        print('success');
+        var data = json.decode(response.body);
+        RetryOtpModel retryOtpModel = RetryOtpModel.fromJson(data);
+        //print('Access key Object is :: $loginModel');
+        return retryOtpModel;
+      } else
+        print('error in else');
+    } catch (_) {
+      print('error in catch${_.toString()}');
+    }
+  }
+
+  validateOtp(String empId, String mobileNumber, String accessKey,
+      String otpCode) async {
+    try {
+      AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
+      var body = {
+        "reference-id": empId,
+        "mobile-number": mobileNumber,
+        "device-id": build.androidId,
+        "device-type": build.manufacturer,
+        "app-name": StringConstants.appName,
+        "app-version": StringConstants.appVersion,
+        "otp-code": otpCode,
+      };
+
+      debugPrint('request without encryption: $body');
+      debugPrint('request headers: ${requestHeadersWithAccessKey(accessKey)}');
+      final response = await post(Uri.parse(UrlConstants.validateOtp),
+          headers: requestHeadersWithAccessKey(accessKey),
+          body: json.encode(body),
+          encoding: Encoding.getByName("utf-8"));
+      print('response is :  ${response.body}');
+      if (response.statusCode == 200) {
+        print('success');
+        var data = json.decode(response.body);
+        ValidateOtpModel validateOtpModel = ValidateOtpModel.fromJson(data);
+        //print('Access key Object is :: $loginModel');
+        return validateOtpModel;
       } else
         print('error in else');
     } catch (_) {

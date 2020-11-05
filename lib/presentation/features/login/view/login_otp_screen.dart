@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -27,6 +28,7 @@ class LoginOtpScreen extends StatefulWidget {
 
 class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   String mobileNumber;
+  String otpCode = "";
   FocusNode _focusNode;
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
@@ -168,9 +170,10 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                       if (value.isEmpty) {
                         return 'Enter the code';
                       }
-                      if (value.length <= 6) {
+                      if (value.length < 6) {
                         return 'Otp code is incorrect';
                       }
+                      otpCode = value;
                       return null;
                     },
                     style: TextStyle(
@@ -219,7 +222,9 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                         child: Container(
                             child: GestureDetector(
                           onTap: () {
-                            retryOtpRequest();
+                            (retryOtp == false)
+                                ? retryOtpRequest()
+                                : print('button press');
                           },
                           child: new Text(
                             (retryOtp == false)
@@ -250,7 +255,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                                     ? CustomDialogs()
                                 .errorDialog(StringConstants.noInternetConnectionError)
                                     : */
-                                afterRequestLayout(mobileNumber);
+                                afterValidateRequest(otpCode);
                               },
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
@@ -298,11 +303,15 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   }
 
   void retryOtpRequest() {
+    _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST);
     /*_loginController.loginResponse*/
   }
 
-  void afterRequestLayout(String mobileNumber) {
-    if (_formKey.currentState.validate()) {}
+  void afterValidateRequest(String otpCode) {
+    if (_formKey.currentState.validate()) {
+      _loginController.otpCode = otpCode;
+      _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
+    }
   }
 
   LoginOtpScreenPageState(this.mobileNumber);
