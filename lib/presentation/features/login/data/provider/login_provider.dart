@@ -22,11 +22,11 @@ class MyApiClient {
     try {
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
-      //print('Response body is : ${json.decode(response.body)}');
+      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        print('Access key Object is :: $accessKeyModel');
+        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -38,7 +38,7 @@ class MyApiClient {
   checkLoginStatus(String empId, String mobileNumber,String accessKey) async {
     try {
       AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
-      /*var body = {
+      var bodyEncrypted = {
         //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
         "reference-id":
             encryptAESCryptoJS(empId, StringConstants.encryptionKey).toString(),
@@ -50,7 +50,7 @@ class MyApiClient {
         "device-type": build.manufacturer,
         "app-name" : StringConstants.appName,
         "app-version" : StringConstants.appVersion,
-      };*/
+      };
       var body = {
         //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
         "reference-id":empId,
@@ -62,9 +62,10 @@ class MyApiClient {
         "app-version" : StringConstants.appVersion,
       };
 
+      debugPrint('request with encryption: $bodyEncrypted');
       debugPrint('request without encryption: $body');
-      debugPrint('request with encryption: ${requestHeadersWithAccessKey(accessKey)}');
-      //debugPrint('in get posts: ${json.encode(body)}');
+      /*debugPrint('request with encryption: ${requestHeadersWithAccessKey(accessKey)}');
+      debugPrint('Url is : ${UrlConstants.loginCheck}');*/
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await post(Uri.parse(UrlConstants.loginCheck),
           headers: requestHeadersWithAccessKey(accessKey),
@@ -76,12 +77,12 @@ class MyApiClient {
         print('success');
         var data = json.decode(response.body);
         LoginModel loginModel = LoginModel.fromJson(data);
-        print('Access key Object is :: $loginModel');
+        //print('Access key Object is :: $loginModel');
         return loginModel;
       } else
         print('error in else');
     } catch (_) {
-      print('error in catch');
+      print('error in catch${_.toString()}');
     }
   }
 }

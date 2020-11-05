@@ -6,8 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
-
 class AddNewLeadForm extends StatefulWidget {
   @override
   _AddNewLeadFormState createState() => _AddNewLeadFormState();
@@ -32,9 +30,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   Position _currentPosition;
   String _currentAddress;
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       // appBar: AppBar(
@@ -424,7 +422,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   fontSize: 17),
                             ),
                           ),
-
                           onPressed: () async {
                             LocationResult result = await showLocationPicker(
                                 context,
@@ -787,12 +784,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       child: _buildPanel(),
                     ),
 
-
                     SizedBox(height: 16),
 
                     Center(
                       child: FlatButton(
-
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0),
                             side: BorderSide(color: Colors.black26)),
@@ -809,9 +804,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 fontSize: 17),
                           ),
                         ),
-
                         onPressed: () async {
-                          Item item = new Item(headerValue: "agx ",expandedValue: "dnxcx");
+                          Item item = new Item(
+                              headerValue: "agx ", expandedValue: "dnxcx");
                           setState(() {
                             _data.add(item);
                           });
@@ -825,7 +820,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     ),
                     Padding(
                       padding:
-                      const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+                          const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
                       child: Text(
                         "Total Site Potential",
                         style: TextStyle(
@@ -839,9 +834,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(right:10.0),
+                            padding: const EdgeInsets.only(right: 10.0),
                             child: TextFormField(
-
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please enter Bags ';
@@ -863,11 +857,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: const Color(0xFF000000).withOpacity(0.4),
+                                      color: const Color(0xFF000000)
+                                          .withOpacity(0.4),
                                       width: 1.0),
                                 ),
                                 errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.red, width: 1.0),
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 1.0),
                                 ),
                                 labelText: "Bags",
                                 filled: false,
@@ -883,49 +879,51 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                         ),
                         Expanded(
-                          child:Padding(
-                            padding: const EdgeInsets.only(left:10.0),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
                             child: TextFormField(
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter MT ';
+                                }
 
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter MT ';
-                              }
-
-                              return null;
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorConstants.backgroundColorBlue,
-                                    //color: HexColor("#0000001F"),
-                                    width: 1.0),
+                                return null;
+                              },
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorConstants.backgroundColorBlue,
+                                      //color: HexColor("#0000001F"),
+                                      width: 1.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: const Color(0xFF000000)
+                                          .withOpacity(0.4),
+                                      width: 1.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 1.0),
+                                ),
+                                labelText: "MT",
+                                filled: false,
+                                focusColor: Colors.black,
+                                labelStyle: TextStyle(
+                                    fontFamily: "Muli",
+                                    color: ColorConstants.inputBoxHintColorDark,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 16.0),
+                                fillColor: ColorConstants.backgroundColor,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: const Color(0xFF000000).withOpacity(0.4),
-                                    width: 1.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red, width: 1.0),
-                              ),
-                              labelText: "MT",
-                              filled: false,
-                              focusColor: Colors.black,
-                              labelStyle: TextStyle(
-                                  fontFamily: "Muli",
-                                  color: ColorConstants.inputBoxHintColorDark,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.0),
-                              fillColor: ColorConstants.backgroundColor,
                             ),
-                        ),
-                          ),)
+                          ),
+                        )
                       ],
                     ),
                     SizedBox(height: 16),
@@ -935,7 +933,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     ),
                     SizedBox(height: 16),
                     TextFormField(
-
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter RERA Number ';
@@ -975,7 +972,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       ),
                     ),
 
-
                     SizedBox(height: 35),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -997,13 +993,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   fontSize: 17),
                             ),
                           ),
-
-                          onPressed: () async {
-
-                          },
+                          onPressed: () async {},
                         ),
                         RaisedButton(
-
                           color: HexColor("#1C99D4"),
                           child: Text(
                             "SUBMIT",
@@ -1013,10 +1005,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 // letterSpacing: 2,
                                 fontSize: 17),
                           ),
-
-                          onPressed: () async {
-
-                          },
+                          onPressed: () async {},
                         ),
                       ],
                     ),
@@ -1054,7 +1043,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       Placemark place = p[0];
 
       setState(() {
-        _siteAddress.text = place.name + "," + place.thoroughfare + "," + place.subLocality ;
+        _siteAddress.text =
+            place.name + "," + place.thoroughfare + "," + place.subLocality;
         _district.text = place.subAdministrativeArea;
         _state.text = place.administrativeArea;
         _pincode.text = place.postalCode;
@@ -1063,14 +1053,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         _currentAddress =
             "${place.locality}, ${place.postalCode}, ${place.country}";
 
-        print("${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+        print(
+            "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
     } catch (e) {
       print(e);
     }
   }
-
-
 
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -1081,9 +1070,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       },
       children: _data.map<ExpansionPanel>((Item item) {
         return ExpansionPanel(
-
           headerBuilder: (BuildContext context, bool isExpanded) {
-
             return ListTile(
               title: Text(item.headerValue),
             );
@@ -1096,18 +1083,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 setState(() {
                   _data.removeWhere((currentItem) => item == currentItem);
                 });
-              }
-          ),
+              }),
           isExpanded: item.isExpanded,
         );
       }).toList(),
     );
   }
-
-
-
 }
-
 
 class Item {
   Item({
@@ -1120,6 +1102,7 @@ class Item {
   String headerValue;
   bool isExpanded;
 }
+
 List<Item> generateItems(int numberOfItems) {
   return List.generate(numberOfItems, (int index) {
     return Item(
@@ -1127,12 +1110,9 @@ List<Item> generateItems(int numberOfItems) {
       expandedValue: 'This is item number $index',
     );
   });
-
-
 }
 //
 // List<Item> addItems(Item item){
 //   _data.add
 //   return List.
 // }
-

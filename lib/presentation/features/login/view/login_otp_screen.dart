@@ -1,20 +1,16 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tech_sales/core/security/read_device_info.dart';
-import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class LoginOtpScreen extends StatefulWidget {
   final String mobileNumber;
@@ -34,25 +30,45 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   FocusNode _focusNode;
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  Map<String, dynamic> _deviceData = <String, dynamic>{};
+  LoginController _loginController = Get.find();
 
   Timer _timer;
   int _start = 180;
+  bool retryOtp = false;
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-      (Timer timer) => setState(
-        () {
-          if (_start < 1) {
-            timer.cancel();
-          } else {
-            _start = _start - 1;
-          }
-        },
-      ),
-    );
+    if (_loginController != null) {
+      LoginModel loginModel = _loginController.loginResponse;
+      print('Time is :: ${jsonEncode(loginModel)}');
+      try {
+        _start = int.parse(loginModel.otpRetrySmsTime);
+        print('${_start.toString()}');
+        _start = _start ~/ 1000;
+        print('${_start.toString()}');
+        //_start = (_start / 1000) as int;
+      } catch (_) {
+        print('We wre in catch ${_.toString()}');
+      }
+
+      const oneSec = const Duration(seconds: 1);
+      _timer = new Timer.periodic(
+        oneSec,
+        (Timer timer) => setState(
+          () {
+            if (_start < 1) {
+              timer.cancel();
+              setState(() {
+                retryOtp = true;
+              });
+            } else {
+              _start = _start - 1;
+            }
+          },
+        ),
+      );
+    } else {
+      print('Controller is null');
+    }
   }
 
   @override
@@ -67,29 +83,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
     super.initState();
     _focusNode = FocusNode();
     startTimer();
-    initPlatformState();
-  }
-
-  Future<void> initPlatformState() async {
-    Map<String, dynamic> deviceData;
-
-    try {
-      if (Platform.isAndroid) {
-        deviceData = readAndroidBuildData(await deviceInfoPlugin.androidInfo);
-      } else if (Platform.isIOS) {
-        deviceData = readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
-      }
-    } on PlatformException {
-      deviceData = <String, dynamic>{
-        'Error:': 'Failed to get platform version.'
-      };
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _deviceData = deviceData;
-    });
   }
 
   @override
@@ -110,13 +103,12 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   }
 
   Widget _buildLoginInterface(BuildContext context) {
-    LoginController _loginController = Get.find();
     SizeConfig().init(context);
     var secToMin = Duration(seconds: _start).inMinutes; // 2 mins
     var sec = _start % 60;
     var timeFormat = secToMin.toString() + ":" + sec.toString();
 
-    var connectionStatus = Provider.of<ConnectivityStatus>(context);
+    // var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     return Padding(
         padding: EdgeInsets.all(16),
@@ -146,36 +138,20 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
             ),
             Text(
               "Welcome, please login ",
-              style: TextStyle(
-                  color: ColorConstants.darkTextColor,
-                  fontFamily: "Muli-Bold.ttf",
-                  fontSize: 20,
-                  letterSpacing: .30,
-                  fontWeight: FontWeight.bold),
+              style: TextStyles.welcomeMsgTextStyle20,
             ),
             SizedBox(
               height: 16,
             ),
             Text(
               "Enter the 6 - digit OTP sent to you at",
-              style: TextStyle(
-                  fontFamily: "Muli",
-                  fontSize: 16,
-                  letterSpacing: .5,
-                  color: const Color(0xFF000000).withOpacity(0.6)),
+              style: TextStyles.enterMsgTextStyle16,
             ),
             SizedBox(
               height: 8,
             ),
-            Obx(() => Text(
-              "+91 ${_loginController.phoneNumber}.",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Muli",
-                  fontSize: 16,
-                  letterSpacing: .5,
-                  color: const Color(0xFF000000).withOpacity(0.6)),
-            )),
+            Obx(() => Text("+91 ${_loginController.phoneNumber}.",
+                style: TextStyles.phoneNumberTextStyle16)),
             SizedBox(
               height: 20,
             ),
@@ -241,13 +217,18 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                     children: [
                       Expanded(
                         child: Container(
-                            child: new Text(
-                          "Resend OTP in $timeFormat",
-                          style: TextStyle(
-                              fontFamily: "Muli",
-                              fontSize: 14,
-                              letterSpacing: .25,
-                              color: ColorConstants.darkTextColor),
+                            child: GestureDetector(
+                          onTap: () {
+                            retryOtpRequest();
+                          },
+                          child: new Text(
+                            (retryOtp == false)
+                                ? "Resend OTP in $timeFormat"
+                                : "Resend OTP",
+                            style: (retryOtp == false)
+                                ? TextStyles.resendOtpTextStyleNormal
+                                : TextStyles.resendOtpTextStyleEnabled,
+                          ),
                         )),
                         flex: 2,
                       ),
@@ -255,27 +236,27 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                         child: Container(
                             child: RaisedButton(
                               elevation: 4,
-                              color: (connectionStatus ==
+                              color:
+                                  /*(connectionStatus ==
                                       ConnectivityStatus.Offline)
                                   ? ColorConstants.buttonDisableColor
-                                  : ColorConstants.buttonNormalColor,
+                                  :*/
+                                  ColorConstants.buttonNormalColor,
                               highlightColor: ColorConstants.buttonPressedColor,
                               onPressed: () {
                                 // Validate returns true if the form is valid, or false
                                 // otherwise.
-                                (connectionStatus == ConnectivityStatus.Offline)
+                                /*(connectionStatus == ConnectivityStatus.Offline)
                                     ? CustomDialogs()
                                 .errorDialog(StringConstants.noInternetConnectionError)
-                                    : afterRequestLayout(mobileNumber);
+                                    : */
+                                afterRequestLayout(mobileNumber);
                               },
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
                                 child: Text(
                                   'VERIFY',
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      letterSpacing: 1.25),
+                                  style: ButtonStyles.buttonStyleBlue,
                                 ),
                               ),
                             ),
@@ -294,11 +275,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                         child: Container(
                             child: new Text(
                           "Didn't received the sms?",
-                          style: TextStyle(
-                              fontFamily: "Muli",
-                              fontSize: 14,
-                              letterSpacing: .25,
-                              color: ColorConstants.darkTextColor),
+                          style: TextStyles.resendOtpTextStyleNormal,
                         )),
                         flex: 2,
                       ),
@@ -307,12 +284,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                             alignment: Alignment.topLeft,
                             child: new Text(
                               "Request OTP via call",
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  fontFamily: "Muli",
-                                  fontSize: 14,
-                                  letterSpacing: .25,
-                                  color: ColorConstants.buttonNormalColor),
+                              style: TextStyles.resendOtpTextStyleEnabled,
                             )),
                         flex: 2,
                       ),
@@ -325,9 +297,12 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
         ));
   }
 
+  void retryOtpRequest() {
+    _loginController.loginResponse
+  }
+
   void afterRequestLayout(String mobileNumber) {
-    if (_formKey.currentState.validate()) {
-    }
+    if (_formKey.currentState.validate()) {}
   }
 
   LoginOtpScreenPageState(this.mobileNumber);

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController {
@@ -20,6 +20,6 @@ class SplashController extends GetxController {
   getAll() {}
 
   openLoginPage() {
-    Timer(Duration(seconds: 3), () => Get.toNamed(Routes.LOGIN_WITH_GETX));
+    Timer(Duration(seconds: 3), () => Get.off(LoginScreen()));
   }
 }

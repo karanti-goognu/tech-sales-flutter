@@ -5,19 +5,13 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/security/read_device_info.dart';
-import 'package:flutter_tech_sales/core/services/connectivity_service.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -77,7 +71,7 @@ class LoginScreenPageState extends State<LoginScreen> {
 
     SizeConfig().init(context);
 
-    var connectionStatus = Provider.of<ConnectivityStatus>(context);
+    //var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     return Padding(
         padding: EdgeInsets.all(16),
@@ -215,9 +209,11 @@ class LoginScreenPageState extends State<LoginScreen> {
                     height: 16,
                   ),
                   RaisedButton(
-                    color: (connectionStatus == ConnectivityStatus.Offline)
+                    color:
+                        /*(connectionStatus == ConnectivityStatus.Offline)
                         ? ColorConstants.buttonDisableColor
-                        : ColorConstants.buttonNormalColor,
+                        : */
+                        ColorConstants.buttonNormalColor,
                     highlightColor: ColorConstants.buttonPressedColor,
                     onPressed: () {
                       // Validate returns true if the form is valid, or false
@@ -226,10 +222,11 @@ class LoginScreenPageState extends State<LoginScreen> {
                         FirebaseAnalytics().logEvent(
                             name: FirebaseEventsConstants.loginButtonClick,
                             parameters: null);
-                        (connectionStatus == ConnectivityStatus.Offline)
+                        afterRequestLayout(empId, mobileNumber);
+                        /*(connectionStatus == ConnectivityStatus.Offline)
                             ? CustomDialogs().errorDialog(
                                 StringConstants.noInternetConnectionError)
-                            : afterRequestLayout(empId, mobileNumber);
+                            : afterRequestLayout(empId, mobileNumber);*/
                       }
                     },
                     child: Padding(
@@ -249,16 +246,9 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   void afterRequestLayout(String empId, String mobileNumber) {
     print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
+
     try {
-      GetX<LoginController>(
-          initState:
-              Get.find<LoginController>().getAccessKey(empId, mobileNumber, 1),
-          builder: (_) {
-            print("We are in builder");
-            return LoginOtpScreen(
-              mobileNumber: mobileNumber,
-            );
-          });
+      Get.find<LoginController>().getAccessKeyWithEmpId(empId, mobileNumber,1);
     } catch (_) {
       print('Exception');
     }
