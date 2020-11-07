@@ -12,4 +12,6 @@ abstract class UrlConstants {
   //End points
   static const String loginCheck = '$baseUrl/login/login-otp';
   static const String getAccessKey = '$baseUrl/validation/generate-access-key';
+  static const String retryOtp = '$baseUrl/login/login-otp-retry';
+  static const String validateOtp = '$baseUrl/login/login-otp-validate';
 }

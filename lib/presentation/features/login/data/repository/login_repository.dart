@@ -11,6 +11,14 @@ class MyRepository {
     return apiClient.checkLoginStatus(empId,mobileNumber,accessKey);
   }
 
+  retryOtp(String empId,String mobileNumber,String accessKey,String otpTokenId) {
+    return apiClient.retryOtp(empId,mobileNumber,accessKey,otpTokenId);
+  }
+
+  validateOtp(String empId,String mobileNumber,String accessKey,String otpCode) {
+    return apiClient.validateOtp(empId,mobileNumber,accessKey,otpCode);
+  }
+
   getAccessKey() {
     return apiClient.getAccessKey();
   }
