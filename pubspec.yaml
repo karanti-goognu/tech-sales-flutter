@@ -48,6 +48,8 @@ dependencies:
   device_info: ^0.4.2+9
   get: ^3.15.0
   sms_autofill: ^1.2.6
+  expandable: ^4.1.4
+  pointycastle: ^2.0.0
 
   flutter_localizations:
     sdk: flutter
