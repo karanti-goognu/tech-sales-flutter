@@ -1,10 +1,10 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:intl/intl.dart';
 
 class LeadScreen extends StatefulWidget {
@@ -13,27 +13,42 @@ class LeadScreen extends StatefulWidget {
 }
 
 class _LeadScreenState extends State<LeadScreen> {
- // String formatter = new DateFormat("yyyy-mm-dd");
+  // String formatter = new DateFormat("yyyy-mm-dd");
+
   List<leadDetailsModel> list = [
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,false,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,false,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
-    new leadDetailsModel("XXXX","NIT Fridabad",200,true,true,DateFormat("yyyy-MM-dd").format(DateTime.now()),999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
   ];
 
-
   int currentTab = 0;
+
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       extendBody: true,
       backgroundColor: ColorConstants.backgroundColorBlue,
@@ -60,6 +75,9 @@ class _LeadScreenState extends State<LeadScreen> {
                       fontFamily: "Muli"),
                 ),
                 FlatButton(
+                  onPressed: () {
+                    _settingModalBottomSheet(context);
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                       side: BorderSide(color: Colors.white)),
@@ -75,24 +93,23 @@ class _LeadScreenState extends State<LeadScreen> {
                             // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                             decoration: new BoxDecoration(
                               color: Colors.white,
-                              border: Border.all(color: Colors.black, width: 0.0),
-                              borderRadius: new BorderRadius.all(Radius.circular(3)),
+                              border:
+                                  Border.all(color: Colors.black, width: 0.0),
+                              borderRadius:
+                                  new BorderRadius.all(Radius.circular(3)),
                             ),
-                            child: Center(child: Text("0",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    //fontFamily: 'Raleway',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal
-                                )))
-                        ),
+                            child: Center(
+                                child: Text("0",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        //fontFamily: 'Raleway',
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.normal)))),
                         Padding(
-                          padding: const EdgeInsets.only(left:8.0),
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'FILTER',
-                            style: TextStyle(color: Colors.white ,
-                                fontSize: 18),
-
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                         ),
                       ],
@@ -109,7 +126,6 @@ class _LeadScreenState extends State<LeadScreen> {
             //     ),
             //   ],
             // )
-
           ],
         ),
         automaticallyImplyLeading: false,
@@ -161,7 +177,7 @@ class _LeadScreenState extends State<LeadScreen> {
         //       ],
         //    ),
         //  ),
-      //  ],
+        //  ],
       ),
       floatingActionButton: Container(
         height: 68.0,
@@ -169,13 +185,14 @@ class _LeadScreenState extends State<LeadScreen> {
         child: FittedBox(
           child: FloatingActionButton(
             backgroundColor: Colors.amber,
-
             child: Icon(
               Icons.add,
             ),
             onPressed: () {
-              Navigator.push(context, new CupertinoPageRoute(builder: (BuildContext context) => AddNewLeadForm()));
-
+              Navigator.push(
+                  context,
+                  new CupertinoPageRoute(
+                      builder: (BuildContext context) => AddNewLeadForm()));
             },
           ),
         ),
@@ -185,8 +202,6 @@ class _LeadScreenState extends State<LeadScreen> {
         color: ColorConstants.appBarColor,
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
-
-
         child: Container(
           height: 60,
           child: Row(
@@ -220,7 +235,6 @@ class _LeadScreenState extends State<LeadScreen> {
                       ],
                     ),
                   ),
-
                 ],
               ),
 
@@ -231,15 +245,13 @@ class _LeadScreenState extends State<LeadScreen> {
                 children: <Widget>[
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {
-
-                    },
+                    onPressed: () {},
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
                           Icons.drafts,
-                          color:  Colors.white60,
+                          color: Colors.white60,
                         ),
                         // Text(
                         //   'Mail',
@@ -252,15 +264,13 @@ class _LeadScreenState extends State<LeadScreen> {
                   ),
                   CupertinoButton(
                     minSize: 40,
-                    onPressed: () {
-
-                    },
+                    onPressed: () {},
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
                           Icons.search,
-                          color:Colors.white60,
+                          color: Colors.white60,
                         ),
                         // Text(
                         //   'Search',
@@ -285,26 +295,25 @@ class _LeadScreenState extends State<LeadScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Total Count : " + list.length.toString(),
-                  style: TextStyle(
-                    fontFamily: "Muli",
-                    fontSize: 15,
-                      color: HexColor("#FFFFFF99"),
-
-
-                  ),),
-                  Text("Total Potential : " + "2000 MT",
+                  Text(
+                    "Total Count : " + list.length.toString(),
                     style: TextStyle(
                       fontFamily: "Muli",
                       fontSize: 15,
-                      color:  HexColor("#FFFFFF99"),
-
-
-                    ),),
+                      color: HexColor("#FFFFFF99"),
+                    ),
+                  ),
+                  Text(
+                    "Total Potential : " + "2000 MT",
+                    style: TextStyle(
+                      fontFamily: "Muli",
+                      fontSize: 15,
+                      color: HexColor("#FFFFFF99"),
+                    ),
+                  ),
                 ],
               ),
             ),
-
             Expanded(child: leadsDetailWidget())
           ],
         ),
@@ -312,15 +321,11 @@ class _LeadScreenState extends State<LeadScreen> {
     );
   }
 
-
-
-
-
   Widget leadsDetailWidget() {
     return ListView.builder(
         itemCount: list.length,
         padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
-       // itemExtent: 125.0,
+        // itemExtent: 125.0,
         itemBuilder: (context, index) {
           return Card(
             clipBehavior: Clip.antiAlias,
@@ -355,69 +360,77 @@ class _LeadScreenState extends State<LeadScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                           Padding(
-                             padding: const EdgeInsets.all(2.0),
-                             child: Text(list[index].date,
-                             //  textAlign: TextAlign.start,
-                               style: TextStyle(
-                                   fontSize: 11,
-                                   fontFamily: "Muli",
-                                   fontWeight: FontWeight.bold,
-
-                                 //fontWeight: FontWeight.normal
-                               ),),
-                           ),
-
                             Padding(
                               padding: const EdgeInsets.all(2.0),
-                              child: Text("Lead-Id(" + list[index].leadID + ")",
+                              child: Text(
+                                list[index].date,
+                                //  textAlign: TextAlign.start,
                                 style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "Muli",
-                                    fontWeight: FontWeight.bold
+                                  fontSize: 11,
+                                  fontFamily: "Muli",
+                                  fontWeight: FontWeight.bold,
+
                                   //fontWeight: FontWeight.normal
                                 ),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(2.0),
-                              child: Text("District: " + list[index].district ,
+                              child: Text(
+                                "Lead-Id(" + list[index].leadID + ")",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.bold
+                                    //fontWeight: FontWeight.normal
+                                    ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(
+                                "District: " + list[index].district,
                                 style: TextStyle(
                                     color: Colors.black38,
                                     fontSize: 14,
                                     fontFamily: "Muli",
                                     fontWeight: FontWeight.bold
-                                  //fontWeight: FontWeight.normal
-                                ),
+                                    //fontWeight: FontWeight.normal
+                                    ),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(2.0),
-                              child: Text("Site-Potential: " + list[index].sitePotential.toString() + "MT",
+                              child: Text(
+                                "Site-Potential: " +
+                                    list[index].sitePotential.toString() +
+                                    "MT",
                                 style: TextStyle(
-                                  color: Colors.black38,
+                                    color: Colors.black38,
                                     fontSize: 14,
                                     fontFamily: "Muli",
                                     fontWeight: FontWeight.bold
-                                  //fontWeight: FontWeight.normal
-                                ),
+                                    //fontWeight: FontWeight.normal
+                                    ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left:8.0),
+                              padding: const EdgeInsets.only(left: 8.0),
                               child: Chip(
-                                  shape: StadiumBorder(side: BorderSide(
-                                    color: HexColor("#6200EE")
-                                  )),
-                                backgroundColor: HexColor("#6200EE").withOpacity(0.1),
-                                label: Text("Active",
+                                shape: StadiumBorder(
+                                    side:
+                                        BorderSide(color: HexColor("#6200EE"))),
+                                backgroundColor:
+                                    HexColor("#6200EE").withOpacity(0.1),
+                                label: Text(
+                                  "Active",
                                   style: TextStyle(
                                       color: HexColor("#6200EE"),
                                       fontSize: 14,
                                       fontFamily: "Muli",
                                       fontWeight: FontWeight.bold
-                                    //fontWeight: FontWeight.normal
-                                  ),
+                                      //fontWeight: FontWeight.normal
+                                      ),
                                 ),
                               ),
                             )
@@ -425,65 +438,75 @@ class _LeadScreenState extends State<LeadScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right:15.0),
+                        padding: const EdgeInsets.only(right: 15.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            !list[index].verifiedStatus ? Chip(
-                              // shape: StadiumBorder(side: BorderSide(
-                              //     color: HexColor("#6200EE")
-                              // )),
-                              backgroundColor: HexColor("#F9A61A"),
-                              label: Text("NON VERIFIED",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontFamily: "Muli",
-                                    fontWeight: FontWeight.bold
-                                  //fontWeight: FontWeight.normal
-                                ),
-                              ),
-                            ) : Chip(
-                              // shape: StadiumBorder(side: BorderSide(
-                              //     color: HexColor("#6200EE")
-                              // )),
-                              backgroundColor: HexColor("#00ADEE"),
-                              label: Text("TELE VERIFIED",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontFamily: "Muli",
-                                    fontWeight: FontWeight.bold
-                                  //fontWeight: FontWeight.normal
-                                ),
-                              ),
-                            ),
+                            !list[index].verifiedStatus
+                                ? Chip(
+                                    // shape: StadiumBorder(side: BorderSide(
+                                    //     color: HexColor("#6200EE")
+                                    // )),
+                                    backgroundColor: HexColor("#F9A61A"),
+                                    label: Text(
+                                      "NON VERIFIED",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontFamily: "Muli",
+                                          fontWeight: FontWeight.bold
+                                          //fontWeight: FontWeight.normal
+                                          ),
+                                    ),
+                                  )
+                                : Chip(
+                                    // shape: StadiumBorder(side: BorderSide(
+                                    //     color: HexColor("#6200EE")
+                                    // )),
+                                    backgroundColor: HexColor("#00ADEE"),
+                                    label: Text(
+                                      "TELE VERIFIED",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontFamily: "Muli",
+                                          fontWeight: FontWeight.bold
+                                          //fontWeight: FontWeight.normal
+                                          ),
+                                    ),
+                                  ),
                             SizedBox(
                               height: 40,
                             ),
-                            Text("Call Contractor",
+                            Text(
+                              "Call Contractor",
                               style: TextStyle(
-                                 // color: Colors.white,
+                                  // color: Colors.white,
                                   fontSize: 11,
                                   fontFamily: "Muli",
                                   fontWeight: FontWeight.bold
-                                //fontWeight: FontWeight.normal
-                              ),),
+                                  //fontWeight: FontWeight.normal
+                                  ),
+                            ),
                             Row(
                               children: [
-                                Icon(Icons.call,
-                                color: HexColor("#8DC63F"),),
-                                Text(list[index].ownerNumber.toString(),
+                                Icon(
+                                  Icons.call,
+                                  color: HexColor("#8DC63F"),
+                                ),
+                                Text(
+                                  list[index].ownerNumber.toString(),
                                   style: TextStyle(
                                       color: HexColor("#1C99D4"),
                                       fontSize: 18,
                                       fontFamily: "Muli",
                                       fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic
-                                    //fontWeight: FontWeight.normal
-                                  ),),
+                                      fontStyle: FontStyle.italic
+                                      //fontWeight: FontWeight.normal
+                                      ),
+                                ),
                               ],
                             ),
                           ],
@@ -497,12 +520,115 @@ class _LeadScreenState extends State<LeadScreen> {
           );
         });
   }
+
+  void _settingModalBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+              height: SizeConfig.safeBlockVertical * 80,
+              child: Stack(
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Filters",
+                                style: TextStyles.mulliBold18,
+                              ),
+                            ),
+                            Spacer(),
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 24,
+                                )),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 1.0,
+                        width: SizeConfig.screenWidth,
+                        color: ColorConstants.lineColorFilter,
+                      ),
+                      new Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          new Expanded(
+                            flex: 1,
+                            child:new ListView.builder
+                              (
+                                itemCount:4,
+                                itemBuilder: (BuildContext ctxt, int index) {
+                                  return new Text("Hello $index");
+                                }
+                            ),
+                          ),
+                          Container(
+                            height: 200,
+                            width: 1,
+                            color: ColorConstants.lineColorFilter,
+                          ),
+                          new Expanded(
+                            flex: 2,
+                            child: new Container(
+                              alignment: Alignment.bottomCenter,
+                              child: Text("Hello Again"), //variable above
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      height: 102,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            height: 1.0,
+                            width: SizeConfig.screenWidth,
+                            color: ColorConstants.lineColorFilter,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(30, 27, 16, 8),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Clear All",
+                                    style: TextStyles.mulliBoldYellow18,
+                                  ),
+                                  Spacer(),
+                                  RaisedButton(
+                                    onPressed: () {},
+                                    color: ColorConstants.buttonNormalColor,
+                                    child: Text(
+                                      "Apply",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  )
+                                ],
+                              ))
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ));
+        });
+  }
 }
 
-
-
 class leadDetailsModel {
-
   String leadID;
   String district;
   int sitePotential;
@@ -511,5 +637,6 @@ class leadDetailsModel {
   String date;
   int ownerNumber;
 
-  leadDetailsModel(this.leadID,this.district,this.sitePotential,this.activeStatus,this.verifiedStatus,this.date,this.ownerNumber);
+  leadDetailsModel(this.leadID, this.district, this.sitePotential,
+      this.activeStatus, this.verifiedStatus, this.date, this.ownerNumber);
 }

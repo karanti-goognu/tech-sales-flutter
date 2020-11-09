@@ -2,15 +2,15 @@ class LoginModel {
   String respCode;
   String respMsg;
   String otpTokenId;
-  String otpSmsTimer;
-  String otpRetrySmsTimer;
+  String otpSmsTime;
+  String otpRetrySmsTime;
 
   LoginModel(
       {this.respCode,
       this.respMsg,
       this.otpTokenId,
-      this.otpSmsTimer,
-      this.otpRetrySmsTimer});
+      this.otpSmsTime,
+      this.otpRetrySmsTime});
 
   static LoginModel fromMap(Map<String, dynamic> json) {
     if (json == null) return null;
@@ -20,16 +20,16 @@ class LoginModel {
         respCode: json['resp-code'],
         respMsg: json['resp-msg'],
         otpTokenId: json['otp-token-id'],
-        otpSmsTimer: json['otp-sms-timer'],
-        otpRetrySmsTimer: json['otp-retry-sms-timer']);
+        otpSmsTime: json['otp-sms-time'],
+        otpRetrySmsTime: json['otp-retry-sms-time']);
   }
 
   LoginModel.fromJson(Map<String, dynamic> json) {
     respCode = json['resp-code'];
     respMsg = json['resp-msg'];
     otpTokenId = json['otp-token-id'];
-    otpSmsTimer = json['otp-sms-timer'];
-    otpRetrySmsTimer = json['otp-retry-sms-timer'];
+    otpSmsTime = json['otp-sms-time'];
+    otpRetrySmsTime = json['otp-retry-sms-time'];
   }
 
   Map<String, dynamic> toJson() {
@@ -37,8 +37,8 @@ class LoginModel {
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
     data['otp-token-id'] = this.otpTokenId;
-    data['otp-sms-timer'] = this.otpSmsTimer;
-    data['otp-retry-sms-timer'] = this.otpRetrySmsTimer;
+    data['otp-sms-time'] = this.otpSmsTime;
+    data['otp-retry-sms-time'] = this.otpRetrySmsTime;
     return data;
   }
 }

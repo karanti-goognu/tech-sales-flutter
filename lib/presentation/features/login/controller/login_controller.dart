@@ -2,8 +2,11 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
@@ -20,22 +23,43 @@ class LoginController extends GetxController {
   LoginController({@required this.repository}) : assert(repository != null);
 
   final _loginResponse = LoginModel().obs;
+  final _retryOtpResponse = RetryOtpModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
+  final _validateOtpResponse = ValidateOtpModel().obs;
   final _phoneNumber = "8860080067".obs;
+  final _empId = "_empty".obs;
+  final _otpCode = "_empty".obs;
 
   get loginResponse => this._loginResponse.value;
 
+  get retryOtpResponse => this._retryOtpResponse.value;
+
   get accessKeyResponse => this._accessKeyResponse.value;
+
+  get validateOtpResponse => this._validateOtpResponse.value;
 
   get phoneNumber => this._phoneNumber.value;
 
+  get empId => this._empId.value;
+
+  get otpCode => this._otpCode.value;
+
   set loginResponse(value) => this._loginResponse.value = value;
+
+  set retryOtpResponse(value) => this._retryOtpResponse.value = value;
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
 
+  set validateOtpResponse(value) => this._validateOtpResponse.value = value;
+
   set phoneNumber(value) => this._phoneNumber.value = value;
 
-  getAccessKey(String empId, String mobileNumber, int requestId) {
+  set empId(value) => this._empId.value = value;
+
+  set otpCode(value) => this._otpCode.value = value;
+
+  getAccessKey(int requestId) {
+    print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -44,23 +68,73 @@ class LoginController extends GetxController {
       Get.back();
       this.accessKeyResponse = data;
       switch (requestId) {
-        case 1:
-          checkLoginStatus(
-              empId, mobileNumber, this.accessKeyResponse.accessKey);
+        case RequestIds.LOGIN_REQUEST:
+          checkLoginStatus();
+          break;
+        case RequestIds.RETRY_OTP_REQUEST:
+          retryOtp();
+          break;
+        case RequestIds.VALIDATE_OTP_REQUEST:
+          validateOTP();
           break;
       }
     });
   }
 
+  //{"resp-code":"DM1011","resp-msg":"OTP generated successfully",
+  // "otp-sms-time":"900000","otp-retry-sms-time":"180000","otp-token-id":"8e711d59-8820-41ee-b11d-59882041ee09"}
+
   //{"resp-code":null,"resp-msg":null,"otp-sms-time":null,"otp-retry-sms-time":null}
-  checkLoginStatus(String empId, String mobileNumber, String accessKey) {
-    repository.checkLoginStatus(empId, mobileNumber, accessKey).then((data) {
-      this.loginResponse = data;
-      if (loginResponse.respCode == "DM1011") {
-        this.phoneNumber = mobileNumber;
-        openOtpVerificationPage(mobileNumber);
+  checkLoginStatus() {
+    repository
+        .checkLoginStatus(
+            this.empId, this.phoneNumber, this.accessKeyResponse.accessKey)
+        .then((data) {
+      if (data == null) {
+        debugPrint('Login Response is null');
       } else {
-        Get.dialog(CustomDialogs().errorDialog(loginResponse.respMsg));
+        this.loginResponse = data;
+        if (loginResponse.respCode == "DM1011") {
+          openOtpVerificationPage(this.phoneNumber);
+        } else {
+          Get.dialog(CustomDialogs().errorDialog(loginResponse.respMsg));
+        }
+      }
+    });
+  }
+
+  retryOtp() {
+    repository
+        .retryOtp(this.empId, this.phoneNumber,
+            this.accessKeyResponse.accessKey, this.loginResponse.otpTokenId)
+        .then((data) {
+      if (data == null) {
+        debugPrint('Otp Retry Response is null');
+      } else {
+        this.retryOtpResponse = data;
+        if (retryOtpResponse.respCode == "DM1015") {
+          Get.dialog(CustomDialogs().errorDialog(retryOtpResponse.respMsg));
+        } else {
+          Get.dialog(CustomDialogs().errorDialog(retryOtpResponse.respMsg));
+        }
+      }
+    });
+  }
+
+  validateOTP() {
+    repository
+        .validateOtp(this.empId, this.phoneNumber,
+            this.accessKeyResponse.accessKey, this.otpCode)
+        .then((data) {
+      if (data == null) {
+        debugPrint('Otp Retry Response is null');
+      } else {
+        this.validateOtpResponse = data;
+        if (validateOtpResponse.respCode == "DM1011") {
+          Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
+        } else {
+          Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
+        }
       }
     });
   }

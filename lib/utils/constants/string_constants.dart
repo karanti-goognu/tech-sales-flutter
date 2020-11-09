@@ -5,7 +5,11 @@ abstract class StringConstants {
   static String noInternetConnectionError =
       'No active internet connection found.Please check your internet connectivity.';
 
+  //Secret Key for encryption
   static String encryptionKey = "dalmia@techexpert";
+  static String encryptedKey = "a8Egz8p4qTjvGNCrS3TKxQ==";
+
+  //
 
   //App constants
   static String appName = 'TSO';
