@@ -22,6 +22,9 @@ abstract class ColorConstants {
   static Color buttonNormalColor = const Color(0x001c99d4).withOpacity(1);
   static Color buttonDisableColor = const Color(0x0000000).withOpacity(0.3);
   static Color darkTextColor = const Color.fromRGBO(0, 0, 0, 0.87);
+  static Color blackColorFilter = const Color.fromRGBO(33, 33, 33, 1);
+  static Color lineColorFilter = const Color.fromRGBO(155, 166, 158, 1);
   static Color focusedInputTextColor = const Color.fromRGBO(141, 198, 63, 1);
+  static Color clearAllTextColor = const Color.fromRGBO(246, 169, 2, 1);
 
 }

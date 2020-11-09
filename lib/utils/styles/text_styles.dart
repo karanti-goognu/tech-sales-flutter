@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 
 abstract class TextStyles {
-
-
   static TextStyle resendOtpTextStyleEnabled = TextStyle(
       fontFamily: "Muli",
       fontSize: 14,
@@ -31,6 +29,18 @@ abstract class TextStyles {
       fontFamily: "Muli-Bold.ttf",
       fontSize: 16,
       letterSpacing: .30,
+      fontWeight: FontWeight.bold);
+
+  static TextStyle mulliBold18 = TextStyle(
+      color: ColorConstants.blackColorFilter,
+      fontFamily: "Muli-Bold.ttf",
+      fontSize: 18,
+      fontWeight: FontWeight.bold);
+
+  static TextStyle mulliBoldYellow18 = TextStyle(
+      color: ColorConstants.clearAllTextColor,
+      fontFamily: "Muli-Bold.ttf",
+      fontSize: 18,
       fontWeight: FontWeight.bold);
 
   static TextStyle enterMsgTextStyle16 = TextStyle(

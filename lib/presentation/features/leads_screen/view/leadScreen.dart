@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:intl/intl.dart';
 
 class LeadScreen extends StatefulWidget {
@@ -12,6 +14,7 @@ class LeadScreen extends StatefulWidget {
 
 class _LeadScreenState extends State<LeadScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
+
   List<leadDetailsModel> list = [
     new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
@@ -45,6 +48,7 @@ class _LeadScreenState extends State<LeadScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       extendBody: true,
       backgroundColor: ColorConstants.backgroundColorBlue,
@@ -71,6 +75,9 @@ class _LeadScreenState extends State<LeadScreen> {
                       fontFamily: "Muli"),
                 ),
                 FlatButton(
+                  onPressed: () {
+                    _settingModalBottomSheet(context);
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                       side: BorderSide(color: Colors.white)),
@@ -511,6 +518,112 @@ class _LeadScreenState extends State<LeadScreen> {
               ),
             ),
           );
+        });
+  }
+
+  void _settingModalBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+              height: SizeConfig.safeBlockVertical * 80,
+              child: Stack(
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Filters",
+                                style: TextStyles.mulliBold18,
+                              ),
+                            ),
+                            Spacer(),
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 24,
+                                )),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 1.0,
+                        width: SizeConfig.screenWidth,
+                        color: ColorConstants.lineColorFilter,
+                      ),
+                      new Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          new Expanded(
+                            flex: 1,
+                            child:new ListView.builder
+                              (
+                                itemCount:4,
+                                itemBuilder: (BuildContext ctxt, int index) {
+                                  return new Text("Hello $index");
+                                }
+                            ),
+                          ),
+                          Container(
+                            height: 200,
+                            width: 1,
+                            color: ColorConstants.lineColorFilter,
+                          ),
+                          new Expanded(
+                            flex: 2,
+                            child: new Container(
+                              alignment: Alignment.bottomCenter,
+                              child: Text("Hello Again"), //variable above
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      height: 102,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            height: 1.0,
+                            width: SizeConfig.screenWidth,
+                            color: ColorConstants.lineColorFilter,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(30, 27, 16, 8),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Clear All",
+                                    style: TextStyles.mulliBoldYellow18,
+                                  ),
+                                  Spacer(),
+                                  RaisedButton(
+                                    onPressed: () {},
+                                    color: ColorConstants.buttonNormalColor,
+                                    child: Text(
+                                      "Apply",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  )
+                                ],
+                              ))
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ));
         });
   }
 }

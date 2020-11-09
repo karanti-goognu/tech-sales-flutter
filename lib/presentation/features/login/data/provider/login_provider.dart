@@ -39,24 +39,26 @@ class MyApiClient {
 
   checkLoginStatus(String empId, String mobileNumber, String accessKey) async {
     try {
+      String encryptedEmpId =
+          encryptString(empId, StringConstants.encryptedKey).toString();
+
+      String decryptedEmpId =
+          decryptString(encryptedEmpId, StringConstants.encryptedKey)
+              .toString();
+
+      String encryptedMobileNumber =
+          encryptString(mobileNumber, StringConstants.encryptedKey).toString();
+
+      String decryptedMobileNumber =
+          decryptString(encryptedMobileNumber, StringConstants.encryptedKey)
+              .toString();
+      // a8Egz8p4qTjvGNCrS3TKxQ==
       AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
       var bodyEncrypted = {
         //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
-        "reference-id":
-            encryptAESCryptoJS(empId, StringConstants.encryptionKey).toString(),
-        "mobile-number":
-            encryptAESCryptoJS(mobileNumber, StringConstants.encryptionKey)
-                .toString(),
-        //"device-id": " 18e86276-d1e2-4e36-bcc2-26036be5065e",
-        "device-id": build.androidId,
-        "device-type": build.manufacturer,
-        "app-name": StringConstants.appName,
-        "app-version": StringConstants.appVersion,
-      };
-      var body = {
-        //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
-        "reference-id": empId,
-        "mobile-number": mobileNumber,
+        "reference-id": encryptedEmpId,
+
+        "mobile-number": encryptedMobileNumber,
         //"device-id": " 18e86276-d1e2-4e36-bcc2-26036be5065e",
         "device-id": build.androidId,
         "device-type": build.manufacturer,
@@ -65,13 +67,16 @@ class MyApiClient {
       };
 
       debugPrint('request with encryption: $bodyEncrypted');
-      debugPrint('request without encryption: $body');
-      /*debugPrint('request with encryption: ${requestHeadersWithAccessKey(accessKey)}');
-      debugPrint('Url is : ${UrlConstants.loginCheck}');*/
+      debugPrint(
+          'decrypted EmpId :: $decryptedEmpId   Encrypted MobileNumber :: $decryptedMobileNumber');
+      //debugPrint('request without encryption: $body');
+      debugPrint(
+          'request with encryption: ${requestHeadersWithAccessKey(accessKey)}');
+      debugPrint('Url is : ${UrlConstants.loginCheck}');
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await post(Uri.parse(UrlConstants.loginCheck),
           headers: requestHeadersWithAccessKey(accessKey),
-          body: json.encode(body),
+          body: json.encode(bodyEncrypted),
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
       print('response is :  ${response.body}');
@@ -124,16 +129,29 @@ class MyApiClient {
 
   validateOtp(String empId, String mobileNumber, String accessKey,
       String otpCode) async {
+    String encryptedEmpId =
+        encryptString(empId, StringConstants.encryptedKey).toString();
+
+    String encryptedMobile =
+        encryptString(mobileNumber, StringConstants.encryptedKey).toString();
+
+    String encryptedOtp =
+        encryptString(otpCode, StringConstants.encryptedKey).toString();
+
+    String decryptedOtp =
+        decryptString(otpCode, StringConstants.encryptedKey).toString();
+
+    print('$encryptedOtp  -----Decrypt String :: $decryptedOtp');
     try {
       AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
       var body = {
-        "reference-id": empId,
-        "mobile-number": mobileNumber,
+        "reference-id": encryptedEmpId,
+        "mobile-number": encryptedMobile,
         "device-id": build.androidId,
         "device-type": build.manufacturer,
         "app-name": StringConstants.appName,
         "app-version": StringConstants.appVersion,
-        "otp-code": otpCode,
+        "otp-code": encryptedOtp,
       };
 
       debugPrint('request without encryption: $body');
