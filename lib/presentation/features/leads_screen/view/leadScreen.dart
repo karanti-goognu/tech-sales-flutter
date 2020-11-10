@@ -1,11 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'file:///C:/Users/hp/StudioProjects/tech-sales-flutter/lib/presentation/features/leads_filter/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/enums/lead_stage.dart';
+import 'package:flutter_tech_sales/utils/enums/lead_status.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+LeadStage _leadStage = LeadStage.NonVerified;
+LeadStatus _leadStatus = LeadStatus.Active;
 
 class LeadScreen extends StatefulWidget {
   @override
@@ -14,6 +21,9 @@ class LeadScreen extends StatefulWidget {
 
 class _LeadScreenState extends State<LeadScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
+  LeadsFilterController _leadsFilterController = Get.find();
+
+  int selectedPosition = 0;
 
   List<leadDetailsModel> list = [
     new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
@@ -523,108 +533,338 @@ class _LeadScreenState extends State<LeadScreen> {
 
   void _settingModalBottomSheet(context) {
     showModalBottomSheet(
+        backgroundColor: ColorConstants.lightGeyColor,
         context: context,
         builder: (BuildContext bc) {
-          return Container(
-              height: SizeConfig.safeBlockVertical * 80,
-              child: Stack(
-                children: [
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Filters",
-                                style: TextStyles.mulliBold18,
+          return Stack(
+            children: [
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Filters",
+                            style: TextStyles.mulliBold18,
+                          ),
+                        ),
+                        Spacer(),
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.cancel,
+                                size: 24,
                               ),
+                            )),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 1.0,
+                    width: SizeConfig.screenWidth,
+                    color: ColorConstants.lineColorFilter,
+                  ),
+                  IntrinsicHeight(
+                      child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      new Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  _leadsFilterController.selectedPosition = 0;
+                                },
+                                child: returnSelectedWidget("Assign Date", 0)),
+                            GestureDetector(
+                                onTap: () {
+                                  _leadsFilterController.selectedPosition = 1;
+                                },
+                                child: returnSelectedWidget("Lead Stage", 1)),
+                            GestureDetector(
+                                onTap: () {
+                                  _leadsFilterController.selectedPosition = 2;
+                                },
+                                child: returnSelectedWidget("Lead Status", 2)),
+                            GestureDetector(
+                              onTap: () {
+                                _leadsFilterController.selectedPosition = 3;
+                              },
+                              child: returnSelectedWidget("Lead Potential", 3),
                             ),
-                            Spacer(),
-                            Align(
-                                alignment: Alignment.centerRight,
-                                child: Icon(
-                                  Icons.cancel,
-                                  size: 24,
-                                )),
                           ],
                         ),
                       ),
+                      Container(
+                        height: (SizeConfig.blockSizeVertical) + 400,
+                        width: 1,
+                        color: ColorConstants.lineColorFilter,
+                      ),
+                      new Expanded(
+                          flex: 2,
+                          child: returnSelectedWidgetBody(
+                              _leadsFilterController.selectedPosition)),
+                    ],
+                  )),
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  height: 102,
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
                       Container(
                         height: 1.0,
                         width: SizeConfig.screenWidth,
                         color: ColorConstants.lineColorFilter,
                       ),
-                      new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Expanded(
-                            flex: 1,
-                            child:new ListView.builder
-                              (
-                                itemCount:4,
-                                itemBuilder: (BuildContext ctxt, int index) {
-                                  return new Text("Hello $index");
-                                }
-                            ),
-                          ),
-                          Container(
-                            height: 200,
-                            width: 1,
-                            color: ColorConstants.lineColorFilter,
-                          ),
-                          new Expanded(
-                            flex: 2,
-                            child: new Container(
-                              alignment: Alignment.bottomCenter,
-                              child: Text("Hello Again"), //variable above
-                            ),
-                          ),
-                        ],
-                      ),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(30, 27, 16, 8),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Clear All",
+                                style: TextStyles.mulliBoldYellow18,
+                              ),
+                              Spacer(),
+                              RaisedButton(
+                                onPressed: () {},
+                                color: ColorConstants.buttonNormalColor,
+                                child: Text(
+                                  "APPLY",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            ],
+                          ))
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Container(
-                      height: 102,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            height: 1.0,
-                            width: SizeConfig.screenWidth,
-                            color: ColorConstants.lineColorFilter,
-                          ),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(30, 27, 16, 8),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Clear All",
-                                    style: TextStyles.mulliBoldYellow18,
-                                  ),
-                                  Spacer(),
-                                  RaisedButton(
-                                    onPressed: () {},
-                                    color: ColorConstants.buttonNormalColor,
-                                    child: Text(
-                                      "Apply",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  )
-                                ],
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ));
+                ),
+              ),
+            ],
+          );
         });
+  }
+
+  Widget returnSelectedWidget(String text, int position) {
+    return Obx(() => Container(
+          height: 50,
+          color: (_leadsFilterController.selectedPosition == position)
+              ? Colors.white
+              : Colors.transparent,
+          child: Center(
+            child: Text(
+              text,
+              style: (_leadsFilterController.selectedPosition == position)
+                  ? TextStyles.mulliBold14
+                  : TextStyle(color: Colors.black),
+            ),
+          ),
+        ));
+  }
+
+  Widget returnSelectedWidgetBody(int position) {
+    return Obx(
+      () => Container(
+        color: Colors.white,
+        child: (_leadsFilterController.selectedPosition == 0)
+            ? returnAssignDateBody()
+            : (_leadsFilterController.selectedPosition == 1)
+                ? returnLeadStageBody()
+                : (_leadsFilterController.selectedPosition == 2)
+                    ? returnLeadStatusBody()
+                    : Text('The Longest text button 3'),
+      ),
+    );
+  }
+
+  Widget returnAssignDateBody() {
+    return Container(
+        padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(19, 0, 19, 6),
+              child: Text(
+                "From Date",
+                style: TextStyles.robotoRegular14,
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.fromLTRB(19, 14, 19, 14),
+                width: double.infinity,
+                height: 51,
+                decoration: myBoxDecoration(),
+                //       <--- BoxDecoration here
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "1-Oct-2020",
+                      style: TextStyles.robotoBold16,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        Icons.date_range_rounded,
+                        size: 22,
+                        color: ColorConstants.clearAllTextColor,
+                      ),
+                    )
+                  ],
+                )),
+            Padding(
+              padding: EdgeInsets.fromLTRB(19, 31, 19, 6),
+              child: Text(
+                "To Date",
+                style: TextStyles.robotoRegular14,
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.fromLTRB(19, 14, 19, 14),
+                width: double.infinity,
+                height: 51,
+                decoration: myBoxDecoration(),
+                //       <--- BoxDecoration here
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "1-Oct-2020",
+                      style: TextStyles.robotoBold16,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        Icons.date_range_rounded,
+                        size: 22,
+                        color: ColorConstants.clearAllTextColor,
+                      ),
+                    )
+                  ],
+                ))
+          ],
+        ));
+  }
+
+  Widget returnLeadStageBody() {
+    return Container(
+        padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
+        child: Column(
+          children: <Widget>[
+            ListTile(
+                title: const Text('Non-Verified'),
+                leading: Obx(
+                  () => Radio(
+                    value: LeadStage.NonVerified,
+                    groupValue:
+                        _leadsFilterController.selectedLeadStage as LeadStage,
+                    onChanged: (LeadStage value) {
+                      _leadsFilterController.selectedLeadStage = value;
+                    },
+                  ),
+                )),
+            ListTile(
+                title: const Text('Tele-Verified'),
+                leading: Obx(
+                  () => Radio(
+                    value: LeadStage.TeleVerified,
+                    groupValue:
+                        _leadsFilterController.selectedLeadStage as LeadStage,
+                    onChanged: (LeadStage value) {
+                      _leadsFilterController.selectedLeadStage = value;
+                    },
+                  ),
+                )),
+            ListTile(
+                title: const Text('Physical-Verified'),
+                leading: Obx(
+                  () => Radio(
+                    value: LeadStage.PhysicalVerified,
+                    groupValue:
+                        _leadsFilterController.selectedLeadStage as LeadStage,
+                    onChanged: (LeadStage value) {
+                      _leadsFilterController.selectedLeadStage = value;
+                    },
+                  ),
+                )),
+          ],
+        ));
+  }
+
+  Widget returnLeadStatusBody() {
+    return Container(
+        padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
+        child: Column(
+          children: <Widget>[
+            ListTile(
+                title: const Text('Active'),
+                leading: Obx(
+                  () => Radio(
+                    value: LeadStatus.Active,
+                    groupValue:
+                        _leadsFilterController.selectedLeadStatus as LeadStatus,
+                    onChanged: (LeadStatus value) {
+                      _leadsFilterController.selectedLeadStatus = value;
+                    },
+                  ),
+                )),
+            ListTile(
+              title: const Text('Rejected'),
+              leading: Radio(
+                value: LeadStatus.Rejected,
+                groupValue:
+                    _leadsFilterController.selectedLeadStatus as LeadStatus,
+                onChanged: (LeadStatus value) {
+                  _leadsFilterController.selectedLeadStatus = value;
+                },
+              ),
+            ),
+            ListTile(
+              title: const Text('Converted to site'),
+              leading: Radio(
+                value: LeadStatus.ConvertedToSite,
+                groupValue:
+                    _leadsFilterController.selectedLeadStatus as LeadStatus,
+                onChanged: (LeadStatus value) {
+                  _leadsFilterController.selectedLeadStatus = value;
+                },
+              ),
+            ),
+            ListTile(
+              title: const Text('Duplicate'),
+              leading: Radio(
+                value: LeadStatus.Duplicate,
+                groupValue:
+                    _leadsFilterController.selectedLeadStatus as LeadStatus,
+                onChanged: (LeadStatus value) {
+                  _leadsFilterController.selectedLeadStatus = value;
+                },
+              ),
+            ),
+          ],
+        ));
+  }
+
+  BoxDecoration myBoxDecoration() {
+    return BoxDecoration(
+        border: Border.all(color: ColorConstants.dateBorderColor),
+        color: Colors.white);
   }
 }
 

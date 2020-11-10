@@ -12,6 +12,7 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 
 class LoginOtpScreen extends StatefulWidget {
   final String mobileNumber;
@@ -29,6 +30,7 @@ class LoginOtpScreen extends StatefulWidget {
 class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   String mobileNumber;
   String otpCode = "";
+  String isUserLoggedIn = "false";
   FocusNode _focusNode;
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
@@ -84,18 +86,21 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    //isUserLoggedIn = _loginController.getSharedPreference(StringConstants.isUserLoggedIn) as String?? "false";
     startTimer();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false, //
-      backgroundColor: ColorConstants.backgroundColor,
-      body: SingleChildScrollView(
-        child: _buildLoginInterface(context),
-      ),
-    );
+    return new WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false, //
+          backgroundColor: ColorConstants.backgroundColor,
+          body: SingleChildScrollView(
+            child: _buildLoginInterface(context),
+          ),
+        ));
   }
 
   void _requestFocus() {
@@ -255,7 +260,9 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                                     ? CustomDialogs()
                                 .errorDialog(StringConstants.noInternetConnectionError)
                                     : */
-                                afterValidateRequest(otpCode);
+                                if (_formKey.currentState.validate()) {
+                                  afterValidateRequest(otpCode);
+                                }
                               },
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
@@ -302,16 +309,36 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
         ));
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text(
+                'Your login progress will be Lost.Do you still want to continue ?'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              new FlatButton(
+                onPressed: () => Get.toNamed(Routes.LOGIN),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   void retryOtpRequest() {
     _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST);
     /*_loginController.loginResponse*/
   }
 
   void afterValidateRequest(String otpCode) {
-    if (_formKey.currentState.validate()) {
-      _loginController.otpCode = otpCode;
-      _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
-    }
+    _loginController.otpCode = otpCode;
+    _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
   }
 
   LoginOtpScreenPageState(this.mobileNumber);

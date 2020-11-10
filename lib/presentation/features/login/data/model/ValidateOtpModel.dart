@@ -1,18 +1,21 @@
 class ValidateOtpModel {
   String respCode;
   String respMsg;
+  String userSecurityKey;
   EmployeeDetails employeeDetails;
   List<UserMenu> userMenu;
   JourneyDetails journeyDetails;
 
   ValidateOtpModel(
-      {this.respCode,
+      {this.userSecurityKey,
+      this.respCode,
       this.respMsg,
       this.employeeDetails,
       this.userMenu,
       this.journeyDetails});
 
   ValidateOtpModel.fromJson(Map<String, dynamic> json) {
+    userSecurityKey = json['user-security-key'];
     respCode = json['resp-code'];
     respMsg = json['resp-msg'];
     employeeDetails = json['employee-details'] != null
@@ -31,6 +34,7 @@ class ValidateOtpModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
     if (this.employeeDetails != null) {
