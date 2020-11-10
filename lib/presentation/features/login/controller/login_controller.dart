@@ -7,9 +7,11 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/Valida
 import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   @override
@@ -58,6 +60,18 @@ class LoginController extends GetxController {
 
   set otpCode(value) => this._otpCode.value = value;
 
+  savePreference(String key, String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, value);
+  }
+
+  getSharedPreference(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    String stringValue = prefs.getString(key);
+    return stringValue;
+  }
+
   getAccessKey(int requestId) {
     print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
     Future.delayed(
@@ -66,6 +80,7 @@ class LoginController extends GetxController {
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
       Get.back();
+
       this.accessKeyResponse = data;
       switch (requestId) {
         case RequestIds.LOGIN_REQUEST:
@@ -86,6 +101,7 @@ class LoginController extends GetxController {
 
   //{"resp-code":null,"resp-msg":null,"otp-sms-time":null,"otp-retry-sms-time":null}
   checkLoginStatus() {
+    debugPrint('Access Key Response :: ');
     repository
         .checkLoginStatus(
             this.empId, this.phoneNumber, this.accessKeyResponse.accessKey)
@@ -122,16 +138,21 @@ class LoginController extends GetxController {
   }
 
   validateOTP() {
+    debugPrint('Otp Retry Response is null${this.otpCode}');
     repository
         .validateOtp(this.empId, this.phoneNumber,
             this.accessKeyResponse.accessKey, this.otpCode)
         .then((data) {
       if (data == null) {
-        debugPrint('Otp Retry Response is null');
+        debugPrint('Otp Validation Response is null');
       } else {
         this.validateOtpResponse = data;
         if (validateOtpResponse.respCode == "DM1011") {
-          Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
+          //Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
+          savePreference(StringConstants.isUserLoggedIn, "true");
+          savePreference(StringConstants.userSecurityKey,
+              this.validateOtpResponse.userSecurityKey);
+          openHomeScreen();
         } else {
           Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
         }
@@ -141,5 +162,9 @@ class LoginController extends GetxController {
 
   openOtpVerificationPage(mobileNumber) {
     Get.toNamed(Routes.VERIFY_OTP);
+  }
+
+  openHomeScreen() {
+    Get.toNamed(Routes.HOME_SCREEN);
   }
 }

@@ -96,10 +96,16 @@ class MyApiClient {
   retryOtp(String empId, String mobileNumber, String accessKey,
       String otpTokenId) async {
     try {
+      String encryptedEmpId =
+      encryptString(empId, StringConstants.encryptedKey).toString();
+
+      String encryptedMobile =
+      encryptString(mobileNumber, StringConstants.encryptedKey).toString();
+
       AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
       var body = {
-        "reference-id": empId,
-        "mobile-number": mobileNumber,
+        "reference-id": encryptedEmpId,
+        "mobile-number": encryptedMobile,
         "device-id": build.androidId,
         "device-type": build.manufacturer,
         "app-name": StringConstants.appName,
@@ -139,7 +145,7 @@ class MyApiClient {
         encryptString(otpCode, StringConstants.encryptedKey).toString();
 
     String decryptedOtp =
-        decryptString(otpCode, StringConstants.encryptedKey).toString();
+        decryptString(encryptedOtp, StringConstants.encryptedKey).toString();
 
     print('$encryptedOtp  -----Decrypt String :: $decryptedOtp');
     try {
