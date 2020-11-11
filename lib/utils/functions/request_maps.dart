@@ -18,3 +18,15 @@ Map<String, String> requestHeadersWithAccessKey(String accessKey) {
   };
   return requestHeaders;
 }
+
+Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String accessKey , String secretKey) {
+  Map<String, String> requestHeaders = new Map();
+  requestHeaders = {
+    'Content-type': 'application/json',
+    'app-name': StringConstants.appName,
+    'app-version': StringConstants.appVersion,
+    'access-key': accessKey,
+    '"user-security' : secretKey
+  };
+  return requestHeaders;
+}

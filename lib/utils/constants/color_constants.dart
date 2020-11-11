@@ -7,6 +7,7 @@ abstract class ColorConstants {
   //Hex Color
   static Color appBarColor = HexColor("#002A64");
   static Color backgroundColorBlue = HexColor("#0054A6");
+  static Color backgroundColorGrey = HexColor("#F1F1F1");
   static Color backgroundColor = HexColor("#FFFFFF");
   static Color blackColor = HexColor("#2B2828");
   static Color lightBlackBorderColor = HexColor("#00001F");

@@ -136,10 +136,10 @@ class MyApiClient {
   validateOtp(String empId, String mobileNumber, String accessKey,
       String otpCode) async {
     String encryptedEmpId =
-        encryptString(empId, StringConstants.encryptedKey).toString();
+    encryptString(empId, StringConstants.encryptedKey).toString();
 
     String encryptedMobile =
-        encryptString(mobileNumber, StringConstants.encryptedKey).toString();
+    encryptString(mobileNumber, StringConstants.encryptedKey).toString();
 
     String encryptedOtp =
         encryptString(otpCode, StringConstants.encryptedKey).toString();

@@ -1105,9 +1105,11 @@ class Item {
 
 List<Item> generateItems(int numberOfItems) {
   return List.generate(numberOfItems, (int index) {
+
     return Item(
       headerValue: 'Influencer Details 1',
       expandedValue: 'This is item number $index',
+
     );
   });
 }
