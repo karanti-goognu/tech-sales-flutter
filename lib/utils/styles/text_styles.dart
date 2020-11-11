@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 abstract class TextStyles {
   static TextStyle resendOtpTextStyleEnabled = TextStyle(
@@ -35,6 +36,30 @@ abstract class TextStyles {
       color: ColorConstants.blackColorFilter,
       fontFamily: "Muli-Bold.ttf",
       fontSize: 18,
+      fontWeight: FontWeight.bold);
+
+  static TextStyle mulliBold14 = TextStyle(
+      color: ColorConstants.blackColorFilter,
+      fontFamily: "Muli-Bold.ttf",
+      fontSize: 14,
+      fontWeight: FontWeight.bold);
+
+  static TextStyle mulliRegular14 = TextStyle(
+      color: ColorConstants.blackColorFilter,
+      fontFamily: "Muli.ttf",
+      fontSize: 14,
+      fontWeight: FontWeight.normal);
+
+  static TextStyle robotoRegular14 = GoogleFonts.roboto(
+      color: ColorConstants.fromDateColor,
+      fontSize: 14,
+      letterSpacing: .25,
+      fontWeight: FontWeight.normal);
+
+  static TextStyle robotoBold16 = GoogleFonts.roboto(
+      color: ColorConstants.fromDateColor,
+      fontSize: 16,
+      letterSpacing: .14,
       fontWeight: FontWeight.bold);
 
   static TextStyle mulliBoldYellow18 = TextStyle(

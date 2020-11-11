@@ -9,7 +9,9 @@ abstract class StringConstants {
   static String encryptionKey = "dalmia@techexpert";
   static String encryptedKey = "a8Egz8p4qTjvGNCrS3TKxQ==";
 
-  //
+  //Shared Preference Constants
+  static String isUserLoggedIn = 'false';
+  static String userSecurityKey = 'empty';
 
   //App constants
   static String appName = 'TSO';

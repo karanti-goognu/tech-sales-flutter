@@ -27,5 +27,8 @@ abstract class ColorConstants {
   static Color lineColorFilter = const Color.fromRGBO(155, 166, 158, 1);
   static Color focusedInputTextColor = const Color.fromRGBO(141, 198, 63, 1);
   static Color clearAllTextColor = const Color.fromRGBO(246, 169, 2, 1);
+  static Color lightGeyColor = const Color.fromRGBO(238, 238, 238, 1);
+  static Color fromDateColor = const Color.fromRGBO(0, 0, 0, 0.87);
+  static Color dateBorderColor = const Color.fromRGBO(224, 224, 224, 1);
 
 }

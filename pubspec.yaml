@@ -38,7 +38,7 @@ dependencies:
   geolocator: ^5.3.1
   google_maps_flutter: ^0.5.30
   google_map_location_picker: ^3.3.4
-  firebase_core: ^0.4.0+9
+  firebase_core: ^0.5.2
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^5.0.2
   dartz: ^0.8.9
@@ -50,6 +50,7 @@ dependencies:
   sms_autofill: ^1.2.6
   expandable: ^4.1.4
   pointycastle: ^2.0.0
+  firebase_crashlytics: ^0.2.3
 
   flutter_localizations:
     sdk: flutter

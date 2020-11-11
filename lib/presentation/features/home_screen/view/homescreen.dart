@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   List<menuDetailsModel> list = [
     new menuDetailsModel("Leads", "assets/images/img2.png"),
     new menuDetailsModel("Sites", "assets/images/img3.png"),
@@ -29,6 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _prefs.then((SharedPreferences prefs) {
+      String userSecurityKey =prefs.getString(StringConstants.userSecurityKey);
+      print('User Security Key :: $userSecurityKey');
+    });
   }
 
   @override
