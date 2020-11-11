@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -17,7 +18,9 @@ class _HomeScreenState extends State<HomeScreen> {
     new menuDetailsModel("Leads", "assets/images/img2.png"),
     new menuDetailsModel("Sites", "assets/images/img3.png"),
     new menuDetailsModel("Influencers", "assets/images/img4.png"),
-    new menuDetailsModel("My Team", "assets/images/img1.png")
+    new menuDetailsModel("My Team", "assets/images/img1.png"),
+    new menuDetailsModel("My Plan", "assets/images/img1.png"),
+    new menuDetailsModel("Service ", "assets/images/img1.png")
   ];
 
   String _status = "check_in";
@@ -40,11 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
         onWillPop: () async {
           // You can do some work here.
           // Returning true allows the pop to happen, returning false prevents it.
-          Get.dialog(CustomDialogs().errorDialog("Do uou want to exit?"));
+          Get.dialog(CustomDialogs().errorDialog("Do you want to exit?"));
           return true;
         },
         child: Scaffold(
-            backgroundColor: ColorConstants.backgroundColorBlue,
+            backgroundColor: ColorConstants.backgroundColorGrey,
             appBar: AppBar(
               // titleSpacing: 50,
               backgroundColor: ColorConstants.appBarColor,
@@ -114,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         "Hello , Bhupinder",
                         style: TextStyle(
-                            color: Colors.white,
+                            // color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.normal,
                             fontFamily: "Muli"),
@@ -122,18 +125,150 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text("Here are today's",
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              color: Colors.white.withOpacity(0.7),
+                              //  color: Colors.white.withOpacity(0.7),
                               fontSize: 15,
                               fontFamily: "Muli")),
                       Text("recommended actions for you",
                           style: TextStyle(
-                              color: Colors.white.withOpacity(0.7),
+                              // color: Colors.white.withOpacity(0.7),
                               fontSize: 15,
                               fontFamily: "Muli")),
                     ],
                   ),
                 ),
-                Expanded(child: userMenuWidget())
+                SizedBox(
+                  height: 15,
+                ),
+                _status == "check_in" || _status == "check_out"
+                    ? _status == "check_in"
+                        ? SliderButton(
+                            action: () {
+                              setState(() {
+                                _status = "check_out";
+                              });
+
+                              ///Do something here OnSlide
+                            },
+
+                            ///Put label over here
+                            label: Text(
+                              "Slide to Check-In !",
+                              style: TextStyle(
+                                  color: Color(0xff4a4a4a),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17),
+                            ),
+                            icon: Center(
+                                child: Icon(
+                              Icons.arrow_forward_outlined,
+                              color: Colors.white,
+                              size: 40.0,
+                              //  semanticLabel: 'Text to announce in accessibility modes',
+                            )),
+
+                            ///Change All the color and size from here.
+                            alignLabel: Alignment.center,
+                            width: MediaQuery.of(context).size.width,
+                            radius: 10,
+                            buttonColor: ColorConstants.checkinColor,
+                            backgroundColor: ColorConstants.checkinColor,
+                            highlightedColor: Colors.grey,
+                            baseColor: Colors.white,
+                            vibrationFlag: true,
+                            dismissible: false,
+                          )
+                        // GestureDetector(
+                        //             onTap: () {
+                        //               setState(() {
+                        //                 _status = "check_out";
+                        //               });
+                        //             },
+                        //             child: Container(
+                        //               alignment: Alignment.center,
+                        //               color: ColorConstants.checkinColor,
+                        //               child: Text("CHECK-IN",
+                        //                   style: TextStyle(
+                        //                       color: Colors.white,
+                        //                       fontFamily: "Muli",
+                        //                       fontSize: 18)),
+                        //             ),
+                        //           )
+                        : SliderButton(
+                            action: () {
+                              setState(() {
+                                _status = "Journey_Ended";
+                              });
+
+                              ///Do something here OnSlide
+                            },
+
+                            ///Put label over here
+                            label: Text(
+                              "Slide to Check-Out !",
+                              style: TextStyle(
+                                  color: Color(0xff4a4a4a),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17),
+                            ),
+                            icon: Center(
+                                child: Icon(
+                              Icons.arrow_forward_outlined,
+                              color: Colors.white,
+                              size: 40.0,
+                              //  semanticLabel: 'Text to announce in accessibility modes',
+                            )),
+
+                            ///Change All the color and size from here.
+                            alignLabel: Alignment.center,
+                            width: MediaQuery.of(context).size.width,
+                            radius: 10,
+                            buttonColor: HexColor("#F9A61A"),
+                            backgroundColor: HexColor("#F9A61A"),
+                            highlightedColor: Colors.grey,
+                            baseColor: Colors.white,
+                            vibrationFlag: true,
+                            dismissible: false,
+                          )
+                    // GestureDetector(
+                    //             onTap: () {
+                    //               setState(() {
+                    //                 _status = "Journey_Ended";
+                    //               });
+                    //             },
+                    //             child: Container(
+                    //               alignment: Alignment.center,
+                    //               color: Colors.red,
+                    //               child: Text("CHECK-OUT",
+                    //                   style: TextStyle(
+                    //                       color: Colors.white,
+                    //                       fontFamily: "Muli",
+                    //                       fontSize: 18)),
+                    //             ),
+                    //           )
+                    : GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _status = "check_in";
+                          });
+                        },
+                        child: Container(
+                          height: 70,
+                          alignment: Alignment.center,
+                          color: Colors.grey,
+                          child: Text("Journey-Ended",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "Muli",
+                                  fontSize: 18)),
+                        ),
+                      ),
+                SizedBox(
+                  height: 15,
+                ),
+                Expanded(child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: userMenuWidget(),
+                ))
                 // ListView.builder(
                 //     itemCount: list.length,
                 //     padding: const EdgeInsets.only(top: 10.0),
@@ -141,205 +276,211 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     itemBuilder: (context, index) {})
               ],
             ),
-            bottomNavigationBar: Container(
-              height: 60,
-              width: 100,
-              child: _status == "check_in" || _status == "check_out"
-                  ? _status == "check_in"
-                      ? SliderButton(
-                          action: () {
+            floatingActionButton: Container(
+              height: 68.0,
+              width: 68.0,
+              child: FittedBox(
+                child: FloatingActionButton(
+                  backgroundColor: Colors.amber,
+                  child: Icon(
+                    Icons.add,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        new CupertinoPageRoute(
+                            builder: (BuildContext context) =>
+                                AddNewLeadForm()));
+                  },
+                ),
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomAppBar(
+              color: ColorConstants.appBarColor,
+              shape: CircularNotchedRectangle(),
+              notchMargin: 10,
+              child: Container(
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        MaterialButton(
+                          minWidth: 40,
+                          onPressed: () {
                             setState(() {
-                              _status = "check_out";
+                              // currentScreen =
+                              //     Dashboard(); // if user taps on this dashboard tab will be active
+                              // currentTab = 0;
                             });
-
-                            ///Do something here OnSlide
                           },
-
-                          ///Put label over here
-                          label: Text(
-                            "Slide to Check-In !",
-                            style: TextStyle(
-                                color: Color(0xff4a4a4a),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.home,
+                                color: Colors.white60,
+                              ),
+                              // Text(
+                              //   'Dashboard',
+                              //   style: TextStyle(
+                              //     color: currentTab == 0 ? Colors.blue : Colors.grey,
+                              //   ),
+                              //),
+                            ],
                           ),
-                          icon: Center(
-                              child: Icon(
-                            Icons.arrow_forward_outlined,
-                            color: Colors.white,
-                            size: 40.0,
-                            //  semanticLabel: 'Text to announce in accessibility modes',
-                          )),
-
-                          ///Change All the color and size from here.
-                          alignLabel: Alignment.center,
-                          width: MediaQuery.of(context).size.width,
-                          radius: 10,
-                          buttonColor: ColorConstants.checkinColor,
-                          backgroundColor: ColorConstants.checkinColor,
-                          highlightedColor: Colors.grey,
-                          baseColor: Colors.white,
-                          vibrationFlag: true,
-                          dismissible: false,
-                        )
-                      // GestureDetector(
-                      //             onTap: () {
-                      //               setState(() {
-                      //                 _status = "check_out";
-                      //               });
-                      //             },
-                      //             child: Container(
-                      //               alignment: Alignment.center,
-                      //               color: ColorConstants.checkinColor,
-                      //               child: Text("CHECK-IN",
-                      //                   style: TextStyle(
-                      //                       color: Colors.white,
-                      //                       fontFamily: "Muli",
-                      //                       fontSize: 18)),
-                      //             ),
-                      //           )
-                      : SliderButton(
-                          action: () {
-                            setState(() {
-                              _status = "Journey_Ended";
-                            });
-
-                            ///Do something here OnSlide
-                          },
-
-                          ///Put label over here
-                          label: Text(
-                            "Slide to Check-Out !",
-                            style: TextStyle(
-                                color: Color(0xff4a4a4a),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17),
-                          ),
-                          icon: Center(
-                              child: Icon(
-                            Icons.arrow_forward_outlined,
-                            color: Colors.white,
-                            size: 40.0,
-                            //  semanticLabel: 'Text to announce in accessibility modes',
-                          )),
-
-                          ///Change All the color and size from here.
-                          alignLabel: Alignment.center,
-                          width: MediaQuery.of(context).size.width,
-                          radius: 10,
-                          buttonColor: HexColor("#F9A61A"),
-                          backgroundColor: HexColor("#F9A61A"),
-                          highlightedColor: Colors.grey,
-                          baseColor: Colors.white,
-                          vibrationFlag: true,
-                          dismissible: false,
-                        )
-                  // GestureDetector(
-                  //             onTap: () {
-                  //               setState(() {
-                  //                 _status = "Journey_Ended";
-                  //               });
-                  //             },
-                  //             child: Container(
-                  //               alignment: Alignment.center,
-                  //               color: Colors.red,
-                  //               child: Text("CHECK-OUT",
-                  //                   style: TextStyle(
-                  //                       color: Colors.white,
-                  //                       fontFamily: "Muli",
-                  //                       fontSize: 18)),
-                  //             ),
-                  //           )
-                  : GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _status = "check_in";
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        color: Colors.grey,
-                        child: Text("Journey-Ended",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Muli",
-                                fontSize: 18)),
-                      ),
+                        ),
+                      ],
                     ),
+
+                    // Right Tab bar icons
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        MaterialButton(
+                          minWidth: 40,
+                          onPressed: () {},
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.drafts,
+                                color: Colors.white60,
+                              ),
+                              // Text(
+                              //   'Mail',
+                              //   style: TextStyle(
+                              //     color: currentTab == 2 ? Colors.blue : Colors.grey,
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                        CupertinoButton(
+                          minSize: 40,
+                          onPressed: () {},
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.search,
+                                color: Colors.white60,
+                              ),
+                              // Text(
+                              //   'Search',
+                              //   style: TextStyle(
+                              //     color: Colors.white,
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
             )));
   }
 
   Widget userMenuWidget() {
-    return ListView.builder(
+    return GridView.builder(
         itemCount: list.length,
-        padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
-        itemExtent: 125.0,
+        // childAspectRatio: ( 2),
+        //  padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1.9,
+            crossAxisSpacing: 1,
+            mainAxisSpacing: 2),
+        // itemExtent: 125.0,
         itemBuilder: (context, index) {
-          return Card(
-            clipBehavior: Clip.antiAlias,
-            borderOnForeground: true,
-            //shadowColor: colornew,
-            elevation: 6,
-            margin: EdgeInsets.all(10.0),
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 60,
-                        width: 60,
-                        margin: EdgeInsets.only(left: 10),
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          // border: Border.all(color: Colors.black, width: 0.0),
-                          // borderRadius: new BorderRadius.all(Radius.circular(70)),
+          return GestureDetector(
+            onTap: () {
+              print(list[index].value + " Page");
+              if (list[index].value == "Leads") {
+                Navigator.push(
+                    context,
+                    new CupertinoPageRoute(
+                        builder: (BuildContext context) => LeadScreen()));
+              }
+            },
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              borderOnForeground: true,
+              //shadowColor: colornew,
+              elevation: 20,
+              margin: EdgeInsets.all(10.0),
+              color: Colors.white,
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          // height: 60,
+                          //                         // width: 60,
+                          margin: EdgeInsets.only(left: 10),
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                            // border: Border.all(color: Colors.black, width: 0.0),
+                            // borderRadius: new BorderRadius.all(Radius.circular(70)),
+                          ),
+                          child: Image.asset(
+                            list[index].imgURL,
+                            width: 30,
+                            height: 30,
+                          ),
                         ),
-                        child: Image.asset(list[index].imgURL),
-                      ),
-                      // Icon(
-                      //   Icons.no_photography_outlined,
-                      //   size: 90,
-                      //   color: Colors.black12,
-                      // ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        list[index].value,
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontFamily: "Muli",
-                            fontWeight: FontWeight.bold
-                            //fontWeight: FontWeight.normal
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      print(list[index].value + " Page");
-                      if (list[index].value == "Leads") {
-                        Navigator.push(
-                            context,
-                            new CupertinoPageRoute(
-                                builder: (BuildContext context) =>
-                                    LeadScreen()));
-                      }
-                    },
-                    child: Icon(
-                      Icons.navigate_next,
-                      size: 30,
+                        // Icon(
+                        //   Icons.no_photography_outlined,
+                        //   size: 90,
+                        //   color: Colors.black12,
+                        // ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Text(
+                          list[index].value,
+                          maxLines: 2,
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: "Muli",
+                              fontWeight: FontWeight.bold
+                              //fontWeight: FontWeight.normal
+                              ),
+                        ),
+                      ],
                     ),
                   ),
-                )
-              ],
+                  // Padding(
+                  //   padding: const EdgeInsets.all(10.0),
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       print(list[index].value + " Page");
+                  //       if (list[index].value == "Leads") {
+                  //         Navigator.push(
+                  //             context,
+                  //             new CupertinoPageRoute(
+                  //                 builder: (BuildContext context) =>
+                  //                     LeadScreen()));
+                  //       }
+                  //     },
+                  //     child: Icon(
+                  //       Icons.navigate_next,
+                  //       size: 30,
+                  //     ),
+                  //   ),
+                  // )
+                ],
+              ),
             ),
           );
         });

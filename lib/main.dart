@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
+import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:get/get.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.INITIAL,
       defaultTransition: Transition.fade,
       getPages: AppPages.pages,
-      home: SplashScreen(),
+      home: HomeScreen(),
       title: 'TSO App',
       theme: appThemeData,
     );
