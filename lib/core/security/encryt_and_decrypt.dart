@@ -9,7 +9,7 @@ import 'package:tuple/tuple.dart';
 
 String decryptString(String encryptedString, String encryptionKey) {
   var key = base64.decode(encryptionKey);
-
+print("Dhawan  "+encryptedString);
   var encryptedStringArray = encryptedString.split("~");
   var params = base64.decode(encryptedStringArray[1]);
   var cipherText = base64.decode(encryptedStringArray[0]);
@@ -35,8 +35,11 @@ String decryptString(String encryptedString, String encryptionKey) {
   return (utf8.decode(plainishText));
 }
 
-String encryptString(String plainishText, String encryptionKey) {
+String  encryptString(String plainishText, String encryptionKey) {
+
   // var key = Uint8List(32); // the 256 bit key
+  print("Dhawam  "+ plainishText);
+  print("Dhawam  "+ encryptionKey);
   var plainText = plainishText;
   var random = Random.secure();
   var params = Uint8List(18)
@@ -63,7 +66,7 @@ String encryptString(String plainishText, String encryptionKey) {
 
   var plainBytes = (utf8.encode(plainText));
   var cipherText = cipher.process(plainBytes);
-
+print(" Dhawan "+base64.encode(cipherText) + "~" + base64.encode(params));
   return (base64.encode(cipherText) + "~" + base64.encode(params));
 }
 
