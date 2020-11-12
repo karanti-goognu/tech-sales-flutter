@@ -74,10 +74,10 @@ class SplashScreenPageState extends State<SplashScreen> {
       Timer(
           Duration(seconds: 3),
           () =>
-        //  (prefs.getString(StringConstants.isUserLoggedIn) == "false")
-        //      ?
-          Get.toNamed(Routes.LOGIN));
-        //      : Get.toNamed(Routes.HOME_SCREEN));
+          //(prefs.getString(StringConstants.isUserLoggedIn) == "false")
+         //     ?
+      Get.toNamed(Routes.LOGIN));
+          //    : Get.toNamed(Routes.HOME_SCREEN));
     });
   }
 

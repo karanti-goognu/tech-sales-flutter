@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.INITIAL,
       defaultTransition: Transition.fade,
       getPages: AppPages.pages,
-      home: LeadScreen(),
+      home: SplashScreen(),
       title: 'TSO App',
       theme: appThemeData,
     );
