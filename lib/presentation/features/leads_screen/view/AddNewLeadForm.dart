@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddNewLeadForm extends StatefulWidget {
   @override
@@ -17,19 +24,42 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   String _myActivity;
   LocationResult _pickedLocation;
   var txt = TextEditingController();
-  int _ratingController;
+  SiteSubTypeEntity _selectedValue;
   String _contactName;
-  int _contactNumber;
+  String _contactNumber;
   var _siteAddress = TextEditingController();
   var _pincode = TextEditingController();
   var _state = TextEditingController();
   var _district = TextEditingController();
   var _taluk = TextEditingController();
+  int _totalBags=0;
+  int _totalMT=0;
+  List<File> _imageList = [
+  new File("/storage/emulated/0/Android/data/com.dalmia.techsales/files/Pictures/scaled_image_picker6000543052621285162.jpg")
+  ];
 
   List<Item> _data = generateItems(1);
-
+List<InfluencerDetail> _list = [
+  new InfluencerDetail()
+];
   Position _currentPosition;
   String _currentAddress;
+
+  List<SiteSubTypeEntity> siteSubTypeEntity = [
+    new SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
+    new SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
+    new SiteSubTypeEntity(
+        siteSubId: 3, siteSubTypeDesc: "Multi-Storey"),
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    AddLeadsController _addLeadsController = Get.find();
+
+    _addLeadsController.getAccessKey(RequestIds.ADD_LEADS_DATA_REQUEST);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,12 +241,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       ),
                     ),
 
-                    DropdownButtonFormField<int>(
-                      value: _ratingController,
-                      items: [1, 2, 3, 4, 5]
+                    DropdownButtonFormField<SiteSubTypeEntity>(
+                      value: _selectedValue,
+                      items: siteSubTypeEntity
                           .map((label) => DropdownMenuItem(
                                 child: Text(
-                                  "Type " + label.toString(),
+                                  label.siteSubTypeDesc,
                                   style: TextStyle(
                                       fontSize: 18,
                                       color: ColorConstants.inputBoxHintColor,
@@ -229,7 +259,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       // hint: Text('Rating'),
                       onChanged: (value) {
                         setState(() {
-                          _ratingController = value;
+                          _selectedValue = value;
                         });
                       },
                       decoration: InputDecoration(
@@ -263,12 +293,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                     TextFormField(
                       initialValue: _contactName,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Contact Name can't be empty";
-                        }
-                        //leagueSize = int.parse(value);
-                        return null;
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return "Contact Name can't be empty";
+                      //   }
+                      //   //leagueSize = int.parse(value);
+                      //   return null;
+                      // },
+                      onChanged: (data) {
+                        setState(() {
+                          _contactName = data;
+                        });
                       },
                       style: TextStyle(
                           fontSize: 18,
@@ -303,7 +338,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     ),
                     SizedBox(height: 16),
                     TextFormField(
-                      //initialValue: _contactNumber.toString(),
+                      initialValue: _contactNumber,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter contact number ';
@@ -312,6 +347,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           return 'Contact number is incorrect';
                         }
                         return null;
+                      },
+                      onChanged: (data) {
+                        setState(() {
+                          _contactNumber = data;
+                        });
                       },
                       style: TextStyle(
                           fontSize: 18,
@@ -470,43 +510,43 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 //                         Text(_pickedLocation.toString()),
 //                       ],
 //                     ),
-                    Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).canvasColor,
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Column(children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.location_on),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      'Location',
-                                      style:
-                                          Theme.of(context).textTheme.caption,
-                                    ),
-                                    if (_currentPosition != null &&
-                                        _currentAddress != null)
-                                      Text(_currentAddress,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                            ],
-                          ),
-                        ])),
+//                     Container(
+//                         decoration: BoxDecoration(
+//                           color: Theme.of(context).canvasColor,
+//                         ),
+//                         padding:
+//                             EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+//                         child: Column(children: <Widget>[
+//                           Row(
+//                             children: <Widget>[
+//                               Icon(Icons.location_on),
+//                               SizedBox(
+//                                 width: 8,
+//                               ),
+//                               Expanded(
+//                                 child: Column(
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: <Widget>[
+//                                     Text(
+//                                       'Location',
+//                                       style:
+//                                           Theme.of(context).textTheme.caption,
+//                                     ),
+//                                     if (_currentPosition != null &&
+//                                         _currentAddress != null)
+//                                       Text(_currentAddress,
+//                                           style: Theme.of(context)
+//                                               .textTheme
+//                                               .bodyText2),
+//                                   ],
+//                                 ),
+//                               ),
+//                               SizedBox(
+//                                 width: 8,
+//                               ),
+//                             ],
+//                           ),
+//                         ])),
                     SizedBox(height: 16),
                     TextFormField(
                       controller: _siteAddress,
@@ -763,6 +803,77 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       ),
                     ),
                     SizedBox(height: 16),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            side: BorderSide(color: Colors.black26)),
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 5, bottom: 10, top: 10),
+                          child: Text(
+                            "UPLOAD PHOTOS",
+                            style: TextStyle(
+                                color: HexColor("#1C99D4"),
+                                fontWeight: FontWeight.bold,
+                                // letterSpacing: 2,
+                                fontSize: 17),
+                          ),
+                        ),
+                        onPressed: () async {
+                          _showPicker(context);
+
+                        },
+                      ),
+
+
+
+                    ),
+
+                        _imageList!=null ?
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text("Picture 1: " ,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15
+                                          ),),
+                                          GestureDetector(
+                                            child: Text("XYZ.jpg",
+                                            style: TextStyle(
+                                              color: HexColor("#007CBF"),
+                                                fontSize: 15
+                                            ),),
+                                              onTap: (){
+                                                return showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      return AlertDialog(
+                                                        content: new Container(
+                                                          // width: 500,
+                                                          // height: 500,
+                                                          child: Image.file(_imageList[0]),
+                                                        ),
+                                                      );
+                                                    }
+                                                );
+                                              }
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(Icons.delete,color: HexColor("#FFCD00"),)
+                                    ],
+                                  ),
+                                )
+                        :Container(),
+
+                    SizedBox(height: 16),
                     Divider(
                       color: Colors.black26,
                       thickness: 1,
@@ -805,10 +916,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                         ),
                         onPressed: () async {
+                          InfluencerDetail infl = new InfluencerDetail();
+
                           Item item = new Item(
                               headerValue: "agx ", expandedValue: "dnxcx");
                           setState(() {
                             _data.add(item);
+                            _list.add(infl);
                           });
                         },
                       ),
@@ -836,6 +950,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: TextFormField(
+                              initialValue: _totalBags.toString(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _totalBags = value as int;
+                                });
+                              },
+                              keyboardType: TextInputType.phone,
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please enter Bags ';
@@ -843,11 +964,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                                 return null;
                               },
+
                               style: TextStyle(
                                   fontSize: 18,
                                   color: ColorConstants.inputBoxHintColor,
                                   fontFamily: "Muli"),
-                              keyboardType: TextInputType.text,
+                             // keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -879,9 +1001,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                         ),
                         Expanded(
+
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: TextFormField(
+                              initialValue: (_totalBags * 20).toString(),
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please enter MT ';
@@ -893,7 +1017,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   fontSize: 18,
                                   color: ColorConstants.inputBoxHintColor,
                                   fontFamily: "Muli"),
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -907,12 +1031,20 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           .withOpacity(0.4),
                                       width: 1.0),
                                 ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: const Color(0xFF000000)
+                                          .withOpacity(0.4),
+                                      width: 1.0),
+                                ),
                                 errorBorder: OutlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Colors.red, width: 1.0),
                                 ),
                                 labelText: "MT",
                                 filled: false,
+                                enabled: false,
+
                                 focusColor: Colors.black,
                                 labelStyle: TextStyle(
                                     fontFamily: "Muli",
@@ -971,6 +1103,137 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         fillColor: ColorConstants.backgroundColor,
                       ),
                     ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      maxLines: 4,
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter RERA Number ';
+                      //   }
+                      //
+                      //   return null;
+                      // },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorConstants.backgroundColorBlue,
+                              //color: HexColor("#0000001F"),
+                              width: 1.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: const Color(0xFF000000).withOpacity(0.4),
+                              width: 1.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 1.0),
+                        ),
+                        labelText: "Comment",
+                        filled: false,
+                        focusColor: Colors.black,
+                        labelStyle: TextStyle(
+                            fontFamily: "Muli",
+                            color: ColorConstants.inputBoxHintColorDark,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16.0),
+                        fillColor: ColorConstants.backgroundColor,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+
+                    Center(
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            side: BorderSide(color: Colors.black26)),
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 5, bottom: 8, top: 5),
+                          child: Text(
+                            "ADD COMMENT",
+                            style: TextStyle(
+                                color: HexColor("#1C99D4"),
+                                fontWeight: FontWeight.bold,
+                                // letterSpacing: 2,
+                                fontSize: 17),
+                          ),
+                        ),
+                        onPressed: () async {
+                      //     InfluencerDetail infl = new InfluencerDetail();
+                      //
+                      //     Item item = new Item(
+                      //         headerValue: "agx ", expandedValue: "dnxcx");
+                      //     setState(() {
+                      //       _data.add(item);
+                      //       _list.add(infl);
+                      //     });
+                         },
+                       ),
+
+
+                    ),
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
+                      child: Text(
+                        "XYZ Kumar",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            // color: HexColor("#000000DE"),
+                            fontFamily: "Muli"),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(top: 5.0, bottom: 20, left: 5),
+                      child: Text(
+                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                        style: TextStyle(
+                            //fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            // color: HexColor("#000000DE"),
+                            fontFamily: "Muli"),
+                      ),
+                    ),
+                    Center(
+                      child: FlatButton(
+                        // shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(0),
+                        //     side: BorderSide(color: Colors.black26)),
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 5, bottom: 8, top: 5),
+                          child: Text(
+                            "VIEW MORE COMMENT",
+                            style: TextStyle(
+                                color: HexColor("##F9A61A"),
+                                fontWeight: FontWeight.bold,
+                                // letterSpacing: 2,
+                                fontSize: 17),
+                          ),
+                        ),
+                        onPressed: () async {
+                          //     InfluencerDetail infl = new InfluencerDetail();
+                          //
+                          //     Item item = new Item(
+                          //         headerValue: "agx ", expandedValue: "dnxcx");
+                          //     setState(() {
+                          //       _data.add(item);
+                          //       _list.add(infl);
+                          //     });
+                        },
+                      ),
+
+
+                    ),
 
                     SizedBox(height: 35),
                     Row(
@@ -1019,7 +1282,64 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         ],
       ),
     );
+
+
   }
+
+  _imgFromCamera() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    );
+
+    setState(() {
+      print(image.path);
+      _imageList.insert(0,image);
+    });
+  }
+
+  _imgFromGallery() async {
+    File image = await  ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    );
+
+    setState(() {
+     // print(image.path);
+     _imageList.add(image);
+     _imageList.insert(0,image);
+    });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
+
 
   _getCurrentLocation() {
     geolocator
@@ -1081,6 +1401,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               trailing: Icon(Icons.delete),
               onTap: () {
                 setState(() {
+                  _list.removeWhere((currentItem) => item == currentItem);
                   _data.removeWhere((currentItem) => item == currentItem);
                 });
               }),
@@ -1090,6 +1411,31 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     );
   }
 }
+
+
+class InfluencerDetail {
+  InfluencerDetail({
+    this.infl_id,
+    this.infl_name,
+    this.infl_contact,
+    this.infl_type_id,
+    this.infl_cat_id,
+    this.infl_intrested,
+    this.infl_created_on,
+
+
+  });
+
+  String infl_id;
+  String infl_name;
+  String infl_contact;
+  String infl_type_id;
+  String infl_cat_id;
+  String infl_intrested;
+  DateTime infl_created_on;
+}
+
+
 
 class Item {
   Item({
@@ -1105,11 +1451,9 @@ class Item {
 
 List<Item> generateItems(int numberOfItems) {
   return List.generate(numberOfItems, (int index) {
-
     return Item(
       headerValue: 'Influencer Details 1',
       expandedValue: 'This is item number $index',
-
     );
   });
 }
@@ -1118,3 +1462,8 @@ List<Item> generateItems(int numberOfItems) {
 //   _data.add
 //   return List.
 // }
+
+
+class CommentsList{
+
+}

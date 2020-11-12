@@ -16,4 +16,5 @@ abstract class UrlConstants {
   static const String retryOtp = '$baseUrl/login/login-otp-retry';
   static const String validateOtp = '$baseUrl/login/login-otp-validate';
   static const String getFilterData = '$baseUrl/leads/lead-filter-data';
+  static const String addLeadsData = '$baseUrl/leads/lead-new';
 }

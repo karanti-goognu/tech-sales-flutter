@@ -1,7 +1,9 @@
+import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/leads__filter_binding.dart';
 import 'package:flutter_tech_sales/bindings/login_binding.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
@@ -30,5 +32,9 @@ class AppPages {
         name: Routes.LEADS_SCREEN,
         page: () => LeadScreen(),
         binding: LeadsFilterBinding()),
+    GetPage(
+        name: Routes.ADD_LEADS_SCREEN,
+        page: () => AddNewLeadForm(),
+        binding: AddLeadsBinding()),
   ];
 }
