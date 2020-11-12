@@ -229,7 +229,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                           onTap: () {
                             (retryOtp == false)
                                 ? retryOtpRequest()
-                                : print('button press');
+                                : retryOtpRequest();
                           },
                           child: new Text(
                             (retryOtp == false)

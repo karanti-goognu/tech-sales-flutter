@@ -52,14 +52,11 @@ class MyApiClient {
       String decryptedMobileNumber =
           decryptString(encryptedMobileNumber, StringConstants.encryptedKey)
               .toString();
-      // a8Egz8p4qTjvGNCrS3TKxQ==
+
       AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
       var bodyEncrypted = {
-        //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
         "reference-id": encryptedEmpId,
-
         "mobile-number": encryptedMobileNumber,
-        //"device-id": " 18e86276-d1e2-4e36-bcc2-26036be5065e",
         "device-id": build.androidId,
         "device-type": build.manufacturer,
         "app-name": StringConstants.appName,
@@ -97,10 +94,10 @@ class MyApiClient {
       String otpTokenId) async {
     try {
       String encryptedEmpId =
-      encryptString(empId, StringConstants.encryptedKey).toString();
+          encryptString(empId, StringConstants.encryptedKey).toString();
 
       String encryptedMobile =
-      encryptString(mobileNumber, StringConstants.encryptedKey).toString();
+          encryptString(mobileNumber, StringConstants.encryptedKey).toString();
 
       AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
       var body = {
@@ -114,6 +111,8 @@ class MyApiClient {
       };
 
       debugPrint('request without encryption: $body');
+      debugPrint(
+          'request headers : ${requestHeadersWithAccessKey(accessKey)}');
       final response = await post(Uri.parse(UrlConstants.retryOtp),
           headers: requestHeadersWithAccessKey(accessKey),
           body: json.encode(body),
@@ -136,10 +135,10 @@ class MyApiClient {
   validateOtp(String empId, String mobileNumber, String accessKey,
       String otpCode) async {
     String encryptedEmpId =
-    encryptString(empId, StringConstants.encryptedKey).toString();
+        encryptString(empId, StringConstants.encryptedKey).toString();
 
     String encryptedMobile =
-    encryptString(mobileNumber, StringConstants.encryptedKey).toString();
+        encryptString(mobileNumber, StringConstants.encryptedKey).toString();
 
     String encryptedOtp =
         encryptString(otpCode, StringConstants.encryptedKey).toString();

@@ -5,10 +5,10 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -63,22 +63,22 @@ Future<void> _initializeFlutterFire() async {
 }
 
 class SplashScreenPageState extends State<SplashScreen> {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _initializeFlutterFireFuture = _initializeFlutterFire();
-    _prefs.then((SharedPreferences prefs) {
-      Timer(
-          Duration(seconds: 3),
-          () =>
-        //  (prefs.getString(StringConstants.isUserLoggedIn) == "false")
-        //      ?
-          Get.toNamed(Routes.LOGIN));
-        //      : Get.toNamed(Routes.HOME_SCREEN));
-    });
+    Timer(
+        Duration(seconds: 3),
+        () => MySharedPreferences.instance
+            .getStringValue(StringConstants.isUserLoggedIn)
+            .then((value) => setState(() {
+                  if (value == '_empty') {
+                    Get.offNamed(Routes.LOGIN);
+                  } else {
+                    Get.offNamed(Routes.LOGIN);
+                  }
+                })));
   }
 
   @override

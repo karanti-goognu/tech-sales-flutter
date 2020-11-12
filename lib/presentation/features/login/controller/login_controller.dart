@@ -60,6 +60,14 @@ class LoginController extends GetxController {
 
   set otpCode(value) => this._otpCode.value = value;
 
+  showNoInternetSnack() {
+    Get.snackbar(
+        "No internet connection.", "Please check your internet connection.",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM);
+  }
+
   savePreference(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);

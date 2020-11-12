@@ -92,6 +92,14 @@ class LeadsFilterController extends GetxController {
     });
   }
 
+  showNoInternetSnack() {
+    Get.snackbar(
+        "No internet connection.", "Please check your internet connection.",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM);
+  }
+
   openOtpVerificationPage(mobileNumber) {
     Get.toNamed(Routes.VERIFY_OTP);
   }

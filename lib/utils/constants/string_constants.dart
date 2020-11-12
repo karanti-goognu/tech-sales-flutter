@@ -7,7 +7,7 @@ abstract class StringConstants {
 
   //Secret Key for encryption
   static String encryptionKey = "dalmia@techexpert";
-  static String encryptedKey = "a8Egz8p4qTjvGNCrS3TKxQ==";
+  static String encryptedKey = "a8Egz8p4qTjvGNCrS3TKxQ==";//a8Egz8p4qTjvGNCrS3TKxQ==
 
   //Shared Preference Constants
   static String isUserLoggedIn = 'false';
