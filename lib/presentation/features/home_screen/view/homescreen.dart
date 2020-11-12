@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -293,11 +294,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     Icons.add,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        new CupertinoPageRoute(
-                            builder: (BuildContext context) =>
-                                AddNewLeadForm()));
+                    Get.toNamed(Routes.ADD_LEADS_SCREEN);
+                    // Navigator.push(
+                    //     context,
+                    //     new CupertinoPageRoute(
+                    //         builder: (BuildContext context) =>
+                    //            AddNewLeadForm()));
                   },
                 ),
               ),

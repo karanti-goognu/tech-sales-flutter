@@ -51,6 +51,8 @@ dependencies:
   expandable: ^4.1.4
   pointycastle: ^2.0.0
   firebase_crashlytics: ^0.2.3
+  image_picker: ^0.6.6+5
+
 
   flutter_localizations:
     sdk: flutter

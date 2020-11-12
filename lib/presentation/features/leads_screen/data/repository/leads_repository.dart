@@ -14,4 +14,9 @@ class MyRepository {
   getAccessKey() {
     return apiClient.getAccessKey();
   }
+
+  getAddLeadsData(String accessKey , String userSecurityKey){
+    print("cdsncjsnc"+userSecurityKey);
+    return apiClient.getAddLeadsData(accessKey,userSecurityKey);
+  }
 }
