@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 //import 'file:///C:/Users/hp/StudioProjects/tech-sales-flutter/lib/presentation/features/leads_filter/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/enums/lead_stage.dart';
 import 'package:flutter_tech_sales/utils/enums/lead_status.dart';
@@ -199,106 +200,108 @@ class _LeadScreenState extends State<LeadScreen> {
             backgroundColor: Colors.amber,
             child: Icon(
               Icons.add,
+              color: Colors.black,
             ),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  new CupertinoPageRoute(
-                      builder: (BuildContext context) => AddNewLeadForm()));
+              Get.toNamed(Routes.ADD_LEADS_SCREEN);
+              // Navigator.push(
+              //     context,
+              //     new CupertinoPageRoute(
+              //         builder: (BuildContext context) => AddNewLeadForm()));
             },
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: ColorConstants.appBarColor,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        // currentScreen =
-                        //     Dashboard(); // if user taps on this dashboard tab will be active
-                        // currentTab = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: Colors.white60,
-                        ),
-                        // Text(
-                        //   'Dashboard',
-                        //   style: TextStyle(
-                        //     color: currentTab == 0 ? Colors.blue : Colors.grey,
-                        //   ),
-                        //),
-                      ],
+        bottomNavigationBar: BottomAppBar(
+          color: ColorConstants.appBarColor,
+          shape: CircularNotchedRectangle(),
+          notchMargin: 10,
+          child: Container(
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        setState(() {
+                          // currentScreen =
+                          //     Dashboard(); // if user taps on this dashboard tab will be active
+                          // currentTab = 0;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.home,
+                            color: Colors.white60,
+                          ),
+                          Text(
+                            'Home',
+                            style: TextStyle(
+                              color: Colors.white60,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
 
-              // Right Tab bar icons
+                // Right Tab bar icons
 
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.drafts,
-                          color: Colors.white60,
-                        ),
-                        // Text(
-                        //   'Mail',
-                        //   style: TextStyle(
-                        //     color: currentTab == 2 ? Colors.blue : Colors.grey,
-                        //   ),
-                        // ),
-                      ],
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {},
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.drafts,
+                            color: Colors.white60,
+                          ),
+                          Text(
+                            'Drafts',
+                            style: TextStyle(
+                              color: Colors.white60,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  CupertinoButton(
-                    minSize: 40,
-                    onPressed: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.search,
-                          color: Colors.white60,
-                        ),
-                        // Text(
-                        //   'Search',
-                        //   style: TextStyle(
-                        //     color: Colors.white,
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {},
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.search,
+                            color: Colors.white60,
+                          ),
+                          Text(
+                            'Search',
+                            style: TextStyle(
+                              color: Colors.white60,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
       body: Container(
         child: Column(
           children: [
@@ -533,13 +536,13 @@ class _LeadScreenState extends State<LeadScreen> {
                                   child: Chip(
                                     shape: StadiumBorder(
                                         side:
-                                            BorderSide(color: HexColor("#6200EE"))),
+                                            BorderSide(color: HexColor("#39B54A"))),
                                     backgroundColor:
-                                        HexColor("#6200EE").withOpacity(0.1),
+                                        HexColor("#39B54A").withOpacity(0.1),
                                     label: Text(
                                       "Active",
                                       style: TextStyle(
-                                          color: HexColor("#6200EE"),
+                                          color: HexColor("#39B54A"),
                                           fontSize: 10,
                                           fontFamily: "Muli",
                                           fontWeight: FontWeight.bold
