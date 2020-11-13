@@ -68,6 +68,7 @@ class MyApiClient {
 
          var data = json.decode(response.body);
          AddLeadInitialModel addLeadInitialModel = AddLeadInitialModel.fromJson(data);
+         print(addLeadInitialModel.siteSubTypeEntity[0]);
         // return  addLeadInitialModel;
         // print('Initial Add Lead Object is :: $addLeadInitialModel');
         // return addLeadInitialModel;
@@ -83,6 +84,37 @@ class MyApiClient {
     }
 
 
+
+  }
+
+  getInflDetailsData(accessKey, String userSecurityKey, phoneNumber,) async {
+    try {
+    //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+      var bodyEncrypted = {
+        "inflContact": phoneNumber
+      };
+      print('Request body is  : ${json.encode(bodyEncrypted)}');
+      print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
+
+
+      final response = await post(Uri.parse(UrlConstants.getInflData+"/$phoneNumber"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey),
+          body: json.encode(bodyEncrypted),
+         // encoding: Encoding.getByName("utf-8")
+      );
+      print('Response body is  : ${json.decode(response.body)}');
+     // print('Response body is  : ${json.decode(response.body)}');
+
+      if (response.statusCode == 200) {
+
+        var data = json.decode(response.body);
+
+      } else
+        print('error');
+    } catch (_) {
+
+      print('exception ${_.toString()}');
+    }
 
   }
 }
