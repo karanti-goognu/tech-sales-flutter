@@ -22,10 +22,9 @@ class AddLeadsController extends GetxController {
     super.onInit();
   }
 
-  final MyRepository repository;
+  final MyRepositoryLeads repository;
 
-  AddLeadsController({@required this.repository})
-      : assert(repository != null);
+  AddLeadsController({@required this.repository}) : assert(repository != null);
 
   final _accessKeyResponse = AccessKeyModel().obs;
 
@@ -37,12 +36,13 @@ class AddLeadsController extends GetxController {
 
   get addLeadsInitialDataResponse => this._addLeadsInitialDataResponse.value;
 
-  set addLeadsInitialDataResponse(value) => this._addLeadsInitialDataResponse.value = value;
+  set addLeadsInitialDataResponse(value) =>
+      this._addLeadsInitialDataResponse.value = value;
 
   getAccessKey(int requestId) {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
       Get.back();
@@ -58,12 +58,14 @@ class AddLeadsController extends GetxController {
 
   getAddLeadsData() {
     //debugPrint('Access Key Response :: ');
-    String userSecurityKey="";
+    String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      userSecurityKey =prefs.getString(StringConstants.userSecurityKey);
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
-      repository.getAddLeadsData(this.accessKeyResponse.accessKey, userSecurityKey ).then((data) {
+      repository
+          .getAddLeadsData(this.accessKeyResponse.accessKey, userSecurityKey)
+          .then((data) {
         if (data == null) {
           debugPrint('Filter Data Response is null');
         } else {
@@ -71,9 +73,11 @@ class AddLeadsController extends GetxController {
           print(data);
           this.addLeadsInitialDataResponse = data;
           if (addLeadsInitialDataResponse.respCode == "DM1011") {
-            Get.dialog(CustomDialogs().errorDialog(addLeadsInitialDataResponse.respMsg));
+            Get.dialog(CustomDialogs()
+                .errorDialog(addLeadsInitialDataResponse.respMsg));
           } else {
-            Get.dialog(CustomDialogs().errorDialog(addLeadsInitialDataResponse.respMsg));
+            Get.dialog(CustomDialogs()
+                .errorDialog(addLeadsInitialDataResponse.respMsg));
           }
           // this.filterDataResponse = data;
           // if (filterDataResponse.respCode == "DM1011") {
@@ -85,7 +89,6 @@ class AddLeadsController extends GetxController {
       });
     });
     //print("access" + this.accessKeyResponse.accessKey);
-
   }
 
   openOtpVerificationPage(mobileNumber) {

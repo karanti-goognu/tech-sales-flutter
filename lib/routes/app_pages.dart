@@ -1,4 +1,5 @@
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
+import 'package:flutter_tech_sales/bindings/home_binding.dart';
 import 'package:flutter_tech_sales/bindings/leads__filter_binding.dart';
 import 'package:flutter_tech_sales/bindings/login_binding.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
@@ -23,7 +24,7 @@ class AppPages {
     GetPage(
         name: Routes.HOME_SCREEN,
         page: () => HomeScreen(),
-        binding: LeadsFilterBinding()),
+        binding: HomeScreenBinding()),
     GetPage(
         name: Routes.VERIFY_OTP,
         page: () => LoginOtpScreen(),

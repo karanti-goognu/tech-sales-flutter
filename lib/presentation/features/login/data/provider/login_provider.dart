@@ -93,6 +93,8 @@ class MyApiClient {
   retryOtp(String empId, String mobileNumber, String accessKey,
       String otpTokenId) async {
     try {
+
+      print('Token Id :: $otpTokenId');
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
 
@@ -107,10 +109,11 @@ class MyApiClient {
         "device-type": build.manufacturer,
         "app-name": StringConstants.appName,
         "app-version": StringConstants.appVersion,
-        "otp-token-id ": otpTokenId,
+        "otp-token-id": otpTokenId,
       };
 
       debugPrint('request without encryption: $body');
+      debugPrint('request without encryption: ${json.encode(body)}');
       debugPrint(
           'request headers : ${requestHeadersWithAccessKey(accessKey)}');
       final response = await post(Uri.parse(UrlConstants.retryOtp),
@@ -123,7 +126,7 @@ class MyApiClient {
         print('success');
         var data = json.decode(response.body);
         RetryOtpModel retryOtpModel = RetryOtpModel.fromJson(data);
-        //print('Access key Object is :: $loginModel');
+        print('Retry Model key Object is :: ${json.encode(retryOtpModel)}');
         return retryOtpModel;
       } else
         print('error in else');

@@ -19,7 +19,7 @@ class LeadsFilterController extends GetxController {
     super.onInit();
   }
 
-  final MyRepository repository;
+  final MyRepositoryLeads repository;
 
   LeadsFilterController({@required this.repository})
       : assert(repository != null);

@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -68,17 +69,15 @@ class SplashScreenPageState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     _initializeFlutterFireFuture = _initializeFlutterFire();
-    Timer(
-        Duration(seconds: 3),
-        () => MySharedPreferences.instance
-            .getStringValue(StringConstants.isUserLoggedIn)
-            .then((value) => setState(() {
-                  if (value == '_empty') {
-                    Get.offNamed(Routes.LOGIN);
-                  } else {
-                    Get.offNamed(Routes.LOGIN);
-                  }
-                })));
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      String isUserLoggedIn =
+          prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
+      print('$isUserLoggedIn');
+      (isUserLoggedIn == "false")
+          ? Get.offNamed(Routes.LOGIN)
+          : Get.offNamed(Routes.HOME_SCREEN);
+    });
   }
 
   @override

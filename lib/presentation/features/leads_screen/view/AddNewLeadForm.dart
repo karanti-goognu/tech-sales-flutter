@@ -57,7 +57,6 @@ List<InfluencerDetail> _list = [
     // TODO: implement initState
     super.initState();
     AddLeadsController _addLeadsController = Get.find();
-
     _addLeadsController.getAccessKey(RequestIds.ADD_LEADS_DATA_REQUEST);
   }
 

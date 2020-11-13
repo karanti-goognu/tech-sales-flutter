@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
+import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
+import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -19,6 +22,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  HomeController _homeController = Get.find();
+  LoginController _loginController = Get.find();
+
   List<menuDetailsModel> list = [
     new menuDetailsModel("Leads", "assets/images/img2.png"),
     new menuDetailsModel("Sites", "assets/images/img3.png"),
@@ -30,13 +37,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _status = "check_in";
 
+  String employeeName = "empty";
+
+  //Login Otp Response :: {"user-security-key":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFTVAwMDAxMjM0IiwibW9iaWxlTnVtYmVyIjoiODg2MDA4MDA2NyIsImV4cCI6MTYwNTE5ODI1MywiaWF0IjoxNjA1MTk2NDUzLCJyZWZlcmVuY2VJZCI6IkVNUDAwMDEyMzQifQ.D14bPNxOQ6g5zbxsHaUVv6RNz0jdUTj_HoHtwS9f3ZuiDlDMnhjILrKfwQTrjFRqiiZMB-yQKJ8v6OVbClaaXQ",
+  // "resp-code":"DM1011","resp-msg":"Request completed successfully",
+  // "employee-details":{"reference-id":"EMP0001234","mobile-number":"8860080067","employee-name":"ANIL","employee-first-name":"ANIL"},
+  // "user-menu":[{"menu-id":1,"menu-text":"LEADS"},{"menu-id":2,"menu-text":"SITES"},{"menu-id":3,"menu-text":"INFLUENCERS"},{"menu-id":4,"menu-text":"MY TEAM"},{"menu-id":5,"menu-text":"JOURNEY"}],
+  // "journey-details":{"journey-date":null,"journey-start-time":null,"journey-start-lat":null,"journey-start-long":null,"journey-end-time":null,"journey-end-lat":null,"journey-end-long":null,"employee-id":null}}
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      print('User Security Key :: $userSecurityKey');
+      _homeController.employeeName =
+          prefs.getString(StringConstants.employeeName);
     });
   }
 
@@ -44,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    // _homeController.dispose();
   }
 
   @override
@@ -123,13 +140,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        "Hello , Bhupinder",
-                        style: TextStyle(
-                            // color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: "Muli"),
+                      Obx(
+                        () => Text(
+                          "Hello , ${_homeController.employeeName}",
+                          style: TextStyle(
+                              // color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.normal,
+                              fontFamily: "Muli"),
+                        ),
                       ),
                       Text("Here are today's",
                           textAlign: TextAlign.start,

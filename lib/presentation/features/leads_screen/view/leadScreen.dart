@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -14,6 +16,7 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 LeadStage _leadStage = LeadStage.NonVerified;
 LeadStatus _leadStatus = LeadStatus.Active;
@@ -25,6 +28,7 @@ class LeadScreen extends StatefulWidget {
 
 class _LeadScreenState extends State<LeadScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
+  // Instantiate your class using Get.put() to make it available for all "child" routes there.
   Map _source = {ConnectivityResult.none: false};
   MyConnectivity _connectivity = MyConnectivity.instance;
   LeadsFilterController _leadsFilterController = Get.find();
@@ -34,110 +38,32 @@ class _LeadScreenState extends State<LeadScreen> {
   int selectedPosition = 0;
 
   List<leadDetailsModel> list = [
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        false,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        false,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
-    new leadDetailsModel(
-        "XXXX",
-        "NIT Fridabad",
-        200,
-        true,
-        true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-        999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
+    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
   ];
 
   int currentTab = 0;
@@ -145,6 +71,7 @@ class _LeadScreenState extends State<LeadScreen> {
   @override
   void initState() {
     super.initState();
+
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
       setState(() => _source = source);
@@ -221,9 +148,9 @@ class _LeadScreenState extends State<LeadScreen> {
                             decoration: new BoxDecoration(
                               color: Colors.white,
                               border:
-                              Border.all(color: Colors.black, width: 0.0),
+                                  Border.all(color: Colors.black, width: 0.0),
                               borderRadius:
-                              new BorderRadius.all(Radius.circular(3)),
+                                  new BorderRadius.all(Radius.circular(3)),
                             ),
                             child: Center(
                                 child: Text("0",
@@ -416,161 +343,161 @@ class _LeadScreenState extends State<LeadScreen> {
       ),
       body: (connectionString == 'Offline')
           ? Container(
-        color: Colors.black12,
-        child: Center(child: Text("No Internet Connection found.")),
-      )
+              color: Colors.black12,
+              child: Center(child: Text("No Internet Connection found.")),
+            )
           : Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 10.0, left: 15.0, bottom: 5, right: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: [
-                  Text(
-                    "Total Count : " + list.length.toString(),
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      fontSize: 15,
-                      // color: HexColor("#FFFFFF99"),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, left: 15.0, bottom: 5, right: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Total Count : " + list.length.toString(),
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            fontSize: 15,
+                            // color: HexColor("#FFFFFF99"),
+                          ),
+                        ),
+                        Text(
+                          "Total Potential : " + "2000 MT",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            fontSize: 15,
+                            // color: HexColor("#FFFFFF99"),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Text(
-                    "Total Potential : " + "2000 MT",
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      fontSize: 15,
-                      // color: HexColor("#FFFFFF99"),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Container(
+                                  width: 10,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: HexColor("#F9A61A")),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3.0),
+                                child: Text(
+                                  "Non-Verified",
+                                  style: TextStyle(
+                                    fontFamily: "Muli",
+                                    fontSize: 14,
+                                    // color: HexColor("#FFFFFF99"),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Container(
+                                  width: 10,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: HexColor("#1C99D4")),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3.0),
+                                child: Text(
+                                  "Tele-Verified",
+                                  style: TextStyle(
+                                    fontFamily: "Muli",
+                                    fontSize: 14,
+                                    // color: HexColor("#FFFFFF99"),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Container(
+                                  width: 10,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: HexColor("#39B54A")),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3.0),
+                                child: Text(
+                                  "Phy-Verified",
+                                  style: TextStyle(
+                                    fontFamily: "Muli",
+                                    fontSize: 14,
+                                    // color: HexColor("#FFFFFF99"),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Container(
+                                  width: 10,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: HexColor("#ADADAD")),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3.0),
+                                child: Text(
+                                  "Duplicate",
+                                  style: TextStyle(
+                                    fontFamily: "Muli",
+                                    fontSize: 14,
+                                    // color: HexColor("#FFFFFF99"),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  Expanded(child: leadsDetailWidget())
                 ],
               ),
             ),
-            Padding(
-              padding:
-              EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: HexColor("#F9A61A")),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3.0),
-                          child: Text(
-                            "Non-Verified",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              fontSize: 14,
-                              // color: HexColor("#FFFFFF99"),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: HexColor("#1C99D4")),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3.0),
-                          child: Text(
-                            "Tele-Verified",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              fontSize: 14,
-                              // color: HexColor("#FFFFFF99"),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: HexColor("#39B54A")),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3.0),
-                          child: Text(
-                            "Phy-Verified",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              fontSize: 14,
-                              // color: HexColor("#FFFFFF99"),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: HexColor("#ADADAD")),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3.0),
-                          child: Text(
-                            "Duplicate",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              fontSize: 14,
-                              // color: HexColor("#FFFFFF99"),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(child: leadsDetailWidget())
-          ],
-        ),
-      ),
     );
   }
 
@@ -591,11 +518,11 @@ class _LeadScreenState extends State<LeadScreen> {
               decoration: BoxDecoration(
                 border: Border(
                     left: BorderSide(
-                      color: !list[index].verifiedStatus
-                          ? HexColor("#F9A61A")
-                          : HexColor("#007CBF"),
-                      width: 6,
-                    )),
+                  color: !list[index].verifiedStatus
+                      ? HexColor("#F9A61A")
+                      : HexColor("#007CBF"),
+                  width: 6,
+                )),
               ),
               child: Stack(
                 children: [
@@ -630,8 +557,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                     fontSize: 18,
                                     fontFamily: "Muli",
                                     fontWeight: FontWeight.bold
-                                  //fontWeight: FontWeight.normal
-                                ),
+                                    //fontWeight: FontWeight.normal
+                                    ),
                               ),
                             ),
                             Padding(
@@ -643,8 +570,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                     fontSize: 14,
                                     fontFamily: "Muli",
                                     fontWeight: FontWeight.bold
-                                  //fontWeight: FontWeight.normal
-                                ),
+                                    //fontWeight: FontWeight.normal
+                                    ),
                               ),
                             ),
                             Row(
@@ -656,7 +583,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                         side: BorderSide(
                                             color: HexColor("#6200EE"))),
                                     backgroundColor:
-                                    HexColor("#6200EE").withOpacity(0.1),
+                                        HexColor("#6200EE").withOpacity(0.1),
                                     label: Text(
                                       "Active",
                                       style: TextStyle(
@@ -664,8 +591,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                           fontSize: 10,
                                           fontFamily: "Muli",
                                           fontWeight: FontWeight.bold
-                                        //fontWeight: FontWeight.normal
-                                      ),
+                                          //fontWeight: FontWeight.normal
+                                          ),
                                     ),
                                   ),
                                 ),
@@ -706,18 +633,18 @@ class _LeadScreenState extends State<LeadScreen> {
                                         fontSize: 15,
                                         fontFamily: "Muli",
                                         fontWeight: FontWeight.bold
-                                      //fontWeight: FontWeight.normal
-                                    ),
+                                        //fontWeight: FontWeight.normal
+                                        ),
                                   ),
                                   Text(
                                     list[index].sitePotential.toString() + "MT",
                                     style: TextStyle(
-                                      // color: Colors.black38,
+                                        // color: Colors.black38,
                                         fontSize: 15,
                                         fontFamily: "Muli",
                                         fontWeight: FontWeight.bold
-                                      //fontWeight: FontWeight.normal
-                                    ),
+                                        //fontWeight: FontWeight.normal
+                                        ),
                                   ),
                                 ],
                               ),
@@ -761,12 +688,12 @@ class _LeadScreenState extends State<LeadScreen> {
                             Text(
                               "Call Contractor",
                               style: TextStyle(
-                                // color: Colors.white,
+                                  // color: Colors.white,
                                   fontSize: 11,
                                   fontFamily: "Muli",
                                   fontWeight: FontWeight.bold
-                                //fontWeight: FontWeight.normal
-                              ),
+                                  //fontWeight: FontWeight.normal
+                                  ),
                             ),
                             Row(
                               children: [
@@ -782,8 +709,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                       fontFamily: "Muli",
                                       fontWeight: FontWeight.bold,
                                       fontStyle: FontStyle.italic
-                                    //fontWeight: FontWeight.normal
-                                  ),
+                                      //fontWeight: FontWeight.normal
+                                      ),
                                 ),
                               ],
                             ),
@@ -842,55 +769,48 @@ class _LeadScreenState extends State<LeadScreen> {
                   ),
                   IntrinsicHeight(
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          new Expanded(
-                            flex: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                GestureDetector(
-                                    onTap: () {
-                                      _leadsFilterController.selectedPosition =
-                                      0;
-                                    },
-                                    child: returnSelectedWidget(
-                                        "Assign Date", 0)),
-                                GestureDetector(
-                                    onTap: () {
-                                      _leadsFilterController.selectedPosition =
-                                      1;
-                                    },
-                                    child: returnSelectedWidget(
-                                        "Lead Stage", 1)),
-                                GestureDetector(
-                                    onTap: () {
-                                      _leadsFilterController.selectedPosition =
-                                      2;
-                                    },
-                                    child: returnSelectedWidget(
-                                        "Lead Status", 2)),
-                                GestureDetector(
-                                  onTap: () {
-                                    _leadsFilterController.selectedPosition = 3;
-                                  },
-                                  child: returnSelectedWidget(
-                                      "Lead Potential", 3),
-                                ),
-                              ],
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      new Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  _leadsFilterController.selectedPosition = 0;
+                                },
+                                child: returnSelectedWidget("Assign Date", 0)),
+                            GestureDetector(
+                                onTap: () {
+                                  _leadsFilterController.selectedPosition = 1;
+                                },
+                                child: returnSelectedWidget("Lead Stage", 1)),
+                            GestureDetector(
+                                onTap: () {
+                                  _leadsFilterController.selectedPosition = 2;
+                                },
+                                child: returnSelectedWidget("Lead Status", 2)),
+                            GestureDetector(
+                              onTap: () {
+                                _leadsFilterController.selectedPosition = 3;
+                              },
+                              child: returnSelectedWidget("Lead Potential", 3),
                             ),
-                          ),
-                          Container(
-                            height: (SizeConfig.blockSizeVertical) + 400,
-                            width: 1,
-                            color: ColorConstants.lineColorFilter,
-                          ),
-                          new Expanded(
-                              flex: 2,
-                              child: returnSelectedWidgetBody(
-                                  _leadsFilterController.selectedPosition)),
-                        ],
-                      )),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: (SizeConfig.blockSizeVertical) + 400,
+                        width: 1,
+                        color: ColorConstants.lineColorFilter,
+                      ),
+                      new Expanded(
+                          flex: 2,
+                          child: returnSelectedWidgetBody(
+                              _leadsFilterController.selectedPosition)),
+                    ],
+                  )),
                 ],
               ),
               Align(
@@ -935,8 +855,7 @@ class _LeadScreenState extends State<LeadScreen> {
   }
 
   Widget returnSelectedWidget(String text, int position) {
-    return Obx(() =>
-        Container(
+    return Obx(() => Container(
           height: 50,
           color: (_leadsFilterController.selectedPosition == position)
               ? Colors.white
@@ -954,17 +873,16 @@ class _LeadScreenState extends State<LeadScreen> {
 
   Widget returnSelectedWidgetBody(int position) {
     return Obx(
-          () =>
-          Container(
-            color: Colors.white,
-            child: (_leadsFilterController.selectedPosition == 0)
-                ? returnAssignDateBody()
-                : (_leadsFilterController.selectedPosition == 1)
+      () => Container(
+        color: Colors.white,
+        child: (_leadsFilterController.selectedPosition == 0)
+            ? returnAssignDateBody()
+            : (_leadsFilterController.selectedPosition == 1)
                 ? returnLeadStageBody()
                 : (_leadsFilterController.selectedPosition == 2)
-                ? returnLeadStatusBody()
-                : Text('The Longest text button 3'),
-          ),
+                    ? returnLeadStatusBody()
+                    : Text('The Longest text button 3'),
+      ),
     );
   }
 
@@ -1055,41 +973,38 @@ class _LeadScreenState extends State<LeadScreen> {
             ListTile(
                 title: const Text('Non-Verified'),
                 leading: Obx(
-                      () =>
-                      Radio(
-                        value: LeadStage.NonVerified,
-                        groupValue:
+                  () => Radio(
+                    value: LeadStage.NonVerified,
+                    groupValue:
                         _leadsFilterController.selectedLeadStage as LeadStage,
-                        onChanged: (LeadStage value) {
-                          _leadsFilterController.selectedLeadStage = value;
-                        },
-                      ),
+                    onChanged: (LeadStage value) {
+                      _leadsFilterController.selectedLeadStage = value;
+                    },
+                  ),
                 )),
             ListTile(
                 title: const Text('Tele-Verified'),
                 leading: Obx(
-                      () =>
-                      Radio(
-                        value: LeadStage.TeleVerified,
-                        groupValue:
+                  () => Radio(
+                    value: LeadStage.TeleVerified,
+                    groupValue:
                         _leadsFilterController.selectedLeadStage as LeadStage,
-                        onChanged: (LeadStage value) {
-                          _leadsFilterController.selectedLeadStage = value;
-                        },
-                      ),
+                    onChanged: (LeadStage value) {
+                      _leadsFilterController.selectedLeadStage = value;
+                    },
+                  ),
                 )),
             ListTile(
                 title: const Text('Physical-Verified'),
                 leading: Obx(
-                      () =>
-                      Radio(
-                        value: LeadStage.PhysicalVerified,
-                        groupValue:
+                  () => Radio(
+                    value: LeadStage.PhysicalVerified,
+                    groupValue:
                         _leadsFilterController.selectedLeadStage as LeadStage,
-                        onChanged: (LeadStage value) {
-                          _leadsFilterController.selectedLeadStage = value;
-                        },
-                      ),
+                    onChanged: (LeadStage value) {
+                      _leadsFilterController.selectedLeadStage = value;
+                    },
+                  ),
                 )),
           ],
         ));
@@ -1103,22 +1018,21 @@ class _LeadScreenState extends State<LeadScreen> {
             ListTile(
                 title: const Text('Active'),
                 leading: Obx(
-                      () =>
-                      Radio(
-                        value: LeadStatus.Active,
-                        groupValue:
+                  () => Radio(
+                    value: LeadStatus.Active,
+                    groupValue:
                         _leadsFilterController.selectedLeadStatus as LeadStatus,
-                        onChanged: (LeadStatus value) {
-                          _leadsFilterController.selectedLeadStatus = value;
-                        },
-                      ),
+                    onChanged: (LeadStatus value) {
+                      _leadsFilterController.selectedLeadStatus = value;
+                    },
+                  ),
                 )),
             ListTile(
               title: const Text('Rejected'),
               leading: Radio(
                 value: LeadStatus.Rejected,
                 groupValue:
-                _leadsFilterController.selectedLeadStatus as LeadStatus,
+                    _leadsFilterController.selectedLeadStatus as LeadStatus,
                 onChanged: (LeadStatus value) {
                   _leadsFilterController.selectedLeadStatus = value;
                 },
@@ -1129,7 +1043,7 @@ class _LeadScreenState extends State<LeadScreen> {
               leading: Radio(
                 value: LeadStatus.ConvertedToSite,
                 groupValue:
-                _leadsFilterController.selectedLeadStatus as LeadStatus,
+                    _leadsFilterController.selectedLeadStatus as LeadStatus,
                 onChanged: (LeadStatus value) {
                   _leadsFilterController.selectedLeadStatus = value;
                 },
@@ -1140,7 +1054,7 @@ class _LeadScreenState extends State<LeadScreen> {
               leading: Radio(
                 value: LeadStatus.Duplicate,
                 groupValue:
-                _leadsFilterController.selectedLeadStatus as LeadStatus,
+                    _leadsFilterController.selectedLeadStatus as LeadStatus,
                 onChanged: (LeadStatus value) {
                   _leadsFilterController.selectedLeadStatus = value;
                 },

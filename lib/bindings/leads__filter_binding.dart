@@ -8,11 +8,11 @@ import 'package:http/http.dart' as http;
 class LeadsFilterBinding implements Bindings {
   @override
   void dependencies() {
-   // print("Dhawan123456789");
+    // print("Dhawan123456789");
     Get.lazyPut<LeadsFilterController>(() {
       return LeadsFilterController(
-          repository:
-              MyRepository(apiClient: MyApiClient(httpClient: http.Client())));
+          repository: MyRepositoryLeads(
+              apiClient: MyApiClientLeads(httpClient: http.Client())));
     });
   }
 }

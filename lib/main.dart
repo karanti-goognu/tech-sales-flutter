@@ -10,9 +10,9 @@ import 'package:get/get.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded(() {
     runApp(MyApp());
+    WidgetsFlutterBinding.ensureInitialized();
   }, (error, stackTrace) {
     print('runZonedGuarded: Caught error in my root zone.');
     FirebaseCrashlytics.instance.recordError(error, stackTrace);

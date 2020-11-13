@@ -15,11 +15,11 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 
-class MyApiClient {
+class MyApiClientLeads {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
-  MyApiClient({@required this.httpClient});
+  MyApiClientLeads({@required this.httpClient});
 
   getAccessKey() async {
     try {

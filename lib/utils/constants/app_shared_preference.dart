@@ -1,19 +1,21 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MySharedPreferences {
-  MySharedPreferences._privateConstructor();
+class SharedPreferencesHelper {
+  /// ------------------------------------------------------------
+  /// Method that returns the user language code, 'en' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getStringValue(String key) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  static final MySharedPreferences instance =
-  MySharedPreferences._privateConstructor();
-
-  setStringValue(String key, bool value) async {
-    SharedPreferences myPrefs = await SharedPreferences.getInstance();
-    myPrefs.setBool(key, value);
+    return prefs.getString(key) ?? 'empty';
   }
 
-  Future<String> getStringValue(String key) async {
-    SharedPreferences myPrefs = await SharedPreferences.getInstance();
-    return myPrefs.getString(key) ?? "_empty";
-  }
+  /// ----------------------------------------------------------
+  /// Method that saves the user language code
+  /// ----------------------------------------------------------
+  static Future<bool> setStringValue(String key, String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    return prefs.setString(key, value);
+  }
 }
