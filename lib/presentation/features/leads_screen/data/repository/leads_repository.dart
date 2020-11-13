@@ -19,4 +19,8 @@ class MyRepositoryLeads {
     print("cdsncjsnc"+userSecurityKey);
     return apiClient.getAddLeadsData(accessKey,userSecurityKey);
   }
+
+  getInflDetailsData(accessKey, String userSecurityKey, phoneNumber) {
+    return apiClient.getInflDetailsData(accessKey,userSecurityKey,phoneNumber);
+  }
 }

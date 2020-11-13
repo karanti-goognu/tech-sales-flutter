@@ -2,15 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddNewLeadForm extends StatefulWidget {
@@ -27,29 +32,50 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   SiteSubTypeEntity _selectedValue;
   String _contactName;
   String _contactNumber;
+  String _comment;
   var _siteAddress = TextEditingController();
   var _pincode = TextEditingController();
   var _state = TextEditingController();
   var _district = TextEditingController();
   var _taluk = TextEditingController();
-  int _totalBags=0;
-  int _totalMT=0;
-  List<File> _imageList = [
-  new File("/storage/emulated/0/Android/data/com.dalmia.techsales/files/Pictures/scaled_image_picker6000543052621285162.jpg")
-  ];
+  var _comments = TextEditingController();
+  var _influencerNumber = TextEditingController();
+  var _influencerName = TextEditingController();
+  var _influencerType = TextEditingController();
+  var _influencerCategory = TextEditingController();
+
+  int _totalBags = 0;
+  int _totalMT = 0;
+  List<File> _imageList = new List();
+  List<CommentsDetail> _commentsList = new List();
+  bool viewMoreActive = false;
+
+  List<String> _items = new List(); // to store comments
+
+  final myController = TextEditingController();
+
+  void _addComment() {
+    if (myController.text.isNotEmpty) {
+      // check if the comments text input is not empty
+      setState(() {
+        _items.add(myController.text); // add new commnet to the existing list
+      });
+
+      myController.clear(); // clear the text from the input
+    }
+  }
 
   List<Item> _data = generateItems(1);
-List<InfluencerDetail> _list = [
-  new InfluencerDetail()
-];
+  List<InfluencerDetail> _listInfluencerDetail = [
+    new InfluencerDetail(isExpanded: true)
+  ];
   Position _currentPosition;
   String _currentAddress;
 
   List<SiteSubTypeEntity> siteSubTypeEntity = [
     new SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
     new SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
-    new SiteSubTypeEntity(
-        siteSubId: 3, siteSubTypeDesc: "Multi-Storey"),
+    new SiteSubTypeEntity(siteSubId: 3, siteSubTypeDesc: "Multi-Storey"),
   ];
 
   @override
@@ -63,6 +89,7 @@ List<InfluencerDetail> _list = [
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       // appBar: AppBar(
       //   // titleSpacing: 50,
@@ -104,6 +131,7 @@ List<InfluencerDetail> _list = [
             backgroundColor: ColorConstants.checkinColor,
             child: Icon(
               Icons.keyboard_backspace,
+              color: Colors.black,
             ),
             onPressed: () {
               Navigator.of(context).pop();
@@ -112,120 +140,121 @@ List<InfluencerDetail> _list = [
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: ColorConstants.appBarColor,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        // currentScreen =
-                        //     Dashboard(); // if user taps on this dashboard tab will be active
-                        // currentTab = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: Colors.white60,
-                        ),
-                        // Text(
-                        //   'Dashboard',
-                        //   style: TextStyle(
-                        //     color: currentTab == 0 ? Colors.blue : Colors.grey,
-                        //   ),
-                        //),
-                      ],
+        bottomNavigationBar: BottomAppBar(
+          color: ColorConstants.appBarColor,
+          shape: CircularNotchedRectangle(),
+          notchMargin: 10,
+          child: Container(
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        setState(() {
+                          // currentScreen =
+                          //     Dashboard(); // if user taps on this dashboard tab will be active
+                          // currentTab = 0;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.home,
+                            color: Colors.white60,
+                          ),
+                          Text(
+                            'Home',
+                            style: TextStyle(
+                              color: Colors.white60,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
 
-              // Right Tab bar icons
+                // Right Tab bar icons
 
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.drafts,
-                          color: Colors.white60,
-                        ),
-                        // Text(
-                        //   'Mail',
-                        //   style: TextStyle(
-                        //     color: currentTab == 2 ? Colors.blue : Colors.grey,
-                        //   ),
-                        // ),
-                      ],
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {},
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.drafts,
+                            color: Colors.white60,
+                          ),
+                          Text(
+                            'Drafts',
+                            style: TextStyle(
+                              color: Colors.white60,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  CupertinoButton(
-                    minSize: 40,
-                    onPressed: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.search,
-                          color: Colors.white60,
-                        ),
-                        // Text(
-                        //   'Search',
-                        //   style: TextStyle(
-                        //     color: Colors.white,
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {},
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.search,
+                            color: Colors.white60,
+                          ),
+                          Text(
+                            'Search',
+                            style: TextStyle(
+                              color: Colors.white60,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
 
-      body: Stack(
-        children: [
-          Positioned(
-              top: 0,
-              left: 200,
-              right: 0,
-              child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/images/Container.png',
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ],
-                  ))),
-          SingleChildScrollView(
-            child: Form(
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Positioned(
+                top: 0,
+                left: 200,
+                right: 0,
+                child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/images/Container.png',
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ],
+                    ))),
+            Form(
               key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Padding(
                       padding:
@@ -464,20 +493,26 @@ List<InfluencerDetail> _list = [
                           onPressed: () async {
                             LocationResult result = await showLocationPicker(
                                 context,
-                                "AIzaSyBEMGF1RVNoYyxMaYE8v2isPlmeCuHDMlc",
+                                "AIzaSyBbCRRECpLRmhBJSY2jv9H0SbzQLnCFYFk",
                                 initialCenter: LatLng(31.1975844, 29.9598339),
                                 automaticallyAnimateToCurrentLocation: true,
 //                      mapStylePath: 'assets/mapStyle.json',
                                 myLocationButtonEnabled: true,
                                 // requiredGPS: true,
-                                layersButtonEnabled: true,
-                                countries: ['AE', 'NG']
+                                layersButtonEnabled: false,
+                               // countries: ['AE', 'NG']
 
 //                      resultCardAlignment: Alignment.bottomCenter,
                                 // desiredAccuracy: LocationAccuracy.best,
                                 );
                             print("result = $result");
-                            setState(() => _pickedLocation = result);
+                            setState(()
+                            {
+                              _pickedLocation = result;
+                              _currentPosition = new Position(latitude:_pickedLocation.latLng.latitude,longitude:_pickedLocation.latLng.longitude  );
+                              _getAddressFromLatLng();
+                             //print(_pickedLocation.latLng.latitude);
+                            });
                           },
                         ),
                       ],
@@ -509,43 +544,43 @@ List<InfluencerDetail> _list = [
 //                         Text(_pickedLocation.toString()),
 //                       ],
 //                     ),
-//                     Container(
-//                         decoration: BoxDecoration(
-//                           color: Theme.of(context).canvasColor,
-//                         ),
-//                         padding:
-//                             EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                         child: Column(children: <Widget>[
-//                           Row(
-//                             children: <Widget>[
-//                               Icon(Icons.location_on),
-//                               SizedBox(
-//                                 width: 8,
-//                               ),
-//                               Expanded(
-//                                 child: Column(
-//                                   crossAxisAlignment: CrossAxisAlignment.start,
-//                                   children: <Widget>[
-//                                     Text(
-//                                       'Location',
-//                                       style:
-//                                           Theme.of(context).textTheme.caption,
-//                                     ),
-//                                     if (_currentPosition != null &&
-//                                         _currentAddress != null)
-//                                       Text(_currentAddress,
-//                                           style: Theme.of(context)
-//                                               .textTheme
-//                                               .bodyText2),
-//                                   ],
-//                                 ),
-//                               ),
-//                               SizedBox(
-//                                 width: 8,
-//                               ),
-//                             ],
-//                           ),
-//                         ])),
+                    Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).canvasColor,
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Column(children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.location_on),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      'Location',
+                                      style:
+                                          Theme.of(context).textTheme.caption,
+                                    ),
+                                    if (_currentPosition != null &&
+                                        _currentAddress != null)
+                                      Text(_currentAddress,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                            ],
+                          ),
+                        ])),
                     SizedBox(height: 16),
                     TextFormField(
                       controller: _siteAddress,
@@ -823,54 +858,75 @@ List<InfluencerDetail> _list = [
                         ),
                         onPressed: () async {
                           _showPicker(context);
-
                         },
                       ),
-
-
-
                     ),
 
-                        _imageList!=null ?
-                                Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text("Picture 1: " ,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15
-                                          ),),
-                                          GestureDetector(
-                                            child: Text("XYZ.jpg",
-                                            style: TextStyle(
-                                              color: HexColor("#007CBF"),
-                                                fontSize: 15
-                                            ),),
-                                              onTap: (){
-                                                return showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext context) {
-                                                      return AlertDialog(
-                                                        content: new Container(
-                                                          // width: 500,
-                                                          // height: 500,
-                                                          child: Image.file(_imageList[0]),
-                                                        ),
-                                                      );
-                                                    }
+                    _imageList != null
+                        ? Row(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: _imageList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          return showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  content: new Container(
+                                                    // width: 500,
+                                                    // height: 500,
+                                                    child: Image.file(
+                                                        _imageList[index]),
+                                                  ),
                                                 );
-                                              }
-                                          ),
-                                        ],
-                                      ),
-                                      Icon(Icons.delete,color: HexColor("#FFCD00"),)
-                                    ],
-                                  ),
-                                )
-                        :Container(),
+                                              });
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Picture ${(index + 1)}. ",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 15),
+                                                ),
+                                                Text(
+                                                  "Image_${(index + 1)}.jpg",
+                                                  style: TextStyle(
+                                                      color:
+                                                          HexColor("#007CBF"),
+                                                      fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                            GestureDetector(
+                                              child: Icon(
+                                                Icons.delete,
+                                                color: HexColor("#FFCD00"),
+                                              ),
+                                              onTap: () {
+                                                setState(() {
+                                                  _imageList.removeAt(index);
+                                                });
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ],
+                          )
+                        : Container(),
 
                     SizedBox(height: 16),
                     Divider(
@@ -890,10 +946,425 @@ List<InfluencerDetail> _list = [
                             fontFamily: "Muli"),
                       ),
                     ),
-                    Container(
-                      child: _buildPanel(),
-                    ),
+                    // Container(
+                    //   child: _buildPanel(),
+                    // ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: _listInfluencerDetail.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                if (!_listInfluencerDetail[index].isExpanded) {
+                                  return Column(
+                                    // mainAxisAlignment:
+                                    // MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Influencer Details ${(index + 1)} ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ),
+                                          _listInfluencerDetail[index]
+                                                  .isExpanded
+                                              ? FlatButton.icon(
+                                                  // shape: RoundedRectangleBorder(
+                                                  //     borderRadius: BorderRadius.circular(0),
+                                                  //     side: BorderSide(color: Colors.black26)),
+                                                  color: Colors.transparent,
+                                                  icon: Icon(
+                                                    Icons.remove,
+                                                    color: HexColor("#F9A61A"),
+                                                    size: 18,
+                                                  ),
+                                                  label: Text(
+                                                    "COLLAPSE",
+                                                    style: TextStyle(
+                                                        color:
+                                                            HexColor("#F9A61A"),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        // letterSpacing: 2,
+                                                        fontSize: 17),
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .isExpanded =
+                                                          !_listInfluencerDetail[
+                                                                  index]
+                                                              .isExpanded;
+                                                    });
+                                                    // _getCurrentLocation();
+                                                  },
+                                                )
+                                              : FlatButton.icon(
+                                                  // shape: RoundedRectangleBorder(
+                                                  //     borderRadius: BorderRadius.circular(0),
+                                                  //     side: BorderSide(color: Colors.black26)),
+                                                  color: Colors.transparent,
+                                                  icon: Icon(
+                                                    Icons.add,
+                                                    color: HexColor("#F9A61A"),
+                                                    size: 18,
+                                                  ),
+                                                  label: Text(
+                                                    "EXPAND",
+                                                    style: TextStyle(
+                                                        color:
+                                                            HexColor("#F9A61A"),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        // letterSpacing: 2,
+                                                        fontSize: 17),
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .isExpanded =
+                                                          !_listInfluencerDetail[
+                                                                  index]
+                                                              .isExpanded;
+                                                    });
+                                                    // _getCurrentLocation();
+                                                  },
+                                                ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return Column(
+                                    // mainAxisAlignment:
+                                    // MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Influencer Details ${(index + 1)} ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ),
+                                          _listInfluencerDetail[index]
+                                                  .isExpanded
+                                              ? FlatButton.icon(
+                                                  // shape: RoundedRectangleBorder(
+                                                  //     borderRadius: BorderRadius.circular(0),
+                                                  //     side: BorderSide(color: Colors.black26)),
+                                                  color: Colors.transparent,
+                                                  icon: Icon(
+                                                    Icons.remove,
+                                                    color: HexColor("#F9A61A"),
+                                                    size: 18,
+                                                  ),
+                                                  label: Text(
+                                                    "COLLAPSE",
+                                                    style: TextStyle(
+                                                        color:
+                                                            HexColor("#F9A61A"),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        // letterSpacing: 2,
+                                                        fontSize: 17),
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .isExpanded =
+                                                          !_listInfluencerDetail[
+                                                                  index]
+                                                              .isExpanded;
+                                                    });
+                                                    // _getCurrentLocation();
+                                                  },
+                                                )
+                                              : FlatButton.icon(
+                                                  // shape: RoundedRectangleBorder(
+                                                  //     borderRadius: BorderRadius.circular(0),
+                                                  //     side: BorderSide(color: Colors.black26)),
+                                                  color: Colors.transparent,
+                                                  icon: Icon(
+                                                    Icons.add,
+                                                    color: HexColor("#F9A61A"),
+                                                    size: 18,
+                                                  ),
+                                                  label: Text(
+                                                    "EXPAND",
+                                                    style: TextStyle(
+                                                        color:
+                                                            HexColor("#F9A61A"),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        // letterSpacing: 2,
+                                                        fontSize: 17),
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .isExpanded =
+                                                          !_listInfluencerDetail[
+                                                                  index]
+                                                              .isExpanded;
+                                                    });
+                                                    // _getCurrentLocation();
+                                                  },
+                                                ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 16),
+                                      TextFormField(
+                                        controller: _influencerNumber,
+                                        onChanged: (value) async {
+                                          if(value.length == 10){
+                                            var bodyEncrypted = {
+                                              //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
+                                              "inflContact": value
+                                            };
+                                            AddLeadsController _addLeadsController = Get.find();
+                                            _addLeadsController.phoneNumber = value;
+                                            _addLeadsController.getAccessKey(RequestIds.Get_Infl_Detail);
 
+                                            // final response = await post(Uri.parse(UrlConstants.loginCheck),
+                                            //     headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey),
+                                            //     body: json.encode(bodyEncrypted),
+                                            //     encoding: Encoding.getByName("utf-8"));
+                                            // setState(() {
+                                            //
+                                            // });
+                                          }
+                                          // setState(() {
+                                          //   _totalBags = value as int;
+                                          // });
+                                        },
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'Please enter Influencer Number ';
+                                          }
+
+                                          return null;
+                                        },
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: ColorConstants
+                                                .inputBoxHintColor,
+                                            fontFamily: "Muli"),
+                                        keyboardType: TextInputType.phone,
+                                        decoration: InputDecoration(
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: ColorConstants
+                                                    .backgroundColorBlue,
+                                                //color: HexColor("#0000001F"),
+                                                width: 1.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: const Color(0xFF000000)
+                                                    .withOpacity(0.4),
+                                                width: 1.0),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 1.0),
+                                          ),
+                                          labelText: "Infl. Contact",
+                                          filled: false,
+
+                                          focusColor: Colors.black,
+                                          labelStyle: TextStyle(
+                                              fontFamily: "Muli",
+                                              color: ColorConstants
+                                                  .inputBoxHintColorDark,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 16.0),
+                                          fillColor:
+                                              ColorConstants.backgroundColor,
+                                        ),
+                                      ),
+                                      SizedBox(height: 16),
+                                      TextFormField(
+                                        controller: _influencerName,
+
+                                        // validator: (value) {
+                                        //   if (value.isEmpty) {
+                                        //     return 'Please enter Influencer Number ';
+                                        //   }
+                                        //
+                                        //   return null;
+                                        // },
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: ColorConstants
+                                                .inputBoxHintColor,
+                                            fontFamily: "Muli"),
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: ColorConstants
+                                                    .backgroundColorBlue,
+                                                //color: HexColor("#0000001F"),
+                                                width: 1.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: const Color(0xFF000000)
+                                                    .withOpacity(0.4),
+                                                width: 1.0),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 1.0),
+                                          ),
+                                          disabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: const Color(0xFF000000)
+                                                    .withOpacity(0.4),
+                                                width: 1.0),
+                                          ),
+                                          labelText: "Infl. Name",
+                                          enabled: false,
+                                          filled: false,
+                                          focusColor: Colors.black,
+                                          labelStyle: TextStyle(
+                                              fontFamily: "Muli",
+                                              color: ColorConstants
+                                                  .inputBoxHintColorDark,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 16.0),
+                                          fillColor:
+                                              ColorConstants.backgroundColor,
+                                        ),
+                                      ),
+                                      SizedBox(height: 16),
+                                      TextFormField(
+                                        controller: _influencerType,
+                                        // validator: (value) {
+                                        //   if (value.isEmpty) {
+                                        //     return 'Please enter Influencer Number ';
+                                        //   }
+                                        //
+                                        //   return null;
+                                        // },
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: ColorConstants
+                                                .inputBoxHintColor,
+                                            fontFamily: "Muli"),
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: ColorConstants
+                                                    .backgroundColorBlue,
+                                                //color: HexColor("#0000001F"),
+                                                width: 1.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: const Color(0xFF000000)
+                                                    .withOpacity(0.4),
+                                                width: 1.0),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 1.0),
+                                          ),
+                                          disabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: const Color(0xFF000000)
+                                                    .withOpacity(0.4),
+                                                width: 1.0),
+                                          ),
+                                          enabled: false,
+                                          labelText: "Infl. Contact",
+                                          filled: false,
+                                          focusColor: Colors.black,
+                                          labelStyle: TextStyle(
+                                              fontFamily: "Muli",
+                                              color: ColorConstants
+                                                  .inputBoxHintColorDark,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 16.0),
+                                          fillColor:
+                                              ColorConstants.backgroundColor,
+                                        ),
+                                      ),
+                                      SizedBox(height: 16),
+                                      TextFormField(
+                                        controller: _influencerCategory,
+                                        // validator: (value) {
+                                        //   if (value.isEmpty) {
+                                        //     return 'Please enter Influencer Number ';
+                                        //   }
+                                        //
+                                        //   return null;
+                                        // },
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: ColorConstants
+                                                .inputBoxHintColor,
+                                            fontFamily: "Muli"),
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: ColorConstants
+                                                    .backgroundColorBlue,
+                                                //color: HexColor("#0000001F"),
+                                                width: 1.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: const Color(0xFF000000)
+                                                    .withOpacity(0.4),
+                                                width: 1.0),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 1.0),
+                                          ),
+                                          disabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: const Color(0xFF000000)
+                                                    .withOpacity(0.4),
+                                                width: 1.0),
+                                          ),
+                                          enabled: false,
+                                          labelText: "Infl. Contact",
+                                          filled: false,
+                                          focusColor: Colors.black,
+                                          labelStyle: TextStyle(
+                                              fontFamily: "Muli",
+                                              color: ColorConstants
+                                                  .inputBoxHintColorDark,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 16.0),
+                                          fillColor:
+                                              ColorConstants.backgroundColor,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              }),
+                        ),
+                      ],
+                    ),
                     SizedBox(height: 16),
 
                     Center(
@@ -915,14 +1386,26 @@ List<InfluencerDetail> _list = [
                           ),
                         ),
                         onPressed: () async {
-                          InfluencerDetail infl = new InfluencerDetail();
+                          if (_listInfluencerDetail[
+                                      _listInfluencerDetail.length - 1]
+                                  .infl_name !=
+                              null) {
+                            InfluencerDetail infl =
+                                new InfluencerDetail(isExpanded: true);
 
-                          Item item = new Item(
-                              headerValue: "agx ", expandedValue: "dnxcx");
-                          setState(() {
-                            _data.add(item);
-                            _list.add(infl);
-                          });
+                            // Item item = new Item(
+                            //     headerValue: "agx ", expandedValue: "dnxcx");
+                            setState(() {
+                              // _data.add(item);
+                              _listInfluencerDetail[
+                                      _listInfluencerDetail.length - 1]
+                                  .isExpanded = false;
+                              _listInfluencerDetail.add(infl);
+                            });
+                          }
+                          else{
+                            print("Error : Please fill previous influencer first");
+                          }
                         },
                       ),
                     ),
@@ -968,7 +1451,7 @@ List<InfluencerDetail> _list = [
                                   fontSize: 18,
                                   color: ColorConstants.inputBoxHintColor,
                                   fontFamily: "Muli"),
-                             // keyboardType: TextInputType.text,
+                              // keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -1000,7 +1483,6 @@ List<InfluencerDetail> _list = [
                           ),
                         ),
                         Expanded(
-
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: TextFormField(
@@ -1043,7 +1525,6 @@ List<InfluencerDetail> _list = [
                                 labelText: "MT",
                                 filled: false,
                                 enabled: false,
-
                                 focusColor: Colors.black,
                                 labelStyle: TextStyle(
                                     fontFamily: "Muli",
@@ -1105,6 +1586,8 @@ List<InfluencerDetail> _list = [
                     SizedBox(height: 16),
                     TextFormField(
                       maxLines: 4,
+                      controller: _comments,
+
                       // validator: (value) {
                       //   if (value.isEmpty) {
                       //     return 'Please enter RERA Number ';
@@ -1117,6 +1600,11 @@ List<InfluencerDetail> _list = [
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
+                      onChanged: (value) {
+                        setState(() {
+                          _comment = value;
+                        });
+                      },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -1164,43 +1652,150 @@ List<InfluencerDetail> _list = [
                           ),
                         ),
                         onPressed: () async {
-                      //     InfluencerDetail infl = new InfluencerDetail();
-                      //
-                      //     Item item = new Item(
-                      //         headerValue: "agx ", expandedValue: "dnxcx");
-                      //     setState(() {
-                      //       _data.add(item);
-                      //       _list.add(infl);
-                      //     });
-                         },
-                       ),
-
-
-                    ),
-                    Padding(
-                      padding:
-                      const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
-                      child: Text(
-                        "XYZ Kumar",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                            // color: HexColor("#000000DE"),
-                            fontFamily: "Muli"),
+                          if (_comments.value.text != null &&
+                              _comments.value.text != '') {
+                            print("here");
+                            setState(() {
+                              _commentsList.add(
+                                new CommentsDetail(
+                                    commentedBy: "XYZNAME",
+                                    comment: _comments.value.text,
+                                    commentedAt: DateTime.now()),
+                              );
+                              _comments.clear();
+                            });
+                          }
+                          SystemChannels.textInput
+                              .invokeMethod('TextInput.hide');
+                        },
                       ),
                     ),
-                    Padding(
-                      padding:
-                      const EdgeInsets.only(top: 5.0, bottom: 20, left: 5),
-                      child: Text(
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                        style: TextStyle(
-                            //fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            // color: HexColor("#000000DE"),
-                            fontFamily: "Muli"),
-                      ),
-                    ),
+                    _commentsList != null && _commentsList.length != 0
+                        ? viewMoreActive
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    child: ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        reverse: true,
+                                        shrinkWrap: true,
+                                        itemCount: _commentsList.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    _commentsList[index]
+                                                        .commentedBy,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 25),
+                                                  ),
+                                                  Text(
+                                                    _commentsList[index]
+                                                        .comment,
+                                                    style: TextStyle(
+                                                        color: Colors.black
+                                                            .withOpacity(0.5),
+                                                        fontSize: 25),
+                                                  ),
+                                                  Text(
+                                                    _commentsList[index]
+                                                        .commentedAt
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.black
+                                                            .withOpacity(0.5),
+                                                        fontSize: 15),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              )
+                                            ],
+                                          );
+                                        }),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        _commentsList[_commentsList.length - 1]
+                                            .commentedBy,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 25),
+                                      ),
+                                      Text(
+                                        _commentsList[_commentsList.length - 1]
+                                            .comment,
+                                        style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            fontSize: 25),
+                                      ),
+                                      Text(
+                                        _commentsList[_commentsList.length - 1]
+                                            .commentedAt
+                                            .toString(),
+                                        style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  )
+                                ],
+                              )
+                        : Container(),
+                    // Padding(
+                    //   padding:
+                    //       const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
+                    //   child: Text(
+                    //     "XYZ Kumar",
+                    //     style: TextStyle(
+                    //         fontWeight: FontWeight.bold,
+                    //         fontSize: 25,
+                    //         // color: HexColor("#000000DE"),
+                    //         fontFamily: "Muli"),
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding:
+                    //       const EdgeInsets.only(top: 5.0, bottom: 20, left: 5),
+                    //   child: Text(
+                    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                    //     style: TextStyle(
+                    //         //fontWeight: FontWeight.bold,
+                    //         fontSize: 20,
+                    //         // color: HexColor("#000000DE"),
+                    //         fontFamily: "Muli"),
+                    //   ),
+                    // ),
                     Center(
                       child: FlatButton(
                         // shape: RoundedRectangleBorder(
@@ -1210,16 +1805,32 @@ List<InfluencerDetail> _list = [
                         child: Padding(
                           padding: const EdgeInsets.only(
                               right: 5, bottom: 8, top: 5),
-                          child: Text(
-                            "VIEW MORE COMMENT",
-                            style: TextStyle(
-                                color: HexColor("##F9A61A"),
-                                fontWeight: FontWeight.bold,
-                                // letterSpacing: 2,
-                                fontSize: 17),
-                          ),
+                          child: !viewMoreActive
+                              ? Text(
+                                  "VIEW MORE COMMENT (" +
+                                      _commentsList.length.toString() +
+                                      ")",
+                                  style: TextStyle(
+                                      color: HexColor("##F9A61A"),
+                                      fontWeight: FontWeight.bold,
+                                      // letterSpacing: 2,
+                                      fontSize: 17),
+                                )
+                              : Text(
+                                  "VIEW LESS COMMENT (" +
+                                      _commentsList.length.toString() +
+                                      ")",
+                                  style: TextStyle(
+                                      color: HexColor("##F9A61A"),
+                                      fontWeight: FontWeight.bold,
+                                      // letterSpacing: 2,
+                                      fontSize: 17),
+                                ),
                         ),
                         onPressed: () async {
+                          setState(() {
+                            viewMoreActive = !viewMoreActive;
+                          });
                           //     InfluencerDetail infl = new InfluencerDetail();
                           //
                           //     Item item = new Item(
@@ -1230,8 +1841,6 @@ List<InfluencerDetail> _list = [
                           //     });
                         },
                       ),
-
-
                     ),
 
                     SizedBox(height: 35),
@@ -1271,40 +1880,69 @@ List<InfluencerDetail> _list = [
                         ),
                       ],
                     ),
-
+                    // Column(children: [
+                    //   Row(
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //       children: <Widget>[
+                    //         Expanded(
+                    //             child: TextField(
+                    //           style: TextStyle(color: Colors.black),
+                    //           controller: myController,
+                    //           maxLines: 5,
+                    //           keyboardType: TextInputType.multiline,
+                    //         )),
+                    //         SizedBox(width: 15),
+                    //         InkWell(
+                    //             onTap: () {
+                    //               _addComment();
+                    //             },
+                    //             child: Icon(Icons.send))
+                    //       ]),
+                    //   SizedBox(height: 10),
+                    //   Row(
+                    //     children: [
+                    //       Expanded(
+                    //         child: ListView.builder(
+                    //             shrinkWrap: true,
+                    //             itemCount: _items.length,
+                    //             itemBuilder: (BuildContext context, int index) {
+                    //               return Text(
+                    //                   "${(index + 1)}. " + _items[index]);
+                    //             }),
+                    //       ),
+                    //     ],
+                    //   )
+                    // ]),
                     SizedBox(height: 70),
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
-
-
   }
 
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50
-    );
+        source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
       print(image.path);
-      _imageList.insert(0,image);
+      _imageList.add(image);
     });
   }
 
   _imgFromGallery() async {
-    File image = await  ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50
-    );
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
-     // print(image.path);
-     _imageList.add(image);
-     _imageList.insert(0,image);
+      // print(image.path);
+      _imageList.add(image);
+      // _imageList.insert(0,image);
     });
   }
 
@@ -1335,10 +1973,8 @@ List<InfluencerDetail> _list = [
               ),
             ),
           );
-        }
-    );
+        });
   }
-
 
   _getCurrentLocation() {
     geolocator
@@ -1400,7 +2036,6 @@ List<InfluencerDetail> _list = [
               trailing: Icon(Icons.delete),
               onTap: () {
                 setState(() {
-                  _list.removeWhere((currentItem) => item == currentItem);
                   _data.removeWhere((currentItem) => item == currentItem);
                 });
               }),
@@ -1411,7 +2046,6 @@ List<InfluencerDetail> _list = [
   }
 }
 
-
 class InfluencerDetail {
   InfluencerDetail({
     this.infl_id,
@@ -1421,8 +2055,7 @@ class InfluencerDetail {
     this.infl_cat_id,
     this.infl_intrested,
     this.infl_created_on,
-
-
+    this.isExpanded,
   });
 
   String infl_id;
@@ -1432,9 +2065,8 @@ class InfluencerDetail {
   String infl_cat_id;
   String infl_intrested;
   DateTime infl_created_on;
+  bool isExpanded;
 }
-
-
 
 class Item {
   Item({
@@ -1462,7 +2094,14 @@ List<Item> generateItems(int numberOfItems) {
 //   return List.
 // }
 
+class CommentsDetail {
+  CommentsDetail({
+    this.commentedBy,
+    this.comment,
+    this.commentedAt,
+  });
 
-class CommentsList{
-
+  String commentedBy;
+  String comment;
+  DateTime commentedAt;
 }

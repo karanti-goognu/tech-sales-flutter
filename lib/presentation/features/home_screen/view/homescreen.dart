@@ -313,6 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundColor: Colors.amber,
                   child: Icon(
                     Icons.add,
+                    color: Colors.black,
                   ),
                   onPressed: () {
                     Get.toNamed(Routes.ADD_LEADS_SCREEN);
@@ -355,12 +356,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icons.home,
                                 color: Colors.white60,
                               ),
-                              // Text(
-                              //   'Dashboard',
-                              //   style: TextStyle(
-                              //     color: currentTab == 0 ? Colors.blue : Colors.grey,
-                              //   ),
-                              //),
+                              Text(
+                                'Home',
+                                style: TextStyle(
+                                  color: Colors.white60,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -382,17 +383,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icons.drafts,
                                 color: Colors.white60,
                               ),
-                              // Text(
-                              //   'Mail',
-                              //   style: TextStyle(
-                              //     color: currentTab == 2 ? Colors.blue : Colors.grey,
-                              //   ),
-                              // ),
+                              Text(
+                                'Drafts',
+                                style: TextStyle(
+                                  color: Colors.white60,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        CupertinoButton(
-                          minSize: 40,
+                        MaterialButton(
+                          minWidth: 40,
                           onPressed: () {},
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -401,12 +402,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icons.search,
                                 color: Colors.white60,
                               ),
-                              // Text(
-                              //   'Search',
-                              //   style: TextStyle(
-                              //     color: Colors.white,
-                              //   ),
-                              // ),
+                              Text(
+                                'Search',
+                                style: TextStyle(
+                                  color: Colors.white60,
+                                ),
+                              ),
                             ],
                           ),
                         )
