@@ -52,14 +52,11 @@ class MyApiClient {
       String decryptedMobileNumber =
           decryptString(encryptedMobileNumber, StringConstants.encryptedKey)
               .toString();
-      // a8Egz8p4qTjvGNCrS3TKxQ==
+
       AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
       var bodyEncrypted = {
-        //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
         "reference-id": encryptedEmpId,
-
         "mobile-number": encryptedMobileNumber,
-        //"device-id": " 18e86276-d1e2-4e36-bcc2-26036be5065e",
         "device-id": build.androidId,
         "device-type": build.manufacturer,
         "app-name": StringConstants.appName,
@@ -97,11 +94,13 @@ class MyApiClient {
   retryOtp(String empId, String mobileNumber, String accessKey,
       String otpTokenId) async {
     try {
+
+      print('Token Id :: $otpTokenId');
       String encryptedEmpId =
-      encryptString(empId, StringConstants.encryptedKey).toString();
+          encryptString(empId, StringConstants.encryptedKey).toString();
 
       String encryptedMobile =
-      encryptString(mobileNumber, StringConstants.encryptedKey).toString();
+          encryptString(mobileNumber, StringConstants.encryptedKey).toString();
 
       AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
       var body = {
@@ -111,10 +110,13 @@ class MyApiClient {
         "device-type": build.manufacturer,
         "app-name": StringConstants.appName,
         "app-version": StringConstants.appVersion,
-        "otp-token-id ": otpTokenId,
+        "otp-token-id": otpTokenId,
       };
 
       debugPrint('request without encryption: $body');
+      debugPrint('request without encryption: ${json.encode(body)}');
+      debugPrint(
+          'request headers : ${requestHeadersWithAccessKey(accessKey)}');
       final response = await post(Uri.parse(UrlConstants.retryOtp),
           headers: requestHeadersWithAccessKey(accessKey),
           body: json.encode(body),
@@ -125,7 +127,7 @@ class MyApiClient {
         print('success');
         var data = json.decode(response.body);
         RetryOtpModel retryOtpModel = RetryOtpModel.fromJson(data);
-        //print('Access key Object is :: $loginModel');
+        print('Retry Model key Object is :: ${json.encode(retryOtpModel)}');
         return retryOtpModel;
       } else
         print('error in else');
@@ -137,10 +139,10 @@ class MyApiClient {
   validateOtp(String empId, String mobileNumber, String accessKey,
       String otpCode) async {
     String encryptedEmpId =
-    encryptString(empId, StringConstants.encryptedKey).toString();
+        encryptString(empId, StringConstants.encryptedKey).toString();
 
     String encryptedMobile =
-    encryptString(mobileNumber, StringConstants.encryptedKey).toString();
+        encryptString(mobileNumber, StringConstants.encryptedKey).toString();
 
     String encryptedOtp =
         encryptString(otpCode, StringConstants.encryptedKey).toString();

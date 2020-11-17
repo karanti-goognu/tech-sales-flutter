@@ -5,18 +5,27 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
 import 'package:meta/meta.dart';
 
-class MyRepository {
-  final MyApiClient apiClient;
+class MyRepositoryLeads {
+  final MyApiClientLeads apiClient;
 
-  MyRepository({@required this.apiClient}) : assert(apiClient != null);
+  MyRepositoryLeads({@required this.apiClient}) : assert(apiClient != null);
 
   getFilterData(String accessKey) {
     return apiClient.getFilterData(accessKey);
   }
 
+  getLeadsData(String accessKey,String securityKey,String url) {
+    return apiClient.getLeadsData(accessKey,securityKey,url);
+  }
+
   getAccessKey() {
     return apiClient.getAccessKey();
   }
+
+  getSecretKey(String empId,String mobileNumber) {
+    return apiClient.getSecretKey(empId,mobileNumber);
+  }
+
 
   getAddLeadsData(String accessKey , String userSecurityKey){
   //  print("dhawan : "+userSecurityKey);

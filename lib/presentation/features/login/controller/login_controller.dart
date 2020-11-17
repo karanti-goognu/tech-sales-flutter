@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryO
 import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -31,6 +34,7 @@ class LoginController extends GetxController {
   final _phoneNumber = "8860080067".obs;
   final _empId = "_empty".obs;
   final _otpCode = "_empty".obs;
+  final _retryOtpActive = false.obs;
 
   get loginResponse => this._loginResponse.value;
 
@@ -46,6 +50,8 @@ class LoginController extends GetxController {
 
   get otpCode => this._otpCode.value;
 
+  get retryOtpActive => this._retryOtpActive.value;
+
   set loginResponse(value) => this._loginResponse.value = value;
 
   set retryOtpResponse(value) => this._retryOtpResponse.value = value;
@@ -60,16 +66,14 @@ class LoginController extends GetxController {
 
   set otpCode(value) => this._otpCode.value = value;
 
-  savePreference(String key, String value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, value);
-  }
+  set retryOtpActive(value) => this._retryOtpActive.value = value;
 
-  getSharedPreference(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //Return String
-    String stringValue = prefs.getString(key);
-    return stringValue;
+  showNoInternetSnack() {
+    Get.snackbar(
+        "No internet connection.", "Please check your internet connection.",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM);
   }
 
   getAccessKey(int requestId) {
@@ -128,10 +132,12 @@ class LoginController extends GetxController {
         debugPrint('Otp Retry Response is null');
       } else {
         this.retryOtpResponse = data;
+        print('Retry Otp Response is :: ${jsonEncode(this.retryOtpResponse)}');
         if (retryOtpResponse.respCode == "DM1015") {
-          Get.dialog(CustomDialogs().errorDialog(retryOtpResponse.respMsg));
+          this.retryOtpActive = false;
         } else {
-          Get.dialog(CustomDialogs().errorDialog(retryOtpResponse.respMsg));
+          Get.dialog(CustomDialogs().errorDialog(
+              '${retryOtpResponse.respCode} ${retryOtpResponse.respMsg}'));
         }
       }
     });
@@ -148,10 +154,29 @@ class LoginController extends GetxController {
       } else {
         this.validateOtpResponse = data;
         if (validateOtpResponse.respCode == "DM1011") {
+          debugPrint(
+              'Otp Validation Response is :: ${json.encode(this.validateOtpResponse)}');
           //Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
-          savePreference(StringConstants.isUserLoggedIn, "true");
-          savePreference(StringConstants.userSecurityKey,
-              this.validateOtpResponse.userSecurityKey);
+          Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+          _prefs.then((SharedPreferences prefs) {
+            prefs
+                .setString(StringConstants.userSecurityKey,
+                    this.validateOtpResponse.userSecurityKey);
+            prefs
+                .setString(StringConstants.isUserLoggedIn, "true");
+            prefs
+                .setString(StringConstants.employeeName,
+                    this.validateOtpResponse.employeeDetails.employeeName);
+            prefs
+                .setString(StringConstants.employeeId,
+                this.validateOtpResponse.employeeDetails.referenceId);
+
+            prefs
+                .setString(StringConstants.mobileNumber,
+                this.validateOtpResponse.employeeDetails.mobileNumber);
+
+          });
+
           openHomeScreen();
         } else {
           Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));

@@ -1,15 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:async';
-import 'package:http_parser/http_parser.dart';
 
-import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
@@ -45,37 +39,97 @@ class MyApiClient {
     }
   }
 
-  getFilterData(String accessKey) async {
+  getSecretKey(String empId, String mobile) async {
     try {
-      var response = await httpClient.get(UrlConstants.getFilterData,
-          headers: requestHeaders);
+      Map<String, String> requestHeadersEmpIdAndNo = {
+        'Content-type': 'application/json',
+        'app-name': StringConstants.appName,
+        'app-version': StringConstants.appVersion,
+        'reference-id': empId,
+        'mobile-number': mobile,
+      };
+
+      var response = await httpClient.get(UrlConstants.getSecretKey,
+          headers: requestHeadersEmpIdAndNo);
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
+        SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
-        return accessKeyModel;
-      } else
-        print('error');
+        return secretKeyModel;
+      } else {
+        print('Error in else');
+      }
     } catch (_) {
       print('exception ${_.toString()}');
     }
   }
 
-  getAddLeadsData(String accessKey, String userSecurityKey) async {
-
+  getFilterData(String accessKey) async {
     try {
-      print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+      String userSecurityKey = "empty";
+      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+      _prefs.then((SharedPreferences prefs) {
+        userSecurityKey =
+            prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+        print('$userSecurityKey');
+      });
+      if (userSecurityKey == "empty") {
+        var response = await httpClient.get(UrlConstants.getFilterData,
+            headers: requestHeadersWithAccessKeyAndSecretKey(
+                accessKey, userSecurityKey));
+        print('Response body is : ${json.decode(response.body)}');
+        if (response.statusCode == 200) {
+          var data = json.decode(response.body);
+          AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
+          //print('Access key Object is :: $accessKeyModel');
+          return accessKeyModel;
+        } else
+          print('error');
+      } else {
+        print('user security key is empty');
+      }
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
+
+  getLeadsData(String accessKey, String securityKey, String url) async {
+    try {
+      //debugPrint('in get posts: ${UrlConstants.loginCheck}');
+      final response = await get(
+          Uri.parse(url),
+          headers:
+              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
+      //var response = await httpClient.post(UrlConstants.loginCheck);
+      print('response is :  ${response.body}');
+      if (response.statusCode == 200) {
+        print('success');
+        var data = json.decode(response.body);
+        LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
+        //print('Access key Object is :: $loginModel');
+        return leadsListModel;
+      } else
+        print('error in else');
+    } catch (_) {
+      print('error in catch${_.toString()}');
+    }
+  }
+
+  getAddLeadsData(String accessKey, String userSecurityKey) async {
+    try {
+      print(
+          requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var response = await httpClient.get(UrlConstants.addLeadsData,
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey));
       print('Response body is  : ${json.decode(response.body)}');
 
       if (response.statusCode == 200) {
-
-         var data = json.decode(response.body);
-         AddLeadInitialModel addLeadInitialModel = AddLeadInitialModel.fromJson(data);
-         return addLeadInitialModel;
-         print(addLeadInitialModel.siteSubTypeEntity[0]);
+        var data = json.decode(response.body);
+        AddLeadInitialModel addLeadInitialModel =
+            AddLeadInitialModel.fromJson(data);
+        print(addLeadInitialModel.siteSubTypeEntity[0]);
         // return  addLeadInitialModel;
         // print('Initial Add Lead Object is :: $addLeadInitialModel');
         // return addLeadInitialModel;

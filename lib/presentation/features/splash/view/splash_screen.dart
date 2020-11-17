@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
@@ -63,21 +64,19 @@ Future<void> _initializeFlutterFire() async {
 }
 
 class SplashScreenPageState extends State<SplashScreen> {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _initializeFlutterFireFuture = _initializeFlutterFire();
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      Timer(
-          Duration(seconds: 3),
-          () =>
-          //(prefs.getString(StringConstants.isUserLoggedIn) == "false")
-         //     ?
-      Get.toNamed(Routes.LOGIN));
-          //    : Get.toNamed(Routes.HOME_SCREEN));
+      String isUserLoggedIn =
+          prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
+      print('$isUserLoggedIn');
+      (isUserLoggedIn == "false")
+          ? Get.offNamed(Routes.LOGIN)
+          : Get.offNamed(Routes.HOME_SCREEN);
     });
   }
 

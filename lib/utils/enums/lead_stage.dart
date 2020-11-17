@@ -1,1 +1,1 @@
-enum LeadStage { NonVerified, TeleVerified, PhysicalVerified }
+enum LeadStage { NonVerified, TeleVerified, PhysicalVerified,Empty }

@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/security/read_device_info.dart';
+import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
@@ -23,14 +25,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenPageState extends State<LoginScreen> {
+  Map _source = {ConnectivityResult.none: false};
+  MyConnectivity _connectivity = MyConnectivity.instance;
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> _deviceData = <String, dynamic>{};
+  String connectivityString;
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+    });
   }
 
   Future<void> initPlatformState() async {
@@ -57,6 +66,17 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.none:
+        connectivityString = "Offline";
+        break;
+      case ConnectivityResult.mobile:
+        connectivityString = "Mobile: Online";
+        break;
+      case ConnectivityResult.wifi:
+        connectivityString = "WiFi: Online";
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false, //
       backgroundColor: ColorConstants.backgroundColor,
@@ -64,6 +84,12 @@ class LoginScreenPageState extends State<LoginScreen> {
         child: _buildLoginInterface(context),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _connectivity.disposeStream();
+    super.dispose();
   }
 
   Widget _buildLoginInterface(BuildContext context) {
@@ -210,11 +236,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                     height: 16,
                   ),
                   RaisedButton(
-                    color:
-                        /*(connectionStatus == ConnectivityStatus.Offline)
-                        ? ColorConstants.buttonDisableColor
-                        : */
-                        ColorConstants.buttonNormalColor,
+                    color: ColorConstants.buttonNormalColor,
                     highlightColor: ColorConstants.buttonPressedColor,
                     onPressed: () {
                       // Validate returns true if the form is valid, or false
@@ -223,11 +245,8 @@ class LoginScreenPageState extends State<LoginScreen> {
                         FirebaseAnalytics().logEvent(
                             name: FirebaseEventsConstants.loginButtonClick,
                             parameters: null);
+
                         afterRequestLayout(empId, mobileNumber);
-                        /*(connectionStatus == ConnectivityStatus.Offline)
-                            ? CustomDialogs().errorDialog(
-                                StringConstants.noInternetConnectionError)
-                            : afterRequestLayout(empId, mobileNumber);*/
                       }
                     },
                     child: Padding(
@@ -253,15 +272,11 @@ class LoginScreenPageState extends State<LoginScreen> {
     try {
       _loginController.empId = empId;
       _loginController.phoneNumber = mobileNumber;
-      _loginController.getAccessKey(RequestIds.LOGIN_REQUEST);
+      (connectivityString == 'Offline')
+          ? _loginController.showNoInternetSnack()
+          : _loginController.getAccessKey(RequestIds.LOGIN_REQUEST);
     } catch (_) {
       print('Exception');
     }
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
 }

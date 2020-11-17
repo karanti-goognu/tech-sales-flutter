@@ -5,4 +5,7 @@ abstract class RequestIds {
   static const int LEADS_FILTER_DATA_REQUEST = 4;
   static const int ADD_LEADS_DATA_REQUEST = 5;
   static const int Get_Infl_Detail = 6;
+  static const int GET_LEADS_LIST = 7;
+  static const int GET_SECRET_KEY = 8;
+  static const int SEARCH_LEADS = 9;
 }

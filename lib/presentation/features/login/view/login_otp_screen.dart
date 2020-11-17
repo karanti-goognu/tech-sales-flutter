@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -35,9 +37,13 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   LoginController _loginController = Get.find();
+  Map _source = {ConnectivityResult.none: false};
+  MyConnectivity _connectivity = MyConnectivity.instance;
+  String connectivityString;
 
   Timer _timer;
   int _start = 180;
+  int _startInitial = 180;
   bool retryOtp = false;
 
   void startTimer() {
@@ -45,11 +51,8 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
       LoginModel loginModel = _loginController.loginResponse;
       print('Time is :: ${jsonEncode(loginModel)}');
       try {
-        _start = int.parse(loginModel.otpRetrySmsTime);
-        print('${_start.toString()}');
-        _start = _start ~/ 1000;
-        print('${_start.toString()}');
-        //_start = (_start / 1000) as int;
+        _startInitial = int.parse(loginModel.otpRetrySmsTime);
+        _start = _startInitial ~/ 1000;
       } catch (_) {
         print('We wre in catch ${_.toString()}');
       }
@@ -61,9 +64,8 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
           () {
             if (_start < 1) {
               timer.cancel();
-              setState(() {
-                retryOtp = true;
-              });
+              _loginController.retryOtpActive = true;
+              _start = _startInitial;
             } else {
               _start = _start - 1;
             }
@@ -77,14 +79,19 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
 
   @override
   void dispose() {
+    super.dispose();
+    _connectivity.disposeStream();
     _timer.cancel();
     _focusNode.dispose();
-    super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+    });
     _focusNode = FocusNode();
     //isUserLoggedIn = _loginController.getSharedPreference(StringConstants.isUserLoggedIn) as String?? "false";
     startTimer();
@@ -92,6 +99,16 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.none:
+        connectivityString = "Offline";
+        break;
+      case ConnectivityResult.mobile:
+        connectivityString = "Mobile: Online";
+        break;
+      case ConnectivityResult.wifi:
+        connectivityString = "WiFi: Online";
+    }
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
@@ -225,41 +242,31 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                     children: [
                       Expanded(
                         child: Container(
-                            child: GestureDetector(
-                          onTap: () {
-                            (retryOtp == false)
-                                ? retryOtpRequest()
-                                : print('button press');
-                          },
-                          child: new Text(
-                            (retryOtp == false)
-                                ? "Resend OTP in $timeFormat"
-                                : "Resend OTP",
-                            style: (retryOtp == false)
-                                ? TextStyles.resendOtpTextStyleNormal
-                                : TextStyles.resendOtpTextStyleEnabled,
-                          ),
-                        )),
+                            child: Obx(() => GestureDetector(
+                                  onTap: () {
+                                    (_loginController.retryOtpActive == false)
+                                        ? print('On click')
+                                        : retryOtpRequest();
+                                  },
+                                  child: new Text(
+                                    (_loginController.retryOtpActive == false)
+                                        ? "Resend OTP in $timeFormat"
+                                        : "Resend OTP",
+                                    style: (_loginController.retryOtpActive ==
+                                            false)
+                                        ? TextStyles.resendOtpTextStyleNormal
+                                        : TextStyles.resendOtpTextStyleEnabled,
+                                  ),
+                                ))),
                         flex: 2,
                       ),
                       Expanded(
                         child: Container(
                             child: RaisedButton(
                               elevation: 4,
-                              color:
-                                  /*(connectionStatus ==
-                                      ConnectivityStatus.Offline)
-                                  ? ColorConstants.buttonDisableColor
-                                  :*/
-                                  ColorConstants.buttonNormalColor,
+                              color: ColorConstants.buttonNormalColor,
                               highlightColor: ColorConstants.buttonPressedColor,
                               onPressed: () {
-                                // Validate returns true if the form is valid, or false
-                                // otherwise.
-                                /*(connectionStatus == ConnectivityStatus.Offline)
-                                    ? CustomDialogs()
-                                .errorDialog(StringConstants.noInternetConnectionError)
-                                    : */
                                 if (_formKey.currentState.validate()) {
                                   afterValidateRequest(otpCode);
                                 }
@@ -332,13 +339,19 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   }
 
   void retryOtpRequest() {
-    _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST);
+    (connectivityString == 'Offline')
+        ? _loginController.showNoInternetSnack()
+        : _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST);
+    startTimer();
     /*_loginController.loginResponse*/
   }
 
   void afterValidateRequest(String otpCode) {
     _loginController.otpCode = otpCode;
-    _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
+    print('$connectivityString');
+    (connectivityString == 'Offline')
+        ? _loginController.showNoInternetSnack()
+        : _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
   }
 
   LoginOtpScreenPageState(this.mobileNumber);
