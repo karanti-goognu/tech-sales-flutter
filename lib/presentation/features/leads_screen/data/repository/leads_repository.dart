@@ -11,12 +11,20 @@ class MyRepositoryLeads {
     return apiClient.getFilterData(accessKey);
   }
 
+  getLeadsData(String accessKey,String securityKey,String url) {
+    return apiClient.getLeadsData(accessKey,securityKey,url);
+  }
+
   getAccessKey() {
     return apiClient.getAccessKey();
   }
 
+  getSecretKey(String empId,String mobileNumber) {
+    return apiClient.getSecretKey(empId,mobileNumber);
+  }
+
+
   getAddLeadsData(String accessKey , String userSecurityKey){
-    print("cdsncjsnc"+userSecurityKey);
     return apiClient.getAddLeadsData(accessKey,userSecurityKey);
   }
 

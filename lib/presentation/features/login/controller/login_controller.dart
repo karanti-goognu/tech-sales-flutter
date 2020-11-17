@@ -167,6 +167,13 @@ class LoginController extends GetxController {
             prefs
                 .setString(StringConstants.employeeName,
                     this.validateOtpResponse.employeeDetails.employeeName);
+            prefs
+                .setString(StringConstants.employeeId,
+                this.validateOtpResponse.employeeDetails.referenceId);
+
+            prefs
+                .setString(StringConstants.mobileNumber,
+                this.validateOtpResponse.employeeDetails.mobileNumber);
 
           });
 

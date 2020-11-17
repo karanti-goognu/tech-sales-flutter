@@ -13,9 +13,25 @@ abstract class StringConstants {
   static String isUserLoggedIn = '_isUserLoggedIn';
   static String userSecurityKey = '_userSecurityKey';
   static String employeeName = '_employeeName';
+  static String employeeId = '_employeeId';
+  static String mobileNumber = '_mobileNumber';
 
   //App constants
   static String appName = 'TSO';
   static String appVersion = '1.0';
   static String accessToken = 'b7a8fb07-3a4d-4696-b85a-709c9185407c';
+
+  //Filter Constants
+  static String nonVerified = 'Non-Verified';
+  static String teleVerified = 'Tele-Verified';
+  static String physicalVerified = 'Physical-Verified';
+
+  static String active = 'Non-Verified';
+  static String rejected = 'Tele-Verified';
+  static String convertedToSite = 'Converted to site';
+  static String duplicate = 'Duplicate';
+  static String empty = 'Empty';
+
+
+
 }

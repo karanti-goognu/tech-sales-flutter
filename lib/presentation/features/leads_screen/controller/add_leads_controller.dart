@@ -22,7 +22,7 @@ class AddLeadsController extends GetxController {
     super.onInit();
   }
 
-  final MyRepository repository;
+  final MyRepositoryLeads repository;
 
   AddLeadsController({@required this.repository})
       : assert(repository != null);
@@ -69,13 +69,13 @@ class AddLeadsController extends GetxController {
     String userSecurityKey="";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      userSecurityKey =prefs.getString(StringConstants.userSecurityKey);
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
-      repository.getAddLeadsData(this.accessKeyResponse.accessKey, userSecurityKey ).then((data) {
+      repository.getAddLeadsData(this.accessKeyResponse.accessKey, userSecurityKey).then((data) {
         if (data == null) {
           debugPrint('Add Lead Data Response is null');
         } else {
-          print("Dhawannn");
+          print("Dhawan");
           print(data);
           this.addLeadsInitialDataResponse = data;
           if (addLeadsInitialDataResponse.respCode == "DM1011") {

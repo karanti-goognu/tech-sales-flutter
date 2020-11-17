@@ -1,3 +1,6 @@
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadStageEntity.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadStatusEntity.dart';
+
 class LeadsFilterModel {
   List<LeadStatusEntity> leadStatusEntity;
   List<LeadStageEntity> leadStageEntity;
@@ -29,44 +32,6 @@ class LeadsFilterModel {
       data['leadStageEntity'] =
           this.leadStageEntity.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class LeadStatusEntity {
-  int id;
-  String leadStatusDesc;
-
-  LeadStatusEntity({this.id, this.leadStatusDesc});
-
-  LeadStatusEntity.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    leadStatusDesc = json['leadStatusDesc'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['leadStatusDesc'] = this.leadStatusDesc;
-    return data;
-  }
-}
-
-class LeadStageEntity {
-  int id;
-  String leadStageDesc;
-
-  LeadStageEntity({this.id, this.leadStageDesc});
-
-  LeadStageEntity.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    leadStageDesc = json['leadStageDesc'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['leadStageDesc'] = this.leadStageDesc;
     return data;
   }
 }

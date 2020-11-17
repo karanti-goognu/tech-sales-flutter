@@ -13,9 +13,11 @@ abstract class UrlConstants {
   //End points
   static const String loginCheck = '$baseUrl/login/login-otp';
   static const String getAccessKey = '$baseUrl/validation/generate-access-key';
+  static const String getSecretKey = '$baseUrl/validation/generate-secret-key';
   static const String retryOtp = '$baseUrl/login/login-otp-retry';
   static const String validateOtp = '$baseUrl/login/login-otp-validate';
   static const String getFilterData = '$baseUrl/leads/lead-filter-data';
+  static const String getLeadsData = '$baseUrl/leads/lead-list-view?referenceID=';
   static const String addLeadsData = '$baseUrl/leads/lead-new';
   static const String getInflData = '$baseUrl/influencer/getDetails';
 }

@@ -347,6 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // currentScreen =
                               //     Dashboard(); // if user taps on this dashboard tab will be active
                               // currentTab = 0;
+                              Get.toNamed(Routes.HOME_SCREEN);
                             });
                           },
                           child: Column(
@@ -394,7 +395,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         MaterialButton(
                           minWidth: 40,
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(Routes.SEARCH_SCREEN);
+                          },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[

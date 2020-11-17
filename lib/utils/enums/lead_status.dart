@@ -1,1 +1,1 @@
-enum LeadStatus { Active, Rejected, ConvertedToSite, Duplicate }
+enum LeadStatus { Active, Rejected, ConvertedToSite, Duplicate,Empty }
