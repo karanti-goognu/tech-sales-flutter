@@ -12,6 +12,8 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/Access
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
@@ -224,56 +226,86 @@ class MyApiClientLeads {
           json.encode(saveLeadRequestModel.influencerList) ?? 'abc'
     };
 
-    var fieldsDetail1 = {
-      'leadSegmane': "abc",
-      'siteSubTypeId': 3,
-      'assignedTo': "EMP0001234",
-      'leadStatusId': 10,
-      'leadStage': 11,
-      'contactName': "Sumit",
-      'contactNumber': saveLeadRequestModel.contactNumber ?? 'abc',
-      'geotagType': "Y",
-      'leadLatitude': saveLeadRequestModel.leadLatitude ?? 'abc',
-      'leadLongitude': saveLeadRequestModel.leadLongitude ?? 'abc',
-      'leadAddress': saveLeadRequestModel.leadAddress ?? 'abc',
-      'leadPincode': saveLeadRequestModel.leadPincode ?? 'abc',
-      'leadStateName': saveLeadRequestModel.leadStateName ?? 'abc',
-      'leadDistrictName': saveLeadRequestModel.leadDistrictName ?? 'abc',
-      'leadTalukName': saveLeadRequestModel.leadTalukName ?? 'abc',
-      'leadSalesPotentialMt':
-          saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
-      'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? 'abc',
-      'assignDate': saveLeadRequestModel.assignDate ?? 'abc',
-      'isStatus': saveLeadRequestModel.isStatus ?? 'abc',
-      // 'photos': saveLeadRequestModel.photos.toString()??'abc',
-      'comments': json.encode(saveLeadRequestModel.comments) ?? 'abc',
-      'influencerList':
-          json.encode(saveLeadRequestModel.influencerList) ?? 'abc'
-    };
 
-    // request.fields.addAll(fieldsDetail);
+    String empId;
+    String mobileNumber;
+    String name;
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) async {
+      empId = prefs.getString(
+          StringConstants.employeeId) ?? "empty";
+      mobileNumber = prefs.getString(
+          StringConstants.mobileNumber) ?? "empty";
+      name = prefs.getString(
+          StringConstants.employeeName) ?? "empty";
+
+
+      var fieldsDetail1 = {
+        'leadSegmane': "abc",
+        'siteSubTypeId': 3,
+        'assignedTo': empId,
+        'leadStatusId': 10,
+        'leadStage': 11,
+        'contactName': saveLeadRequestModel.contactName,
+        'contactNumber': saveLeadRequestModel.contactNumber ?? 'abc',
+        'geotagType': "Y",
+        'leadLatitude': saveLeadRequestModel.leadLatitude ?? 'abc',
+        'leadLongitude': saveLeadRequestModel.leadLongitude ?? 'abc',
+        'leadAddress': saveLeadRequestModel.leadAddress ?? 'abc',
+        'leadPincode': saveLeadRequestModel.leadPincode ?? 'abc',
+        'leadStateName': saveLeadRequestModel.leadStateName ?? 'abc',
+        'leadDistrictName': saveLeadRequestModel.leadDistrictName ?? 'abc',
+        'leadTalukName': saveLeadRequestModel.leadTalukName ?? 'abc',
+        'leadSalesPotentialMt':
+        saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
+        'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? 'abc',
+        'assignDate': saveLeadRequestModel.assignDate ?? 'abc',
+        'isStatus': saveLeadRequestModel.isStatus ?? 'abc',
+        // 'photos': saveLeadRequestModel.photos.toString()??'abc',
+        'comments': json.encode(saveLeadRequestModel.comments) ?? 'abc',
+        'influencerList':
+        json.encode(saveLeadRequestModel.influencerList) ?? 'abc'
+      };
+
+      // request.fields.addAll(fieldsDetail);
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
 //     print("Request headers :: " + request.headers.toString());
 //     print("Request Body/Fields :: " + request.fields.toString());
-    // print("Files:: " + request.files.toString());
-    try {
-      debugPrint('request without encryption: $fieldsDetail');
-      final response = await post(Uri.parse(UrlConstants.saveLeadsData),
-          headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey),
-          body: json.encode(fieldsDetail1),
-          encoding: Encoding.getByName("utf-8"));
-      print('response is :  ${response.body}');
-      // var response = await request.send();
-      // print("Response Code ::" + response.statusCode.toString());
-      // print("Response  ::" + response.toString());
-      // response.stream.transform(utf8.decoder).listen((value) {
-      //   print(value);
-      // });
+      // print("Files:: " + request.files.toString());
+      try {
+        debugPrint('request without encryption: $fieldsDetail1');
+        final response = await post(Uri.parse(UrlConstants.saveLeadsData),
+            headers: requestHeadersWithAccessKeyAndSecretKey(
+                accessKey, userSecurityKey),
+            body: json.encode(fieldsDetail1),
+            encoding: Encoding.getByName("utf-8"));
+        print('response is :  ${response.body}');
+        // if (response.statusCode == 200) {
+           var data = json.decode(response.body);
+        //   //var validateOtpResponse;
+          Get.back();
+          Get.dialog(CustomDialogs().showDialog(data['resp-msg'] +" and Lead Id is : " + data['lead-Id']));
 
-    } catch (_) {
-      print('exception ${_.toString()}');
-    }
+
+
+        // }
+        // if(response.body.resp-code ==200 ){
+        //   Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
+        // }
+
+        // var response = await request.send();
+        // print("Response Code ::" + response.statusCode.toString());
+        // print("Response  ::" + response.toString());
+        // response.stream.transform(utf8.decoder).listen((value) {
+        //   print(value);
+        // });
+
+      } catch (_) {
+        print('exception ${_.toString()}');
+      }
+
+    });
+
   }
 }
