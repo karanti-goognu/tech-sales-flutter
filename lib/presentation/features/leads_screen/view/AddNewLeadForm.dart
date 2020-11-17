@@ -12,6 +12,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repos
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -21,6 +22,7 @@ import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddNewLeadForm extends StatefulWidget {
   @override
@@ -2091,12 +2093,26 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 _comments.value.text != '') {
                               print("here");
                               setState(() {
-                                _commentsList.add(
-                                  new CommentsDetail(
-                                      commentedBy: "ABC",
-                                      comment: _comments.value.text,
-                                      commentedAt: DateTime.now()),
-                                );
+                                String empId;
+                                String mobileNumber;
+                                String name;
+                                Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+                                _prefs.then((SharedPreferences prefs) {
+                                  empId = prefs.getString(
+                                      StringConstants.employeeId) ?? "empty";
+                                  mobileNumber = prefs.getString(
+                                      StringConstants.mobileNumber) ?? "empty";
+                                  name = prefs.getString(
+                                      StringConstants.employeeName) ?? "empty";
+                                  _commentsList.add(
+                                      new CommentsDetail(
+                                          commentedBy: name,
+                                          comment: _comments.value.text,
+                                          commentedAt: DateTime.now()),
+                                  );
+                                });
+
+
                                 _comments.clear();
                               });
                             }
