@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
@@ -10,9 +9,6 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -29,7 +25,7 @@ class MyApiClientLeads {
 
   getAccessKey() async {
     try {
-     // print("dsacsdcc" + requestHeaders.toString());
+      // print("dsacsdcc" + requestHeaders.toString());
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
       print('Response body is : ${json.decode(response.body)}');
@@ -103,8 +99,7 @@ class MyApiClientLeads {
   getLeadsData(String accessKey, String securityKey, String url) async {
     try {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
-      final response = await get(
-          Uri.parse(url),
+      final response = await get(Uri.parse(url),
           headers:
               requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
       //var response = await httpClient.post(UrlConstants.loginCheck);
@@ -118,7 +113,7 @@ class MyApiClientLeads {
       } else
         print('error in else');
     } catch (_) {
-      print('error in catch${_.toString()}');
+      print('error in catch ${_.toString()}');
     }
   }
 
@@ -136,7 +131,7 @@ class MyApiClientLeads {
         AddLeadInitialModel addLeadInitialModel =
             AddLeadInitialModel.fromJson(data);
         print(addLeadInitialModel.siteSubTypeEntity[0]);
-         return  addLeadInitialModel;
+        return addLeadInitialModel;
         // print('Initial Add Lead Object is :: $addLeadInitialModel');
         // return addLeadInitialModel;
         // print(addLeadInitialModel.siteSubTypeEntity.length);
@@ -146,52 +141,47 @@ class MyApiClientLeads {
       } else
         print('error');
     } catch (_) {
-
       print('exception ${_.toString()}');
     }
-
-
-
   }
 
-  getInflDetailsData(accessKey, String userSecurityKey, phoneNumber,) async {
+  getInflDetailsData(
+    accessKey,
+    String userSecurityKey,
+    phoneNumber,
+  ) async {
     try {
-    //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
-      var bodyEncrypted = {
-        "inflContact": phoneNumber
-      };
+      //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+      var bodyEncrypted = {"inflContact": phoneNumber};
       // print('Request body is  : ${json.encode(bodyEncrypted)}');
       // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
 
-
-      final response = await get(Uri.parse(UrlConstants.getInflData+"/$phoneNumber"),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey),
-
+      final response = await get(
+        Uri.parse(UrlConstants.getInflData + "/$phoneNumber"),
+        headers:
+            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
       print('Response body is  : ${json.decode(response.body)}');
-     // print('Response body is  : ${json.decode(response.body)}');
+      // print('Response body is  : ${json.decode(response.body)}');
 
       if (response.statusCode == 200) {
-
         var data = json.decode(response.body);
-        InfluencerDetail influencerDetailModel = InfluencerDetail.fromJson(data);
+        InfluencerDetail influencerDetailModel =
+            InfluencerDetail.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');\
-      //  print(influencerDetailModel.inflName);
+        //  print(influencerDetailModel.inflName);
         return influencerDetailModel;
       } else
         print('error');
     } catch (_) {
-
       print('exception ${_.toString()}');
     }
-
   }
 
-  saveLeadsData(accessKey, String userSecurityKey, SaveLeadRequestModel saveLeadRequestModel) async {
-
+  saveLeadsData(accessKey, String userSecurityKey,
+      SaveLeadRequestModel saveLeadRequestModel) async {
     // http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.saveLeadsData));
     // request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
-
 
     // for (var file in imageList) {
     //   String fileName = file.path.split("/").last;
@@ -207,71 +197,71 @@ class MyApiClientLeads {
     //   request.files.add(multipartFileSign);
     // }
 
+    var fieldsDetail = {
+      'leadSegmane': saveLeadRequestModel.leadSegmane ?? 'abc',
+      'siteSubTypeId': saveLeadRequestModel.siteSubTypeId ?? 'abc',
+      'assignedTo': saveLeadRequestModel.assignedTo ?? 'abc',
+      'leadStatusId': saveLeadRequestModel.leadStatusId ?? 'abc',
+      'leadStage': saveLeadRequestModel.leadStage ?? 'abc',
+      'contactName': saveLeadRequestModel.contactName ?? 'abc',
+      'contactNumber': saveLeadRequestModel.contactNumber ?? 'abc',
+      'geotagType': saveLeadRequestModel.geotagType ?? 'abc',
+      'leadLatitude': saveLeadRequestModel.leadLatitude ?? 'abc',
+      'leadLongitude': saveLeadRequestModel.leadLongitude ?? 'abc',
+      'leadAddress': saveLeadRequestModel.leadAddress ?? 'abc',
+      'leadPincode': saveLeadRequestModel.leadPincode ?? 'abc',
+      'leadStateName': saveLeadRequestModel.leadStateName ?? 'abc',
+      'leadDistrictName': saveLeadRequestModel.leadDistrictName ?? 'abc',
+      'leadTalukName': saveLeadRequestModel.leadTalukName ?? 'abc',
+      'leadSalesPotentialMt':
+          saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
+      'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? 'abc',
+      'assignDate': saveLeadRequestModel.assignDate ?? 'abc',
+      'isStatus': saveLeadRequestModel.isStatus ?? 'abc',
+      // 'photos': saveLeadRequestModel.photos.toString()??'abc',
+      'comments': json.encode(saveLeadRequestModel.comments) ?? 'abc',
+      'influencerList':
+          json.encode(saveLeadRequestModel.influencerList) ?? 'abc'
+    };
 
+    var fieldsDetail1 = {
+      'leadSegmane': "abc",
+      'siteSubTypeId': 3,
+      'assignedTo': "EMP0001234",
+      'leadStatusId': 10,
+      'leadStage': 11,
+      'contactName': "Sumit",
+      'contactNumber': saveLeadRequestModel.contactNumber ?? 'abc',
+      'geotagType': "Y",
+      'leadLatitude': saveLeadRequestModel.leadLatitude ?? 'abc',
+      'leadLongitude': saveLeadRequestModel.leadLongitude ?? 'abc',
+      'leadAddress': saveLeadRequestModel.leadAddress ?? 'abc',
+      'leadPincode': saveLeadRequestModel.leadPincode ?? 'abc',
+      'leadStateName': saveLeadRequestModel.leadStateName ?? 'abc',
+      'leadDistrictName': saveLeadRequestModel.leadDistrictName ?? 'abc',
+      'leadTalukName': saveLeadRequestModel.leadTalukName ?? 'abc',
+      'leadSalesPotentialMt':
+          saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
+      'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? 'abc',
+      'assignDate': saveLeadRequestModel.assignDate ?? 'abc',
+      'isStatus': saveLeadRequestModel.isStatus ?? 'abc',
+      // 'photos': saveLeadRequestModel.photos.toString()??'abc',
+      'comments': json.encode(saveLeadRequestModel.comments) ?? 'abc',
+      'influencerList':
+          json.encode(saveLeadRequestModel.influencerList) ?? 'abc'
+    };
 
-
-
-
-var fieldsDetail = {
-  'leadSegmane': saveLeadRequestModel.leadSegmane??'abc',
-  'siteSubTypeId': saveLeadRequestModel.siteSubTypeId??'abc',
-  'assignedTo': saveLeadRequestModel.assignedTo??'abc',
-  'leadStatusId': saveLeadRequestModel.leadStatusId??'abc',
-  'leadStage': saveLeadRequestModel.leadStage??'abc',
-  'contactName': saveLeadRequestModel.contactName??'abc',
-  'contactNumber': saveLeadRequestModel.contactNumber??'abc',
-  'geotagType': saveLeadRequestModel.geotagType??'abc',
-  'leadLatitude': saveLeadRequestModel.leadLatitude??'abc',
-  'leadLongitude': saveLeadRequestModel.leadLongitude??'abc',
-  'leadAddress': saveLeadRequestModel.leadAddress??'abc',
-  'leadPincode': saveLeadRequestModel.leadPincode??'abc',
-  'leadStateName': saveLeadRequestModel.leadStateName??'abc',
-  'leadDistrictName': saveLeadRequestModel.leadDistrictName??'abc',
-  'leadTalukName': saveLeadRequestModel.leadTalukName??'abc',
-  'leadSalesPotentialMt': saveLeadRequestModel.leadSalesPotentialMt??'abc',
-  'leadReraNumber': saveLeadRequestModel.leadReraNumber??'abc',
-  'assignDate': saveLeadRequestModel.assignDate??'abc',
-  'isStatus': saveLeadRequestModel.isStatus??'abc',
- // 'photos': saveLeadRequestModel.photos.toString()??'abc',
-  'comments': json.encode(saveLeadRequestModel.comments)??'abc',
- 'influencerList': json.encode(saveLeadRequestModel.influencerList)??'abc'
-};
-
-var fieldsDetail1 = {
-  'leadSegmane': "abc",
-  'siteSubTypeId': 3,
-  'assignedTo': "EMP0001234",
-  'leadStatusId': 10,
-  'leadStage': 11,
-  'contactName': "Sumit",
-  'contactNumber': saveLeadRequestModel.contactNumber??'abc',
-  'geotagType': "Y",
-  'leadLatitude': saveLeadRequestModel.leadLatitude??'abc',
-  'leadLongitude': saveLeadRequestModel.leadLongitude??'abc',
-  'leadAddress': saveLeadRequestModel.leadAddress??'abc',
-  'leadPincode': saveLeadRequestModel.leadPincode??'abc',
-  'leadStateName': saveLeadRequestModel.leadStateName??'abc',
-  'leadDistrictName': saveLeadRequestModel.leadDistrictName??'abc',
-  'leadTalukName': saveLeadRequestModel.leadTalukName??'abc',
-  'leadSalesPotentialMt': saveLeadRequestModel.leadSalesPotentialMt??'abc',
-  'leadReraNumber': saveLeadRequestModel.leadReraNumber??'abc',
-  'assignDate': saveLeadRequestModel.assignDate??'abc',
-  'isStatus': saveLeadRequestModel.isStatus??'abc',
-  // 'photos': saveLeadRequestModel.photos.toString()??'abc',
-  'comments': json.encode(saveLeadRequestModel.comments)??'abc',
-  'influencerList': json.encode(saveLeadRequestModel.influencerList)??'abc'
-};
-
-  // request.fields.addAll(fieldsDetail);
+    // request.fields.addAll(fieldsDetail);
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
 //     print("Request headers :: " + request.headers.toString());
 //     print("Request Body/Fields :: " + request.fields.toString());
-   // print("Files:: " + request.files.toString());
+    // print("Files:: " + request.files.toString());
     try {
       debugPrint('request without encryption: $fieldsDetail');
       final response = await post(Uri.parse(UrlConstants.saveLeadsData),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey),
           body: json.encode(fieldsDetail1),
           encoding: Encoding.getByName("utf-8"));
       print('response is :  ${response.body}');
@@ -282,15 +272,8 @@ var fieldsDetail1 = {
       //   print(value);
       // });
 
-  } catch (_) {
-
-  print('exception ${_.toString()}');
-  }
-
-
-
-
-
-
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
   }
 }
