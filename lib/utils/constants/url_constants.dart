@@ -18,4 +18,5 @@ abstract class UrlConstants {
   static const String getFilterData = '$baseUrl/leads/lead-filter-data';
   static const String addLeadsData = '$baseUrl/leads/lead-new';
   static const String getInflData = '$baseUrl/influencer/getDetails';
+  static const String saveLeadsData = '$baseUrl/leads/lead-save';
 }
