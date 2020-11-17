@@ -74,6 +74,7 @@ class MyApiClient {
       final response = await post(Uri.parse(UrlConstants.loginCheck),
           headers: requestHeadersWithAccessKey(accessKey),
           body: json.encode(bodyEncrypted),
+
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
       print('response is :  ${response.body}');

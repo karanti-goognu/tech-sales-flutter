@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -39,13 +43,15 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   var _district = TextEditingController();
   var _taluk = TextEditingController();
   var _comments = TextEditingController();
+  var _rera= TextEditingController();
   var _influencerNumber = TextEditingController();
   var _influencerName = TextEditingController();
   var _influencerType = TextEditingController();
   var _influencerCategory = TextEditingController();
+  String geoTagType;
 
-  int _totalBags = 0;
-  int _totalMT = 0;
+  var _totalBags = TextEditingController();
+  var _totalMT = TextEditingController();
   List<File> _imageList = new List();
   List<CommentsDetail> _commentsList = new List();
   bool viewMoreActive = false;
@@ -77,17 +83,58 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     new SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
     new SiteSubTypeEntity(siteSubId: 3, siteSubTypeDesc: "Multi-Storey"),
   ];
-
+  List<InfluencerTypeEntity> influencerTypeEntity ;
+  List<InfluencerCategoryEntity> influencerCategoryEntity ;
+  AddLeadsController _addLeadsController ;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    AddLeadsController _addLeadsController = Get.find();
-    _addLeadsController.getAccessKey(RequestIds.ADD_LEADS_DATA_REQUEST);
+  _addLeadsController = Get.find();
+  getInitialData();
+
+
   }
+
+   getInitialData() {
+     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
+     AccessKeyModel accessKeyModel =
+     new AccessKeyModel();
+     _addLeadsController
+         .getAccessKeyOnly()
+         .then((data) async {
+       accessKeyModel = data;
+       print("AccessKey :: " +
+           accessKeyModel.accessKey);
+       await _addLeadsController.getAddLeadsData(accessKeyModel.accessKey).then((data){
+
+         addLeadInitialModel = data;
+         setState(() {
+           siteSubTypeEntity = addLeadInitialModel.siteSubTypeEntity;
+           influencerTypeEntity = addLeadInitialModel.influencerTypeEntity;
+           influencerCategoryEntity = addLeadInitialModel.influencerCategoryEntity;
+         //  print(influencerCategoryEntity[0].inflCatDesc);
+
+         });
+
+       });
+
+       Get.back();
+     });
+
+
+
+   }
+
 
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
@@ -140,95 +187,95 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-          color: ColorConstants.appBarColor,
-          shape: CircularNotchedRectangle(),
-          notchMargin: 10,
-          child: Container(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {
-                        setState(() {
-                          // currentScreen =
-                          //     Dashboard(); // if user taps on this dashboard tab will be active
-                          // currentTab = 0;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.home,
+      bottomNavigationBar: BottomAppBar(
+        color: ColorConstants.appBarColor,
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Container(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        // currentScreen =
+                        //     Dashboard(); // if user taps on this dashboard tab will be active
+                        // currentTab = 0;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.home,
+                          color: Colors.white60,
+                        ),
+                        Text(
+                          'Home',
+                          style: TextStyle(
                             color: Colors.white60,
                           ),
-                          Text(
-                            'Home',
-                            style: TextStyle(
-                              color: Colors.white60,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
 
-                // Right Tab bar icons
+              // Right Tab bar icons
 
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {},
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.drafts,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {},
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.drafts,
+                          color: Colors.white60,
+                        ),
+                        Text(
+                          'Drafts',
+                          style: TextStyle(
                             color: Colors.white60,
                           ),
-                          Text(
-                            'Drafts',
-                            style: TextStyle(
-                              color: Colors.white60,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {},
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.search,
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {},
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.search,
+                          color: Colors.white60,
+                        ),
+                        Text(
+                          'Search',
+                          style: TextStyle(
                             color: Colors.white60,
                           ),
-                          Text(
-                            'Search',
-                            style: TextStyle(
-                              color: Colors.white60,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              )
+            ],
           ),
         ),
+      ),
 
       body: SingleChildScrollView(
         child: Stack(
@@ -461,6 +508,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             ),
                           ),
                           onPressed: () {
+                            setState(() {
+                              geoTagType="Auto";
+                            });
                             _getCurrentLocation();
                           },
                         ),
@@ -491,27 +541,31 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             ),
                           ),
                           onPressed: () async {
+                            setState(() {
+                              geoTagType="Manual";
+                            });
                             LocationResult result = await showLocationPicker(
-                                context,
-                                "AIzaSyBbCRRECpLRmhBJSY2jv9H0SbzQLnCFYFk",
-                                initialCenter: LatLng(31.1975844, 29.9598339),
-                                automaticallyAnimateToCurrentLocation: true,
+                              context,
+                              "AIzaSyBbCRRECpLRmhBJSY2jv9H0SbzQLnCFYFk",
+                              initialCenter: LatLng(31.1975844, 29.9598339),
+                              automaticallyAnimateToCurrentLocation: true,
 //                      mapStylePath: 'assets/mapStyle.json',
-                                myLocationButtonEnabled: true,
-                                // requiredGPS: true,
-                                layersButtonEnabled: false,
-                               // countries: ['AE', 'NG']
+                              myLocationButtonEnabled: true,
+                              // requiredGPS: true,
+                              layersButtonEnabled: false,
+                              // countries: ['AE', 'NG']
 
 //                      resultCardAlignment: Alignment.bottomCenter,
-                                // desiredAccuracy: LocationAccuracy.best,
-                                );
+                              // desiredAccuracy: LocationAccuracy.best,
+                            );
                             print("result = $result");
-                            setState(()
-                            {
+                            setState(() {
                               _pickedLocation = result;
-                              _currentPosition = new Position(latitude:_pickedLocation.latLng.latitude,longitude:_pickedLocation.latLng.longitude  );
+                              _currentPosition = new Position(
+                                  latitude: _pickedLocation.latLng.latitude,
+                                  longitude: _pickedLocation.latLng.longitude);
                               _getAddressFromLatLng();
-                             //print(_pickedLocation.latLng.latitude);
+                              //print(_pickedLocation.latLng.latitude);
                             });
                           },
                         ),
@@ -544,43 +598,43 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 //                         Text(_pickedLocation.toString()),
 //                       ],
 //                     ),
-                    Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).canvasColor,
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Column(children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.location_on),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      'Location',
-                                      style:
-                                          Theme.of(context).textTheme.caption,
-                                    ),
-                                    if (_currentPosition != null &&
-                                        _currentAddress != null)
-                                      Text(_currentAddress,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                            ],
-                          ),
-                        ])),
+//                     Container(
+//                         decoration: BoxDecoration(
+//                           color: Theme.of(context).canvasColor,
+//                         ),
+//                         padding:
+//                             EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+//                         child: Column(children: <Widget>[
+//                           Row(
+//                             children: <Widget>[
+//                               Icon(Icons.location_on),
+//                               SizedBox(
+//                                 width: 8,
+//                               ),
+//                               Expanded(
+//                                 child: Column(
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: <Widget>[
+//                                     Text(
+//                                       'Location',
+//                                       style:
+//                                           Theme.of(context).textTheme.caption,
+//                                     ),
+//                                     if (_currentPosition != null &&
+//                                         _currentAddress != null)
+//                                       Text(_currentAddress,
+//                                           style: Theme.of(context)
+//                                               .textTheme
+//                                               .bodyText2),
+//                                   ],
+//                                 ),
+//                               ),
+//                               SizedBox(
+//                                 width: 8,
+//                               ),
+//                             ],
+//                           ),
+//                         ])),
                     SizedBox(height: 16),
                     TextFormField(
                       controller: _siteAddress,
@@ -1127,24 +1181,94 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       ),
                                       SizedBox(height: 16),
                                       TextFormField(
-                                        controller: _influencerNumber,
+                                        controller: _listInfluencerDetail[index].inflContact,
+                                        maxLength: 10,
                                         onChanged: (value) async {
-                                          if(value.length == 10){
+                                          if (value.length == 10) {
                                             var bodyEncrypted = {
                                               //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
                                               "inflContact": value
                                             };
-                                            AddLeadsController _addLeadsController = Get.find();
-                                            _addLeadsController.phoneNumber = value;
-                                            _addLeadsController.getAccessKey(RequestIds.Get_Infl_Detail);
 
-                                            // final response = await post(Uri.parse(UrlConstants.loginCheck),
-                                            //     headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey),
-                                            //     body: json.encode(bodyEncrypted),
-                                            //     encoding: Encoding.getByName("utf-8"));
-                                            // setState(() {
-                                            //
-                                            // });
+                                            AddLeadsController
+                                                _addLeadsController =
+                                                Get.find();
+                                            _addLeadsController.phoneNumber =
+                                                value;
+                                            AccessKeyModel accessKeyModel =
+                                                new AccessKeyModel();
+                                            await _addLeadsController
+                                                .getAccessKeyOnly()
+                                                .then((data) async {
+                                              accessKeyModel = data;
+                                              print("AccessKey :: " +
+                                                  accessKeyModel.accessKey);
+                                              await _addLeadsController
+                                                  .getInflDetailsData(
+                                                  accessKeyModel.accessKey)
+                                                  .then((data) {
+                                                 _listInfluencerDetail[index].inflContact=new TextEditingController();;
+                                                 _listInfluencerDetail[index].inflName=new TextEditingController();;
+
+                                                InfluencerDetail inflDetail =
+                                                    data;
+                                                print (data);
+                                                setState(() {
+                                                  FocusScope.of(context).unfocus();
+                                                //  print(inflDetail.inflName.text);
+                                                  _listInfluencerDetail[index].inflTypeValue = new TextEditingController();
+                                                  _listInfluencerDetail[index].inflCatValue = new TextEditingController();
+                                                  _listInfluencerDetail[index].inflTypeId = new TextEditingController();
+                                                  _listInfluencerDetail[index].inflCatId = new TextEditingController();
+
+
+
+                                                  _listInfluencerDetail[index].inflContact = inflDetail.inflContact;
+                                                  _listInfluencerDetail[index].inflName = inflDetail.inflName;
+                                                  _listInfluencerDetail[index].id = inflDetail.id;
+                                                  _listInfluencerDetail[index].ilpIntrested = inflDetail.ilpIntrested;
+                                                  _listInfluencerDetail[index].createdOn = inflDetail.createdOn;
+
+
+                                                  for(int i = 0 ; i < influencerTypeEntity.length ; i++){
+                                                    if(influencerTypeEntity[i].inflTypeId.toString() == inflDetail.inflTypeId.text){
+                                                      _listInfluencerDetail[index].inflTypeId =inflDetail.inflTypeId;
+                                                   //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                     _listInfluencerDetail[index].inflTypeValue.text = influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc;
+                                                      break;
+                                                    }
+                                                    else{
+                                                      _listInfluencerDetail[index].inflContact.clear();
+                                                      _listInfluencerDetail[index].inflName.clear();
+                                                      _listInfluencerDetail[index].inflTypeId.clear();
+                                                      _listInfluencerDetail[index].inflTypeValue.clear();
+                                                    }
+                                                  }
+                                                 // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].infl_type_desc;
+
+                                                  for(int i = 0 ; i < influencerCategoryEntity.length ; i++){
+                                                    if(influencerCategoryEntity[i].inflCatId.toString() == inflDetail.inflCatId.text){
+                                                      _listInfluencerDetail[index].inflCatId =inflDetail.inflCatId;
+                                                      //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                      _listInfluencerDetail[index].inflCatValue.text = influencerCategoryEntity[influencerCategoryEntity[i].inflCatId].inflCatDesc;
+                                                      break;
+                                                    }
+                                                    else{
+                                                      _listInfluencerDetail[index].inflContact.clear();
+                                                      _listInfluencerDetail[index].inflName.clear();
+                                                      _listInfluencerDetail[index].inflCatId.clear();
+                                                      _listInfluencerDetail[index].inflCatValue.clear();
+                                                    }
+                                                  }
+                                                });
+                                                Get.back();
+                                              });
+                                            });
+
+
+                                            print("Dhawan :: ");
+
+
                                           }
                                           // setState(() {
                                           //   _totalBags = value as int;
@@ -1183,7 +1307,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           ),
                                           labelText: "Infl. Contact",
                                           filled: false,
-
                                           focusColor: Colors.black,
                                           labelStyle: TextStyle(
                                               fontFamily: "Muli",
@@ -1197,7 +1320,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       ),
                                       SizedBox(height: 16),
                                       TextFormField(
-                                        controller: _influencerName,
+                                      //  initialValue: _listInfluencerDetail[index].inflName,
+                                        controller:_listInfluencerDetail[index].inflName,
 
                                         // validator: (value) {
                                         //   if (value.isEmpty) {
@@ -1252,7 +1376,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       ),
                                       SizedBox(height: 16),
                                       TextFormField(
-                                        controller: _influencerType,
+                                        controller: _listInfluencerDetail[index].inflTypeValue,
                                         // validator: (value) {
                                         //   if (value.isEmpty) {
                                         //     return 'Please enter Influencer Number ';
@@ -1291,7 +1415,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 width: 1.0),
                                           ),
                                           enabled: false,
-                                          labelText: "Infl. Contact",
+                                          labelText: "Infl. Type",
                                           filled: false,
                                           focusColor: Colors.black,
                                           labelStyle: TextStyle(
@@ -1306,7 +1430,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       ),
                                       SizedBox(height: 16),
                                       TextFormField(
-                                        controller: _influencerCategory,
+                                        controller: _listInfluencerDetail[index].inflCatValue,
                                         // validator: (value) {
                                         //   if (value.isEmpty) {
                                         //     return 'Please enter Influencer Number ';
@@ -1345,7 +1469,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 width: 1.0),
                                           ),
                                           enabled: false,
-                                          labelText: "Infl. Contact",
+                                          labelText: "Infl. Category",
                                           filled: false,
                                           focusColor: Colors.black,
                                           labelStyle: TextStyle(
@@ -1388,8 +1512,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         onPressed: () async {
                           if (_listInfluencerDetail[
                                       _listInfluencerDetail.length - 1]
-                                  .infl_name !=
-                              null) {
+                                  .inflName.text !=
+                              null &&  _listInfluencerDetail[
+                          _listInfluencerDetail.length - 1]
+                              .inflName.text !=
+                              "null") {
                             InfluencerDetail infl =
                                 new InfluencerDetail(isExpanded: true);
 
@@ -1402,9 +1529,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   .isExpanded = false;
                               _listInfluencerDetail.add(infl);
                             });
-                          }
-                          else{
-                            print("Error : Please fill previous influencer first");
+                          } else {
+                            print(
+                                "Error : Please fill previous influencer first");
                           }
                         },
                       ),
@@ -1432,10 +1559,18 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: TextFormField(
-                              initialValue: _totalBags.toString(),
+                              // initialValue: _totalBags.toString(),
+                              controller: _totalBags,
                               onChanged: (value) {
                                 setState(() {
-                                  _totalBags = value as int;
+                                 // _totalBags.text = value ;
+                                  if(_totalBags.text == null || _totalBags.text =="" ){
+                                    _totalMT.clear();
+                                  }
+                                  else{
+                                    _totalMT.text = (int.parse(_totalBags.text) * 20 ).toString();
+                                  }
+
                                 });
                               },
                               keyboardType: TextInputType.phone,
@@ -1486,7 +1621,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: TextFormField(
-                              initialValue: (_totalBags * 20).toString(),
+                              controller: _totalMT,
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please enter MT ';
@@ -1545,6 +1680,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     ),
                     SizedBox(height: 16),
                     TextFormField(
+                      controller: _rera,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter RERA Number ';
@@ -1633,43 +1769,43 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     ),
                     SizedBox(height: 16),
 
-                    Center(
-                      child: FlatButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                            side: BorderSide(color: Colors.black26)),
-                        color: Colors.transparent,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              right: 5, bottom: 8, top: 5),
-                          child: Text(
-                            "ADD COMMENT",
-                            style: TextStyle(
-                                color: HexColor("#1C99D4"),
-                                fontWeight: FontWeight.bold,
-                                // letterSpacing: 2,
-                                fontSize: 17),
-                          ),
-                        ),
-                        onPressed: () async {
-                          if (_comments.value.text != null &&
-                              _comments.value.text != '') {
-                            print("here");
-                            setState(() {
-                              _commentsList.add(
-                                new CommentsDetail(
-                                    commentedBy: "XYZNAME",
-                                    comment: _comments.value.text,
-                                    commentedAt: DateTime.now()),
-                              );
-                              _comments.clear();
-                            });
-                          }
-                          SystemChannels.textInput
-                              .invokeMethod('TextInput.hide');
-                        },
-                      ),
-                    ),
+                    // Center(
+                    //   child: FlatButton(
+                    //     shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(0),
+                    //         side: BorderSide(color: Colors.black26)),
+                    //     color: Colors.transparent,
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.only(
+                    //           right: 5, bottom: 8, top: 5),
+                    //       child: Text(
+                    //         "ADD COMMENT",
+                    //         style: TextStyle(
+                    //             color: HexColor("#1C99D4"),
+                    //             fontWeight: FontWeight.bold,
+                    //             // letterSpacing: 2,
+                    //             fontSize: 17),
+                    //       ),
+                    //     ),
+                    //     onPressed: () async {
+                    //       if (_comments.value.text != null &&
+                    //           _comments.value.text != '') {
+                    //         print("here");
+                    //         setState(() {
+                    //           _commentsList.add(
+                    //             new CommentsDetail(
+                    //                 commentedBy: "XYZNAME",
+                    //                 comment: _comments.value.text,
+                    //                 commentedAt: DateTime.now()),
+                    //           );
+                    //           _comments.clear();
+                    //         });
+                    //       }
+                    //       SystemChannels.textInput
+                    //           .invokeMethod('TextInput.hide');
+                    //     },
+                    //   ),
+                    // ),
                     _commentsList != null && _commentsList.length != 0
                         ? viewMoreActive
                             ? Row(
@@ -1876,7 +2012,43 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 // letterSpacing: 2,
                                 fontSize: 17),
                           ),
-                          onPressed: () async {},
+                          onPressed: () async {
+                            if (_comments.value.text != null &&
+                                          _comments.value.text != '') {
+                                        print("here");
+                                        setState(() {
+                                          _commentsList.add(
+                                            new CommentsDetail(
+                                                commentedBy: "ABC",
+                                                comment: _comments.value.text,
+                                                commentedAt: DateTime.now()),
+                                          );
+                                          _comments.clear();
+                                        });
+                                      }
+                            SaveLeadRequestModel saveLeadRequestModel = new SaveLeadRequestModel(
+                              siteSubTypeId: _selectedValue.siteSubId.toString(),
+                              contactName: _contactName,
+                              contactNumber: _contactNumber,
+                              geotagType: geoTagType,
+                              leadLatitude: _currentPosition.latitude.toString(),
+                              leadLongitude: _currentPosition.longitude.toString(),
+                              leadAddress: _siteAddress.text,
+                              leadPincode: _pincode.text,
+                              leadStateName: _state.text,
+                              leadDistrictName: _district.text,
+                              leadTalukName: _taluk.text,
+                              leadSalesPotentialMt:_totalMT.text,
+                              leadReraNumber: _rera.text,
+                              isStatus: "false",
+                              influencerList: _listInfluencerDetail,
+                              comments: _commentsList
+                            );
+
+                            _addLeadsController.getAccessKeyAndSaveLead(saveLeadRequestModel,_imageList);
+
+
+                          },
                         ),
                       ],
                     ),
@@ -2044,28 +2216,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       }).toList(),
     );
   }
-}
 
-class InfluencerDetail {
-  InfluencerDetail({
-    this.infl_id,
-    this.infl_name,
-    this.infl_contact,
-    this.infl_type_id,
-    this.infl_cat_id,
-    this.infl_intrested,
-    this.infl_created_on,
-    this.isExpanded,
-  });
 
-  String infl_id;
-  String infl_name;
-  String infl_contact;
-  String infl_type_id;
-  String infl_cat_id;
-  String infl_intrested;
-  DateTime infl_created_on;
-  bool isExpanded;
 }
 
 class Item {
@@ -2094,14 +2246,4 @@ List<Item> generateItems(int numberOfItems) {
 //   return List.
 // }
 
-class CommentsDetail {
-  CommentsDetail({
-    this.commentedBy,
-    this.comment,
-    this.commentedAt,
-  });
 
-  String commentedBy;
-  String comment;
-  DateTime commentedAt;
-}

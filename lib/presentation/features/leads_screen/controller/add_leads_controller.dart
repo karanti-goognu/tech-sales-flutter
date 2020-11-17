@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 
@@ -22,10 +26,9 @@ class AddLeadsController extends GetxController {
     super.onInit();
   }
 
-  final MyRepositoryLeads repository;
+  final MyRepository repository;
 
-  AddLeadsController({@required this.repository})
-      : assert(repository != null);
+  AddLeadsController({@required this.repository}) : assert(repository != null);
   final _phoneNumber = "8860080067".obs;
 
   get phoneNumber => this._phoneNumber.value;
@@ -38,98 +41,93 @@ class AddLeadsController extends GetxController {
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
 
+  final _inflDetailResponse = InfluencerDetail().obs;
+
+  get inflDetailResponse => this._inflDetailResponse.value;
+
+  set inflDetailResponse(value) => this._inflDetailResponse.value = value;
+
   final _addLeadsInitialDataResponse = AddLeadInitialModel().obs;
 
   get addLeadsInitialDataResponse => this._addLeadsInitialDataResponse.value;
 
-  set addLeadsInitialDataResponse(value) => this._addLeadsInitialDataResponse.value = value;
+  set addLeadsInitialDataResponse(value) =>
+      this._addLeadsInitialDataResponse.value = value;
 
-  getAccessKey(int requestId) {
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-    repository.getAccessKey().then((data) {
-      Get.back();
 
-      this.accessKeyResponse = data;
-      switch (requestId) {
-        case RequestIds.ADD_LEADS_DATA_REQUEST:
-          getAddLeadsData();
-          break;
-        case RequestIds.Get_Infl_Detail:
-          getInflDetailsData();
-          break;
-      }
-    });
-  }
-
-  getAddLeadsData() {
+  getAddLeadsData(String accessKey) async {
     //debugPrint('Access Key Response :: ');
-    String userSecurityKey="";
+    String userSecurityKey = "";
+    AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
+    await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
-      repository.getAddLeadsData(this.accessKeyResponse.accessKey, userSecurityKey).then((data) {
-        if (data == null) {
-          debugPrint('Add Lead Data Response is null');
-        } else {
-          print("Dhawan");
-          print(data);
-          this.addLeadsInitialDataResponse = data;
-          if (addLeadsInitialDataResponse.respCode == "DM1011") {
-            Get.dialog(CustomDialogs().errorDialog(addLeadsInitialDataResponse.respMsg));
-          } else {
-            Get.dialog(CustomDialogs().errorDialog(addLeadsInitialDataResponse.respMsg));
-          }
-          // this.filterDataResponse = data;
-          // if (filterDataResponse.respCode == "DM1011") {
-          //   Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
-          // } else {
-          //   Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
-          // }
-        }
-      });
+      addLeadInitialModel =  await repository
+          .getAddLeadsData(accessKey, userSecurityKey);
     });
+    return addLeadInitialModel;
     //print("access" + this.accessKeyResponse.accessKey);
-
   }
 
-
-  getInflDetailsData() {
+  getInflDetailsData(String accessKey) async {
     //debugPrint('Access Key Response :: ');
-    String userSecurityKey="";
+    String userSecurityKey = "";
+    InfluencerDetail influencerDetail = new InfluencerDetail();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
-      userSecurityKey =prefs.getString(StringConstants.userSecurityKey);
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
-      repository.getInflDetailsData(this.accessKeyResponse.accessKey, userSecurityKey,this.phoneNumber ).then((data) {
-        if (data == null) {
-          debugPrint('Get Infl Data Response is null');
-        } else {
-          print("Dhawannn");
-          print(data);
-          this.addLeadsInitialDataResponse = data;
-          if (addLeadsInitialDataResponse.respCode == "DM1011") {
-            Get.dialog(CustomDialogs().errorDialog(addLeadsInitialDataResponse.respMsg));
-          } else {
-            Get.dialog(CustomDialogs().errorDialog(addLeadsInitialDataResponse.respMsg));
-          }
-          // this.filterDataResponse = data;
-          // if (filterDataResponse.respCode == "DM1011") {
-          //   Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
-          // } else {
-          //   Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
-          // }
-        }
-      });
-    });
-    //print("access" + this.accessKeyResponse.accessKey);
 
+      influencerDetail = await repository.getInflDetailsData(
+          accessKey, userSecurityKey, this.phoneNumber);
+    });
+    // print("access" + this. accessKeyResponse.accessKey);
+    return influencerDetail;
   }
 
   openOtpVerificationPage(mobileNumber) {
     Get.toNamed(Routes.VERIFY_OTP);
   }
+
+  getAccessKeyOnly() {
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+
+    return repository.getAccessKey();
+    //   return this.accessKeyResponse;
+  }
+
+   getAccessKeyAndSaveLead(SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
+
+     Future.delayed(
+         Duration.zero,
+             () => Get.dialog(Center(child: CircularProgressIndicator()),
+             barrierDismissible: false));
+     repository.getAccessKey().then((data) {
+      // Get.back();
+
+       this.accessKeyResponse = data;
+//print(this.accessKeyResponse.accessKey);
+          saveLeadsData(saveLeadRequestModel,imageList);
+
+     });
+
+
+   }
+
+   saveLeadsData(SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) async {
+     String userSecurityKey = "";
+     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+     await _prefs.then((SharedPreferences prefs) async {
+       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+       print('User Security Key :: $userSecurityKey');
+
+      await repository.saveLeadsData(
+          this.accessKeyResponse.accessKey, userSecurityKey, saveLeadRequestModel,imageList);
+     });
+
+   }
 }

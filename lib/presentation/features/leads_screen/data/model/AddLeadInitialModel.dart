@@ -73,39 +73,39 @@ class SiteSubTypeEntity {
 }
 
 class InfluencerCategoryEntity {
-  int infl_cat_id;
-  String infl_cat_desc;
+  int inflCatId;
+  String inflCatDesc;
 
-  InfluencerCategoryEntity({this.infl_cat_id, this.infl_cat_desc});
+  InfluencerCategoryEntity({this.inflCatId, this.inflCatDesc});
 
   InfluencerCategoryEntity.fromJson(Map<String, dynamic> json) {
-    infl_cat_id = json['infl_cat_id'];
-    infl_cat_desc = json['infl_cat_desc'];
+    inflCatId = json['inflCatId'];
+    inflCatDesc = json['inflCatDesc'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['infl_cat_id'] = this.infl_cat_id;
-    data['infl_cat_desc'] = this.infl_cat_desc;
+    data['inflCatId'] = this.inflCatId;
+    data['inflCatDesc'] = this.inflCatDesc;
     return data;
   }
 }
 
 class InfluencerTypeEntity {
-  int infl_type_id;
-  String infl_type_desc;
+  int inflTypeId;
+  String inflTypeDesc;
 
-  InfluencerTypeEntity({this.infl_type_id, this.infl_type_desc});
+  InfluencerTypeEntity({this.inflTypeId, this.inflTypeDesc});
 
   InfluencerTypeEntity.fromJson(Map<String, dynamic> json) {
-    infl_type_id = json['infl_type_id'];
-    infl_type_desc = json['infl_type_desc'];
+    inflTypeId= json['inflTypeId'];
+    inflTypeDesc = json['inflTypeDesc'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['infl_type_id'] = this.infl_type_id;
-    data['infl_type_desc'] = this.infl_type_desc;
+    data['inflTypeId'] = this.inflTypeId;
+    data['inflTypeDesc'] = this.inflTypeDesc;
     return data;
   }
 }
