@@ -216,7 +216,7 @@ class LeadsFilterController extends GetxController {
 
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getLeadsData}$encryptedEmpId$leadStatus$leadStage&limit=500&offset=0";
+          "${UrlConstants.getLeadsData}$encryptedEmpId&limit=500&offset=0";
       debugPrint(
           'Url is : $url');
       repository
