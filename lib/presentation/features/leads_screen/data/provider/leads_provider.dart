@@ -1,9 +1,14 @@
 import 'dart:convert';
 
+
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
@@ -14,12 +19,13 @@ import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class MyApiClient {
+class MyApiClientLeads {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
-  MyApiClient({@required this.httpClient});
+  MyApiClientLeads({@required this.httpClient});
 
   getAccessKey() async {
     try {
@@ -130,7 +136,7 @@ class MyApiClient {
         AddLeadInitialModel addLeadInitialModel =
             AddLeadInitialModel.fromJson(data);
         print(addLeadInitialModel.siteSubTypeEntity[0]);
-        // return  addLeadInitialModel;
+         return  addLeadInitialModel;
         // print('Initial Add Lead Object is :: $addLeadInitialModel');
         // return addLeadInitialModel;
         // print(addLeadInitialModel.siteSubTypeEntity.length);
@@ -181,7 +187,7 @@ class MyApiClient {
 
   }
 
-  saveLeadsData(accessKey, String userSecurityKey, SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) async {
+  saveLeadsData(accessKey, String userSecurityKey, SaveLeadRequestModel saveLeadRequestModel) async {
 
     // http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.saveLeadsData));
     // request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
@@ -200,6 +206,11 @@ class MyApiClient {
     //
     //   request.files.add(multipartFileSign);
     // }
+
+
+
+
+
 
 var fieldsDetail = {
   'leadSegmane': saveLeadRequestModel.leadSegmane??'abc',

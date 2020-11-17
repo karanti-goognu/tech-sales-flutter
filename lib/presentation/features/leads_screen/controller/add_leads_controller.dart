@@ -26,7 +26,7 @@ class AddLeadsController extends GetxController {
     super.onInit();
   }
 
-  final MyRepository repository;
+  final MyRepositoryLeads repository;
 
   AddLeadsController({@required this.repository}) : assert(repository != null);
   final _phoneNumber = "8860080067".obs;
