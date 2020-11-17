@@ -41,6 +41,7 @@ class LeadsListModel {
 class LeadsEntity {
   int leadId;
   String leadSegment;
+  String assignedTo;
   int siteSubTypeId;
   int leadStatusId;
   int leadStageId;
@@ -55,7 +56,7 @@ class LeadsEntity {
   String leadDistrictName;
   String leadTalukName;
   String leadSitePotentialMt;
-  Null leadReraNumber;
+  String leadReraNumber;
   Null leadRejectReason;
   String leadIsDuplicate;
   Null leadOriginalId;
@@ -64,10 +65,12 @@ class LeadsEntity {
   int createdOn;
   Null updatedBy;
   Null updatedOn;
+  int assignDate;
 
   LeadsEntity(
       {this.leadId,
         this.leadSegment,
+        this.assignedTo,
         this.siteSubTypeId,
         this.leadStatusId,
         this.leadStageId,
@@ -90,11 +93,13 @@ class LeadsEntity {
         this.createdBy,
         this.createdOn,
         this.updatedBy,
-        this.updatedOn});
+        this.updatedOn,
+        this.assignDate});
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
     leadId = json['leadId'];
     leadSegment = json['leadSegment'];
+    assignedTo = json['assignedTo'];
     siteSubTypeId = json['siteSubTypeId'];
     leadStatusId = json['leadStatusId'];
     leadStageId = json['leadStageId'];
@@ -117,13 +122,15 @@ class LeadsEntity {
     createdBy = json['createdBy'];
     createdOn = json['createdOn'];
     updatedBy = json['updatedBy'];
-    updatedOn = json['updated_on'];
+    updatedOn = json['updatedOn'];
+    assignDate = json['assignDate'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['leadId'] = this.leadId;
     data['leadSegment'] = this.leadSegment;
+    data['assignedTo'] = this.assignedTo;
     data['siteSubTypeId'] = this.siteSubTypeId;
     data['leadStatusId'] = this.leadStatusId;
     data['leadStageId'] = this.leadStageId;
@@ -146,7 +153,8 @@ class LeadsEntity {
     data['createdBy'] = this.createdBy;
     data['createdOn'] = this.createdOn;
     data['updatedBy'] = this.updatedBy;
-    data['updated_on'] = this.updatedOn;
+    data['updatedOn'] = this.updatedOn;
+    data['assignDate'] = this.assignDate;
     return data;
   }
 }
