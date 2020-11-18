@@ -7,10 +7,10 @@ class LeadsListModel {
 
   LeadsListModel(
       {this.leadsEntity,
-        this.respCode,
-        this.respMsg,
-        this.totalLeadPotential,
-        this.totalLeadCount});
+      this.respCode,
+      this.respMsg,
+      this.totalLeadPotential,
+      this.totalLeadCount});
 
   LeadsListModel.fromJson(Map<String, dynamic> json) {
     if (json['leadsEntity'] != null) {
@@ -69,32 +69,32 @@ class LeadsEntity {
 
   LeadsEntity(
       {this.leadId,
-        this.leadSegment,
-        this.assignedTo,
-        this.siteSubTypeId,
-        this.leadStatusId,
-        this.leadStageId,
-        this.contactName,
-        this.contactNumber,
-        this.geotagType,
-        this.leadLatitude,
-        this.leadLongitude,
-        this.leadAddress,
-        this.leadPincode,
-        this.leadStateName,
-        this.leadDistrictName,
-        this.leadTalukName,
-        this.leadSitePotentialMt,
-        this.leadReraNumber,
-        this.leadRejectReason,
-        this.leadIsDuplicate,
-        this.leadOriginalId,
-        this.siteConverted,
-        this.createdBy,
-        this.createdOn,
-        this.updatedBy,
-        this.updatedOn,
-        this.assignDate});
+      this.leadSegment,
+      this.assignedTo,
+      this.siteSubTypeId,
+      this.leadStatusId,
+      this.leadStageId,
+      this.contactName,
+      this.contactNumber,
+      this.geotagType,
+      this.leadLatitude,
+      this.leadLongitude,
+      this.leadAddress,
+      this.leadPincode,
+      this.leadStateName,
+      this.leadDistrictName,
+      this.leadTalukName,
+      this.leadSitePotentialMt,
+      this.leadReraNumber,
+      this.leadRejectReason,
+      this.leadIsDuplicate,
+      this.leadOriginalId,
+      this.siteConverted,
+      this.createdBy,
+      this.createdOn,
+      this.updatedBy,
+      this.updatedOn,
+      this.assignDate});
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
     leadId = json['leadId'];
