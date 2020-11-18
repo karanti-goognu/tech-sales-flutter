@@ -8,6 +8,9 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repos
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/provider/login_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/data/provider/splash_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/data/repository/splash_repository.dart';
 import 'package:get/get.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:http/http.dart' as http;
@@ -31,6 +34,12 @@ class HomeScreenBinding implements Bindings {
       return AddLeadsController(
           repository: MyRepositoryLeads(
               apiClient: MyApiClientLeads(httpClient: http.Client())));
+    });
+
+    Get.lazyPut<SplashController>(() {
+      return SplashController(
+          repository: MyRepositorySplash(
+              apiClient: MyApiClientSplash(httpClient: http.Client())));
     });
   }
 }
