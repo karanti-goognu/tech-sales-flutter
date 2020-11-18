@@ -20,6 +20,7 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class LeadScreen extends StatefulWidget {
   @override
@@ -552,7 +553,10 @@ class _LeadScreenState extends State<LeadScreen> {
                   ),
                   scrollDirection: Axis.horizontal,
                 )),
-            Expanded(child: leadsDetailWidget())
+            Expanded(child: leadsDetailWidget()),
+            // SizedBox(
+            //   height: 30,
+            // ),
           ],
         ),
       ),
@@ -596,7 +600,7 @@ class _LeadScreenState extends State<LeadScreen> {
                             borderOnForeground: true,
                             //shadowColor: colornew,
                             elevation: 6,
-                            margin: EdgeInsets.all(10.0),
+                            margin: EdgeInsets.all(5.0),
                             color: Colors.white,
                             child: Container(
                               decoration: BoxDecoration(
@@ -610,20 +614,20 @@ class _LeadScreenState extends State<LeadScreen> {
                               ),
                               child: Stack(
                                 children: [
-                                  Positioned(
-                                      top: 0,
-                                      left: 250,
-                                      right: 0,
-                                      child: Container(
-                                          color: Colors.white,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Image.asset(
-                                                'assets/images/Container.png',
-                                                fit: BoxFit.fitHeight,
-                                              ),
-                                            ],
-                                          ))),
+                                  // Positioned(
+                                  //     top: 0,
+                                  //     left: 250,
+                                  //     right: 0,
+                                  //     child: Container(
+                                  //         color: Colors.white,
+                                  //         child: Column(
+                                  //           children: <Widget>[
+                                  //             Image.asset(
+                                  //               'assets/images/Container.png',
+                                  //               fit: BoxFit.fitHeight,
+                                  //             ),
+                                  //           ],
+                                  //         ))),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -642,7 +646,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                     const EdgeInsets.all(2.0),
                                                 child: Obx(
                                                   () => Text(
-                                                    "Lead-Id(${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
+                                                    "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontFamily: "Muli",
@@ -678,16 +682,16 @@ class _LeadScreenState extends State<LeadScreen> {
                                                     shape: StadiumBorder(
                                                         side: BorderSide(
                                                             color: HexColor(
-                                                                "#6200EE"))),
+                                                                "#39B54A"))),
                                                     backgroundColor:
-                                                        HexColor("#6200EE")
+                                                        HexColor("#39B54A")
                                                             .withOpacity(0.1),
                                                     label: Obx(
                                                       () => Text(
                                                         "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadStageId}",
                                                         style: TextStyle(
                                                             color: HexColor(
-                                                                "#6200EE"),
+                                                                "#39B54A"),
                                                             fontSize: 10,
                                                             fontFamily: "Muli",
                                                             fontWeight:
@@ -797,16 +801,16 @@ class _LeadScreenState extends State<LeadScreen> {
                                             SizedBox(
                                               height: 30,
                                             ),
-                                            Text(
-                                              "Call Contractor",
-                                              style: TextStyle(
-                                                  // color: Colors.white,
-                                                  fontSize: 11,
-                                                  fontFamily: "Muli",
-                                                  fontWeight: FontWeight.bold
-                                                  //fontWeight: FontWeight.normal
-                                                  ),
-                                            ),
+                                            // Text(
+                                            //   "Call Contractor",
+                                            //   style: TextStyle(
+                                            //       // color: Colors.white,
+                                            //       fontSize: 11,
+                                            //       fontFamily: "Muli",
+                                            //       fontWeight: FontWeight.bold
+                                            //       //fontWeight: FontWeight.normal
+                                            //       ),
+                                            // ),
                                             Row(
                                               children: [
                                                 Icon(
@@ -814,19 +818,26 @@ class _LeadScreenState extends State<LeadScreen> {
                                                   color: HexColor("#8DC63F"),
                                                 ),
                                                 Obx(
-                                                  () => Text(
-                                                    "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                    style: TextStyle(
-                                                        color:
-                                                            HexColor("#1C99D4"),
-                                                        fontSize: 18,
-                                                        fontFamily: "Muli",
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontStyle:
-                                                            FontStyle.italic
-                                                        //fontWeight: FontWeight.normal
-                                                        ),
+                                                  () => GestureDetector(
+                                                    child: Text(
+                                                      "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                                 //  " Call Contractor",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.black,
+                                                          fontSize: 15,
+                                                          fontFamily: "Muli",
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontStyle:
+                                                              FontStyle.italic
+                                                          //fontWeight: FontWeight.normal
+                                                          ),
+                                                    ),
+                                                    onTap: (){
+                                                      String num = _leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber;
+                                                      launch('tel:${num}');
+                                                    },
                                                   ),
                                                 ),
                                               ],
