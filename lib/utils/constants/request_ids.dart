@@ -8,4 +8,5 @@ abstract class RequestIds {
   static const int GET_LEADS_LIST = 7;
   static const int GET_SECRET_KEY = 8;
   static const int SEARCH_LEADS = 9;
+  static const int REFRESH_DATA = 10;
 }

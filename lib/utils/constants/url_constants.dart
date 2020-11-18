@@ -21,4 +21,5 @@ abstract class UrlConstants {
   static const String addLeadsData = '$baseUrl/leads/lead-new';
   static const String getInflData = '$baseUrl/influencer/getDetails';
   static const String saveLeadsData = '$baseUrl/leads/lead-save';
+  static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';
 }

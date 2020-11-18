@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -27,6 +28,7 @@ class _LeadScreenState extends State<LeadScreen> {
   Map _source = {ConnectivityResult.none: false};
   MyConnectivity _connectivity = MyConnectivity.instance;
   LeadsFilterController _leadsFilterController = Get.find();
+  SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
 
@@ -823,8 +825,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                                 Obx(
                                                   () => GestureDetector(
                                                     child: Text(
-                                                      //"${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                      " Call Contractor",
+                                                      "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                                      //" Call Contractor",
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 15,
@@ -843,7 +845,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                               .leadsEntity[
                                                                   index]
                                                               .contactNumber;
-                                                      launch('tel:${num}');
+                                                      launch('tel:$num');
                                                     },
                                                   ),
                                                 ),
@@ -1115,7 +1117,7 @@ class _LeadScreenState extends State<LeadScreen> {
         ));
   }
 
-  Widget returnLeadStageBody() {
+  /*Widget returnLeadStageBody() {
     return Container(
         padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
         child: Column(
@@ -1173,6 +1175,93 @@ class _LeadScreenState extends State<LeadScreen> {
                 )),
           ],
         ));
+  }*/
+
+  Widget returnLeadStageBody() {
+    return Obx(
+      () => (_splashController == null)
+          ? Container(
+              child: Center(
+                child: Text("splash controller  is empty!!"),
+              ),
+            )
+          : (_splashController.splashDataModel == null)
+              ? Container(
+                  child: Center(
+                    child: Text("Leads stage response  is empty!!"),
+                  ),
+                )
+              : (_splashController.splashDataModel.leadStageEntity == null)
+                  ? Container(
+                      child: Center(
+                        child: Text("Leads stage list is empty!!"),
+                      ),
+                    )
+                  : (_splashController.splashDataModel.leadStageEntity.length ==
+                          0)
+                      ? Container(
+                          child: Center(
+                            child: Text("You don't have any lead stages..!!"),
+                          ),
+                        )
+                      : Container(
+                        child: Center(
+                            child: Text(
+                                "You can continue with lead stages.."
+                                    "\n${_splashController.splashDataModel.leadStageEntity.length}!!") ))
+                      /*Column(
+                        children: [
+                          Expanded(
+                              child: ListView.builder(
+                                  itemCount: _splashController
+                                      .splashDataModel.leadStageEntity.length,
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10, bottom: 10),
+                                  itemExtent: 125.0,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                        height: 90,
+                                        width: 90,
+                                        padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
+                                        child: Column(
+                                          children: <Widget>[
+                                            ListTile(
+                                                title: Text(
+                                                    "${_splashController.splashDataModel.leadStageEntity[index].leadStageDesc}"),
+                                                leading: Obx(
+                                                  () => Radio(
+                                                    value: _splashController
+                                                        .splashDataModel
+                                                        .leadStageEntity[index]
+                                                        .id as String,
+                                                    groupValue:
+                                                        _leadsFilterController
+                                                                .selectedLeadStage
+                                                            as String,
+                                                    onChanged: (String value) {
+                                                      if (_leadsFilterController
+                                                              .selectedLeadStage ==
+                                                          StringConstants.empty) {
+                                                        _leadsFilterController
+                                                                .selectedFilterCount =
+                                                            _leadsFilterController
+                                                                    .selectedFilterCount +
+                                                                1;
+                                                      }
+                                                      _leadsFilterController
+                                                              .selectedLeadStage =
+                                                          value;
+                                                    },
+                                                  ),
+                                                )),
+                                          ],
+                                        ));
+                                    ;
+                                  }),
+                            ),
+                        ],
+                      )*/,
+    );
   }
 
   Widget returnLeadStatusBody() {
