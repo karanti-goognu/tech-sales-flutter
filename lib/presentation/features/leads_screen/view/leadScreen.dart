@@ -4,16 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
-
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/utils/enums/lead_stage.dart';
-import 'package:flutter_tech_sales/utils/enums/lead_status.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -582,7 +576,9 @@ class _LeadScreenState extends State<LeadScreen> {
                       child: Text("Leads list is empty!!"),
                     ),
                   )
-                : (_leadsFilterController.leadsListResponse.leadsEntity.length == 0)
+                : (_leadsFilterController
+                            .leadsListResponse.leadsEntity.length ==
+                        0)
                     ? Container(
                         child: Center(
                           child: Text("You don't have any leads..!!"),
@@ -688,7 +684,14 @@ class _LeadScreenState extends State<LeadScreen> {
                                                             .withOpacity(0.1),
                                                     label: Obx(
                                                       () => Text(
-                                                        "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadStageId}",
+                                                        ((_leadsFilterController
+                                                                    .leadsListResponse
+                                                                    .leadsEntity[
+                                                                        index]
+                                                                    .leadStageId) ==
+                                                                1)
+                                                            ? "Active"
+                                                            : "Rejected",
                                                         style: TextStyle(
                                                             color: HexColor(
                                                                 "#39B54A"),
@@ -820,11 +823,10 @@ class _LeadScreenState extends State<LeadScreen> {
                                                 Obx(
                                                   () => GestureDetector(
                                                     child: Text(
-                                                      "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                 //  " Call Contractor",
+                                                      //"${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                                      " Call Contractor",
                                                       style: TextStyle(
-                                                          color:
-                                                              Colors.black,
+                                                          color: Colors.black,
                                                           fontSize: 15,
                                                           fontFamily: "Muli",
                                                           fontWeight:
@@ -834,8 +836,13 @@ class _LeadScreenState extends State<LeadScreen> {
                                                           //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
-                                                    onTap: (){
-                                                      String num = _leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber;
+                                                    onTap: () {
+                                                      String num =
+                                                          _leadsFilterController
+                                                              .leadsListResponse
+                                                              .leadsEntity[
+                                                                  index]
+                                                              .contactNumber;
                                                       launch('tel:${num}');
                                                     },
                                                   ),

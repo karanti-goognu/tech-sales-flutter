@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/data/repository/splash_repository.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController {
-  final MyRepository repository;
+  final MyRepositorySplash repository;
 
   SplashController({@required this.repository}) : assert(repository != null);
 
