@@ -422,6 +422,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.phone,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+
                       maxLength: 10,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -684,6 +688,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.phone,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
                       //  maxLength: 6,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -1356,6 +1363,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 .inputBoxHintColor,
                                             fontFamily: "Muli"),
                                         keyboardType: TextInputType.phone,
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
                                         decoration: InputDecoration(
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
@@ -1644,12 +1654,15 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     _totalMT.clear();
                                   } else {
                                     _totalMT.text =
-                                        (int.parse(_totalBags.text) * 20)
+                                        (int.parse(_totalBags.text) / 20)
                                             .toString();
                                   }
                                 });
                               },
                               keyboardType: TextInputType.phone,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please enter Bags ';
@@ -1698,6 +1711,19 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             padding: const EdgeInsets.only(left: 10.0),
                             child: TextFormField(
                               controller: _totalMT,
+                              onChanged: (value) {
+                                setState(() {
+                                  // _totalBags.text = value ;
+                                  if (_totalMT.text == null ||
+                                      _totalMT.text == "") {
+                                    _totalBags.clear();
+                                  } else {
+                                    _totalBags.text =
+                                        (int.parse(_totalMT.text) * 20)
+                                            .toString();
+                                  }
+                                });
+                              },
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please enter MT ';
@@ -1709,7 +1735,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   fontSize: 18,
                                   color: ColorConstants.inputBoxHintColor,
                                   fontFamily: "Muli"),
-                              keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -1735,7 +1761,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 ),
                                 labelText: "MT",
                                 filled: false,
-                                enabled: false,
+                                //enabled: false,
                                 focusColor: Colors.black,
                                 labelStyle: TextStyle(
                                     fontFamily: "Muli",
