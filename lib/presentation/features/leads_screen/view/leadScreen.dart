@@ -1204,11 +1204,26 @@ class _LeadScreenState extends State<LeadScreen> {
                             child: Text("You don't have any lead stages..!!"),
                           ),
                         )
-                      : Container(
-                        child: Center(
-                            child: Text(
-                                "You can continue with lead stages.."
-                                    "\n${_splashController.splashDataModel.leadStageEntity.length}!!") ))
+                      : SingleChildScrollView(
+                        child: Container(
+                            child:
+                            Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                      itemCount: _splashController
+                                          .splashDataModel.leadStageEntity.length,
+                                      // padding: const EdgeInsets.only(
+                                      //     left: 10.0, right: 10, bottom: 10),
+                                     // itemExtent: 125.0,
+                                      itemBuilder: (context, index) {
+                                  return Text(
+                                      "You can continue with lead stages.."
+                                          "\n${_splashController.splashDataModel.leadStageEntity.length}!!");
+                                      }),
+                                ),
+                              ],
+                            )))
                       /*Column(
                         children: [
                           Expanded(
