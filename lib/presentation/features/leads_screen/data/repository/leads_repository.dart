@@ -38,6 +38,11 @@ class MyRepositoryLeads {
 
   saveLeadsData(accessKey, String userSecurityKey, SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
 
-    return apiClient.saveLeadsData(accessKey,userSecurityKey,saveLeadRequestModel);
+    return apiClient.saveLeadsData(accessKey,userSecurityKey,saveLeadRequestModel ,imageList);
+  }
+
+  getLeadData(String accessKey, String userSecurityKey, int leadId) {
+    return apiClient.getLeadData(accessKey,userSecurityKey,leadId);
+
   }
 }

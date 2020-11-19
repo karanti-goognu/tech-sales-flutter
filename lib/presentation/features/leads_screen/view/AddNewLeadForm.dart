@@ -16,6 +16,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
@@ -907,7 +908,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                         ),
                         onPressed: () async {
-                          _showPicker(context);
+                          if(_imageList.length<5){
+                            _showPicker(context);
+                          }
+                          else{
+                            Get.dialog(CustomDialogs().errorDialog("You can add only upto 5 photos"));
+                          }
+
                         },
                       ),
                     ),
@@ -1840,7 +1847,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       keyboardType: TextInputType.text,
                       onChanged: (value) {
                         setState(() {
-                          _comment = value;
+                          _comments.text = value;
                         });
                       },
                       decoration: InputDecoration(
@@ -2115,8 +2122,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 fontSize: 17),
                           ),
                           onPressed: () async {
-                            if (_comments.value.text != null &&
-                                _comments.value.text != '') {
+                            //print(_comments.text);
+                            if (_comments.text != null &&
+                                _comments.text != '') {
+                             // print(_comments.text);
                               print("here");
                               setState(() {
                                 String empId;
@@ -2130,16 +2139,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       StringConstants.mobileNumber) ?? "empty";
                                   name = prefs.getString(
                                       StringConstants.employeeName) ?? "empty";
+                                  print(_comments.text);
                                   _commentsList.add(
                                       new CommentsDetail(
                                           commentedBy: name,
-                                          comment: _comments.value.text,
+                                          comment: _comments.text,
                                           commentedAt: DateTime.now()),
                                   );
                                 });
 
 
-                                _comments.clear();
+                              //  _comments.clear();
                               });
                             }
                             SaveLeadRequestModel saveLeadRequestModel =
@@ -2220,8 +2230,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
-      print(image.path);
-      _imageList.add(image);
+      //print(image.path);
+      if(image!=null) {
+
+          _imageList.add(image);
+
+      }
     });
   }
 
@@ -2231,7 +2245,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
     setState(() {
       // print(image.path);
-      _imageList.add(image);
+
+      if(image!=null) {
+
+          _imageList.add(image);
+
+      }
       // _imageList.insert(0,image);
     });
   }

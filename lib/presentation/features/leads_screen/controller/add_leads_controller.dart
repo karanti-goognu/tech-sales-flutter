@@ -130,4 +130,19 @@ class AddLeadsController extends GetxController {
      });
 
    }
+
+  getLeadData(String accessKey, int leadId) async {
+    String userSecurityKey = "";
+    AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      print('User Security Key :: $userSecurityKey');
+      addLeadInitialModel =  await repository
+          .getLeadData(accessKey, userSecurityKey,leadId);
+    });
+   // return addLeadInitialModel;
+
+
+  }
 }

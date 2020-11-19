@@ -25,6 +25,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewLeadScreen extends StatefulWidget {
+  int leadId;
+  ViewLeadScreen(this.leadId);
+
   @override
   _ViewLeadScreenState createState() => _ViewLeadScreenState();
 }
@@ -97,13 +100,19 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.leadId.toString());
     _addLeadsController = Get.find();
     getInitialData();
-
+    getLeadsData(widget.leadId);
 
 
 
   }
+  getLeadsData(int leadId) {
+
+
+  }
+
 
   getInitialData() {
     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
@@ -112,14 +121,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       accessKeyModel = data;
       print("AccessKey :: " + accessKeyModel.accessKey);
       await _addLeadsController
-          .getAddLeadsData(accessKeyModel.accessKey)
+          .getLeadData(accessKeyModel.accessKey,widget.leadId)
           .then((data) {
-        addLeadInitialModel = data;
+       // addLeadInitialModel = data;
         setState(() {
-          siteSubTypeEntity = addLeadInitialModel.siteSubTypeEntity;
-          influencerTypeEntity = addLeadInitialModel.influencerTypeEntity;
-          influencerCategoryEntity =
-              addLeadInitialModel.influencerCategoryEntity;
+          // siteSubTypeEntity = addLeadInitialModel.siteSubTypeEntity;
+          // influencerTypeEntity = addLeadInitialModel.influencerTypeEntity;
+          // influencerCategoryEntity =
+          //     addLeadInitialModel.influencerCategoryEntity;
           //  print(influencerCategoryEntity[0].inflCatDesc);
         });
       });
@@ -300,17 +309,112 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                   children: <Widget>[
                     Padding(
                       padding:
-                      const EdgeInsets.only(top: 30.0, bottom: 20, left: 5),
-                      child: Text(
-                        "Add a new Trade lead",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 25,
-                            color: HexColor("#006838"),
-                            fontFamily: "Muli"),
+                      const EdgeInsets.only(top: 30.0, bottom: 10, left: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Trade lead",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 25,
+                                color: HexColor("#006838"),
+                                fontFamily: "Muli",
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Icon(Icons.edit,
+                                  color: HexColor("#F9A61A"),
+                                size: 24,),
+                              ),
+                              Text(
+                                "Edit",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: HexColor("#F9A61A"),
+                                    fontFamily: "Muli"),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
+                    Padding(
+                      padding:
+                      const EdgeInsets.only( bottom: 20, left: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                      "ID: " + widget.leadId.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              //color: HexColor("#006838"),
+                              fontFamily: "Muli",
+                            ),
+                          ),
+                          SizedBox(
+                            width:120
+                          ),
+                          Expanded(
+                            child: DropdownButton<SiteSubTypeEntity>(
+                              value: _selectedValue,
+                              items: siteSubTypeEntity
+                                  .map((label) => DropdownMenuItem(
+                                child: Text(
+                                  label.siteSubTypeDesc,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                ),
+                                value: label,
+                              ))
+                                  .toList(),
+                            //  elevation: 0,
+                              iconSize: 40,
 
+                              // hint: Text('Rating'),
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedValue = value;
+                                });
+                              },
+
+                            //   decoration: InputDecoration(
+                            //     focusedBorder: OutlineInputBorder(
+                            //       borderSide: BorderSide(
+                            //           color: ColorConstants.backgroundColorBlue,
+                            //           //color: HexColor("#0000001F"),
+                            //           width: 0),
+                            //     ),
+                            //     enabledBorder: InputBorder.none,
+                            //     errorBorder: OutlineInputBorder(
+                            //
+                            //       borderSide: BorderSide(color: Colors.red, width: 0),
+                            //     ),
+                            //    // labelText: "Site Subtype",
+                            //    // filled: false,
+                            //     focusColor: Colors.black,
+                            //     isDense: true,
+                            //     labelStyle: TextStyle(
+                            //         fontFamily: "Muli",
+                            //         color: ColorConstants.inputBoxHintColorDark,
+                            //         fontWeight: FontWeight.normal,
+                            //         fontSize: 16.0),
+                            //     fillColor: ColorConstants.backgroundColor,
+                            //   ),
+                             ),
+                          ),
+                        ],
+                      ),
+                    ),
                     DropdownButtonFormField<SiteSubTypeEntity>(
                       value: _selectedValue,
                       items: siteSubTypeEntity
@@ -2311,6 +2415,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       print(e);
     }
   }
+
+
 
 
 }
