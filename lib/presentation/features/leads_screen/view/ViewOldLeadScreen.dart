@@ -27,17 +27,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
-class ViewLeadScreen extends StatefulWidget {
-  int leadId;
-  ViewLeadScreen(this.leadId);
-
+class ViewOldLeadScree extends StatefulWidget {
   @override
-  _ViewLeadScreenState createState() => _ViewLeadScreenState();
+  _ViewOldLeadScreeState createState() => _ViewOldLeadScreeState();
 }
 
-class _ViewLeadScreenState extends State<ViewLeadScreen> {
-
-
+class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
   final _formKey = GlobalKey<FormState>();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
@@ -106,7 +101,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     _addLeadsController = Get.find();
     getLeadData();
@@ -132,11 +127,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
           LeadStatusEntity list ;
           for (int i = 0; i < leadStatusEntity.length; i++) {
             if(viewLeadDataResponse.leadsEntity.leadStatusId.toString() == leadStatusEntity[i].id.toString()){
-              labelText = leadStatusEntity[i].leadStatusDesc;
-              list = new LeadStatusEntity(
+                labelText = leadStatusEntity[i].leadStatusDesc;
+                list = new LeadStatusEntity(
                   id:leadStatusEntity[i].id,
                   leadStatusDesc:leadStatusEntity[i].leadStatusDesc
-              );
+                );
 
 
               // _selectedValue.id = leadStatusEntity[i].id;
@@ -164,9 +159,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
           _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
           _currentPosition = new Position(
               latitude:
-              double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
+                  double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
               longitude:
-              double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
+                  double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
           listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
           for (int i = 0; i < listLeadImagePhoto.length; i++) {
             File file = new File(UrlConstants.baseUrlforImages +
@@ -244,7 +239,162 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
-
+      appBar: AppBar(
+        // titleSpacing: 50,
+        // leading: new Container(),
+        backgroundColor: ColorConstants.appBarColor,
+        toolbarHeight: 100,
+        centerTitle: false,
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Column(
+              // mainAxisSize: MainAxisSize.max,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ((leadCreatedBy == gv.currentId))
+                    ? FlatButton(
+                        onPressed: () {
+                          Get.dialog(
+                              CustomDialogs().errorDialog("Coming Soon !!"));
+                        },
+                        color: Colors.transparent,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 4.0, right: 5),
+                              child: Icon(
+                                Icons.clear,
+                                color: HexColor("#F9A61A"),
+                                size: 20,
+                              ),
+                            ),
+                            Text(
+                              'Drop This Lead',
+                              style: TextStyle(
+                                  color: HexColor("#F9A61A"), fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ((leadCreatedBy == gv.currentId))
+                          ? FlatButton(
+                              onPressed: () {
+                                Get.dialog(CustomDialogs()
+                                    .errorDialog("Coming Soon !!"));
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(1.0),
+                                  side: BorderSide(color: Colors.white10)),
+                              color: Colors.transparent,
+                              child: Text(
+                                'EDIT OLD LEAD',
+                                style: TextStyle(
+                                    color: Colors.white60, fontSize: 18),
+                              ),
+                            )
+                          : FlatButton(
+                              onPressed: () {
+                                Get.dialog(CustomDialogs()
+                                    .errorDialog("Coming Soon !!"));
+                              },
+                              color: Colors.transparent,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.clear,
+                                    color: HexColor("#F9A61A"),
+                                    size: 20,
+                                  ),
+                                  Text(
+                                    'Drop This Lead',
+                                    style: TextStyle(
+                                        color: HexColor("#F9A61A"),
+                                        fontSize: 18),
+                                  ),
+                                ],
+                              ),
+                            ),
+                      FlatButton(
+                        onPressed: () {
+                          Get.dialog(
+                              CustomDialogs().errorDialog("Coming Soon !!"));
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            side: BorderSide(color: HexColor("#1C99D4"))),
+                        color: HexColor("#1C99D4"),
+                        child: Text(
+                          'CREATE NEW LEAD',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        automaticallyImplyLeading: false,
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 20.0, top: 20),
+        //     child: Column(
+        //       children: [
+        //         FlatButton(
+        //           shape: RoundedRectangleBorder(
+        //               borderRadius: BorderRadius.circular(18.0),
+        //               side: BorderSide(color: Colors.white)),
+        //           color: Colors.transparent,
+        //           child: Padding(
+        //             padding: const EdgeInsets.only(bottom: 5),
+        //             child: Row(
+        //               children: [
+        //               //  Icon(Icons.exposure_zero_outlined),
+        //                 Container(
+        //                   height: 18,
+        //                   width: 18,
+        //                   // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+        //                   decoration: new BoxDecoration(
+        //                     color: Colors.white,
+        //                      border: Border.all(color: Colors.black, width: 0.0),
+        //                      borderRadius: new BorderRadius.all(Radius.circular(3)),
+        //                   ),
+        //                   child: Center(child: Text("0",
+        //                       style: TextStyle(
+        //                         color: Colors.black,
+        //                          //fontFamily: 'Raleway',
+        //                           fontSize: 12,
+        //                           fontWeight: FontWeight.normal
+        //                       )))
+        //                 ),
+        //                 Padding(
+        //                   padding: const EdgeInsets.only(left:8.0),
+        //                   child: Text(
+        //                     'FILTER',
+        //                     style: TextStyle(color: Colors.white ,
+        //                     fontSize: 18),
+        //
+        //                   ),
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //         )
+        //       ],
+        //    ),
+        //  ),
+        //  ],
+      ),
       floatingActionButton: Container(
         height: 68.0,
         width: 68.0,
@@ -354,20 +504,20 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Positioned(
-                top: 0,
-                left: 200,
-                right: 0,
-                child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/images/Container.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ],
-                    ))),
+            // Positioned(
+            //     top: 0,
+            //     left: 200,
+            //     right: 0,
+            //     child: Container(
+            //         color: Colors.white,
+            //         child: Column(
+            //           children: <Widget>[
+            //             Image.asset(
+            //               'assets/images/Container.png',
+            //               fit: BoxFit.fitHeight,
+            //             ),
+            //           ],
+            //         ))),
             Container(
               child: Form(
                 key: _formKey,
@@ -424,69 +574,69 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                           blurRadius: 10.0,
                                           spreadRadius: 4.0)
                                     ]
-                                ),
-                                child: DropdownButtonHideUnderline(
-
-                                  child: DropdownButton(
-                                    // elevation: 100,
-
-
-                                    value: _selectedValue,
-                                    items: leadStatusEntity
-                                        .map((label) => DropdownMenuItem(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left:8.0),
-                                        child: Text(
-                                          label.leadStatusDesc,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: ColorConstants
-                                                  .inputBoxHintColor,
-                                              fontFamily: "Muli"),
-                                        ),
-                                      ),
-                                      value: label,
-                                    ))
-                                        .toList(),
-                                    //  elevation: 0,
-                                    iconSize: 40,
-
-                                    // hint: Text('Rating'),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedValue = value;
-                                        Get.dialog(CustomDialogs()
-                                            .errorDialog("Coming Soon !!"));
-                                      });
-                                    },
-
-                                    // decoration: InputDecoration(
-                                    //   focusedBorder: OutlineInputBorder(
-                                    //     borderSide: BorderSide(
-                                    //         color: ColorConstants.backgroundColorBlue,
-                                    //         //color: HexColor("#0000001F"),
-                                    //         width: 0),
-                                    //   ),
-                                    //   enabledBorder: InputBorder.none,
-                                    //   errorBorder: OutlineInputBorder(
-                                    //     borderSide:
-                                    //         BorderSide(color: Colors.red, width: 0),
-                                    //   ),
-                                    //   // labelText: "Site Subtype",
-                                    //   // filled: false,
-                                    //   hintText: labelText,
-                                    //   focusColor: Colors.black,
-                                    //   isDense: true,
-                                    //   labelStyle: TextStyle(
-                                    //       fontFamily: "Muli",
-                                    //       color: ColorConstants.inputBoxHintColorDark,
-                                    //       fontWeight: FontWeight.normal,
-                                    //       fontSize: 16.0),
-                                    //   fillColor: ColorConstants.backgroundColor,
-                                    // ),
                                   ),
+                              child: DropdownButtonHideUnderline(
+
+                                child: DropdownButton(
+                                  // elevation: 100,
+
+
+                                  value: _selectedValue,
+                                  items: leadStatusEntity
+                                      .map((label) => DropdownMenuItem(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left:8.0),
+                                              child: Text(
+                                                label.leadStatusDesc,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: ColorConstants
+                                                        .inputBoxHintColor,
+                                                    fontFamily: "Muli"),
+                                              ),
+                                            ),
+                                            value: label,
+                                          ))
+                                      .toList(),
+                                  //  elevation: 0,
+                                  iconSize: 40,
+
+                                  // hint: Text('Rating'),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedValue = value;
+                                      Get.dialog(CustomDialogs()
+                                          .errorDialog("Coming Soon !!"));
+                                    });
+                                  },
+
+                                  // decoration: InputDecoration(
+                                  //   focusedBorder: OutlineInputBorder(
+                                  //     borderSide: BorderSide(
+                                  //         color: ColorConstants.backgroundColorBlue,
+                                  //         //color: HexColor("#0000001F"),
+                                  //         width: 0),
+                                  //   ),
+                                  //   enabledBorder: InputBorder.none,
+                                  //   errorBorder: OutlineInputBorder(
+                                  //     borderSide:
+                                  //         BorderSide(color: Colors.red, width: 0),
+                                  //   ),
+                                  //   // labelText: "Site Subtype",
+                                  //   // filled: false,
+                                  //   hintText: labelText,
+                                  //   focusColor: Colors.black,
+                                  //   isDense: true,
+                                  //   labelStyle: TextStyle(
+                                  //       fontFamily: "Muli",
+                                  //       color: ColorConstants.inputBoxHintColorDark,
+                                  //       fontWeight: FontWeight.normal,
+                                  //       fontSize: 16.0),
+                                  //   fillColor: ColorConstants.backgroundColor,
+                                  // ),
                                 ),
-                              ),)
+                              ),
+                            ),)
                           ],
                         ),
                       ),
@@ -569,7 +719,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.black26, width: 1.0),
+                                BorderSide(color: Colors.black26, width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red, width: 1.0),
@@ -621,7 +771,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.black26, width: 1.0),
+                                BorderSide(color: Colors.black26, width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red, width: 1.0),
@@ -645,7 +795,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                       Padding(
                         padding:
-                        const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+                            const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
                         child: Text(
                           "Geo Tag",
                           style: TextStyle(
@@ -1104,69 +1254,69 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                       _imageList != null
                           ? Row(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: _imageList.length,
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      return showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              content: new Container(
-                                                // width: 500,
-                                                // height: 500,
-                                                child: Image.network(
-                                                    _imageList[index].path),
-                                              ),
-                                            );
-                                          });
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Picture ${(index + 1)}. ",
-                                              style: TextStyle(
-                                                  fontWeight:
-                                                  FontWeight.bold,
-                                                  fontSize: 15),
-                                            ),
-                                            Text(
-                                              "Image_${(index + 1)}.jpg",
-                                              style: TextStyle(
-                                                  color:
-                                                  HexColor("#007CBF"),
-                                                  fontSize: 15),
-                                            ),
-                                          ],
-                                        ),
-                                        GestureDetector(
-                                          child: Icon(
-                                            Icons.delete,
-                                            color: HexColor("#FFCD00"),
-                                          ),
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: _imageList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return GestureDetector(
                                           onTap: () {
-                                            setState(() {
-                                              _imageList.removeAt(index);
-                                            });
+                                            return showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content: new Container(
+                                                      // width: 500,
+                                                      // height: 500,
+                                                      child: Image.network(
+                                                          _imageList[index].path),
+                                                    ),
+                                                  );
+                                                });
                                           },
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ],
-                      )
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Picture ${(index + 1)}. ",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 15),
+                                                  ),
+                                                  Text(
+                                                    "Image_${(index + 1)}.jpg",
+                                                    style: TextStyle(
+                                                        color:
+                                                            HexColor("#007CBF"),
+                                                        fontSize: 15),
+                                                  ),
+                                                ],
+                                              ),
+                                              GestureDetector(
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color: HexColor("#FFCD00"),
+                                                ),
+                                                onTap: () {
+                                                  setState(() {
+                                                    _imageList.removeAt(index);
+                                                  });
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              ],
+                            )
                           : Container(),
 
                       SizedBox(height: 16),
@@ -1177,7 +1327,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                       Padding(
                         padding:
-                        const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+                            const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
                         child: Text(
                           "Influencer Details",
                           style: TextStyle(
@@ -1205,7 +1355,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "Influencer Details ${(index + 1)} ",
@@ -1214,71 +1364,71 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                   fontSize: 18),
                                             ),
                                             _listInfluencerDetail[index]
-                                                .isExpanded
+                                                    .isExpanded
                                                 ? FlatButton.icon(
-                                              // shape: RoundedRectangleBorder(
-                                              //     borderRadius: BorderRadius.circular(0),
-                                              //     side: BorderSide(color: Colors.black26)),
-                                              color: Colors.transparent,
-                                              icon: Icon(
-                                                Icons.remove,
-                                                color: HexColor("#F9A61A"),
-                                                size: 18,
-                                              ),
-                                              label: Text(
-                                                "COLLAPSE",
-                                                style: TextStyle(
-                                                    color:
-                                                    HexColor("#F9A61A"),
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    // letterSpacing: 2,
-                                                    fontSize: 17),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  _listInfluencerDetail[
-                                                  index]
-                                                      .isExpanded =
-                                                  !_listInfluencerDetail[
-                                                  index]
-                                                      .isExpanded;
-                                                });
-                                                // _getCurrentLocation();
-                                              },
-                                            )
+                                                    // shape: RoundedRectangleBorder(
+                                                    //     borderRadius: BorderRadius.circular(0),
+                                                    //     side: BorderSide(color: Colors.black26)),
+                                                    color: Colors.transparent,
+                                                    icon: Icon(
+                                                      Icons.remove,
+                                                      color: HexColor("#F9A61A"),
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "COLLAPSE",
+                                                      style: TextStyle(
+                                                          color:
+                                                              HexColor("#F9A61A"),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          // letterSpacing: 2,
+                                                          fontSize: 17),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded =
+                                                            !_listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  )
                                                 : FlatButton.icon(
-                                              // shape: RoundedRectangleBorder(
-                                              //     borderRadius: BorderRadius.circular(0),
-                                              //     side: BorderSide(color: Colors.black26)),
-                                              color: Colors.transparent,
-                                              icon: Icon(
-                                                Icons.add,
-                                                color: HexColor("#F9A61A"),
-                                                size: 18,
-                                              ),
-                                              label: Text(
-                                                "EXPAND",
-                                                style: TextStyle(
-                                                    color:
-                                                    HexColor("#F9A61A"),
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    // letterSpacing: 2,
-                                                    fontSize: 17),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  _listInfluencerDetail[
-                                                  index]
-                                                      .isExpanded =
-                                                  !_listInfluencerDetail[
-                                                  index]
-                                                      .isExpanded;
-                                                });
-                                                // _getCurrentLocation();
-                                              },
-                                            ),
+                                                    // shape: RoundedRectangleBorder(
+                                                    //     borderRadius: BorderRadius.circular(0),
+                                                    //     side: BorderSide(color: Colors.black26)),
+                                                    color: Colors.transparent,
+                                                    icon: Icon(
+                                                      Icons.add,
+                                                      color: HexColor("#F9A61A"),
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "EXPAND",
+                                                      style: TextStyle(
+                                                          color:
+                                                              HexColor("#F9A61A"),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          // letterSpacing: 2,
+                                                          fontSize: 17),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded =
+                                                            !_listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  ),
                                           ],
                                         ),
                                       ],
@@ -1290,7 +1440,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "Influencer Details ${(index + 1)} ",
@@ -1299,71 +1449,71 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                   fontSize: 18),
                                             ),
                                             _listInfluencerDetail[index]
-                                                .isExpanded
+                                                    .isExpanded
                                                 ? FlatButton.icon(
-                                              // shape: RoundedRectangleBorder(
-                                              //     borderRadius: BorderRadius.circular(0),
-                                              //     side: BorderSide(color: Colors.black26)),
-                                              color: Colors.transparent,
-                                              icon: Icon(
-                                                Icons.remove,
-                                                color: HexColor("#F9A61A"),
-                                                size: 18,
-                                              ),
-                                              label: Text(
-                                                "COLLAPSE",
-                                                style: TextStyle(
-                                                    color:
-                                                    HexColor("#F9A61A"),
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    // letterSpacing: 2,
-                                                    fontSize: 17),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  _listInfluencerDetail[
-                                                  index]
-                                                      .isExpanded =
-                                                  !_listInfluencerDetail[
-                                                  index]
-                                                      .isExpanded;
-                                                });
-                                                // _getCurrentLocation();
-                                              },
-                                            )
+                                                    // shape: RoundedRectangleBorder(
+                                                    //     borderRadius: BorderRadius.circular(0),
+                                                    //     side: BorderSide(color: Colors.black26)),
+                                                    color: Colors.transparent,
+                                                    icon: Icon(
+                                                      Icons.remove,
+                                                      color: HexColor("#F9A61A"),
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "COLLAPSE",
+                                                      style: TextStyle(
+                                                          color:
+                                                              HexColor("#F9A61A"),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          // letterSpacing: 2,
+                                                          fontSize: 17),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded =
+                                                            !_listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  )
                                                 : FlatButton.icon(
-                                              // shape: RoundedRectangleBorder(
-                                              //     borderRadius: BorderRadius.circular(0),
-                                              //     side: BorderSide(color: Colors.black26)),
-                                              color: Colors.transparent,
-                                              icon: Icon(
-                                                Icons.add,
-                                                color: HexColor("#F9A61A"),
-                                                size: 18,
-                                              ),
-                                              label: Text(
-                                                "EXPAND",
-                                                style: TextStyle(
-                                                    color:
-                                                    HexColor("#F9A61A"),
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    // letterSpacing: 2,
-                                                    fontSize: 17),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  _listInfluencerDetail[
-                                                  index]
-                                                      .isExpanded =
-                                                  !_listInfluencerDetail[
-                                                  index]
-                                                      .isExpanded;
-                                                });
-                                                // _getCurrentLocation();
-                                              },
-                                            ),
+                                                    // shape: RoundedRectangleBorder(
+                                                    //     borderRadius: BorderRadius.circular(0),
+                                                    //     side: BorderSide(color: Colors.black26)),
+                                                    color: Colors.transparent,
+                                                    icon: Icon(
+                                                      Icons.add,
+                                                      color: HexColor("#F9A61A"),
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "EXPAND",
+                                                      style: TextStyle(
+                                                          color:
+                                                              HexColor("#F9A61A"),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          // letterSpacing: 2,
+                                                          fontSize: 17),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded =
+                                                            !_listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  ),
                                           ],
                                         ),
                                         SizedBox(height: 16),
@@ -1379,7 +1529,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               //     .inflContact
                                               //     .clear();
                                               if (_listInfluencerDetail[index]
-                                                  .inflName !=
+                                                      .inflName !=
                                                   null) {
                                                 _listInfluencerDetail[index]
                                                     .inflName
@@ -1398,11 +1548,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               };
 
                                               for (int i = 0;
-                                              i <
-                                                  _listInfluencerDetail
-                                                      .length -
-                                                      1;
-                                              i++) {
+                                                  i <
+                                                      _listInfluencerDetail
+                                                              .length -
+                                                          1;
+                                                  i++) {
                                                 if (value ==
                                                     _listInfluencerDetail[i]
                                                         .inflContact
@@ -1415,38 +1565,38 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               if (match) {
                                                 Get.dialog(CustomDialogs()
                                                     .errorDialog(
-                                                    "Already added influencer : " +
-                                                        value));
+                                                        "Already added influencer : " +
+                                                            value));
                                               } else {
                                                 String empId;
                                                 String mobileNumber;
                                                 String name;
                                                 Future<SharedPreferences> _prefs =
-                                                SharedPreferences
-                                                    .getInstance();
+                                                    SharedPreferences
+                                                        .getInstance();
                                                 await _prefs.then(
-                                                        (SharedPreferences prefs) {
-                                                      empId = prefs.getString(
+                                                    (SharedPreferences prefs) {
+                                                  empId = prefs.getString(
                                                           StringConstants
                                                               .employeeId) ??
-                                                          "empty";
-                                                      mobileNumber = prefs.getString(
+                                                      "empty";
+                                                  mobileNumber = prefs.getString(
                                                           StringConstants
                                                               .mobileNumber) ??
-                                                          "empty";
-                                                      name = prefs.getString(
+                                                      "empty";
+                                                  name = prefs.getString(
                                                           StringConstants
                                                               .employeeName) ??
-                                                          "empty";
-                                                      print(_comments.text);
-                                                    });
+                                                      "empty";
+                                                  print(_comments.text);
+                                                });
                                                 AddLeadsController
-                                                _addLeadsController =
-                                                Get.find();
+                                                    _addLeadsController =
+                                                    Get.find();
                                                 _addLeadsController.phoneNumber =
                                                     value;
                                                 AccessKeyModel accessKeyModel =
-                                                new AccessKeyModel();
+                                                    new AccessKeyModel();
                                                 await _addLeadsController
                                                     .getAccessKeyOnly()
                                                     .then((data) async {
@@ -1455,16 +1605,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                       accessKeyModel.accessKey);
                                                   await _addLeadsController
                                                       .getInflDetailsData(
-                                                      accessKeyModel
-                                                          .accessKey)
+                                                          accessKeyModel
+                                                              .accessKey)
                                                       .then((data) {
                                                     _listInfluencerDetail[index]
-                                                        .inflContact =
-                                                    new TextEditingController();
+                                                            .inflContact =
+                                                        new TextEditingController();
                                                     ;
                                                     _listInfluencerDetail[index]
-                                                        .inflName =
-                                                    new TextEditingController();
+                                                            .inflName =
+                                                        new TextEditingController();
                                                     ;
 
                                                     InfluencerDetail inflDetail =
@@ -1475,76 +1625,76 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                           .unfocus();
                                                       //  print(inflDetail.inflName.text);
                                                       _listInfluencerDetail[index]
-                                                          .inflTypeValue =
-                                                      new TextEditingController();
+                                                              .inflTypeValue =
+                                                          new TextEditingController();
                                                       _listInfluencerDetail[index]
-                                                          .inflCatValue =
-                                                      new TextEditingController();
+                                                              .inflCatValue =
+                                                          new TextEditingController();
                                                       _listInfluencerDetail[index]
-                                                          .inflTypeId =
-                                                      new TextEditingController();
+                                                              .inflTypeId =
+                                                          new TextEditingController();
                                                       _listInfluencerDetail[index]
-                                                          .inflCatId =
-                                                      new TextEditingController();
+                                                              .inflCatId =
+                                                          new TextEditingController();
 
                                                       _listInfluencerDetail[index]
-                                                          .inflContact =
+                                                              .inflContact =
                                                           inflDetail.inflContact;
                                                       _listInfluencerDetail[index]
-                                                          .inflName =
+                                                              .inflName =
                                                           inflDetail.inflName;
                                                       _listInfluencerDetail[index]
                                                           .id = inflDetail.id;
                                                       _listInfluencerDetail[index]
-                                                          .ilpIntrested =
+                                                              .ilpIntrested =
                                                           inflDetail.ilpIntrested;
                                                       _listInfluencerDetail[index]
-                                                          .createdOn =
+                                                              .createdOn =
                                                           inflDetail.createdOn;
                                                       _listInfluencerDetail[index]
                                                           .createdBy = empId;
 
                                                       for (int i = 0;
-                                                      i <
-                                                          influencerTypeEntity
-                                                              .length;
-                                                      i++) {
+                                                          i <
+                                                              influencerTypeEntity
+                                                                  .length;
+                                                          i++) {
                                                         if (influencerTypeEntity[
-                                                        i]
-                                                            .inflTypeId
-                                                            .toString() ==
+                                                                    i]
+                                                                .inflTypeId
+                                                                .toString() ==
                                                             inflDetail.inflTypeId
                                                                 .text) {
                                                           _listInfluencerDetail[
-                                                          index]
-                                                              .inflTypeId =
+                                                                      index]
+                                                                  .inflTypeId =
                                                               inflDetail
                                                                   .inflTypeId;
                                                           //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                                                           _listInfluencerDetail[
-                                                          index]
+                                                                  index]
                                                               .inflTypeValue
                                                               .text = influencerTypeEntity[
-                                                          influencerTypeEntity[
-                                                          i]
-                                                              .inflTypeId]
+                                                                  influencerTypeEntity[
+                                                                          i]
+                                                                      .inflTypeId]
                                                               .inflTypeDesc;
                                                           break;
                                                         } else {
                                                           _listInfluencerDetail[
-                                                          index]
+                                                                  index]
                                                               .inflContact
                                                               .clear();
                                                           _listInfluencerDetail[
-                                                          index]
+                                                                  index]
                                                               .inflName
                                                               .clear();
                                                           _listInfluencerDetail[
-                                                          index]
+                                                                  index]
                                                               .inflTypeId
                                                               .clear();
                                                           _listInfluencerDetail[
-                                                          index]
+                                                                  index]
                                                               .inflTypeValue
                                                               .clear();
                                                         }
@@ -1552,47 +1702,47 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                       // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].infl_type_desc;
 
                                                       for (int i = 0;
-                                                      i <
-                                                          influencerCategoryEntity
-                                                              .length;
-                                                      i++) {
+                                                          i <
+                                                              influencerCategoryEntity
+                                                                  .length;
+                                                          i++) {
                                                         if (influencerCategoryEntity[
-                                                        i]
-                                                            .inflCatId
-                                                            .toString() ==
+                                                                    i]
+                                                                .inflCatId
+                                                                .toString() ==
                                                             inflDetail
                                                                 .inflCatId.text) {
                                                           _listInfluencerDetail[
-                                                          index]
-                                                              .inflCatId =
+                                                                      index]
+                                                                  .inflCatId =
                                                               inflDetail
                                                                   .inflCatId;
                                                           //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                                                           _listInfluencerDetail[
-                                                          index]
-                                                              .inflCatValue
-                                                              .text =
+                                                                      index]
+                                                                  .inflCatValue
+                                                                  .text =
                                                               influencerCategoryEntity[
-                                                              influencerCategoryEntity[
-                                                              i]
-                                                                  .inflCatId]
+                                                                      influencerCategoryEntity[
+                                                                              i]
+                                                                          .inflCatId]
                                                                   .inflCatDesc;
                                                           break;
                                                         } else {
                                                           _listInfluencerDetail[
-                                                          index]
+                                                                  index]
                                                               .inflContact
                                                               .clear();
                                                           _listInfluencerDetail[
-                                                          index]
+                                                                  index]
                                                               .inflName
                                                               .clear();
                                                           _listInfluencerDetail[
-                                                          index]
+                                                                  index]
                                                               .inflCatId
                                                               .clear();
                                                           _listInfluencerDetail[
-                                                          index]
+                                                                  index]
                                                               .inflCatValue
                                                               .clear();
                                                         }
@@ -1653,7 +1803,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16.0),
                                             fillColor:
-                                            ColorConstants.backgroundColor,
+                                                ColorConstants.backgroundColor,
                                           ),
                                         ),
                                         SizedBox(height: 16),
@@ -1710,7 +1860,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16.0),
                                             fillColor:
-                                            ColorConstants.backgroundColor,
+                                                ColorConstants.backgroundColor,
                                           ),
                                         ),
                                         SizedBox(height: 16),
@@ -1765,7 +1915,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16.0),
                                             fillColor:
-                                            ColorConstants.backgroundColor,
+                                                ColorConstants.backgroundColor,
                                           ),
                                         ),
                                         SizedBox(height: 16),
@@ -1820,7 +1970,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16.0),
                                             fillColor:
-                                            ColorConstants.backgroundColor,
+                                                ColorConstants.backgroundColor,
                                           ),
                                         ),
                                       ],
@@ -1855,27 +2005,27 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             //   _listInfluencerDetail.length - 1]
                             //       .inflName);
                             if (_listInfluencerDetail[
-                            _listInfluencerDetail.length - 1]
-                                .inflName !=
-                                null &&
+                                            _listInfluencerDetail.length - 1]
+                                        .inflName !=
+                                    null &&
                                 _listInfluencerDetail[
-                                _listInfluencerDetail.length - 1]
-                                    .inflName !=
+                                            _listInfluencerDetail.length - 1]
+                                        .inflName !=
                                     "null" &&
                                 !_listInfluencerDetail[
-                                _listInfluencerDetail.length - 1]
+                                        _listInfluencerDetail.length - 1]
                                     .inflName
                                     .text
                                     .isNullOrBlank) {
                               InfluencerDetail infl =
-                              new InfluencerDetail(isExpanded: true);
+                                  new InfluencerDetail(isExpanded: true);
 
                               // Item item = new Item(
                               //     headerValue: "agx ", expandedValue: "dnxcx");
                               setState(() {
                                 // _data.add(item);
                                 _listInfluencerDetail[
-                                _listInfluencerDetail.length - 1]
+                                        _listInfluencerDetail.length - 1]
                                     .isExpanded = false;
                                 _listInfluencerDetail.add(infl);
                               });
@@ -2182,105 +2332,105 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                       // ),
                       _commentsList != null && _commentsList.length != 0
                           ? viewMoreActive
-                          ? Row(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                reverse: true,
-                                shrinkWrap: true,
-                                itemCount: _commentsList.length,
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  return Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            _commentsList[index]
-                                                .creatorName,
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 25),
-                                          ),
-                                          Text(
-                                            _commentsList[index]
-                                                .commentText,
-                                            style: TextStyle(
-                                                color: Colors.black
-                                                    .withOpacity(0.5),
-                                                fontSize: 25),
-                                          ),
-                                          Text(
-                                            _commentsList[index]
-                                                .commentedAt
-                                                .toString(),
-                                            style: TextStyle(
-                                                color: Colors.black
-                                                    .withOpacity(0.5),
-                                                fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      )
-                                    ],
-                                  );
-                                }),
-                          ),
-                        ],
-                      )
-                          : Column(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                _commentsList[_commentsList.length - 1]
-                                    .creatorName,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25),
-                              ),
-                              Text(
-                                _commentsList[_commentsList.length - 1]
-                                    .commentText,
-                                style: TextStyle(
-                                    color:
-                                    Colors.black.withOpacity(0.5),
-                                    fontSize: 25),
-                              ),
-                              Text(
-                                _commentsList[_commentsList.length - 1]
-                                    .commentedAt
-                                    .toString(),
-                                style: TextStyle(
-                                    color:
-                                    Colors.black.withOpacity(0.5),
-                                    fontSize: 15),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          )
-                        ],
-                      )
+                              ? Row(
+                                  children: [
+                                    Expanded(
+                                      child: ListView.builder(
+                                          physics: NeverScrollableScrollPhysics(),
+                                          reverse: true,
+                                          shrinkWrap: true,
+                                          itemCount: _commentsList.length,
+                                          itemBuilder:
+                                              (BuildContext context, int index) {
+                                            return Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      _commentsList[index]
+                                                          .creatorName,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 25),
+                                                    ),
+                                                    Text(
+                                                      _commentsList[index]
+                                                          .commentText,
+                                                      style: TextStyle(
+                                                          color: Colors.black
+                                                              .withOpacity(0.5),
+                                                          fontSize: 25),
+                                                    ),
+                                                    Text(
+                                                      _commentsList[index]
+                                                          .commentedAt
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.black
+                                                              .withOpacity(0.5),
+                                                          fontSize: 15),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                )
+                                              ],
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          _commentsList[_commentsList.length - 1]
+                                              .creatorName,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
+                                        ),
+                                        Text(
+                                          _commentsList[_commentsList.length - 1]
+                                              .commentText,
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                              fontSize: 25),
+                                        ),
+                                        Text(
+                                          _commentsList[_commentsList.length - 1]
+                                              .commentedAt
+                                              .toString(),
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    )
+                                  ],
+                                )
                           : Container(),
                       // Padding(
                       //   padding:
@@ -2317,25 +2467,25 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                 right: 5, bottom: 8, top: 5),
                             child: !viewMoreActive
                                 ? Text(
-                              "VIEW MORE COMMENT (" +
-                                  _commentsList.length.toString() +
-                                  ")",
-                              style: TextStyle(
-                                  color: HexColor("##F9A61A"),
-                                  fontWeight: FontWeight.bold,
-                                  // letterSpacing: 2,
-                                  fontSize: 17),
-                            )
+                                    "VIEW MORE COMMENT (" +
+                                        _commentsList.length.toString() +
+                                        ")",
+                                    style: TextStyle(
+                                        color: HexColor("##F9A61A"),
+                                        fontWeight: FontWeight.bold,
+                                        // letterSpacing: 2,
+                                        fontSize: 17),
+                                  )
                                 : Text(
-                              "VIEW LESS COMMENT (" +
-                                  _commentsList.length.toString() +
-                                  ")",
-                              style: TextStyle(
-                                  color: HexColor("##F9A61A"),
-                                  fontWeight: FontWeight.bold,
-                                  // letterSpacing: 2,
-                                  fontSize: 17),
-                            ),
+                                    "VIEW LESS COMMENT (" +
+                                        _commentsList.length.toString() +
+                                        ")",
+                                    style: TextStyle(
+                                        color: HexColor("##F9A61A"),
+                                        fontWeight: FontWeight.bold,
+                                        // letterSpacing: 2,
+                                        fontSize: 17),
+                                  ),
                           ),
                           onPressed: () async {
                             setState(() {
@@ -2582,7 +2732,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
         _taluk.text = place.locality;
         //txt.text = place.postalCode;
         _currentAddress =
-        "${place.locality}, ${place.postalCode}, ${place.country}";
+            "${place.locality}, ${place.postalCode}, ${place.country}";
 
         print(
             "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");

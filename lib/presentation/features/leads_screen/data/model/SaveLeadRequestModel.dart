@@ -30,7 +30,8 @@ class SaveLeadRequestModel {
     this.isStatus,
     this.photos,
     this.comments,
-    this.influencerList
+    this.influencerList,
+    this.listLeadImage
   });
 
 
@@ -56,6 +57,7 @@ class SaveLeadRequestModel {
   List<MultipartFile> photos;
   List<CommentsDetail> comments;
   List <InfluencerDetail> influencerList;
+  List<ListLeadImage> listLeadImage;
 
 
 
@@ -90,8 +92,25 @@ class SaveLeadRequestModel {
     data['photos']=jsonEncode(this.photos);
     data['comments']=this.comments.map((e) => e.toJson()).toList();
     data['influencerList']=this.influencerList.map((e) => e.toJson()).toList();
+    data['listLeadImage']=this.listLeadImage.map((e) => e.toJson()).toList();
 
     return data;
   }
 
+}
+
+class ListLeadImage {
+  String photoName;
+
+  ListLeadImage({this.photoName});
+
+  ListLeadImage.fromJson(Map<String, dynamic> json) {
+    photoName = json['photoName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['photoName'] = this.photoName;
+    return data;
+  }
 }

@@ -9,7 +9,9 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -20,6 +22,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
 class MyApiClientLeads {
   final http.Client httpClient;
@@ -183,7 +186,7 @@ class MyApiClientLeads {
   }
 
   saveLeadsData(accessKey, String userSecurityKey,
-      SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) async {
+      SaveLeadRequestModel saveLeadRequestModel, List<File> imageList, BuildContext context) async {
     http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.saveLeadsData));
     request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
 
@@ -196,37 +199,10 @@ class MyApiClientLeads {
       var length = await file.length(); //imageFile is your image file
 
       // multipart that takes file
-      var multipartFileSign = new http.MultipartFile('photo', stream, length, filename: fileName);
+      var multipartFileSign = new http.MultipartFile('file', stream, length, filename: fileName);
 
       request.files.add(multipartFileSign);
     }
-
-    // var fieldsDetail = {
-    //   'leadSegmane': saveLeadRequestModel.leadSegmane ?? 'abc',
-    //   'siteSubTypeId': saveLeadRequestModel.siteSubTypeId ?? 'abc',
-    //   'assignedTo': saveLeadRequestModel.assignedTo ?? 'abc',
-    //   'leadStatusId': saveLeadRequestModel.leadStatusId ?? 'abc',
-    //   'leadStage': saveLeadRequestModel.leadStage ?? 'abc',
-    //   'contactName': saveLeadRequestModel.contactName ?? 'abc',
-    //   'contactNumber': saveLeadRequestModel.contactNumber ?? 'abc',
-    //   'geotagType': saveLeadRequestModel.geotagType ?? 'abc',
-    //   'leadLatitude': saveLeadRequestModel.leadLatitude ?? 'abc',
-    //   'leadLongitude': saveLeadRequestModel.leadLongitude ?? 'abc',
-    //   'leadAddress': saveLeadRequestModel.leadAddress ?? 'abc',
-    //   'leadPincode': saveLeadRequestModel.leadPincode ?? 'abc',
-    //   'leadStateName': saveLeadRequestModel.leadStateName ?? 'abc',
-    //   'leadDistrictName': saveLeadRequestModel.leadDistrictName ?? 'abc',
-    //   'leadTalukName': saveLeadRequestModel.leadTalukName ?? 'abc',
-    //   'leadSalesPotentialMt':
-    //       saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
-    //   'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? 'abc',
-    //   'assignDate': saveLeadRequestModel.assignDate ?? 'abc',
-    //   'isStatus': saveLeadRequestModel.isStatus ?? 'abc',
-    //   // 'photos': saveLeadRequestModel.photos.toString()??'abc',
-    //   'comments': json.encode(saveLeadRequestModel.comments) ?? 'abc',
-    //   'influencerList':
-    //       json.encode(saveLeadRequestModel.influencerList) ?? 'abc'
-    // };
 
 
     String empId;
@@ -241,16 +217,17 @@ class MyApiClientLeads {
       name = prefs.getString(
           StringConstants.employeeName) ?? "empty";
 
+      gv.currentId = empId;
 
       var uploadImageWithLeadModel = {
-        'leadSegmane': "abc",
+        'leadSegment': "abc",
         'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId),
         'assignedTo': empId,
         'leadStatusId': 1,
         'leadStage': 2,
         'contactName': saveLeadRequestModel.contactName,
         'contactNumber': saveLeadRequestModel.contactNumber ?? 'abc',
-        'geotagType': "Y",
+        'geotagType': saveLeadRequestModel.geotagType ?? 'M',
         'leadLatitude': saveLeadRequestModel.leadLatitude ?? 'abc',
         'leadLongitude': saveLeadRequestModel.leadLongitude ?? 'abc',
         'leadAddress': saveLeadRequestModel.leadAddress ?? 'abc',
@@ -261,74 +238,65 @@ class MyApiClientLeads {
         'leadSalesPotentialMt':
         saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
         'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? 'abc',
-        'assignDate': saveLeadRequestModel.assignDate ?? 'abc',
+        //'assignDate': saveLeadRequestModel.assignDate ?? 'abc',
         'isStatus': saveLeadRequestModel.isStatus ?? 'abc',
         // 'photos': saveLeadRequestModel.photos.toString()??'abc',
         'createdBy':empId,
         'leadIsDuplicate':"N",
-        'listLeadcomments': json.encode(saveLeadRequestModel.comments) ?? 'abc',
+        'listLeadImage' : saveLeadRequestModel.listLeadImage ?? 'abc',
+        'listLeadcomments': saveLeadRequestModel.comments ?? 'abc',
         'leadInfluencerEntity':
-        json.encode(saveLeadRequestModel.influencerList) ?? 'abc'
+        saveLeadRequestModel.influencerList ?? 'abc'
       };
 
-       request.fields['uploadImageWithLeadModel'] = json.encode(uploadImageWithLeadModel);
+       request.fields['uploadImageWithLeadModel'] = jsonEncode(uploadImageWithLeadModel);
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
     print("Request headers :: " + request.headers.toString());
      print("Request Body/Fields :: " + request.fields.toString());
       // print("Files:: " + request.files.toString());
       try {
-    //    debugPrint('request without encryption: $uploadImageWithLeadModel');
-        // final response = await post(Uri.parse(UrlConstants.saveLeadsData),
-        //     headers: requestHeadersWithAccessKeyAndSecretKey(
-        //         accessKey, userSecurityKey),
-        //     body: json.encode(uploadImageWithLeadModel),
-        //     encoding: Encoding.getByName("utf-8"));
-        // var streamedresponse = await request.send();
-        // var response = await http.Response.fromStream(streamedresponse);
-        // //var data = json.decode(response.body);
-        // print(response.statusCode);
          request.send().then((result) async {
 
           http.Response.fromStream(result)
               .then((response) {
 
-            if (response.statusCode == 200)
-            {
-              print("Uploaded! ");
-              print('response.body '+ response.body);
+            var data = json.decode(response.body);
+            SaveLeadResponse saveLeadResponse = SaveLeadResponse.fromJson(data);
+
+            if(saveLeadResponse.respCode == "LD2008"){
               Get.back();
-                Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
+              gv.selectedLeadID = saveLeadResponse.leadId;
+              Get.dialog(CustomDialogs().showExistingLeadDialog("We have an existing lead with this contact number. Do you want to" ,context));
             }
-          else{
+            else if (saveLeadResponse.respCode == "LD2007"){
               Get.back();
-              Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
+              Get.back();
+              Get.dialog(CustomDialogs().showDialog("Lead Added Successfully !!!"));
             }
-            return response.body;
+            else{
+              Get.back();
+              Get.dialog(CustomDialogs().showDialog("Some Error Occured !!! "));
+            }
+
+          //   if (response.statusCode == 200)
+          //   {
+          //     print("Uploaded! ");
+          //     print('response.body '+ response.body);
+          //     Get.back();
+          //       Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
+          //   }
+          // else{
+          //     Get.back();
+          //     Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
+          //   }
+          //  return response.body;
 
           });
         }).catchError((err) => print('error : '+err.toString()))
             .whenComplete(()
         {});
-        // if (response.statusCode == 200) {
-         //  var data = json.decode(response.body);
-        //   //var validateOtpResponse;
-        //   Get.back();
-        //   Get.dialog(CustomDialogs().showDialog(data['resp-msg'] +" and Lead Id is : " + data['lead-Id']));
 
-
-
-        // }
-        // if(response.body.resp-code ==200 ){
-        //   Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
-        // }
-
-        // var response = await request.send();
-        // print("Response Code ::" + response.statusCode.toString());
-        // print("Response  ::" + response.toString());
-        // response.stream.transform(utf8.decoder).listen((value) {
-        //   print(value);
-        // });
 
       } catch (_) {
         print('exception ${_.toString()}');
@@ -344,7 +312,9 @@ class MyApiClientLeads {
       var bodyEncrypted = {"leadId": leadId};
       // print('Request body is  : ${json.encode(bodyEncrypted)}');
       // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
+
       print("URL is :: " + UrlConstants.getLeadData+"$leadId");
+      print("Request Header :: " + json.encode(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey)));
       final response = await get(
         Uri.parse(UrlConstants.getLeadData+"$leadId"),
         headers:
@@ -354,12 +324,16 @@ class MyApiClientLeads {
       // print('Response body is  : ${json.decode(response.body)}');
 
       if (response.statusCode == 200) {
-        // var data = json.decode(response.body);
-        // InfluencerDetail influencerDetailModel =
-        // InfluencerDetail.fromJson(data);
-        // //print('Access key Object is :: $accessKeyModel');\
-        // //  print(influencerDetailModel.inflName);
-        // return influencerDetailModel;
+        Get.back();
+
+        var data = json.decode(response.body);
+        print(data);
+        ViewLeadDataResponse viewLeadDataResponse = ViewLeadDataResponse.fromJson(data);
+       // print(viewLeadDataResponse);
+        //print('Access key Object is :: $accessKeyModel');\
+        //  print(influencerDetailModel.inflName);
+        print(viewLeadDataResponse);
+        return viewLeadDataResponse;
       } else
         print('error');
     } catch (_) {

@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 
@@ -100,7 +101,7 @@ class AddLeadsController extends GetxController {
     //   return this.accessKeyResponse;
   }
 
-   getAccessKeyAndSaveLead(SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
+   getAccessKeyAndSaveLead(SaveLeadRequestModel saveLeadRequestModel, List<File> imageList, BuildContext context) {
 
      Future.delayed(
          Duration.zero,
@@ -111,14 +112,14 @@ class AddLeadsController extends GetxController {
 
        this.accessKeyResponse = data;
 //print(this.accessKeyResponse.accessKey);
-          saveLeadsData(saveLeadRequestModel,imageList);
+          saveLeadsData(saveLeadRequestModel,imageList,context);
 
      });
 
 
    }
 
-   saveLeadsData(SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) async {
+   saveLeadsData(SaveLeadRequestModel saveLeadRequestModel, List<File> imageList, BuildContext context) async {
      String userSecurityKey = "";
      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
      await _prefs.then((SharedPreferences prefs) async {
@@ -126,22 +127,23 @@ class AddLeadsController extends GetxController {
        print('User Security Key :: $userSecurityKey');
 
       await repository.saveLeadsData(
-          this.accessKeyResponse.accessKey, userSecurityKey, saveLeadRequestModel,imageList);
+          this.accessKeyResponse.accessKey, userSecurityKey, saveLeadRequestModel,imageList,context);
      });
 
    }
 
   getLeadData(String accessKey, int leadId) async {
     String userSecurityKey = "";
-    AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
+    ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
-      addLeadInitialModel =  await repository
+      viewLeadDataResponse =  await repository
           .getLeadData(accessKey, userSecurityKey,leadId);
     });
-   // return addLeadInitialModel;
+    print(viewLeadDataResponse);
+   return viewLeadDataResponse;
 
 
   }
