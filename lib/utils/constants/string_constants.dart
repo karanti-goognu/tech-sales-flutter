@@ -26,10 +26,11 @@ abstract class StringConstants {
   static String teleVerified = 'Tele-Verified';
   static String physicalVerified = 'Physical-Verified';
 
-  static String active = 'Non-Verified';
-  static String rejected = 'Tele-Verified';
+  static String active = 'Active';
+  static String rejected = 'Rejected';
   static String convertedToSite = 'Converted to site';
   static String duplicate = 'Duplicate';
+  static String futureOpportunity = 'Future Opportunity';
   static String empty = 'Empty';
 
 

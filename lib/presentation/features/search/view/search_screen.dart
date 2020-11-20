@@ -85,14 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
           ),
-          new Expanded(
-              child: controller.text.length >= 3 && controller.text.isNotEmpty
-                  ? new Container(
-                      child: Text("Length is greater"),
-                    )
-                  : new Container(
-                      child: Text("Search in the Leads"),
-                    )),
+          new Expanded(child: leadsDetailWidget()),
         ],
       ),
     ));
@@ -114,7 +107,7 @@ class _SearchScreenState extends State<SearchScreen> {
             : (_leadsFilterController.leadsListResponse.leadsEntity == null)
                 ? Container(
                     child: Center(
-                      child: Text("Leads list is empty!!"),
+                      child: Text("Search results is empty!!"),
                     ),
                   )
                 : (_leadsFilterController
@@ -225,7 +218,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                             .withOpacity(0.1),
                                                     label: Obx(
                                                       () => Text(
-                                                        "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadStageId}",
+                                                        "${((_leadsFilterController.leadsListResponse.leadsEntity[index].leadStageId) == "1") ? "Active" : "Rejected"}",
                                                         style: TextStyle(
                                                             color: HexColor(
                                                                 "#6200EE"),
@@ -388,6 +381,7 @@ class _SearchScreenState extends State<SearchScreen> {
     LeadsFilterController _leadsFilterController = Get.find();
     if (controller.text.length >= 3) {
       print('Hello');
+      _leadsFilterController.searchKey = text;
       _leadsFilterController.getAccessKey(RequestIds.SEARCH_LEADS);
     }
   }
