@@ -644,14 +644,16 @@ class _LeadScreenState extends State<LeadScreen> {
                         // itemExtent: 125.0,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               Navigator.push(
-                                       context,
-                                      new CupertinoPageRoute(
-                                          builder: (BuildContext context) =>
-                                             ViewLeadScreen(_leadsFilterController.leadsListResponse.leadsEntity[index].leadId)));
-                            }
-                            ,
+                                  context,
+                                  new CupertinoPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ViewLeadScreen(_leadsFilterController
+                                              .leadsListResponse
+                                              .leadsEntity[index]
+                                              .leadId)));
+                            },
                             child: Card(
                               clipBehavior: Clip.antiAlias,
                               borderOnForeground: true,
@@ -663,7 +665,11 @@ class _LeadScreenState extends State<LeadScreen> {
                                 decoration: BoxDecoration(
                                   border: Border(
                                       left: BorderSide(
-                                    color: !list[index].verifiedStatus
+                                    color: (_leadsFilterController
+                                                .leadsListResponse
+                                                .leadsEntity[index]
+                                                .leadStageId ==
+                                            1)
                                         ? HexColor("#F9A61A")
                                         : HexColor("#007CBF"),
                                     width: 6,
@@ -757,9 +763,11 @@ class _LeadScreenState extends State<LeadScreen> {
                                                               color: HexColor(
                                                                   "#39B54A"),
                                                               fontSize: 10,
-                                                              fontFamily: "Muli",
+                                                              fontFamily:
+                                                                  "Muli",
                                                               fontWeight:
-                                                                  FontWeight.bold
+                                                                  FontWeight
+                                                                      .bold
                                                               //fontWeight: FontWeight.normal
                                                               ),
                                                         ),
@@ -770,7 +778,13 @@ class _LeadScreenState extends State<LeadScreen> {
                                                     padding: EdgeInsets.only(
                                                         left: 10.0),
                                                     child: Text(
-                                                      list[index].date,
+                                                      " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
+                                                        _leadsFilterController
+                                                                .leadsListResponse
+                                                                .leadsEntity[
+                                                                    index]
+                                                                .createdOn,
+                                                      ))}",
                                                       //  textAlign: TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 13,
@@ -1196,7 +1210,7 @@ class _LeadScreenState extends State<LeadScreen> {
         ));
   }
 
-  /*Widget returnLeadStageBody() {
+  Widget returnLeadStageBody() {
     return Container(
         padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
         child: Column(
@@ -1254,9 +1268,9 @@ class _LeadScreenState extends State<LeadScreen> {
                 )),
           ],
         ));
-  }*/
+  }
 
-  Widget returnLeadStageBody() {
+  /*Widget returnLeadStageBody() {
     return Obx(
       () => (_splashController == null)
           ? Container(
@@ -1283,11 +1297,11 @@ class _LeadScreenState extends State<LeadScreen> {
                             child: Text("You don't have any lead stages..!!"),
                           ),
                         )
-                      : /*Container(
+                      : */ /*Container(
                         child: Center(
                             child: Text(
                                 "You can continue with lead stages.."
-                                    "\n${_splashController.splashDataModel.leadStageEntity.length}!!") ))*/
+                                    "\n${_splashController.splashDataModel.leadStageEntity.length}!!") ))*/ /*
 
                       Expanded(
                           child: ListView.builder(
@@ -1335,7 +1349,7 @@ class _LeadScreenState extends State<LeadScreen> {
                               }),
                         ),
     );
-  }
+  }*/
 
   Widget returnLeadStatusBody() {
     return Container(
