@@ -1,7 +1,6 @@
 class ViewLeadDataResponse {
   String respCode;
   String respMsg;
-  List<SiteSubTypeEntity> siteSubTypeEntity;
   List<LeadStageEntity> leadStageEntity;
   List<LeadStatusEntity> leadStatusEntity;
   List<LeadInfluencerEntity> leadInfluencerEntity;
@@ -16,7 +15,6 @@ class ViewLeadDataResponse {
   ViewLeadDataResponse(
       {this.respCode,
         this.respMsg,
-        this.siteSubTypeEntity,
         this.leadStageEntity,
         this.leadStatusEntity,
         this.leadInfluencerEntity,
@@ -31,12 +29,6 @@ class ViewLeadDataResponse {
   ViewLeadDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
-    if (json['siteSubTypeEntity'] != null) {
-      siteSubTypeEntity = new List<SiteSubTypeEntity>();
-      json['siteSubTypeEntity'].forEach((v) {
-        siteSubTypeEntity.add(new SiteSubTypeEntity.fromJson(v));
-      });
-    }
     if (json['leadStageEntity'] != null) {
       leadStageEntity = new List<LeadStageEntity>();
       json['leadStageEntity'].forEach((v) {
@@ -100,10 +92,6 @@ class ViewLeadDataResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
-    if (this.siteSubTypeEntity != null) {
-      data['siteSubTypeEntity'] =
-          this.siteSubTypeEntity.map((v) => v.toJson()).toList();
-    }
     if (this.leadStageEntity != null) {
       data['leadStageEntity'] =
           this.leadStageEntity.map((v) => v.toJson()).toList();
@@ -142,25 +130,6 @@ class ViewLeadDataResponse {
     if (this.dealerList != null) {
       data['dealerList'] = this.dealerList.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class SiteSubTypeEntity {
-  int siteSubId;
-  String siteSubTypeDesc;
-
-  SiteSubTypeEntity({this.siteSubId, this.siteSubTypeDesc});
-
-  SiteSubTypeEntity.fromJson(Map<String, dynamic> json) {
-    siteSubId = json['siteSubId'];
-    siteSubTypeDesc = json['siteSubTypeDesc'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['siteSubId'] = this.siteSubId;
-    data['siteSubTypeDesc'] = this.siteSubTypeDesc;
     return data;
   }
 }
@@ -210,8 +179,8 @@ class LeadInfluencerEntity {
   String isDelete;
   String createdBy;
   int createdOn;
-  String updatedBy;
-  String updatedOn;
+  Null updatedBy;
+  Null updatedOn;
 
   LeadInfluencerEntity(
       {this.id,
@@ -244,43 +213,6 @@ class LeadInfluencerEntity {
     data['createdOn'] = this.createdOn;
     data['updatedBy'] = this.updatedBy;
     data['updatedOn'] = this.updatedOn;
-    return data;
-  }
-}
-
-class LeadcommentsEnitiy {
-  int id;
-  int leadId;
-  String commentText;
-  String creatorName;
-  String createdBy;
-  int createdOn;
-
-  LeadcommentsEnitiy(
-      {this.id,
-        this.leadId,
-        this.commentText,
-        this.creatorName,
-        this.createdBy,
-        this.createdOn});
-
-  LeadcommentsEnitiy.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    leadId = json['leadId'];
-    commentText = json['commentText'];
-    creatorName = json['creatorName'];
-    createdBy = json['createdBy'];
-    createdOn = json['createdOn'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['leadId'] = this.leadId;
-    data['commentText'] = this.commentText;
-    data['creatorName'] = this.creatorName;
-    data['createdBy'] = this.createdBy;
-    data['createdOn'] = this.createdOn;
     return data;
   }
 }
@@ -397,7 +329,7 @@ class LeadsEntity {
   int leadId;
   String leadSegment;
   String assignedTo;
-  int siteSubTypeId;
+  Null siteSubTypeId;
   int leadStatusId;
   int leadStageId;
   String contactName;
@@ -412,20 +344,20 @@ class LeadsEntity {
   String leadTalukName;
   String leadSitePotentialMt;
   String leadReraNumber;
-  String leadRejectReason;
+  Null leadRejectReason;
   String leadIsDuplicate;
-  String leadOriginalId;
-  String siteConverted;
+  Null leadOriginalId;
+  Null siteConverted;
   String createdBy;
   int createdOn;
-  String updatedBy;
-  String updatedOn;
-  String assignDate;
+  Null updatedBy;
+  Null updatedOn;
+  Null assignDate;
   String rejectionComment;
   String leadscol;
-  String nextDateCconstruction;
+  Null nextDateCconstruction;
   String nextStageConstruction;
-  String siteDealerId;
+  Null siteDealerId;
 
   LeadsEntity(
       {this.leadId,
@@ -535,7 +467,7 @@ class LeadsEntity {
 }
 
 class DealerList {
-  int dealerId;
+  String dealerId;
   String dealerName;
 
   DealerList({this.dealerId, this.dealerName});
@@ -549,6 +481,43 @@ class DealerList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['dealerId'] = this.dealerId;
     data['dealerName'] = this.dealerName;
+    return data;
+  }
+}
+
+class LeadcommentsEnitiy {
+  int id;
+  int leadId;
+  String commentText;
+  String creatorName;
+  String createdBy;
+  int createdOn;
+
+  LeadcommentsEnitiy(
+      {this.id,
+        this.leadId,
+        this.commentText,
+        this.creatorName,
+        this.createdBy,
+        this.createdOn});
+
+  LeadcommentsEnitiy.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    leadId = json['leadId'];
+    commentText = json['commentText'];
+    creatorName = json['creatorName'];
+    createdBy = json['createdBy'];
+    createdOn = json['createdOn'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['leadId'] = this.leadId;
+    data['commentText'] = this.commentText;
+    data['creatorName'] = this.creatorName;
+    data['createdBy'] = this.createdBy;
+    data['createdOn'] = this.createdOn;
     return data;
   }
 }

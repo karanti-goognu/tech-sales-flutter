@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart' as initmodel;
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:path/path.dart';
 import 'package:flutter/cupertino.dart';
@@ -94,11 +95,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   Position _currentPosition;
   String _currentAddress;
   List<LeadStatusEntity> leadStatusEntity = new List();
-  List<SiteSubTypeEntity> siteSubTypeEntity = [
-    new SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
-    new SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
-    new SiteSubTypeEntity(siteSubId: 3, siteSubTypeDesc: "Multi-Storey"),
-  ];
+  // List<initmodel.SiteSubTypeEntity> siteSubTypeEntity = [
+  //   new initmodel.SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
+  //   new initmodel.SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
+  //   new initmodel.SiteSubTypeEntity(siteSubId: 3, siteSubTypeDesc: "Multi-Storey"),
+  // ];
   List<InfluencerTypeEntity> influencerTypeEntity;
 
   List<InfluencerCategoryEntity> influencerCategoryEntity;
@@ -122,7 +123,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       await _addLeadsController
           .getLeadData(accessKeyModel.accessKey, widget.leadId)
           .then((data) {
-        // print(data);
+            print("here");
+         print(data);
         viewLeadDataResponse = data;
 
         print(viewLeadDataResponse);
@@ -161,7 +163,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
             }
           }
-          siteSubTypeEntity = viewLeadDataResponse.siteSubTypeEntity;
+          //siteSubTypeEntity = viewLeadDataResponse.siteSubTypeEntity;
           influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
           influencerCategoryEntity =
               viewLeadDataResponse.influencerCategoryEntity;
@@ -416,7 +418,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "ID: " + gv.selectedLeadID,
+                            "ID: " + widget.leadId.toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
