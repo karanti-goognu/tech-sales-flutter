@@ -241,7 +241,7 @@ class MyApiClientLeads {
       gv.currentId = empId;
 
       var uploadImageWithLeadModel = {
-        'leadSegment': "abc",
+        'leadSegment': "TRADE",
         'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId),
         'assignedTo': empId,
         'leadStatusId': 1,
