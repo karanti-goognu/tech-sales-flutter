@@ -10,6 +10,8 @@ abstract class UrlConstants {
   //static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
   static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
 
+  static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
+
   //End points
   static const String loginCheck = '$baseUrl/login/login-otp';
   static const String getAccessKey = '$baseUrl/validation/generate-access-key';
@@ -22,5 +24,7 @@ abstract class UrlConstants {
   static const String getInflData = '$baseUrl/influencer/getDetails';
   static const String saveLeadsData = '$baseUrl/leads/lead-save';
   static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';
+  static const String getLeadData = '$baseUrl/leads/view-lead?leadId=';
+
   static const String getSearchData = '$baseUrl/leads/lead-search?referenceID=';
 }

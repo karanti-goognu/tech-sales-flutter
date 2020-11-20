@@ -1,4 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InfluencerDetail {
   InfluencerDetail({
@@ -11,7 +14,8 @@ class InfluencerDetail {
     this.createdOn,
     this.isExpanded,
     this.inflCatValue,
-    this.inflTypeValue
+    this.inflTypeValue,
+    this.createdBy
   });
 
   var id = TextEditingController();
@@ -23,6 +27,7 @@ class InfluencerDetail {
   var inflCatValue= TextEditingController();
   var ilpIntrested= TextEditingController();
   var createdOn= TextEditingController();
+  String createdBy;
   bool isExpanded;
 
 
@@ -39,16 +44,22 @@ class InfluencerDetail {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['inflId'] = this.id.text;
-    // data['inflName'] = this.inflName.text;
-    // data['inflContact'] = this.inflContact.text;
-    // data['inflTypeId'] = this.inflTypeId.text;
-    // data['inflCatId'] = this.inflCatId.text;
-    // data['ilpIntrested'] = this.ilpIntrested.text;
-    // data['createdOn'] = this.createdOn.text.toString();
 
-    return data;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+
+      data['inflId'] = int.parse(this.id.text);
+      // data['inflName'] = this.inflName.text;
+      // data['inflContact'] = this.inflContact.text;
+      // data['inflTypeId'] = this.inflTypeId.text;
+      // data['inflCatId'] = this.inflCatId.text;
+      // data['ilpIntrested'] = this.ilpIntrested.text;
+      // data['createdOn'] = this.createdOn.text.toString();
+      data['createdBy'] = this.createdBy;
+      data[ 'isDelete'] = 'N';
+      return data;
+
+
   }
 
 }

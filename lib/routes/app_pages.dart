@@ -4,8 +4,10 @@ import 'package:flutter_tech_sales/bindings/leads__filter_binding.dart';
 import 'package:flutter_tech_sales/bindings/login_binding.dart';
 import 'package:flutter_tech_sales/bindings/search_binding.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
+import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewOldLeadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
@@ -43,5 +45,9 @@ class AppPages {
         name: Routes.ADD_LEADS_SCREEN,
         page: () => AddNewLeadForm(),
         binding: AddLeadsBinding()),
+    GetPage(
+        name: Routes.VIEW_OLD_LEAD_SCREEN,
+        page: () => ViewOldLeadScree(),
+        binding: ViewOldLeadsBinding()),
   ];
 }

@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
 import 'package:meta/meta.dart';
@@ -40,8 +41,13 @@ class MyRepositoryLeads {
     return apiClient.getInflDetailsData(accessKey,userSecurityKey,phoneNumber);
   }
 
-  saveLeadsData(accessKey, String userSecurityKey, SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
+  saveLeadsData(accessKey, String userSecurityKey, SaveLeadRequestModel saveLeadRequestModel, List<File> imageList, BuildContext context) {
 
-    return apiClient.saveLeadsData(accessKey,userSecurityKey,saveLeadRequestModel);
+    return apiClient.saveLeadsData(accessKey,userSecurityKey,saveLeadRequestModel ,imageList,context);
+  }
+
+  getLeadData(String accessKey, String userSecurityKey, int leadId) {
+    return apiClient.getLeadData(accessKey,userSecurityKey,leadId);
+
   }
 }

@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:path/path.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
+//import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
@@ -24,22 +25,27 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
-class AddNewLeadForm extends StatefulWidget {
+class ViewLeadScreen extends StatefulWidget {
+  int leadId;
+  ViewLeadScreen(this.leadId);
+
   @override
-  _AddNewLeadFormState createState() => _AddNewLeadFormState();
+  _ViewLeadScreenState createState() => _ViewLeadScreenState();
 }
 
-class _AddNewLeadFormState extends State<AddNewLeadForm> {
+class _ViewLeadScreenState extends State<ViewLeadScreen> {
   final _formKey = GlobalKey<FormState>();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
   LocationResult _pickedLocation;
   var txt = TextEditingController();
-  SiteSubTypeEntity _selectedValue;
-  String _contactName;
-  String _contactNumber;
+  LeadStatusEntity _selectedValue;
+  var _contactName = TextEditingController();
+  var _contactNumber = TextEditingController();
   String _comment;
+  String labelText;
   var _siteAddress = TextEditingController();
   var _pincode = TextEditingController();
   var _state = TextEditingController();
@@ -51,14 +57,20 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   var _influencerName = TextEditingController();
   var _influencerType = TextEditingController();
   var _influencerCategory = TextEditingController();
-  String geoTagType;
+  var geoTagType = TextEditingController();
+  var leadCreatedBy;
+  bool isEditable = false;
 
   var _totalBags = TextEditingController();
   var _totalMT = TextEditingController();
   List<File> _imageList = new List();
   List<ListLeadImage> listLeadImage = new List<ListLeadImage>();
+  List<LeadphotosEntity> listLeadImagePhoto = new List<LeadphotosEntity>();
   List<CommentsDetail> _commentsList = new List();
+  List<LeadcommentsEnitiy> _commentsListEntity = new List();
   List<CommentsDetail> _commentsListNew = new List();
+  List<LeadStageEntity> leadStageEntity = new List();
+  LeadStageEntity leadStageVal = new LeadStageEntity();
   bool viewMoreActive = false;
 
   List<String> _items = new List(); // to store comments
@@ -77,12 +89,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   }
 
   List<Item> _data = generateItems(1);
-  List<InfluencerDetail> _listInfluencerDetail = [
-    new InfluencerDetail(isExpanded: true)
-  ];
+  List<InfluencerDetail> _listInfluencerDetail = new List();
+  List<InfluencerEntity> _listInfluencerEntity = new List();
   Position _currentPosition;
   String _currentAddress;
-
+  List<LeadStatusEntity> leadStatusEntity = new List();
   List<SiteSubTypeEntity> siteSubTypeEntity = [
     new SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
     new SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
@@ -96,32 +107,152 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _addLeadsController = Get.find();
-    getInitialData();
+    getLeadData();
   }
 
-  getInitialData() {
-    AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
+  getLeadData() {
+    // AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
+    ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     _addLeadsController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
       print("AccessKey :: " + accessKeyModel.accessKey);
       await _addLeadsController
-          .getAddLeadsData(accessKeyModel.accessKey)
+          .getLeadData(accessKeyModel.accessKey, widget.leadId)
           .then((data) {
-        addLeadInitialModel = data;
+        // print(data);
+        viewLeadDataResponse = data;
+
+        print(viewLeadDataResponse);
+
         setState(() {
-          siteSubTypeEntity = addLeadInitialModel.siteSubTypeEntity;
-          influencerTypeEntity = addLeadInitialModel.influencerTypeEntity;
+          leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
+          LeadStatusEntity list;
+          for (int i = 0; i < leadStatusEntity.length; i++) {
+            if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
+                leadStatusEntity[i].id.toString()) {
+              labelText = leadStatusEntity[i].leadStatusDesc;
+              list = new LeadStatusEntity(
+                  id: leadStatusEntity[i].id,
+                  leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
+
+              print(labelText);
+              // _selectedValue.id = leadStatusEntity[i].id;
+              // _selectedValue.leadStatusDesc = leadStatusEntity[i].leadStatusDesc;
+
+            }
+          }
+
+          leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
+          leadStageEntity = viewLeadDataResponse.leadStageEntity;
+
+          for (int i = 0; i < leadStageEntity.length; i++) {
+            if (viewLeadDataResponse.leadsEntity.leadStageId.toString() ==
+                leadStageEntity[i].id.toString()) {
+
+              leadStageVal.id = leadStageEntity[i].id;
+              leadStageVal.leadStageDesc =  leadStageEntity[i].leadStageDesc;
+
+
+              // _selectedValue.id = leadStatusEntity[i].id;
+              // _selectedValue.leadStatusDesc = leadStatusEntity[i].leadStatusDesc;
+
+            }
+          }
+          siteSubTypeEntity = viewLeadDataResponse.siteSubTypeEntity;
+          influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
           influencerCategoryEntity =
-              addLeadInitialModel.influencerCategoryEntity;
+              viewLeadDataResponse.influencerCategoryEntity;
+          _contactName.text = viewLeadDataResponse.leadsEntity.contactName;
+          _contactNumber.text = viewLeadDataResponse.leadsEntity.contactNumber;
+          geoTagType.text = viewLeadDataResponse.leadsEntity.geotagType;
+          _siteAddress.text = viewLeadDataResponse.leadsEntity.leadAddress;
+          _pincode.text = viewLeadDataResponse.leadsEntity.leadPincode;
+          _state.text = viewLeadDataResponse.leadsEntity.leadStateName;
+          _district.text = viewLeadDataResponse.leadsEntity.leadDistrictName;
+          _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
+          _currentPosition = new Position(
+              latitude:
+                  double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
+              longitude:
+                  double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
+          listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
+          for (int i = 0; i < listLeadImagePhoto.length; i++) {
+            File file = new File(UrlConstants.baseUrlforImages +
+                "/" +
+                listLeadImagePhoto[i].photoName);
+            _imageList.add(file);
+          }
+
+          influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+          influencerCategoryEntity =
+              viewLeadDataResponse.influencerCategoryEntity;
+
+          _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
+
+          for (int i = 0; i < _listInfluencerEntity.length; i++) {
+            InfluencerDetail inflDetail = new InfluencerDetail(
+                id: new TextEditingController(
+                    text: _listInfluencerEntity[i].id.toString()),
+                inflName: new TextEditingController(
+                    text: _listInfluencerEntity[i].inflName.toString()),
+                inflContact: new TextEditingController(
+                    text: _listInfluencerEntity[i].inflContact.toString()),
+                inflTypeId: new TextEditingController(
+                    text: _listInfluencerEntity[i].inflTypeId.toString()),
+                // inflTypeValue: new TextEditingController(text: influencerTypeEntity[_listInfluencerEntity[i].inflTypeId-1].inflTypeDesc),
+                inflCatId: new TextEditingController(
+                    text: _listInfluencerEntity[i].inflCatId.toString()),
+                // inflCatValue:  new TextEditingController(text: influencerCategoryEntity[_listInfluencerEntity[i].inflCatId-1].inflCatDesc),
+                ilpIntrested: new TextEditingController(
+                    text: _listInfluencerEntity[i].ilpIntrested.toString()),
+                createdOn: new TextEditingController(
+                    text: _listInfluencerEntity[i].createdOn.toString()),
+                isExpanded: false);
+            for (int j = 0; j < influencerTypeEntity.length; j++) {
+              if (influencerTypeEntity[j].inflTypeId.toString() ==
+                  inflDetail.inflTypeId.text.toString()) {
+                inflDetail.inflTypeValue = new TextEditingController(
+                    text: influencerTypeEntity[j].inflTypeDesc);
+                break;
+              }
+            }
+            for (int j = 0; j < influencerCategoryEntity.length; j++) {
+              if (influencerCategoryEntity[j].inflCatId.toString() ==
+                  inflDetail.inflCatId.text.toString()) {
+                inflDetail.inflCatValue = new TextEditingController(
+                    text: influencerCategoryEntity[j].inflCatDesc);
+                break;
+              }
+            }
+
+            _listInfluencerDetail.add(inflDetail);
+          }
+          _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
+          for (int i = 0; i < _commentsListEntity.length; i++) {
+            _commentsList.add(new CommentsDetail(
+              creatorName: _commentsListEntity[i].creatorName,
+              //commentedAt: _commentsListEntity[i].createdOn,
+              commentedBy: _commentsListEntity[i].createdBy,
+              commentText: _commentsListEntity[i].commentText,
+            ));
+          }
+          _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
+          _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
+          _totalBags.text = (int.parse(_totalMT.text) * 20).toString();
+
+          // _totalBags.text = viewLeadDataResponse.
+
           //  print(influencerCategoryEntity[0].inflCatDesc);
         });
       });
-
-      Get.back();
+      // Future.delayed(
+      //     Duration.zero,
+      //         () => Get.dialog(Center(),
+      //         barrierDismissible: false));
+      //  Get.back();
     });
   }
 
@@ -130,38 +261,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   // titleSpacing: 50,
-      //   // leading: new Container(),
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   toolbarHeight: 90,
-      //   centerTitle: false,
-      //   title: Column(
-      //     mainAxisAlignment: MainAxisAlignment.start,
-      //     children: [
-      //       Row(
-      //         // mainAxisSize: MainAxisSize.max,
-      //         // crossAxisAlignment: CrossAxisAlignment.center,
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //         children: [
-      //           Text(
-      //             "Add a new Trade lead",
-      //             style: TextStyle(
-      //                 fontWeight: FontWeight.normal,
-      //                 fontSize: 22,
-      //                 color: HexColor("#006838"),
-      //                 fontFamily: "Muli"),
-      //           ),
-      //         ],
-      //       ),
-      //
-      //
-      //     ],
-      //   ),
-      //   automaticallyImplyLeading: false,
-      //
-      // ),
       floatingActionButton: Container(
         height: 68.0,
         width: 68.0,
@@ -268,7 +367,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           ),
         ),
       ),
-
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -295,16 +393,122 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20.0, bottom: 10, left: 5),
+                          child: Text(
+                            "Trade lead",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 25,
+                                color: HexColor("#006838"),
+                                fontFamily: "Muli"),
+                          ),
+                        ),
+                      ],
+                    ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 30.0, bottom: 20, left: 5),
-                      child: Text(
-                        "Add a new Trade lead",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 25,
-                            color: HexColor("#006838"),
-                            fontFamily: "Muli"),
+                      padding: const EdgeInsets.only(bottom: 20, left: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "ID: " + gv.selectedLeadID,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              //color: HexColor("#006838"),
+                              fontFamily: "Muli",
+                            ),
+                          ),
+                          SizedBox(width: 50),
+                          Expanded(
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 1.0, right: 1.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Colors.white,
+                                  //border: Border.all()
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey[500],
+                                        offset: Offset(5.0, 5.0),
+                                        blurRadius: 10.0,
+                                        spreadRadius: 4.0)
+                                  ]),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  // elevation: 100,
+
+                                  value: _selectedValue,
+                                  items: leadStatusEntity
+                                      .map((label) => DropdownMenuItem(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
+                                              child: Text(
+                                                label.leadStatusDesc,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: ColorConstants
+                                                        .inputBoxHintColor,
+                                                    fontFamily: "Muli"),
+                                              ),
+                                            ),
+                                            value: label,
+                                          ))
+                                      .toList(),
+                                  //  elevation: 0,
+                                  iconSize: 40,
+                                  hint: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: (labelText != null)
+                                        ? Text(labelText)
+                                        : Text(""),
+                                  ),
+
+                                  // hint: Text('Rating'),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedValue = value;
+                                      Get.dialog(CustomDialogs()
+                                          .errorDialog("Coming Soon !!"));
+                                    });
+                                  },
+
+                                  // decoration: InputDecoration(
+                                  //   focusedBorder: OutlineInputBorder(
+                                  //     borderSide: BorderSide(
+                                  //         color: ColorConstants.backgroundColorBlue,
+                                  //         //color: HexColor("#0000001F"),
+                                  //         width: 0),
+                                  //   ),
+                                  //   enabledBorder: InputBorder.none,
+                                  //   errorBorder: OutlineInputBorder(
+                                  //     borderSide:
+                                  //         BorderSide(color: Colors.red, width: 0),
+                                  //   ),
+                                  //   // labelText: "Site Subtype",
+                                  //   // filled: false,
+                                  //   hintText: labelText,
+                                  //   focusColor: Colors.black,
+                                  //   isDense: true,
+                                  //   labelStyle: TextStyle(
+                                  //       fontFamily: "Muli",
+                                  //       color: ColorConstants.inputBoxHintColorDark,
+                                  //       fontWeight: FontWeight.normal,
+                                  //       fontSize: 16.0),
+                                  //   fillColor: ColorConstants.backgroundColor,
+                                  // ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
 
@@ -356,10 +560,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     //   ),
                     // ),
 
-                    SizedBox(height: 16),
+                    //  SizedBox(height: 16),
 
                     TextFormField(
-                      initialValue: _contactName,
+                      controller: _contactName,
                       // validator: (value) {
                       //   if (value.isEmpty) {
                       //     return "Contact Name can't be empty";
@@ -368,9 +572,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       //   return null;
                       // },
                       onChanged: (data) {
-                        setState(() {
-                          _contactName = data;
-                        });
+                        // setState(() {
+                        //   _contactName.text = data;
+                        // });
                       },
                       style: TextStyle(
                           fontSize: 18,
@@ -405,7 +609,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     ),
                     SizedBox(height: 16),
                     TextFormField(
-                      initialValue: _contactNumber,
+                      controller: _contactNumber,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter contact number ';
@@ -416,9 +620,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         return null;
                       },
                       onChanged: (data) {
-                        setState(() {
-                          _contactNumber = data;
-                        });
+                        // setState(() {
+                        //   _contactNumber.text = data;
+                        // });
                       },
                       style: TextStyle(
                           fontSize: 18,
@@ -504,7 +708,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                           onPressed: () {
                             setState(() {
-                              geoTagType = "A";
+                              geoTagType.text = "A";
                             });
                             _getCurrentLocation();
                           },
@@ -537,7 +741,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                           onPressed: () async {
                             setState(() {
-                              geoTagType = "M";
+                              geoTagType.text = "M";
                             });
                             LocationResult result = await showLocationPicker(
                               context,
@@ -924,6 +1128,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             children: [
                               Expanded(
                                 child: ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: _imageList.length,
                                     itemBuilder:
@@ -937,8 +1142,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   content: new Container(
                                                     // width: 500,
                                                     // height: 500,
-                                                    child: Image.file(
-                                                        _imageList[index]),
+                                                    child: Image.network(
+                                                        _imageList[index].path),
                                                   ),
                                                 );
                                               });
@@ -1189,30 +1394,25 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                         maxLength: 10,
                                         onChanged: (value) async {
                                           bool match = false;
-                                          if(value.length <10){
+                                          if (value.length < 10) {
                                             // _listInfluencerDetail[
                                             // index]
                                             //     .inflContact
                                             //     .clear();
-                                            if( _listInfluencerDetail[
-                                            index]
-                                                .inflName != null){
-                                              _listInfluencerDetail[
-                                              index]
+                                            if (_listInfluencerDetail[index]
+                                                    .inflName !=
+                                                null) {
+                                              _listInfluencerDetail[index]
                                                   .inflName
                                                   .clear();
-                                              _listInfluencerDetail[
-                                              index]
+                                              _listInfluencerDetail[index]
                                                   .inflTypeValue
                                                   .clear();
-                                              _listInfluencerDetail[
-                                              index]
+                                              _listInfluencerDetail[index]
                                                   .inflCatValue
                                                   .clear();
                                             }
-
-                                          }
-                                          else if (value.length == 10) {
+                                          } else if (value.length == 10) {
                                             var bodyEncrypted = {
                                               //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
                                               "inflContact": value
@@ -1234,7 +1434,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             }
 
                                             if (match) {
-                                              Get.dialog(CustomDialogs().errorDialog("Already added influencer : " +value ));
+                                              Get.dialog(CustomDialogs()
+                                                  .errorDialog(
+                                                      "Already added influencer : " +
+                                                          value));
                                             } else {
                                               String empId;
                                               String mobileNumber;
@@ -1669,22 +1872,22 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                         ),
                         onPressed: () async {
-                        // //  print(_listInfluencerDetail[
-                        //   _listInfluencerDetail.length - 1]
-                        //       .inflName);
+                          // //  print(_listInfluencerDetail[
+                          //   _listInfluencerDetail.length - 1]
+                          //       .inflName);
                           if (_listInfluencerDetail[
                                           _listInfluencerDetail.length - 1]
-                                      .inflName
-                                       !=
+                                      .inflName !=
                                   null &&
                               _listInfluencerDetail[
                                           _listInfluencerDetail.length - 1]
-                                      .inflName
-                                      !=
-                                  "null" && ! _listInfluencerDetail[
-                          _listInfluencerDetail.length - 1]
-                              .inflName.text.isNullOrBlank
-                              ) {
+                                      .inflName !=
+                                  "null" &&
+                              !_listInfluencerDetail[
+                                      _listInfluencerDetail.length - 1]
+                                  .inflName
+                                  .text
+                                  .isNullOrBlank) {
                             InfluencerDetail infl =
                                 new InfluencerDetail(isExpanded: true);
 
@@ -1700,8 +1903,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           } else {
                             print(
                                 "Error : Please fill previous influencer first");
-                            Get.dialog(CustomDialogs()
-                                .errorDialog("Please fill previous influencer first"));
+                            Get.dialog(CustomDialogs().errorDialog(
+                                "Please fill previous influencer first"));
                           }
                         },
                       ),
@@ -1912,7 +2115,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     TextFormField(
                       maxLines: 4,
                       maxLength: 500,
-                     // initialValue: _comments.text,
+                      // initialValue: _comments.text,
                       controller: _comments,
 
                       // validator: (value) {
@@ -2172,166 +2375,165 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     ),
 
                     SizedBox(height: 35),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FlatButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0),
-                              side: BorderSide(color: Colors.black26)),
-                          color: Colors.transparent,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 5, bottom: 8, top: 5),
-                            child: Text(
-                              "SAVE AND CLOSE",
-                              style: TextStyle(
-                                  color: HexColor("#1C99D4"),
-                                  fontWeight: FontWeight.bold,
-                                  // letterSpacing: 2,
-                                  fontSize: 17),
+
+                    Center(
+                      child: RaisedButton(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
                             ),
-                          ),
-                          onPressed: () async {},
-                        ),
-                        RaisedButton(
-                          color: HexColor("#1C99D4"),
+                        color: HexColor("#1C99D4"),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 5, bottom: 10, top: 10),
                           child: Text(
-                            "SUBMIT",
+                            "MOVE TO NEXT STAGE",
+
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                // letterSpacing: 2,
+
+                                 letterSpacing: 1,
                                 fontSize: 17),
                           ),
-                          onPressed: () async {
-                            //print(_comments.text);
-                            if (_comments.text != null &&
-                                _comments.text != '') {
-                              // print(_comments.text);
-                              print("here");
-                              setState(() {
-                                String empId;
-                                String mobileNumber;
-                                String name;
-                                Future<SharedPreferences> _prefs =
-                                    SharedPreferences.getInstance();
-                                _prefs.then((SharedPreferences prefs) async {
-                                  empId = prefs.getString(
-                                          StringConstants.employeeId) ??
-                                      "empty";
-                                  mobileNumber = prefs.getString(
-                                          StringConstants.mobileNumber) ??
-                                      "empty";
-                                  name = prefs.getString(
-                                          StringConstants.employeeName) ??
-                                      "empty";
-                               //   print("DHAWAM " + _comments.text);
-                                  await _commentsListNew.add(
-                                    new CommentsDetail(
-                                        commentedBy: empId,
-                                        commentText: _comments.text,
-                                        commentedAt: DateTime.now(),
-                                        creatorName: name),
-                                  );
-                                 // print("DHAWAM " + _commentsListNew[0].commentText);
-
-
-                                  if(_listInfluencerDetail[
-                                  _listInfluencerDetail.length - 1]
-                                      .inflName
-                                      ==
-                                      null ||
-                                      _listInfluencerDetail[
-                                      _listInfluencerDetail.length - 1]
-                                          .inflName
-                                          ==
-                                          "null" ||  _listInfluencerDetail[
-                                  _listInfluencerDetail.length - 1]
-                                      .inflName.text.isNullOrBlank){
-                                    print("here1234");
-                                    _listInfluencerDetail.removeAt(_listInfluencerDetail.length-1);
-                                  }
-
-                                  SaveLeadRequestModel saveLeadRequestModel =
-                                  new SaveLeadRequestModel(
-                                      siteSubTypeId: "2",
-                                      contactName: _contactName,
-                                      contactNumber: _contactNumber,
-                                      geotagType: geoTagType,
-                                      leadLatitude:
-                                      _currentPosition.latitude.toString(),
-                                      leadLongitude:
-                                      _currentPosition.longitude.toString(),
-                                      leadAddress: _siteAddress.text,
-                                      leadPincode: _pincode.text,
-                                      leadStateName: _state.text,
-                                      leadDistrictName: _district.text,
-                                      leadTalukName: _taluk.text,
-                                      leadSalesPotentialMt: _totalMT.text,
-                                      leadReraNumber: _rera.text,
-                                      isStatus: "false",
-                                      listLeadImage: listLeadImage,
-                                      influencerList: _listInfluencerDetail,
-                                      comments: _commentsListNew);
-
-
-
-                                  _addLeadsController.getAccessKeyAndSaveLead(
-                                      saveLeadRequestModel, _imageList ,context);
-                                  _commentsListNew = new List();
-
-
-
-                                });
-
-                                //  _comments.clear();
-                              });
-                            }
-
-
-                          },
                         ),
-                      ],
+                        onPressed: () async {
+                          nextStageModalBottomSheet(context);
+                        },
+                      ),
                     ),
-                    // Column(children: [
-                    //   Row(
-                    //       crossAxisAlignment: CrossAxisAlignment.center,
-                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //       children: <Widget>[
-                    //         Expanded(
-                    //             child: TextField(
-                    //           style: TextStyle(color: Colors.black),
-                    //           controller: myController,
-                    //           maxLines: 5,
-                    //           keyboardType: TextInputType.multiline,
-                    //         )),
-                    //         SizedBox(width: 15),
-                    //         InkWell(
-                    //             onTap: () {
-                    //               _addComment();
-                    //             },
-                    //             child: Icon(Icons.send))
-                    //       ]),
-                    //   SizedBox(height: 10),
-                    //   Row(
-                    //     children: [
-                    //       Expanded(
-                    //         child: ListView.builder(
-                    //             shrinkWrap: true,
-                    //             itemCount: _items.length,
-                    //             itemBuilder: (BuildContext context, int index) {
-                    //               return Text(
-                    //                   "${(index + 1)}. " + _items[index]);
-                    //             }),
+
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     FlatButton(
+                    //       shape: RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(0),
+                    //           side: BorderSide(color: Colors.black26)),
+                    //       color: Colors.transparent,
+                    //       child: Padding(
+                    //         padding: const EdgeInsets.only(
+                    //             right: 5, bottom: 8, top: 5),
+                    //         child: Text(
+                    //           "SAVE AND CLOSE",
+                    //           style: TextStyle(
+                    //               color: HexColor("#1C99D4"),
+                    //               fontWeight: FontWeight.bold,
+                    //               // letterSpacing: 2,
+                    //               fontSize: 17),
+                    //         ),
                     //       ),
-                    //     ],
-                    //   )
-                    // ]),
+                    //       onPressed: () async {},
+                    //     ),
+                    //     RaisedButton(
+                    //       color: HexColor("#1C99D4"),
+                    //       child: Text(
+                    //         "SUBMIT",
+                    //         style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontWeight: FontWeight.bold,
+                    //             // letterSpacing: 2,
+                    //             fontSize: 17),
+                    //       ),
+                    //       onPressed: () async {
+                    //         //print(_comments.text);
+                    //         if (_comments.text != null &&
+                    //             _comments.text != '') {
+                    //           // print(_comments.text);
+                    //           print("here");
+                    //           setState(() {
+                    //             String empId;
+                    //             String mobileNumber;
+                    //             String name;
+                    //             Future<SharedPreferences> _prefs =
+                    //             SharedPreferences.getInstance();
+                    //             _prefs.then((SharedPreferences prefs) async {
+                    //               empId = prefs.getString(
+                    //                   StringConstants.employeeId) ??
+                    //                   "empty";
+                    //               mobileNumber = prefs.getString(
+                    //                   StringConstants.mobileNumber) ??
+                    //                   "empty";
+                    //               name = prefs.getString(
+                    //                   StringConstants.employeeName) ??
+                    //                   "empty";
+                    //               //   print("DHAWAM " + _comments.text);
+                    //               await _commentsListNew.add(
+                    //                 new CommentsDetail(
+                    //                     commentedBy: empId,
+                    //                     commentText: _comments.text,
+                    //                     commentedAt: DateTime.now(),
+                    //                     creatorName: name),
+                    //               );
+                    //               // print("DHAWAM " + _commentsListNew[0].commentText);
+                    //
+                    //
+                    //               if(_listInfluencerDetail[
+                    //               _listInfluencerDetail.length - 1]
+                    //                   .inflName
+                    //                   ==
+                    //                   null ||
+                    //                   _listInfluencerDetail[
+                    //                   _listInfluencerDetail.length - 1]
+                    //                       .inflName
+                    //                       ==
+                    //                       "null" ||  _listInfluencerDetail[
+                    //               _listInfluencerDetail.length - 1]
+                    //                   .inflName.text.isNullOrBlank){
+                    //                 print("here1234");
+                    //                 _listInfluencerDetail.removeAt(_listInfluencerDetail.length-1);
+                    //               }
+                    //
+                    //               SaveLeadRequestModel saveLeadRequestModel =
+                    //               new SaveLeadRequestModel(
+                    //                   siteSubTypeId: "2",
+                    //                   contactName: _contactName.text,
+                    //                   contactNumber: _contactNumber.text,
+                    //                   geotagType: geoTagType.text,
+                    //                   leadLatitude:
+                    //                   _currentPosition.latitude.toString(),
+                    //                   leadLongitude:
+                    //                   _currentPosition.longitude.toString(),
+                    //                   leadAddress: _siteAddress.text,
+                    //                   leadPincode: _pincode.text,
+                    //                   leadStateName: _state.text,
+                    //                   leadDistrictName: _district.text,
+                    //                   leadTalukName: _taluk.text,
+                    //                   leadSalesPotentialMt: _totalMT.text,
+                    //                   leadReraNumber: _rera.text,
+                    //                   isStatus: "false",
+                    //                   listLeadImage: listLeadImage,
+                    //                   influencerList: _listInfluencerDetail,
+                    //                   comments: _commentsListNew);
+                    //
+                    //               print("aaa " + saveLeadRequestModel.comments[0].commentText);
+                    //
+                    //               _addLeadsController.getAccessKeyAndSaveLead(
+                    //                   saveLeadRequestModel, _imageList,context);
+                    //               _commentsListNew = new List();
+                    //
+                    //
+                    //
+                    //             });
+                    //
+                    //             //  _comments.clear();
+                    //           });
+                    //         }
+                    //
+                    //
+                    //       },
+                    //     ),
+                    //   ],
+                    // ),
+                    //
+
                     SizedBox(height: 70),
                   ],
                 ),
               ),
+            ),
+            Container(
+              color: Color.fromRGBO(255, 255, 255, 0.7),
             ),
           ],
         ),
@@ -2467,6 +2669,82 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       }).toList(),
     );
   }
+
+
+  void nextStageModalBottomSheet(context) {
+    print(leadStageEntity.length);
+
+    print(leadStageVal.leadStageDesc);
+    showModalBottomSheet(
+
+        backgroundColor: ColorConstants.lightGeyColor,
+        context: context,
+        builder: (BuildContext buildContext) {
+          return Container(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text("Stages",
+                    style: TextStyle(
+                    fontSize: 30,
+                      fontWeight: FontWeight.bold
+                  ),),
+              SizedBox(
+                height: 30,
+              ),
+              Expanded(
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: leadStageEntity.length,
+                    itemBuilder:
+                        (BuildContext context, int index) {
+                      return  Padding(
+                        padding: const EdgeInsets.only(top:8.0,bottom: 8.0),
+                        child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                      side: BorderSide(color: Colors.black26)),
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          leadStageEntity[index].leadStageDesc,
+                                          style: TextStyle(
+                                              //color: HexColor("#1C99D4"),
+                                              fontWeight: FontWeight.bold,
+                                              // letterSpacing: 2,
+                                              fontSize: 20),
+                                        ),
+                                        (leadStageVal.id == leadStageEntity[index].id)?Icon(Icons.check_circle,
+                                        color: Colors.green,):Icon(Icons.check_circle_outline)
+                                      ],
+                                    ),
+                                  ),
+                                  onPressed: () async {
+
+                                    Get.dialog(
+                                   CustomDialogs().errorDialog("Coming Soon !!"));
+                                  },
+                                ),
+                      );
+                    }),
+              ),
+            
+
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
 }
 
 class Item {
