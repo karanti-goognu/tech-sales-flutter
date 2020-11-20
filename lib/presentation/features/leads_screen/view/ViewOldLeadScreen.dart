@@ -108,11 +108,11 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
     getLeadData();
   }
 
-  getLeadData() {
+  getLeadData() async {
     // AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
     ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
     AccessKeyModel accessKeyModel = new AccessKeyModel();
-    _addLeadsController.getAccessKeyOnly().then((data) async {
+    await _addLeadsController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
       print("AccessKey :: " + accessKeyModel.accessKey);
       await _addLeadsController
@@ -226,7 +226,7 @@ print(labelText);
           }
           _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
           _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
-          _totalBags.text =  (int.parse(_totalMT.text) *20).toString();
+          _totalBags.text =  (double.parse(_totalMT.text) *20).round().toString();
 
 
           // _totalBags.text = viewLeadDataResponse.
