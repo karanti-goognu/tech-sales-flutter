@@ -69,9 +69,9 @@ class _LeadScreenState extends State<LeadScreen> {
   void initState() {
     super.initState();
 
-    //_leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+    _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
 
-    _leadsFilterController.getSecretKey(RequestIds.GET_SECRET_KEY);
+    //_leadsFilterController.getSecretKey(RequestIds.GET_SECRET_KEY);
 
     /*_connectivity.initialise();
     _connectivity.myStream.listen((source) {
@@ -179,6 +179,35 @@ class _LeadScreenState extends State<LeadScreen> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Obx(() => (_leadsFilterController.assignToDate ==
+                            StringConstants.empty)
+                        ? Container()
+                        : FilterChip(
+                            label: Row(
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                    "${_leadsFilterController.assignFromDate} to ${_leadsFilterController.assignToDate}")
+                              ],
+                            ),
+                            backgroundColor: Colors.transparent,
+                            shape: StadiumBorder(side: BorderSide()),
+                            onSelected: (bool value) {
+                              print("selected");
+                            },
+                          )),
+                    SizedBox(
+                      width: 8,
+                    ),
                     Obx(() => (_leadsFilterController.selectedLeadStatus ==
                             StringConstants.empty)
                         ? Container()
@@ -186,7 +215,7 @@ class _LeadScreenState extends State<LeadScreen> {
                             label: Row(
                               children: [
                                 Icon(
-                                  Icons.cancel,
+                                  Icons.check,
                                   color: Colors.black,
                                 ),
                                 SizedBox(
@@ -212,7 +241,7 @@ class _LeadScreenState extends State<LeadScreen> {
                             label: Row(
                               children: [
                                 Icon(
-                                  Icons.cancel,
+                                  Icons.check,
                                   color: Colors.black,
                                 ),
                                 SizedBox(
@@ -417,14 +446,14 @@ class _LeadScreenState extends State<LeadScreen> {
                       ),
                     ),
                   ),
-                  Text(
-                    "Total Potential : ${_leadsFilterController.leadsListResponse.totalLeadPotential}",
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      fontSize: 15,
-                      // color: HexColor("#FFFFFF99"),
-                    ),
-                  ),
+                  Obx(() => Text(
+                        "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
+                        style: TextStyle(
+                          fontFamily: "Muli",
+                          fontSize: 15,
+                          // color: HexColor("#FFFFFF99"),
+                        ),
+                      )),
                 ],
               ),
             ),
@@ -583,7 +612,26 @@ class _LeadScreenState extends State<LeadScreen> {
                         0)
                     ? Container(
                         child: Center(
-                          child: Text("You don't have any leads..!!"),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("You don't have any leads..!!"),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              RaisedButton(
+                                onPressed: () {
+                                  _leadsFilterController
+                                      .getAccessKey(RequestIds.GET_LEADS_LIST);
+                                },
+                                color: ColorConstants.buttonNormalColor,
+                                child: Text(
+                                  "TRY AGAIN",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       )
                     : ListView.builder(
@@ -868,142 +916,149 @@ class _LeadScreenState extends State<LeadScreen> {
         backgroundColor: ColorConstants.lightGeyColor,
         context: context,
         builder: (BuildContext bc) {
-          return Stack(
-            children: [
-              Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Filters",
-                            style: TextStyles.mulliBold18,
-                          ),
+          return Stack(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Filters",
+                          style: TextStyles.mulliBold18,
                         ),
-                        Spacer(),
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Icon(
-                                Icons.cancel,
-                                size: 24,
-                              ),
-                            )),
-                      ],
-                    ),
+                      ),
+                      Spacer(),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.cancel,
+                              size: 24,
+                            ),
+                          )),
+                    ],
                   ),
-                  Container(
-                    height: 1.0,
-                    width: SizeConfig.screenWidth,
-                    color: ColorConstants.lineColorFilter,
-                  ),
-                  IntrinsicHeight(
-                      child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      new Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            GestureDetector(
-                                onTap: () {
-                                  _leadsFilterController.selectedPosition = 0;
-                                },
-                                child: returnSelectedWidget("Assign Date", 0)),
-                            GestureDetector(
-                                onTap: () {
-                                  _leadsFilterController.selectedPosition = 1;
-                                },
-                                child: returnSelectedWidget("Lead Stage", 1)),
-                            GestureDetector(
-                                onTap: () {
-                                  _leadsFilterController.selectedPosition = 2;
-                                },
-                                child: returnSelectedWidget("Lead Status", 2)),
-                            GestureDetector(
+                ),
+                Container(
+                  height: 1.0,
+                  width: SizeConfig.screenWidth,
+                  color: ColorConstants.lineColorFilter,
+                ),
+                bodyOfBottomSheet(),
+                bottomOfBottomSheet(),
+              ],
+            ),
+          ]);
+        });
+  }
+
+  Widget bodyOfBottomSheet() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        new Flexible(
+          flex: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GestureDetector(
+                  onTap: () {
+                    _leadsFilterController.selectedPosition = 0;
+                  },
+                  child: returnSelectedWidget("Assign Date", 0)),
+              GestureDetector(
+                  onTap: () {
+                    _leadsFilterController.selectedPosition = 1;
+                  },
+                  child: returnSelectedWidget("Lead Stage", 1)),
+              GestureDetector(
+                  onTap: () {
+                    _leadsFilterController.selectedPosition = 2;
+                  },
+                  child: returnSelectedWidget("Lead Status", 2)),
+              /* GestureDetector(
                               onTap: () {
                                 _leadsFilterController.selectedPosition = 3;
                               },
                               child: returnSelectedWidget("Lead Potential", 3),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: (SizeConfig.blockSizeVertical) + 400,
-                        width: 1,
-                        color: ColorConstants.lineColorFilter,
-                      ),
-                      new Expanded(
-                          flex: 2,
-                          child: returnSelectedWidgetBody(
-                              _leadsFilterController.selectedPosition)),
-                    ],
-                  )),
-                ],
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  height: 102,
-                  color: Colors.white,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 1.0,
-                        width: SizeConfig.screenWidth,
-                        color: ColorConstants.lineColorFilter,
-                      ),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(30, 27, 16, 8),
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  //Navigator.pop(context);
-                                  _leadsFilterController.selectedLeadStage =
-                                      StringConstants.empty;
-                                  _leadsFilterController.selectedLeadStatus =
-                                      StringConstants.empty;
-                                  _leadsFilterController.selectedFilterCount =
-                                      0;
-                                },
-                                child: Text(
-                                  "Clear All",
-                                  style: TextStyles.mulliBoldYellow18,
-                                ),
-                              ),
-                              Spacer(),
-                              RaisedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  _leadsFilterController
-                                      .getSecretKey(RequestIds.GET_LEADS_LIST);
-                                },
-                                color: ColorConstants.buttonNormalColor,
-                                child: Text(
-                                  "APPLY",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )
-                            ],
-                          ))
-                    ],
-                  ),
-                ),
-              ),
+                            ),*/
             ],
-          );
-        });
+          ),
+        ),
+        Container(
+          height: (SizeConfig.blockSizeVertical),
+          width: 1,
+          color: ColorConstants.lineColorFilter,
+        ),
+        new Expanded(
+            flex: 2,
+            child: returnSelectedWidgetBody(
+                _leadsFilterController.selectedPosition)),
+      ],
+    );
+  }
+
+  Widget bottomOfBottomSheet() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            height: 1.0,
+            width: SizeConfig.screenWidth,
+            color: ColorConstants.lineColorFilter,
+          ),
+          Padding(
+              padding: EdgeInsets.fromLTRB(30, 27, 16, 8),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      //Navigator.pop(context);
+                      _leadsFilterController.selectedLeadStage =
+                          StringConstants.empty;
+                      _leadsFilterController.selectedLeadStatus =
+                          StringConstants.empty;
+                      _leadsFilterController.assignToDate =
+                          StringConstants.empty;
+                      _leadsFilterController.assignFromDate =
+                          StringConstants.empty;
+                      _leadsFilterController.selectedFilterCount = 0;
+                    },
+                    child: Text(
+                      "Clear All",
+                      style: TextStyles.mulliBoldYellow18,
+                    ),
+                  ),
+                  Spacer(),
+                  RaisedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _leadsFilterController
+                          .getAccessKey(RequestIds.GET_LEADS_LIST);
+                    },
+                    color: ColorConstants.buttonNormalColor,
+                    child: Text(
+                      "APPLY",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                ],
+              ))
+        ],
+      ),
+    );
   }
 
   Widget returnSelectedWidget(String text, int position) {
@@ -1069,7 +1124,7 @@ class _LeadScreenState extends State<LeadScreen> {
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
                           onTap: () {
-                            _selectDate(context, "from");
+                            _selectDate(context, "from", DateTime(2015, 8));
                           },
                           child: Icon(
                             Icons.date_range_rounded,
@@ -1103,7 +1158,19 @@ class _LeadScreenState extends State<LeadScreen> {
                       alignment: Alignment.centerRight,
                       child: GestureDetector(
                           onTap: () {
-                            _selectDate(context, "to");
+                            if (_leadsFilterController.assignFromDate ==
+                                StringConstants.empty) {
+                              print('From date is empty');
+                            } else {
+                              String fromDate =
+                                  _leadsFilterController.assignFromDate;
+                              List<String> toDate = fromDate.split("-");
+                              int intYear = int.parse(toDate[2]);
+                              int intMonth = int.parse(toDate[1]);
+                              int intDay = int.parse(toDate[0]);
+                              _selectDate(context, "to",
+                                  DateTime(intYear, intMonth, intDay));
+                            }
                           },
                           child: Icon(
                             Icons.date_range_rounded,
@@ -1204,63 +1271,57 @@ class _LeadScreenState extends State<LeadScreen> {
                             child: Text("You don't have any lead stages..!!"),
                           ),
                         )
-                      : Container(
+                      : /*Container(
                         child: Center(
                             child: Text(
                                 "You can continue with lead stages.."
-                                    "\n${_splashController.splashDataModel.leadStageEntity.length}!!") ))
-                      /*Column(
-                        children: [
-                          Expanded(
-                              child: ListView.builder(
-                                  itemCount: _splashController
-                                      .splashDataModel.leadStageEntity.length,
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, right: 10, bottom: 10),
-                                  itemExtent: 125.0,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                        height: 90,
-                                        width: 90,
-                                        padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
-                                        child: Column(
-                                          children: <Widget>[
-                                            ListTile(
-                                                title: Text(
-                                                    "${_splashController.splashDataModel.leadStageEntity[index].leadStageDesc}"),
-                                                leading: Obx(
-                                                  () => Radio(
-                                                    value: _splashController
-                                                        .splashDataModel
-                                                        .leadStageEntity[index]
-                                                        .id as String,
-                                                    groupValue:
+                                    "\n${_splashController.splashDataModel.leadStageEntity.length}!!") ))*/
+
+                      Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                              itemCount: _splashController
+                                  .splashDataModel.leadStageEntity.length,
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, right: 10, bottom: 10),
+                              itemBuilder: (context, index) {
+                                return Container(
+                                    padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
+                                    child: Column(
+                                      children: <Widget>[
+                                        ListTile(
+                                            title: Text(
+                                                "${_splashController.splashDataModel.leadStageEntity[index].leadStageDesc}"),
+                                            leading: Obx(
+                                              () => Radio(
+                                                value: _splashController
+                                                    .splashDataModel
+                                                    .leadStageEntity[index]
+                                                    .id as String,
+                                                groupValue:
+                                                    _leadsFilterController
+                                                            .selectedLeadStage
+                                                        as String,
+                                                onChanged: (String value) {
+                                                  if (_leadsFilterController
+                                                          .selectedLeadStage ==
+                                                      StringConstants.empty) {
+                                                    _leadsFilterController
+                                                            .selectedFilterCount =
                                                         _leadsFilterController
-                                                                .selectedLeadStage
-                                                            as String,
-                                                    onChanged: (String value) {
-                                                      if (_leadsFilterController
-                                                              .selectedLeadStage ==
-                                                          StringConstants.empty) {
-                                                        _leadsFilterController
-                                                                .selectedFilterCount =
-                                                            _leadsFilterController
-                                                                    .selectedFilterCount +
-                                                                1;
-                                                      }
-                                                      _leadsFilterController
-                                                              .selectedLeadStage =
-                                                          value;
-                                                    },
-                                                  ),
-                                                )),
-                                          ],
-                                        ));
-                                    ;
-                                  }),
-                            ),
-                        ],
-                      )*/,
+                                                                .selectedFilterCount +
+                                                            1;
+                                                  }
+                                                  _leadsFilterController
+                                                          .selectedLeadStage =
+                                                      value;
+                                                },
+                                              ),
+                                            )),
+                                      ],
+                                    ));
+                              }),
+                        ),
     );
   }
 
@@ -1269,69 +1330,31 @@ class _LeadScreenState extends State<LeadScreen> {
         padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
         child: Column(
           children: <Widget>[
-            ListTile(
-                title: Text(StringConstants.active),
-                leading: Obx(
-                  () => Radio(
-                    value: StringConstants.active,
-                    groupValue:
-                        _leadsFilterController.selectedLeadStatus as String,
-                    onChanged: (String value) {
-                      if (_leadsFilterController.selectedLeadStatus ==
-                          StringConstants.empty) {
-                        _leadsFilterController.selectedFilterCount =
-                            _leadsFilterController.selectedFilterCount + 1;
-                      }
-                      _leadsFilterController.selectedLeadStatus = value;
-                    },
-                  ),
-                )),
-            ListTile(
-              title: Text(StringConstants.rejected),
-              leading: Radio(
-                value: StringConstants.rejected,
-                groupValue: _leadsFilterController.selectedLeadStatus as String,
-                onChanged: (String value) {
-                  if (_leadsFilterController.selectedLeadStatus ==
-                      StringConstants.empty) {
-                    _leadsFilterController.selectedFilterCount =
-                        _leadsFilterController.selectedFilterCount + 1;
-                  }
-                  _leadsFilterController.selectedLeadStatus = value;
-                },
-              ),
-            ),
-            ListTile(
-              title: Text(StringConstants.convertedToSite),
-              leading: Radio(
-                value: StringConstants.convertedToSite,
-                groupValue: _leadsFilterController.selectedLeadStatus as String,
-                onChanged: (String value) {
-                  if (_leadsFilterController.selectedLeadStatus ==
-                      StringConstants.empty) {
-                    _leadsFilterController.selectedFilterCount =
-                        _leadsFilterController.selectedFilterCount + 1;
-                  }
-                  _leadsFilterController.selectedLeadStatus = value;
-                },
-              ),
-            ),
-            ListTile(
-              title: Text(StringConstants.duplicate),
-              leading: Radio(
-                value: StringConstants.duplicate,
-                groupValue: _leadsFilterController.selectedLeadStatus as String,
-                onChanged: (String value) {
-                  if (_leadsFilterController.selectedLeadStatus ==
-                      StringConstants.empty) {
-                    _leadsFilterController.selectedFilterCount =
-                        _leadsFilterController.selectedFilterCount + 1;
-                  }
-                  _leadsFilterController.selectedLeadStatus = value;
-                },
-              ),
-            ),
+            leadStatusListTile(StringConstants.active),
+            leadStatusListTile(StringConstants.convertedToSite),
+            leadStatusListTile(StringConstants.rejected),
+            leadStatusListTile(StringConstants.futureOpportunity),
+            leadStatusListTile(StringConstants.duplicate),
           ],
+        ));
+  }
+
+  Widget leadStatusListTile(String statusValue) {
+    return ListTile(
+        title: Text(statusValue),
+        leading: Obx(
+          () => Radio(
+            value: statusValue,
+            groupValue: _leadsFilterController.selectedLeadStatus as String,
+            onChanged: (String value) {
+              if (_leadsFilterController.selectedLeadStatus ==
+                  StringConstants.empty) {
+                _leadsFilterController.selectedFilterCount =
+                    _leadsFilterController.selectedFilterCount + 1;
+              }
+              _leadsFilterController.selectedLeadStatus = value;
+            },
+          ),
         ));
   }
 
@@ -1341,11 +1364,12 @@ class _LeadScreenState extends State<LeadScreen> {
         color: Colors.white);
   }
 
-  Future<void> _selectDate(BuildContext context, String type) async {
+  Future<void> _selectDate(
+      BuildContext context, String type, DateTime fromDate) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
+        firstDate: fromDate,
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
       setState(() {
