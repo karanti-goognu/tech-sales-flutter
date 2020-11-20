@@ -89,11 +89,11 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
   Position _currentPosition;
   String _currentAddress;
   List<LeadStatusEntity> leadStatusEntity = new List();
-  List<SiteSubTypeEntity> siteSubTypeEntity = [
-    new SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
-    new SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
-    new SiteSubTypeEntity(siteSubId: 3, siteSubTypeDesc: "Multi-Storey"),
-  ];
+  // List<SiteSubTypeEntity> siteSubTypeEntity = [
+  //   new SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
+  //   new SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
+  //   new SiteSubTypeEntity(siteSubId: 3, siteSubTypeDesc: "Multi-Storey"),
+  // ];
   List<InfluencerTypeEntity> influencerTypeEntity;
 
   List<InfluencerCategoryEntity> influencerCategoryEntity;
@@ -146,7 +146,7 @@ print(labelText);
           leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
           print(leadCreatedBy);
 
-          siteSubTypeEntity = viewLeadDataResponse.siteSubTypeEntity;
+         // siteSubTypeEntity = viewLeadDataResponse.siteSubTypeEntity;
           influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
           influencerCategoryEntity =
               viewLeadDataResponse.influencerCategoryEntity;
