@@ -258,7 +258,7 @@ class LeadsFilterController extends GetxController {
 
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getSearchData}$encryptedEmpId&searchText=${this.searchKey}";
+          "${UrlConstants.getSearchData}$empId&searchText=${this.searchKey}";
       debugPrint('Url is : $url');
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
