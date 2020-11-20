@@ -19,6 +19,10 @@ class MyRepositoryLeads {
     return apiClient.getLeadsData(accessKey,securityKey,url);
   }
 
+  getSearchData(String accessKey,String securityKey,String url) {
+    return apiClient.getSearchData(accessKey,securityKey,url);
+  }
+
   getAccessKey() {
     return apiClient.getAccessKey();
   }

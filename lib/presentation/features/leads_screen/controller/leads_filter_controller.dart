@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,8 +37,9 @@ class LeadsFilterController extends GetxController {
 
   final _selectedPosition = 0.obs;
   final _selectedFilterCount = 0.obs;
-  final _assignToDate = "".obs;
-  final _assignFromDate = "".obs;
+  final _assignToDate = StringConstants.empty.obs;
+  final _assignFromDate = StringConstants.empty.obs;
+  final _searchKey = "".obs;
 
   final _selectedLeadStage = StringConstants.empty.obs;
 
@@ -46,6 +48,8 @@ class LeadsFilterController extends GetxController {
   get accessKeyResponse => this._accessKeyResponse.value;
 
   get selectedFilterCount => this._selectedFilterCount.value;
+
+  get searchKey => this._searchKey.value;
 
   get secretKeyResponse => this._secretKeyResponse.value;
 
@@ -74,6 +78,8 @@ class LeadsFilterController extends GetxController {
   set filterDataResponse(value) => this._filterDataResponse.value = value;
 
   set phoneNumber(value) => this._phoneNumber.value = value;
+
+  set searchKey(value) => this._searchKey.value = value;
 
   set assignToDate(value) => this._assignToDate.value = value;
 
@@ -110,15 +116,53 @@ class LeadsFilterController extends GetxController {
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);
-          getAccessKey(RequestIds.GET_LEADS_LIST);
+          getAccessKey(requestId);
         } else {
-          print('Secret kry response is null');
+          print('Secret key response is null');
         }
       });
     });
   }
 
   getAccessKey(int requestId) {
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    repository.getAccessKey().then((data) {
+      Get.back();
+      this.accessKeyResponse = data;
+      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+      _prefs.then((SharedPreferences prefs) {
+        String userSecurityKey =
+            prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+        print('User Security key is :: $userSecurityKey');
+        if (userSecurityKey != "empty") {
+          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
+          bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
+          if (hasExpired) {
+            print('Has expired');
+            getSecretKey(requestId);
+          } else {
+            print('Not expired');
+            switch (requestId) {
+              case RequestIds.LEADS_FILTER_DATA_REQUEST:
+                getFilterData();
+                break;
+              case RequestIds.GET_LEADS_LIST:
+                getLeadsData(this.accessKeyResponse.accessKey);
+                break;
+              case RequestIds.SEARCH_LEADS:
+                searchLeads(this.accessKeyResponse.accessKey);
+                break;
+            }
+          }
+        }
+      });
+    });
+  }
+
+  /*getAccessKey(int requestId) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -136,11 +180,11 @@ class LeadsFilterController extends GetxController {
           break;
 
         case RequestIds.SEARCH_LEADS:
-          getLeadsData(this.accessKeyResponse.accessKey);
+          searchLeads(this.accessKeyResponse.accessKey);
           break;
       }
     });
-  }
+  }*/
 
   getFilterData() {
     debugPrint('Access Key Response :: ');
@@ -150,7 +194,7 @@ class LeadsFilterController extends GetxController {
       } else {
         this.filterDataResponse = data;
         if (filterDataResponse.respCode == "DM1011") {
-          Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
+          //Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
         } else {
           Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
         }
@@ -182,17 +226,15 @@ class LeadsFilterController extends GetxController {
       //debugPrint('request without encryption: $body');
       String url =
           "${UrlConstants.getLeadsData}$empId$leadStatus$leadStage&limit=500&offset=0";
-      debugPrint(
-          'Url is : $url');
-      repository
-          .getLeadsData(accessKey, userSecurityKey, url)
-          .then((data) {
+      var encodedUrl = Uri.encodeFull(url);
+      debugPrint('Url is : $encodedUrl');
+      repository.getLeadsData(accessKey, userSecurityKey, encodedUrl).then((data) {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
           this.leadsListResponse = data;
           if (leadsListResponse.respCode == "LD2006") {
-            Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
           } else {
             Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
           }
@@ -201,7 +243,7 @@ class LeadsFilterController extends GetxController {
     });
   }
 
-  searchLeads(String accessKey,String key) {
+  searchLeads(String accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -212,22 +254,21 @@ class LeadsFilterController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('User Security key is :: $userSecurityKey');
       String encryptedEmpId =
-      encryptString(empId, StringConstants.encryptedKey).toString();
+          encryptString(empId, StringConstants.encryptedKey).toString();
 
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getLeadsData}$encryptedEmpId&limit=500&offset=0";
-      debugPrint(
-          'Url is : $url');
-      repository
-          .getLeadsData(accessKey, userSecurityKey, url)
-          .then((data) {
+          "${UrlConstants.getSearchData}$encryptedEmpId&searchText=${this.searchKey}";
+      debugPrint('Url is : $url');
+      repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
           this.leadsListResponse = data;
-          if (leadsListResponse.respCode == "LD2006") {
-            Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+          if (leadsListResponse.respCode == "LD2004") {
+            //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            print('success');
+            //leadsDetailWidget();
           } else {
             Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
           }

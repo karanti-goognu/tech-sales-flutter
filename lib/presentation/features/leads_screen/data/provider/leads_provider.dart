@@ -124,6 +124,27 @@ class MyApiClientLeads {
     }
   }
 
+  getSearchData(String accessKey, String securityKey, String url) async {
+    try {
+      //debugPrint('in get posts: ${UrlConstants.loginCheck}');
+      final response = await get(Uri.parse(url),
+          headers:
+          requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
+      //var response = await httpClient.post(UrlConstants.loginCheck);
+      print('response is :  ${response.body}');
+      if (response.statusCode == 200) {
+        print('success');
+        var data = json.decode(response.body);
+        LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
+        //print('Access key Object is :: $loginModel');
+        return leadsListModel;
+      } else
+        print('error in else');
+    } catch (_) {
+      print('error in catch ${_.toString()}');
+    }
+  }
+
   getAddLeadsData(String accessKey, String userSecurityKey) async {
     try {
       print(

@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onWillPop: () async {
           // You can do some work here.
           // Returning true allows the pop to happen, returning false prevents it.
-          Get.dialog(CustomDialogs().errorDialog("Do you want to exit?"));
+          Get.dialog(CustomDialogs().appExitDialog("Do you want to exit?"));
           return true;
         },
         child: Scaffold(

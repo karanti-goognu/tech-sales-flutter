@@ -14,6 +14,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashController extends GetxController {
@@ -47,13 +48,28 @@ class SplashController extends GetxController {
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
       Get.back();
-
       this.accessKeyResponse = data;
-      switch (requestId) {
-        case RequestIds.REFRESH_DATA:
-          getRefreshData(this.accessKeyResponse.accessKey);
-          break;
-      }
+      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+      _prefs.then((SharedPreferences prefs) {
+        String userSecurityKey =
+            prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+        print('User Security key is :: $userSecurityKey');
+        if (userSecurityKey != "empty") {
+          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
+          bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
+          if (hasExpired) {
+            print('Has expired');
+            getSecretKey(requestId);
+          } else {
+            print('Not expired');
+            switch (requestId) {
+              case RequestIds.REFRESH_DATA:
+                getRefreshData(this.accessKeyResponse.accessKey);
+                break;
+            }
+          }
+        }
+      });
     });
   }
 
@@ -82,7 +98,7 @@ class SplashController extends GetxController {
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);
-          getAccessKey(RequestIds.REFRESH_DATA);
+          getAccessKey(requestId);
         } else {
           print('Secret kry response is null');
         }
