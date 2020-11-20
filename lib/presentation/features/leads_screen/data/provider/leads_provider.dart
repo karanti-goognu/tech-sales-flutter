@@ -241,7 +241,7 @@ class MyApiClientLeads {
       gv.currentId = empId;
 
       var uploadImageWithLeadModel = {
-        'leadSegment': "abc",
+        'leadSegment': "TRADE",
         'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId),
         'assignedTo': empId,
         'leadStatusId': 1,
@@ -291,8 +291,8 @@ class MyApiClientLeads {
               Get.dialog(CustomDialogs().showExistingLeadDialog("We have an existing lead with this contact number. Do you want to" ,context));
             }
             else if (saveLeadResponse.respCode == "LD2007"){
-              Get.back();
-              Get.back();
+              // Get.back();
+              // Get.back();
               Get.dialog(CustomDialogs().showDialog("Lead Added Successfully !!!"));
             }
             else{
