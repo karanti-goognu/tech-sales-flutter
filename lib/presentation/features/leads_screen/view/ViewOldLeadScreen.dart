@@ -56,6 +56,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
   var _influencerCategory = TextEditingController();
   var geoTagType = TextEditingController();
   var leadCreatedBy;
+  bool isEditable=false;
 
   var _totalBags = TextEditingController();
   var _totalMT = TextEditingController();
@@ -133,7 +134,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                   leadStatusDesc:leadStatusEntity[i].leadStatusDesc
                 );
 
-
+print(labelText);
               // _selectedValue.id = leadStatusEntity[i].id;
               // _selectedValue.leadStatusDesc = leadStatusEntity[i].leadStatusDesc;
 
@@ -223,13 +224,20 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
               commentText: _commentsListEntity[i].commentText,
             ));
           }
+          _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
+          _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
+          _totalBags.text =  (int.parse(_totalMT.text) *20).toString();
+
 
           // _totalBags.text = viewLeadDataResponse.
 
           //  print(influencerCategoryEntity[0].inflCatDesc);
         });
       });
-
+      // Future.delayed(
+      //     Duration.zero,
+      //         () => Get.dialog(Center(),
+      //         barrierDismissible: false));
       //  Get.back();
     });
   }
@@ -256,8 +264,10 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                 ((leadCreatedBy == gv.currentId))
                     ? FlatButton(
                         onPressed: () {
-                          Get.dialog(
-                              CustomDialogs().errorDialog("Coming Soon !!"));
+                          Get.back();
+                          Get.back();
+                          // Get.dialog(
+                          //     CustomDialogs().errorDialog("Coming Soon !!"));
                         },
                         color: Colors.transparent,
                         child: Row(
@@ -303,8 +313,10 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                             )
                           : FlatButton(
                               onPressed: () {
-                                Get.dialog(CustomDialogs()
-                                    .errorDialog("Coming Soon !!"));
+                                Get.back();
+                                Get.back();
+                                // Get.dialog(
+                                //     CustomDialogs().errorDialog("Coming Soon !!"));
                               },
                               color: Colors.transparent,
                               child: Row(
@@ -521,6 +533,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
             Container(
               child: Form(
                 key: _formKey,
+
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
@@ -577,8 +590,11 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                                   ),
                               child: DropdownButtonHideUnderline(
 
+
+
                                 child: DropdownButton(
                                   // elevation: 100,
+
 
 
                                   value: _selectedValue,
@@ -600,6 +616,10 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                                       .toList(),
                                   //  elevation: 0,
                                   iconSize: 40,
+                                  hint: Padding(
+                                    padding: const EdgeInsets.only(left:8.0),
+                                    child: (labelText!= null)?Text(labelText):Text(""),
+                                  ),
 
                                   // hint: Text('Rating'),
                                   onChanged: (value) {
@@ -1299,17 +1319,17 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                                                   ),
                                                 ],
                                               ),
-                                              GestureDetector(
-                                                child: Icon(
-                                                  Icons.delete,
-                                                  color: HexColor("#FFCD00"),
-                                                ),
-                                                onTap: () {
-                                                  setState(() {
-                                                    _imageList.removeAt(index);
-                                                  });
-                                                },
-                                              )
+                                              // GestureDetector(
+                                              //   child: Icon(
+                                              //     Icons.delete,
+                                              //     color: HexColor("#FFCD00"),
+                                              //   ),
+                                              //   onTap: () {
+                                              //     setState(() {
+                                              //       _imageList.removeAt(index);
+                                              //     });
+                                              //   },
+                                              // )
                                             ],
                                           ),
                                         );
@@ -2039,206 +2059,206 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                         ),
                       ),
 
-                      // Divider(
-                      //   color: Colors.black26,
-                      //   thickness: 1,
-                      // ),
-                      // Padding(
-                      //   padding:
-                      //   const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
-                      //   child: Text(
-                      //     "Total Site Potential",
-                      //     style: TextStyle(
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: 25,
-                      //         // color: HexColor("#000000DE"),
-                      //         fontFamily: "Muli"),
-                      //   ),
-                      // ),
-                      // Row(
-                      //   children: [
-                      //     Expanded(
-                      //       child: Padding(
-                      //         padding: const EdgeInsets.only(right: 10.0),
-                      //         child: TextFormField(
-                      //           // initialValue: _totalBags.toString(),
-                      //           controller: _totalBags,
-                      //           onChanged: (value) {
-                      //             setState(() {
-                      //               // _totalBags.text = value ;
-                      //               if (_totalBags.text == null ||
-                      //                   _totalBags.text == "") {
-                      //                 _totalMT.clear();
-                      //               } else {
-                      //                 _totalMT.text =
-                      //                     (int.parse(_totalBags.text) / 20)
-                      //                         .toString();
-                      //               }
-                      //             });
-                      //           },
-                      //           keyboardType: TextInputType.phone,
-                      //           inputFormatters: <TextInputFormatter>[
-                      //             FilteringTextInputFormatter.digitsOnly
-                      //           ],
-                      //           validator: (value) {
-                      //             if (value.isEmpty) {
-                      //               return 'Please enter Bags ';
-                      //             }
-                      //
-                      //             return null;
-                      //           },
-                      //
-                      //           style: TextStyle(
-                      //               fontSize: 18,
-                      //               color: ColorConstants.inputBoxHintColor,
-                      //               fontFamily: "Muli"),
-                      //           // keyboardType: TextInputType.text,
-                      //           decoration: InputDecoration(
-                      //             focusedBorder: OutlineInputBorder(
-                      //               borderSide: BorderSide(
-                      //                   color: ColorConstants.backgroundColorBlue,
-                      //                   //color: HexColor("#0000001F"),
-                      //                   width: 1.0),
-                      //             ),
-                      //             enabledBorder: OutlineInputBorder(
-                      //               borderSide: BorderSide(
-                      //                   color: const Color(0xFF000000)
-                      //                       .withOpacity(0.4),
-                      //                   width: 1.0),
-                      //             ),
-                      //             errorBorder: OutlineInputBorder(
-                      //               borderSide:
-                      //               BorderSide(color: Colors.red, width: 1.0),
-                      //             ),
-                      //             labelText: "Bags",
-                      //             filled: false,
-                      //             focusColor: Colors.black,
-                      //             labelStyle: TextStyle(
-                      //                 fontFamily: "Muli",
-                      //                 color: ColorConstants.inputBoxHintColorDark,
-                      //                 fontWeight: FontWeight.normal,
-                      //                 fontSize: 16.0),
-                      //             fillColor: ColorConstants.backgroundColor,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     Expanded(
-                      //       child: Padding(
-                      //         padding: const EdgeInsets.only(left: 10.0),
-                      //         child: TextFormField(
-                      //           controller: _totalMT,
-                      //           onChanged: (value) {
-                      //             setState(() {
-                      //               // _totalBags.text = value ;
-                      //               if (_totalMT.text == null ||
-                      //                   _totalMT.text == "") {
-                      //                 _totalBags.clear();
-                      //               } else {
-                      //                 _totalBags.text =
-                      //                     (int.parse(_totalMT.text) * 20)
-                      //                         .toString();
-                      //               }
-                      //             });
-                      //           },
-                      //           validator: (value) {
-                      //             if (value.isEmpty) {
-                      //               return 'Please enter MT ';
-                      //             }
-                      //
-                      //             return null;
-                      //           },
-                      //           style: TextStyle(
-                      //               fontSize: 18,
-                      //               color: ColorConstants.inputBoxHintColor,
-                      //               fontFamily: "Muli"),
-                      //           keyboardType: TextInputType.numberWithOptions(
-                      //               decimal: true),
-                      //           decoration: InputDecoration(
-                      //             focusedBorder: OutlineInputBorder(
-                      //               borderSide: BorderSide(
-                      //                   color: ColorConstants.backgroundColorBlue,
-                      //                   //color: HexColor("#0000001F"),
-                      //                   width: 1.0),
-                      //             ),
-                      //             enabledBorder: OutlineInputBorder(
-                      //               borderSide: BorderSide(
-                      //                   color: const Color(0xFF000000)
-                      //                       .withOpacity(0.4),
-                      //                   width: 1.0),
-                      //             ),
-                      //             disabledBorder: OutlineInputBorder(
-                      //               borderSide: BorderSide(
-                      //                   color: const Color(0xFF000000)
-                      //                       .withOpacity(0.4),
-                      //                   width: 1.0),
-                      //             ),
-                      //             errorBorder: OutlineInputBorder(
-                      //               borderSide:
-                      //               BorderSide(color: Colors.red, width: 1.0),
-                      //             ),
-                      //             labelText: "MT",
-                      //             filled: false,
-                      //             //enabled: false,
-                      //             focusColor: Colors.black,
-                      //             labelStyle: TextStyle(
-                      //                 fontFamily: "Muli",
-                      //                 color: ColorConstants.inputBoxHintColorDark,
-                      //                 fontWeight: FontWeight.normal,
-                      //                 fontSize: 16.0),
-                      //             fillColor: ColorConstants.backgroundColor,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
-                      // SizedBox(height: 16),
-                      // Divider(
-                      //   color: Colors.black26,
-                      //   thickness: 1,
-                      // ),
-                      // SizedBox(height: 16),
-                      // TextFormField(
-                      //   controller: _rera,
-                      //   validator: (value) {
-                      //     if (value.isEmpty) {
-                      //       return 'Please enter RERA Number ';
-                      //     }
-                      //
-                      //     return null;
-                      //   },
-                      //   style: TextStyle(
-                      //       fontSize: 18,
-                      //       color: ColorConstants.inputBoxHintColor,
-                      //       fontFamily: "Muli"),
-                      //   keyboardType: TextInputType.text,
-                      //   decoration: InputDecoration(
-                      //     focusedBorder: OutlineInputBorder(
-                      //       borderSide: BorderSide(
-                      //           color: ColorConstants.backgroundColorBlue,
-                      //           //color: HexColor("#0000001F"),
-                      //           width: 1.0),
-                      //     ),
-                      //     enabledBorder: OutlineInputBorder(
-                      //       borderSide: BorderSide(
-                      //           color: const Color(0xFF000000).withOpacity(0.4),
-                      //           width: 1.0),
-                      //     ),
-                      //     errorBorder: OutlineInputBorder(
-                      //       borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      //     ),
-                      //     labelText: "RERA Number",
-                      //     filled: false,
-                      //     focusColor: Colors.black,
-                      //     labelStyle: TextStyle(
-                      //         fontFamily: "Muli",
-                      //         color: ColorConstants.inputBoxHintColorDark,
-                      //         fontWeight: FontWeight.normal,
-                      //         fontSize: 16.0),
-                      //     fillColor: ColorConstants.backgroundColor,
-                      //   ),
-                      // ),
+                      Divider(
+                        color: Colors.black26,
+                        thickness: 1,
+                      ),
+                      Padding(
+                        padding:
+                        const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+                        child: Text(
+                          "Total Site Potential",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              // color: HexColor("#000000DE"),
+                              fontFamily: "Muli"),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: TextFormField(
+                                // initialValue: _totalBags.toString(),
+                                controller: _totalBags,
+                                onChanged: (value) {
+                                  setState(() {
+                                    // _totalBags.text = value ;
+                                    if (_totalBags.text == null ||
+                                        _totalBags.text == "") {
+                                      _totalMT.clear();
+                                    } else {
+                                      _totalMT.text =
+                                          (int.parse(_totalBags.text) / 20)
+                                              .toString();
+                                    }
+                                  });
+                                },
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter Bags ';
+                                  }
+
+                                  return null;
+                                },
+
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                // keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: ColorConstants.backgroundColorBlue,
+                                        //color: HexColor("#0000001F"),
+                                        width: 1.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
+                                  ),
+                                  labelText: "Bags",
+                                  filled: false,
+                                  focusColor: Colors.black,
+                                  labelStyle: TextStyle(
+                                      fontFamily: "Muli",
+                                      color: ColorConstants.inputBoxHintColorDark,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16.0),
+                                  fillColor: ColorConstants.backgroundColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: TextFormField(
+                                controller: _totalMT,
+                                onChanged: (value) {
+                                  setState(() {
+                                    // _totalBags.text = value ;
+                                    if (_totalMT.text == null ||
+                                        _totalMT.text == "") {
+                                      _totalBags.clear();
+                                    } else {
+                                      _totalBags.text =
+                                          (int.parse(_totalMT.text) * 20)
+                                              .toString();
+                                    }
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter MT ';
+                                  }
+
+                                  return null;
+                                },
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: ColorConstants.backgroundColorBlue,
+                                        //color: HexColor("#0000001F"),
+                                        width: 1.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
+                                  ),
+                                  labelText: "MT",
+                                  filled: false,
+                                  //enabled: false,
+                                  focusColor: Colors.black,
+                                  labelStyle: TextStyle(
+                                      fontFamily: "Muli",
+                                      color: ColorConstants.inputBoxHintColorDark,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16.0),
+                                  fillColor: ColorConstants.backgroundColor,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Divider(
+                        color: Colors.black26,
+                        thickness: 1,
+                      ),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        controller: _rera,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter RERA Number ';
+                          }
+
+                          return null;
+                        },
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: ColorConstants.backgroundColorBlue,
+                                //color: HexColor("#0000001F"),
+                                width: 1.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: const Color(0xFF000000).withOpacity(0.4),
+                                width: 1.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                          ),
+                          labelText: "RERA Number",
+                          filled: false,
+                          focusColor: Colors.black,
+                          labelStyle: TextStyle(
+                              fontFamily: "Muli",
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16.0),
+                          fillColor: ColorConstants.backgroundColor,
+                        ),
+                      ),
                       SizedBox(height: 16),
 
                       TextFormField(

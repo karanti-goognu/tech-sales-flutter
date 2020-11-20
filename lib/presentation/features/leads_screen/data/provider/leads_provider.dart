@@ -224,7 +224,7 @@ class MyApiClientLeads {
         'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId),
         'assignedTo': empId,
         'leadStatusId': 1,
-        'leadStage': 2,
+        'leadStage': 1,
         'contactName': saveLeadRequestModel.contactName,
         'contactNumber': saveLeadRequestModel.contactNumber ?? 'abc',
         'geotagType': saveLeadRequestModel.geotagType ?? 'M',

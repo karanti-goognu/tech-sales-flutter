@@ -10,7 +10,7 @@ abstract class UrlConstants {
   //static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
   static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
 
-  static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
+  static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
 
   //End points
   static const String loginCheck = '$baseUrl/login/login-otp';
