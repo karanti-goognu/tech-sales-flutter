@@ -1,3 +1,6 @@
+import 'package:flutter_tech_sales/presentation/features/splash/data/models/JourneyDetailsModel.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/data/models/LeadStatusModel.dart';
+
 class SplashDataModel {
   List<LeadStatusEntity> leadStatusEntity;
   List<LeadStageEntity> leadStageEntity;
@@ -10,13 +13,13 @@ class SplashDataModel {
 
   SplashDataModel(
       {this.leadStatusEntity,
-        this.leadStageEntity,
-        this.userSecurityKey,
-        this.respCode,
-        this.respMsg,
-        this.employeeDetails,
-        this.userMenu,
-        this.journeyDetails});
+      this.leadStageEntity,
+      this.userSecurityKey,
+      this.respCode,
+      this.respMsg,
+      this.employeeDetails,
+      this.userMenu,
+      this.journeyDetails});
 
   SplashDataModel.fromJson(Map<String, dynamic> json) {
     if (json['leadStatusEntity'] != null) {
@@ -74,25 +77,6 @@ class SplashDataModel {
   }
 }
 
-class LeadStatusEntity {
-  int id;
-  String leadStatusDesc;
-
-  LeadStatusEntity({this.id, this.leadStatusDesc});
-
-  LeadStatusEntity.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    leadStatusDesc = json['leadStatusDesc'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['leadStatusDesc'] = this.leadStatusDesc;
-    return data;
-  }
-}
-
 class LeadStageEntity {
   int id;
   String leadStageDesc;
@@ -120,9 +104,9 @@ class EmployeeDetails {
 
   EmployeeDetails(
       {this.referenceId,
-        this.mobileNumber,
-        this.employeeFirstName,
-        this.employeeName});
+      this.mobileNumber,
+      this.employeeFirstName,
+      this.employeeName});
 
   EmployeeDetails.fromJson(Map<String, dynamic> json) {
     referenceId = json['reference-id'];
@@ -156,51 +140,6 @@ class UserMenu {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['menu-id'] = this.menuId;
     data['menu-text'] = this.menuText;
-    return data;
-  }
-}
-
-class JourneyDetails {
-  String journeyDate;
-  String journeyStartTime;
-  String journeyStartLat;
-  String journeyStartLong;
-  Null journeyEndTime;
-  Null journeyEndLat;
-  Null journeyEndLong;
-  String employeeId;
-
-  JourneyDetails(
-      {this.journeyDate,
-        this.journeyStartTime,
-        this.journeyStartLat,
-        this.journeyStartLong,
-        this.journeyEndTime,
-        this.journeyEndLat,
-        this.journeyEndLong,
-        this.employeeId});
-
-  JourneyDetails.fromJson(Map<String, dynamic> json) {
-    journeyDate = json['journey-date'];
-    journeyStartTime = json['journey-start-time'];
-    journeyStartLat = json['journey-start-lat'];
-    journeyStartLong = json['journey-start-long'];
-    journeyEndTime = json['journey-end-time'];
-    journeyEndLat = json['journey-end-lat'];
-    journeyEndLong = json['journey-end-long'];
-    employeeId = json['employee-id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['journey-date'] = this.journeyDate;
-    data['journey-start-time'] = this.journeyStartTime;
-    data['journey-start-lat'] = this.journeyStartLat;
-    data['journey-start-long'] = this.journeyStartLong;
-    data['journey-end-time'] = this.journeyEndTime;
-    data['journey-end-lat'] = this.journeyEndLat;
-    data['journey-end-long'] = this.journeyEndLong;
-    data['employee-id'] = this.employeeId;
     return data;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -30,6 +31,7 @@ class _LeadScreenState extends State<LeadScreen> {
   Map _source = {ConnectivityResult.none: false};
   MyConnectivity _connectivity = MyConnectivity.instance;
   LeadsFilterController _leadsFilterController = Get.find();
+  LoginController _loginController = Get.find();
   SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
@@ -70,7 +72,29 @@ class _LeadScreenState extends State<LeadScreen> {
   @override
   void initState() {
     super.initState();
+    try{
+      if(_loginController.validateOtpResponse.leadStatusEntity!=null){
+        if(_loginController.validateOtpResponse.leadStatusEntity.length!=0){
+          _splashController.splashDataModel.leadStatusEntity =
+              _loginController.validateOtpResponse.leadStatusEntity;
+        }
+      }
+    }catch(_){
+      print('${_.toString()}');
+    }
 
+    /*if (_splashController.splashDataModel == null) {
+      print('Splash Data model is null');
+      if (_splashController.splashDataModel.leadStatusEntity == null) {
+        print('Splash Data model List is null');
+        _splashController.splashDataModel.leadStatusEntity =
+            _loginController.validateOtpResponse.leadStatusEntity;
+      }else{
+        print('Splash Data model list is not null');
+      }
+    }else{
+      print('Splash Data model is not null');
+    }*/
     _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
 
     //_leadsFilterController.getSecretKey(RequestIds.GET_SECRET_KEY);
@@ -591,178 +615,259 @@ class _LeadScreenState extends State<LeadScreen> {
   }
 
   Widget leadsDetailWidget() {
-    return Obx(() => (_leadsFilterController == null)
-        ? Container(
-            child: Center(
-              child: Text("Leads controller  is empty!!"),
-            ),
-          )
-        : (_leadsFilterController.leadsListResponse == null)
-            ? Container(
-                child: Center(
-                  child: Text("Leads list response  is empty!!"),
-                ),
-              )
-            : (_leadsFilterController.leadsListResponse.leadsEntity == null)
-                ? Container(
-                    child: Center(
-                      child: Text("Leads list is empty!!"),
-                    ),
-                  )
-                : (_leadsFilterController
-                            .leadsListResponse.leadsEntity.length ==
-                        0)
-                    ? Container(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("You don't have any leads..!!"),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              RaisedButton(
-                                onPressed: () {
-                                  _leadsFilterController
-                                      .getAccessKey(RequestIds.GET_LEADS_LIST);
-                                },
-                                color: ColorConstants.buttonNormalColor,
-                                child: Text(
-                                  "TRY AGAIN",
-                                  style: TextStyle(color: Colors.white),
+    return Obx(
+      () => (_leadsFilterController == null)
+          ? Container(
+              child: Center(
+                child: Text("Leads controller  is empty!!"),
+              ),
+            )
+          : (_leadsFilterController.leadsListResponse == null)
+              ? Container(
+                  child: Center(
+                    child: Text("Leads list response  is empty!!"),
+                  ),
+                )
+              : (_leadsFilterController.leadsListResponse.leadsEntity == null)
+                  ? Container(
+                      child: Center(
+                        child: Text("Leads list is empty!!"),
+                      ),
+                    )
+                  : (_leadsFilterController
+                              .leadsListResponse.leadsEntity.length ==
+                          0)
+                      ? Container(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("You don't have any leads..!!"),
+                                SizedBox(
+                                  height: 10,
                                 ),
-                              )
-                            ],
+                                RaisedButton(
+                                  onPressed: () {
+                                    _leadsFilterController.getAccessKey(
+                                        RequestIds.GET_LEADS_LIST);
+                                  },
+                                  color: ColorConstants.buttonNormalColor,
+                                  child: Text(
+                                    "TRY AGAIN",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: _leadsFilterController
-                            .leadsListResponse.leadsEntity.length,
-                        padding: const EdgeInsets.only(
-                            left: 10.0, right: 10, bottom: 10),
-                        // itemExtent: 125.0,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  new CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ViewLeadScreen(_leadsFilterController
-                                              .leadsListResponse
-                                              .leadsEntity[index]
-                                              .leadId)));
-                            },
-                            child: Card(
-                              clipBehavior: Clip.antiAlias,
-                              borderOnForeground: true,
-                              //shadowColor: colornew,
-                              elevation: 6,
-                              margin: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                      left: BorderSide(
-                                    color: (_leadsFilterController
-                                                .leadsListResponse
-                                                .leadsEntity[index]
-                                                .leadStageId ==
-                                            1)
-                                        ? HexColor("#F9A61A")
-                                        : HexColor("#007CBF"),
-                                    width: 6,
-                                  )),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    // Positioned(
-                                    //     top: 0,
-                                    //     left: 250,
-                                    //     right: 0,
-                                    //     child: Container(
-                                    //         color: Colors.white,
-                                    //         child: Column(
-                                    //           children: <Widget>[
-                                    //             Image.asset(
-                                    //               'assets/images/Container.png',
-                                    //               fit: BoxFit.fitHeight,
-                                    //             ),
-                                    //           ],
-                                    //         ))),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 5.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(2.0),
-                                                  child: Obx(
-                                                    () => Text(
-                                                      "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontFamily: "Muli",
-                                                          fontWeight:
-                                                              FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
-                                                          ),
-                                                    ),
-                                                  )),
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(2.0),
-                                                  child: Obx(
-                                                    () => Text(
-                                                      "District: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadDistrictName}",
-                                                      style: TextStyle(
-                                                          color: Colors.black38,
-                                                          fontSize: 14,
-                                                          fontFamily: "Muli",
-                                                          fontWeight:
-                                                              FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
-                                                          ),
-                                                    ),
-                                                  )),
-                                              Row(
-                                                children: [
-                                                  Padding(
+                        )
+                      : ListView.builder(
+                          itemCount: _leadsFilterController
+                              .leadsListResponse.leadsEntity.length,
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10, bottom: 10),
+                          // itemExtent: 125.0,
+                          itemBuilder: (context, index) {
+                            print(
+                                '${_splashController.splashDataModel.leadStatusEntity[(_leadsFilterController.leadsListResponse.leadsEntity[index].leadStatusId) - 1].leadStatusDesc}');
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    new CupertinoPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ViewLeadScreen(
+                                                _leadsFilterController
+                                                    .leadsListResponse
+                                                    .leadsEntity[index]
+                                                    .leadId)));
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                borderOnForeground: true,
+                                //shadowColor: colornew,
+                                elevation: 6,
+                                margin: EdgeInsets.all(5.0),
+                                color: Colors.white,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                        left: BorderSide(
+                                      color: (_leadsFilterController
+                                                  .leadsListResponse
+                                                  .leadsEntity[index]
+                                                  .leadStageId ==
+                                              1)
+                                          ? HexColor("#F9A61A")
+                                          : HexColor("#007CBF"),
+                                      width: 6,
+                                    )),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      // Positioned(
+                                      //     top: 0,
+                                      //     left: 250,
+                                      //     right: 0,
+                                      //     child: Container(
+                                      //         color: Colors.white,
+                                      //         child: Column(
+                                      //           children: <Widget>[
+                                      //             Image.asset(
+                                      //               'assets/images/Container.png',
+                                      //               fit: BoxFit.fitHeight,
+                                      //             ),
+                                      //           ],
+                                      //         ))),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 5.0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
                                                     padding:
-                                                        const EdgeInsets.only(
-                                                            left: 1.0),
-                                                    child: Chip(
-                                                      shape: StadiumBorder(
-                                                          side: BorderSide(
-                                                              color: HexColor(
-                                                                  "#39B54A"))),
-                                                      backgroundColor:
-                                                          HexColor("#39B54A")
-                                                              .withOpacity(0.1),
-                                                      label: Obx(
+                                                        const EdgeInsets.all(
+                                                            2.0),
+                                                    child: Obx(
+                                                      () => Text(
+                                                        "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontFamily: "Muli",
+                                                            fontWeight:
+                                                                FontWeight.bold
+                                                            //fontWeight: FontWeight.normal
+                                                            ),
+                                                      ),
+                                                    )),
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            2.0),
+                                                    child: Obx(
+                                                      () => Text(
+                                                        "District: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadDistrictName}",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black38,
+                                                            fontSize: 14,
+                                                            fontFamily: "Muli",
+                                                            fontWeight:
+                                                                FontWeight.bold
+                                                            //fontWeight: FontWeight.normal
+                                                            ),
+                                                      ),
+                                                    )),
+                                                Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 1.0),
+                                                      child: Chip(
+                                                        shape: StadiumBorder(
+                                                            side: BorderSide(
+                                                                color: HexColor(
+                                                                    "#39B54A"))),
+                                                        backgroundColor:
+                                                            HexColor("#39B54A")
+                                                                .withOpacity(
+                                                                    0.1),
+                                                        label: Obx(
+                                                          () => Text(
+                                                            (_splashController
+                                                                .splashDataModel
+                                                                .leadStatusEntity[(_leadsFilterController
+                                                                        .leadsListResponse
+                                                                        .leadsEntity[
+                                                                            index]
+                                                                        .leadStatusId) -
+                                                                    1]
+                                                                .leadStatusDesc),
+                                                            style: TextStyle(
+                                                                color: HexColor(
+                                                                    "#39B54A"),
+                                                                fontSize: 8,
+                                                                fontFamily:
+                                                                    "Muli",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold
+                                                                //fontWeight: FontWeight.normal
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 10.0),
+                                                      child: Text(
+                                                        " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
+                                                          _leadsFilterController
+                                                              .leadsListResponse
+                                                              .leadsEntity[
+                                                                  index]
+                                                              .createdOn,
+                                                        ))}",
+                                                        //  textAlign: TextAlign.start,
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                          fontFamily: "Muli",
+                                                          fontWeight:
+                                                              FontWeight.bold,
+
+                                                          //fontWeight: FontWeight.normal
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 15.0, bottom: 10),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        "Site-Pt: ",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black38,
+                                                            fontSize: 15,
+                                                            fontFamily: "Muli",
+                                                            fontWeight:
+                                                                FontWeight.bold
+                                                            //fontWeight: FontWeight.normal
+                                                            ),
+                                                      ),
+                                                      Obx(
                                                         () => Text(
-                                                          ((_leadsFilterController
-                                                                      .leadsListResponse
-                                                                      .leadsEntity[
-                                                                          index]
-                                                                      .leadStatusId) ==
-                                                                  1)
-                                                              ? "Active"
-                                                              : "Not Active",
+                                                          "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
                                                           style: TextStyle(
-                                                              color: HexColor(
-                                                                  "#39B54A"),
-                                                              fontSize: 10,
+                                                              // color: Colors.black38,
+                                                              fontSize: 15,
                                                               fontFamily:
                                                                   "Muli",
                                                               fontWeight:
@@ -771,170 +876,107 @@ class _LeadScreenState extends State<LeadScreen> {
                                                               //fontWeight: FontWeight.normal
                                                               ),
                                                         ),
-                                                      ),
-                                                    ),
+                                                      )
+                                                    ],
                                                   ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 10.0),
-                                                    child: Text(
-                                                      " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
-                                                        _leadsFilterController
-                                                                .leadsListResponse
-                                                                .leadsEntity[
-                                                                    index]
-                                                                .createdOn,
-                                                      ))}",
-                                                      //  textAlign: TextAlign.start,
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily: "Muli",
-                                                        fontWeight:
-                                                            FontWeight.bold,
-
-                                                        //fontWeight: FontWeight.normal
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 15.0, bottom: 10),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 8.0),
-                                                child: Row(
+                                                ),
+                                                // !list[index].verifiedStatus
+                                                //     ? Chip(
+                                                //         // shape: StadiumBorder(side: BorderSide(
+                                                //         //     color: HexColor("#6200EE")
+                                                //         // )),
+                                                //         backgroundColor: HexColor("#F9A61A"),
+                                                //         label: Text(
+                                                //           "NON VERIFIED",
+                                                //           style: TextStyle(
+                                                //               color: Colors.white,
+                                                //               fontSize: 14,
+                                                //               fontFamily: "Muli",
+                                                //               fontWeight: FontWeight.bold
+                                                //               //fontWeight: FontWeight.normal
+                                                //               ),
+                                                //         ),
+                                                //       )
+                                                //     : Chip(
+                                                //         // shape: StadiumBorder(side: BorderSide(
+                                                //         //     color: HexColor("#6200EE")
+                                                //         // )),
+                                                //         backgroundColor: HexColor("#00ADEE"),
+                                                //         label: Text(
+                                                //           "TELE VERIFIED",
+                                                //           style: TextStyle(
+                                                //               color: Colors.white,
+                                                //               fontSize: 14,
+                                                //               fontFamily: "Muli",
+                                                //               fontWeight: FontWeight.bold
+                                                //               //fontWeight: FontWeight.normal
+                                                //               ),
+                                                //         ),
+                                                //       ),
+                                                SizedBox(
+                                                  height: 30,
+                                                ),
+                                                // Text(
+                                                //   "Call Contractor",
+                                                //   style: TextStyle(
+                                                //       // color: Colors.white,
+                                                //       fontSize: 11,
+                                                //       fontFamily: "Muli",
+                                                //       fontWeight: FontWeight.bold
+                                                //       //fontWeight: FontWeight.normal
+                                                //       ),
+                                                // ),
+                                                Row(
                                                   children: [
-                                                    Text(
-                                                      "Site-Pt: ",
-                                                      style: TextStyle(
-                                                          color: Colors.black38,
-                                                          fontSize: 15,
-                                                          fontFamily: "Muli",
-                                                          fontWeight:
-                                                              FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
-                                                          ),
+                                                    Icon(
+                                                      Icons.call,
+                                                      color:
+                                                          HexColor("#8DC63F"),
                                                     ),
                                                     Obx(
-                                                      () => Text(
-                                                        "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
-                                                        style: TextStyle(
-                                                            // color: Colors.black38,
-                                                            fontSize: 15,
-                                                            fontFamily: "Muli",
-                                                            fontWeight:
-                                                                FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
-                                                            ),
+                                                      () => GestureDetector(
+                                                        child: Text(
+                                                          "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                                          //" Call Contractor",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 15,
+                                                              fontFamily:
+                                                                  "Muli",
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .italic
+                                                              //fontWeight: FontWeight.normal
+                                                              ),
+                                                        ),
+                                                        onTap: () {
+                                                          String num =
+                                                              _leadsFilterController
+                                                                  .leadsListResponse
+                                                                  .leadsEntity[
+                                                                      index]
+                                                                  .contactNumber;
+                                                          launch('tel:$num');
+                                                        },
                                                       ),
-                                                    )
+                                                    ),
                                                   ],
                                                 ),
-                                              ),
-                                              // !list[index].verifiedStatus
-                                              //     ? Chip(
-                                              //         // shape: StadiumBorder(side: BorderSide(
-                                              //         //     color: HexColor("#6200EE")
-                                              //         // )),
-                                              //         backgroundColor: HexColor("#F9A61A"),
-                                              //         label: Text(
-                                              //           "NON VERIFIED",
-                                              //           style: TextStyle(
-                                              //               color: Colors.white,
-                                              //               fontSize: 14,
-                                              //               fontFamily: "Muli",
-                                              //               fontWeight: FontWeight.bold
-                                              //               //fontWeight: FontWeight.normal
-                                              //               ),
-                                              //         ),
-                                              //       )
-                                              //     : Chip(
-                                              //         // shape: StadiumBorder(side: BorderSide(
-                                              //         //     color: HexColor("#6200EE")
-                                              //         // )),
-                                              //         backgroundColor: HexColor("#00ADEE"),
-                                              //         label: Text(
-                                              //           "TELE VERIFIED",
-                                              //           style: TextStyle(
-                                              //               color: Colors.white,
-                                              //               fontSize: 14,
-                                              //               fontFamily: "Muli",
-                                              //               fontWeight: FontWeight.bold
-                                              //               //fontWeight: FontWeight.normal
-                                              //               ),
-                                              //         ),
-                                              //       ),
-                                              SizedBox(
-                                                height: 30,
-                                              ),
-                                              // Text(
-                                              //   "Call Contractor",
-                                              //   style: TextStyle(
-                                              //       // color: Colors.white,
-                                              //       fontSize: 11,
-                                              //       fontFamily: "Muli",
-                                              //       fontWeight: FontWeight.bold
-                                              //       //fontWeight: FontWeight.normal
-                                              //       ),
-                                              // ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.call,
-                                                    color: HexColor("#8DC63F"),
-                                                  ),
-                                                  Obx(
-                                                    () => GestureDetector(
-                                                      child: Text(
-                                                        "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                        //" Call Contractor",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 15,
-                                                            fontFamily: "Muli",
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontStyle:
-                                                                FontStyle.italic
-                                                            //fontWeight: FontWeight.normal
-                                                            ),
-                                                      ),
-                                                      onTap: () {
-                                                        String num =
-                                                            _leadsFilterController
-                                                                .leadsListResponse
-                                                                .leadsEntity[
-                                                                    index]
-                                                                .contactNumber;
-                                                        launch('tel:$num');
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          }),
     );
   }
 
@@ -1230,7 +1272,8 @@ class _LeadScreenState extends State<LeadScreen> {
                             _leadsFilterController.selectedFilterCount + 1;
                       }
                       _leadsFilterController.selectedLeadStage = value;
-                      _leadsFilterController.selectedLeadStageValue = StringConstants.nonVerifiedValue;
+                      _leadsFilterController.selectedLeadStageValue =
+                          StringConstants.nonVerifiedValue;
                     },
                   ),
                 )),
@@ -1248,7 +1291,8 @@ class _LeadScreenState extends State<LeadScreen> {
                             _leadsFilterController.selectedFilterCount + 1;
                       }
                       _leadsFilterController.selectedLeadStage = value;
-                      _leadsFilterController.selectedLeadStageValue = StringConstants.teleVerifiedValue;
+                      _leadsFilterController.selectedLeadStageValue =
+                          StringConstants.teleVerifiedValue;
                     },
                   ),
                 )),
@@ -1266,7 +1310,8 @@ class _LeadScreenState extends State<LeadScreen> {
                             _leadsFilterController.selectedFilterCount + 1;
                       }
                       _leadsFilterController.selectedLeadStage = value;
-                      _leadsFilterController.selectedLeadStageValue = StringConstants.physicalVerifiedValue;
+                      _leadsFilterController.selectedLeadStageValue =
+                          StringConstants.physicalVerifiedValue;
                     },
                   ),
                 )),
@@ -1360,16 +1405,21 @@ class _LeadScreenState extends State<LeadScreen> {
         padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
         child: Column(
           children: <Widget>[
-            leadStatusListTile(StringConstants.active,StringConstants.activeValue),
-            leadStatusListTile(StringConstants.convertedToSite,StringConstants.convertedToSiteValue),
-            leadStatusListTile(StringConstants.rejected,StringConstants.rejectedValue),
-            leadStatusListTile(StringConstants.futureOpportunity,StringConstants.futureOpportunityValue),
-            leadStatusListTile(StringConstants.duplicate,StringConstants.duplicateValue),
+            leadStatusListTile(
+                StringConstants.active, StringConstants.activeValue),
+            leadStatusListTile(StringConstants.convertedToSite,
+                StringConstants.convertedToSiteValue),
+            leadStatusListTile(
+                StringConstants.rejected, StringConstants.rejectedValue),
+            leadStatusListTile(StringConstants.futureOpportunity,
+                StringConstants.futureOpportunityValue),
+            leadStatusListTile(
+                StringConstants.duplicate, StringConstants.duplicateValue),
           ],
         ));
   }
 
-  Widget leadStatusListTile(String statusValue,String leadStatusValue) {
+  Widget leadStatusListTile(String statusValue, String leadStatusValue) {
     return ListTile(
         title: Text(statusValue),
         leading: Obx(

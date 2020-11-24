@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart' as splashModel;
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -26,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   HomeController _homeController = Get.find();
   LoginController _loginController = Get.find();
+  SplashController _splashController = Get.find();
 
   List<menuDetailsModel> list = [
     new menuDetailsModel("Leads", "assets/images/img2.png"),
@@ -50,6 +53,20 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if (_loginController != null) {
+      if (_loginController.validateOtpResponse != null) {
+        if (_loginController.validateOtpResponse.journeyDetails != null) {
+          _splashController.splashDataModel.journeyDetails =
+              _loginController.validateOtpResponse.journeyDetails ;
+        } else {
+          print('Journey Details in validate is null');
+        }
+      } else {
+        print('Validate Otp response is null');
+      }
+    } else {
+      print('Login Controller is null');
+    }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       _homeController.employeeName =
@@ -164,109 +181,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                (_status == StringConstants.checkIn ||
-                        _status == StringConstants.checkOut)
-                    ? (_status == StringConstants.checkIn)
-                        ? SliderButton(
-                            action: () {
-                              setState(() {
-                                _status = StringConstants.checkOut;
-                                _prefs.then((SharedPreferences prefs) {
-                                  prefs.setString(StringConstants.checkInStatus,
-                                      StringConstants.checkOut);
-                                });
-                              });
-                              _homeController.getAccessKey(RequestIds.CHECK_IN);
-                            },
-
-                            ///Put label over here
-                            label: Text(
-                              "Slide to Check-In !",
-                              style: TextStyle(
-                                  color: Color(0xff4a4a4a),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17),
-                            ),
-                            icon: Center(
-                                child: Icon(
-                              Icons.arrow_forward_outlined,
-                              color: Colors.white,
-                              size: 40.0,
-                              //  semanticLabel: 'Text to announce in accessibility modes',
-                            )),
-
-                            ///Change All the color and size from here.
-                            alignLabel: Alignment.center,
-                            width: MediaQuery.of(context).size.width,
-                            radius: 10,
-                            buttonColor: ColorConstants.checkinColor,
-                            backgroundColor: ColorConstants.checkinColor,
-                            highlightedColor: Colors.grey,
-                            baseColor: Colors.white,
-                            vibrationFlag: true,
-                            dismissible: false,
-                          )
-                        : SliderButton(
-                            action: () {
-                              setState(() {
-                                _status = StringConstants.journeyEnded;
-                                _prefs.then((SharedPreferences prefs) {
-                                  prefs.setString(StringConstants.checkInStatus,
-                                      StringConstants.journeyEnded);
-                                });
-                              });
-
-                              ///Do something here OnSlide
-                            },
-
-                            ///Put label over here
-                            label: Text(
-                              "Slide to Check-Out !",
-                              style: TextStyle(
-                                  color: Color(0xff4a4a4a),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17),
-                            ),
-                            icon: Center(
-                                child: Icon(
-                              Icons.arrow_forward_outlined,
-                              color: Colors.white,
-                              size: 40.0,
-                              //  semanticLabel: 'Text to announce in accessibility modes',
-                            )),
-
-                            ///Change All the color and size from here.
-                            alignLabel: Alignment.center,
-                            width: MediaQuery.of(context).size.width,
-                            radius: 10,
-                            buttonColor: HexColor("#F9A61A"),
-                            backgroundColor: HexColor("#F9A61A"),
-                            highlightedColor: Colors.grey,
-                            baseColor: Colors.white,
-                            vibrationFlag: true,
-                            dismissible: false,
-                          )
-                    : GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _status = StringConstants.checkIn;
-                            _prefs.then((SharedPreferences prefs) {
-                              prefs.setString(StringConstants.checkInStatus,
-                                  StringConstants.checkIn);
-                            });
-                          });
-                        },
-                        child: Container(
-                          height: 70,
-                          alignment: Alignment.center,
-                          color: Colors.grey,
-                          child: Text("Journey-Ended",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Muli",
-                                  fontSize: 18)),
-                        ),
-                      ),
+                Obx(() => (_splashController
+                            .splashDataModel.journeyDetails.journeyDate ==
+                        null)
+                    ? checkInSliderButton()
+                    : (_splashController.splashDataModel.journeyDetails
+                                .journeyEndTime ==
+                            null)
+                        ? checkOutSliderButton()
+                        : journeyEnded()),
                 SizedBox(
                   height: 15,
                 ),
@@ -387,6 +310,114 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             )));
+  }
+
+  Widget checkInSliderButton() {
+    return SliderButton(
+      action: () {
+        /*setState(() {
+          _status = StringConstants.checkOut;
+          _prefs.then((SharedPreferences prefs) {
+            prefs.setString(
+                StringConstants.checkInStatus, StringConstants.checkOut);
+          });
+        });*/
+        _homeController.getAccessKey(RequestIds.CHECK_IN);
+      },
+
+      ///Put label over here
+      label: Text(
+        "Slide to Check-In !",
+        style: TextStyle(
+            color: Color(0xff4a4a4a),
+            fontWeight: FontWeight.w500,
+            fontSize: 17),
+      ),
+      icon: Center(
+          child: Icon(
+        Icons.arrow_forward_outlined,
+        color: Colors.white,
+        size: 40.0,
+        //  semanticLabel: 'Text to announce in accessibility modes',
+      )),
+
+      ///Change All the color and size from here.
+      alignLabel: Alignment.center,
+      width: MediaQuery.of(context).size.width,
+      radius: 10,
+      buttonColor: ColorConstants.checkinColor,
+      backgroundColor: ColorConstants.checkinColor,
+      highlightedColor: Colors.grey,
+      baseColor: Colors.white,
+      vibrationFlag: true,
+      dismissible: false,
+    );
+  }
+
+  Widget checkOutSliderButton() {
+    return SliderButton(
+      action: () {
+        /*setState(() {
+          _status = StringConstants.journeyEnded;
+          _prefs.then((SharedPreferences prefs) {
+            prefs.setString(
+                StringConstants.checkInStatus, StringConstants.journeyEnded);
+          });
+        });*/
+        _homeController.getAccessKey(RequestIds.CHECK_OUT);
+
+        ///Do something here OnSlide
+      },
+
+      ///Put label over here
+      label: Text(
+        "Slide to Check-Out !",
+        style: TextStyle(
+            color: Color(0xff4a4a4a),
+            fontWeight: FontWeight.w500,
+            fontSize: 17),
+      ),
+      icon: Center(
+          child: Icon(
+        Icons.arrow_forward_outlined,
+        color: Colors.white,
+        size: 40.0,
+        //  semanticLabel: 'Text to announce in accessibility modes',
+      )),
+
+      ///Change All the color and size from here.
+      alignLabel: Alignment.center,
+      width: MediaQuery.of(context).size.width,
+      radius: 10,
+      buttonColor: HexColor("#F9A61A"),
+      backgroundColor: HexColor("#F9A61A"),
+      highlightedColor: Colors.grey,
+      baseColor: Colors.white,
+      vibrationFlag: true,
+      dismissible: false,
+    );
+  }
+
+  Widget journeyEnded() {
+    return GestureDetector(
+      onTap: () {
+        /*setState(() {
+          _status = StringConstants.checkIn;
+          _prefs.then((SharedPreferences prefs) {
+            prefs.setString(
+                StringConstants.checkInStatus, StringConstants.checkIn);
+          });
+        });*/
+      },
+      child: Container(
+        height: 70,
+        alignment: Alignment.center,
+        color: Colors.grey,
+        child: Text("Journey-Ended",
+            style: TextStyle(
+                color: Colors.white, fontFamily: "Muli", fontSize: 18)),
+      ),
+    );
   }
 
   Widget userMenuWidget() {

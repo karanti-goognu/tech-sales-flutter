@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginM
 import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -28,6 +29,7 @@ class HomeController extends GetxController {
   }
 
   final MyRepositoryHome repository;
+  SplashController _splashController = Get.find();
 
   HomeController({@required this.repository}) : assert(repository != null);
 
@@ -88,6 +90,9 @@ class HomeController extends GetxController {
         case RequestIds.CHECK_IN:
           getCheckInDetails(this.accessKeyResponse.accessKey);
           break;
+        case RequestIds.CHECK_OUT:
+          getCheckOutDetails(this.accessKeyResponse.accessKey);
+          break;
       }
     });
   }
@@ -136,6 +141,8 @@ class HomeController extends GetxController {
             debugPrint('Check in  Data Response is null');
           } else {
             this.checkInResponse = data;
+            _splashController.splashDataModel.journeyDetails.journeyDate =
+                formattedDate;
             print("${this.checkInResponse}");
           }
         });
@@ -151,45 +158,57 @@ class HomeController extends GetxController {
     String userSecurityKey = "empty";
     String journeyStartLat = "empty";
     String journeyStartLong = "empty";
+    String journeyEndLat = "empty";
+    String journeyEndLong = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
       geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
-        journeyStartLat = position.latitude.toString();
-        journeyStartLong = position.longitude.toString();
+        journeyStartLat =
+            _splashController.splashDataModel.journeyDetails.journeyStartLat;
+        journeyStartLong =
+            _splashController.splashDataModel.journeyDetails.journeyStartLong;
+        journeyEndLat = position.latitude.toString();
+        journeyEndLong = position.longitude.toString();
         //debugPrint('request without encryption: $body');
         String url = "${UrlConstants.getCheckInDetails}";
         debugPrint('Url is : $url');
         var date = DateTime.now();
         var formattedDate = "${date.year}-${date.month}-${date.day}";
-        var formattedDateTime = "${date.year}-${date.month}-${date.day} ${date.hour}-${date.minute}-${date.second}";
+
+        String journeyDate =
+            _splashController.splashDataModel.journeyDetails.journeyDate;
+        String journeyStartTime =
+            _splashController.splashDataModel.journeyDetails.journeyStartTime;
+
         print(
             'Date is ${date.toString()} Formatted Date :: $formattedDate Latitude $journeyStartLat Longitude $journeyStartLong');
 
         repository
             .getCheckInDetails(
-            url,
-            accessKey,
-            userSecurityKey,
-            empId,
-            formattedDate,
-            date.toString(),
-            journeyStartLat,
-            journeyStartLong,
-            "",
-            "",
-            "")
+                url,
+                accessKey,
+                userSecurityKey,
+                empId,
+                journeyDate,
+                journeyStartTime,
+                journeyStartLat,
+                journeyStartLong,
+                date.toString(),
+                journeyEndLat,
+                journeyEndLong)
             .then((data) {
           if (data == null) {
             debugPrint('Check in  Data Response is null');
           } else {
             this.checkInResponse = data;
+            _splashController.splashDataModel.journeyDetails.journeyEndTime =
+                date.toString();
             print("${this.checkInResponse}");
           }
         });
