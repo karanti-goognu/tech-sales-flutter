@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -148,4 +149,36 @@ class AddLeadsController extends GetxController {
 
 
   }
+
+  void updateLeadData(var updateRequestModel, List<File> imageList , BuildContext context, int leadId) {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    repository.getAccessKey().then((data) {
+      // Get.back();
+
+      this.accessKeyResponse = data;
+//print(this.accessKeyResponse.accessKey);
+      updateLeadDataInBackend(updateRequestModel,imageList,context,leadId);
+
+  });
+  }
+
+  Future<void> updateLeadDataInBackend(var updateRequestModel, List<File> imageList, BuildContext context, int leadId) async {
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      print('User Security Key :: $userSecurityKey');
+
+      await repository.updateLeadsData(
+          this.accessKeyResponse.accessKey, userSecurityKey, updateRequestModel,imageList,context,leadId);
+    });
+
+
+
+  }
+
+
 }

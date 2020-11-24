@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
 import 'package:meta/meta.dart';
 
@@ -49,5 +50,9 @@ class MyRepositoryLeads {
   getLeadData(String accessKey, String userSecurityKey, int leadId) {
     return apiClient.getLeadData(accessKey,userSecurityKey,leadId);
 
+  }
+
+  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel, List<File> imageList, BuildContext context, int leadId) {
+    return apiClient.updateLeadsData(accessKey,userSecurityKey,updateRequestModel ,imageList,context,leadId);
   }
 }

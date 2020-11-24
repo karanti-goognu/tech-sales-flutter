@@ -11,6 +11,8 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -259,9 +261,7 @@ class MyApiClientLeads {
         'leadSalesPotentialMt':
         saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
         'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? 'abc',
-        //'assignDate': saveLeadRequestModel.assignDate ?? 'abc',
         'isStatus': saveLeadRequestModel.isStatus ?? 'abc',
-        // 'photos': saveLeadRequestModel.photos.toString()??'abc',
         'createdBy':empId,
         'leadIsDuplicate':"N",
         'listLeadImage' : saveLeadRequestModel.listLeadImage ?? 'abc',
@@ -362,5 +362,83 @@ class MyApiClientLeads {
     }
 
 
+  }
+
+  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel, List<File> imageList, BuildContext context, int leadId) async {
+
+    http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateLeadsData));
+    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
+
+    for (var file in imageList) {
+      String fileName = file.path.split("/").last;
+      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+
+      // get file length
+
+      var length = await file.length(); //imageFile is your image file
+
+      // multipart that takes file
+      var multipartFileSign = new http.MultipartFile('file', stream, length, filename: fileName);
+
+      request.files.add(multipartFileSign);
+    }
+
+
+    String empId;
+    String mobileNumber;
+    String name;
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) async {
+      empId = prefs.getString(
+          StringConstants.employeeId) ?? "empty";
+      mobileNumber = prefs.getString(
+          StringConstants.mobileNumber) ?? "empty";
+      name = prefs.getString(
+          StringConstants.employeeName) ?? "empty";
+
+      gv.currentId = empId;
+
+
+      request.fields['uploadImageWithUpdateLeadModel'] = json.encode(updateRequestModel);
+
+//print(saveLeadRequestModel.comments[0].commentedBy);
+      print("Request headers :: " + request.headers.toString());
+      print("Request Body/Fields :: " + request.fields.toString());
+      // print("Files:: " + request.files.toString());
+      try {
+        request.send().then((result) async {
+
+          http.Response.fromStream(result)
+              .then((response) {
+
+            print(response.statusCode);
+
+            var data = json.decode(response.body);
+            print(data);
+            UpdateLeadResponseModel updateLeadResponseModel= UpdateLeadResponseModel.fromJson(data);
+
+            if(updateLeadResponseModel.respCode == "LD2009"){
+              Get.back();
+              gv.selectedLeadID = updateLeadResponseModel.leadId;
+              Get.dialog(CustomDialogs().showDialog("Lead has been updated"));
+            }
+            else{
+              Get.back();
+
+              Get.dialog(CustomDialogs().showDialog("Some Error Occured !!! "));
+            }
+
+
+          });
+        }).catchError((err) => print('error : '+err.toString()))
+            .whenComplete(()
+        {});
+
+
+      } catch (_) {
+        print('exception ${_.toString()}');
+      }
+
+    });
   }
 }
