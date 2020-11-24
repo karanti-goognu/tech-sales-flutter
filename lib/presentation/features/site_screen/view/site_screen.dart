@@ -17,20 +17,15 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-import 'ViewLeadScreen.dart';
-
-class LeadScreen extends StatefulWidget {
+class SiteScreen extends StatefulWidget {
   @override
-  _LeadScreenState createState() => _LeadScreenState();
+  _SiteScreenState createState() => _SiteScreenState();
 }
 
-class _LeadScreenState extends State<LeadScreen> {
+class _SiteScreenState extends State<SiteScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
   // Instantiate your class using Get.put() to make it available for all "child" routes there.
-  Map _source = {ConnectivityResult.none: false};
-  MyConnectivity _connectivity = MyConnectivity.instance;
-  LeadsFilterController _leadsFilterController = Get.find();
-  SplashController _splashController = Get.find();
+  LeadsFilterController _siteController = Get.find();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
 
@@ -71,14 +66,7 @@ class _LeadScreenState extends State<LeadScreen> {
   void initState() {
     super.initState();
 
-    _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
-
-    //_leadsFilterController.getSecretKey(RequestIds.GET_SECRET_KEY);
-
-    /*_connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
-    });*/
+    _siteController.getAccessKey(RequestIds.GET_LEADS_LIST);
   }
 
   @override
@@ -89,17 +77,6 @@ class _LeadScreenState extends State<LeadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String connectionString;
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.none:
-        connectionString = "Offline";
-        break;
-      case ConnectivityResult.mobile:
-        connectionString = "Mobile: Online";
-        break;
-      case ConnectivityResult.wifi:
-        connectionString = "WiFi: Online";
-    }
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
@@ -122,7 +99,7 @@ class _LeadScreenState extends State<LeadScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "OPEN LEADS",
+                  "OPEN SITES",
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 22,
@@ -131,9 +108,6 @@ class _LeadScreenState extends State<LeadScreen> {
                 ),
                 FlatButton(
                   onPressed: () {
-                    /* (connectionString == 'Offline')
-                        ? _leadsFilterController.showNoInternetSnack()
-                        : _settingModalBottomSheet(context);*/
                     _settingModalBottomSheet(context);
                   },
                   shape: RoundedRectangleBorder(
@@ -158,7 +132,7 @@ class _LeadScreenState extends State<LeadScreen> {
                             ),
                             child: Center(
                                 child: Obx(() => Text(
-                                    "${_leadsFilterController.selectedFilterCount}",
+                                    "${_siteController.selectedFilterCount}",
                                     style: TextStyle(
                                         color: Colors.black,
                                         //fontFamily: 'Raleway',
@@ -184,7 +158,33 @@ class _LeadScreenState extends State<LeadScreen> {
                     SizedBox(
                       width: 8,
                     ),
-                    Obx(() => (_leadsFilterController.assignToDate ==
+                    Obx(() =>
+                        (_siteController.assignToDate == StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                                label: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                        "${_siteController.assignFromDate} to ${_siteController.assignToDate}")
+                                  ],
+                                ),
+                                backgroundColor: Colors.transparent,
+                                shape: StadiumBorder(side: BorderSide()),
+                                onSelected: (bool value) {
+                                  print("selected");
+                                },
+                              )),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Obx(() => (_siteController.selectedLeadStatus ==
                             StringConstants.empty)
                         ? Container()
                         : FilterChip(
@@ -197,8 +197,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                 SizedBox(
                                   width: 4,
                                 ),
-                                Text(
-                                    "${_leadsFilterController.assignFromDate} to ${_leadsFilterController.assignToDate}")
+                                Text("${_siteController.selectedLeadStatus}")
                               ],
                             ),
                             backgroundColor: Colors.transparent,
@@ -210,7 +209,7 @@ class _LeadScreenState extends State<LeadScreen> {
                     SizedBox(
                       width: 8,
                     ),
-                    Obx(() => (_leadsFilterController.selectedLeadStatus ==
+                    Obx(() => (_siteController.selectedLeadStage ==
                             StringConstants.empty)
                         ? Container()
                         : FilterChip(
@@ -223,34 +222,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                 SizedBox(
                                   width: 4,
                                 ),
-                                Text(
-                                    "${_leadsFilterController.selectedLeadStatus}")
-                              ],
-                            ),
-                            backgroundColor: Colors.transparent,
-                            shape: StadiumBorder(side: BorderSide()),
-                            onSelected: (bool value) {
-                              print("selected");
-                            },
-                          )),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Obx(() => (_leadsFilterController.selectedLeadStage ==
-                            StringConstants.empty)
-                        ? Container()
-                        : FilterChip(
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                    "${_leadsFilterController.selectedLeadStage}")
+                                Text("${_siteController.selectedLeadStage}")
                               ],
                             ),
                             backgroundColor: Colors.transparent,
@@ -264,55 +236,6 @@ class _LeadScreenState extends State<LeadScreen> {
           ],
         ),
         automaticallyImplyLeading: false,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.only(right: 20.0, top: 20),
-        //     child: Column(
-        //       children: [
-        //         FlatButton(
-        //           shape: RoundedRectangleBorder(
-        //               borderRadius: BorderRadius.circular(18.0),
-        //               side: BorderSide(color: Colors.white)),
-        //           color: Colors.transparent,
-        //           child: Padding(
-        //             padding: const EdgeInsets.only(bottom: 5),
-        //             child: Row(
-        //               children: [
-        //               //  Icon(Icons.exposure_zero_outlined),
-        //                 Container(
-        //                   height: 18,
-        //                   width: 18,
-        //                   // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-        //                   decoration: new BoxDecoration(
-        //                     color: Colors.white,
-        //                      border: Border.all(color: Colors.black, width: 0.0),
-        //                      borderRadius: new BorderRadius.all(Radius.circular(3)),
-        //                   ),
-        //                   child: Center(child: Text("0",
-        //                       style: TextStyle(
-        //                         color: Colors.black,
-        //                          //fontFamily: 'Raleway',
-        //                           fontSize: 12,
-        //                           fontWeight: FontWeight.normal
-        //                       )))
-        //                 ),
-        //                 Padding(
-        //                   padding: const EdgeInsets.only(left:8.0),
-        //                   child: Text(
-        //                     'FILTER',
-        //                     style: TextStyle(color: Colors.white ,
-        //                     fontSize: 18),
-        //
-        //                   ),
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         )
-        //       ],
-        //    ),
-        //  ),
-        //  ],
       ),
       floatingActionButton: Container(
         height: 68.0,
@@ -326,10 +249,6 @@ class _LeadScreenState extends State<LeadScreen> {
             ),
             onPressed: () {
               Get.toNamed(Routes.ADD_LEADS_SCREEN);
-              /*Navigator.push(
-                  context,
-                  new CupertinoPageRoute(
-                      builder: (BuildContext context) => AddNewLeadForm()));*/
             },
           ),
         ),
@@ -359,12 +278,6 @@ class _LeadScreenState extends State<LeadScreen> {
                           Icons.home,
                           color: Colors.white60,
                         ),
-                        // Text(
-                        //   'Dashboard',
-                        //   style: TextStyle(
-                        //     color: currentTab == 0 ? Colors.blue : Colors.grey,
-                        //   ),
-                        //),
                       ],
                     ),
                   ),
@@ -386,12 +299,6 @@ class _LeadScreenState extends State<LeadScreen> {
                           Icons.drafts,
                           color: Colors.white60,
                         ),
-                        // Text(
-                        //   'Mail',
-                        //   style: TextStyle(
-                        //     color: currentTab == 2 ? Colors.blue : Colors.grey,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -407,12 +314,6 @@ class _LeadScreenState extends State<LeadScreen> {
                           Icons.search,
                           color: Colors.white60,
                         ),
-                        // Text(
-                        //   'Search',
-                        //   style: TextStyle(
-                        //     color: Colors.white,
-                        //   ),
-                        // ),
                       ],
                     ),
                   )
@@ -422,14 +323,7 @@ class _LeadScreenState extends State<LeadScreen> {
           ),
         ),
       ),
-      body:
-          /*(connectionString == 'Offline')
-          ? Container(
-              color: Colors.black12,
-              child: Center(child: Text("No Internet Connection found.")),
-            )
-          :*/
-          Container(
+      body: Container(
         child: Column(
           children: [
             Padding(
@@ -440,7 +334,7 @@ class _LeadScreenState extends State<LeadScreen> {
                 children: [
                   Obx(
                     () => Text(
-                      "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
+                      "Total Count : ${(_siteController.leadsListResponse.leadsEntity == null) ? 0 : _siteController.leadsListResponse.leadsEntity.length}",
                       style: TextStyle(
                         fontFamily: "Muli",
                         fontSize: 15,
@@ -449,7 +343,7 @@ class _LeadScreenState extends State<LeadScreen> {
                     ),
                   ),
                   Obx(() => Text(
-                        "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
+                        "Total Potential : ${(_siteController.leadsListResponse.totalLeadPotential == null) ? 0 : _siteController.leadsListResponse.totalLeadPotential}",
                         style: TextStyle(
                           fontFamily: "Muli",
                           fontSize: 15,
@@ -463,35 +357,8 @@ class _LeadScreenState extends State<LeadScreen> {
                 padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5),
                 child: SingleChildScrollView(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: HexColor("#F9A61A")),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 3.0),
-                              child: Text(
-                                "Non-Verified",
-                                style: TextStyle(
-                                  fontFamily: "Muli",
-                                  fontSize: 14,
-                                  // color: HexColor("#FFFFFF99"),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: Row(
@@ -548,34 +415,6 @@ class _LeadScreenState extends State<LeadScreen> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: HexColor("#ADADAD")),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 3.0),
-                              child: Text(
-                                "Duplicate",
-                                style: TextStyle(
-                                  fontFamily: "Muli",
-                                  fontSize: 14,
-                                  // color: HexColor("#FFFFFF99"),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                   scrollDirection: Axis.horizontal,
@@ -591,27 +430,25 @@ class _LeadScreenState extends State<LeadScreen> {
   }
 
   Widget leadsDetailWidget() {
-    return Obx(() => (_leadsFilterController == null)
+    return Obx(() => (_siteController == null)
         ? Container(
             child: Center(
               child: Text("Leads controller  is empty!!"),
             ),
           )
-        : (_leadsFilterController.leadsListResponse == null)
+        : (_siteController.leadsListResponse == null)
             ? Container(
                 child: Center(
                   child: Text("Leads list response  is empty!!"),
                 ),
               )
-            : (_leadsFilterController.leadsListResponse.leadsEntity == null)
+            : (_siteController.leadsListResponse.leadsEntity == null)
                 ? Container(
                     child: Center(
                       child: Text("Leads list is empty!!"),
                     ),
                   )
-                : (_leadsFilterController
-                            .leadsListResponse.leadsEntity.length ==
-                        0)
+                : (_siteController.leadsListResponse.leadsEntity.length == 0)
                     ? Container(
                         child: Center(
                           child: Column(
@@ -623,7 +460,7 @@ class _LeadScreenState extends State<LeadScreen> {
                               ),
                               RaisedButton(
                                 onPressed: () {
-                                  _leadsFilterController
+                                  _siteController
                                       .getAccessKey(RequestIds.GET_LEADS_LIST);
                                 },
                                 color: ColorConstants.buttonNormalColor,
@@ -637,23 +474,14 @@ class _LeadScreenState extends State<LeadScreen> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: _leadsFilterController
+                        itemCount: _siteController
                             .leadsListResponse.leadsEntity.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),
                         // itemExtent: 125.0,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  new CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ViewLeadScreen(_leadsFilterController
-                                              .leadsListResponse
-                                              .leadsEntity[index]
-                                              .leadId)));
-                            },
+                            onTap: () {},
                             child: Card(
                               clipBehavior: Clip.antiAlias,
                               borderOnForeground: true,
@@ -665,7 +493,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                 decoration: BoxDecoration(
                                   border: Border(
                                       left: BorderSide(
-                                    color: (_leadsFilterController
+                                    color: (_siteController
                                                 .leadsListResponse
                                                 .leadsEntity[index]
                                                 .leadStageId ==
@@ -675,22 +503,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                     width: 6,
                                   )),
                                 ),
-                                child: Stack(
+                                child: Column(
                                   children: [
-                                    // Positioned(
-                                    //     top: 0,
-                                    //     left: 250,
-                                    //     right: 0,
-                                    //     child: Container(
-                                    //         color: Colors.white,
-                                    //         child: Column(
-                                    //           children: <Widget>[
-                                    //             Image.asset(
-                                    //               'assets/images/Container.png',
-                                    //               fit: BoxFit.fitHeight,
-                                    //             ),
-                                    //           ],
-                                    //         ))),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -705,11 +519,25 @@ class _LeadScreenState extends State<LeadScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Padding(
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
+                                                child: Text(
+                                                  "Follow-up Date XXXX",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontFamily: "Muli",
+                                                      fontWeight:
+                                                          FontWeight.normal
+                                                      //fontWeight: FontWeight.normal
+                                                      ),
+                                                ),
+                                              ),
+                                              Padding(
                                                   padding:
                                                       const EdgeInsets.all(2.0),
                                                   child: Obx(
                                                     () => Text(
-                                                      "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
+                                                      "Site ID (${_siteController.leadsListResponse.leadsEntity[index].leadId})",
                                                       style: TextStyle(
                                                           fontSize: 18,
                                                           fontFamily: "Muli",
@@ -724,10 +552,10 @@ class _LeadScreenState extends State<LeadScreen> {
                                                       const EdgeInsets.all(2.0),
                                                   child: Obx(
                                                     () => Text(
-                                                      "District: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadDistrictName}",
+                                                      "District: ${_siteController.leadsListResponse.leadsEntity[index].leadDistrictName}",
                                                       style: TextStyle(
                                                           color: Colors.black38,
-                                                          fontSize: 14,
+                                                          fontSize: 12,
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold
@@ -751,18 +579,18 @@ class _LeadScreenState extends State<LeadScreen> {
                                                               .withOpacity(0.1),
                                                       label: Obx(
                                                         () => Text(
-                                                          ((_leadsFilterController
+                                                          ((_siteController
                                                                       .leadsListResponse
                                                                       .leadsEntity[
                                                                           index]
-                                                                      .leadStatusId) ==
+                                                                      .leadStageId) ==
                                                                   1)
                                                               ? "Active"
                                                               : "Rejected",
                                                           style: TextStyle(
                                                               color: HexColor(
                                                                   "#39B54A"),
-                                                              fontSize: 10,
+                                                              fontSize: 12,
                                                               fontFamily:
                                                                   "Muli",
                                                               fontWeight:
@@ -779,11 +607,10 @@ class _LeadScreenState extends State<LeadScreen> {
                                                         left: 10.0),
                                                     child: Text(
                                                       " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
-                                                        _leadsFilterController
-                                                                .leadsListResponse
-                                                                .leadsEntity[
-                                                                    index]
-                                                                .createdOn,
+                                                        _siteController
+                                                            .leadsListResponse
+                                                            .leadsEntity[index]
+                                                            .createdOn,
                                                       ))}",
                                                       //  textAlign: TextAlign.start,
                                                       style: TextStyle(
@@ -829,7 +656,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                     ),
                                                     Obx(
                                                       () => Text(
-                                                        "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
+                                                        "${_siteController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
                                                         style: TextStyle(
                                                             // color: Colors.black38,
                                                             fontSize: 15,
@@ -843,52 +670,19 @@ class _LeadScreenState extends State<LeadScreen> {
                                                   ],
                                                 ),
                                               ),
-                                              // !list[index].verifiedStatus
-                                              //     ? Chip(
-                                              //         // shape: StadiumBorder(side: BorderSide(
-                                              //         //     color: HexColor("#6200EE")
-                                              //         // )),
-                                              //         backgroundColor: HexColor("#F9A61A"),
-                                              //         label: Text(
-                                              //           "NON VERIFIED",
-                                              //           style: TextStyle(
-                                              //               color: Colors.white,
-                                              //               fontSize: 14,
-                                              //               fontFamily: "Muli",
-                                              //               fontWeight: FontWeight.bold
-                                              //               //fontWeight: FontWeight.normal
-                                              //               ),
-                                              //         ),
-                                              //       )
-                                              //     : Chip(
-                                              //         // shape: StadiumBorder(side: BorderSide(
-                                              //         //     color: HexColor("#6200EE")
-                                              //         // )),
-                                              //         backgroundColor: HexColor("#00ADEE"),
-                                              //         label: Text(
-                                              //           "TELE VERIFIED",
-                                              //           style: TextStyle(
-                                              //               color: Colors.white,
-                                              //               fontSize: 14,
-                                              //               fontFamily: "Muli",
-                                              //               fontWeight: FontWeight.bold
-                                              //               //fontWeight: FontWeight.normal
-                                              //               ),
-                                              //         ),
-                                              //       ),
+                                              Text(
+                                                "Retention Site ",
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 12,
+                                                    fontFamily: "Muli",
+                                                    fontWeight: FontWeight.bold
+                                                    //fontWeight: FontWeight.normal
+                                                    ),
+                                              ),
                                               SizedBox(
                                                 height: 30,
                                               ),
-                                              // Text(
-                                              //   "Call Contractor",
-                                              //   style: TextStyle(
-                                              //       // color: Colors.white,
-                                              //       fontSize: 11,
-                                              //       fontFamily: "Muli",
-                                              //       fontWeight: FontWeight.bold
-                                              //       //fontWeight: FontWeight.normal
-                                              //       ),
-                                              // ),
                                               Row(
                                                 children: [
                                                   Icon(
@@ -898,7 +692,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                   Obx(
                                                     () => GestureDetector(
                                                       child: Text(
-                                                        "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                                        "${_siteController.leadsListResponse.leadsEntity[index].contactNumber}",
                                                         //" Call Contractor",
                                                         style: TextStyle(
                                                             color: Colors.black,
@@ -913,7 +707,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                       ),
                                                       onTap: () {
                                                         String num =
-                                                            _leadsFilterController
+                                                            _siteController
                                                                 .leadsListResponse
                                                                 .leadsEntity[
                                                                     index]
@@ -928,6 +722,44 @@ class _LeadScreenState extends State<LeadScreen> {
                                           ),
                                         ),
                                       ],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                                      child: Container(
+                                        color: Colors.grey,
+                                        width: double.infinity,
+                                        height: 1,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Exclusive Dalmia ",
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                fontSize: 12,
+                                                fontFamily: "Muli",
+                                                fontWeight: FontWeight.bold
+                                                //fontWeight: FontWeight.normal
+                                                ),
+                                          ),
+                                          Text(
+                                            "Hot ",
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                fontSize: 12,
+                                                fontFamily: "Muli",
+                                                fontWeight: FontWeight.bold
+                                                //fontWeight: FontWeight.normal
+                                                ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -999,25 +831,36 @@ class _LeadScreenState extends State<LeadScreen> {
             children: [
               GestureDetector(
                   onTap: () {
-                    _leadsFilterController.selectedPosition = 0;
+                    _siteController.selectedPosition = 0;
                   },
                   child: returnSelectedWidget("Assign Date", 0)),
               GestureDetector(
                   onTap: () {
-                    _leadsFilterController.selectedPosition = 1;
+                    _siteController.selectedPosition = 1;
                   },
-                  child: returnSelectedWidget("Lead Stage", 1)),
+                  child: returnSelectedWidget("Type of site", 1)),
               GestureDetector(
                   onTap: () {
-                    _leadsFilterController.selectedPosition = 2;
+                    _siteController.selectedPosition = 2;
                   },
-                  child: returnSelectedWidget("Lead Status", 2)),
-              /* GestureDetector(
-                              onTap: () {
-                                _leadsFilterController.selectedPosition = 3;
-                              },
-                              child: returnSelectedWidget("Lead Potential", 3),
-                            ),*/
+                  child: returnSelectedWidget("Site Stage", 2)),
+              GestureDetector(
+                  onTap: () {
+                    _siteController.selectedPosition = 3;
+                  },
+                  child: returnSelectedWidget("Site Status", 3)),
+              GestureDetector(
+                onTap: () {
+                  _siteController.selectedPosition = 4;
+                },
+                child: returnSelectedWidget("Pincode", 4),
+              ),
+              GestureDetector(
+                onTap: () {
+                  _siteController.selectedPosition = 5;
+                },
+                child: returnSelectedWidget("Influencer Cat.", 5),
+              ),
             ],
           ),
         ),
@@ -1028,8 +871,7 @@ class _LeadScreenState extends State<LeadScreen> {
         ),
         new Expanded(
             flex: 2,
-            child: returnSelectedWidgetBody(
-                _leadsFilterController.selectedPosition)),
+            child: returnSelectedWidgetBody(_siteController.selectedPosition)),
       ],
     );
   }
@@ -1052,15 +894,12 @@ class _LeadScreenState extends State<LeadScreen> {
                   GestureDetector(
                     onTap: () {
                       //Navigator.pop(context);
-                      _leadsFilterController.selectedLeadStage =
+                      _siteController.selectedLeadStage = StringConstants.empty;
+                      _siteController.selectedLeadStatus =
                           StringConstants.empty;
-                      _leadsFilterController.selectedLeadStatus =
-                          StringConstants.empty;
-                      _leadsFilterController.assignToDate =
-                          StringConstants.empty;
-                      _leadsFilterController.assignFromDate =
-                          StringConstants.empty;
-                      _leadsFilterController.selectedFilterCount = 0;
+                      _siteController.assignToDate = StringConstants.empty;
+                      _siteController.assignFromDate = StringConstants.empty;
+                      _siteController.selectedFilterCount = 0;
                     },
                     child: Text(
                       "Clear All",
@@ -1071,8 +910,7 @@ class _LeadScreenState extends State<LeadScreen> {
                   RaisedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      _leadsFilterController
-                          .getAccessKey(RequestIds.GET_LEADS_LIST);
+                      _siteController.getAccessKey(RequestIds.GET_LEADS_LIST);
                     },
                     color: ColorConstants.buttonNormalColor,
                     child: Text(
@@ -1090,13 +928,13 @@ class _LeadScreenState extends State<LeadScreen> {
   Widget returnSelectedWidget(String text, int position) {
     return Obx(() => Container(
           height: 50,
-          color: (_leadsFilterController.selectedPosition == position)
+          color: (_siteController.selectedPosition == position)
               ? Colors.white
               : Colors.transparent,
           child: Center(
             child: Text(
               text,
-              style: (_leadsFilterController.selectedPosition == position)
+              style: (_siteController.selectedPosition == position)
                   ? TextStyles.mulliBold14
                   : TextStyle(color: Colors.black),
             ),
@@ -1108,11 +946,11 @@ class _LeadScreenState extends State<LeadScreen> {
     return Obx(
       () => Container(
         color: Colors.white,
-        child: (_leadsFilterController.selectedPosition == 0)
+        child: (_siteController.selectedPosition == 0)
             ? returnAssignDateBody()
-            : (_leadsFilterController.selectedPosition == 1)
+            : (_siteController.selectedPosition == 1)
                 ? returnLeadStageBody()
-                : (_leadsFilterController.selectedPosition == 2)
+                : (_siteController.selectedPosition == 2)
                     ? returnLeadStatusBody()
                     : Text('The Longest text button 3'),
       ),
@@ -1143,7 +981,7 @@ class _LeadScreenState extends State<LeadScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Obx(() => Text(
-                          "${_leadsFilterController.assignFromDate}",
+                          "${_siteController.assignFromDate}",
                           style: TextStyles.robotoBold16,
                         )),
                     Align(
@@ -1177,19 +1015,18 @@ class _LeadScreenState extends State<LeadScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Obx(() => Text(
-                          "${_leadsFilterController.assignToDate}",
+                          "${_siteController.assignToDate}",
                           style: TextStyles.robotoBold16,
                         )),
                     Align(
                       alignment: Alignment.centerRight,
                       child: GestureDetector(
                           onTap: () {
-                            if (_leadsFilterController.assignFromDate ==
+                            if (_siteController.assignFromDate ==
                                 StringConstants.empty) {
                               print('From date is empty');
                             } else {
-                              String fromDate =
-                                  _leadsFilterController.assignFromDate;
+                              String fromDate = _siteController.assignFromDate;
                               List<String> toDate = fromDate.split("-");
                               int intYear = int.parse(toDate[0]);
                               int intMonth = int.parse(toDate[1]);
@@ -1220,16 +1057,16 @@ class _LeadScreenState extends State<LeadScreen> {
                 leading: Obx(
                   () => Radio(
                     value: StringConstants.nonVerified,
-                    groupValue:
-                        _leadsFilterController.selectedLeadStage as String,
+                    groupValue: _siteController.selectedLeadStage as String,
                     onChanged: (String value) {
-                      if (_leadsFilterController.selectedLeadStage ==
+                      if (_siteController.selectedLeadStage ==
                           StringConstants.empty) {
-                        _leadsFilterController.selectedFilterCount =
-                            _leadsFilterController.selectedFilterCount + 1;
+                        _siteController.selectedFilterCount =
+                            _siteController.selectedFilterCount + 1;
                       }
-                      _leadsFilterController.selectedLeadStage = value;
-                      _leadsFilterController.selectedLeadStageValue = StringConstants.nonVerifiedValue;
+                      _siteController.selectedLeadStage = value;
+                      _siteController.selectedLeadStageValue =
+                          StringConstants.nonVerifiedValue;
                     },
                   ),
                 )),
@@ -1238,16 +1075,16 @@ class _LeadScreenState extends State<LeadScreen> {
                 leading: Obx(
                   () => Radio(
                     value: StringConstants.teleVerified,
-                    groupValue:
-                        _leadsFilterController.selectedLeadStage as String,
+                    groupValue: _siteController.selectedLeadStage as String,
                     onChanged: (String value) {
-                      if (_leadsFilterController.selectedLeadStage ==
+                      if (_siteController.selectedLeadStage ==
                           StringConstants.empty) {
-                        _leadsFilterController.selectedFilterCount =
-                            _leadsFilterController.selectedFilterCount + 1;
+                        _siteController.selectedFilterCount =
+                            _siteController.selectedFilterCount + 1;
                       }
-                      _leadsFilterController.selectedLeadStage = value;
-                      _leadsFilterController.selectedLeadStageValue = StringConstants.teleVerifiedValue;
+                      _siteController.selectedLeadStage = value;
+                      _siteController.selectedLeadStageValue =
+                          StringConstants.teleVerifiedValue;
                     },
                   ),
                 )),
@@ -1256,16 +1093,16 @@ class _LeadScreenState extends State<LeadScreen> {
                 leading: Obx(
                   () => Radio(
                     value: StringConstants.physicalVerified,
-                    groupValue:
-                        _leadsFilterController.selectedLeadStage as String,
+                    groupValue: _siteController.selectedLeadStage as String,
                     onChanged: (String value) {
-                      if (_leadsFilterController.selectedLeadStage ==
+                      if (_siteController.selectedLeadStage ==
                           StringConstants.empty) {
-                        _leadsFilterController.selectedFilterCount =
-                            _leadsFilterController.selectedFilterCount + 1;
+                        _siteController.selectedFilterCount =
+                            _siteController.selectedFilterCount + 1;
                       }
-                      _leadsFilterController.selectedLeadStage = value;
-                      _leadsFilterController.selectedLeadStageValue = StringConstants.physicalVerifiedValue;
+                      _siteController.selectedLeadStage = value;
+                      _siteController.selectedLeadStageValue =
+                          StringConstants.physicalVerifiedValue;
                     },
                   ),
                 )),
@@ -1273,116 +1110,39 @@ class _LeadScreenState extends State<LeadScreen> {
         ));
   }
 
-  /*Widget returnLeadStageBody() {
-    return Obx(
-      () => (_splashController == null)
-          ? Container(
-              child: Center(
-                child: Text("splash controller  is empty!!"),
-              ),
-            )
-          : (_splashController.splashDataModel == null)
-              ? Container(
-                  child: Center(
-                    child: Text("Leads stage response  is empty!!"),
-                  ),
-                )
-              : (_splashController.splashDataModel.leadStageEntity == null)
-                  ? Container(
-                      child: Center(
-                        child: Text("Leads stage list is empty!!"),
-                      ),
-                    )
-                  : (_splashController.splashDataModel.leadStageEntity.length ==
-                          0)
-                      ? Container(
-                          child: Center(
-                            child: Text("You don't have any lead stages..!!"),
-                          ),
-                        )
-                      : */ /*Container(
-                        child: Center(
-                            child: Text(
-                                "You can continue with lead stages.."
-                                    "\n${_splashController.splashDataModel.leadStageEntity.length}!!") ))*/ /*
-
-                      Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                              itemCount: _splashController
-                                  .splashDataModel.leadStageEntity.length,
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, right: 10, bottom: 10),
-                              itemBuilder: (context, index) {
-                                return Container(
-                                    padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
-                                    child: Column(
-                                      children: <Widget>[
-                                        ListTile(
-                                            title: Text(
-                                                "${_splashController.splashDataModel.leadStageEntity[index].leadStageDesc}"),
-                                            leading: Obx(
-                                              () => Radio(
-                                                value: _splashController
-                                                    .splashDataModel
-                                                    .leadStageEntity[index]
-                                                    .id as String,
-                                                groupValue:
-                                                    _leadsFilterController
-                                                            .selectedLeadStage
-                                                        as String,
-                                                onChanged: (String value) {
-                                                  if (_leadsFilterController
-                                                          .selectedLeadStage ==
-                                                      StringConstants.empty) {
-                                                    _leadsFilterController
-                                                            .selectedFilterCount =
-                                                        _leadsFilterController
-                                                                .selectedFilterCount +
-                                                            1;
-                                                  }
-                                                  _leadsFilterController
-                                                          .selectedLeadStage =
-                                                      value;
-                                                },
-                                              ),
-                                            )),
-                                      ],
-                                    ));
-                              }),
-                        ),
-    );
-  }*/
-
   Widget returnLeadStatusBody() {
     return Container(
         padding: EdgeInsets.fromLTRB(8, 28, 8, 28),
         child: Column(
           children: <Widget>[
-            leadStatusListTile(StringConstants.active,StringConstants.activeValue),
-            leadStatusListTile(StringConstants.convertedToSite,StringConstants.convertedToSiteValue),
-            leadStatusListTile(StringConstants.rejected,StringConstants.rejectedValue),
-            leadStatusListTile(StringConstants.futureOpportunity,StringConstants.futureOpportunityValue),
-            leadStatusListTile(StringConstants.duplicate,StringConstants.duplicateValue),
+            leadStatusListTile(
+                StringConstants.active, StringConstants.activeValue),
+            leadStatusListTile(StringConstants.convertedToSite,
+                StringConstants.convertedToSiteValue),
+            leadStatusListTile(
+                StringConstants.rejected, StringConstants.rejectedValue),
+            leadStatusListTile(StringConstants.futureOpportunity,
+                StringConstants.futureOpportunityValue),
+            leadStatusListTile(
+                StringConstants.duplicate, StringConstants.duplicateValue),
           ],
         ));
   }
 
-  Widget leadStatusListTile(String statusValue,String leadStatusValue) {
+  Widget leadStatusListTile(String statusValue, String leadStatusValue) {
     return ListTile(
         title: Text(statusValue),
         leading: Obx(
           () => Radio(
             value: statusValue,
-            groupValue: _leadsFilterController.selectedLeadStatus as String,
+            groupValue: _siteController.selectedLeadStatus as String,
             onChanged: (String value) {
-              if (_leadsFilterController.selectedLeadStatus ==
-                  StringConstants.empty) {
-                _leadsFilterController.selectedFilterCount =
-                    _leadsFilterController.selectedFilterCount + 1;
+              if (_siteController.selectedLeadStatus == StringConstants.empty) {
+                _siteController.selectedFilterCount =
+                    _siteController.selectedFilterCount + 1;
               }
-              _leadsFilterController.selectedLeadStatus = value;
-              _leadsFilterController.selectedLeadStatusValue = leadStatusValue;
+              _siteController.selectedLeadStatus = value;
+              _siteController.selectedLeadStatusValue = leadStatusValue;
             },
           ),
         ));
@@ -1406,9 +1166,9 @@ class _LeadScreenState extends State<LeadScreen> {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);
         if (type == "to") {
-          _leadsFilterController.assignToDate = formattedDate;
+          _siteController.assignToDate = formattedDate;
         } else {
-          _leadsFilterController.assignFromDate = formattedDate;
+          _siteController.assignFromDate = formattedDate;
         }
         selectedDateString = formattedDate;
       });

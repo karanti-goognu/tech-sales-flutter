@@ -161,14 +161,14 @@ class UserMenu {
 }
 
 class JourneyDetails {
-  Null journeyDate;
-  Null journeyStartTime;
-  Null journeyStartLat;
-  Null journeyStartLong;
+  String journeyDate;
+  String journeyStartTime;
+  String journeyStartLat;
+  String journeyStartLong;
   Null journeyEndTime;
   Null journeyEndLat;
   Null journeyEndLong;
-  Null employeeId;
+  String employeeId;
 
   JourneyDetails(
       {this.journeyDate,

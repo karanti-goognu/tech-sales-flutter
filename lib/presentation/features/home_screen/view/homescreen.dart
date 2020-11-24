@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/login/controller/login_
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     new menuDetailsModel("Service ", "assets/images/img1.png")
   ];
 
-  String _status = "check_in";
+  String _status = StringConstants.checkIn;
 
   String employeeName = "empty";
 
@@ -53,6 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _prefs.then((SharedPreferences prefs) {
       _homeController.employeeName =
           prefs.getString(StringConstants.employeeName);
+      _status = prefs.getString(StringConstants.checkInStatus);
+      print('Status is :: $_status');
     });
   }
 
@@ -65,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('Status is :: $_status');
     return WillPopScope(
         onWillPop: () async {
           // You can do some work here.
@@ -113,13 +117,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: 30,
                           ),
                         ),
-
-                        // Icon(
-                        //   Icons.circle_notifications,
-                        //
-                        //   color: Colors.white,
-                        //   size: 50,
-                        // ),
                       ),
                       Text(
                         "Notification",
@@ -167,15 +164,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                _status == "check_in" || _status == "check_out"
-                    ? _status == "check_in"
+                (_status == StringConstants.checkIn ||
+                        _status == StringConstants.checkOut)
+                    ? (_status == StringConstants.checkIn)
                         ? SliderButton(
                             action: () {
                               setState(() {
-                                _status = "check_out";
+                                _status = StringConstants.checkOut;
+                                _prefs.then((SharedPreferences prefs) {
+                                  prefs.setString(StringConstants.checkInStatus,
+                                      StringConstants.checkOut);
+                                });
                               });
-
-                              ///Do something here OnSlide
+                              _homeController.getAccessKey(RequestIds.CHECK_IN);
                             },
 
                             ///Put label over here
@@ -205,26 +206,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             vibrationFlag: true,
                             dismissible: false,
                           )
-                        // GestureDetector(
-                        //             onTap: () {
-                        //               setState(() {
-                        //                 _status = "check_out";
-                        //               });
-                        //             },
-                        //             child: Container(
-                        //               alignment: Alignment.center,
-                        //               color: ColorConstants.checkinColor,
-                        //               child: Text("CHECK-IN",
-                        //                   style: TextStyle(
-                        //                       color: Colors.white,
-                        //                       fontFamily: "Muli",
-                        //                       fontSize: 18)),
-                        //             ),
-                        //           )
                         : SliderButton(
                             action: () {
                               setState(() {
-                                _status = "Journey_Ended";
+                                _status = StringConstants.journeyEnded;
+                                _prefs.then((SharedPreferences prefs) {
+                                  prefs.setString(StringConstants.checkInStatus,
+                                      StringConstants.journeyEnded);
+                                });
                               });
 
                               ///Do something here OnSlide
@@ -257,26 +246,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             vibrationFlag: true,
                             dismissible: false,
                           )
-                    // GestureDetector(
-                    //             onTap: () {
-                    //               setState(() {
-                    //                 _status = "Journey_Ended";
-                    //               });
-                    //             },
-                    //             child: Container(
-                    //               alignment: Alignment.center,
-                    //               color: Colors.red,
-                    //               child: Text("CHECK-OUT",
-                    //                   style: TextStyle(
-                    //                       color: Colors.white,
-                    //                       fontFamily: "Muli",
-                    //                       fontSize: 18)),
-                    //             ),
-                    //           )
                     : GestureDetector(
                         onTap: () {
                           setState(() {
-                            _status = "check_in";
+                            _status = StringConstants.checkIn;
+                            _prefs.then((SharedPreferences prefs) {
+                              prefs.setString(StringConstants.checkInStatus,
+                                  StringConstants.checkIn);
+                            });
                           });
                         },
                         child: Container(
@@ -298,11 +275,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: userMenuWidget(),
                 ))
-                // ListView.builder(
-                //     itemCount: list.length,
-                //     padding: const EdgeInsets.only(top: 10.0),
-                //     itemExtent: 25.0,
-                //     itemBuilder: (context, index) {})
               ],
             ),
             floatingActionButton: Container(
@@ -317,11 +289,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   onPressed: () {
                     Get.toNamed(Routes.ADD_LEADS_SCREEN);
-                    // Navigator.push(
-                    //     context,
-                    //     new CupertinoPageRoute(
-                    //         builder: (BuildContext context) =>
-                    //            AddNewLeadForm()));
                   },
                 ),
               ),
@@ -438,10 +405,10 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               print(list[index].value + " Page");
               if (list[index].value == "Leads") {
-                Navigator.push(
-                    context,
-                    new CupertinoPageRoute(
-                        builder: (BuildContext context) => LeadScreen()));
+                Get.toNamed(Routes.LEADS_SCREEN);
+              }
+              if (list[index].value == "Sites") {
+                Get.toNamed(Routes.SITES_SCREEN);
               }
             },
             child: Card(
@@ -494,25 +461,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(10.0),
-                  //   child: GestureDetector(
-                  //     onTap: () {
-                  //       print(list[index].value + " Page");
-                  //       if (list[index].value == "Leads") {
-                  //         Navigator.push(
-                  //             context,
-                  //             new CupertinoPageRoute(
-                  //                 builder: (BuildContext context) =>
-                  //                     LeadScreen()));
-                  //       }
-                  //     },
-                  //     child: Icon(
-                  //       Icons.navigate_next,
-                  //       size: 30,
-                  //     ),
-                  //   ),
-                  // )
                 ],
               ),
             ),

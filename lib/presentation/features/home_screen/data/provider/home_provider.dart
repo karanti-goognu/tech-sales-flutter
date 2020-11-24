@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +27,41 @@ class MyApiClientHome {
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
+
+  getCheckInDetails(String url, String accessKey, String secretKey,String referenceId,String journeyDate,
+      String journeyStartTime,String journeyStartLat,String journeyStartLong,String journeyEndTime,
+      String journeyEndLat,String journeyEndLong) async {
+    try {
+      var requestBody = {
+        "reference-id": referenceId,
+        "journey-Date": journeyDate,
+
+        "journey-Start-Time": journeyStartTime,
+        "journey-Start-Lat": journeyStartLat,
+        "journey-Start-Long": journeyStartLong,
+        "journey-End-Time": journeyEndTime,
+        "Journey-End-Lat": journeyEndLat,
+        "Journey-End-Long": journeyEndLong
+      };
+
+      print('Request Body is ${json.encode(requestBody)}');
+      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
+      var response = await httpClient.post(UrlConstants.getCheckInDetails,
+          headers:
+          requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey),
+      body: jsonEncode(requestBody));
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        JourneyModel journeyModel = JourneyModel.fromJson(data);
+        //print('Access key Object is :: $accessKeyModel');
+        return journeyModel;
       } else
         print('error');
     } catch (_) {

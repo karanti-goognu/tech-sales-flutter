@@ -287,7 +287,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                   SizedBox(
                     height: 40,
                   ),
-                  Row(
+                 /* Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
@@ -308,7 +308,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                         flex: 2,
                       ),
                     ],
-                  ),
+                  ),*/
                 ],
               ),
             ),
