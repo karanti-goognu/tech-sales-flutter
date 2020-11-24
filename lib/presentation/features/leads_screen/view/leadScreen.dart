@@ -548,41 +548,41 @@ class _LeadScreenState extends State<LeadScreen> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: HexColor("#ADADAD")),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 3.0),
-                              child: Text(
-                                "Duplicate",
-                                style: TextStyle(
-                                  fontFamily: "Muli",
-                                  fontSize: 14,
-                                  // color: HexColor("#FFFFFF99"),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 8),
+                      //   child: Row(
+                      //     children: [
+                      //       Padding(
+                      //         padding: const EdgeInsets.only(top: 4.0),
+                      //         child: Container(
+                      //           width: 10,
+                      //           height: 10,
+                      //           decoration: BoxDecoration(
+                      //               shape: BoxShape.circle,
+                      //               color: HexColor("#ADADAD")),
+                      //         ),
+                      //       ),
+                      //       Padding(
+                      //         padding: const EdgeInsets.only(left: 3.0),
+                      //         child: Text(
+                      //           "Duplicate",
+                      //           style: TextStyle(
+                      //             fontFamily: "Muli",
+                      //             fontSize: 14,
+                      //             // color: HexColor("#FFFFFF99"),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                   scrollDirection: Axis.horizontal,
                 )),
             Expanded(child: leadsDetailWidget()),
             // SizedBox(
-            //   height: 30,
+            //   height: 50,
             // ),
           ],
         ),
@@ -758,7 +758,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                                       .leadStatusId) ==
                                                                   1)
                                                               ? "Active"
-                                                              : "Rejected",
+                                                              : "Not Active",
                                                           style: TextStyle(
                                                               color: HexColor(
                                                                   "#39B54A"),
@@ -934,7 +934,8 @@ class _LeadScreenState extends State<LeadScreen> {
                               ),
                             ),
                           );
-                        }));
+                        }),
+    );
   }
 
   void _settingModalBottomSheet(context) {
