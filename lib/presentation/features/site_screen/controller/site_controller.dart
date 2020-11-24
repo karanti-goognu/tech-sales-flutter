@@ -17,7 +17,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LeadsFilterController extends GetxController {
+class SiteController extends GetxController {
   @override
   void onInit() {
     super.onInit();
@@ -25,7 +25,7 @@ class LeadsFilterController extends GetxController {
 
   final MyRepositoryLeads repository;
 
-  LeadsFilterController({@required this.repository})
+  SiteController({@required this.repository})
       : assert(repository != null);
 
   final _accessKeyResponse = AccessKeyModel().obs;

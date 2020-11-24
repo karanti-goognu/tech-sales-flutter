@@ -9,4 +9,5 @@ abstract class Routes {
   static const ADD_LEADS_SCREEN = '/new_lead_screen';
   static const SEARCH_SCREEN = '/search_screen';
   static const VIEW_OLD_LEAD_SCREEN = '/old_lead_screen';
+  static const SITES_SCREEN = '/sites_screen';
 }

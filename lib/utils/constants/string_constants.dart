@@ -23,15 +23,27 @@ abstract class StringConstants {
 
   //Filter Constants
   static String nonVerified = 'Non-Verified';
+  static String nonVerifiedValue = '1';
   static String teleVerified = 'Tele-Verified';
+  static String teleVerifiedValue = '2';
   static String physicalVerified = 'Physical-Verified';
+  static String physicalVerifiedValue = '3';
 
   static String active = 'Active';
+  static String activeValue = '1';
   static String rejected = 'Rejected';
+  static String rejectedValue = '2';
   static String convertedToSite = 'Converted to site';
+  static String convertedToSiteValue = '3';
   static String duplicate = 'Duplicate';
+  static String duplicateValue = '4';
   static String futureOpportunity = 'Future Opportunity';
+  static String futureOpportunityValue = '5';
   static String empty = 'Empty';
+  static String checkInStatus = 'checkIn';
+  static String checkIn = 'checkIn';
+  static String checkOut = 'checkOut';
+  static String journeyEnded = 'journeyEnded';
 
 
 
