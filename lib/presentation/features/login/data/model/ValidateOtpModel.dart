@@ -129,11 +129,11 @@ class UserMenu {
 class JourneyDetails {
   String journeyDate;
   String journeyStartTime;
-  double journeyStartLat;
-  double journeyStartLong;
+  String journeyStartLat;
+  String journeyStartLong;
   String journeyEndTime;
-  double journeyEndLat;
-  double journeyEndLong;
+  String journeyEndLat;
+  String journeyEndLong;
   String employeeId;
 
   JourneyDetails(
