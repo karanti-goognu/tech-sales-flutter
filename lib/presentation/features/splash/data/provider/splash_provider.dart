@@ -76,7 +76,7 @@ class MyApiClientSplash {
 
       var response = await httpClient.get(url,
           headers: requestHeadersEmpIdAndNo);
-      print('Response body is : ${json.decode(response.body)}');
+      print('Response body is : ${(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SplashDataModel splashDataModel = SplashDataModel.fromJson(data);

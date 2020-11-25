@@ -9,4 +9,30 @@ class MyRepositoryHome {
   getAccessKey() {
     return apiClient.getAccessKey();
   }
+
+  getCheckInDetails(
+      String url,
+      String accessKey,
+      String secretKey,
+      String referenceId,
+      String journeyDate,
+      String journeyStartTime,
+      String journeyStartLat,
+      String journeyStartLong,
+      String journeyEndTime,
+      String journeyEndLat,
+      String journeyEndLong) {
+    return apiClient.getCheckInDetails(
+        url,
+        accessKey,
+        secretKey,
+        referenceId,
+        journeyDate,
+        journeyStartTime,
+        journeyStartLat,
+        journeyStartLong,
+        journeyEndTime,
+        journeyEndLat,
+        journeyEndLong);
+  }
 }

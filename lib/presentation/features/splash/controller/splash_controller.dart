@@ -27,6 +27,7 @@ class SplashController extends GetxController {
   final _splashDataModel = SplashDataModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
 
+
   get login => this._login.value;
 
   get accessKeyResponse => this._accessKeyResponse.value;
@@ -35,11 +36,13 @@ class SplashController extends GetxController {
 
   get secretKeyResponse => this._secretKeyResponse.value;
 
+
   set splashDataModel(value) => this._splashDataModel.value = value;
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
 
   set secretKeyResponse(value) => this._secretKeyResponse.value = value;
+
 
   getAccessKey(int requestId) {
     Future.delayed(
@@ -120,7 +123,7 @@ class SplashController extends GetxController {
           encryptString(empId, StringConstants.encryptedKey).toString();
 
       //debugPrint('request without encryption: $body');
-      String url = "${UrlConstants.refreshSplashData}$encryptedEmpId";
+      String url = "${UrlConstants.refreshSplashData}$empId";
       debugPrint('Url is : $url');
       repository.getRefreshData(url, accessKey, userSecurityKey).then((data) {
         if (data == null) {
