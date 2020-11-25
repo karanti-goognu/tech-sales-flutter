@@ -420,7 +420,11 @@ class MyApiClientLeads {
             if(updateLeadResponseModel.respCode == "LD2009"){
               Get.back();
               gv.selectedLeadID = updateLeadResponseModel.leadId;
-              Get.dialog(CustomDialogs().showDialog("Lead has been updated"));
+              Get.dialog(CustomDialogs().showDialog(updateLeadResponseModel.respMsg));
+            }
+            else if(updateLeadResponseModel.respCode == "ED2011"){
+              Get.back();
+              Get.dialog(CustomDialogs().showDialog(updateLeadResponseModel.respMsg));
             }
             else{
               Get.back();
