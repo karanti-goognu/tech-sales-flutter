@@ -64,7 +64,7 @@
         String leadReraNumber;
         int leadRejectReason;
         String leadIsDuplicate;
-        Null leadOriginalId;
+        int leadOriginalId;
         Null siteConverted;
         String createdBy;
         int createdOn;
