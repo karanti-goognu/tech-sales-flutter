@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -17,6 +18,8 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -211,6 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.black,
                   ),
                   onPressed: () {
+                    gv.fromLead=false;
                     Get.toNamed(Routes.ADD_LEADS_SCREEN);
                   },
                 ),
@@ -266,7 +270,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: <Widget>[
                         MaterialButton(
                           minWidth: 40,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                new CupertinoPageRoute(
+                                    builder: (BuildContext context) => DraftLeadListScreen()));
+                          },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[

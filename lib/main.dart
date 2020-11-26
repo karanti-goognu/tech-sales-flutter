@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:get/get.dart';

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -17,6 +18,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+
 
 import 'ViewLeadScreen.dart';
 
@@ -349,6 +352,7 @@ class _LeadScreenState extends State<LeadScreen> {
               color: Colors.black,
             ),
             onPressed: () {
+              gv.fromLead = false;
               Get.toNamed(Routes.ADD_LEADS_SCREEN);
               /*Navigator.push(
                   context,
@@ -374,7 +378,12 @@ class _LeadScreenState extends State<LeadScreen> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
-                      Get.toNamed(Routes.HOME_SCREEN);
+                      setState(() {
+                        // currentScreen =
+                        //     Dashboard(); // if user taps on this dashboard tab will be active
+                        // currentTab = 0;
+                        Get.toNamed(Routes.HOME_SCREEN);
+                      });
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -383,12 +392,12 @@ class _LeadScreenState extends State<LeadScreen> {
                           Icons.home,
                           color: Colors.white60,
                         ),
-                        // Text(
-                        //   'Dashboard',
-                        //   style: TextStyle(
-                        //     color: currentTab == 0 ? Colors.blue : Colors.grey,
-                        //   ),
-                        //),
+                        Text(
+                          'Home',
+                          style: TextStyle(
+                            color: Colors.white60,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -402,7 +411,12 @@ class _LeadScreenState extends State<LeadScreen> {
                 children: <Widget>[
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new CupertinoPageRoute(
+                              builder: (BuildContext context) => DraftLeadListScreen()));
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -410,17 +424,17 @@ class _LeadScreenState extends State<LeadScreen> {
                           Icons.drafts,
                           color: Colors.white60,
                         ),
-                        // Text(
-                        //   'Mail',
-                        //   style: TextStyle(
-                        //     color: currentTab == 2 ? Colors.blue : Colors.grey,
-                        //   ),
-                        // ),
+                        Text(
+                          'Drafts',
+                          style: TextStyle(
+                            color: Colors.white60,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  CupertinoButton(
-                    minSize: 40,
+                  MaterialButton(
+                    minWidth: 40,
                     onPressed: () {
                       Get.toNamed(Routes.SEARCH_SCREEN);
                     },
@@ -431,12 +445,12 @@ class _LeadScreenState extends State<LeadScreen> {
                           Icons.search,
                           color: Colors.white60,
                         ),
-                        // Text(
-                        //   'Search',
-                        //   style: TextStyle(
-                        //     color: Colors.white,
-                        //   ),
-                        // ),
+                        Text(
+                          'Search',
+                          style: TextStyle(
+                            color: Colors.white60,
+                          ),
+                        ),
                       ],
                     ),
                   )

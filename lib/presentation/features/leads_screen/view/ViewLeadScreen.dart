@@ -265,7 +265,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
             _commentsList.add(new CommentsDetail(
               creatorName: _commentsListEntity[i].creatorName,
               //commentedAt: _commentsListEntity[i].createdOn,
-              commentedBy: _commentsListEntity[i].createdBy,
+              createdBy: _commentsListEntity[i].createdBy,
               commentText: _commentsListEntity[i].commentText,
             ));
           }
@@ -4061,7 +4061,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                       }
                                       await _commentsList.add(
                                         new CommentsDetail(
-                                            commentedBy: empId,
+                                            createdBy: empId,
                                             commentText: _comments.text,
                                             commentedAt: DateTime.now(),
                                             creatorName: name),
