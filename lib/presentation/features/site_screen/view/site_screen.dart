@@ -16,6 +16,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+
 
 class SiteScreen extends StatefulWidget {
   @override
@@ -248,6 +250,7 @@ class _SiteScreenState extends State<SiteScreen> {
               color: Colors.black,
             ),
             onPressed: () {
+              gv.fromLead = false;
               Get.toNamed(Routes.ADD_LEADS_SCREEN);
             },
           ),

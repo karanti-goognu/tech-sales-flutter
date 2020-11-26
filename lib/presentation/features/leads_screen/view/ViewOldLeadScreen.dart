@@ -220,7 +220,7 @@ print(labelText);
             _commentsList.add(new CommentsDetail(
               creatorName: _commentsListEntity[i].creatorName,
               //commentedAt: _commentsListEntity[i].createdOn,
-              commentedBy: _commentsListEntity[i].createdBy,
+              createdBy: _commentsListEntity[i].createdBy,
               commentText: _commentsListEntity[i].commentText,
             ));
           }

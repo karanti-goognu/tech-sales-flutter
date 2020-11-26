@@ -9,7 +9,7 @@ import 'CommentDetailModel.dart';
 
 class SaveLeadRequestModel {
   SaveLeadRequestModel({
-    this.leadSegmane,
+    //this.leadSegmane,
     this.siteSubTypeId,
     this.assignedTo,
     this.leadStatusId,
@@ -31,11 +31,12 @@ class SaveLeadRequestModel {
     this.photos,
     this.comments,
     this.influencerList,
-    this.listLeadImage
+    this.listLeadImage,
+    this.leadBags
   });
 
 
-  String leadSegmane;
+ // String leadSegmane;
   String siteSubTypeId;
   String assignedTo;
   String leadStatusId;
@@ -54,6 +55,7 @@ class SaveLeadRequestModel {
   String  leadReraNumber;
   String  assignDate;
   String isStatus;
+  String leadBags;
   List<MultipartFile> photos;
   List<CommentsDetail> comments;
   List <InfluencerDetail> influencerList;
@@ -63,14 +65,54 @@ class SaveLeadRequestModel {
 
 
 
-
+  SaveLeadRequestModel.fromJson(Map<String, dynamic> json) {
+    siteSubTypeId = json['siteSubTypeId'];
+    assignedTo = json['assignedTo'];
+    leadStatusId = json['leadStatusId'];
+    leadStage = json['leadStage'];
+    contactName = json['contactName'];
+    contactNumber = json['contactNumber'];
+    geotagType = json['geotagType'];
+    leadLatitude = json['leadLatitude'];
+    leadLongitude = json['leadLongitude'];
+    leadAddress = json['leadAddress'];
+    leadPincode = json['leadPincode'];
+    leadStateName = json['leadStateName'];
+    leadDistrictName = json['leadDistrictName'];
+    leadTalukName = json['leadTalukName'];
+    leadSalesPotentialMt = json['leadSalesPotentialMt'];
+    leadReraNumber = json['leadReraNumber'];
+    assignDate = json['assignDate'];
+    isStatus = json['isStatus'];
+    leadBags = json['leadBags'];
+    // photos = json['photos'];
+    if (json['comments'] != null) {
+      comments = new List<CommentsDetail>();
+      json['comments'].forEach((v) {
+        comments.add(new CommentsDetail.fromJson(v));
+      });
+    }
+    if (json['influencerList'] != null) {
+      influencerList = new List<InfluencerDetail>();
+      json['influencerList'].forEach((v) {
+        influencerList.add(new InfluencerDetail.fromJson(v));
+      });
+    }
+    if (json['listLeadImage'] != null) {
+      listLeadImage = new List<ListLeadImage>();
+      json['listLeadImage'].forEach((v) {
+        listLeadImage.add(new ListLeadImage.fromJson(v));
+      }
+      );
+   }
+  }
 
 
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    data['leadSegmane']=this.leadSegmane;
+    //data['leadSegmane']=this.leadSegmane;
     data['siteSubTypeId']=this.siteSubTypeId;
     data['assignedTo']=this.assignedTo;
     data['leadStatusId']=this.leadStatusId;
