@@ -234,7 +234,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                           'Search',
                           style: TextStyle(
                             color: Colors.white60,
-                          ),
+                          ), //
                         ),
                       ],
                     ),
