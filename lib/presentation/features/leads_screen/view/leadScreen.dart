@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -17,6 +18,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+
 
 import 'ViewLeadScreen.dart';
 
@@ -72,14 +75,14 @@ class _LeadScreenState extends State<LeadScreen> {
   @override
   void initState() {
     super.initState();
-    try {
-      if (_loginController.validateOtpResponse.leadStatusEntity != null) {
-        if (_loginController.validateOtpResponse.leadStatusEntity.length != 0) {
+    try{
+      if(_loginController.validateOtpResponse.leadStatusEntity!=null){
+        if(_loginController.validateOtpResponse.leadStatusEntity.length!=0){
           _splashController.splashDataModel.leadStatusEntity =
               _loginController.validateOtpResponse.leadStatusEntity;
         }
       }
-    } catch (_) {
+    }catch(_){
       print('${_.toString()}');
     }
 
@@ -357,9 +360,248 @@ class _LeadScreenState extends State<LeadScreen> {
                 onPressed: () {
                   Get.toNamed(Routes.ADD_LEADS_SCREEN);
                   /*Navigator.push(
+                    _settingModalBottomSheet(context);
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.white)),
+                  color: Colors.transparent,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 5),
+                    child: Row(
+                      children: [
+                        //  Icon(Icons.exposure_zero_outlined),
+                        Container(
+                            height: 18,
+                            width: 18,
+                            // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              border:
+                                  Border.all(color: Colors.black, width: 0.0),
+                              borderRadius:
+                                  new BorderRadius.all(Radius.circular(3)),
+                            ),
+                            child: Center(
+                                child: Obx(() => Text(
+                                    "${_leadsFilterController.selectedFilterCount}",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        //fontFamily: 'Raleway',
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.normal))))),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'FILTER',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Obx(() => (_leadsFilterController.assignToDate ==
+                            StringConstants.empty)
+                        ? Container()
+                        : FilterChip(
+                            label: Row(
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                    "${_leadsFilterController.assignFromDate} to ${_leadsFilterController.assignToDate}")
+                              ],
+                            ),
+                            backgroundColor: Colors.transparent,
+                            shape: StadiumBorder(side: BorderSide()),
+                            onSelected: (bool value) {
+                              print("selected");
+                            },
+                          )),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Obx(() => (_leadsFilterController.selectedLeadStatus ==
+                            StringConstants.empty)
+                        ? Container()
+                        : FilterChip(
+                            label: Row(
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                    "${_leadsFilterController.selectedLeadStatus}")
+                              ],
+                            ),
+                            backgroundColor: Colors.transparent,
+                            shape: StadiumBorder(side: BorderSide()),
+                            onSelected: (bool value) {
+                              print("selected");
+                            },
+                          )),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Obx(() => (_leadsFilterController.selectedLeadStage ==
+                            StringConstants.empty)
+                        ? Container()
+                        : FilterChip(
+                            label: Row(
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                    "${_leadsFilterController.selectedLeadStage}")
+                              ],
+                            ),
+                            backgroundColor: Colors.transparent,
+                            shape: StadiumBorder(side: BorderSide()),
+                            onSelected: (bool value) {
+                              print("selected");
+                            },
+                          )),
+                  ],
+                ))
+          ],
+        ),
+        automaticallyImplyLeading: false,
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 20.0, top: 20),
+        //     child: Column(
+        //       children: [
+        //         FlatButton(
+        //           shape: RoundedRectangleBorder(
+        //               borderRadius: BorderRadius.circular(18.0),
+        //               side: BorderSide(color: Colors.white)),
+        //           color: Colors.transparent,
+        //           child: Padding(
+        //             padding: const EdgeInsets.only(bottom: 5),
+        //             child: Row(
+        //               children: [
+        //               //  Icon(Icons.exposure_zero_outlined),
+        //                 Container(
+        //                   height: 18,
+        //                   width: 18,
+        //                   // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+        //                   decoration: new BoxDecoration(
+        //                     color: Colors.white,
+        //                      border: Border.all(color: Colors.black, width: 0.0),
+        //                      borderRadius: new BorderRadius.all(Radius.circular(3)),
+        //                   ),
+        //                   child: Center(child: Text("0",
+        //                       style: TextStyle(
+        //                         color: Colors.black,
+        //                          //fontFamily: 'Raleway',
+        //                           fontSize: 12,
+        //                           fontWeight: FontWeight.normal
+        //                       )))
+        //                 ),
+        //                 Padding(
+        //                   padding: const EdgeInsets.only(left:8.0),
+        //                   child: Text(
+        //                     'FILTER',
+        //                     style: TextStyle(color: Colors.white ,
+        //                     fontSize: 18),
+        //
+        //                   ),
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //         )
+        //       ],
+        //    ),
+        //  ),
+        //  ],
+      ),
+      floatingActionButton: Container(
+        height: 68.0,
+        width: 68.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+            backgroundColor: Colors.amber,
+            child: Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              gv.fromLead = false;
+              Get.toNamed(Routes.ADD_LEADS_SCREEN);
+              /*Navigator.push(
                   context,
                   new CupertinoPageRoute(
                       builder: (BuildContext context) => AddNewLeadForm()));*/
+            },
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        color: ColorConstants.appBarColor,
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Container(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        // currentScreen =
+                        //     Dashboard(); // if user taps on this dashboard tab will be active
+                        // currentTab = 0;
+                        Get.toNamed(Routes.HOME_SCREEN);
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.home,
+                          color: Colors.white60,
+                        ),
+                        Text(
+                          'Home',
+                          style: TextStyle(
+                            color: Colors.white60,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
                 },
               ),
             ),
@@ -402,8 +644,64 @@ class _LeadScreenState extends State<LeadScreen> {
                     ],
                   ),
 
-                  // Right Tab bar icons
+              // Right Tab bar icons
 
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new CupertinoPageRoute(
+                              builder: (BuildContext context) => DraftLeadListScreen()));
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.drafts,
+                          color: Colors.white60,
+                        ),
+                        Text(
+                          'Drafts',
+                          style: TextStyle(
+                            color: Colors.white60,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      Get.toNamed(Routes.SEARCH_SCREEN);
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.search,
+                          color: Colors.white60,
+                        ),
+                        Text(
+                          'Search',
+                          style: TextStyle(
+                            color: Colors.white60,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+      body:
+          /*(connectionString == 'Offline')
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
