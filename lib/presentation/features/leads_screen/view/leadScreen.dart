@@ -72,14 +72,14 @@ class _LeadScreenState extends State<LeadScreen> {
   @override
   void initState() {
     super.initState();
-    try{
-      if(_loginController.validateOtpResponse.leadStatusEntity!=null){
-        if(_loginController.validateOtpResponse.leadStatusEntity.length!=0){
+    try {
+      if (_loginController.validateOtpResponse.leadStatusEntity != null) {
+        if (_loginController.validateOtpResponse.leadStatusEntity.length != 0) {
           _splashController.splashDataModel.leadStatusEntity =
               _loginController.validateOtpResponse.leadStatusEntity;
         }
       }
-    }catch(_){
+    } catch (_) {
       print('${_.toString()}');
     }
 
@@ -128,490 +128,498 @@ class _LeadScreenState extends State<LeadScreen> {
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
     print(selectedDateString); // something like 20-04-2020
-    return Scaffold(
-      extendBody: true,
-      backgroundColor: ColorConstants.backgroundColorGrey,
-      appBar: AppBar(
-        // titleSpacing: 50,
-        // leading: new Container(),
-        backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: 120,
-        centerTitle: false,
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              // mainAxisSize: MainAxisSize.max,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return WillPopScope(
+        onWillPop: () async {
+          Get.toNamed(Routes.HOME_SCREEN);
+          return true;
+        },
+        child: Scaffold(
+          extendBody: true,
+          backgroundColor: ColorConstants.backgroundColorGrey,
+          appBar: AppBar(
+            // titleSpacing: 50,
+            // leading: new Container(),
+            backgroundColor: ColorConstants.appBarColor,
+            toolbarHeight: 120,
+            centerTitle: false,
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  "OPEN LEADS",
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontFamily: "Muli"),
-                ),
-                FlatButton(
-                  onPressed: () {
-                    /* (connectionString == 'Offline')
+                Row(
+                  // mainAxisSize: MainAxisSize.max,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "OPEN LEADS",
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontFamily: "Muli"),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        /* (connectionString == 'Offline')
                         ? _leadsFilterController.showNoInternetSnack()
                         : _settingModalBottomSheet(context);*/
-                    _settingModalBottomSheet(context);
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)),
-                  color: Colors.transparent,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
+                        _settingModalBottomSheet(context);
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.white)),
+                      color: Colors.transparent,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: Row(
+                          children: [
+                            //  Icon(Icons.exposure_zero_outlined),
+                            Container(
+                                height: 18,
+                                width: 18,
+                                // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                                decoration: new BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.black, width: 0.0),
+                                  borderRadius:
+                                      new BorderRadius.all(Radius.circular(3)),
+                                ),
+                                child: Center(
+                                    child: Obx(() => Text(
+                                        "${_leadsFilterController.selectedFilterCount}",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            //fontFamily: 'Raleway',
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.normal))))),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                'FILTER',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        //  Icon(Icons.exposure_zero_outlined),
-                        Container(
-                            height: 18,
-                            width: 18,
-                            // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                            decoration: new BoxDecoration(
-                              color: Colors.white,
-                              border:
-                                  Border.all(color: Colors.black, width: 0.0),
-                              borderRadius:
-                                  new BorderRadius.all(Radius.circular(3)),
-                            ),
-                            child: Center(
-                                child: Obx(() => Text(
-                                    "${_leadsFilterController.selectedFilterCount}",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        //fontFamily: 'Raleway',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.normal))))),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            'FILTER',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
+                        SizedBox(
+                          width: 8,
                         ),
+                        Obx(() => (_leadsFilterController.assignToDate ==
+                                StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                                label: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                        "${_leadsFilterController.assignFromDate} to ${_leadsFilterController.assignToDate}")
+                                  ],
+                                ),
+                                backgroundColor: Colors.transparent,
+                                shape: StadiumBorder(side: BorderSide()),
+                                onSelected: (bool value) {
+                                  print("selected");
+                                },
+                              )),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Obx(() => (_leadsFilterController.selectedLeadStatus ==
+                                StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                                label: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                        "${_leadsFilterController.selectedLeadStatus}")
+                                  ],
+                                ),
+                                backgroundColor: Colors.transparent,
+                                shape: StadiumBorder(side: BorderSide()),
+                                onSelected: (bool value) {
+                                  print("selected");
+                                },
+                              )),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Obx(() => (_leadsFilterController.selectedLeadStage ==
+                                StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                                label: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                        "${_leadsFilterController.selectedLeadStage}")
+                                  ],
+                                ),
+                                backgroundColor: Colors.transparent,
+                                shape: StadiumBorder(side: BorderSide()),
+                                onSelected: (bool value) {
+                                  print("selected");
+                                },
+                              )),
                       ],
-                    ),
-                  ),
-                )
+                    ))
               ],
             ),
-            SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Obx(() => (_leadsFilterController.assignToDate ==
-                            StringConstants.empty)
-                        ? Container()
-                        : FilterChip(
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                    "${_leadsFilterController.assignFromDate} to ${_leadsFilterController.assignToDate}")
-                              ],
-                            ),
-                            backgroundColor: Colors.transparent,
-                            shape: StadiumBorder(side: BorderSide()),
-                            onSelected: (bool value) {
-                              print("selected");
-                            },
-                          )),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Obx(() => (_leadsFilterController.selectedLeadStatus ==
-                            StringConstants.empty)
-                        ? Container()
-                        : FilterChip(
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                    "${_leadsFilterController.selectedLeadStatus}")
-                              ],
-                            ),
-                            backgroundColor: Colors.transparent,
-                            shape: StadiumBorder(side: BorderSide()),
-                            onSelected: (bool value) {
-                              print("selected");
-                            },
-                          )),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Obx(() => (_leadsFilterController.selectedLeadStage ==
-                            StringConstants.empty)
-                        ? Container()
-                        : FilterChip(
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                    "${_leadsFilterController.selectedLeadStage}")
-                              ],
-                            ),
-                            backgroundColor: Colors.transparent,
-                            shape: StadiumBorder(side: BorderSide()),
-                            onSelected: (bool value) {
-                              print("selected");
-                            },
-                          )),
-                  ],
-                ))
-          ],
-        ),
-        automaticallyImplyLeading: false,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.only(right: 20.0, top: 20),
-        //     child: Column(
-        //       children: [
-        //         FlatButton(
-        //           shape: RoundedRectangleBorder(
-        //               borderRadius: BorderRadius.circular(18.0),
-        //               side: BorderSide(color: Colors.white)),
-        //           color: Colors.transparent,
-        //           child: Padding(
-        //             padding: const EdgeInsets.only(bottom: 5),
-        //             child: Row(
-        //               children: [
-        //               //  Icon(Icons.exposure_zero_outlined),
-        //                 Container(
-        //                   height: 18,
-        //                   width: 18,
-        //                   // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-        //                   decoration: new BoxDecoration(
-        //                     color: Colors.white,
-        //                      border: Border.all(color: Colors.black, width: 0.0),
-        //                      borderRadius: new BorderRadius.all(Radius.circular(3)),
-        //                   ),
-        //                   child: Center(child: Text("0",
-        //                       style: TextStyle(
-        //                         color: Colors.black,
-        //                          //fontFamily: 'Raleway',
-        //                           fontSize: 12,
-        //                           fontWeight: FontWeight.normal
-        //                       )))
-        //                 ),
-        //                 Padding(
-        //                   padding: const EdgeInsets.only(left:8.0),
-        //                   child: Text(
-        //                     'FILTER',
-        //                     style: TextStyle(color: Colors.white ,
-        //                     fontSize: 18),
-        //
-        //                   ),
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         )
-        //       ],
-        //    ),
-        //  ),
-        //  ],
-      ),
-      floatingActionButton: Container(
-        height: 68.0,
-        width: 68.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: Colors.amber,
-            child: Icon(
-              Icons.add,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Get.toNamed(Routes.ADD_LEADS_SCREEN);
-              /*Navigator.push(
+            automaticallyImplyLeading: false,
+            // actions: [
+            //   Padding(
+            //     padding: const EdgeInsets.only(right: 20.0, top: 20),
+            //     child: Column(
+            //       children: [
+            //         FlatButton(
+            //           shape: RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.circular(18.0),
+            //               side: BorderSide(color: Colors.white)),
+            //           color: Colors.transparent,
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(bottom: 5),
+            //             child: Row(
+            //               children: [
+            //               //  Icon(Icons.exposure_zero_outlined),
+            //                 Container(
+            //                   height: 18,
+            //                   width: 18,
+            //                   // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+            //                   decoration: new BoxDecoration(
+            //                     color: Colors.white,
+            //                      border: Border.all(color: Colors.black, width: 0.0),
+            //                      borderRadius: new BorderRadius.all(Radius.circular(3)),
+            //                   ),
+            //                   child: Center(child: Text("0",
+            //                       style: TextStyle(
+            //                         color: Colors.black,
+            //                          //fontFamily: 'Raleway',
+            //                           fontSize: 12,
+            //                           fontWeight: FontWeight.normal
+            //                       )))
+            //                 ),
+            //                 Padding(
+            //                   padding: const EdgeInsets.only(left:8.0),
+            //                   child: Text(
+            //                     'FILTER',
+            //                     style: TextStyle(color: Colors.white ,
+            //                     fontSize: 18),
+            //
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //    ),
+            //  ),
+            //  ],
+          ),
+          floatingActionButton: Container(
+            height: 68.0,
+            width: 68.0,
+            child: FittedBox(
+              child: FloatingActionButton(
+                backgroundColor: Colors.amber,
+                child: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Get.toNamed(Routes.ADD_LEADS_SCREEN);
+                  /*Navigator.push(
                   context,
                   new CupertinoPageRoute(
                       builder: (BuildContext context) => AddNewLeadForm()));*/
-            },
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: ColorConstants.appBarColor,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Get.toNamed(Routes.HOME_SCREEN);
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: Colors.white60,
-                        ),
-                        // Text(
-                        //   'Dashboard',
-                        //   style: TextStyle(
-                        //     color: currentTab == 0 ? Colors.blue : Colors.grey,
-                        //   ),
-                        //),
-                      ],
-                    ),
-                  ),
-                ],
+                },
               ),
-
-              // Right Tab bar icons
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            color: ColorConstants.appBarColor,
+            shape: CircularNotchedRectangle(),
+            notchMargin: 10,
+            child: Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.drafts,
-                          color: Colors.white60,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          Get.toNamed(Routes.HOME_SCREEN);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.home,
+                              color: Colors.white60,
+                            ),
+                            // Text(
+                            //   'Dashboard',
+                            //   style: TextStyle(
+                            //     color: currentTab == 0 ? Colors.blue : Colors.grey,
+                            //   ),
+                            //),
+                          ],
                         ),
-                        // Text(
-                        //   'Mail',
-                        //   style: TextStyle(
-                        //     color: currentTab == 2 ? Colors.blue : Colors.grey,
-                        //   ),
-                        // ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  CupertinoButton(
-                    minSize: 40,
-                    onPressed: () {
-                      Get.toNamed(Routes.SEARCH_SCREEN);
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.search,
-                          color: Colors.white60,
+
+                  // Right Tab bar icons
+
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {},
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.drafts,
+                              color: Colors.white60,
+                            ),
+                            // Text(
+                            //   'Mail',
+                            //   style: TextStyle(
+                            //     color: currentTab == 2 ? Colors.blue : Colors.grey,
+                            //   ),
+                            // ),
+                          ],
                         ),
-                        // Text(
-                        //   'Search',
-                        //   style: TextStyle(
-                        //     color: Colors.white,
-                        //   ),
-                        // ),
-                      ],
-                    ),
+                      ),
+                      CupertinoButton(
+                        minSize: 40,
+                        onPressed: () {
+                          Get.toNamed(Routes.SEARCH_SCREEN);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.search,
+                              color: Colors.white60,
+                            ),
+                            // Text(
+                            //   'Search',
+                            //   style: TextStyle(
+                            //     color: Colors.white,
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
-        ),
-      ),
-      body:
-          /*(connectionString == 'Offline')
+          body:
+              /*(connectionString == 'Offline')
           ? Container(
               color: Colors.black12,
               child: Center(child: Text("No Internet Connection found.")),
             )
           :*/
-          Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 10.0, left: 15.0, bottom: 5, right: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Obx(
-                    () => Text(
-                      "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
-                      style: TextStyle(
-                        fontFamily: "Muli",
-                        fontSize: 15,
-                        // color: HexColor("#FFFFFF99"),
-                      ),
-                    ),
-                  ),
-                  Obx(() => Text(
-                        "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
-                        style: TextStyle(
-                          fontFamily: "Muli",
-                          fontSize: 15,
-                          // color: HexColor("#FFFFFF99"),
-                        ),
-                      )),
-                ],
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5),
-                child: SingleChildScrollView(
+              Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10.0, left: 15.0, bottom: 5, right: 15.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: HexColor("#F9A61A")),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 3.0),
-                              child: Text(
-                                "Non-Verified",
-                                style: TextStyle(
-                                  fontFamily: "Muli",
-                                  fontSize: 14,
-                                  // color: HexColor("#FFFFFF99"),
-                                ),
-                              ),
-                            ),
-                          ],
+                      Obx(
+                        () => Text(
+                          "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            fontSize: 15,
+                            // color: HexColor("#FFFFFF99"),
+                          ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: HexColor("#1C99D4")),
-                              ),
+                      Obx(() => Text(
+                            "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
+                            style: TextStyle(
+                              fontFamily: "Muli",
+                              fontSize: 15,
+                              // color: HexColor("#FFFFFF99"),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 3.0),
-                              child: Text(
-                                "Tele-Verified",
-                                style: TextStyle(
-                                  fontFamily: "Muli",
-                                  fontSize: 14,
-                                  // color: HexColor("#FFFFFF99"),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: HexColor("#39B54A")),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 3.0),
-                              child: Text(
-                                "Phy-Verified",
-                                style: TextStyle(
-                                  fontFamily: "Muli",
-                                  fontSize: 14,
-                                  // color: HexColor("#FFFFFF99"),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(right: 8),
-                      //   child: Row(
-                      //     children: [
-                      //       Padding(
-                      //         padding: const EdgeInsets.only(top: 4.0),
-                      //         child: Container(
-                      //           width: 10,
-                      //           height: 10,
-                      //           decoration: BoxDecoration(
-                      //               shape: BoxShape.circle,
-                      //               color: HexColor("#ADADAD")),
-                      //         ),
-                      //       ),
-                      //       Padding(
-                      //         padding: const EdgeInsets.only(left: 3.0),
-                      //         child: Text(
-                      //           "Duplicate",
-                      //           style: TextStyle(
-                      //             fontFamily: "Muli",
-                      //             fontSize: 14,
-                      //             // color: HexColor("#FFFFFF99"),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+                          )),
                     ],
                   ),
-                  scrollDirection: Axis.horizontal,
-                )),
-            Expanded(child: leadsDetailWidget()),
-            // SizedBox(
-            //   height: 50,
-            // ),
-          ],
-        ),
-      ),
-    );
+                ),
+                Padding(
+                    padding:
+                        EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5),
+                    child: SingleChildScrollView(
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: HexColor("#F9A61A")),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 3.0),
+                                  child: Text(
+                                    "Non-Verified",
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontSize: 14,
+                                      // color: HexColor("#FFFFFF99"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: HexColor("#1C99D4")),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 3.0),
+                                  child: Text(
+                                    "Tele-Verified",
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontSize: 14,
+                                      // color: HexColor("#FFFFFF99"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: HexColor("#39B54A")),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 3.0),
+                                  child: Text(
+                                    "Phy-Verified",
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontSize: 14,
+                                      // color: HexColor("#FFFFFF99"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(right: 8),
+                          //   child: Row(
+                          //     children: [
+                          //       Padding(
+                          //         padding: const EdgeInsets.only(top: 4.0),
+                          //         child: Container(
+                          //           width: 10,
+                          //           height: 10,
+                          //           decoration: BoxDecoration(
+                          //               shape: BoxShape.circle,
+                          //               color: HexColor("#ADADAD")),
+                          //         ),
+                          //       ),
+                          //       Padding(
+                          //         padding: const EdgeInsets.only(left: 3.0),
+                          //         child: Text(
+                          //           "Duplicate",
+                          //           style: TextStyle(
+                          //             fontFamily: "Muli",
+                          //             fontSize: 14,
+                          //             // color: HexColor("#FFFFFF99"),
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                      scrollDirection: Axis.horizontal,
+                    )),
+                Expanded(child: leadsDetailWidget()),
+                // SizedBox(
+                //   height: 50,
+                // ),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget leadsDetailWidget() {

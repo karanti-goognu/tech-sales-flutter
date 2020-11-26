@@ -159,25 +159,19 @@ class LoginController extends GetxController {
           //Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
           Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
           _prefs.then((SharedPreferences prefs) {
-            prefs
-                .setString(StringConstants.userSecurityKey,
-                    this.validateOtpResponse.userSecurityKey);
-            prefs
-                .setString(StringConstants.isUserLoggedIn, "true");
-            prefs
-                .setString(StringConstants.employeeName,
-                    this.validateOtpResponse.employeeDetails.employeeName);
-            prefs
-                .setString(StringConstants.employeeId,
+            prefs.setString(StringConstants.userSecurityKey,
+                this.validateOtpResponse.userSecurityKey);
+            prefs.setString(StringConstants.isUserLoggedIn, "true");
+            prefs.setString(StringConstants.employeeName,
+                this.validateOtpResponse.employeeDetails.employeeName);
+            prefs.setString(StringConstants.employeeId,
                 this.validateOtpResponse.employeeDetails.referenceId);
 
-            prefs
-                .setString(StringConstants.mobileNumber,
+            prefs.setString(StringConstants.mobileNumber,
                 this.validateOtpResponse.employeeDetails.mobileNumber);
-
           });
 
-          openHomeScreen();
+          openSplashScreen();
         } else {
           Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
         }
@@ -189,7 +183,7 @@ class LoginController extends GetxController {
     Get.toNamed(Routes.VERIFY_OTP);
   }
 
-  openHomeScreen() {
-    Get.toNamed(Routes.HOME_SCREEN);
+  openSplashScreen() {
+    Get.toNamed(Routes.INITIAL);
   }
 }
