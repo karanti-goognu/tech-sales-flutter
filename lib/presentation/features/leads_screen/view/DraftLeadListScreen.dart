@@ -20,8 +20,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   final db = DraftLeadDBHelper();
   List<SaveLeadRequestModel> draftList = new List();
 
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -32,263 +30,258 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   }
 
   fetchDraftList() async {
-
-     db.fetchAll().then((value)  {
-
-    for (int i = 0; i < value.length; i++) {
-      setState(() {
-        draftList.add(
-            SaveLeadRequestModel.fromJson(json.decode(value[i].leadModel)));
-      });
-
-    }
-
+    db.fetchAll().then((value) {
+      for (int i = 0; i < value.length; i++) {
+        setState(() {
+          draftList.add(
+              SaveLeadRequestModel.fromJson(json.decode(value[i].leadModel)));
+        });
+      }
     });
     //await db.removeLeadInDraft(2);
-
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return  WillPopScope(
+    return WillPopScope(
         onWillPop: () async {
-        Get.toNamed(Routes.HOME_SCREEN);
-        return true;
-    },
-    child:Scaffold(
-      extendBody: true,
-      backgroundColor: ColorConstants.backgroundColorGrey,
-      appBar: AppBar(
-        // titleSpacing: 50,
-        // leading: new Container(),
-        backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: 120,
-        centerTitle: false,
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              // mainAxisSize: MainAxisSize.max,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Get.toNamed(Routes.HOME_SCREEN);
+          return true;
+        },
+        child: Scaffold(
+          extendBody: true,
+          backgroundColor: ColorConstants.backgroundColorGrey,
+          appBar: AppBar(
+            // titleSpacing: 50,
+            // leading: new Container(),
+            backgroundColor: ColorConstants.appBarColor,
+            toolbarHeight: 120,
+            centerTitle: false,
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  "Drafts",
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontFamily: "Muli"),
+                Row(
+                  // mainAxisSize: MainAxisSize.max,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Drafts",
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontFamily: "Muli"),
+                    ),
+                    // FlatButton(
+                    //   onPressed: () {},
+                    //   shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(18.0),
+                    //       side: BorderSide(color: Colors.white)),
+                    //   color: Colors.transparent,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 5),
+                    //     child: Row(
+                    //       children: [
+                    //         //  Icon(Icons.exposure_zero_outlined),
+                    //         Container(
+                    //             height: 18,
+                    //             width: 18,
+                    //             // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                    //             decoration: new BoxDecoration(
+                    //               color: Colors.white,
+                    //               border:
+                    //                   Border.all(color: Colors.black, width: 0.0),
+                    //               borderRadius:
+                    //                   new BorderRadius.all(Radius.circular(3)),
+                    //             ),
+                    //             child: Center(
+                    //                 child: Text("0",
+                    //                     style: TextStyle(
+                    //                         color: Colors.black,
+                    //                         //fontFamily: 'Raleway',
+                    //                         fontSize: 12,
+                    //                         fontWeight: FontWeight.normal)))),
+                    //         Padding(
+                    //           padding: const EdgeInsets.only(left: 8.0),
+                    //           child: Text(
+                    //             'FILTER',
+                    //             style: TextStyle(color: Colors.white, fontSize: 18),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // )
+                  ],
                 ),
-                // FlatButton(
-                //   onPressed: () {},
-                //   shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(18.0),
-                //       side: BorderSide(color: Colors.white)),
-                //   color: Colors.transparent,
-                //   child: Padding(
-                //     padding: const EdgeInsets.only(bottom: 5),
-                //     child: Row(
-                //       children: [
-                //         //  Icon(Icons.exposure_zero_outlined),
-                //         Container(
-                //             height: 18,
-                //             width: 18,
-                //             // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                //             decoration: new BoxDecoration(
-                //               color: Colors.white,
-                //               border:
-                //                   Border.all(color: Colors.black, width: 0.0),
-                //               borderRadius:
-                //                   new BorderRadius.all(Radius.circular(3)),
-                //             ),
-                //             child: Center(
-                //                 child: Text("0",
-                //                     style: TextStyle(
-                //                         color: Colors.black,
-                //                         //fontFamily: 'Raleway',
-                //                         fontSize: 12,
-                //                         fontWeight: FontWeight.normal)))),
-                //         Padding(
-                //           padding: const EdgeInsets.only(left: 8.0),
-                //           child: Text(
-                //             'FILTER',
-                //             style: TextStyle(color: Colors.white, fontSize: 18),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // )
               ],
             ),
-          ],
-        ),
-        automaticallyImplyLeading: false,
-      ),
-      floatingActionButton: Container(
-        height: 68.0,
-        width: 68.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: Colors.amber,
-            child: Icon(
-              Icons.add,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Get.toNamed(Routes.ADD_LEADS_SCREEN);
-              /*Navigator.push(
+            automaticallyImplyLeading: false,
+          ),
+          floatingActionButton: Container(
+            height: 68.0,
+            width: 68.0,
+            child: FittedBox(
+              child: FloatingActionButton(
+                backgroundColor: Colors.amber,
+                child: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Get.toNamed(Routes.ADD_LEADS_SCREEN);
+                  /*Navigator.push(
                   context,
                   new CupertinoPageRoute(
                       builder: (BuildContext context) => AddNewLeadForm()));*/
-            },
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar:BottomAppBar(
-        color: ColorConstants.appBarColor,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        // currentScreen =
-                        //     Dashboard(); // if user taps on this dashboard tab will be active
-                        // currentTab = 0;
-                        Get.toNamed(Routes.HOME_SCREEN);
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: Colors.white60,
-                        ),
-                        Text(
-                          'Home',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                },
               ),
-
-              // Right Tab bar icons
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            color: ColorConstants.appBarColor,
+            shape: CircularNotchedRectangle(),
+            notchMargin: 10,
+            child: Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          new CupertinoPageRoute(
-                              builder: (BuildContext context) => DraftLeadListScreen()));
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.drafts,
-                          color: Colors.white60,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          setState(() {
+                            // currentScreen =
+                            //     Dashboard(); // if user taps on this dashboard tab will be active
+                            // currentTab = 0;
+                            Get.toNamed(Routes.HOME_SCREEN);
+                          });
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.home,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Home',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Drafts',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Get.toNamed(Routes.SEARCH_SCREEN);
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.search,
-                          color: Colors.white60,
+
+                  // Right Tab bar icons
+
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              new CupertinoPageRoute(
+                                  builder: (BuildContext context) =>
+                                      DraftLeadListScreen()));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.drafts,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Drafts',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Search',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ), //
+                      ),
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          Get.toNamed(Routes.SEARCH_SCREEN);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.search,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Search',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ), //
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
-        ),
-      ),
-      body:
-          /*(connectionString == 'Offline')
+          body:
+              /*(connectionString == 'Offline')
           ? Container(
               color: Colors.black12,
               child: Center(child: Text("No Internet Connection found.")),
             )
           :*/
-          Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 10.0, left: 15.0, bottom: 5, right: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Total Count : " + draftList.length.toString(),
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      fontSize: 15,
-                      // color: HexColor("#FFFFFF99"),
-                    ),
+              Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10.0, left: 15.0, bottom: 5, right: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Total Count : " + draftList.length.toString(),
+                        style: TextStyle(
+                          fontFamily: "Muli",
+                          fontSize: 15,
+                          // color: HexColor("#FFFFFF99"),
+                        ),
+                      ),
+                      Text(
+                        "Total Potential : " + countTotalPotential(draftList),
+                        style: TextStyle(
+                          fontFamily: "Muli",
+                          fontSize: 15,
+                          // color: HexColor("#FFFFFF99"),
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "Total Potential : " + countTotalPotential(draftList),
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      fontSize: 15,
-                      // color: HexColor("#FFFFFF99"),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                Expanded(child: DraftLeadsDetailWidget()),
+                SizedBox(
+                  height: 50,
+                ),
+              ],
             ),
-
-            Expanded(child: DraftLeadsDetailWidget()),
-            SizedBox(
-              height: 50,
-            ),
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 
   Widget DraftLeadsDetailWidget() {
@@ -304,11 +297,10 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  gv.draftID= index+1;
+                  gv.draftID = index + 1;
                   gv.fromLead = true;
                   gv.saveLeadRequestModel = draftList[index];
                   Get.toNamed(Routes.ADD_LEADS_SCREEN);
-
                 },
                 child: Card(
                     clipBehavior: Clip.antiAlias,
@@ -335,7 +327,9 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                                 height: 8,
                               ),
                               Text(
-                                "District : " + draftList[index].leadDistrictName ?? "",
+                                "District : " +
+                                        draftList[index].leadDistrictName ??
+                                    "",
                                 style: TextStyle(
                                   fontSize: 13,
                                 ),
@@ -351,7 +345,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                               ),
                             ],
                           ),
-
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -366,19 +359,23 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                                     ),
                                   ),
                                   Text(
-                                    (draftList[index].leadSalesPotentialMt != "") ?draftList[index].leadSalesPotentialMt : "0",
+                                    (draftList[index].leadSalesPotentialMt !=
+                                            "")
+                                        ? draftList[index].leadSalesPotentialMt
+                                        : "0",
                                     style: TextStyle(
                                         fontSize: 15,
-                                        fontWeight: FontWeight.bold
-                                    ),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                               SizedBox(
                                 height: 20,
                               ),
-                              Icon(Icons.edit_sharp,
-                              color: Colors.amber,)
+                              Icon(
+                                Icons.edit_sharp,
+                                color: Colors.amber,
+                              )
                             ],
                           ),
                         ],
@@ -391,15 +388,14 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   }
 
   String countTotalPotential(List<SaveLeadRequestModel> draftList) {
-    double sum =0;
+    double sum = 0;
 
-    for(int i = 0 ; i< draftList.length ; i++){
-      if(draftList[i].leadSalesPotentialMt != null && draftList[i].leadSalesPotentialMt != ""){
+    for (int i = 0; i < draftList.length; i++) {
+      if (draftList[i].leadSalesPotentialMt != null &&
+          draftList[i].leadSalesPotentialMt != "") {
         sum = sum + double.parse(draftList[i].leadSalesPotentialMt);
       }
-
     }
     return sum.toString();
-
   }
 }

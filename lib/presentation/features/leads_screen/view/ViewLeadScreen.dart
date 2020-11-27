@@ -4176,9 +4176,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 .nextStageConstruction,
                                         'siteDealerId': viewLeadDataResponse
                                             .leadsEntity.siteDealerId,
-                                        'listLeadcomments': commentsList,
-                                        'listLeadImage': imageList,
-                                        'leadInfluencerEntity': listInfluencer
+                                        'listLeadcomments': new List(),
+                                        'listLeadImage': new List(),
+                                        'leadInfluencerEntity':
+                                        new List()
+                                        // 'listLeadcomments': commentsList,
+                                        // 'listLeadImage': imageList,
+                                        // 'leadInfluencerEntity': listInfluencer
                                       };
 
                                       leadStageVal.id =

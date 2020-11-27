@@ -55,4 +55,10 @@ class MyRepositoryLeads {
   updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel, List<File> imageList, BuildContext context, int leadId) {
     return apiClient.updateLeadsData(accessKey,userSecurityKey,updateRequestModel ,imageList,context,leadId);
   }
+
+  getSiteData(String accessKey, String userSecurityKey, int siteId) {
+
+    return apiClient.getSiteData(accessKey,userSecurityKey,siteId);
+
+  }
 }
