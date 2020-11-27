@@ -19,7 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginController extends GetxController {
   @override
   void onInit() {
-    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     super.onInit();
   }
 
@@ -77,7 +76,8 @@ class LoginController extends GetxController {
   }
 
   getAccessKey(int requestId) {
-    print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
+    print(
+        'In get Access key EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -105,7 +105,6 @@ class LoginController extends GetxController {
 
   //{"resp-code":null,"resp-msg":null,"otp-sms-time":null,"otp-retry-sms-time":null}
   checkLoginStatus() {
-    debugPrint('Access Key Response :: ');
     repository
         .checkLoginStatus(
             this.empId, this.phoneNumber, this.accessKeyResponse.accessKey)
@@ -159,25 +158,19 @@ class LoginController extends GetxController {
           //Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
           Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
           _prefs.then((SharedPreferences prefs) {
-            prefs
-                .setString(StringConstants.userSecurityKey,
-                    this.validateOtpResponse.userSecurityKey);
-            prefs
-                .setString(StringConstants.isUserLoggedIn, "true");
-            prefs
-                .setString(StringConstants.employeeName,
-                    this.validateOtpResponse.employeeDetails.employeeName);
-            prefs
-                .setString(StringConstants.employeeId,
+            prefs.setString(StringConstants.userSecurityKey,
+                this.validateOtpResponse.userSecurityKey);
+            prefs.setString(StringConstants.isUserLoggedIn, "true");
+            prefs.setString(StringConstants.employeeName,
+                this.validateOtpResponse.employeeDetails.employeeName);
+            prefs.setString(StringConstants.employeeId,
                 this.validateOtpResponse.employeeDetails.referenceId);
 
-            prefs
-                .setString(StringConstants.mobileNumber,
+            prefs.setString(StringConstants.mobileNumber,
                 this.validateOtpResponse.employeeDetails.mobileNumber);
-
           });
 
-          openHomeScreen();
+          openSplashScreen();
         } else {
           Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
         }
@@ -189,7 +182,7 @@ class LoginController extends GetxController {
     Get.toNamed(Routes.VERIFY_OTP);
   }
 
-  openHomeScreen() {
-    Get.toNamed(Routes.HOME_SCREEN);
+  openSplashScreen() {
+    Get.toNamed(Routes.INITIAL);
   }
 }

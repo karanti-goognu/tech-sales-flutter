@@ -46,8 +46,8 @@ class MyApiClientHome {
         "journey-Start-Lat": journeyStartLat,
         "journey-Start-Long": journeyStartLong,
         "journey-End-Time": journeyEndTime,
-        "Journey-End-Lat": journeyEndLat,
-        "Journey-End-Long": journeyEndLong
+        "journey-End-Lat": journeyEndLat,
+        "journey-End-Long": journeyEndLong
       };
 
       print('Request Body is ${json.encode(requestBody)}');

@@ -29,6 +29,7 @@ abstract class UrlConstants {
 
   static const String getSearchData = '$baseUrl/leads/lead-search?referenceID=';
   static const String getCheckInDetails = '$baseUrl/journey/details';
+  static const String getSitesList = '$baseUrl/sites/site-list-view?referenceID=';
 
 
 }

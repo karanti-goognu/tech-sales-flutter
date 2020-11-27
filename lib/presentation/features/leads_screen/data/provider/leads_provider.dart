@@ -15,6 +15,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -131,7 +132,7 @@ class MyApiClientLeads {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await get(Uri.parse(url),
           headers:
-          requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
+              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
       //var response = await httpClient.post(UrlConstants.loginCheck);
       print('response is :  ${response.body}');
       if (response.statusCode == 200) {
@@ -208,10 +209,16 @@ class MyApiClientLeads {
     }
   }
 
-  saveLeadsData(accessKey, String userSecurityKey,
-      SaveLeadRequestModel saveLeadRequestModel, List<File> imageList, BuildContext context) async {
-    http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.saveLeadsData));
-    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
+  saveLeadsData(
+      accessKey,
+      String userSecurityKey,
+      SaveLeadRequestModel saveLeadRequestModel,
+      List<File> imageList,
+      BuildContext context) async {
+    http.MultipartRequest request = new http.MultipartRequest(
+        'POST', Uri.parse(UrlConstants.saveLeadsData));
+    request.headers.addAll(
+        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
 
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
@@ -222,23 +229,20 @@ class MyApiClientLeads {
       var length = await file.length(); //imageFile is your image file
 
       // multipart that takes file
-      var multipartFileSign = new http.MultipartFile('file', stream, length, filename: fileName);
+      var multipartFileSign =
+          new http.MultipartFile('file', stream, length, filename: fileName);
 
       request.files.add(multipartFileSign);
     }
-
 
     String empId;
     String mobileNumber;
     String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
-      empId = prefs.getString(
-          StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(
-          StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(
-          StringConstants.employeeName) ?? "empty";
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
+      name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
       gv.currentId = empId;
 
@@ -259,72 +263,68 @@ class MyApiClientLeads {
         'leadDistrictName': saveLeadRequestModel.leadDistrictName ?? 'abc',
         'leadTalukName': saveLeadRequestModel.leadTalukName ?? 'abc',
         'leadSalesPotentialMt':
-        saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
+            saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
         'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? 'abc',
         'isStatus': saveLeadRequestModel.isStatus ?? 'abc',
-        'createdBy':empId,
-        'leadIsDuplicate':"N",
-        'listLeadImage' : saveLeadRequestModel.listLeadImage ?? 'abc',
+        'createdBy': empId,
+        'leadIsDuplicate': "N",
+        'listLeadImage': saveLeadRequestModel.listLeadImage ?? 'abc',
         'listLeadcomments': saveLeadRequestModel.comments ?? 'abc',
-        'leadInfluencerEntity':
-        saveLeadRequestModel.influencerList ?? 'abc'
+        'leadInfluencerEntity': saveLeadRequestModel.influencerList ?? 'abc'
       };
 
-       request.fields['uploadImageWithLeadModel'] = jsonEncode(uploadImageWithLeadModel);
+      request.fields['uploadImageWithLeadModel'] =
+          jsonEncode(uploadImageWithLeadModel);
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
-    print("Request headers :: " + request.headers.toString());
-     print("Request Body/Fields :: " + request.fields.toString());
+      print("Request headers :: " + request.headers.toString());
+      print("Request Body/Fields :: " + request.fields.toString());
       // print("Files:: " + request.files.toString());
       try {
-         request.send().then((result) async {
+        request
+            .send()
+            .then((result) async {
+              http.Response.fromStream(result).then((response) {
+                var data = json.decode(response.body);
+                SaveLeadResponse saveLeadResponse =
+                    SaveLeadResponse.fromJson(data);
 
-          http.Response.fromStream(result)
-              .then((response) {
+                if (saveLeadResponse.respCode == "LD2008") {
+                  Get.back();
+                  gv.selectedLeadID = saveLeadResponse.leadId;
+                  Get.dialog(CustomDialogs().showExistingLeadDialog(
+                      "We have an existing lead with this contact number. Do you want to",
+                      context));
+                } else if (saveLeadResponse.respCode == "LD2007") {
+                  Get.offNamed(Routes.LEADS_SCREEN);
+                  Get.dialog(CustomDialogs()
+                      .showDialogSubmitLead("Lead Added Successfully !!!"));
+                } else {
+                  Get.back();
+                  Get.dialog(
+                      CustomDialogs().showDialog("Some Error Occured !!! "));
+                }
 
-            var data = json.decode(response.body);
-            SaveLeadResponse saveLeadResponse = SaveLeadResponse.fromJson(data);
-
-            if(saveLeadResponse.respCode == "LD2008"){
-              Get.back();
-              gv.selectedLeadID = saveLeadResponse.leadId;
-              Get.dialog(CustomDialogs().showExistingLeadDialog("We have an existing lead with this contact number. Do you want to" ,context));
-            }
-            else if (saveLeadResponse.respCode == "LD2007"){
-              Get.back();
-              Get.back();
-              Get.dialog(CustomDialogs().showDialog("Lead Added Successfully !!!"));
-            }
-            else{
-              Get.back();
-              Get.dialog(CustomDialogs().showDialog("Some Error Occured !!! "));
-            }
-
-          //   if (response.statusCode == 200)
-          //   {
-          //     print("Uploaded! ");
-          //     print('response.body '+ response.body);
-          //     Get.back();
-          //       Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
-          //   }
-          // else{
-          //     Get.back();
-          //     Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
-          //   }
-          //  return response.body;
-
-          });
-        }).catchError((err) => print('error : '+err.toString()))
-            .whenComplete(()
-        {});
-
-
+                //   if (response.statusCode == 200)
+                //   {
+                //     print("Uploaded! ");
+                //     print('response.body '+ response.body);
+                //     Get.back();
+                //       Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
+                //   }
+                // else{
+                //     Get.back();
+                //     Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
+                //   }
+                //  return response.body;
+              });
+            })
+            .catchError((err) => print('error : ' + err.toString()))
+            .whenComplete(() {});
       } catch (_) {
         print('exception ${_.toString()}');
       }
-
     });
-
   }
 
   getLeadData(String accessKey, String userSecurityKey, int leadId) async {
@@ -334,12 +334,14 @@ class MyApiClientLeads {
       // print('Request body is  : ${json.encode(bodyEncrypted)}');
       // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
 
-      print("URL is :: " + UrlConstants.getLeadData+"$leadId");
-      print("Request Header :: " + json.encode(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey)));
+      print("URL is :: " + UrlConstants.getLeadData + "$leadId");
+      print("Request Header :: " +
+          json.encode(requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey)));
       final response = await get(
-        Uri.parse(UrlConstants.getLeadData+"$leadId"),
+        Uri.parse(UrlConstants.getLeadData + "$leadId"),
         headers:
-        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
       print('Response body is  : ${json.decode(response.body)}');
       // print('Response body is  : ${json.decode(response.body)}');
@@ -349,8 +351,9 @@ class MyApiClientLeads {
 
         var data = json.decode(response.body);
         print(data);
-        ViewLeadDataResponse viewLeadDataResponse = ViewLeadDataResponse.fromJson(data);
-       // print(viewLeadDataResponse);
+        ViewLeadDataResponse viewLeadDataResponse =
+            ViewLeadDataResponse.fromJson(data);
+        // print(viewLeadDataResponse);
         //print('Access key Object is :: $accessKeyModel');\
         //  print(influencerDetailModel.inflName);
         //print(viewLeadDataResponse.dealerList);
@@ -360,14 +363,14 @@ class MyApiClientLeads {
     } catch (_) {
       print('exception ${_.toString()}');
     }
-
-
   }
 
-  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel, List<File> imageList, BuildContext context, int leadId) async {
-
-    http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateLeadsData));
-    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
+  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
+      List<File> imageList, BuildContext context, int leadId) async {
+    http.MultipartRequest request = new http.MultipartRequest(
+        'POST', Uri.parse(UrlConstants.updateLeadsData));
+    request.headers.addAll(
+        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
 
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
@@ -378,71 +381,63 @@ class MyApiClientLeads {
       var length = await file.length(); //imageFile is your image file
 
       // multipart that takes file
-      var multipartFileSign = new http.MultipartFile('file', stream, length, filename: fileName);
+      var multipartFileSign =
+          new http.MultipartFile('file', stream, length, filename: fileName);
 
       request.files.add(multipartFileSign);
     }
-
 
     String empId;
     String mobileNumber;
     String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
-      empId = prefs.getString(
-          StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(
-          StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(
-          StringConstants.employeeName) ?? "empty";
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
+      name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
       gv.currentId = empId;
 
-
-      request.fields['uploadImageWithUpdateLeadModel'] = json.encode(updateRequestModel);
+      request.fields['uploadImageWithUpdateLeadModel'] =
+          json.encode(updateRequestModel);
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
       print("Request headers :: " + request.headers.toString());
       print("Request Body/Fields :: " + request.fields.toString());
       // print("Files:: " + request.files.toString());
       try {
-        request.send().then((result) async {
+        request
+            .send()
+            .then((result) async {
+              http.Response.fromStream(result).then((response) {
+                print(response.statusCode);
 
-          http.Response.fromStream(result)
-              .then((response) {
+                var data = json.decode(response.body);
+                print(data);
+                UpdateLeadResponseModel updateLeadResponseModel =
+                    UpdateLeadResponseModel.fromJson(data);
 
-            print(response.statusCode);
-
-            var data = json.decode(response.body);
-            print(data);
-            UpdateLeadResponseModel updateLeadResponseModel= UpdateLeadResponseModel.fromJson(data);
-
-            if(updateLeadResponseModel.respCode == "LD2009"){
-              Get.back();
-              gv.selectedLeadID = updateLeadResponseModel.leadId;
-              Get.dialog(CustomDialogs().showDialog(updateLeadResponseModel.respMsg));
-            }
-            else if(updateLeadResponseModel.respCode == "ED2011"){
-              Get.back();
-              Get.dialog(CustomDialogs().showDialog(updateLeadResponseModel.respMsg));
-            }
-            else{
-              Get.back();
-
-              Get.dialog(CustomDialogs().showDialog("Some Error Occured !!! "));
-            }
-
-
-          });
-        }).catchError((err) => print('error : '+err.toString()))
-            .whenComplete(()
-        {});
-
-
+                if (updateLeadResponseModel.respCode == "LD2009") {
+                  Get.back();
+                  gv.selectedLeadID = updateLeadResponseModel.leadId;
+                  Get.dialog(CustomDialogs()
+                      .showDialog(updateLeadResponseModel.respMsg));
+                } else if (updateLeadResponseModel.respCode == "ED2011") {
+                  Get.back();
+                  Get.dialog(CustomDialogs()
+                      .showDialog(updateLeadResponseModel.respMsg));
+                } else {
+                  Get.back();
+                  Get.dialog(
+                      CustomDialogs().showDialog("Some Error Occured !!! "));
+                }
+              });
+            })
+            .catchError((err) => print('error : ' + err.toString()))
+            .whenComplete(() {});
       } catch (_) {
         print('exception ${_.toString()}');
       }
-
     });
   }
 }

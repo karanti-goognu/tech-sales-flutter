@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class MyApiClient {
 
   getAccessKey() async {
     try {
+      print('$requestHeaders');
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
       print('Response body is : ${json.decode(response.body)}');
@@ -63,13 +65,13 @@ class MyApiClient {
         "app-version": StringConstants.appVersion,
       };
 
-      debugPrint('request with encryption: $bodyEncrypted');
-      debugPrint(
+      print('request with encryption: $bodyEncrypted');
+      print(
           'decrypted EmpId :: $decryptedEmpId   Encrypted MobileNumber :: $decryptedMobileNumber');
       //debugPrint('request without encryption: $body');
-      debugPrint(
+      print(
           'request with encryption: ${requestHeadersWithAccessKey(accessKey)}');
-      debugPrint('Url is : ${UrlConstants.loginCheck}');
+      print('Url is : ${UrlConstants.loginCheck}');
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await post(Uri.parse(UrlConstants.loginCheck),
           headers: requestHeadersWithAccessKey(accessKey),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/repository/home_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
@@ -119,7 +120,7 @@ class HomeController extends GetxController {
         String url = "${UrlConstants.getCheckInDetails}";
         debugPrint('Url is : $url');
         var date = DateTime.now();
-        var formattedDate = "${date.year}-${date.month}-${date.day}";
+        var formattedDate = "${date.year}-${date.month}-${(date.day)}";
         print(
             'Date is ${date.toString()} Formatted Date :: $formattedDate Latitude $journeyStartLat Longitude $journeyStartLong');
 
@@ -141,8 +142,11 @@ class HomeController extends GetxController {
             debugPrint('Check in  Data Response is null');
           } else {
             this.checkInResponse = data;
-            _splashController.splashDataModel.journeyDetails.journeyDate =
-                formattedDate;
+            checkInStatus = StringConstants.checkOut;
+            _splashController.splashDataModel.journeyDetails.journeyStartLat= this.checkInResponse.journeyEntity.journeyStartLat;
+            _splashController.splashDataModel.journeyDetails.journeyStartLong = this.checkInResponse.journeyEntity.journeyStartLong;
+            _splashController.splashDataModel.journeyDetails.journeyDate = this.checkInResponse.journeyEntity.journeyDate;
+            _splashController.splashDataModel.journeyDetails.journeyStartTime = this.checkInResponse.journeyEntity.journeyStartTime;
             print("${this.checkInResponse}");
           }
         });
@@ -207,8 +211,7 @@ class HomeController extends GetxController {
             debugPrint('Check in  Data Response is null');
           } else {
             this.checkInResponse = data;
-            _splashController.splashDataModel.journeyDetails.journeyEndTime =
-                date.toString();
+            checkInStatus = StringConstants.journeyEnded;
             print("${this.checkInResponse}");
           }
         });

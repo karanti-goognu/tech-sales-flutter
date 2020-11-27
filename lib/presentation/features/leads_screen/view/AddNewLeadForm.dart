@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:flutter/cupertino.dart';
@@ -243,11 +244,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
-                      setState(() {
-                        // currentScreen =
-                        //     Dashboard(); // if user taps on this dashboard tab will be active
-                        // currentTab = 0;
-                      });
+                     Get.toNamed(Routes.HOME_SCREEN);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
