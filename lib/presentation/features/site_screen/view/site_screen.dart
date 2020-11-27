@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -19,6 +19,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
+
 class SiteScreen extends StatefulWidget {
   @override
   _SiteScreenState createState() => _SiteScreenState();
@@ -27,7 +28,7 @@ class SiteScreen extends StatefulWidget {
 class _SiteScreenState extends State<SiteScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
   // Instantiate your class using Get.put() to make it available for all "child" routes there.
-  LeadsFilterController _siteController = Get.find();
+  SiteController _siteController = Get.find();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
 
@@ -68,7 +69,7 @@ class _SiteScreenState extends State<SiteScreen> {
   void initState() {
     super.initState();
 
-    _siteController.getAccessKey(RequestIds.GET_LEADS_LIST);
+    _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
   }
 
   @override
@@ -186,7 +187,7 @@ class _SiteScreenState extends State<SiteScreen> {
                     SizedBox(
                       width: 8,
                     ),
-                    Obx(() => (_siteController.selectedLeadStatus ==
+                    Obx(() => (_siteController.selectedSiteStatus ==
                             StringConstants.empty)
                         ? Container()
                         : FilterChip(
@@ -199,7 +200,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                 SizedBox(
                                   width: 4,
                                 ),
-                                Text("${_siteController.selectedLeadStatus}")
+                                Text("${_siteController.selectedSiteStatus}")
                               ],
                             ),
                             backgroundColor: Colors.transparent,
@@ -211,7 +212,7 @@ class _SiteScreenState extends State<SiteScreen> {
                     SizedBox(
                       width: 8,
                     ),
-                    Obx(() => (_siteController.selectedLeadStage ==
+                    Obx(() => (_siteController.selectedSiteStage ==
                             StringConstants.empty)
                         ? Container()
                         : FilterChip(
@@ -224,7 +225,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                 SizedBox(
                                   width: 4,
                                 ),
-                                Text("${_siteController.selectedLeadStage}")
+                                Text("${_siteController.selectedSiteStage}")
                               ],
                             ),
                             backgroundColor: Colors.transparent,
@@ -239,7 +240,6 @@ class _SiteScreenState extends State<SiteScreen> {
         ),
         automaticallyImplyLeading: false,
       ),
-
       floatingActionButton: Container(
         height: 68.0,
         width: 68.0,
@@ -338,7 +338,7 @@ class _SiteScreenState extends State<SiteScreen> {
                 children: [
                   Obx(
                     () => Text(
-                      "Total Count : ${(_siteController.leadsListResponse.leadsEntity == null) ? 0 : _siteController.leadsListResponse.leadsEntity.length}",
+                      "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
                       style: TextStyle(
                         fontFamily: "Muli",
                         fontSize: 15,
@@ -347,7 +347,7 @@ class _SiteScreenState extends State<SiteScreen> {
                     ),
                   ),
                   Obx(() => Text(
-                        "Total Potential : ${(_siteController.leadsListResponse.totalLeadPotential == null) ? 0 : _siteController.leadsListResponse.totalLeadPotential}",
+                        "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : _siteController.sitesListResponse.totalSitePotential}",
                         style: TextStyle(
                           fontFamily: "Muli",
                           fontSize: 15,
@@ -437,28 +437,28 @@ class _SiteScreenState extends State<SiteScreen> {
     return Obx(() => (_siteController == null)
         ? Container(
             child: Center(
-              child: Text("Leads controller  is empty!!"),
+              child: Text("Sites controller  is empty!!"),
             ),
           )
-        : (_siteController.leadsListResponse == null)
+        : (_siteController.sitesListResponse == null)
             ? Container(
                 child: Center(
-                  child: Text("Leads list response  is empty!!"),
+                  child: Text("Sites list response  is empty!!"),
                 ),
               )
-            : (_siteController.leadsListResponse.leadsEntity == null)
+            : (_siteController.sitesListResponse.sitesEntity == null)
                 ? Container(
                     child: Center(
-                      child: Text("Leads list is empty!!"),
+                      child: Text("Sites list is empty!!"),
                     ),
                   )
-                : (_siteController.leadsListResponse.leadsEntity.length == 0)
+                : (_siteController.sitesListResponse.sitesEntity.length == 0)
                     ? Container(
                         child: Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("You don't have any leads..!!"),
+                              Text("You don't have any Sites..!!"),
                               SizedBox(
                                 height: 10,
                               ),
@@ -479,20 +479,13 @@ class _SiteScreenState extends State<SiteScreen> {
                       )
                     : ListView.builder(
                         itemCount: _siteController
-                            .leadsListResponse.leadsEntity.length,
+                            .sitesListResponse.sitesEntity.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),
                         // itemExtent: 125.0,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: () {
-                              print("here");
-                              Navigator.push(
-                                  context,
-                                  new CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ViewSiteScreen(1)));
-                            },
+                            onTap: () {},
                             child: Card(
                               clipBehavior: Clip.antiAlias,
                               borderOnForeground: true,
@@ -505,9 +498,9 @@ class _SiteScreenState extends State<SiteScreen> {
                                   border: Border(
                                       left: BorderSide(
                                     color: (_siteController
-                                                .leadsListResponse
-                                                .leadsEntity[index]
-                                                .leadStageId ==
+                                                .sitesListResponse
+                                                .sitesEntity[index]
+                                                .siteStageId ==
                                             1)
                                         ? HexColor("#F9A61A")
                                         : HexColor("#007CBF"),
@@ -548,7 +541,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       const EdgeInsets.all(2.0),
                                                   child: Obx(
                                                     () => Text(
-                                                      "Site ID (${_siteController.leadsListResponse.leadsEntity[index].leadId})",
+                                                      "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
                                                       style: TextStyle(
                                                           fontSize: 18,
                                                           fontFamily: "Muli",
@@ -563,7 +556,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       const EdgeInsets.all(2.0),
                                                   child: Obx(
                                                     () => Text(
-                                                      "District: ${_siteController.leadsListResponse.leadsEntity[index].leadDistrictName}",
+                                                      "District: ${_siteController.sitesListResponse.sitesEntity[index].siteDistrict}",
                                                       style: TextStyle(
                                                           color: Colors.black38,
                                                           fontSize: 12,
@@ -591,10 +584,10 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       label: Obx(
                                                         () => Text(
                                                           ((_siteController
-                                                                      .leadsListResponse
-                                                                      .leadsEntity[
+                                                                      .sitesListResponse
+                                                                      .sitesEntity[
                                                                           index]
-                                                                      .leadStageId) ==
+                                                                      .siteStageId) ==
                                                                   1)
                                                               ? "Active"
                                                               : "Rejected",
@@ -619,8 +612,8 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     child: Text(
                                                       " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
                                                         _siteController
-                                                            .leadsListResponse
-                                                            .leadsEntity[index]
+                                                            .sitesListResponse
+                                                            .sitesEntity[index]
                                                             .createdOn,
                                                       ))}",
                                                       //  textAlign: TextAlign.start,
@@ -667,7 +660,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     ),
                                                     Obx(
                                                       () => Text(
-                                                        "${_siteController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
+                                                        "${_siteController.sitesListResponse.sitesEntity[index].sitePotentialMt}MT",
                                                         style: TextStyle(
                                                             // color: Colors.black38,
                                                             fontSize: 15,
@@ -703,8 +696,8 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   Obx(
                                                     () => GestureDetector(
                                                       child: Text(
-                                                        "${_siteController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                        //" Call Contractor",
+                                                        "${_siteController.sitesListResponse.sitesEntity[index].contactNumber}",
+                                                        /*" Call Contractor",*/
                                                         style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 15,
@@ -719,8 +712,8 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       onTap: () {
                                                         String num =
                                                             _siteController
-                                                                .leadsListResponse
-                                                                .leadsEntity[
+                                                                .sitesListResponse
+                                                                .sitesEntity[
                                                                     index]
                                                                 .contactNumber;
                                                         launch('tel:$num');
@@ -905,8 +898,8 @@ class _SiteScreenState extends State<SiteScreen> {
                   GestureDetector(
                     onTap: () {
                       //Navigator.pop(context);
-                      _siteController.selectedLeadStage = StringConstants.empty;
-                      _siteController.selectedLeadStatus =
+                      _siteController.selectedSiteStage = StringConstants.empty;
+                      _siteController.selectedSiteStatus =
                           StringConstants.empty;
                       _siteController.assignToDate = StringConstants.empty;
                       _siteController.assignFromDate = StringConstants.empty;
@@ -1068,15 +1061,15 @@ class _SiteScreenState extends State<SiteScreen> {
                 leading: Obx(
                   () => Radio(
                     value: StringConstants.nonVerified,
-                    groupValue: _siteController.selectedLeadStage as String,
+                    groupValue: _siteController.selectedSiteStage as String,
                     onChanged: (String value) {
-                      if (_siteController.selectedLeadStage ==
+                      if (_siteController.selectedSiteStage ==
                           StringConstants.empty) {
                         _siteController.selectedFilterCount =
                             _siteController.selectedFilterCount + 1;
                       }
-                      _siteController.selectedLeadStage = value;
-                      _siteController.selectedLeadStageValue =
+                      _siteController.selectedSiteStage = value;
+                      _siteController.selectedSiteStageValue =
                           StringConstants.nonVerifiedValue;
                     },
                   ),
@@ -1086,15 +1079,15 @@ class _SiteScreenState extends State<SiteScreen> {
                 leading: Obx(
                   () => Radio(
                     value: StringConstants.teleVerified,
-                    groupValue: _siteController.selectedLeadStage as String,
+                    groupValue: _siteController.selectedSiteStage as String,
                     onChanged: (String value) {
-                      if (_siteController.selectedLeadStage ==
+                      if (_siteController.selectedSiteStage ==
                           StringConstants.empty) {
                         _siteController.selectedFilterCount =
                             _siteController.selectedFilterCount + 1;
                       }
-                      _siteController.selectedLeadStage = value;
-                      _siteController.selectedLeadStageValue =
+                      _siteController.selectedSiteStage = value;
+                      _siteController.selectedSiteStageValue =
                           StringConstants.teleVerifiedValue;
                     },
                   ),
@@ -1104,15 +1097,15 @@ class _SiteScreenState extends State<SiteScreen> {
                 leading: Obx(
                   () => Radio(
                     value: StringConstants.physicalVerified,
-                    groupValue: _siteController.selectedLeadStage as String,
+                    groupValue: _siteController.selectedSiteStage as String,
                     onChanged: (String value) {
-                      if (_siteController.selectedLeadStage ==
+                      if (_siteController.selectedSiteStage ==
                           StringConstants.empty) {
                         _siteController.selectedFilterCount =
                             _siteController.selectedFilterCount + 1;
                       }
-                      _siteController.selectedLeadStage = value;
-                      _siteController.selectedLeadStageValue =
+                      _siteController.selectedSiteStage = value;
+                      _siteController.selectedSiteStageValue =
                           StringConstants.physicalVerifiedValue;
                     },
                   ),
@@ -1146,14 +1139,14 @@ class _SiteScreenState extends State<SiteScreen> {
         leading: Obx(
           () => Radio(
             value: statusValue,
-            groupValue: _siteController.selectedLeadStatus as String,
+            groupValue: _siteController.selectedSiteStatus as String,
             onChanged: (String value) {
-              if (_siteController.selectedLeadStatus == StringConstants.empty) {
+              if (_siteController.selectedSiteStatus == StringConstants.empty) {
                 _siteController.selectedFilterCount =
                     _siteController.selectedFilterCount + 1;
               }
-              _siteController.selectedLeadStatus = value;
-              _siteController.selectedLeadStatusValue = leadStatusValue;
+              _siteController.selectedSiteStatus = value;
+              _siteController.selectedSiteStatusValue = leadStatusValue;
             },
           ),
         ));

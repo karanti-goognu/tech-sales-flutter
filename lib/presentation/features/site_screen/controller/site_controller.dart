@@ -1,12 +1,10 @@
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/Model/ViewSiteDataResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
 
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -24,16 +22,15 @@ class SiteController extends GetxController {
     super.onInit();
   }
 
-  final MyRepositoryLeads repository;
-
+  final MyRepositorySites repository;
 
   SiteController({@required this.repository})
       : assert(repository != null);
 
   final _accessKeyResponse = AccessKeyModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
-  final _filterDataResponse = LeadsFilterModel().obs;
-  final _leadsListResponse = LeadsListModel().obs;
+  //final _filterDataResponse = SitesFilterModel().obs;
+  final _sitesListResponse = SitesListModel().obs;
 
   final _phoneNumber = "8860080067".obs;
 
@@ -43,11 +40,11 @@ class SiteController extends GetxController {
   final _assignFromDate = StringConstants.empty.obs;
   final _searchKey = "".obs;
 
-  final _selectedLeadStage = StringConstants.empty.obs;
-  final _selectedLeadStageValue = StringConstants.empty.obs;
+  final _selectedSiteStage = StringConstants.empty.obs;
+  final _selectedSiteStageValue = StringConstants.empty.obs;
 
-  final _selectedLeadStatus = StringConstants.empty.obs;
-  final _selectedLeadStatusValue = StringConstants.empty.obs;
+  final _selectedSiteStatus = StringConstants.empty.obs;
+  final _selectedSiteStatusValue = StringConstants.empty.obs;
 
   get accessKeyResponse => this._accessKeyResponse.value;
 
@@ -61,21 +58,21 @@ class SiteController extends GetxController {
 
   get assignFromDate => this._assignFromDate.value;
 
-  get filterDataResponse => this._filterDataResponse.value;
+  //get filterDataResponse => this._filterDataResponse.value;
 
-  get leadsListResponse => this._leadsListResponse.value;
+  get sitesListResponse => this._sitesListResponse.value;
 
   get phoneNumber => this._phoneNumber.value;
 
   get selectedPosition => this._selectedPosition.value;
 
-  get selectedLeadStage => this._selectedLeadStage.value;
+  get selectedSiteStage => this._selectedSiteStage.value;
 
-  get selectedLeadStageValue => this._selectedLeadStageValue.value;
+  get selectedSiteStageValue => this._selectedSiteStageValue.value;
 
-  get selectedLeadStatus => this._selectedLeadStatus.value;
+  get selectedSiteStatus => this._selectedSiteStatus.value;
 
-  get selectedLeadStatusValue => this._selectedLeadStatusValue.value;
+  get selectedSiteStatusValue => this._selectedSiteStatusValue.value;
 
   set selectedFilterCount(value) => this._selectedFilterCount.value = value;
 
@@ -83,7 +80,7 @@ class SiteController extends GetxController {
 
   set secretKeyResponse(value) => this._secretKeyResponse.value = value;
 
-  set filterDataResponse(value) => this._filterDataResponse.value = value;
+  //set filterDataResponse(value) => this._filterDataResponse.value = value;
 
   set phoneNumber(value) => this._phoneNumber.value = value;
 
@@ -95,17 +92,17 @@ class SiteController extends GetxController {
 
   set selectedPosition(value) => this._selectedPosition.value = value;
 
-  set selectedLeadStage(value) => this._selectedLeadStage.value = value;
+  set selectedSiteStage(value) => this._selectedSiteStage.value = value;
 
-  set selectedLeadStageValue(value) =>
-      this._selectedLeadStageValue.value = value;
+  set selectedSiteStageValue(value) =>
+      this._selectedSiteStageValue.value = value;
 
-  set selectedLeadStatus(value) => this._selectedLeadStatus.value = value;
+  set selectedSiteStatus(value) => this._selectedSiteStatus.value = value;
 
-  set selectedLeadStatusValue(value) =>
-      this._selectedLeadStatusValue.value = value;
+  set selectedSiteStatusValue(value) =>
+      this._selectedSiteStatusValue.value = value;
 
-  set leadsListResponse(value) => this._leadsListResponse.value = value;
+  set sitesListResponse(value) => this._sitesListResponse.value = value;
 
   getSecretKey(int requestId) {
     Future.delayed(
@@ -160,14 +157,8 @@ class SiteController extends GetxController {
           } else {
             print('Not expired');
             switch (requestId) {
-              case RequestIds.LEADS_FILTER_DATA_REQUEST:
-                getFilterData();
-                break;
-              case RequestIds.GET_LEADS_LIST:
-                getLeadsData(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.SEARCH_LEADS:
-                searchLeads(this.accessKeyResponse.accessKey);
+              case RequestIds.GET_SITES_LIST:
+                getSitesData(this.accessKeyResponse.accessKey);
                 break;
             }
           }
@@ -176,23 +167,7 @@ class SiteController extends GetxController {
     });
   }
 
-  getFilterData() {
-    debugPrint('Access Key Response :: ');
-    repository.getFilterData(this.accessKeyResponse.accessKey).then((data) {
-      if (data == null) {
-        debugPrint('Filter Data Response is null');
-      } else {
-        this.filterDataResponse = data;
-        if (filterDataResponse.respCode == "DM1011") {
-          //Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
-        } else {
-          Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
-        }
-      }
-    });
-  }
-
-  getLeadsData(String accessKey) {
+  getSitesData(String accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -215,37 +190,37 @@ class SiteController extends GetxController {
         assignFrom = "&assignDateFrom=${this.assignFromDate}";
       }
 
-      String leadStatus = "";
-      if (this.selectedLeadStatusValue != StringConstants.empty) {
-        leadStatus = "&leadStatus=${this.selectedLeadStatusValue}";
+      String siteStatus = "";
+      if (this.selectedSiteStatusValue != StringConstants.empty) {
+        siteStatus = "&siteStatus=${this.selectedSiteStatusValue}";
       }
-      String leadStage = "";
-      if (this.selectedLeadStageValue != StringConstants.empty) {
-        leadStage = "&leadStage=${this.selectedLeadStageValue}";
+      String siteStage = "";
+      if (this.selectedSiteStageValue != StringConstants.empty) {
+        siteStage = "&siteStage=${this.selectedSiteStageValue}";
       }
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage&limit=500&offset=0";
+          "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage&limit=500&offset=0";
       var encodedUrl = Uri.encodeFull(url);
       debugPrint('Url is : $encodedUrl');
       repository
-          .getLeadsData(accessKey, userSecurityKey, encodedUrl)
+          .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
         if (data == null) {
-          debugPrint('Leads Data Response is null');
+          debugPrint('Sites Data Response is null');
         } else {
-          this.leadsListResponse = data;
-          if (leadsListResponse.respCode == "LD2006") {
-            //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+          this.sitesListResponse = data;
+          if (sitesListResponse.respCode == "LD2006") {
+            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
           } else {
-            Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
           }
         }
       });
     });
   }
 
-  searchLeads(String accessKey) {
+  searchSites(String accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -264,48 +239,20 @@ class SiteController extends GetxController {
       debugPrint('Url is : $url');
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
-          debugPrint('Leads Data Response is null');
+          debugPrint('Sites Data Response is null');
         } else {
-          this.leadsListResponse = data;
-          if (leadsListResponse.respCode == "LD2004") {
-            //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+          this.sitesListResponse = data;
+          if (sitesListResponse.respCode == "LD2004") {
+            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('success');
-            //leadsDetailWidget();
+            //SitesDetailWidget();
           } else {
-            Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
           }
         }
       });
     });
   }
-
-  getAccessKeyOnly() {
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-
-    return repository.getAccessKey();
-    //   return this.accessKeyResponse;
-  }
-
-  getSiteData(String accessKey, int leadId) async {
-    String userSecurityKey = "";
-    ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) async {
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      print('User Security Key :: $userSecurityKey');
-      viewSiteDataResponse =  await repository
-          .getSiteData(accessKey, userSecurityKey,leadId);
-    });
-    print(viewSiteDataResponse);
-
-    return viewSiteDataResponse;
-
-
-  }
-
 
   showNoInternetSnack() {
     Get.snackbar(
@@ -318,6 +265,4 @@ class SiteController extends GetxController {
   openOtpVerificationPage(mobileNumber) {
     Get.toNamed(Routes.VERIFY_OTP);
   }
-
-
 }

@@ -7,7 +7,8 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/view/Draft
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart' as splashModel;
+import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart'
+    as splashModel;
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -42,8 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
     new menuDetailsModel("Service ", "assets/images/img1.png")
   ];
 
-  String _status = StringConstants.checkIn;
-
   String employeeName = "empty";
 
   //Login Otp Response :: {"user-security-key":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFTVAwMDAxMjM0IiwibW9iaWxlTnVtYmVyIjoiODg2MDA4MDA2NyIsImV4cCI6MTYwNTE5ODI1MywiaWF0IjoxNjA1MTk2NDUzLCJyZWZlcmVuY2VJZCI6IkVNUDAwMDEyMzQifQ.D14bPNxOQ6g5zbxsHaUVv6RNz0jdUTj_HoHtwS9f3ZuiDlDMnhjILrKfwQTrjFRqiiZMB-yQKJ8v6OVbClaaXQ",
@@ -56,26 +55,23 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (_loginController != null) {
-      if (_loginController.validateOtpResponse != null) {
-        if (_loginController.validateOtpResponse.journeyDetails != null) {
-          _splashController.splashDataModel.journeyDetails =
-              _loginController.validateOtpResponse.journeyDetails ;
-        } else {
-          print('Journey Details in validate is null');
-        }
-      } else {
-        print('Validate Otp response is null');
-      }
+    if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
+      print('Check In');
+      _homeController.checkInStatus = StringConstants.checkIn;
     } else {
-      print('Login Controller is null');
+      if (_splashController.splashDataModel.journeyDetails.journeyEndTime ==
+          null) {
+        print('Check Out');
+        _homeController.checkInStatus = StringConstants.checkOut;
+      } else {
+        print('Journey Ended');
+        _homeController.checkInStatus = StringConstants.journeyEnded;
+      }
     }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       _homeController.employeeName =
           prefs.getString(StringConstants.employeeName);
-      _status = prefs.getString(StringConstants.checkInStatus);
-      print('Status is :: $_status');
     });
   }
 
@@ -88,7 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Status is :: $_status');
     return WillPopScope(
         onWillPop: () async {
           // You can do some work here.
@@ -184,15 +179,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                Obx(() => (_splashController
-                            .splashDataModel.journeyDetails.journeyDate ==
-                        null)
-                    ? checkInSliderButton()
-                    : (_splashController.splashDataModel.journeyDetails
-                                .journeyEndTime ==
-                            null)
-                        ? checkOutSliderButton()
-                        : journeyEnded()),
+                Obx(() =>
+                    (_homeController.checkInStatus == StringConstants.checkIn)
+                        ? checkInSliderButton()
+                        : (_homeController.checkInStatus ==
+                                StringConstants.checkOut)
+                            ? checkOutSliderButton()
+                            : journeyEnded()),
                 SizedBox(
                   height: 15,
                 ),
