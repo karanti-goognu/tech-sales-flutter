@@ -112,7 +112,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
-          resizeToAvoidBottomInset: false, //
+          resizeToAvoidBottomInset: true, //
           backgroundColor: ColorConstants.backgroundColor,
           body: SingleChildScrollView(
             child: _buildLoginInterface(context),

@@ -19,7 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginController extends GetxController {
   @override
   void onInit() {
-    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     super.onInit();
   }
 
@@ -77,7 +76,8 @@ class LoginController extends GetxController {
   }
 
   getAccessKey(int requestId) {
-    print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
+    print(
+        'In get Access key EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -105,7 +105,6 @@ class LoginController extends GetxController {
 
   //{"resp-code":null,"resp-msg":null,"otp-sms-time":null,"otp-retry-sms-time":null}
   checkLoginStatus() {
-    debugPrint('Access Key Response :: ');
     repository
         .checkLoginStatus(
             this.empId, this.phoneNumber, this.accessKeyResponse.accessKey)

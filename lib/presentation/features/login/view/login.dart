@@ -1,12 +1,9 @@
 import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tech_sales/core/security/read_device_info.dart';
-import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
@@ -25,60 +22,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenPageState extends State<LoginScreen> {
-  Map _source = {ConnectivityResult.none: false};
-  MyConnectivity _connectivity = MyConnectivity.instance;
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  Map<String, dynamic> _deviceData = <String, dynamic>{};
   String connectivityString;
+  LoginController _loginController = Get.find();
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
-    });
-  }
-
-  Future<void> initPlatformState() async {
-    Map<String, dynamic> deviceData;
-
-    try {
-      if (Platform.isAndroid) {
-        deviceData = readAndroidBuildData(await deviceInfoPlugin.androidInfo);
-      } else if (Platform.isIOS) {
-        deviceData = readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
-      }
-    } on PlatformException {
-      deviceData = <String, dynamic>{
-        'Error:': 'Failed to get platform version.'
-      };
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _deviceData = deviceData;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.none:
-        connectivityString = "Offline";
-        break;
-      case ConnectivityResult.mobile:
-        connectivityString = "Mobile: Online";
-        break;
-      case ConnectivityResult.wifi:
-        connectivityString = "WiFi: Online";
-    }
-
     return Scaffold(
-      resizeToAvoidBottomInset: false, //
+      resizeToAvoidBottomInset: true, //
       backgroundColor: ColorConstants.backgroundColor,
       body: SingleChildScrollView(
         child: _buildLoginInterface(context),
@@ -88,7 +45,6 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    _connectivity.disposeStream();
     super.dispose();
   }
 
@@ -118,13 +74,6 @@ class LoginScreenPageState extends State<LoginScreen> {
                     letterSpacing: 0,
                     fontWeight: FontWeight.w800),
               )),
-              /*decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/assets/alucard.jpg'),
-                  fit: BoxFit.fill,
-                ),
-                shape: BoxShape.circle,
-              ),*/
             ),
             Text(
               "Welcome, please login ",
@@ -267,14 +216,10 @@ class LoginScreenPageState extends State<LoginScreen> {
   void afterRequestLayout(String empId, String mobileNumber) {
     print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
 
-    LoginController _loginController = Get.find();
-
     try {
       _loginController.empId = empId;
       _loginController.phoneNumber = mobileNumber;
-      (connectivityString == 'Offline')
-          ? _loginController.showNoInternetSnack()
-          : _loginController.getAccessKey(RequestIds.LOGIN_REQUEST);
+      _loginController.getAccessKey(RequestIds.LOGIN_REQUEST);
     } catch (_) {
       print('Exception');
     }
