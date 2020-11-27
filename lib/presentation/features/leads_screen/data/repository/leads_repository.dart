@@ -56,9 +56,5 @@ class MyRepositoryLeads {
     return apiClient.updateLeadsData(accessKey,userSecurityKey,updateRequestModel ,imageList,context,leadId);
   }
 
-  getSiteData(String accessKey, String userSecurityKey, int siteId) {
 
-    return apiClient.getSiteData(accessKey,userSecurityKey,siteId);
-
-  }
 }

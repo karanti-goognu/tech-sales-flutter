@@ -62,7 +62,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen> {
       accessKeyModel = data;
       print("AccessKey :: " + accessKeyModel.accessKey);
       await _siteController
-          .getSiteData(accessKeyModel.accessKey, widget.siteId)
+          .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
           .then((data) {
         print("here");
         print(data);

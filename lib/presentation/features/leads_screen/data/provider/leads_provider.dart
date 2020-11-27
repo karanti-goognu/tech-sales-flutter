@@ -15,7 +15,11 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+<<<<<<< HEAD
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/Model/ViewSiteDataResponse.dart';
+=======
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+>>>>>>> c4f5825bb3b4d897f41736730d1845d928e47153
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -365,12 +369,57 @@ class MyApiClientLeads {
     }
   }
 
+<<<<<<< HEAD
+
+  getSiteData(String accessKey, String userSecurityKey, int siteId) async {
+    try {
+      //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+      var bodyEncrypted = {"SiteId": siteId};
+      // print('Request body is  : ${json.encode(bodyEncrypted)}');
+      // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
+
+      print("URL is :: " + UrlConstants.getSiteData+"$siteId");
+      print("Request Header :: " + json.encode(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey)));
+      final response = await get(
+        Uri.parse(UrlConstants.getSiteData+"$siteId"),
+        headers:
+        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+      );
+      print('Response body is  : ${json.decode(response.body)}');
+      // print('Response body is  : ${json.decode(response.body)}');
+
+      if (response.statusCode == 200) {
+        Get.back();
+
+        var data = json.decode(response.body);
+        print(data);
+        ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse.fromJson(data);
+        // print(viewLeadDataResponse);
+        //print('Access key Object is :: $accessKeyModel');\
+        //  print(influencerDetailModel.inflName);
+        //print(viewLeadDataResponse.dealerList);
+        return viewSiteDataResponse;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+
+
+  }
+
+  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel, List<File> imageList, BuildContext context, int leadId) async {
+
+    http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateLeadsData));
+    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
+=======
   updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
       List<File> imageList, BuildContext context, int leadId) async {
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateLeadsData));
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+>>>>>>> c4f5825bb3b4d897f41736730d1845d928e47153
 
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
@@ -440,4 +489,6 @@ class MyApiClientLeads {
       }
     });
   }
+
+
 }
