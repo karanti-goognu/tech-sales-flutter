@@ -30,4 +30,17 @@ class MyRepositorySites {
   getSecretKey(String empId,String mobileNumber) {
     return apiClient.getSecretKey(empId,mobileNumber);
   }
+
+  getSitedetailsData(String accessKey, String userSecurityKey, int siteId) {
+    return apiClient.getSiteDetailsData(accessKey,userSecurityKey,siteId);
+  }
+
+
+  // getSitedetailsData(String accessKey, String userSecurityKey, int siteId) {
+  //   return apiClient.getSiteDetailsData(accessKey,userSecurityKey,siteId);
+  // }
+
+  //getSiteData(String accessKey, String userSecurityKey, int leadId) {}
+
+
 }

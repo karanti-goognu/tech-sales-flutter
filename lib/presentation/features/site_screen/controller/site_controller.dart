@@ -273,7 +273,8 @@ class SiteController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
-      //viewSiteDataResponse =  await repository.getSitedetailsDataNew(accessKey, userSecurityKey,siteId);
+     // viewSiteDataResponse =  await repository.getSitedetailsDataNew(accessKey, userSecurityKey,siteId);
+      viewSiteDataResponse =  await repository.getSitedetailsData( accessKey,  userSecurityKey,  siteId);
     });
     print(viewSiteDataResponse);
 

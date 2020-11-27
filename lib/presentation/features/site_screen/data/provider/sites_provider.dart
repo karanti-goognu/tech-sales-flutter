@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/Model/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
@@ -135,6 +137,43 @@ class MyApiClientSites {
         print('error in else');
     } catch (_) {
       print('error in catch ${_.toString()}');
+    }
+  }
+
+  getSiteDetailsData(String accessKey, String userSecurityKey, int siteId) async {
+    try {
+      //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+      var bodyEncrypted = {"SiteId": siteId};
+      // print('Request body is  : ${json.encode(bodyEncrypted)}');
+      // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
+
+      print("URL is :: " + UrlConstants.getSiteData + "$siteId");
+      print("Request Header :: " + json.encode(
+          requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey)));
+      final response = await get(
+        Uri.parse(UrlConstants.getSiteData + "$siteId"),
+        headers:
+        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+      );
+      print('Response body is  : ${json.decode(response.body)}');
+      // print('Response body is  : ${json.decode(response.body)}');
+
+      if (response.statusCode == 200) {
+        Get.back();
+
+        var data = json.decode(response.body);
+        print(data);
+        ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse
+            .fromJson(data);
+        // print(viewLeadDataResponse);
+        //print('Access key Object is :: $accessKeyModel');\
+        //  print(influencerDetailModel.inflName);
+        //print(viewLeadDataResponse.dealerList);
+        return viewSiteDataResponse;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception ${_.toString()}');
     }
   }
 }
