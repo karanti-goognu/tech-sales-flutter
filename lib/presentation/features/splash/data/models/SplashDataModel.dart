@@ -1,9 +1,12 @@
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/JourneyDetailsModel.dart';
-import 'package:flutter_tech_sales/presentation/features/splash/data/models/LeadStatusModel.dart';
 
 class SplashDataModel {
   List<LeadStatusEntity> leadStatusEntity;
   List<LeadStageEntity> leadStageEntity;
+  List<SiteStageEntity> siteStageEntity;
+  List<SiteStatusEntity> siteStatusEntity;
+  List<SiteSubTypeEntity> siteSubTypeEntity;
+  List<InfluencerCategoryEntity> influencerCategoryEntity;
   Null userSecurityKey;
   Null respCode;
   Null respMsg;
@@ -14,6 +17,10 @@ class SplashDataModel {
   SplashDataModel(
       {this.leadStatusEntity,
       this.leadStageEntity,
+      this.siteStageEntity,
+      this.siteStatusEntity,
+      this.siteSubTypeEntity,
+      this.influencerCategoryEntity,
       this.userSecurityKey,
       this.respCode,
       this.respMsg,
@@ -32,6 +39,30 @@ class SplashDataModel {
       leadStageEntity = new List<LeadStageEntity>();
       json['leadStageEntity'].forEach((v) {
         leadStageEntity.add(new LeadStageEntity.fromJson(v));
+      });
+    }
+    if (json['siteStageEntity'] != null) {
+      siteStageEntity = new List<SiteStageEntity>();
+      json['siteStageEntity'].forEach((v) {
+        siteStageEntity.add(new SiteStageEntity.fromJson(v));
+      });
+    }
+    if (json['siteStatusEntity'] != null) {
+      siteStatusEntity = new List<SiteStatusEntity>();
+      json['siteStatusEntity'].forEach((v) {
+        siteStatusEntity.add(new SiteStatusEntity.fromJson(v));
+      });
+    }
+    if (json['siteSubTypeEntity'] != null) {
+      siteSubTypeEntity = new List<SiteSubTypeEntity>();
+      json['siteSubTypeEntity'].forEach((v) {
+        siteSubTypeEntity.add(new SiteSubTypeEntity.fromJson(v));
+      });
+    }
+    if (json['influencerCategoryEntity'] != null) {
+      influencerCategoryEntity = new List<InfluencerCategoryEntity>();
+      json['influencerCategoryEntity'].forEach((v) {
+        influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
     userSecurityKey = json['user-security-key'];
@@ -61,6 +92,22 @@ class SplashDataModel {
       data['leadStageEntity'] =
           this.leadStageEntity.map((v) => v.toJson()).toList();
     }
+    if (this.siteStageEntity != null) {
+      data['siteStageEntity'] =
+          this.siteStageEntity.map((v) => v.toJson()).toList();
+    }
+    if (this.siteStatusEntity != null) {
+      data['siteStatusEntity'] =
+          this.siteStatusEntity.map((v) => v.toJson()).toList();
+    }
+    if (this.siteSubTypeEntity != null) {
+      data['siteSubTypeEntity'] =
+          this.siteSubTypeEntity.map((v) => v.toJson()).toList();
+    }
+    if (this.influencerCategoryEntity != null) {
+      data['influencerCategoryEntity'] =
+          this.influencerCategoryEntity.map((v) => v.toJson()).toList();
+    }
     data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
@@ -73,6 +120,25 @@ class SplashDataModel {
     if (this.journeyDetails != null) {
       data['journey-details'] = this.journeyDetails.toJson();
     }
+    return data;
+  }
+}
+
+class LeadStatusEntity {
+  int id;
+  String leadStatusDesc;
+
+  LeadStatusEntity({this.id, this.leadStatusDesc});
+
+  LeadStatusEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    leadStatusDesc = json['leadStatusDesc'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['leadStatusDesc'] = this.leadStatusDesc;
     return data;
   }
 }
@@ -92,6 +158,82 @@ class LeadStageEntity {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['leadStageDesc'] = this.leadStageDesc;
+    return data;
+  }
+}
+
+class SiteStageEntity {
+  int id;
+  String siteStageDesc;
+
+  SiteStageEntity({this.id, this.siteStageDesc});
+
+  SiteStageEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    siteStageDesc = json['siteStageDesc'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['siteStageDesc'] = this.siteStageDesc;
+    return data;
+  }
+}
+
+class SiteStatusEntity {
+  int id;
+  String siteStatusDesc;
+
+  SiteStatusEntity({this.id, this.siteStatusDesc});
+
+  SiteStatusEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    siteStatusDesc = json['siteStatusDesc'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['siteStatusDesc'] = this.siteStatusDesc;
+    return data;
+  }
+}
+
+class SiteSubTypeEntity {
+  int siteSubId;
+  String siteSubTypeDesc;
+
+  SiteSubTypeEntity({this.siteSubId, this.siteSubTypeDesc});
+
+  SiteSubTypeEntity.fromJson(Map<String, dynamic> json) {
+    siteSubId = json['siteSubId'];
+    siteSubTypeDesc = json['siteSubTypeDesc'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['siteSubId'] = this.siteSubId;
+    data['siteSubTypeDesc'] = this.siteSubTypeDesc;
+    return data;
+  }
+}
+
+class InfluencerCategoryEntity {
+  int inflCatId;
+  String inflCatDesc;
+
+  InfluencerCategoryEntity({this.inflCatId, this.inflCatDesc});
+
+  InfluencerCategoryEntity.fromJson(Map<String, dynamic> json) {
+    inflCatId = json['inflCatId'];
+    inflCatDesc = json['inflCatDesc'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['inflCatId'] = this.inflCatId;
+    data['inflCatDesc'] = this.inflCatDesc;
     return data;
   }
 }
@@ -143,3 +285,4 @@ class UserMenu {
     return data;
   }
 }
+

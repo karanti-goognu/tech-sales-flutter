@@ -1,18 +1,13 @@
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
 
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,11 +19,8 @@ class SiteController extends GetxController {
 
   final MyRepositorySites repository;
 
-  SiteController({@required this.repository})
-      : assert(repository != null);
+  SiteController({@required this.repository}) : assert(repository != null);
 
-  final _accessKeyResponse = AccessKeyModel().obs;
-  final _secretKeyResponse = SecretKeyModel().obs;
   //final _filterDataResponse = SitesFilterModel().obs;
   final _sitesListResponse = SitesListModel().obs;
 
@@ -46,13 +38,12 @@ class SiteController extends GetxController {
   final _selectedSiteStatus = StringConstants.empty.obs;
   final _selectedSiteStatusValue = StringConstants.empty.obs;
 
-  get accessKeyResponse => this._accessKeyResponse.value;
+  final _selectedSiteInfluencerCat = StringConstants.empty.obs;
+  final _selectedSiteInfluencerCatValue = StringConstants.empty.obs;
 
   get selectedFilterCount => this._selectedFilterCount.value;
 
   get searchKey => this._searchKey.value;
-
-  get secretKeyResponse => this._secretKeyResponse.value;
 
   get assignToDate => this._assignToDate.value;
 
@@ -74,11 +65,12 @@ class SiteController extends GetxController {
 
   get selectedSiteStatusValue => this._selectedSiteStatusValue.value;
 
+  get selectedSiteInfluencerCat => this._selectedSiteInfluencerCat.value;
+
+  get selectedSiteInfluencerCatValue =>
+      this._selectedSiteInfluencerCatValue.value;
+
   set selectedFilterCount(value) => this._selectedFilterCount.value = value;
-
-  set accessKeyResponse(value) => this._accessKeyResponse.value = value;
-
-  set secretKeyResponse(value) => this._secretKeyResponse.value = value;
 
   //set filterDataResponse(value) => this._filterDataResponse.value = value;
 
@@ -102,70 +94,13 @@ class SiteController extends GetxController {
   set selectedSiteStatusValue(value) =>
       this._selectedSiteStatusValue.value = value;
 
+  set selectedSiteInfluencerCat(value) =>
+      this._selectedSiteInfluencerCat.value = value;
+
+  set selectedSiteInfluencerCatValue(value) =>
+      this._selectedSiteInfluencerCatValue.value = value;
+
   set sitesListResponse(value) => this._sitesListResponse.value = value;
-
-  getSecretKey(int requestId) {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-    String empId = "empty";
-    String mobileNumber = "empty";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
-      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      String empIdEncrypted =
-          encryptString(empId, StringConstants.encryptedKey);
-      String mobileNumberEncrypted =
-          encryptString(mobileNumber, StringConstants.encryptedKey);
-      repository
-          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
-          .then((data) {
-        Get.back();
-        this.secretKeyResponse = data;
-        if (data != null) {
-          prefs.setString(StringConstants.userSecurityKey,
-              this.secretKeyResponse.secretKey);
-          getAccessKey(requestId);
-        } else {
-          print('Secret key response is null');
-        }
-      });
-    });
-  }
-
-  getAccessKey(int requestId) {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-    repository.getAccessKey().then((data) {
-      Get.back();
-      this.accessKeyResponse = data;
-      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      _prefs.then((SharedPreferences prefs) {
-        String userSecurityKey =
-            prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-        print('User Security key is :: $userSecurityKey');
-        if (userSecurityKey != "empty") {
-          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
-          bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
-          if (hasExpired) {
-            print('Has expired');
-            getSecretKey(requestId);
-          } else {
-            print('Not expired');
-            switch (requestId) {
-              case RequestIds.GET_SITES_LIST:
-                getSitesData(this.accessKeyResponse.accessKey);
-                break;
-            }
-          }
-        }
-      });
-    });
-  }
 
   getSitesData(String accessKey) {
     String empId = "empty";
@@ -210,7 +145,7 @@ class SiteController extends GetxController {
           debugPrint('Sites Data Response is null');
         } else {
           this.sitesListResponse = data;
-          if (sitesListResponse.respCode == "LD2006") {
+          if (sitesListResponse.respCode == "ST2006") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
           } else {
             Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));

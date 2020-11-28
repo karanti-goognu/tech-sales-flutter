@@ -7,10 +7,10 @@ class SitesListModel {
 
   SitesListModel(
       {this.sitesEntity,
-      this.respCode,
-      this.respMsg,
-      this.totalSitePotential,
-      this.totalSiteCount});
+        this.respCode,
+        this.respMsg,
+        this.totalSitePotential,
+        this.totalSiteCount});
 
   SitesListModel.fromJson(Map<String, dynamic> json) {
     if (json['sitesEntity'] != null) {
@@ -58,45 +58,53 @@ class SitesEntity {
   String sitePotentialMt;
   String reraNumber;
   String dealerId;
-  int siteBuiltArea;
+  String siteBuiltArea;
   int noOfFloors;
   String productDemo;
   String productOralBriefing;
   String soCode;
+  String plotNumber;
+  Null inactiveReasonText;
+  Null nextVisitDate;
+  Null closureReasonText;
   String createdBy;
   int createdOn;
-  int updatedBy;
-  int updatedOn;
+  Null updatedBy;
+  Null updatedOn;
 
   SitesEntity(
       {this.siteId,
-      this.leadId,
-      this.siteSegment,
-      this.assignedTo,
-      this.siteStatusId,
-      this.siteStageId,
-      this.contactName,
-      this.contactNumber,
-      this.siteCreationDate,
-      this.siteGeotag,
-      this.siteGeotagLat,
-      this.siteGeotagLong,
-      this.sitePincode,
-      this.siteState,
-      this.siteDistrict,
-      this.siteTaluk,
-      this.sitePotentialMt,
-      this.reraNumber,
-      this.dealerId,
-      this.siteBuiltArea,
-      this.noOfFloors,
-      this.productDemo,
-      this.productOralBriefing,
-      this.soCode,
-      this.createdBy,
-      this.createdOn,
-      this.updatedBy,
-      this.updatedOn});
+        this.leadId,
+        this.siteSegment,
+        this.assignedTo,
+        this.siteStatusId,
+        this.siteStageId,
+        this.contactName,
+        this.contactNumber,
+        this.siteCreationDate,
+        this.siteGeotag,
+        this.siteGeotagLat,
+        this.siteGeotagLong,
+        this.sitePincode,
+        this.siteState,
+        this.siteDistrict,
+        this.siteTaluk,
+        this.sitePotentialMt,
+        this.reraNumber,
+        this.dealerId,
+        this.siteBuiltArea,
+        this.noOfFloors,
+        this.productDemo,
+        this.productOralBriefing,
+        this.soCode,
+        this.plotNumber,
+        this.inactiveReasonText,
+        this.nextVisitDate,
+        this.closureReasonText,
+        this.createdBy,
+        this.createdOn,
+        this.updatedBy,
+        this.updatedOn});
 
   SitesEntity.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -123,6 +131,10 @@ class SitesEntity {
     productDemo = json['productDemo'];
     productOralBriefing = json['productOralBriefing'];
     soCode = json['soCode'];
+    plotNumber = json['plotNumber'];
+    inactiveReasonText = json['inactiveReasonText'];
+    nextVisitDate = json['nextVisitDate'];
+    closureReasonText = json['closureReasonText'];
     createdBy = json['createdBy'];
     createdOn = json['createdOn'];
     updatedBy = json['updatedBy'];
@@ -155,6 +167,10 @@ class SitesEntity {
     data['productDemo'] = this.productDemo;
     data['productOralBriefing'] = this.productOralBriefing;
     data['soCode'] = this.soCode;
+    data['plotNumber'] = this.plotNumber;
+    data['inactiveReasonText'] = this.inactiveReasonText;
+    data['nextVisitDate'] = this.nextVisitDate;
+    data['closureReasonText'] = this.closureReasonText;
     data['createdBy'] = this.createdBy;
     data['createdOn'] = this.createdOn;
     data['updatedBy'] = this.updatedBy;
