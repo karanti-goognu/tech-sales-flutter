@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
-
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -30,6 +29,7 @@ class SiteController extends GetxController {
   final _selectedFilterCount = 0.obs;
   final _assignToDate = StringConstants.empty.obs;
   final _assignFromDate = StringConstants.empty.obs;
+  final _sitePincode = StringConstants.empty.obs;
   final _searchKey = "".obs;
 
   final _selectedSiteStage = StringConstants.empty.obs;
@@ -48,6 +48,8 @@ class SiteController extends GetxController {
   get assignToDate => this._assignToDate.value;
 
   get assignFromDate => this._assignFromDate.value;
+
+  get selectedSitePincode => this._sitePincode.value;
 
   //get filterDataResponse => this._filterDataResponse.value;
 
@@ -85,6 +87,8 @@ class SiteController extends GetxController {
   set selectedPosition(value) => this._selectedPosition.value = value;
 
   set selectedSiteStage(value) => this._selectedSiteStage.value = value;
+
+  set selectedSitePincode(value) => this._sitePincode.value = value;
 
   set selectedSiteStageValue(value) =>
       this._selectedSiteStageValue.value = value;
