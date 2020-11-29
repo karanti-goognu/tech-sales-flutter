@@ -45,21 +45,7 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child:
-            //Stack(children: [
-            // Positioned(
-            //     top: 0,
-            //     left: 200,
-            //     right: 0,
-            //     child: Container(
-            //         color: Colors.white,
-            //         child: Column(
-            //           children: <Widget>[
-            //             Image.asset(
-            //               'assets/images/Container.png',
-            //               fit: BoxFit.fitHeight,
-            //             ),
-            //           ],
-            //         ))),
+
             Stack(
               children: [
             Positioned(

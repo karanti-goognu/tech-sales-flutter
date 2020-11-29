@@ -15,7 +15,11 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
+
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -365,12 +369,13 @@ class MyApiClientLeads {
     }
   }
 
-  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId) async {
-    http.MultipartRequest request = new http.MultipartRequest(
-        'POST', Uri.parse(UrlConstants.updateLeadsData));
-    request.headers.addAll(
-        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+
+
+  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel, List<File> imageList, BuildContext context, int leadId) async {
+
+    http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateLeadsData));
+    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
+
 
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
@@ -440,4 +445,6 @@ class MyApiClientLeads {
       }
     });
   }
+
+
 }

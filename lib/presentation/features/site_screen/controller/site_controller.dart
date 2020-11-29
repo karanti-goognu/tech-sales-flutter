@@ -1,5 +1,11 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -18,7 +24,9 @@ class SiteController extends GetxController {
 
   final MyRepositorySites repository;
 
-  SiteController({@required this.repository}) : assert(repository != null);
+
+  SiteController({@required this.repository})
+      : assert(repository != null);
 
   //final _filterDataResponse = SitesFilterModel().obs;
   final _sitesListResponse = SitesListModel().obs;
@@ -203,6 +211,34 @@ class SiteController extends GetxController {
     });
   }
 
+  getAccessKeyOnly() {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+
+    return repository.getAccessKey();
+    //   return this.accessKeyResponse;
+  }
+
+  getSitedetailsData(String accessKey, int siteId) async {
+    String userSecurityKey = "";
+    ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      print('User Security Key :: $userSecurityKey');
+     // viewSiteDataResponse =  await repository.getSitedetailsDataNew(accessKey, userSecurityKey,siteId);
+      viewSiteDataResponse =  await repository.getSitedetailsData( accessKey,  userSecurityKey,  siteId);
+    });
+    print(viewSiteDataResponse);
+
+    return viewSiteDataResponse;
+
+
+  }
+
+
   showNoInternetSnack() {
     Get.snackbar(
         "No internet connection.", "Please check your internet connection.",
@@ -214,4 +250,38 @@ class SiteController extends GetxController {
   openOtpVerificationPage(mobileNumber) {
     Get.toNamed(Routes.VERIFY_OTP);
   }
+
+  void updateLeadData(var updateDataRequest, List<File> list, BuildContext context, int siteId) {
+
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    repository.getAccessKey().then((data) {
+      // Get.back();
+
+      this.accessKeyResponse = data;
+//print(this.accessKeyResponse.accessKey);
+      updateSiteDataInBackend(updateDataRequest,list,context,siteId);
+
+    });
+
+  }
+
+  Future<void> updateSiteDataInBackend(updateDataRequest, List<File> list, BuildContext context, int siteId) async {
+
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      print('User Security Key :: $userSecurityKey');
+
+      await repository.updateSiteData(
+          this.accessKeyResponse.accessKey, userSecurityKey, updateDataRequest,list,context,siteId);
+    });
+
+
+  }
+
+
 }

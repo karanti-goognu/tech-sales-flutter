@@ -64,13 +64,13 @@ class SitesEntity {
   String productOralBriefing;
   String soCode;
   String plotNumber;
-  Null inactiveReasonText;
-  Null nextVisitDate;
-  Null closureReasonText;
+  String inactiveReasonText;
+  String nextVisitDate;
+  String closureReasonText;
   String createdBy;
   int createdOn;
-  Null updatedBy;
-  Null updatedOn;
+  String updatedBy;
+  int updatedOn;
 
   SitesEntity(
       {this.siteId,

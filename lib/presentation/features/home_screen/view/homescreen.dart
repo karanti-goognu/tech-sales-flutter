@@ -196,11 +196,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ))
               ],
             ),
-            floatingActionButton: Container(
+            floatingActionButton:
+            Container(
               height: 68.0,
               width: 68.0,
               child: FittedBox(
                 child: FloatingActionButton(
+
                   backgroundColor: Colors.amber,
                   child: Icon(
                     Icons.add,
@@ -329,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ///Put label over here
       label: Text(
-        "Slide to Check-In !",
+        "Swipe to start your day ",
         style: TextStyle(
             color: Color(0xff4a4a4a),
             fontWeight: FontWeight.w500,
@@ -337,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       icon: Center(
           child: Icon(
-        Icons.arrow_forward_outlined,
+        Icons.play_circle_filled_outlined,
         color: Colors.white,
         size: 40.0,
         //  semanticLabel: 'Text to announce in accessibility modes',

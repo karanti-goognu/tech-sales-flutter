@@ -25,11 +25,15 @@ abstract class UrlConstants {
   static const String saveLeadsData = '$baseUrl/leads/lead-save';
   static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';
   static const String getLeadData = '$baseUrl/leads/view-lead?leadId=';
+  static const String getSiteData = '$baseUrl/sites/view-site?siteId=';
   static const String updateLeadsData = '$baseUrl/leads/lead-update';
+  static const String updateSiteData = '$baseUrl/sites/site-update';
 
   static const String getSearchData = '$baseUrl/sites/site-search/?';
   static const String getCheckInDetails = '$baseUrl/journey/details';
   static const String getSitesList = '$baseUrl/sites/site-list-view?referenceID=';
+
+
 
 
 }
