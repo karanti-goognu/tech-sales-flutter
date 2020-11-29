@@ -137,9 +137,19 @@ class SiteController extends GetxController {
       if (this.selectedSiteStageValue != StringConstants.empty) {
         siteStage = "&siteStage=${this.selectedSiteStageValue}";
       }
+
+      String sitePincode = "";
+      if (this.selectedSitePincode != StringConstants.empty) {
+        siteStage = "&sitePincode=${this.selectedSitePincode}";
+      }
+
+      String siteInfluencerCat = "";
+      if (this.selectedSiteInfluencerCatValue != StringConstants.empty) {
+        siteStage = "&siteInfluencerCategory=${this.selectedSiteInfluencerCatValue}";
+      }
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage&limit=500&offset=0";
+          "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=500&offset=0";
       var encodedUrl = Uri.encodeFull(url);
       debugPrint('Url is : $encodedUrl');
       repository
@@ -174,7 +184,7 @@ class SiteController extends GetxController {
 
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getSearchData}$empId&searchText=${this.searchKey}";
+          "${UrlConstants.getSearchData}searchText=${this.searchKey}&referenceID=$empId";
       debugPrint('Url is : $url');
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {

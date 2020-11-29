@@ -12,4 +12,5 @@ abstract class RequestIds {
   static const int CHECK_IN = 11;
   static const int CHECK_OUT = 12;
   static const int GET_SITES_LIST = 13;
+  static const int SEARCH_SITES = 14;
 }

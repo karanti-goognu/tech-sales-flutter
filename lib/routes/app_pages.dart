@@ -29,6 +29,11 @@ class AppPages {
         name: Routes.SEARCH_SCREEN,
         page: () => SearchScreen(),
         binding: SearchBinding()),
+
+    GetPage(
+        name: Routes.SEARCH_SITES_SCREEN,
+        page: () => SearchScreen(),
+        binding: SearchBinding()),
     GetPage(
         name: Routes.LOGIN, page: () => LoginScreen(), binding: LoginBinding()),
     GetPage(
