@@ -47,6 +47,9 @@ class LeadsFilterController extends GetxController {
   final _selectedLeadStatus = StringConstants.empty.obs;
   final _selectedLeadStatusValue = StringConstants.empty.obs;
 
+  final _selectedLeadPotential = StringConstants.empty.obs;
+  final _selectedLeadPotentialValue = StringConstants.empty.obs;
+
   get accessKeyResponse => this._accessKeyResponse.value;
 
   get selectedFilterCount => this._selectedFilterCount.value;
@@ -75,6 +78,10 @@ class LeadsFilterController extends GetxController {
 
   get selectedLeadStatusValue => this._selectedLeadStatusValue.value;
 
+  get selectedLeadPotential => this._selectedLeadPotential.value;
+
+  get selectedLeadPotentialValue => this._selectedLeadPotentialValue.value;
+
   set selectedFilterCount(value) => this._selectedFilterCount.value = value;
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
@@ -102,6 +109,11 @@ class LeadsFilterController extends GetxController {
 
   set selectedLeadStatusValue(value) =>
       this._selectedLeadStatusValue.value = value;
+
+  set selectedLeadPotentialValue(value) =>
+      this._selectedLeadPotentialValue.value = value;
+
+  set selectedLeadPotential(value) => this._selectedLeadPotential.value = value;
 
   set leadsListResponse(value) => this._leadsListResponse.value = value;
 
@@ -221,9 +233,35 @@ class LeadsFilterController extends GetxController {
       if (this.selectedLeadStageValue != StringConstants.empty) {
         leadStage = "&leadStage=${this.selectedLeadStageValue}";
       }
+
+      //	leadPotentialFrom (optional)
+      //
+      // 	leadPotentialTo (optional)
+      String leadPotentialFrom = "";
+      String leadPotentialTo = "";
+      print('${this.selectedLeadPotentialValue}');
+      if (this.selectedLeadPotentialValue != StringConstants.empty) {
+        switch (selectedLeadPotentialValue) {
+          case "0":
+            leadPotentialFrom = "&leadPotentialFrom=0";
+            leadPotentialTo = "&leadPotentialTo=200";
+            break;
+          case "1":
+            leadPotentialFrom = "&leadPotentialFrom=201";
+            leadPotentialTo = "&leadPotentialTo=500";
+            break;
+          case "2":
+            leadPotentialFrom = "&leadPotentialFrom=501";
+            break;
+          default:
+            leadPotentialFrom = "";
+            leadPotentialTo = "";
+            break;
+        }
+      }
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage&limit=500&offset=0";
+          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=500&offset=0";
       var encodedUrl = Uri.encodeFull(url);
       debugPrint('Url is : $encodedUrl');
       repository
