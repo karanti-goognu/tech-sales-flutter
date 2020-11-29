@@ -47,7 +47,7 @@ class SitesEntity {
   int siteStageId;
   String contactName;
   String contactNumber;
-  int siteCreationDate;
+  String siteCreationDate;
   String siteGeotag;
   String siteGeotagLat;
   String siteGeotagLong;

@@ -100,6 +100,10 @@ class AppController extends GetxController {
               case RequestIds.GET_SITES_LIST:
                 _siteController.getSitesData(this.accessKeyResponse.accessKey);
                 break;
+
+              case RequestIds.SEARCH_SITES:
+                _siteController.searchSites(this.accessKeyResponse.accessKey);
+                break;
             }
           }
         }
