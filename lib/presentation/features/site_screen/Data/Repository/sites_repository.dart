@@ -31,12 +31,23 @@ class MyRepositorySites {
     return apiClient.getSecretKey(empId,mobileNumber);
   }
 
-
   getSitedetailsData(String accessKey, String userSecurityKey, int siteId) {
     return apiClient.getSiteDetailsData(accessKey,userSecurityKey,siteId);
   }
 
-  getSiteData(String accessKey, String userSecurityKey, int leadId) {}
+
+  updateSiteData(accessKey, String userSecurityKey, updateDataRequest, List<File> list, BuildContext context, int siteId) {
+    return apiClient.updateSiteData(accessKey,userSecurityKey,updateDataRequest ,list,context,siteId);
+
+
+  }
+
+
+  // getSitedetailsData(String accessKey, String userSecurityKey, int siteId) {
+  //   return apiClient.getSiteDetailsData(accessKey,userSecurityKey,siteId);
+  // }
+
+  //getSiteData(String accessKey, String userSecurityKey, int leadId) {}
 
 
 }

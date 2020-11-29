@@ -5,6 +5,7 @@ import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -485,7 +486,16 @@ class _SiteScreenState extends State<SiteScreen> {
                         // itemExtent: 125.0,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+
+                              Navigator.push(
+                                  context,
+                                  new CupertinoPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ViewSiteScreen(_siteController.sitesListResponse.sitesEntity[index].siteId
+                                              )));
+
+                            },
                             child: Card(
                               clipBehavior: Clip.antiAlias,
                               borderOnForeground: true,
