@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadS
 import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/search/view/site_search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,11 @@ class AppPages {
     GetPage(
         name: Routes.SEARCH_SCREEN,
         page: () => SearchScreen(),
+        binding: SearchBinding()),
+
+    GetPage(
+        name: Routes.SEARCH_SITES_SCREEN,
+        page: () => SiteSearchScreen() ,
         binding: SearchBinding()),
     GetPage(
         name: Routes.LOGIN, page: () => LoginScreen(), binding: LoginBinding()),

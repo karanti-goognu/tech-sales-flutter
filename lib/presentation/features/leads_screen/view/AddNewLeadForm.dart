@@ -114,24 +114,19 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   }
 
   getInitialData() {
-
-
-
     setState(() {
       print(gv.fromLead);
       if (gv.fromLead) {
-
         saveLeadRequestModelFromDraft = gv.saveLeadRequestModel;
         _contactName = saveLeadRequestModelFromDraft.contactName;
         geoTagType = saveLeadRequestModelFromDraft.geotagType;
         _contactNumber = saveLeadRequestModelFromDraft.contactNumber;
-        if(saveLeadRequestModelFromDraft.leadLatitude != "null"){
-
+        if (saveLeadRequestModelFromDraft.leadLatitude != "null") {
           _currentPosition = new Position(
-              latitude: double.parse(saveLeadRequestModelFromDraft.leadLatitude),
+              latitude:
+                  double.parse(saveLeadRequestModelFromDraft.leadLatitude),
               longitude:
-             double.parse(saveLeadRequestModelFromDraft.leadLongitude));
-
+                  double.parse(saveLeadRequestModelFromDraft.leadLongitude));
         }
         _siteAddress.text = saveLeadRequestModelFromDraft.leadAddress;
         _pincode.text = saveLeadRequestModelFromDraft.leadPincode;
@@ -145,10 +140,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         // _listInfluencerDetail = saveLeadRequestModelFromDraft.influencerList;
         // _commentsListNew = saveLeadRequestModelFromDraft.comments;
 
-
-        saveLeadRequestModelFromDraft =
-        new SaveLeadRequestModel();
-        gv.saveLeadRequestModel =  new SaveLeadRequestModel();
+        saveLeadRequestModelFromDraft = new SaveLeadRequestModel();
+        gv.saveLeadRequestModel = new SaveLeadRequestModel();
       }
     });
     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
@@ -168,8 +161,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           //  print(influencerCategoryEntity[0].inflCatDesc);
         });
       });
-
-
 
       Get.back();
     });
@@ -244,7 +235,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
-                     Get.toNamed(Routes.HOME_SCREEN);
+                      Get.toNamed(Routes.HOME_SCREEN);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -1313,8 +1304,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   .getAccessKeyOnly()
                                                   .then((data) async {
                                                 accessKeyModel = data;
-                                                print("AccessKey :: " +
-                                                    accessKeyModel.accessKey);
+                                                print(
+                                                    " We are here AccessKey :: " +
+                                                        accessKeyModel
+                                                            .accessKey);
                                                 await _addLeadsController
                                                     .getInflDetailsData(
                                                         accessKeyModel
@@ -1323,11 +1316,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   _listInfluencerDetail[index]
                                                           .inflContact =
                                                       new TextEditingController();
-                                                  ;
                                                   _listInfluencerDetail[index]
                                                           .inflName =
                                                       new TextEditingController();
-                                                  ;
 
                                                   InfluencerDetail inflDetail =
                                                       data;
@@ -2316,8 +2307,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           leadStateName: _state.text,
                                           leadDistrictName: _district.text,
                                           leadTalukName: _taluk.text,
-                                          leadSalesPotentialMt: _totalMT.text ?? "0",
-                                          leadBags:_totalBags.text,
+                                          leadSalesPotentialMt:
+                                              _totalMT.text ?? "0",
+                                          leadBags: _totalBags.text,
                                           leadReraNumber: _rera.text,
                                           isStatus: "false",
                                           listLeadImage: new List(),
@@ -2329,34 +2321,34 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           assignDate:
                                               formatter.format(DateTime.now()));
 
-
-
 //
 //                                   SaveLeadRequestModel saveLeadRequestModel1 = json.decode(draftLeadModelforDB.leadModel);
 
                                   print(json.encode(saveLeadRequestModel));
-                                  if(!gv.fromLead){
+                                  if (!gv.fromLead) {
                                     DraftLeadModelforDB draftLeadModelforDB =
-                                    new DraftLeadModelforDB(null,
-                                        json.encode(saveLeadRequestModel));
+                                        new DraftLeadModelforDB(null,
+                                            json.encode(saveLeadRequestModel));
                                     print(draftLeadModelforDB.leadModel);
-                                    await db.addLeadInDraft(draftLeadModelforDB);
-                                  }
-                                  else{
+                                    await db
+                                        .addLeadInDraft(draftLeadModelforDB);
+                                  } else {
                                     DraftLeadModelforDB draftLeadModelforDB =
-                                    new DraftLeadModelforDB(gv.draftID,
-                                        json.encode(saveLeadRequestModel));
+                                        new DraftLeadModelforDB(gv.draftID,
+                                            json.encode(saveLeadRequestModel));
                                     print(draftLeadModelforDB.leadModel);
-                                    await db.updateLeadInDraft(draftLeadModelforDB);
+                                    await db
+                                        .updateLeadInDraft(draftLeadModelforDB);
                                   }
-
 
                                   gv.fromLead = false;
-                                  gv.saveLeadRequestModel =  new SaveLeadRequestModel();
-                                  Navigator.pushReplacement(context, new CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          DraftLeadListScreen()
-                                  ));
+                                  gv.saveLeadRequestModel =
+                                      new SaveLeadRequestModel();
+                                  Navigator.pushReplacement(
+                                      context,
+                                      new CupertinoPageRoute(
+                                          builder: (BuildContext context) =>
+                                              DraftLeadListScreen()));
 
                                   // draftLeadModelforDB.leadModel = saveLeadRequestModel.toJson();
                                   // _addLeadsController.getAccessKeyAndSaveLead(
@@ -2445,12 +2437,16 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           contactName: _contactName,
                                           contactNumber: _contactNumber,
                                           geotagType: geoTagType,
-                                          leadLatitude: (_currentPosition!=null)?_currentPosition
-                                              .latitude
-                                              .toString(): "0",
-                                          leadLongitude: (_currentPosition!=null)?_currentPosition
-                                              .longitude
-                                              .toString(): "0",
+                                          leadLatitude:
+                                              (_currentPosition != null)
+                                                  ? _currentPosition.latitude
+                                                      .toString()
+                                                  : "0",
+                                          leadLongitude:
+                                              (_currentPosition != null)
+                                                  ? _currentPosition.longitude
+                                                      .toString()
+                                                  : "0",
                                           leadAddress: _siteAddress.text,
                                           leadPincode: _pincode.text,
                                           leadStateName: _state.text,

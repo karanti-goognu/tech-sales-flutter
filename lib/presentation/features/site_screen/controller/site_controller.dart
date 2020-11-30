@@ -8,14 +8,11 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/Access
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
-
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,14 +24,11 @@ class SiteController extends GetxController {
 
   final MyRepositorySites repository;
 
+  SiteController({@required this.repository}) : assert(repository != null);
 
-  SiteController({@required this.repository})
-      : assert(repository != null);
-
-  final _accessKeyResponse = AccessKeyModel().obs;
-  final _secretKeyResponse = SecretKeyModel().obs;
   //final _filterDataResponse = SitesFilterModel().obs;
   final _sitesListResponse = SitesListModel().obs;
+  final _accessKeyResponse = AccessKeyModel().obs;
 
   final _phoneNumber = "8860080067".obs;
 
@@ -42,6 +36,7 @@ class SiteController extends GetxController {
   final _selectedFilterCount = 0.obs;
   final _assignToDate = StringConstants.empty.obs;
   final _assignFromDate = StringConstants.empty.obs;
+  final _sitePincode = StringConstants.empty.obs;
   final _searchKey = "".obs;
 
   final _selectedSiteStage = StringConstants.empty.obs;
@@ -50,17 +45,20 @@ class SiteController extends GetxController {
   final _selectedSiteStatus = StringConstants.empty.obs;
   final _selectedSiteStatusValue = StringConstants.empty.obs;
 
-  get accessKeyResponse => this._accessKeyResponse.value;
+  final _selectedSiteInfluencerCat = StringConstants.empty.obs;
+  final _selectedSiteInfluencerCatValue = StringConstants.empty.obs;
 
   get selectedFilterCount => this._selectedFilterCount.value;
 
-  get searchKey => this._searchKey.value;
+  get accessKeyResponse => this._accessKeyResponse.value;
 
-  get secretKeyResponse => this._secretKeyResponse.value;
+  get searchKey => this._searchKey.value;
 
   get assignToDate => this._assignToDate.value;
 
   get assignFromDate => this._assignFromDate.value;
+
+  get selectedSitePincode => this._sitePincode.value;
 
   //get filterDataResponse => this._filterDataResponse.value;
 
@@ -78,13 +76,16 @@ class SiteController extends GetxController {
 
   get selectedSiteStatusValue => this._selectedSiteStatusValue.value;
 
+  get selectedSiteInfluencerCat => this._selectedSiteInfluencerCat.value;
+
+  get selectedSiteInfluencerCatValue =>
+      this._selectedSiteInfluencerCatValue.value;
+
   set selectedFilterCount(value) => this._selectedFilterCount.value = value;
 
-  set accessKeyResponse(value) => this._accessKeyResponse.value = value;
-
-  set secretKeyResponse(value) => this._secretKeyResponse.value = value;
-
   //set filterDataResponse(value) => this._filterDataResponse.value = value;
+
+  set accessKeyResponse(value) => this._accessKeyResponse.value = value;
 
   set phoneNumber(value) => this._phoneNumber.value = value;
 
@@ -98,6 +99,8 @@ class SiteController extends GetxController {
 
   set selectedSiteStage(value) => this._selectedSiteStage.value = value;
 
+  set selectedSitePincode(value) => this._sitePincode.value = value;
+
   set selectedSiteStageValue(value) =>
       this._selectedSiteStageValue.value = value;
 
@@ -106,70 +109,13 @@ class SiteController extends GetxController {
   set selectedSiteStatusValue(value) =>
       this._selectedSiteStatusValue.value = value;
 
+  set selectedSiteInfluencerCat(value) =>
+      this._selectedSiteInfluencerCat.value = value;
+
+  set selectedSiteInfluencerCatValue(value) =>
+      this._selectedSiteInfluencerCatValue.value = value;
+
   set sitesListResponse(value) => this._sitesListResponse.value = value;
-
-  getSecretKey(int requestId) {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-    String empId = "empty";
-    String mobileNumber = "empty";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
-      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      String empIdEncrypted =
-          encryptString(empId, StringConstants.encryptedKey);
-      String mobileNumberEncrypted =
-          encryptString(mobileNumber, StringConstants.encryptedKey);
-      repository
-          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
-          .then((data) {
-        Get.back();
-        this.secretKeyResponse = data;
-        if (data != null) {
-          prefs.setString(StringConstants.userSecurityKey,
-              this.secretKeyResponse.secretKey);
-          getAccessKey(requestId);
-        } else {
-          print('Secret key response is null');
-        }
-      });
-    });
-  }
-
-  getAccessKey(int requestId) {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-    repository.getAccessKey().then((data) {
-      Get.back();
-      this.accessKeyResponse = data;
-      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      _prefs.then((SharedPreferences prefs) {
-        String userSecurityKey =
-            prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-        print('User Security key is :: $userSecurityKey');
-        if (userSecurityKey != "empty") {
-          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
-          bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
-          if (hasExpired) {
-            print('Has expired');
-            getSecretKey(requestId);
-          } else {
-            print('Not expired');
-            switch (requestId) {
-              case RequestIds.GET_SITES_LIST:
-                getSitesData(this.accessKeyResponse.accessKey);
-                break;
-            }
-          }
-        }
-      });
-    });
-  }
 
   getSitesData(String accessKey) {
     String empId = "empty";
@@ -202,9 +148,20 @@ class SiteController extends GetxController {
       if (this.selectedSiteStageValue != StringConstants.empty) {
         siteStage = "&siteStage=${this.selectedSiteStageValue}";
       }
+
+      String sitePincode = "";
+      if (this.selectedSitePincode != StringConstants.empty) {
+        siteStage = "&sitePincode=${this.selectedSitePincode}";
+      }
+
+      String siteInfluencerCat = "";
+      if (this.selectedSiteInfluencerCatValue != StringConstants.empty) {
+        siteStage =
+            "&siteInflCat=${this.selectedSiteInfluencerCatValue}";
+      }
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage&limit=500&offset=0";
+          "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=500&offset=0";
       var encodedUrl = Uri.encodeFull(url);
       debugPrint('Url is : $encodedUrl');
       repository
@@ -214,7 +171,7 @@ class SiteController extends GetxController {
           debugPrint('Sites Data Response is null');
         } else {
           this.sitesListResponse = data;
-          if (sitesListResponse.respCode == "LD2006") {
+          if (sitesListResponse.respCode == "ST2006") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
           } else {
             Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
@@ -239,14 +196,14 @@ class SiteController extends GetxController {
 
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getSearchData}$empId&searchText=${this.searchKey}";
+          "${UrlConstants.getSiteSearchData}searchText=${this.searchKey}&referenceID=$empId";
       debugPrint('Url is : $url');
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
           this.sitesListResponse = data;
-          if (sitesListResponse.respCode == "LD2004") {
+          if (sitesListResponse.respCode == "ST2004") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('success');
             //SitesDetailWidget();
@@ -261,7 +218,7 @@ class SiteController extends GetxController {
   getAccessKeyOnly() {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
 
     return repository.getAccessKey();
@@ -275,16 +232,14 @@ class SiteController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
-     // viewSiteDataResponse =  await repository.getSitedetailsDataNew(accessKey, userSecurityKey,siteId);
-      viewSiteDataResponse =  await repository.getSitedetailsData( accessKey,  userSecurityKey,  siteId);
+      // viewSiteDataResponse =  await repository.getSitedetailsDataNew(accessKey, userSecurityKey,siteId);
+      viewSiteDataResponse = await repository.getSitedetailsData(
+          accessKey, userSecurityKey, siteId);
     });
     print(viewSiteDataResponse);
 
     return viewSiteDataResponse;
-
-
   }
-
 
   showNoInternetSnack() {
     Get.snackbar(
@@ -298,37 +253,31 @@ class SiteController extends GetxController {
     Get.toNamed(Routes.VERIFY_OTP);
   }
 
-  void updateLeadData(var updateDataRequest, List<File> list, BuildContext context, int siteId) {
-
+  void updateLeadData(var updateDataRequest, List<File> list,
+      BuildContext context, int siteId) {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
       // Get.back();
 
       this.accessKeyResponse = data;
 //print(this.accessKeyResponse.accessKey);
-      updateSiteDataInBackend(updateDataRequest,list,context,siteId);
-
+      updateSiteDataInBackend(updateDataRequest, list, context, siteId);
     });
-
   }
 
-  Future<void> updateSiteDataInBackend(updateDataRequest, List<File> list, BuildContext context, int siteId) async {
-
+  Future<void> updateSiteDataInBackend(updateDataRequest, List<File> list,
+      BuildContext context, int siteId) async {
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
 
-      await repository.updateSiteData(
-          this.accessKeyResponse.accessKey, userSecurityKey, updateDataRequest,list,context,siteId);
+      await repository.updateSiteData(this.accessKeyResponse.accessKey,
+          userSecurityKey, updateDataRequest, list, context, siteId);
     });
-
-
   }
-
-
 }
