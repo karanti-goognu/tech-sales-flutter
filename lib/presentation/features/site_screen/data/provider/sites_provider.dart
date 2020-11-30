@@ -131,9 +131,9 @@ class MyApiClientSites {
       if (response.statusCode == 200) {
         print('success');
         var data = json.decode(response.body);
-        LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
+        SitesListModel sitesListModel = SitesListModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
-        return leadsListModel;
+        return sitesListModel;
       } else
         print('error in else');
     } catch (_) {

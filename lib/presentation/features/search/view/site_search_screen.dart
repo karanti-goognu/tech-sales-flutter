@@ -108,13 +108,13 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                   child: Text("Leads list response  is empty!!"),
                 ),
               )
-            : (_siteController.sitesListResponse.siteEntity == null)
+            : (_siteController.sitesListResponse.sitesEntity == null)
                 ? Container(
                     child: Center(
                       child: Text("Search results is empty!!"),
                     ),
                   )
-                : (_siteController.sitesListResponse.siteEntity.length == 0)
+                : (_siteController.sitesListResponse.sitesEntity.length == 0)
                     ? Container(
                         child: Center(
                           child: Text("You don't have any leads..!!"),
@@ -417,7 +417,7 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   }
 
   onSearchTextChanged(String text) async {
-    if (controller.text.length >= 3) {
+    if (controller.text.length >= 1) {
       print('Hello');
       _siteController.searchKey = text;
       _appController.getAccessKey(RequestIds.SEARCH_SITES);

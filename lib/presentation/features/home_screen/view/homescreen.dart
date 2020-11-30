@@ -1,16 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart'
-    as splashModel;
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -21,17 +15,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   HomeController _homeController = Get.find();
-  LoginController _loginController = Get.find();
   SplashController _splashController = Get.find();
 
   List<menuDetailsModel> list = [
@@ -196,20 +186,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ))
               ],
             ),
-            floatingActionButton:
-            Container(
+            floatingActionButton: Container(
               height: 68.0,
               width: 68.0,
               child: FittedBox(
                 child: FloatingActionButton(
-
                   backgroundColor: Colors.amber,
                   child: Icon(
                     Icons.add,
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    gv.fromLead=false;
+                    gv.fromLead = false;
                     Get.toNamed(Routes.ADD_LEADS_SCREEN);
                   },
                 ),
@@ -269,7 +257,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 new CupertinoPageRoute(
-                                    builder: (BuildContext context) => DraftLeadListScreen()));
+                                    builder: (BuildContext context) =>
+                                        DraftLeadListScreen()));
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -361,13 +350,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget checkOutSliderButton() {
     return SliderButton(
       action: () {
-        /*setState(() {
-          _status = StringConstants.journeyEnded;
-          _prefs.then((SharedPreferences prefs) {
-            prefs.setString(
-                StringConstants.checkInStatus, StringConstants.journeyEnded);
-          });
-        });*/
         _homeController.getAccessKey(RequestIds.CHECK_OUT);
 
         ///Do something here OnSlide
@@ -404,15 +386,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget journeyEnded() {
     return GestureDetector(
-      onTap: () {
-        /*setState(() {
-          _status = StringConstants.checkIn;
-          _prefs.then((SharedPreferences prefs) {
-            prefs.setString(
-                StringConstants.checkInStatus, StringConstants.checkIn);
-          });
-        });*/
-      },
+      onTap: () {},
       child: Container(
         height: 70,
         alignment: Alignment.center,
@@ -485,9 +459,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Text(
                           list[index].value,
-                          maxLines: 2,
+                          maxLines: 1,
+                          overflow: TextOverflow.clip,
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 18,
                               fontFamily: "Muli",
                               fontWeight: FontWeight.bold
                               //fontWeight: FontWeight.normal

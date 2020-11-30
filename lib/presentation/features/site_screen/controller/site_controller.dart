@@ -24,12 +24,11 @@ class SiteController extends GetxController {
 
   final MyRepositorySites repository;
 
-
-  SiteController({@required this.repository})
-      : assert(repository != null);
+  SiteController({@required this.repository}) : assert(repository != null);
 
   //final _filterDataResponse = SitesFilterModel().obs;
   final _sitesListResponse = SitesListModel().obs;
+  final _accessKeyResponse = AccessKeyModel().obs;
 
   final _phoneNumber = "8860080067".obs;
 
@@ -50,6 +49,8 @@ class SiteController extends GetxController {
   final _selectedSiteInfluencerCatValue = StringConstants.empty.obs;
 
   get selectedFilterCount => this._selectedFilterCount.value;
+
+  get accessKeyResponse => this._accessKeyResponse.value;
 
   get searchKey => this._searchKey.value;
 
@@ -83,6 +84,8 @@ class SiteController extends GetxController {
   set selectedFilterCount(value) => this._selectedFilterCount.value = value;
 
   //set filterDataResponse(value) => this._filterDataResponse.value = value;
+
+  set accessKeyResponse(value) => this._accessKeyResponse.value = value;
 
   set phoneNumber(value) => this._phoneNumber.value = value;
 
@@ -153,7 +156,8 @@ class SiteController extends GetxController {
 
       String siteInfluencerCat = "";
       if (this.selectedSiteInfluencerCatValue != StringConstants.empty) {
-        siteStage = "&siteInfluencerCategory=${this.selectedSiteInfluencerCatValue}";
+        siteStage =
+            "&siteInflCat=${this.selectedSiteInfluencerCatValue}";
       }
       //debugPrint('request without encryption: $body');
       String url =
@@ -192,14 +196,14 @@ class SiteController extends GetxController {
 
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getSearchData}searchText=${this.searchKey}&referenceID=$empId";
+          "${UrlConstants.getSiteSearchData}searchText=${this.searchKey}&referenceID=$empId";
       debugPrint('Url is : $url');
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
           this.sitesListResponse = data;
-          if (sitesListResponse.respCode == "LD2004") {
+          if (sitesListResponse.respCode == "ST2004") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('success');
             //SitesDetailWidget();
@@ -214,7 +218,7 @@ class SiteController extends GetxController {
   getAccessKeyOnly() {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
 
     return repository.getAccessKey();
@@ -228,16 +232,14 @@ class SiteController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
-     // viewSiteDataResponse =  await repository.getSitedetailsDataNew(accessKey, userSecurityKey,siteId);
-      viewSiteDataResponse =  await repository.getSitedetailsData( accessKey,  userSecurityKey,  siteId);
+      // viewSiteDataResponse =  await repository.getSitedetailsDataNew(accessKey, userSecurityKey,siteId);
+      viewSiteDataResponse = await repository.getSitedetailsData(
+          accessKey, userSecurityKey, siteId);
     });
     print(viewSiteDataResponse);
 
     return viewSiteDataResponse;
-
-
   }
-
 
   showNoInternetSnack() {
     Get.snackbar(
@@ -251,37 +253,31 @@ class SiteController extends GetxController {
     Get.toNamed(Routes.VERIFY_OTP);
   }
 
-  void updateLeadData(var updateDataRequest, List<File> list, BuildContext context, int siteId) {
-
+  void updateLeadData(var updateDataRequest, List<File> list,
+      BuildContext context, int siteId) {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
       // Get.back();
 
       this.accessKeyResponse = data;
 //print(this.accessKeyResponse.accessKey);
-      updateSiteDataInBackend(updateDataRequest,list,context,siteId);
-
+      updateSiteDataInBackend(updateDataRequest, list, context, siteId);
     });
-
   }
 
-  Future<void> updateSiteDataInBackend(updateDataRequest, List<File> list, BuildContext context, int siteId) async {
-
+  Future<void> updateSiteDataInBackend(updateDataRequest, List<File> list,
+      BuildContext context, int siteId) async {
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       print('User Security Key :: $userSecurityKey');
 
-      await repository.updateSiteData(
-          this.accessKeyResponse.accessKey, userSecurityKey, updateDataRequest,list,context,siteId);
+      await repository.updateSiteData(this.accessKeyResponse.accessKey,
+          userSecurityKey, updateDataRequest, list, context, siteId);
     });
-
-
   }
-
-
 }
