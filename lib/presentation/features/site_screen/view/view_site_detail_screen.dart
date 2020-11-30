@@ -4077,6 +4077,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                 }
                                               }
                                             } else {
+
                                               _listInfluencerDetail[index]
                                                   .inflContact
                                                   .clear();

@@ -257,24 +257,24 @@ class MyApiClientLeads {
         'leadStatusId': 1,
         'leadStage': 1,
         'contactName': saveLeadRequestModel.contactName,
-        'contactNumber': saveLeadRequestModel.contactNumber ?? 'abc',
+        'contactNumber': saveLeadRequestModel.contactNumber ?? '0',
         'geotagType': saveLeadRequestModel.geotagType ?? 'M',
-        'leadLatitude': saveLeadRequestModel.leadLatitude ?? 'abc',
-        'leadLongitude': saveLeadRequestModel.leadLongitude ?? 'abc',
-        'leadAddress': saveLeadRequestModel.leadAddress ?? 'abc',
-        'leadPincode': saveLeadRequestModel.leadPincode ?? 'abc',
-        'leadStateName': saveLeadRequestModel.leadStateName ?? 'abc',
-        'leadDistrictName': saveLeadRequestModel.leadDistrictName ?? 'abc',
-        'leadTalukName': saveLeadRequestModel.leadTalukName ?? 'abc',
+        'leadLatitude': saveLeadRequestModel.leadLatitude ?? '0',
+        'leadLongitude': saveLeadRequestModel.leadLongitude ?? '0',
+        'leadAddress': saveLeadRequestModel.leadAddress ?? 'null',
+        'leadPincode': saveLeadRequestModel.leadPincode ?? '0',
+        'leadStateName': saveLeadRequestModel.leadStateName ?? 'null',
+        'leadDistrictName': saveLeadRequestModel.leadDistrictName ?? 'null',
+        'leadTalukName': saveLeadRequestModel.leadTalukName ?? 'null',
         'leadSalesPotentialMt':
-            saveLeadRequestModel.leadSalesPotentialMt ?? 'abc',
-        'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? 'abc',
-        'isStatus': saveLeadRequestModel.isStatus ?? 'abc',
+            saveLeadRequestModel.leadSalesPotentialMt ?? '0',
+        'leadReraNumber': saveLeadRequestModel.leadReraNumber ?? '0',
+        'isStatus': saveLeadRequestModel.isStatus ?? 'null',
         'createdBy': empId,
         'leadIsDuplicate': "N",
-        'listLeadImage': saveLeadRequestModel.listLeadImage ?? 'abc',
-        'listLeadcomments': saveLeadRequestModel.comments ?? 'abc',
-        'leadInfluencerEntity': saveLeadRequestModel.influencerList ?? 'abc'
+        'listLeadImage': saveLeadRequestModel.listLeadImage ?? 'null',
+        'listLeadcomments': saveLeadRequestModel.comments ?? 'null',
+        'leadInfluencerEntity': saveLeadRequestModel.influencerList ?? 'null'
       };
 
       request.fields['uploadImageWithLeadModel'] =
@@ -293,6 +293,7 @@ class MyApiClientLeads {
                 SaveLeadResponse saveLeadResponse =
                     SaveLeadResponse.fromJson(data);
 
+                print(response.body);
                 if (saveLeadResponse.respCode == "LD2008") {
                   Get.back();
                   gv.selectedLeadID = saveLeadResponse.leadId;

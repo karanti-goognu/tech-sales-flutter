@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart'
     as updateRequest;
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
@@ -59,6 +60,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   var _contactName = TextEditingController();
   var _contactNumber = TextEditingController();
   String _comment;
+  int initialInfluencerListLength;
   String labelText;
   int labelId;
   var _nextDateofConstruction = TextEditingController();
@@ -90,6 +92,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   List<LeadRejectReasonEntity> leadRejectReasonEntity = new List();
   List<NextStageConstructionEntity> nextStageConstructionEntity = new List();
   List<DealerList> dealerList = new List();
+  List<ImageDetails> _imgDetails = new List();
 
   bool viewMoreActive = false;
 
@@ -212,62 +215,81 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
               longitude:
                   double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
           listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
-          for (int i = 0; i < listLeadImagePhoto.length; i++) {
-            File file = new File(UrlConstants.baseUrlforImages +
-                "/" +
-                listLeadImagePhoto[i].photoName);
-            _imageList.add(file);
+
+          if (listLeadImagePhoto != null) {
+            for (int i = 0; i < listLeadImagePhoto.length; i++) {
+              File file = new File(UrlConstants.baseUrlforImages +
+                  "/" +
+                  listLeadImagePhoto[i].photoName);
+              _imgDetails.add(new ImageDetails("Network", file));
+            }
           }
-          initialImagelistLength = _imageList.length;
+
+          // for (int i = 0; i < listLeadImagePhoto.length; i++) {
+          //   File file = new File(UrlConstants.baseUrlforImages +
+          //       "/" +
+          //       listLeadImagePhoto[i].photoName);
+          //   _imageList.add(file);
+          // }
+          // initialImagelistLength = _imageList.length;
           influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
           influencerCategoryEntity =
               viewLeadDataResponse.influencerCategoryEntity;
 
           _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
 
-          for (int i = 0; i < _listInfluencerEntity.length; i++) {
-            InfluencerDetail inflDetail = new InfluencerDetail(
-                id: new TextEditingController(
-                    text: _listInfluencerEntity[i].id.toString()),
-                inflName: new TextEditingController(
-                    text: _listInfluencerEntity[i].inflName.toString()),
-                inflContact: new TextEditingController(
-                    text: _listInfluencerEntity[i].inflContact.toString()),
-                inflTypeId: new TextEditingController(
-                    text: _listInfluencerEntity[i].inflTypeId.toString()),
-                // inflTypeValue: new TextEditingController(text: influencerTypeEntity[_listInfluencerEntity[i].inflTypeId-1].inflTypeDesc),
-                inflCatId: new TextEditingController(
-                    text: _listInfluencerEntity[i].inflCatId.toString()),
-                // inflCatValue:  new TextEditingController(text: influencerCategoryEntity[_listInfluencerEntity[i].inflCatId-1].inflCatDesc),
-                ilpIntrested: new TextEditingController(
-                    text: _listInfluencerEntity[i].ilpIntrested.toString()),
-                createdOn: new TextEditingController(
-                    text: _listInfluencerEntity[i].createdOn.toString()),
-                isExpanded: false);
-            for (int j = 0; j < influencerTypeEntity.length; j++) {
-              if (influencerTypeEntity[j].inflTypeId.toString() ==
-                  inflDetail.inflTypeId.text.toString()) {
-                inflDetail.inflTypeValue = new TextEditingController(
-                    text: influencerTypeEntity[j].inflTypeDesc);
-                break;
+          if (_listInfluencerEntity.length != null) {
+            for (int i = 0; i < _listInfluencerEntity.length; i++) {
+              InfluencerDetail inflDetail = new InfluencerDetail(
+                  id: new TextEditingController(
+                      text: _listInfluencerEntity[i].id.toString()),
+                  inflName: new TextEditingController(
+                      text: _listInfluencerEntity[i].inflName.toString()),
+                  inflContact: new TextEditingController(
+                      text: _listInfluencerEntity[i].inflContact.toString()),
+                  inflTypeId: new TextEditingController(
+                      text: _listInfluencerEntity[i].inflTypeId.toString()),
+                  // inflTypeValue: new TextEditingController(text: influencerTypeEntity[_listInfluencerEntity[i].inflTypeId-1].inflTypeDesc),
+                  inflCatId: new TextEditingController(
+                      text: _listInfluencerEntity[i].inflCatId.toString()),
+                  // inflCatValue:  new TextEditingController(text: influencerCategoryEntity[_listInfluencerEntity[i].inflCatId-1].inflCatDesc),
+                  ilpIntrested: new TextEditingController(
+                      text: _listInfluencerEntity[i].ilpIntrested.toString()),
+                  createdOn: new TextEditingController(
+                      text: _listInfluencerEntity[i].createdOn.toString()),
+                  isExpanded: false);
+              for (int j = 0; j < influencerTypeEntity.length; j++) {
+                if (influencerTypeEntity[j].inflTypeId.toString() ==
+                    inflDetail.inflTypeId.text.toString()) {
+                  inflDetail.inflTypeValue = new TextEditingController(
+                      text: influencerTypeEntity[j].inflTypeDesc);
+                  break;
+                }
               }
-            }
-            for (int j = 0; j < influencerCategoryEntity.length; j++) {
-              if (influencerCategoryEntity[j].inflCatId.toString() ==
-                  inflDetail.inflCatId.text.toString()) {
-                inflDetail.inflCatValue = new TextEditingController(
-                    text: influencerCategoryEntity[j].inflCatDesc);
-                break;
+              for (int j = 0; j < influencerCategoryEntity.length; j++) {
+                if (influencerCategoryEntity[j].inflCatId.toString() ==
+                    inflDetail.inflCatId.text.toString()) {
+                  inflDetail.inflCatValue = new TextEditingController(
+                      text: influencerCategoryEntity[j].inflCatDesc);
+                  break;
+                }
               }
-            }
 
-            _listInfluencerDetail.add(inflDetail);
+              _listInfluencerDetail.add(inflDetail);
+            }
+          } else {
+            _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true));
           }
+          initialInfluencerListLength= _listInfluencerDetail.length;
+
+
           _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
+          final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
           for (int i = 0; i < _commentsListEntity.length; i++) {
             _commentsList.add(new CommentsDetail(
               creatorName: _commentsListEntity[i].creatorName,
-              //commentedAt: _commentsListEntity[i].createdOn,
+              commentedAt: formatter.format(DateTime.fromMillisecondsSinceEpoch(
+                  _commentsListEntity[i].createdOn)),
               createdBy: _commentsListEntity[i].createdBy,
               commentText: _commentsListEntity[i].commentText,
             ));
@@ -917,115 +939,105 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                             String empId;
                                                             String mobileNumber;
                                                             String name;
-                                                            Future<SharedPreferences>
-                                                                _prefs =
-                                                                SharedPreferences
-                                                                    .getInstance();
-                                                            _prefs.then(
-                                                                (SharedPreferences
-                                                                    prefs) async {
+                                                            Future<SharedPreferences> _prefs =
+                                                            SharedPreferences.getInstance();
+                                                            _prefs
+                                                                .then((SharedPreferences prefs) async {
                                                               empId = prefs.getString(
-                                                                      StringConstants
-                                                                          .employeeId) ??
+                                                                  StringConstants.employeeId) ??
                                                                   "empty";
-                                                              mobileNumber =
-                                                                  prefs.getString(
-                                                                          StringConstants
-                                                                              .mobileNumber) ??
-                                                                      "empty";
+                                                              mobileNumber = prefs.getString(
+                                                                  StringConstants.mobileNumber) ??
+                                                                  "empty";
                                                               name = prefs.getString(
-                                                                      StringConstants
-                                                                          .employeeName) ??
+                                                                  StringConstants.employeeName) ??
                                                                   "empty";
 
-                                                              // print(_comments.text);
-                                                              if (_comments
-                                                                      .text ==
-                                                                  "") {
-                                                                _comments.text =
-                                                                    "Status Changed";
+                                                              print(_comments.text);
+                                                              if (_comments.text == "") {
+                                                                _comments.text = "Stage Changed";
                                                               }
-                                                              // await _commentsList.add(
-                                                              //   new CommentsDetail(
-                                                              //       commentedBy: empId,
-                                                              //       commentText: _comments.text,
-                                                              //       commentedAt: DateTime.now(),
-                                                              //       creatorName: name),
-                                                              // );
-                                                              //
-                                                              List<
-                                                                      updateRequest
-                                                                          .ListLeadcomments>
-                                                                  commentsList =
-                                                                  new List();
 
-                                                              commentsList.add(
-                                                                  new updateRequest
-                                                                      .ListLeadcomments(
-                                                                leadId: widget
-                                                                    .leadId,
-                                                                commentText:
-                                                                    _comments
-                                                                        .text,
-                                                                creatorName:
-                                                                    _contactName
-                                                                        .text,
-                                                                createdBy:
-                                                                    empId,
-                                                              ));
+                                                              List<CommentsDetail> commentsDetails = [
+                                                                new CommentsDetail(
+                                                                    createdBy: empId,
+                                                                    commentText: _comments.text,
+                                                                    // commentedAt: DateTime.now(),
+                                                                    creatorName: name)
+                                                              ];
 
-                                                              // List<updateRequest.ListLeadImage>
-                                                              // imageList = new List();
-                                                              // for (int i = 0;
-                                                              // i < listLeadImage.length;
-                                                              // i++) {
-                                                              //   imageList.add(
-                                                              //       new updateRequest.ListLeadImage(
-                                                              //         leadId: widget.leadId,
-                                                              //         photoName: listLeadImage[i].photoName,
-                                                              //         createdBy: empId,
-                                                              //       ));
-                                                              // }
-                                                              // if (_listInfluencerDetail[
-                                                              // _listInfluencerDetail
-                                                              //     .length -
-                                                              //     1]
-                                                              //     .inflName ==
-                                                              //     null ||
-                                                              //     _listInfluencerDetail[
-                                                              //     _listInfluencerDetail
-                                                              //         .length -
-                                                              //         1]
-                                                              //         .inflName ==
-                                                              //         "null" ||
-                                                              //     _listInfluencerDetail[
-                                                              //     _listInfluencerDetail.length -
-                                                              //         1]
-                                                              //         .inflName
-                                                              //         .text
-                                                              //         .isNullOrBlank) {
-                                                              //   print("here1234");
-                                                              //   _listInfluencerDetail.removeAt(
-                                                              //       _listInfluencerDetail.length - 1);
-                                                              // }
-                                                              // List<updateRequest.LeadInfluencerEntity>
-                                                              // listInfluencer = new List();
-                                                              //
-                                                              // print(_listInfluencerDetail.length);
-                                                              //
-                                                              // for (int i = 0;
-                                                              // i < _listInfluencerDetail.length;
-                                                              // i++) {
-                                                              //   listInfluencer.add(new updateRequest
-                                                              //       .LeadInfluencerEntity(
-                                                              //       leadId: widget.leadId,
-                                                              //       createdBy: empId,
-                                                              //       inflId: int.parse(
-                                                              //           _listInfluencerDetail[i]
-                                                              //               .id
-                                                              //               .text),
-                                                              //       isDelete: "N"));
-                                                              // }
+                                                              List<updateRequest.ListLeadcomments>
+                                                              commentsList = new List();
+
+                                                              for (int i = 0;
+                                                              i < commentsDetails.length;
+                                                              i++) {
+                                                                commentsList.add(
+                                                                    new updateRequest.ListLeadcomments(
+                                                                      leadId: widget.leadId,
+                                                                      commentText:
+                                                                      commentsDetails[i].commentText,
+                                                                      creatorName: name,
+                                                                      createdBy: empId,
+                                                                    ));
+                                                              }
+
+                                                              List<updateRequest.ListLeadImage>
+                                                              imageList = new List();
+                                                              for (int i = 0;
+                                                              i < listLeadImage.length;
+                                                              i++) {
+                                                                imageList.add(
+                                                                    new updateRequest.ListLeadImage(
+                                                                      leadId: widget.leadId,
+                                                                      photoName: listLeadImage[i].photoName,
+                                                                      createdBy: empId,
+                                                                    ));
+                                                              }
+                                                              if (_listInfluencerDetail.length != 0) {
+                                                                if (_listInfluencerDetail[
+                                                                _listInfluencerDetail
+                                                                    .length -
+                                                                    1]
+                                                                    .inflName ==
+                                                                    null ||
+                                                                    _listInfluencerDetail[
+                                                                    _listInfluencerDetail
+                                                                        .length -
+                                                                        1]
+                                                                        .inflName ==
+                                                                        "null" ||
+                                                                    _listInfluencerDetail[
+                                                                    _listInfluencerDetail
+                                                                        .length -
+                                                                        1]
+                                                                        .inflName
+                                                                        .text
+                                                                        .isNullOrBlank) {
+                                                                  print("here1234");
+                                                                  _listInfluencerDetail.removeAt(
+                                                                      _listInfluencerDetail.length - 1);
+                                                                }
+                                                              }
+                                                              List<updateRequest.LeadInfluencerEntity>
+                                                              listInfluencer = new List();
+
+                                                              print(_listInfluencerDetail.length);
+
+                                                              for (int i = initialInfluencerListLength;
+                                                              i < _listInfluencerDetail.length;
+                                                              i++) {
+                                                                listInfluencer.add(new updateRequest
+                                                                    .LeadInfluencerEntity(
+                                                                    leadId: widget.leadId,
+                                                                    createdBy: empId,
+                                                                    inflId: int.parse(
+                                                                        _listInfluencerDetail[i]
+                                                                            .id
+                                                                            .text),
+                                                                    isDelete: "N"));
+                                                              }
+
 
                                                               var updateRequestModel =
                                                                   {
@@ -1115,20 +1127,20 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                         .nextStageConsId,
                                                                 'siteDealerId':
                                                                     null,
-                                                                'listLeadcomments':
-                                                                    new List(),
-                                                                'listLeadImage':
-                                                                    new List(),
-                                                                'leadInfluencerEntity':
-                                                                    new List()
                                                                 // 'listLeadcomments':
-                                                                //     commentsList,
+                                                                //     new List(),
                                                                 // 'listLeadImage':
-                                                                //     viewLeadDataResponse
-                                                                //         .leadphotosEntity,
+                                                                //     new List(),
                                                                 // 'leadInfluencerEntity':
-                                                                //     viewLeadDataResponse
-                                                                //         .leadInfluencerEntity
+                                                                //     new List()
+                                                                'listLeadcomments':
+                                                                    commentsList,
+                                                                'listLeadImage':
+                                                                    viewLeadDataResponse
+                                                                        .leadphotosEntity,
+                                                                'leadInfluencerEntity':
+                                                                    viewLeadDataResponse
+                                                                        .leadInfluencerEntity
                                                               };
 
                                                               _addLeadsController.updateLeadData(
@@ -1154,102 +1166,104 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             String mobileNumber;
                                             String name;
                                             Future<SharedPreferences> _prefs =
-                                                SharedPreferences.getInstance();
-                                            _prefs.then((SharedPreferences
-                                                prefs) async {
+                                            SharedPreferences.getInstance();
+                                            _prefs
+                                                .then((SharedPreferences prefs) async {
                                               empId = prefs.getString(
-                                                      StringConstants
-                                                          .employeeId) ??
+                                                  StringConstants.employeeId) ??
                                                   "empty";
                                               mobileNumber = prefs.getString(
-                                                      StringConstants
-                                                          .mobileNumber) ??
+                                                  StringConstants.mobileNumber) ??
                                                   "empty";
                                               name = prefs.getString(
-                                                      StringConstants
-                                                          .employeeName) ??
+                                                  StringConstants.employeeName) ??
                                                   "empty";
 
-                                              // print(_comments.text);
-                                              // if (_comments.text == "") {
-                                              //   _comments.text = "Stage Changed";
-                                              // }
-                                              // await _commentsList.add(
-                                              //   new CommentsDetail(
-                                              //       commentedBy: empId,
-                                              //       commentText: _comments.text,
-                                              //       commentedAt: DateTime.now(),
-                                              //       creatorName: name),
-                                              // );
-                                              //
-                                              // List<updateRequest.ListLeadcomments>
-                                              // commentsList = new List();
-                                              //
-                                              // for (int i = 0;
-                                              // i < _commentsList.length;
-                                              // i++) {
-                                              //   commentsList.add(
-                                              //       new updateRequest.ListLeadcomments(
-                                              //         leadId: widget.leadId,
-                                              //         commentText:
-                                              //         _commentsList[i].commentText,
-                                              //         creatorName: _contactName.text,
-                                              //         createdBy: empId,
-                                              //       ));
-                                              // }
-                                              //
-                                              // List<updateRequest.ListLeadImage>
-                                              // imageList = new List();
-                                              // for (int i = 0;
-                                              // i < listLeadImage.length;
-                                              // i++) {
-                                              //   imageList.add(
-                                              //       new updateRequest.ListLeadImage(
-                                              //         leadId: widget.leadId,
-                                              //         photoName: listLeadImage[i].photoName,
-                                              //         createdBy: empId,
-                                              //       ));
-                                              // }
-                                              // if (_listInfluencerDetail[
-                                              // _listInfluencerDetail
-                                              //     .length -
-                                              //     1]
-                                              //     .inflName ==
-                                              //     null ||
-                                              //     _listInfluencerDetail[
-                                              //     _listInfluencerDetail
-                                              //         .length -
-                                              //         1]
-                                              //         .inflName ==
-                                              //         "null" ||
-                                              //     _listInfluencerDetail[
-                                              //     _listInfluencerDetail.length -
-                                              //         1]
-                                              //         .inflName
-                                              //         .text
-                                              //         .isNullOrBlank) {
-                                              //   print("here1234");
-                                              //   _listInfluencerDetail.removeAt(
-                                              //       _listInfluencerDetail.length - 1);
-                                              // }
-                                              // List<updateRequest.LeadInfluencerEntity>
-                                              // listInfluencer = new List();
-                                              //
-                                              // print(_listInfluencerDetail.length);
-                                              //
-                                              // for (int i = 0;
-                                              // i < _listInfluencerDetail.length;
-                                              // i++) {
-                                              //   listInfluencer.add(new updateRequest
-                                              //       .LeadInfluencerEntity(
-                                              //       leadId: widget.leadId,
-                                              //       createdBy: empId,
-                                              //       inflId: int.parse(
-                                              //           _listInfluencerDetail[i]
-                                              //               .id
-                                              //               .text),
-                                              //       isDelete: "N"));
-                                              // }
+                                              print(_comments.text);
+                                              if (_comments.text == "") {
+                                                _comments.text = "Stage Changed";
+                                              }
+
+                                              List<CommentsDetail> commentsDetails = [
+                                                new CommentsDetail(
+                                                    createdBy: empId,
+                                                    commentText: _comments.text,
+                                                    // commentedAt: DateTime.now(),
+                                                    creatorName: name)
+                                              ];
+
+                                              List<updateRequest.ListLeadcomments>
+                                              commentsList = new List();
+
+                                              for (int i = 0;
+                                              i < commentsDetails.length;
+                                              i++) {
+                                                commentsList.add(
+                                                    new updateRequest.ListLeadcomments(
+                                                      leadId: widget.leadId,
+                                                      commentText:
+                                                      commentsDetails[i].commentText,
+                                                      creatorName: name,
+                                                      createdBy: empId,
+                                                    ));
+                                              }
+
+                                              List<updateRequest.ListLeadImage>
+                                              imageList = new List();
+                                              for (int i = 0;
+                                              i < listLeadImage.length;
+                                              i++) {
+                                                imageList.add(
+                                                    new updateRequest.ListLeadImage(
+                                                      leadId: widget.leadId,
+                                                      photoName: listLeadImage[i].photoName,
+                                                      createdBy: empId,
+                                                    ));
+                                              }
+                                              if (_listInfluencerDetail.length != 0) {
+                                                if (_listInfluencerDetail[
+                                                _listInfluencerDetail
+                                                    .length -
+                                                    1]
+                                                    .inflName ==
+                                                    null ||
+                                                    _listInfluencerDetail[
+                                                    _listInfluencerDetail
+                                                        .length -
+                                                        1]
+                                                        .inflName ==
+                                                        "null" ||
+                                                    _listInfluencerDetail[
+                                                    _listInfluencerDetail
+                                                        .length -
+                                                        1]
+                                                        .inflName
+                                                        .text
+                                                        .isNullOrBlank) {
+                                                  print("here1234");
+                                                  _listInfluencerDetail.removeAt(
+                                                      _listInfluencerDetail.length - 1);
+                                                }
+                                              }
+                                              List<updateRequest.LeadInfluencerEntity>
+                                              listInfluencer = new List();
+
+                                              print(_listInfluencerDetail.length);
+
+                                              for (int i = initialInfluencerListLength;
+                                              i < _listInfluencerDetail.length;
+                                              i++) {
+                                                listInfluencer.add(new updateRequest
+                                                    .LeadInfluencerEntity(
+                                                    leadId: widget.leadId,
+                                                    createdBy: empId,
+                                                    inflId: int.parse(
+                                                        _listInfluencerDetail[i]
+                                                            .id
+                                                            .text),
+                                                    isDelete: "N"));
+                                              }
+
 
                                               showDialog(
                                                   context: context,
@@ -1461,22 +1475,22 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                       viewLeadDataResponse
                                                                           .leadsEntity
                                                                           .siteDealerId,
-                                                                  'listLeadcomments':
-                                                                      new List(),
-                                                                  'listLeadImage':
-                                                                      new List(),
-                                                                  'leadInfluencerEntity':
-                                                                      new List()
-
                                                                   // 'listLeadcomments':
-                                                                  //     viewLeadDataResponse
-                                                                  //         .leadcommentsEnitiy,
+                                                                  //     new List(),
                                                                   // 'listLeadImage':
-                                                                  //     viewLeadDataResponse
-                                                                  //         .leadphotosEntity,
+                                                                  //     new List(),
                                                                   // 'leadInfluencerEntity':
-                                                                  //     viewLeadDataResponse
-                                                                  //         .leadInfluencerEntity
+                                                                   //   new List()
+
+                                                                  'listLeadcomments':
+                                                                      viewLeadDataResponse
+                                                                          .leadcommentsEnitiy,
+                                                                  'listLeadImage':
+                                                                      viewLeadDataResponse
+                                                                          .leadphotosEntity,
+                                                                  'leadInfluencerEntity':
+                                                                      viewLeadDataResponse
+                                                                          .leadInfluencerEntity
                                                                 };
 
                                                                 _addLeadsController.updateLeadData(
@@ -1501,102 +1515,104 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             String mobileNumber;
                                             String name;
                                             Future<SharedPreferences> _prefs =
-                                                SharedPreferences.getInstance();
-                                            _prefs.then((SharedPreferences
-                                                prefs) async {
+                                            SharedPreferences.getInstance();
+                                            _prefs
+                                                .then((SharedPreferences prefs) async {
                                               empId = prefs.getString(
-                                                      StringConstants
-                                                          .employeeId) ??
+                                                  StringConstants.employeeId) ??
                                                   "empty";
                                               mobileNumber = prefs.getString(
-                                                      StringConstants
-                                                          .mobileNumber) ??
+                                                  StringConstants.mobileNumber) ??
                                                   "empty";
                                               name = prefs.getString(
-                                                      StringConstants
-                                                          .employeeName) ??
+                                                  StringConstants.employeeName) ??
                                                   "empty";
 
-                                              // print(_comments.text);
-                                              // if (_comments.text == "") {
-                                              //   _comments.text = "Stage Changed";
-                                              // }
-                                              // await _commentsList.add(
-                                              //   new CommentsDetail(
-                                              //       commentedBy: empId,
-                                              //       commentText: _comments.text,
-                                              //       commentedAt: DateTime.now(),
-                                              //       creatorName: name),
-                                              // );
-                                              //
-                                              // List<updateRequest.ListLeadcomments>
-                                              // commentsList = new List();
-                                              //
-                                              // for (int i = 0;
-                                              // i < _commentsList.length;
-                                              // i++) {
-                                              //   commentsList.add(
-                                              //       new updateRequest.ListLeadcomments(
-                                              //         leadId: widget.leadId,
-                                              //         commentText:
-                                              //         _commentsList[i].commentText,
-                                              //         creatorName: _contactName.text,
-                                              //         createdBy: empId,
-                                              //       ));
-                                              // }
-                                              //
-                                              // List<updateRequest.ListLeadImage>
-                                              // imageList = new List();
-                                              // for (int i = 0;
-                                              // i < listLeadImage.length;
-                                              // i++) {
-                                              //   imageList.add(
-                                              //       new updateRequest.ListLeadImage(
-                                              //         leadId: widget.leadId,
-                                              //         photoName: listLeadImage[i].photoName,
-                                              //         createdBy: empId,
-                                              //       ));
-                                              // }
-                                              // if (_listInfluencerDetail[
-                                              // _listInfluencerDetail
-                                              //     .length -
-                                              //     1]
-                                              //     .inflName ==
-                                              //     null ||
-                                              //     _listInfluencerDetail[
-                                              //     _listInfluencerDetail
-                                              //         .length -
-                                              //         1]
-                                              //         .inflName ==
-                                              //         "null" ||
-                                              //     _listInfluencerDetail[
-                                              //     _listInfluencerDetail.length -
-                                              //         1]
-                                              //         .inflName
-                                              //         .text
-                                              //         .isNullOrBlank) {
-                                              //   print("here1234");
-                                              //   _listInfluencerDetail.removeAt(
-                                              //       _listInfluencerDetail.length - 1);
-                                              // }
-                                              // List<updateRequest.LeadInfluencerEntity>
-                                              // listInfluencer = new List();
-                                              //
-                                              // print(_listInfluencerDetail.length);
-                                              //
-                                              // for (int i = 0;
-                                              // i < _listInfluencerDetail.length;
-                                              // i++) {
-                                              //   listInfluencer.add(new updateRequest
-                                              //       .LeadInfluencerEntity(
-                                              //       leadId: widget.leadId,
-                                              //       createdBy: empId,
-                                              //       inflId: int.parse(
-                                              //           _listInfluencerDetail[i]
-                                              //               .id
-                                              //               .text),
-                                              //       isDelete: "N"));
-                                              // }
+                                              print(_comments.text);
+                                              if (_comments.text == "") {
+                                                _comments.text = "Stage Changed";
+                                              }
+
+                                              List<CommentsDetail> commentsDetails = [
+                                                new CommentsDetail(
+                                                    createdBy: empId,
+                                                    commentText: _comments.text,
+                                                    // commentedAt: DateTime.now(),
+                                                    creatorName: name)
+                                              ];
+
+                                              List<updateRequest.ListLeadcomments>
+                                              commentsList = new List();
+
+                                              for (int i = 0;
+                                              i < commentsDetails.length;
+                                              i++) {
+                                                commentsList.add(
+                                                    new updateRequest.ListLeadcomments(
+                                                      leadId: widget.leadId,
+                                                      commentText:
+                                                      commentsDetails[i].commentText,
+                                                      creatorName: name,
+                                                      createdBy: empId,
+                                                    ));
+                                              }
+
+                                              List<updateRequest.ListLeadImage>
+                                              imageList = new List();
+                                              for (int i = 0;
+                                              i < listLeadImage.length;
+                                              i++) {
+                                                imageList.add(
+                                                    new updateRequest.ListLeadImage(
+                                                      leadId: widget.leadId,
+                                                      photoName: listLeadImage[i].photoName,
+                                                      createdBy: empId,
+                                                    ));
+                                              }
+                                              if (_listInfluencerDetail.length != 0) {
+                                                if (_listInfluencerDetail[
+                                                _listInfluencerDetail
+                                                    .length -
+                                                    1]
+                                                    .inflName ==
+                                                    null ||
+                                                    _listInfluencerDetail[
+                                                    _listInfluencerDetail
+                                                        .length -
+                                                        1]
+                                                        .inflName ==
+                                                        "null" ||
+                                                    _listInfluencerDetail[
+                                                    _listInfluencerDetail
+                                                        .length -
+                                                        1]
+                                                        .inflName
+                                                        .text
+                                                        .isNullOrBlank) {
+                                                  print("here1234");
+                                                  _listInfluencerDetail.removeAt(
+                                                      _listInfluencerDetail.length - 1);
+                                                }
+                                              }
+                                              List<updateRequest.LeadInfluencerEntity>
+                                              listInfluencer = new List();
+
+                                              print(_listInfluencerDetail.length);
+
+                                              for (int i = initialInfluencerListLength;
+                                              i < _listInfluencerDetail.length;
+                                              i++) {
+                                                listInfluencer.add(new updateRequest
+                                                    .LeadInfluencerEntity(
+                                                    leadId: widget.leadId,
+                                                    createdBy: empId,
+                                                    inflId: int.parse(
+                                                        _listInfluencerDetail[i]
+                                                            .id
+                                                            .text),
+                                                    isDelete: "N"));
+                                              }
+
 
                                               var updateRequestModel = {
                                                 'leadId': viewLeadDataResponse
@@ -2363,7 +2379,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             ),
                           ),
                           onPressed: () async {
-                            if (_imageList.length < 5) {
+                            if (_imgDetails.length < 5) {
                               _showPicker(context);
                             } else {
                               Get.dialog(CustomDialogs().errorDialog(
@@ -2373,14 +2389,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                         ),
                       ),
 
-                      _imageList != null
+                      _imgDetails != null
                           ? Row(
                               children: [
                                 Expanded(
                                   child: ListView.builder(
                                       physics: NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
-                                      itemCount: _imageList.length,
+                                      itemCount: _imgDetails.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return GestureDetector(
@@ -2393,9 +2409,17 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                     content: new Container(
                                                       // width: 500,
                                                       // height: 500,
-                                                      child: Image.network(
-                                                          _imageList[index]
-                                                              .path),
+                                                      child: _imgDetails[index]
+                                                                  .from
+                                                                  .toLowerCase() ==
+                                                              "network"
+                                                          ? Image.network(
+                                                              _imgDetails[index]
+                                                                  .file
+                                                                  .path)
+                                                          : Image.file(
+                                                              _imgDetails[index]
+                                                                  .file),
                                                     ),
                                                   );
                                                 });
@@ -2429,7 +2453,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 ),
                                                 onTap: () {
                                                   setState(() {
-                                                    _imageList.removeAt(index);
+                                                    _imgDetails.removeAt(index);
                                                   });
                                                 },
                                               )
@@ -2471,15 +2495,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: _listInfluencerDetail.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  if (!_listInfluencerDetail[index]
-                                      .isExpanded) {
+                                  if (!_listInfluencerDetail[index].isExpanded) {
                                     return Column(
                                       // mainAxisAlignment:
                                       // MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "Influencer Details ${(index + 1)} ",
@@ -2488,73 +2511,71 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                   fontSize: 18),
                                             ),
                                             _listInfluencerDetail[index]
-                                                    .isExpanded
+                                                .isExpanded
                                                 ? FlatButton.icon(
-                                                    // shape: RoundedRectangleBorder(
-                                                    //     borderRadius: BorderRadius.circular(0),
-                                                    //     side: BorderSide(color: Colors.black26)),
-                                                    color: Colors.transparent,
-                                                    icon: Icon(
-                                                      Icons.remove,
-                                                      color:
-                                                          HexColor("#F9A61A"),
-                                                      size: 18,
-                                                    ),
-                                                    label: Text(
-                                                      "COLLAPSE",
-                                                      style: TextStyle(
-                                                          color: HexColor(
-                                                              "#F9A61A"),
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          // letterSpacing: 2,
-                                                          fontSize: 17),
-                                                    ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .isExpanded =
-                                                            !_listInfluencerDetail[
-                                                                    index]
-                                                                .isExpanded;
-                                                      });
-                                                      // _getCurrentLocation();
-                                                    },
-                                                  )
+                                              // shape: RoundedRectangleBorder(
+                                              //     borderRadius: BorderRadius.circular(0),
+                                              //     side: BorderSide(color: Colors.black26)),
+                                              color: Colors.transparent,
+                                              icon: Icon(
+                                                Icons.remove,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "COLLAPSE",
+                                                style: TextStyle(
+                                                    color:
+                                                    HexColor("#F9A61A"),
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 17),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  _listInfluencerDetail[
+                                                  index]
+                                                      .isExpanded =
+                                                  !_listInfluencerDetail[
+                                                  index]
+                                                      .isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            )
                                                 : FlatButton.icon(
-                                                    // shape: RoundedRectangleBorder(
-                                                    //     borderRadius: BorderRadius.circular(0),
-                                                    //     side: BorderSide(color: Colors.black26)),
-                                                    color: Colors.transparent,
-                                                    icon: Icon(
-                                                      Icons.add,
-                                                      color:
-                                                          HexColor("#F9A61A"),
-                                                      size: 18,
-                                                    ),
-                                                    label: Text(
-                                                      "EXPAND",
-                                                      style: TextStyle(
-                                                          color: HexColor(
-                                                              "#F9A61A"),
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          // letterSpacing: 2,
-                                                          fontSize: 17),
-                                                    ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .isExpanded =
-                                                            !_listInfluencerDetail[
-                                                                    index]
-                                                                .isExpanded;
-                                                      });
-                                                      // _getCurrentLocation();
-                                                    },
-                                                  ),
+                                              // shape: RoundedRectangleBorder(
+                                              //     borderRadius: BorderRadius.circular(0),
+                                              //     side: BorderSide(color: Colors.black26)),
+                                              color: Colors.transparent,
+                                              icon: Icon(
+                                                Icons.add,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "EXPAND",
+                                                style: TextStyle(
+                                                    color:
+                                                    HexColor("#F9A61A"),
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 17),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  _listInfluencerDetail[
+                                                  index]
+                                                      .isExpanded =
+                                                  !_listInfluencerDetail[
+                                                  index]
+                                                      .isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            ),
                                           ],
                                         ),
                                       ],
@@ -2566,7 +2587,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "Influencer Details ${(index + 1)} ",
@@ -2575,80 +2596,77 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                   fontSize: 18),
                                             ),
                                             _listInfluencerDetail[index]
-                                                    .isExpanded
+                                                .isExpanded
                                                 ? FlatButton.icon(
-                                                    // shape: RoundedRectangleBorder(
-                                                    //     borderRadius: BorderRadius.circular(0),
-                                                    //     side: BorderSide(color: Colors.black26)),
-                                                    color: Colors.transparent,
-                                                    icon: Icon(
-                                                      Icons.remove,
-                                                      color:
-                                                          HexColor("#F9A61A"),
-                                                      size: 18,
-                                                    ),
-                                                    label: Text(
-                                                      "COLLAPSE",
-                                                      style: TextStyle(
-                                                          color: HexColor(
-                                                              "#F9A61A"),
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          // letterSpacing: 2,
-                                                          fontSize: 17),
-                                                    ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .isExpanded =
-                                                            !_listInfluencerDetail[
-                                                                    index]
-                                                                .isExpanded;
-                                                      });
-                                                      // _getCurrentLocation();
-                                                    },
-                                                  )
+                                              // shape: RoundedRectangleBorder(
+                                              //     borderRadius: BorderRadius.circular(0),
+                                              //     side: BorderSide(color: Colors.black26)),
+                                              color: Colors.transparent,
+                                              icon: Icon(
+                                                Icons.remove,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "COLLAPSE",
+                                                style: TextStyle(
+                                                    color:
+                                                    HexColor("#F9A61A"),
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 17),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  _listInfluencerDetail[
+                                                  index]
+                                                      .isExpanded =
+                                                  !_listInfluencerDetail[
+                                                  index]
+                                                      .isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            )
                                                 : FlatButton.icon(
-                                                    // shape: RoundedRectangleBorder(
-                                                    //     borderRadius: BorderRadius.circular(0),
-                                                    //     side: BorderSide(color: Colors.black26)),
-                                                    color: Colors.transparent,
-                                                    icon: Icon(
-                                                      Icons.add,
-                                                      color:
-                                                          HexColor("#F9A61A"),
-                                                      size: 18,
-                                                    ),
-                                                    label: Text(
-                                                      "EXPAND",
-                                                      style: TextStyle(
-                                                          color: HexColor(
-                                                              "#F9A61A"),
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          // letterSpacing: 2,
-                                                          fontSize: 17),
-                                                    ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .isExpanded =
-                                                            !_listInfluencerDetail[
-                                                                    index]
-                                                                .isExpanded;
-                                                      });
-                                                      // _getCurrentLocation();
-                                                    },
-                                                  ),
+                                              // shape: RoundedRectangleBorder(
+                                              //     borderRadius: BorderRadius.circular(0),
+                                              //     side: BorderSide(color: Colors.black26)),
+                                              color: Colors.transparent,
+                                              icon: Icon(
+                                                Icons.add,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "EXPAND",
+                                                style: TextStyle(
+                                                    color:
+                                                    HexColor("#F9A61A"),
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 17),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  _listInfluencerDetail[
+                                                  index]
+                                                      .isExpanded =
+                                                  !_listInfluencerDetail[
+                                                  index]
+                                                      .isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            ),
                                           ],
                                         ),
                                         SizedBox(height: 16),
                                         TextFormField(
-                                          controller:
-                                              _listInfluencerDetail[index]
-                                                  .inflContact,
+                                          controller: _listInfluencerDetail[index]
+                                              .inflContact,
                                           maxLength: 10,
                                           onChanged: (value) async {
                                             bool match = false;
@@ -2658,7 +2676,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               //     .inflContact
                                               //     .clear();
                                               if (_listInfluencerDetail[index]
-                                                      .inflName !=
+                                                  .inflName !=
                                                   null) {
                                                 _listInfluencerDetail[index]
                                                     .inflName
@@ -2677,11 +2695,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               };
 
                                               for (int i = 0;
-                                                  i <
-                                                      _listInfluencerDetail
-                                                              .length -
-                                                          1;
-                                                  i++) {
+                                              i <
+                                                  _listInfluencerDetail
+                                                      .length -
+                                                      1;
+                                              i++) {
                                                 if (value ==
                                                     _listInfluencerDetail[i]
                                                         .inflContact
@@ -2694,38 +2712,38 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               if (match) {
                                                 Get.dialog(CustomDialogs()
                                                     .errorDialog(
-                                                        "Already added influencer : " +
-                                                            value));
+                                                    "Already added influencer : " +
+                                                        value));
                                               } else {
                                                 String empId;
                                                 String mobileNumber;
                                                 String name;
-                                                Future<SharedPreferences>
-                                                    _prefs = SharedPreferences
-                                                        .getInstance();
+                                                Future<SharedPreferences> _prefs =
+                                                SharedPreferences
+                                                    .getInstance();
                                                 await _prefs.then(
-                                                    (SharedPreferences prefs) {
-                                                  empId = prefs.getString(
+                                                        (SharedPreferences prefs) {
+                                                      empId = prefs.getString(
                                                           StringConstants
                                                               .employeeId) ??
-                                                      "empty";
-                                                  mobileNumber = prefs.getString(
+                                                          "empty";
+                                                      mobileNumber = prefs.getString(
                                                           StringConstants
                                                               .mobileNumber) ??
-                                                      "empty";
-                                                  name = prefs.getString(
+                                                          "empty";
+                                                      name = prefs.getString(
                                                           StringConstants
                                                               .employeeName) ??
-                                                      "empty";
-                                                  print(_comments.text);
-                                                });
+                                                          "empty";
+                                                      print(_comments.text);
+                                                    });
                                                 AddLeadsController
-                                                    _addLeadsController =
-                                                    Get.find();
-                                                _addLeadsController
-                                                    .phoneNumber = value;
+                                                _addLeadsController =
+                                                Get.find();
+                                                _addLeadsController.phoneNumber =
+                                                    value;
                                                 AccessKeyModel accessKeyModel =
-                                                    new AccessKeyModel();
+                                                new AccessKeyModel();
                                                 await _addLeadsController
                                                     .getAccessKeyOnly()
                                                     .then((data) async {
@@ -2734,159 +2752,200 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                       accessKeyModel.accessKey);
                                                   await _addLeadsController
                                                       .getInflDetailsData(
-                                                          accessKeyModel
-                                                              .accessKey)
+                                                      accessKeyModel
+                                                          .accessKey)
                                                       .then((data) {
-                                                    _listInfluencerDetail[index]
+                                                    InfluencerDetail inflDetail =
+                                                        data;
+                                                    print(
+                                                        inflDetail.inflName.text);
+
+                                                    setState(() {
+                                                      if (inflDetail
+                                                          .inflName.text !=
+                                                          "null") {
+                                                        _listInfluencerDetail[
+                                                        index]
                                                             .inflContact =
                                                         new TextEditingController();
-                                                    ;
-                                                    _listInfluencerDetail[index]
+                                                        ;
+                                                        _listInfluencerDetail[
+                                                        index]
                                                             .inflName =
                                                         new TextEditingController();
-                                                    ;
+                                                        FocusScope.of(context)
+                                                            .unfocus();
+                                                        //  print(inflDetail.inflName.text);
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .inflTypeId =
+                                                        new TextEditingController();
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .inflCatId =
+                                                        new TextEditingController();
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .inflTypeValue =
+                                                        new TextEditingController();
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .inflCatValue =
+                                                        new TextEditingController();
 
-                                                    InfluencerDetail
-                                                        inflDetail = data;
-                                                    print(data);
-                                                    setState(() {
-                                                      FocusScope.of(context)
-                                                          .unfocus();
-                                                      //  print(inflDetail.inflName.text);
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .inflTypeValue =
-                                                          new TextEditingController();
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .inflCatValue =
-                                                          new TextEditingController();
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .inflTypeId =
-                                                          new TextEditingController();
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .inflCatId =
-                                                          new TextEditingController();
+                                                        print(
+                                                            inflDetail.inflName);
 
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .inflContact =
-                                                          inflDetail
-                                                              .inflContact;
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .inflName =
-                                                          inflDetail.inflName;
-                                                      _listInfluencerDetail[
-                                                              index]
-                                                          .id = inflDetail.id;
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .ilpIntrested =
-                                                          inflDetail
-                                                              .ilpIntrested;
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .createdOn =
-                                                          inflDetail.createdOn;
-                                                      _listInfluencerDetail[
-                                                              index]
-                                                          .createdBy = empId;
-
-                                                      for (int i = 0;
-                                                          i <
-                                                              influencerTypeEntity
-                                                                  .length;
-                                                          i++) {
-                                                        if (influencerTypeEntity[
-                                                                    i]
-                                                                .inflTypeId
-                                                                .toString() ==
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .inflContact =
                                                             inflDetail
-                                                                .inflTypeId
-                                                                .text) {
-                                                          _listInfluencerDetail[
-                                                                      index]
-                                                                  .inflTypeId =
-                                                              inflDetail
-                                                                  .inflTypeId;
-                                                          //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                          _listInfluencerDetail[
-                                                                  index]
-                                                              .inflTypeValue
-                                                              .text = influencerTypeEntity[
-                                                                  influencerTypeEntity[
-                                                                          i]
-                                                                      .inflTypeId]
-                                                              .inflTypeDesc;
-                                                          break;
-                                                        } else {
-                                                          _listInfluencerDetail[
-                                                                  index]
-                                                              .inflContact
-                                                              .clear();
-                                                          _listInfluencerDetail[
-                                                                  index]
-                                                              .inflName
-                                                              .clear();
-                                                          _listInfluencerDetail[
-                                                                  index]
-                                                              .inflTypeId
-                                                              .clear();
-                                                          _listInfluencerDetail[
-                                                                  index]
-                                                              .inflTypeValue
-                                                              .clear();
-                                                        }
-                                                      }
-                                                      // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].infl_type_desc;
+                                                                .inflContact;
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .inflName =
+                                                            inflDetail.inflName;
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .id = inflDetail.id;
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .ilpIntrested =
+                                                            inflDetail
+                                                                .ilpIntrested;
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .createdOn =
+                                                            inflDetail.createdOn;
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .inflTypeValue =
+                                                            inflDetail
+                                                                .inflTypeValue;
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .inflCatValue =
+                                                            inflDetail
+                                                                .inflCatValue;
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .createdBy = empId;
+                                                        print(
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflName);
 
-                                                      for (int i = 0;
-                                                          i <
-                                                              influencerCategoryEntity
-                                                                  .length;
-                                                          i++) {
-                                                        if (influencerCategoryEntity[
-                                                                    i]
-                                                                .inflCatId
-                                                                .toString() ==
-                                                            inflDetail.inflCatId
-                                                                .text) {
-                                                          _listInfluencerDetail[
-                                                                      index]
-                                                                  .inflCatId =
+                                                        for (int i = 0;
+                                                        i <
+                                                            influencerTypeEntity
+                                                                .length;
+                                                        i++) {
+                                                          if (influencerTypeEntity[
+                                                          i]
+                                                              .inflTypeId
+                                                              .toString() ==
                                                               inflDetail
-                                                                  .inflCatId;
-                                                          //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                                  .inflTypeId
+                                                                  .text) {
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflTypeId =
+                                                                inflDetail
+                                                                    .inflTypeId;
+                                                            //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflTypeValue
+                                                                .text = influencerTypeEntity[
+                                                            influencerTypeEntity[
+                                                            i]
+                                                                .inflTypeId -
+                                                                1]
+                                                                .inflTypeDesc;
+                                                            break;
+                                                          } else {
+                                                            // _listInfluencerDetail[
+                                                            // index]
+                                                            //     .inflContact
+                                                            //     .clear();
+                                                            // _listInfluencerDetail[
+                                                            // index]
+                                                            //     .inflName
+                                                            //     .clear();
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflTypeId
+                                                                .clear();
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflTypeValue
+                                                                .clear();
+                                                          }
+                                                        }
+                                                        print(
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflName);
+                                                        // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
+
+                                                        for (int i = 0;
+                                                        i <
+                                                            influencerCategoryEntity
+                                                                .length;
+                                                        i++) {
+                                                          if (influencerCategoryEntity[
+                                                          i]
+                                                              .inflCatId
+                                                              .toString() ==
+                                                              inflDetail.inflCatId
+                                                                  .text) {
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflCatId =
+                                                                inflDetail
+                                                                    .inflCatId;
+                                                            //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflCatValue
+                                                                .text = influencerCategoryEntity[
+                                                            influencerCategoryEntity[
+                                                            i]
+                                                                .inflCatId -
+                                                                1]
+                                                                .inflCatDesc;
+                                                            break;
+                                                          } else {
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflCatId
+                                                                .clear();
+                                                            _listInfluencerDetail[
+                                                            index]
+                                                                .inflCatValue
+                                                                .clear();
+                                                          }
+                                                        }
+                                                      } else {
+
+
+                                                        if( _listInfluencerDetail[
+                                                        index]
+                                                            .inflContact != null){
                                                           _listInfluencerDetail[
-                                                                  index]
-                                                              .inflCatValue
-                                                              .text = influencerCategoryEntity[
-                                                                  influencerCategoryEntity[
-                                                                          i]
-                                                                      .inflCatId]
-                                                              .inflCatDesc;
-                                                          break;
-                                                        } else {
-                                                          _listInfluencerDetail[
-                                                                  index]
+                                                          index]
                                                               .inflContact
                                                               .clear();
                                                           _listInfluencerDetail[
-                                                                  index]
+                                                          index]
                                                               .inflName
                                                               .clear();
-                                                          _listInfluencerDetail[
-                                                                  index]
-                                                              .inflCatId
-                                                              .clear();
-                                                          _listInfluencerDetail[
-                                                                  index]
-                                                              .inflCatValue
-                                                              .clear();
                                                         }
+
+                                                        Get.back();
+                                                        Get.dialog(CustomDialogs().errorDialog(
+                                                            "No influencer registered with this number"));
+
                                                       }
                                                     });
                                                     Get.back();
@@ -2914,8 +2973,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               fontFamily: "Muli"),
                                           keyboardType: TextInputType.phone,
                                           inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter
-                                                .digitsOnly
+                                            FilteringTextInputFormatter.digitsOnly
                                           ],
                                           decoration: InputDecoration(
                                             focusedBorder: OutlineInputBorder(
@@ -2933,8 +2991,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Colors.red,
-                                                  width: 1.0),
+                                                  color: Colors.red, width: 1.0),
                                             ),
                                             labelText: "Infl. Contact",
                                             filled: false,
@@ -2946,15 +3003,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16.0),
                                             fillColor:
-                                                ColorConstants.backgroundColor,
+                                            ColorConstants.backgroundColor,
                                           ),
                                         ),
                                         SizedBox(height: 16),
                                         TextFormField(
                                           //  initialValue: _listInfluencerDetail[index].inflName,
-                                          controller:
-                                              _listInfluencerDetail[index]
-                                                  .inflName,
+                                          controller: _listInfluencerDetail[index]
+                                              .inflName,
 
                                           // validator: (value) {
                                           //   if (value.isEmpty) {
@@ -2985,8 +3041,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Colors.red,
-                                                  width: 1.0),
+                                                  color: Colors.red, width: 1.0),
                                             ),
                                             disabledBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
@@ -3005,14 +3060,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16.0),
                                             fillColor:
-                                                ColorConstants.backgroundColor,
+                                            ColorConstants.backgroundColor,
                                           ),
                                         ),
                                         SizedBox(height: 16),
                                         TextFormField(
-                                          controller:
-                                              _listInfluencerDetail[index]
-                                                  .inflTypeValue,
+                                          controller: _listInfluencerDetail[index]
+                                              .inflTypeValue,
                                           // validator: (value) {
                                           //   if (value.isEmpty) {
                                           //     return 'Please enter Influencer Number ';
@@ -3042,8 +3096,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Colors.red,
-                                                  width: 1.0),
+                                                  color: Colors.red, width: 1.0),
                                             ),
                                             disabledBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
@@ -3062,14 +3115,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16.0),
                                             fillColor:
-                                                ColorConstants.backgroundColor,
+                                            ColorConstants.backgroundColor,
                                           ),
                                         ),
                                         SizedBox(height: 16),
                                         TextFormField(
-                                          controller:
-                                              _listInfluencerDetail[index]
-                                                  .inflCatValue,
+                                          controller: _listInfluencerDetail[index]
+                                              .inflCatValue,
                                           // validator: (value) {
                                           //   if (value.isEmpty) {
                                           //     return 'Please enter Influencer Number ';
@@ -3099,8 +3151,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Colors.red,
-                                                  width: 1.0),
+                                                  color: Colors.red, width: 1.0),
                                             ),
                                             disabledBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
@@ -3119,7 +3170,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16.0),
                                             fillColor:
-                                                ColorConstants.backgroundColor,
+                                            ColorConstants.backgroundColor,
                                           ),
                                         ),
                                       ],
@@ -3153,36 +3204,45 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             // //  print(_listInfluencerDetail[
                             //   _listInfluencerDetail.length - 1]
                             //       .inflName);
-                            if (_listInfluencerDetail[
-                                            _listInfluencerDetail.length - 1]
-                                        .inflName !=
-                                    null &&
-                                _listInfluencerDetail[
-                                            _listInfluencerDetail.length - 1]
-                                        .inflName !=
-                                    "null" &&
-                                !_listInfluencerDetail[
-                                        _listInfluencerDetail.length - 1]
-                                    .inflName
-                                    .text
-                                    .isNullOrBlank) {
-                              InfluencerDetail infl =
-                                  new InfluencerDetail(isExpanded: true);
 
-                              // Item item = new Item(
-                              //     headerValue: "agx ", expandedValue: "dnxcx");
+                            if (_listInfluencerDetail.length == 0) {
                               setState(() {
-                                // _data.add(item);
-                                _listInfluencerDetail[
-                                        _listInfluencerDetail.length - 1]
-                                    .isExpanded = false;
-                                _listInfluencerDetail.add(infl);
+                                _listInfluencerDetail.add(
+                                    new InfluencerDetail(isExpanded: true));
                               });
+
                             } else {
-                              print(
-                                  "Error : Please fill previous influencer first");
-                              Get.dialog(CustomDialogs().errorDialog(
-                                  "Please fill previous influencer first"));
+                              if (_listInfluencerDetail[
+                                              _listInfluencerDetail.length - 1]
+                                          .inflName !=
+                                      null &&
+                                  _listInfluencerDetail[
+                                              _listInfluencerDetail.length - 1]
+                                          .inflName !=
+                                      "null" &&
+                                  !_listInfluencerDetail[
+                                          _listInfluencerDetail.length - 1]
+                                      .inflName
+                                      .text
+                                      .isNullOrBlank) {
+                                InfluencerDetail infl =
+                                    new InfluencerDetail(isExpanded: true);
+
+                                // Item item = new Item(
+                                //     headerValue: "agx ", expandedValue: "dnxcx");
+                                setState(() {
+                                  // _data.add(item);
+                                  _listInfluencerDetail[
+                                          _listInfluencerDetail.length - 1]
+                                      .isExpanded = false;
+                                  _listInfluencerDetail.add(infl);
+                                });
+                              } else {
+                                print(
+                                    "Error : Please fill previous influencer first");
+                                Get.dialog(CustomDialogs().errorDialog(
+                                    "Please fill previous influencer first"));
+                              }
                             }
                           },
                         ),
@@ -3690,130 +3750,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                         ),
                       ),
 
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     FlatButton(
-                      //       shape: RoundedRectangleBorder(
-                      //           borderRadius: BorderRadius.circular(0),
-                      //           side: BorderSide(color: Colors.black26)),
-                      //       color: Colors.transparent,
-                      //       child: Padding(
-                      //         padding: const EdgeInsets.only(
-                      //             right: 5, bottom: 8, top: 5),
-                      //         child: Text(
-                      //           "SAVE AND CLOSE",
-                      //           style: TextStyle(
-                      //               color: HexColor("#1C99D4"),
-                      //               fontWeight: FontWeight.bold,
-                      //               // letterSpacing: 2,
-                      //               fontSize: 17),
-                      //         ),
-                      //       ),
-                      //       onPressed: () async {},
-                      //     ),
-                      //     RaisedButton(
-                      //       color: HexColor("#1C99D4"),
-                      //       child: Text(
-                      //         "SUBMIT",
-                      //         style: TextStyle(
-                      //             color: Colors.white,
-                      //             fontWeight: FontWeight.bold,
-                      //             // letterSpacing: 2,
-                      //             fontSize: 17),
-                      //       ),
-                      //       onPressed: () async {
-                      //         //print(_comments.text);
-                      //         if (_comments.text != null &&
-                      //             _comments.text != '') {
-                      //           // print(_comments.text);
-                      //           print("here");
-                      //           setState(() {
-                      //             String empId;
-                      //             String mobileNumber;
-                      //             String name;
-                      //             Future<SharedPreferences> _prefs =
-                      //             SharedPreferences.getInstance();
-                      //             _prefs.then((SharedPreferences prefs) async {
-                      //               empId = prefs.getString(
-                      //                   StringConstants.employeeId) ??
-                      //                   "empty";
-                      //               mobileNumber = prefs.getString(
-                      //                   StringConstants.mobileNumber) ??
-                      //                   "empty";
-                      //               name = prefs.getString(
-                      //                   StringConstants.employeeName) ??
-                      //                   "empty";
-                      //               //   print("DHAWAM " + _comments.text);
-                      //               await _commentsListNew.add(
-                      //                 new CommentsDetail(
-                      //                     commentedBy: empId,
-                      //                     commentText: _comments.text,
-                      //                     commentedAt: DateTime.now(),
-                      //                     creatorName: name),
-                      //               );
-                      //               // print("DHAWAM " + _commentsListNew[0].commentText);
-                      //
-                      //
-                      //               if(_listInfluencerDetail[
-                      //               _listInfluencerDetail.length - 1]
-                      //                   .inflName
-                      //                   ==
-                      //                   null ||
-                      //                   _listInfluencerDetail[
-                      //                   _listInfluencerDetail.length - 1]
-                      //                       .inflName
-                      //                       ==
-                      //                       "null" ||  _listInfluencerDetail[
-                      //               _listInfluencerDetail.length - 1]
-                      //                   .inflName.text.isNullOrBlank){
-                      //                 print("here1234");
-                      //                 _listInfluencerDetail.removeAt(_listInfluencerDetail.length-1);
-                      //               }
-                      //
-                      //               SaveLeadRequestModel saveLeadRequestModel =
-                      //               new SaveLeadRequestModel(
-                      //                   siteSubTypeId: "2",
-                      //                   contactName: _contactName.text,
-                      //                   contactNumber: _contactNumber.text,
-                      //                   geotagType: geoTagType.text,
-                      //                   leadLatitude:
-                      //                   _currentPosition.latitude.toString(),
-                      //                   leadLongitude:
-                      //                   _currentPosition.longitude.toString(),
-                      //                   leadAddress: _siteAddress.text,
-                      //                   leadPincode: _pincode.text,
-                      //                   leadStateName: _state.text,
-                      //                   leadDistrictName: _district.text,
-                      //                   leadTalukName: _taluk.text,
-                      //                   leadSalesPotentialMt: _totalMT.text,
-                      //                   leadReraNumber: _rera.text,
-                      //                   isStatus: "false",
-                      //                   listLeadImage: listLeadImage,
-                      //                   influencerList: _listInfluencerDetail,
-                      //                   comments: _commentsListNew);
-                      //
-                      //               print("aaa " + saveLeadRequestModel.comments[0].commentText);
-                      //
-                      //               _addLeadsController.getAccessKeyAndSaveLead(
-                      //                   saveLeadRequestModel, _imageList,context);
-                      //               _commentsListNew = new List();
-                      //
-                      //
-                      //
-                      //             });
-                      //
-                      //             //  _comments.clear();
-                      //           });
-                      //         }
-                      //
-                      //
-                      //       },
-                      //     ),
-                      //   ],
-                      // ),
-                      //
-
                       SizedBox(height: 70),
                     ],
                   ),
@@ -3840,6 +3776,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
         listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
         _imageList.add(image);
+        _imgDetails.add(new ImageDetails("asset", image));
       }
     });
   }
@@ -3854,6 +3791,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       if (image != null) {
         listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
         _imageList.add(image);
+        _imgDetails.add(new ImageDetails("asset", image));
       }
       // _imageList.insert(0,image);
     });
@@ -4062,26 +4000,27 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                       if (_comments.text == "") {
                                         _comments.text = "Stage Changed";
                                       }
-                                      await _commentsList.add(
+
+                                      List<CommentsDetail> commentsDetails = [
                                         new CommentsDetail(
                                             createdBy: empId,
                                             commentText: _comments.text,
-                                            commentedAt: DateTime.now(),
-                                            creatorName: name),
-                                      );
+                                            // commentedAt: DateTime.now(),
+                                            creatorName: name)
+                                      ];
 
                                       List<updateRequest.ListLeadcomments>
                                           commentsList = new List();
 
                                       for (int i = 0;
-                                          i < _commentsList.length;
+                                          i < commentsDetails.length;
                                           i++) {
                                         commentsList.add(
                                             new updateRequest.ListLeadcomments(
                                           leadId: widget.leadId,
                                           commentText:
-                                              _commentsList[i].commentText,
-                                          creatorName: _contactName.text,
+                                              commentsDetails[i].commentText,
+                                          creatorName: name,
                                           createdBy: empId,
                                         ));
                                       }
@@ -4098,34 +4037,37 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                           createdBy: empId,
                                         ));
                                       }
-                                      if (_listInfluencerDetail[
-                                                      _listInfluencerDetail
-                                                              .length -
-                                                          1]
-                                                  .inflName ==
-                                              null ||
-                                          _listInfluencerDetail[
-                                                      _listInfluencerDetail
-                                                              .length -
-                                                          1]
-                                                  .inflName ==
-                                              "null" ||
-                                          _listInfluencerDetail[
-                                                  _listInfluencerDetail.length -
-                                                      1]
-                                              .inflName
-                                              .text
-                                              .isNullOrBlank) {
-                                        print("here1234");
-                                        _listInfluencerDetail.removeAt(
-                                            _listInfluencerDetail.length - 1);
+                                      if (_listInfluencerDetail.length != 0) {
+                                        if (_listInfluencerDetail[
+                                                        _listInfluencerDetail
+                                                                .length -
+                                                            1]
+                                                    .inflName ==
+                                                null ||
+                                            _listInfluencerDetail[
+                                                        _listInfluencerDetail
+                                                                .length -
+                                                            1]
+                                                    .inflName ==
+                                                "null" ||
+                                            _listInfluencerDetail[
+                                                    _listInfluencerDetail
+                                                            .length -
+                                                        1]
+                                                .inflName
+                                                .text
+                                                .isNullOrBlank) {
+                                          print("here1234");
+                                          _listInfluencerDetail.removeAt(
+                                              _listInfluencerDetail.length - 1);
+                                        }
                                       }
                                       List<updateRequest.LeadInfluencerEntity>
                                           listInfluencer = new List();
 
                                       print(_listInfluencerDetail.length);
 
-                                      for (int i = 0;
+                                      for (int i = initialInfluencerListLength;
                                           i < _listInfluencerDetail.length;
                                           i++) {
                                         listInfluencer.add(new updateRequest
@@ -4138,6 +4080,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                     .text),
                                             isDelete: "N"));
                                       }
+
+                                      print("Dhawannnnn ::"+ listInfluencer.length.toString());
 
                                       var updateRequestModel = {
                                         'leadId': viewLeadDataResponse
@@ -4179,13 +4123,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                 .nextStageConstruction,
                                         'siteDealerId': viewLeadDataResponse
                                             .leadsEntity.siteDealerId,
-                                        'listLeadcomments': new List(),
-                                        'listLeadImage': new List(),
-                                        'leadInfluencerEntity': new List()
-                                        // 'listLeadcomments': commentsList,
-                                        // 'listLeadImage': imageList,
-                                        // 'leadInfluencerEntity': listInfluencer
+                                        'listLeadcomments': commentsList,
+                                        'listLeadImage': imageList,
+                                         'leadInfluencerEntity': listInfluencer
                                       };
+
+                                      print(commentsList.length);
 
                                       leadStageVal.id =
                                           leadStageEntity[index].id;
@@ -4195,7 +4138,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                                       _addLeadsController.updateLeadData(
                                           updateRequestModel,
-                                          new List<File>(),
+                                          _imageList,
                                           context,
                                           viewLeadDataResponse
                                               .leadsEntity.leadId);
