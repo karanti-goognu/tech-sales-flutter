@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
+
 //import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
@@ -37,6 +38,7 @@ import 'RejectionLeadScreen.dart';
 
 class ViewLeadScreen extends StatefulWidget {
   int leadId;
+
   ViewLeadScreen(this.leadId);
 
   @override
@@ -115,6 +117,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   String _currentAddress;
   List<LeadStatusEntity> leadStatusEntity = new List();
   ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
+
   // List<initmodel.SiteSubTypeEntity> siteSubTypeEntity = [
   //   new initmodel.SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
   //   new initmodel.SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
@@ -299,7 +302,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
               child: ListBody(
                 children: <Widget>[
                   Text(
-                "Status of this lead is $labelText . You cannot edit or update it.",
+                    "Status of this lead is $labelText . You cannot edit or update it.",
                     style: GoogleFonts.roboto(
                         fontSize: 16,
                         height: 1.4,
@@ -4178,8 +4181,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             .leadsEntity.siteDealerId,
                                         'listLeadcomments': new List(),
                                         'listLeadImage': new List(),
-                                        'leadInfluencerEntity':
-                                        new List()
+                                        'leadInfluencerEntity': new List()
                                         // 'listLeadcomments': commentsList,
                                         // 'listLeadImage': imageList,
                                         // 'leadInfluencerEntity': listInfluencer

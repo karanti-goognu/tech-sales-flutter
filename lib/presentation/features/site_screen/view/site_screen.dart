@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
@@ -374,72 +375,6 @@ class _SiteScreenState extends State<SiteScreen> {
                 ],
               ),
             ),
-            Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5),
-                child: SingleChildScrollView(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: HexColor("#1C99D4")),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 3.0),
-                              child: Text(
-                                "Tele-Verified",
-                                style: TextStyle(
-                                  fontFamily: "Muli",
-                                  fontSize: 14,
-                                  // color: HexColor("#FFFFFF99"),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: HexColor("#39B54A")),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 3.0),
-                              child: Text(
-                                "Phy-Verified",
-                                style: TextStyle(
-                                  fontFamily: "Muli",
-                                  fontSize: 14,
-                                  // color: HexColor("#FFFFFF99"),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  scrollDirection: Axis.horizontal,
-                )),
             Expanded(child: leadsDetailWidget()),
             // SizedBox(
             //   height: 30,
@@ -520,7 +455,8 @@ class _SiteScreenState extends State<SiteScreen> {
                               margin: EdgeInsets.all(5.0),
                               color: Colors.white,
                               child: Container(
-                                decoration: BoxDecoration(
+                                padding: EdgeInsets.all(8),
+                                /*decoration: BoxDecoration(
                                   border: Border(
                                       left: BorderSide(
                                     color: (_siteController
@@ -532,7 +468,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                         : HexColor("#007CBF"),
                                     width: 6,
                                   )),
-                                ),
+                                ),*/
                                 child: Column(
                                   children: [
                                     Row(
@@ -548,7 +484,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Padding(
+                                             /* Padding(
                                                 padding:
                                                     const EdgeInsets.all(2.0),
                                                 child: Text(
@@ -561,7 +497,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       //fontWeight: FontWeight.normal
                                                       ),
                                                 ),
-                                              ),
+                                              ),*/
                                               Padding(
                                                   padding:
                                                       const EdgeInsets.all(2.0),
@@ -636,12 +572,10 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     padding: EdgeInsets.only(
                                                         left: 10.0),
                                                     child: Text(
-                                                      " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
-                                                        _siteController
-                                                            .sitesListResponse
-                                                            .sitesEntity[index]
-                                                            .createdOn,
-                                                      ))}",
+                                                      " ${ _siteController
+                                                          .sitesListResponse
+                                                          .sitesEntity[index]
+                                                          .siteCreationDate}",
                                                       //  textAlign: TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 13,
