@@ -318,6 +318,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
     if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
       //        Get.back();
       return Scaffold(
+        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomPadding: false,
         body: Container(
           child: AlertDialog(
             content: SingleChildScrollView(
@@ -3827,18 +3829,25 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
         });
   }
 
-  _getCurrentLocation() {
+  _getCurrentLocation() async {
+    if (!(await Geolocator().isLocationServiceEnabled())) {
+
+    Get.dialog(CustomDialogs()
+        .errorDialog("Please enable your location service from device settings"));
+    }
+    else{
     geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
-      setState(() {
-        _currentPosition = position;
-      });
-
-      _getAddressFromLatLng();
-    }).catchError((e) {
-      print(e);
+    setState(() {
+    _currentPosition = position;
     });
+
+    _getAddressFromLatLng();
+    }).catchError((e) {
+    print(e);
+    });
+    }
   }
 
   _getAddressFromLatLng() async {

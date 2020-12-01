@@ -245,6 +245,7 @@ print(labelText);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -2722,18 +2723,25 @@ print(labelText);
         });
   }
 
-  _getCurrentLocation() {
+  _getCurrentLocation() async {
+    if (!(await Geolocator().isLocationServiceEnabled())) {
+
+    Get.dialog(CustomDialogs()
+        .errorDialog("Please enable your location service from device settings"));
+    }
+    else{
     geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
-      setState(() {
-        _currentPosition = position;
-      });
-
-      _getAddressFromLatLng();
-    }).catchError((e) {
-      print(e);
+    setState(() {
+    _currentPosition = position;
     });
+
+    _getAddressFromLatLng();
+    }).catchError((e) {
+    print(e);
+    });
+    }
   }
 
   _getAddressFromLatLng() async {

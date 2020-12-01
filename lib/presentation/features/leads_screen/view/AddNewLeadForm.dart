@@ -176,6 +176,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       // appBar: AppBar(
       //   // titleSpacing: 50,
@@ -2624,18 +2625,28 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         });
   }
 
-  _getCurrentLocation() {
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      setState(() {
-        _currentPosition = position;
-      });
+  _getCurrentLocation() async {
 
-      _getAddressFromLatLng();
-    }).catchError((e) {
-      print(e);
-    });
+    if (!(await Geolocator().isLocationServiceEnabled())) {
+
+      Get.dialog(CustomDialogs()
+          .errorDialog("Please enable your location service from device settings"));
+    }
+    else{
+      geolocator
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .then((Position position) {
+        setState(() {
+          _currentPosition = position;
+        });
+
+        _getAddressFromLatLng();
+      }).catchError((e) {
+        print(e);
+      });
+    }
+
+
   }
 
   _getAddressFromLatLng() async {
