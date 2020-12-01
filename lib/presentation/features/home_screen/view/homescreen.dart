@@ -104,7 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          print("Notification");
+                          Get.dialog(
+                              CustomDialogs().errorDialog("Page Coming Soon .... "));
                         },
                         child: Container(
                           height: 50,

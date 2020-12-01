@@ -135,6 +135,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                       ),
                       labelText: "Employee ID",
                       filled: true,
+
                       focusColor: Colors.black,
                       labelStyle: TextStyle(
                           fontFamily: "Muli",
