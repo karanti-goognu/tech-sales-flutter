@@ -38,6 +38,9 @@ class ViewSiteScreen extends StatefulWidget {
 
 class _ViewSiteScreenState extends State<ViewSiteScreen>
     with SingleTickerProviderStateMixin {
+
+
+  FocusNode myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
   bool addNextButtonDisable = false;
@@ -145,11 +148,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     //_controller.addListener(_handleTabSelection);
     print(widget.siteId);
     getSiteData();
+
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    myFocusNode.dispose();
     super.dispose();
   }
 
@@ -242,7 +247,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
           print(viewSiteDataResponse.siteVisitHistoryEntity.length);
           sitesModal = viewSiteDataResponse.sitesModal;
-          _siteBuiltupArea.text = sitesModal.siteBuiltArea;
           _siteProductDemo.text = sitesModal.siteProductDemo;
           if (_siteProductDemo.text == 'N') {
             isSwitchedsiteProductDemo = false;
@@ -305,7 +309,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               print(labelText);
               // _selectedValue.id = leadStatusEntity[i].id;
               // _selectedValue.leadStatusDesc = leadStatusEntity[i].leadStatusDesc;
-
+              _siteBuiltupArea.text = sitesModal.siteBuiltArea;
+              myFocusNode = FocusNode();
+              myFocusNode.requestFocus();
             }
           }
         });
@@ -1082,7 +1088,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 'Search',
                                 style: TextStyle(
                                   color: Colors.white60,
-                                ),
+                                ), //
                               ),
                             ],
                           ),
@@ -1098,9 +1104,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   Widget siteDataView() {
+
     return SingleChildScrollView(
       child: Container(
           child: Form(
+
               child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
@@ -1111,7 +1119,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         SizedBox(
                           height: 20,
                         ),
+                        Visibility(
+                          visible: false,
+                          child: TextFormField(
+                            focusNode: myFocusNode,
+                            autofocus: true,
+                          ),
+                        ),
                         DropdownButtonFormField<ConstructionStageEntity>(
+
+                         //
                           value: _selectedConstructionType,
                           items: constructionStageEntity
                               .map((label) => DropdownMenuItem(
@@ -1173,6 +1190,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ),
                         SizedBox(height: 16),
                         TextFormField(
+
                           controller: _siteBuiltupArea,
                           validator: (value) {
                             if (value.isEmpty) {
@@ -1242,6 +1260,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 10.0),
                                 child: TextFormField(
+
                                   enabled: false,
                                   style: TextStyle(
                                       fontSize: 18,
@@ -1956,6 +1975,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   BorderSide(color: Colors.red, width: 1.0),
                             ),
                             labelText: "Pincode",
+                            enabled: false,
                             filled: false,
                             focusColor: Colors.black,
                             labelStyle: TextStyle(
@@ -2010,6 +2030,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   BorderSide(color: Colors.red, width: 1.0),
                             ),
                             labelText: "State",
+                            enabled:false,
                             filled: false,
                             focusColor: Colors.black,
                             labelStyle: TextStyle(
@@ -2064,6 +2085,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   BorderSide(color: Colors.red, width: 1.0),
                             ),
                             labelText: "District",
+                            enabled:false,
                             filled: false,
                             focusColor: Colors.black,
                             labelStyle: TextStyle(
@@ -2118,6 +2140,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               borderSide:
                                   BorderSide(color: Colors.red, width: 1.0),
                             ),
+                            enabled:false,
                             labelText: "Taluk",
                             filled: false,
                             focusColor: Colors.black,
@@ -4171,8 +4194,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                     .clear();
                                               }
 
-                                              Get.back();
-                                              Get.dialog(CustomDialogs()
+                                             // Get.back();
+                                            return  Get.dialog(CustomDialogs()
                                                   .errorDialog(
                                                       "No influencer registered with this number"));
                                             }

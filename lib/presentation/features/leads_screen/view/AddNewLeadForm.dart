@@ -762,6 +762,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           borderSide: BorderSide(color: Colors.red, width: 1.0),
                         ),
                         labelText: "Pincode",
+                        enabled: false,
                         filled: false,
                         focusColor: Colors.black,
                         labelStyle: TextStyle(
@@ -814,6 +815,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           borderSide: BorderSide(color: Colors.red, width: 1.0),
                         ),
                         labelText: "State",
+                        enabled: false,
                         filled: false,
                         focusColor: Colors.black,
                         labelStyle: TextStyle(
@@ -866,6 +868,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           borderSide: BorderSide(color: Colors.red, width: 1.0),
                         ),
                         labelText: "District",
+                        enabled: false,
                         filled: false,
                         focusColor: Colors.black,
                         labelStyle: TextStyle(
@@ -920,6 +923,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         ),
                         labelText: "Taluk",
                         filled: false,
+                        enabled:false,
                         focusColor: Colors.black,
                         labelStyle: TextStyle(
                             fontFamily: "Muli",
@@ -1335,7 +1339,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   print(
                                                       inflDetail.inflName.text);
 
-                                                  setState(() {
+                                                  setState(()  {
                                                     if (inflDetail
                                                             .inflName.text !=
                                                         "null") {
@@ -1516,8 +1520,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                             .inflName
                                                             .clear();
                                                       }
-                                                      Get.back();
-                                                      Get.dialog(CustomDialogs().errorDialog(
+                                                      //Get.back();
+                                                      //print("hehehhehe");
+                                                    return  Get.dialog(CustomDialogs().showDialog(
                                                           "No influencer registered with this number"));
 
                                                     }
@@ -2453,8 +2458,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 _currentPosition.latitude != null &&
                                 _currentPosition.latitude != '' &&
                                 _pincode.text != null &&
-                                _pincode.text != '' &&
-                                _listInfluencerDetail.length != 0) {
+                                _pincode.text != ''
+                            //&&
+                               // _listInfluencerDetail.length != 0
+                            ) {
                               // print(_comments.text);
                               print("here");
                               setState(() {
@@ -2475,8 +2482,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       "empty";
                                   //   print("DHAWAM " + _comments.text);
                                   if (_comments.text == "" ||
-                                      _comments.text != "null" ||
-                                      _comments.text != null) {
+                                      _comments.text == "null" ||
+                                      _comments.text == null) {
                                     _comments.text = "Added New Lead";
                                   }
                                   await _commentsListNew.add(
@@ -2547,7 +2554,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                               });
                             } else {
                               Get.dialog(CustomDialogs().errorDialog(
-                                  "Please fill the mandotary fields. i.e. Contact Number , Address , Influencer Detail . "));
+                                  "Please fill the mandotary fields. i.e. Contact Number , Address  . "));
                             }
                           },
                         ),

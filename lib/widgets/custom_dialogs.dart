@@ -95,6 +95,7 @@ class CustomDialogs {
   }
 
   Widget showDialog(String message) {
+
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(

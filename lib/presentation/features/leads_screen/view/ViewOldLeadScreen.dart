@@ -1064,6 +1064,7 @@ print(labelText);
                             borderSide: BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Pincode",
+                          enabled: false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -1116,6 +1117,7 @@ print(labelText);
                             borderSide: BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "State",
+                          enabled:false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -1168,6 +1170,7 @@ print(labelText);
                             borderSide: BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "District",
+                          enabled:false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -1221,6 +1224,7 @@ print(labelText);
                             borderSide: BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Taluk",
+                          enabled: false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
