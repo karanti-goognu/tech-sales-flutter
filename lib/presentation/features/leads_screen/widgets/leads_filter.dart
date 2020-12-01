@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -155,14 +157,20 @@ class _FilterWidgetState extends State<FilterWidget> {
                 GestureDetector(
                   onTap: () {
                     //Navigator.pop(context);
-                    _leadsFilterController.selectedLeadStage =
-                        StringConstants.empty;
-                    _leadsFilterController.selectedLeadStatus =
-                        StringConstants.empty;
-                    _leadsFilterController.assignToDate = StringConstants.empty;
-                    _leadsFilterController.assignFromDate =
-                        StringConstants.empty;
-                    _leadsFilterController.selectedFilterCount = 0;
+                    setState(() {
+                      _leadsFilterController.selectedLeadStage =
+                          StringConstants.empty;
+                      _leadsFilterController.selectedLeadStatus =
+                          StringConstants.empty;
+                      _leadsFilterController.assignToDate = StringConstants.empty;
+                      _leadsFilterController.assignFromDate =
+                          StringConstants.empty;
+                      _leadsFilterController.selectedLeadPotential =
+                          StringConstants.empty;
+                      _leadsFilterController.selectedFilterCount = 0;
+                      Get.back();
+                      Get.offNamed(Routes.LEADS_SCREEN);
+                    });
                   },
                   child: Text(
                     "Clear All",

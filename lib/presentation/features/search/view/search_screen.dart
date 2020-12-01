@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController controller = new TextEditingController();
   LeadsFilterController _leadsFilterController = Get.find();
+  SplashController _splashController = Get.find();
 
   List<leadDetailsModel> list = [
     new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
@@ -125,6 +127,17 @@ class _SearchScreenState extends State<SearchScreen> {
                             left: 10.0, right: 10, bottom: 10),
                         // itemExtent: 125.0,
                         itemBuilder: (context, index) {
+                          String selectedDateString = "empty";
+                          final DateFormat formatter =
+                              DateFormat('dd-MMM-yyyy');
+                          if (_leadsFilterController.leadsListResponse
+                                  .leadsEntity[index].assignDate !=
+                              null) {
+                            selectedDateString = formatter.format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    _leadsFilterController.leadsListResponse
+                                        .leadsEntity[index].assignDate));
+                          }
                           return GestureDetector(
                             /*onTap: (){
                               Navigator.push(context, new CupertinoPageRoute(
@@ -146,7 +159,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                 decoration: BoxDecoration(
                                   border: Border(
                                       left: BorderSide(
-                                    color: !list[index].verifiedStatus
+                                    color: _leadsFilterController
+                                                .leadsListResponse
+                                                .leadsEntity[index]
+                                                .leadStageId ==
+                                            1
                                         ? HexColor("#F9A61A")
                                         : HexColor("#007CBF"),
                                     width: 6,
@@ -228,7 +245,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                               .withOpacity(0.1),
                                                       label: Obx(
                                                         () => Text(
-                                                          "${((_leadsFilterController.leadsListResponse.leadsEntity[index].leadStageId) == "1") ? "Active" : "Rejected"}",
+                                                          "${_splashController.splashDataModel.leadStatusEntity[(_leadsFilterController.leadsListResponse.leadsEntity[index].leadStatusId) - 1].leadStatusDesc}",
                                                           style: TextStyle(
                                                               color: HexColor(
                                                                   "#6200EE"),
@@ -248,7 +265,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                     padding: EdgeInsets.only(
                                                         left: 10.0),
                                                     child: Text(
-                                                      list[index].date,
+                                                      "$selectedDateString",
                                                       //  textAlign: TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 13,
