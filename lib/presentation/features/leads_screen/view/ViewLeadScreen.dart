@@ -2179,6 +2179,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                 BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Pincode",
+                          enabled: false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -2232,6 +2233,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                 BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "State",
+                          enabled: false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -2285,6 +2287,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                 BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "District",
+                          enabled:false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -2339,6 +2342,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                 BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Taluk",
+                          enabled:false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -2944,8 +2948,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                               .clear();
                                                         }
 
-                                                        Get.back();
-                                                        Get.dialog(CustomDialogs().errorDialog(
+                                                       // Get.back();
+                                                       return Get.dialog(CustomDialogs().errorDialog(
                                                             "No influencer registered with this number"));
 
                                                       }

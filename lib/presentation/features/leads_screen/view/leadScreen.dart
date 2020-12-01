@@ -503,9 +503,10 @@ class _LeadScreenState extends State<LeadScreen> {
                       scrollDirection: Axis.horizontal,
                     )),
                 Expanded(child: leadsDetailWidget()),
-                // SizedBox(
-                //   height: 50,
-                // ),
+                Container(
+                  height: 70,
+                  color: Colors.transparent,
+                ),
               ],
             ),
           ),

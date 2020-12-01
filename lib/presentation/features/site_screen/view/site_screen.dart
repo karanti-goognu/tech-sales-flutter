@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
@@ -291,7 +292,12 @@ class _SiteScreenState extends State<SiteScreen> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
-                      Get.toNamed(Routes.HOME_SCREEN);
+                      setState(() {
+                        // currentScreen =
+                        //     Dashboard(); // if user taps on this dashboard tab will be active
+                        // currentTab = 0;
+                        Get.toNamed(Routes.HOME_SCREEN);
+                      });
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -299,6 +305,12 @@ class _SiteScreenState extends State<SiteScreen> {
                         Icon(
                           Icons.home,
                           color: Colors.white60,
+                        ),
+                        Text(
+                          'Home',
+                          style: TextStyle(
+                            color: Colors.white60,
+                          ),
                         ),
                       ],
                     ),
@@ -313,7 +325,13 @@ class _SiteScreenState extends State<SiteScreen> {
                 children: <Widget>[
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new CupertinoPageRoute(
+                              builder: (BuildContext context) =>
+                                  DraftLeadListScreen()));
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -321,13 +339,19 @@ class _SiteScreenState extends State<SiteScreen> {
                           Icons.drafts,
                           color: Colors.white60,
                         ),
+                        Text(
+                          'Drafts',
+                          style: TextStyle(
+                            color: Colors.white60,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  CupertinoButton(
-                    minSize: 40,
+                  MaterialButton(
+                    minWidth: 40,
                     onPressed: () {
-                      Get.toNamed(Routes.SEARCH_SITES_SCREEN);
+                      Get.toNamed(Routes.SEARCH_SCREEN);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -335,6 +359,12 @@ class _SiteScreenState extends State<SiteScreen> {
                         Icon(
                           Icons.search,
                           color: Colors.white60,
+                        ),
+                        Text(
+                          'Search',
+                          style: TextStyle(
+                            color: Colors.white60,
+                          ), //
                         ),
                       ],
                     ),
