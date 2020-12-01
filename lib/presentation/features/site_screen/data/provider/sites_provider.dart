@@ -6,6 +6,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
@@ -170,6 +171,8 @@ class MyApiClientSites {
         ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse
             .fromJson(data);
 
+        // print(response.);
+
         if (viewSiteDataResponse.respCode == "ST2010") {
           return viewSiteDataResponse;
         } else if (viewSiteDataResponse.respCode == "ST2011") {
@@ -235,9 +238,24 @@ class MyApiClientSites {
             .then((result) async {
           http.Response.fromStream(result).then((response) {
             print(response.statusCode);
+            print(response.body);
 
             var data = json.decode(response.body);
-            print(data);
+        //    print(data);
+
+      //      print(response.body)  ;
+            UpdateLeadResponseModel updateLeadResponseModel =
+            UpdateLeadResponseModel.fromJson(data);
+          //  print(response.body);
+            if (updateLeadResponseModel.respCode == "ST2033") {
+              Get.back();
+              Get.dialog(
+                  CustomDialogs().showDialog(updateLeadResponseModel.respMsg));
+
+            } else  {
+              Get.dialog(
+                  CustomDialogs().showDialog(updateLeadResponseModel.respMsg));
+            }
 
           });
         })

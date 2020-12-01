@@ -668,7 +668,7 @@ class SiteCommentsEntity {
   String siteCommentText;
   String creatorName;
   String createdBy;
-  String createdOn;
+  int createdOn;
 
   SiteCommentsEntity(
       {this.id,
@@ -676,7 +676,8 @@ class SiteCommentsEntity {
         this.siteCommentText,
         this.creatorName,
         this.createdBy,
-        this.createdOn});
+        this.createdOn
+      });
 
   SiteCommentsEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
