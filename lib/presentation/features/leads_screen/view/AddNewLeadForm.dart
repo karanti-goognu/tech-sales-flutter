@@ -269,7 +269,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 children: <Widget>[
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new CupertinoPageRoute(
+                              builder: (BuildContext context) =>
+                                  DraftLeadListScreen()));
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -288,7 +294,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   ),
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(Routes.SEARCH_SCREEN);
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
