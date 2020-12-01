@@ -8,7 +8,7 @@ class CommentsDetail {
 
   String createdBy;
   String commentText;
-  DateTime commentedAt;
+  String commentedAt;
   String creatorName;
 
   Map<String, dynamic> toJson() {

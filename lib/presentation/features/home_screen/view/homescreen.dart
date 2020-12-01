@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     new menuDetailsModel("Influencers", "assets/images/img4.png"),
     new menuDetailsModel("My Team", "assets/images/img1.png"),
     new menuDetailsModel("My Plan", "assets/images/img1.png"),
-    new menuDetailsModel("Service ", "assets/images/img1.png")
+    new menuDetailsModel("Service", "assets/images/img1.png")
   ];
 
   String employeeName = "empty";
@@ -419,6 +419,24 @@ class _HomeScreenState extends State<HomeScreen> {
               if (list[index].value == "Sites") {
                 Get.toNamed(Routes.SITES_SCREEN);
               }
+              if (list[index].value == "Influencers") {
+                Get.dialog(
+                    CustomDialogs().errorDialog(list[index].value + " Page Coming Soon .... "));
+              }
+              if (list[index].value == "My Team") {
+                Get.dialog(
+                    CustomDialogs().errorDialog(list[index].value + " Page Coming Soon .... "));
+              }
+              if (list[index].value == "My Plan") {
+                Get.dialog(
+                    CustomDialogs().errorDialog(list[index].value + " Page Coming Soon .... "));
+              }
+              if (list[index].value == "Service") {
+                print("here");
+                Get.dialog(
+                    CustomDialogs().errorDialog(list[index].value + " Page Coming Soon .... "));
+              }
+
             },
             child: Card(
               clipBehavior: Clip.antiAlias,

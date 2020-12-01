@@ -33,12 +33,18 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
     db.fetchAll().then((value) {
       for (int i = 0; i < value.length; i++) {
         setState(() {
+          print(value[i].leadModel);
           draftList.add(
+
               SaveLeadRequestModel.fromJson(json.decode(value[i].leadModel)));
         });
+
+
       }
+
     });
     //await db.removeLeadInDraft(2);
+
   }
 
   @override
@@ -73,46 +79,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                           color: Colors.white,
                           fontFamily: "Muli"),
                     ),
-                    // FlatButton(
-                    //   onPressed: () {},
-                    //   shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(18.0),
-                    //       side: BorderSide(color: Colors.white)),
-                    //   color: Colors.transparent,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.only(bottom: 5),
-                    //     child: Row(
-                    //       children: [
-                    //         //  Icon(Icons.exposure_zero_outlined),
-                    //         Container(
-                    //             height: 18,
-                    //             width: 18,
-                    //             // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                    //             decoration: new BoxDecoration(
-                    //               color: Colors.white,
-                    //               border:
-                    //                   Border.all(color: Colors.black, width: 0.0),
-                    //               borderRadius:
-                    //                   new BorderRadius.all(Radius.circular(3)),
-                    //             ),
-                    //             child: Center(
-                    //                 child: Text("0",
-                    //                     style: TextStyle(
-                    //                         color: Colors.black,
-                    //                         //fontFamily: 'Raleway',
-                    //                         fontSize: 12,
-                    //                         fontWeight: FontWeight.normal)))),
-                    //         Padding(
-                    //           padding: const EdgeInsets.only(left: 8.0),
-                    //           child: Text(
-                    //             'FILTER',
-                    //             style: TextStyle(color: Colors.white, fontSize: 18),
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // )
+
                   ],
                 ),
               ],
@@ -295,6 +262,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
             padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
             // itemExtent: 125.0,
             itemBuilder: (context, index) {
+
               return GestureDetector(
                 onTap: () {
                   gv.draftID = index + 1;
