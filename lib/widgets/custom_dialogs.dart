@@ -87,7 +87,7 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-           SystemNavigator.pop();
+            SystemNavigator.pop();
           },
         ),
       ],
@@ -95,7 +95,6 @@ class CustomDialogs {
   }
 
   Widget showDialog(String message) {
-
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -123,8 +122,8 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-           Get.back();
-           Get.back();
+            Get.back();
+            Get.back();
           },
         ),
       ],
@@ -195,7 +194,7 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-             Get.back();
+            Get.back();
             Get.toNamed(Routes.VIEW_OLD_LEAD_SCREEN);
             // Navigator.push(
             //     context,
@@ -210,11 +209,10 @@ class CustomDialogs {
   Widget showUpdatedLeadDialog(String s, BuildContext context) {
     Get.back();
     Get.toNamed(Routes.VIEW_OLD_LEAD_SCREEN);
-
   }
 
-
-  Widget showRejectionConfirmationDialog(String message, BuildContext context, ViewLeadDataResponse viewLeadDataResponse) {
+  Widget showRejectionConfirmationDialog(String message, BuildContext context,
+      ViewLeadDataResponse viewLeadDataResponse) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -232,7 +230,6 @@ class CustomDialogs {
         ),
       ),
       actions: <Widget>[
-
         TextButton(
           child: Text(
             'Yes',
@@ -240,15 +237,16 @@ class CustomDialogs {
                 fontSize: 17,
                 letterSpacing: 1.25,
                 fontStyle: FontStyle.normal,
-               // fontWeight: FontWeight.bold,
+                // fontWeight: FontWeight.bold,
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
             Get.back();
             Navigator.push(
-                        context,
-                        new CupertinoPageRoute(
-                            builder: (BuildContext context) => RejectionLeadScreen(viewLeadDataResponse)));
+                context,
+                new CupertinoPageRoute(
+                    builder: (BuildContext context) =>
+                        RejectionLeadScreen(viewLeadDataResponse)));
           },
         ),
         TextButton(
@@ -262,7 +260,7 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-Get.back();
+            Get.back();
           },
         ),
       ],

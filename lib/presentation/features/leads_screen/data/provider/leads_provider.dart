@@ -424,10 +424,13 @@ class MyApiClientLeads {
                     UpdateLeadResponseModel.fromJson(data);
 
                 if (updateLeadResponseModel.respCode == "LD2009") {
-                  Get.back();
+                  //Get.back();
                   gv.selectedLeadID = updateLeadResponseModel.leadId;
+                /*  Get.dialog(CustomDialogs()
+                      .showDialog(updateLeadResponseModel.respMsg));*/
+                  Get.offNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs()
-                      .showDialog(updateLeadResponseModel.respMsg));
+                      .showDialogSubmitLead(updateLeadResponseModel.respMsg));
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
                   Get.back();
                   Get.dialog(CustomDialogs()

@@ -1,4 +1,3 @@
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
@@ -24,12 +23,14 @@ class LeadsFilterController extends GetxController {
   }
 
   @override
-  void onReady() { // called after the widget is rendered on screen
+  void onReady() {
+    // called after the widget is rendered on screen
     super.onReady();
   }
 
   @override
-  void onClose() { // called just before the Controller is deleted from memory
+  void onClose() {
+    // called just before the Controller is deleted from memory
     super.onClose();
   }
 
