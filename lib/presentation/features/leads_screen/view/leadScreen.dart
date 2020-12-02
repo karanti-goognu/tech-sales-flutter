@@ -22,6 +22,9 @@ class LeadScreen extends StatefulWidget {
   _LeadScreenState createState() => _LeadScreenState();
 }
 
+final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+PersistentBottomSheetController controller;
+
 class _LeadScreenState extends State<LeadScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
   // Instantiate your class using Get.put() to make it available for all "child" routes there.
@@ -34,6 +37,8 @@ class _LeadScreenState extends State<LeadScreen> {
   int selectedPosition = 0;
 
   int currentTab = 0;
+
+  var bottomSheetController;
 
   @override
   void initState() {
@@ -72,6 +77,7 @@ class _LeadScreenState extends State<LeadScreen> {
         },
         child: Scaffold(
           extendBody: true,
+          key: _scaffoldKey,
           backgroundColor: ColorConstants.backgroundColorGrey,
           appBar: AppBar(
             // titleSpacing: 50,
@@ -226,29 +232,30 @@ class _LeadScreenState extends State<LeadScreen> {
                         SizedBox(
                           width: 8,
                         ),
-                        Obx(() => (_leadsFilterController.selectedLeadPotential ==
-                            StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                          label: Row(
-                            children: [
-                              Icon(
-                                Icons.check,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                  "${_leadsFilterController.selectedLeadPotential}")
-                            ],
-                          ),
-                          backgroundColor: Colors.transparent,
-                          shape: StadiumBorder(side: BorderSide()),
-                          onSelected: (bool value) {
-                            print("selected");
-                          },
-                        )),
+                        Obx(() =>
+                            (_leadsFilterController.selectedLeadPotential ==
+                                    StringConstants.empty)
+                                ? Container()
+                                : FilterChip(
+                                    label: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check,
+                                          color: Colors.black,
+                                        ),
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                            "${_leadsFilterController.selectedLeadPotential}")
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.transparent,
+                                    shape: StadiumBorder(side: BorderSide()),
+                                    onSelected: (bool value) {
+                                      print("selected");
+                                    },
+                                  )),
                         SizedBox(
                           width: 8,
                         ),
@@ -598,7 +605,13 @@ class _LeadScreenState extends State<LeadScreen> {
                                                   .leadStageId ==
                                               1)
                                           ? HexColor("#F9A61A")
-                                          : HexColor("#007CBF"),
+                                          : (_leadsFilterController
+                                                      .leadsListResponse
+                                                      .leadsEntity[index]
+                                                      .leadStageId ==
+                                                  2)
+                                              ? HexColor("#007CBF")
+                                              : HexColor("#39B54A"),
                                       width: 6,
                                     )),
                                   ),
@@ -779,39 +792,6 @@ class _LeadScreenState extends State<LeadScreen> {
                                                     ],
                                                   ),
                                                 ),
-                                                // !list[index].verifiedStatus
-                                                //     ? Chip(
-                                                //         // shape: StadiumBorder(side: BorderSide(
-                                                //         //     color: HexColor("#6200EE")
-                                                //         // )),
-                                                //         backgroundColor: HexColor("#F9A61A"),
-                                                //         label: Text(
-                                                //           "NON VERIFIED",
-                                                //           style: TextStyle(
-                                                //               color: Colors.white,
-                                                //               fontSize: 14,
-                                                //               fontFamily: "Muli",
-                                                //               fontWeight: FontWeight.bold
-                                                //               //fontWeight: FontWeight.normal
-                                                //               ),
-                                                //         ),
-                                                //       )
-                                                //     : Chip(
-                                                //         // shape: StadiumBorder(side: BorderSide(
-                                                //         //     color: HexColor("#6200EE")
-                                                //         // )),
-                                                //         backgroundColor: HexColor("#00ADEE"),
-                                                //         label: Text(
-                                                //           "TELE VERIFIED",
-                                                //           style: TextStyle(
-                                                //               color: Colors.white,
-                                                //               fontSize: 14,
-                                                //               fontFamily: "Muli",
-                                                //               fontWeight: FontWeight.bold
-                                                //               //fontWeight: FontWeight.normal
-                                                //               ),
-                                                //         ),
-                                                //       ),
                                                 SizedBox(
                                                   height: 30,
                                                 ),
@@ -880,13 +860,26 @@ class _LeadScreenState extends State<LeadScreen> {
   }
 
   void _settingModalBottomSheet(context) {
-    showModalBottomSheet(
+    _scaffoldKey.currentState
+        .showBottomSheet<Null>((BuildContext context) {
+          /*return  showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
         isScrollControlled: true,
-        builder: (BuildContext bc) {
+        builder: (BuildContext bc) {*/
           return FilterWidget();
-        });
+        })
+        .closed
+        .then((value) => () {
+              print('Closed');
+            });
+  }
+
+  void _closeModalBottomSheet() {
+    if (controller != null) {
+      controller.close();
+      controller = null;
+    }
   }
 
   BoxDecoration myBoxDecoration() {

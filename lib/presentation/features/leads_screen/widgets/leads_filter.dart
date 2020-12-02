@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -160,16 +158,24 @@ class _FilterWidgetState extends State<FilterWidget> {
                     setState(() {
                       _leadsFilterController.selectedLeadStage =
                           StringConstants.empty;
+                      _leadsFilterController.selectedLeadStageValue =
+                          StringConstants.empty;
                       _leadsFilterController.selectedLeadStatus =
                           StringConstants.empty;
-                      _leadsFilterController.assignToDate = StringConstants.empty;
+                      _leadsFilterController.selectedLeadStatusValue =
+                          StringConstants.empty;
+                      _leadsFilterController.assignToDate =
+                          StringConstants.empty;
                       _leadsFilterController.assignFromDate =
                           StringConstants.empty;
                       _leadsFilterController.selectedLeadPotential =
                           StringConstants.empty;
+                      _leadsFilterController.selectedLeadPotentialValue =
+                          StringConstants.empty;
                       _leadsFilterController.selectedFilterCount = 0;
-                      Get.back();
-                      Get.offNamed(Routes.LEADS_SCREEN);
+                      Navigator.pop(context);
+                      _leadsFilterController
+                          .getAccessKey(RequestIds.GET_LEADS_LIST);
                     });
                   },
                   child: Text(
@@ -373,6 +379,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 }
                 _leadsFilterController.selectedLeadStage = value;
                 _leadsFilterController.selectedLeadStageValue = leadStageValue;
+                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
@@ -420,6 +427,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.selectedLeadStatus = value;
                 _leadsFilterController.selectedLeadStatusValue =
                     leadStatusValue;
+                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
@@ -443,7 +451,8 @@ class _FilterWidgetState extends State<FilterWidget> {
             }));
   }
 
-  Widget leadPotentialListTile(String potentialValue, String leadPotentialValue) {
+  Widget leadPotentialListTile(
+      String potentialValue, String leadPotentialValue) {
     return Container(
       height: 40,
       child: ListTile(
@@ -451,7 +460,8 @@ class _FilterWidgetState extends State<FilterWidget> {
           leading: Obx(
             () => Radio(
               value: potentialValue,
-              groupValue: _leadsFilterController.selectedLeadPotential as String,
+              groupValue:
+                  _leadsFilterController.selectedLeadPotential as String,
               onChanged: (String value) {
                 if (_leadsFilterController.selectedLeadPotential ==
                     StringConstants.empty) {
@@ -459,7 +469,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                       _leadsFilterController.selectedFilterCount + 1;
                 }
                 _leadsFilterController.selectedLeadPotential = value;
-                _leadsFilterController.selectedLeadPotentialValue = leadPotentialValue;
+                _leadsFilterController.selectedLeadPotentialValue =
+                    leadPotentialValue;
+                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
