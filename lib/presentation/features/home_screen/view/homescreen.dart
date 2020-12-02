@@ -2,18 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
-import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -24,13 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
 
-  List<menuDetailsModel> list = [
-    new menuDetailsModel("Leads", "assets/images/img2.png"),
-    new menuDetailsModel("Sites", "assets/images/img3.png"),
-    new menuDetailsModel("Influencers", "assets/images/img4.png"),
-    new menuDetailsModel("My Team", "assets/images/img1.png"),
-    new menuDetailsModel("My Plan", "assets/images/img1.png"),
-    new menuDetailsModel("Service", "assets/images/img1.png")
+  List<MenuDetailsModel> list = [
+    new MenuDetailsModel("Leads", "assets/images/img2.png"),
+    new MenuDetailsModel("Sites", "assets/images/img3.png"),
+    new MenuDetailsModel("Influencers", "assets/images/img4.png"),
+    new MenuDetailsModel("My Team", "assets/images/img1.png"),
+    new MenuDetailsModel("My Plan", "assets/images/img1.png"),
+    new MenuDetailsModel("Service", "assets/images/img1.png")
   ];
 
   String employeeName = "empty";
@@ -104,8 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Get.dialog(
-                              CustomDialogs().errorDialog("Page Coming Soon .... "));
+                          Get.dialog(CustomDialogs()
+                              .errorDialog("Page Coming Soon .... "));
                         },
                         child: Container(
                           height: 50,
@@ -308,15 +308,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget checkInSliderButton() {
     return SliderButton(
-      action: () {
-        /*setState(() {
-          _status = StringConstants.checkOut;
-          _prefs.then((SharedPreferences prefs) {
-            prefs.setString(
-                StringConstants.checkInStatus, StringConstants.checkOut);
-          });
-        });*/
-        _homeController.getAccessKey(RequestIds.CHECK_IN);
+      action: () async {
+        if (await Permission.location.request().isGranted) {
+          _homeController.getAccessKey(RequestIds.CHECK_IN);
+        } else {
+          print('permission denied');
+        }
       },
 
       ///Put label over here
@@ -350,8 +347,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget checkOutSliderButton() {
     return SliderButton(
-      action: () {
-        _homeController.getAccessKey(RequestIds.CHECK_OUT);
+      action: () async {
+        if (await Permission.location.request().isGranted) {
+          // Either the permission was already granted before or the user just granted it.
+          _homeController.getAccessKey(RequestIds.CHECK_OUT);
+        } else {
+          print('permission not granted');
+        }
 
         ///Do something here OnSlide
       },
@@ -421,23 +423,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 Get.toNamed(Routes.SITES_SCREEN);
               }
               if (list[index].value == "Influencers") {
-                Get.dialog(
-                    CustomDialogs().errorDialog(list[index].value + " Page Coming Soon .... "));
+                Get.dialog(CustomDialogs().errorDialog(
+                    list[index].value + " Page Coming Soon .... "));
               }
               if (list[index].value == "My Team") {
-                Get.dialog(
-                    CustomDialogs().errorDialog(list[index].value + " Page Coming Soon .... "));
+                Get.dialog(CustomDialogs().errorDialog(
+                    list[index].value + " Page Coming Soon .... "));
               }
               if (list[index].value == "My Plan") {
-                Get.dialog(
-                    CustomDialogs().errorDialog(list[index].value + " Page Coming Soon .... "));
+                Get.dialog(CustomDialogs().errorDialog(
+                    list[index].value + " Page Coming Soon .... "));
               }
               if (list[index].value == "Service") {
                 print("here");
-                Get.dialog(
-                    CustomDialogs().errorDialog(list[index].value + " Page Coming Soon .... "));
+                Get.dialog(CustomDialogs().errorDialog(
+                    list[index].value + " Page Coming Soon .... "));
               }
-
             },
             child: Card(
               clipBehavior: Clip.antiAlias,
@@ -498,9 +499,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class menuDetailsModel {
+class MenuDetailsModel {
   String value;
   String imgURL;
 
-  menuDetailsModel(this.value, this.imgURL);
+  MenuDetailsModel(this.value, this.imgURL);
 }

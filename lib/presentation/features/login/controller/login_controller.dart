@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryO
 import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -134,9 +132,12 @@ class LoginController extends GetxController {
         print('Retry Otp Response is :: ${jsonEncode(this.retryOtpResponse)}');
         if (retryOtpResponse.respCode == "DM1015") {
           this.retryOtpActive = false;
+        } else if (retryOtpResponse.respCode == "DM1016") {
+          Get.dialog(CustomDialogs()
+              .redirectToLoginDialog('${retryOtpResponse.respMsg}'));
         } else {
-          Get.dialog(CustomDialogs().errorDialog(
-              '${retryOtpResponse.respCode} ${retryOtpResponse.respMsg}'));
+          Get.dialog(
+              CustomDialogs().errorDialog('${retryOtpResponse.respMsg}'));
         }
       }
     });
@@ -165,7 +166,6 @@ class LoginController extends GetxController {
                 this.validateOtpResponse.employeeDetails.employeeName);
             prefs.setString(StringConstants.employeeId,
                 this.validateOtpResponse.employeeDetails.referenceId);
-
             prefs.setString(StringConstants.mobileNumber,
                 this.validateOtpResponse.employeeDetails.mobileNumber);
           });
