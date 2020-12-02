@@ -12,8 +12,8 @@ abstract class UrlConstants {
   //Release
  /* static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
 
-  static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';*/
-
+  static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
+*/
   //Development
   static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
 

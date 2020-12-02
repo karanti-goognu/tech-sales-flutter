@@ -156,7 +156,7 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                           fontSize: 18,
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.text,
                       maxLines: 4,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -225,8 +225,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                           name = prefs.getString(
                               StringConstants.employeeName) ??
                               "empty";
-
-
 
                           var updateRequestModel = {
                             'leadId': viewLeadDataResponse
