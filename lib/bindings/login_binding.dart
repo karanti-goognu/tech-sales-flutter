@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 class LoginBinding implements Bindings {
   @override
   void dependencies() {
+
     Get.lazyPut<LoginController>(() {
       return LoginController(
           repository:
