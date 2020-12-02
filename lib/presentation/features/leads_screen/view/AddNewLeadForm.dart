@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/DraftLeadModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:intl/intl.dart';
@@ -85,9 +86,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   }
 
   List<Item> _data = generateItems(1);
-  List<InfluencerDetail> _listInfluencerDetail = [
-    new InfluencerDetail(isExpanded: true)
-  ];
+  List<InfluencerDetail> _listInfluencerDetail = new List();
+
+
   Position _currentPosition = new Position();
   String _currentAddress;
 
@@ -101,8 +102,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   List<InfluencerCategoryEntity> influencerCategoryEntity;
 
   AddLeadsController _addLeadsController;
-  SaveLeadRequestModel saveLeadRequestModelFromDraft =
-      new SaveLeadRequestModel();
+  SaveLeadRequestDraftModel saveLeadRequestModelFromDraft =
+      new SaveLeadRequestDraftModel();
 
   @override
   void initState() {
@@ -121,7 +122,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         _contactName = saveLeadRequestModelFromDraft.contactName;
         geoTagType = saveLeadRequestModelFromDraft.geotagType;
         _contactNumber = saveLeadRequestModelFromDraft.contactNumber;
-        if (saveLeadRequestModelFromDraft.leadLatitude != "null") {
+        if (saveLeadRequestModelFromDraft.leadLatitude != "null" && saveLeadRequestModelFromDraft.leadLatitude != null) {
           _currentPosition = new Position(
               latitude:
                   double.parse(saveLeadRequestModelFromDraft.leadLatitude),
@@ -136,16 +137,51 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         _totalMT.text = saveLeadRequestModelFromDraft.leadSalesPotentialMt;
         _totalBags.text = saveLeadRequestModelFromDraft.leadBags;
         _rera.text = saveLeadRequestModelFromDraft.leadReraNumber;
-        _totalBags.text =
-            (double.parse(_totalMT.text) * 20).round().toString();
-        // listLeadImage = saveLeadRequestModelFromDraft.listLeadImage;
-        print(saveLeadRequestModelFromDraft.influencerList[0].inflName);
-        _listInfluencerDetail = saveLeadRequestModelFromDraft.influencerList;
-        // _commentsListNew = saveLeadRequestModelFromDraft.comments;
+        if(_totalMT.text != null && _totalMT.text != "null" && _totalMT.text != ""){
+          _totalBags.text =
+              (double.parse(_totalMT.text) * 20).round().toString();
+        }
 
-        saveLeadRequestModelFromDraft = new SaveLeadRequestModel();
-        gv.saveLeadRequestModel = new SaveLeadRequestModel();
-         _listInfluencerDetail.add( new InfluencerDetail(isExpanded: true));
+        // listLeadImage = saveLeadRequestModelFromDraft.listLeadImage;
+        print(saveLeadRequestModelFromDraft.influencerList.length);
+        if(saveLeadRequestModelFromDraft.influencerList.length != 0){
+          print(saveLeadRequestModelFromDraft.influencerList[0].inflName);
+          for(int i = 0 ; i < saveLeadRequestModelFromDraft.influencerList.length ; i ++){
+            _listInfluencerDetail.add(new InfluencerDetail(
+              id : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].id),
+                inflName : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflName),
+                inflContact : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflContact),
+                inflTypeId : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflTypeId),
+                inflTypeValue : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflTypeValue),
+                inflCatId : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflCatId),
+                inflCatValue : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflCatValue),
+                ilpIntrested : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].ilpIntrested),
+              isExpanded: saveLeadRequestModelFromDraft.influencerList[i].isExpanded
+
+            ));
+          }
+        }
+
+        if(saveLeadRequestModelFromDraft.listLeadImage.length != null){
+          for(int i = 0 ; i < saveLeadRequestModelFromDraft.listLeadImage.length ; i++){
+            _imageList.add(new File(saveLeadRequestModelFromDraft.listLeadImage[i].photoPath));
+            listLeadImage.add(new ListLeadImage(
+              photoName: basename(saveLeadRequestModelFromDraft.listLeadImage[i].photoPath)
+            ));
+          }
+        }
+
+
+        // _commentsListNew = saveLeadRequestModelFromDraft.comments;
+        if(saveLeadRequestModelFromDraft.comments.length != 0){
+          _comments.text = saveLeadRequestModelFromDraft.comments[0].commentText;
+
+        }
+
+        //print (saveLeadRequestModelFromDraft.comments[0].commentText);
+        saveLeadRequestModelFromDraft = new SaveLeadRequestDraftModel();
+        gv.saveLeadRequestModel = new SaveLeadRequestDraftModel();
+
 
 
       }
@@ -167,6 +203,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           //  print(influencerCategoryEntity[0].inflCatDesc);
         });
       });
+      if(_listInfluencerDetail.length == 0){
+        _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true));
+      }
 
       Get.back();
     });
@@ -2270,14 +2309,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           setState(() {
                             viewMoreActive = !viewMoreActive;
                           });
-                          //     InfluencerDetail infl = new InfluencerDetail();
-                          //
-                          //     Item item = new Item(
-                          //         headerValue: "agx ", expandedValue: "dnxcx");
-                          //     setState(() {
-                          //       _data.add(item);
-                          //       _list.add(infl);
-                          //     });
+
                         },
                       ),
                     ),
@@ -2364,11 +2396,37 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           _listInfluencerDetail.length - 1);
                                     }
                                   }
+
+                                  List<InfluencerDetailDraft> influencerDetailDraft = new List();
+                                  for(int i = 0 ; i < _listInfluencerDetail.length ;i++){
+                                    influencerDetailDraft.add(new InfluencerDetailDraft(
+                                      id: _listInfluencerDetail[i].id.text,
+                                      inflName:  _listInfluencerDetail[i].inflName.text,
+                                       inflContact: _listInfluencerDetail[i].inflContact.text,
+                                       inflTypeId : _listInfluencerDetail[i].inflTypeId.text,
+                                      inflTypeValue: _listInfluencerDetail[i].inflTypeValue.text,
+                                      inflCatId : _listInfluencerDetail[i].inflCatId.text,
+                                      inflCatValue:_listInfluencerDetail[i].inflCatValue.text,
+                                         ilpIntrested : _listInfluencerDetail[i].ilpIntrested.text,
+                                    isExpanded : _listInfluencerDetail[i].isExpanded,
+
+                                    ));
+                                  }
+
+                                  List<ListLeadImageDraft> listLeadImageDraft = new List();
+
+                                  for(int i = 0 ;i< _imageList.length ; i++){
+                                    listLeadImageDraft.add( new ListLeadImageDraft(
+                                      photoPath: _imageList[i].path
+                                    )
+                                    );
+                                  }
+
                                   final DateFormat formatter =
                                       DateFormat("dd-MM-yyyy");
 
-                                  SaveLeadRequestModel saveLeadRequestModel =
-                                      new SaveLeadRequestModel(
+                                  SaveLeadRequestDraftModel saveLeadRequestDraftModel =
+                                      new SaveLeadRequestDraftModel(
                                           siteSubTypeId: "2",
                                           contactName: _contactName,
                                           contactNumber: _contactNumber,
@@ -2389,30 +2447,31 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           leadBags: _totalBags.text,
                                           leadReraNumber: _rera.text,
                                           isStatus: "false",
-                                          // listLeadImage: new List(),
-                                          // influencerList: new List(),
-                                          // comments: new List(),
-                                          listLeadImage: listLeadImage,
-                                          influencerList: _listInfluencerDetail,
-                                          comments: _commentsListNew,
+                                         // listLeadImage: new List(),
+                                        //  influencerList: new List(),
+                                         // comments: new List(),
+                                           listLeadImage: listLeadImageDraft,
+                                           influencerList: influencerDetailDraft,
+                                           comments: _commentsListNew,
                                           assignDate:
                                               formatter.format(DateTime.now()));
 
 //
 //                                   SaveLeadRequestModel saveLeadRequestModel1 = json.decode(draftLeadModelforDB.leadModel);
 
-                                  print(json.encode(saveLeadRequestModel));
+                                  print(saveLeadRequestDraftModel.toJson());
+                                  print(gv.fromLead);
                                   if (!gv.fromLead) {
                                     DraftLeadModelforDB draftLeadModelforDB =
                                         new DraftLeadModelforDB(null,
-                                            json.encode(saveLeadRequestModel));
+                                            json.encode(saveLeadRequestDraftModel));
                                     print(draftLeadModelforDB.leadModel);
                                     await db
                                         .addLeadInDraft(draftLeadModelforDB);
                                   } else {
                                     DraftLeadModelforDB draftLeadModelforDB =
                                         new DraftLeadModelforDB(gv.draftID,
-                                            json.encode(saveLeadRequestModel));
+                                            json.encode(saveLeadRequestDraftModel));
                                     print(draftLeadModelforDB.leadModel);
                                     await db
                                         .updateLeadInDraft(draftLeadModelforDB);
@@ -2420,7 +2479,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                                   gv.fromLead = false;
                                   gv.saveLeadRequestModel =
-                                      new SaveLeadRequestModel();
+                                      new SaveLeadRequestDraftModel();
                                   Navigator.pushReplacement(
                                       context,
                                       new CupertinoPageRoute(

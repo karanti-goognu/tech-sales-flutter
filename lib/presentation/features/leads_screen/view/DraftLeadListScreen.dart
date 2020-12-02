@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/DraftLeadModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -18,7 +19,7 @@ class DraftLeadListScreen extends StatefulWidget {
 
 class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   final db = DraftLeadDBHelper();
-  List<SaveLeadRequestModel> draftList = new List();
+  List<SaveLeadRequestDraftModel> draftList = new List();
 
   @override
   void initState() {
@@ -36,7 +37,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
           print(value[i].leadModel);
           draftList.add(
 
-              SaveLeadRequestModel.fromJson(json.decode(value[i].leadModel)));
+              SaveLeadRequestDraftModel.fromJson(json.decode(value[i].leadModel)));
         });
 
 
@@ -97,6 +98,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                   color: Colors.black,
                 ),
                 onPressed: () {
+                  gv.fromLead = false;
                   Get.toNamed(Routes.ADD_LEADS_SCREEN);
                   /*Navigator.push(
                   context,
@@ -355,7 +357,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
     );
   }
 
-  String countTotalPotential(List<SaveLeadRequestModel> draftList) {
+  String countTotalPotential(List<SaveLeadRequestDraftModel> draftList) {
     double sum = 0;
 
     for (int i = 0; i < draftList.length; i++) {

@@ -32,14 +32,6 @@ class DraftLeadDBHelper extends ChangeNotifier{
     var databasesPath = await getDatabasesPath();
     String dbPath = join(databasesPath, 'database.db');
 
-  //   var database = openDatabase(dbPath, version: 1,
-  //       onCreate: (Database db, int version) async {
-  //     await db.execute('''
-  //   CREATE TABLE draftLead(
-  //     id INTEGER PRIMARY KEY AUTOINCREMENT,
-  //     leadModel TEXT,)
-  // ''');
-  //   });
 
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
@@ -50,21 +42,8 @@ class DraftLeadDBHelper extends ChangeNotifier{
     return database;
   }
 
-  // Future<void> _onCreate(Database db, int version) async {
-  //   await db.execute('''
-  //   CREATE TABLE draftLead(
-  //     id INTEGER PRIMARY KEY AUTOINCREMENT,
-  //     leadModel TEXT,)
-  // ''');
-  //   print("Database was created!");
-  // }
-
-  // void _onUpgrade(Database db, int oldVersion, int newVersion) {
-  //   // Run migration according database versions
-  // }
 
   Future<int> addLeadInDraft(DraftLeadModelforDB draftLeadModelforDB) async {
-    print("dsadada");
     var client = await db;
     return client.insert('draftLead', draftLeadModelforDB.toMapForDb(),
        conflictAlgorithm: ConflictAlgorithm.replace);
@@ -104,22 +83,6 @@ class DraftLeadDBHelper extends ChangeNotifier{
     }
     return [];
   }
-
-  // Stream<List<DraftLeadModelforDB>> get fetchAllList   {
-  //   var res = getTable();
-  //     print("sadad");
-  //     print(res.toString());
-  //     var draftLeads = res.map((leadMap) => DraftLeadModelforDB.fromDb(leadMap)).toList();
-  //     // return draftLeads;
-  //
-  // }
-  //
-  // getTable() async{
-  //   print("sadadsadd");
-  //   var client =  await db;
-  //   var res =  await client.query('draftLead');
-  //   return res;
-  // }
 
 
 }
