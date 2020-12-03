@@ -5,6 +5,7 @@ import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
@@ -34,7 +35,7 @@ import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 class MyApiClientLeads {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-
+  final db = DraftLeadDBHelper();
   MyApiClientLeads({@required this.httpClient});
 
   getAccessKey() async {
@@ -288,27 +289,42 @@ class MyApiClientLeads {
         request
             .send()
             .then((result) async {
-              http.Response.fromStream(result).then((response) {
+              http.Response.fromStream(result).then((response) async {
                 var data = json.decode(response.body);
                 SaveLeadResponse saveLeadResponse =
                     SaveLeadResponse.fromJson(data);
 
                 print(response.body);
+
                 if (saveLeadResponse.respCode == "LD2008") {
                   Get.back();
                   gv.selectedLeadID = saveLeadResponse.leadId;
+                  gv.fromLead = false;
                   Get.dialog(CustomDialogs().showExistingLeadDialog(
                       "We have an existing lead with this contact number. Do you want to",
                       context));
                 } else if (saveLeadResponse.respCode == "LD2007") {
-                  Get.offNamed(Routes.LEADS_SCREEN);
+                  // if (gv.fromLead) {
+                  //   await db.removeLeadInDraft(gv.draftID);
+                  //   gv.fromLead = false;
+                  // }
+                  gv.fromLead = false;
+                //  Get.toNamed(Routes.LEADS_SCREEN);
+                  Get.back();
+                  Get.back();
+                  Get.back();
+                 Get.toNamed(Routes.LEADS_SCREEN);
+
+
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead("Lead Added Successfully !!!"));
                 } else {
+                  gv.fromLead = false;
                   Get.back();
                   Get.dialog(
                       CustomDialogs().showDialog("Some Error Occured !!! "));
                 }
+
 
                 //   if (response.statusCode == 200)
                 //   {
@@ -370,13 +386,12 @@ class MyApiClientLeads {
     }
   }
 
-
-
-  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel, List<File> imageList, BuildContext context, int leadId) async {
-
-    http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateLeadsData));
-    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
-
+  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
+      List<File> imageList, BuildContext context, int leadId) async {
+    http.MultipartRequest request = new http.MultipartRequest(
+        'POST', Uri.parse(UrlConstants.updateLeadsData));
+    request.headers.addAll(
+        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
 
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
@@ -426,8 +441,12 @@ class MyApiClientLeads {
                 if (updateLeadResponseModel.respCode == "LD2009") {
                   //Get.back();
                   gv.selectedLeadID = updateLeadResponseModel.leadId;
-                /*  Get.dialog(CustomDialogs()
+                  /*  Get.dialog(CustomDialogs()
                       .showDialog(updateLeadResponseModel.respMsg));*/
+                 // Get.back();
+                //  Get.back();
+                  Get.back();
+                 // Get.back();
                   Get.offNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead(updateLeadResponseModel.respMsg));
@@ -449,6 +468,4 @@ class MyApiClientLeads {
       }
     });
   }
-
-
 }

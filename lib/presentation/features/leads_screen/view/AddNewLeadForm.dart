@@ -40,7 +40,7 @@ class AddNewLeadForm extends StatefulWidget {
 class _AddNewLeadFormState extends State<AddNewLeadForm> {
   final db = DraftLeadDBHelper();
 
-  final _formKey = GlobalKey<FormState>();
+  //final _formKey = GlobalKey<FormState>();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
   LocationResult _pickedLocation;
@@ -112,6 +112,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     _addLeadsController = Get.find();
 
     getInitialData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+     _addLeadsController.dispose();
+  //  _formKey.currentState.dispose();
   }
 
   getInitialData() {
@@ -378,7 +385,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       ],
                     ))),
             Form(
-              key: _formKey,
+              //key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
@@ -2339,7 +2346,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             // print(_comments.text);
 
                             if (_contactNumber != null &&
-                                _contactNumber != '') {
+                                _contactNumber != '' && _contactNumber.length == 10) {
                               print("here");
                               setState(() {
                                 String empId;
@@ -2469,10 +2476,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     await db
                                         .addLeadInDraft(draftLeadModelforDB);
                                   } else {
+                                    print(json.encode(saveLeadRequestDraftModel));
                                     DraftLeadModelforDB draftLeadModelforDB =
                                         new DraftLeadModelforDB(gv.draftID,
                                             json.encode(saveLeadRequestDraftModel));
-                                    print(draftLeadModelforDB.leadModel);
+
                                     await db
                                         .updateLeadInDraft(draftLeadModelforDB);
                                   }
@@ -2486,10 +2494,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           builder: (BuildContext context) =>
                                               DraftLeadListScreen()));
 
-                                  // draftLeadModelforDB.leadModel = saveLeadRequestModel.toJson();
-                                  // _addLeadsController.getAccessKeyAndSaveLead(
-                                  //     saveLeadRequestModel, _imageList ,context);
-                                  // _commentsListNew = new List();
+
                                 });
 
                                 //  _comments.clear();
@@ -2512,8 +2517,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                           onPressed: () async {
                             //print(_comments.text);
-                            if (_contactNumber != null &&
-                                _contactNumber != '' &&
+                            if (_contactNumber != null && _contactNumber.length == 10 &&
+                            _contactNumber != '' &&
                                 _currentPosition.latitude != null &&
                                 _currentPosition.latitude != '' &&
                                 _pincode.text != null &&
@@ -2554,7 +2559,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   );
                                   // print("DHAWAM " + _commentsListNew[0].commentText);
 
-                                  if (_listInfluencerDetail[
+                                  if (
+                                  _listInfluencerDetail.length != 0 && (_listInfluencerDetail[
                                                   _listInfluencerDetail.length -
                                                       1]
                                               .inflName ==
@@ -2568,7 +2574,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                               _listInfluencerDetail.length - 1]
                                           .inflName
                                           .text
-                                          .isNullOrBlank) {
+                                          .isNullOrBlank)) {
                                     print("here1234");
                                     _listInfluencerDetail.removeAt(
                                         _listInfluencerDetail.length - 1);
@@ -2602,9 +2608,16 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           influencerList: _listInfluencerDetail,
                                           comments: _commentsListNew);
 
-                                  _addLeadsController.getAccessKeyAndSaveLead(
-                                      saveLeadRequestModel,
-                                      _imageList,
+
+                                  if(
+                                  !gv.fromLead
+                                  ){
+                                    gv.draftID= 0;
+                                  }
+
+                                    _addLeadsController.getAccessKeyAndSaveLead(
+                                        saveLeadRequestModel,
+                                        _imageList,
                                       context);
                                   _commentsListNew = new List();
                                 });

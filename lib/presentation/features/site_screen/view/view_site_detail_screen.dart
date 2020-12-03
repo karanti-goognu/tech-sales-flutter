@@ -154,7 +154,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   @override
   void dispose() {
     _tabController.dispose();
-    myFocusNode.dispose();
+   // myFocusNode.dispose();
     super.dispose();
   }
 
@@ -558,7 +558,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                               color: ColorConstants.inputBoxHintColor,
                                                                               fontFamily: "Muli"),
                                                                           keyboardType:
-                                                                              TextInputType.phone,
+                                                                              TextInputType.text,
                                                                           maxLines:
                                                                               4,
                                                                           decoration:
@@ -850,7 +850,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                               color: ColorConstants.inputBoxHintColor,
                                                                               fontFamily: "Muli"),
                                                                           keyboardType:
-                                                                              TextInputType.phone,
+                                                                              TextInputType.text,
                                                                           maxLines:
                                                                               4,
                                                                           decoration:
@@ -2976,7 +2976,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
               child: Text(
-                "No. of Nags Supplied",
+                "No. of Bags Supplied",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -5409,7 +5409,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         Padding(
           padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
           child: Text(
-            "No. of Nags Supplied",
+            "No. of Bags Supplied",
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,

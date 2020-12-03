@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:path/path.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,8 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+
+import 'DraftLeadListScreen.dart';
 
 class ViewOldLeadScree extends StatefulWidget {
   @override
@@ -440,11 +443,7 @@ print(labelText);
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
-                      setState(() {
-                        // currentScreen =
-                        //     Dashboard(); // if user taps on this dashboard tab will be active
-                        // currentTab = 0;
-                      });
+                      Get.toNamed(Routes.HOME_SCREEN);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -472,7 +471,13 @@ print(labelText);
                 children: <Widget>[
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new CupertinoPageRoute(
+                              builder: (BuildContext context) =>
+                                  DraftLeadListScreen()));
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -491,7 +496,9 @@ print(labelText);
                   ),
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(Routes.SEARCH_SCREEN);
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

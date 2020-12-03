@@ -66,6 +66,7 @@ class _LeadScreenState extends State<LeadScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
@@ -76,6 +77,8 @@ class _LeadScreenState extends State<LeadScreen> {
           return true;
         },
         child: Scaffold(
+          resizeToAvoidBottomPadding: false,
+          //resizeToAvoidBottomInset: true,
           extendBody: true,
           key: _scaffoldKey,
           backgroundColor: ColorConstants.backgroundColorGrey,
