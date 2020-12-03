@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/RejectionLeadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewLeadScreen.dart';
@@ -9,6 +12,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+
 
 class CustomDialogs {
   Widget errorDialog(String message) {
@@ -201,7 +206,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showExistingLeadDialog(String message, BuildContext context) {
+  Widget showExistingLeadDialog(String message, BuildContext context, SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -230,6 +235,10 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
+            gv.saveLeadRequestModelNew = saveLeadRequestModel;
+            gv.imageList = imageList;
+
+
             Get.back();
             Get.toNamed(Routes.VIEW_OLD_LEAD_SCREEN);
             // Navigator.push(

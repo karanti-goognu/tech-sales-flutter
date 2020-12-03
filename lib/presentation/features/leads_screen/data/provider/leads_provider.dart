@@ -220,6 +220,8 @@ class MyApiClientLeads {
       SaveLeadRequestModel saveLeadRequestModel,
       List<File> imageList,
       BuildContext context) async {
+   // print(imageList.length);
+
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.saveLeadsData));
     request.headers.addAll(
@@ -302,7 +304,7 @@ class MyApiClientLeads {
                   gv.fromLead = false;
                   Get.dialog(CustomDialogs().showExistingLeadDialog(
                       "We have an existing lead with this contact number. Do you want to",
-                      context));
+                      context , saveLeadRequestModel , imageList));
                 } else if (saveLeadResponse.respCode == "LD2007") {
                   // if (gv.fromLead) {
                   //   await db.removeLeadInDraft(gv.draftID);
@@ -447,7 +449,7 @@ class MyApiClientLeads {
                 //  Get.back();
                   Get.back();
                  // Get.back();
-                  Get.offNamed(Routes.LEADS_SCREEN);
+                  Get.toNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead(updateLeadResponseModel.respMsg));
                 } else if (updateLeadResponseModel.respCode == "ED2011") {

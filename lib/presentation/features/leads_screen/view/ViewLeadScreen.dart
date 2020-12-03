@@ -322,7 +322,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
       //        Get.back();
       return Scaffold(
@@ -951,273 +950,62 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                     .errorDialog(
                                                                         "Please fill the details first"));
                                                           } else {
-                                                            String empId;
-                                                            String mobileNumber;
-                                                            String name;
-                                                            Future<SharedPreferences>
-                                                                _prefs =
-                                                                SharedPreferences
-                                                                    .getInstance();
-                                                            _prefs.then(
-                                                                (SharedPreferences
-                                                                    prefs) async {
-                                                              empId = prefs.getString(
-                                                                      StringConstants
-                                                                          .employeeId) ??
-                                                                  "empty";
-                                                              mobileNumber =
-                                                                  prefs.getString(
-                                                                          StringConstants
-                                                                              .mobileNumber) ??
-                                                                      "empty";
-                                                              name = prefs.getString(
-                                                                      StringConstants
-                                                                          .employeeName) ??
-                                                                  "empty";
+                                                            if (nextStageConstructionPickedDate
+                                                                    .difference(
+                                                                        DateTime
+                                                                            .now())
+                                                                    .inDays >
+                                                                31) {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                        return AlertDialog(
+                                                                          content: SingleChildScrollView(
+                                                                            child: ListBody(
+                                                                              children: <Widget>[
+                                                                                Text(
+                                                                                  "Next Construction date is more than 31 days from now, "
+                                                                                      "So status will be changed to FUTURE "
+                                                                                      "OPPORTUNITY . "
+                                                                                  ,
+                                                                                  style: GoogleFonts.roboto(
+                                                                                      fontSize: 16,
+                                                                                      height: 1.4,
+                                                                                      letterSpacing: .25,
+                                                                                      fontStyle: FontStyle.normal,
+                                                                                      color: ColorConstants.inputBoxHintColorDark),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          actions: <Widget>[
+                                                                            TextButton(
+                                                                              child: Text(
+                                                                                'OK',
+                                                                                style: GoogleFonts.roboto(
+                                                                                    fontSize: 17,
+                                                                                    letterSpacing: 1.25,
+                                                                                    fontStyle: FontStyle.normal,
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: ColorConstants.buttonNormalColor),
+                                                                              ),
+                                                                              onPressed: () {
+                                                                                updateStatusforNextStage(context , 5);
+                                                                              },
+                                                                            ),
+                                                                          ],
+                                                                        );
+                                                                  });
+                                                            }
+                                                            else{
+                                                              updateStatusforNextStage(context , 3);
+                                                            }
 
-                                                              print(_comments
-                                                                  .text);
-                                                              if (_comments
-                                                                      .text ==
-                                                                  "") {
-                                                                _comments.text =
-                                                                    "Stage Changed";
-                                                              }
 
-                                                              List<CommentsDetail>
-                                                                  commentsDetails =
-                                                                  [
-                                                                new CommentsDetail(
-                                                                    createdBy:
-                                                                        empId,
-                                                                    commentText:
-                                                                        _comments
-                                                                            .text,
-                                                                    // commentedAt: DateTime.now(),
-                                                                    creatorName:
-                                                                        name)
-                                                              ];
-
-                                                              List<
-                                                                      updateRequest
-                                                                          .ListLeadcomments>
-                                                                  commentsList =
-                                                                  new List();
-
-                                                              for (int i = 0;
-                                                                  i <
-                                                                      commentsDetails
-                                                                          .length;
-                                                                  i++) {
-                                                                commentsList.add(
-                                                                    new updateRequest
-                                                                        .ListLeadcomments(
-                                                                  leadId: widget
-                                                                      .leadId,
-                                                                  commentText:
-                                                                      commentsDetails[
-                                                                              i]
-                                                                          .commentText,
-                                                                  creatorName:
-                                                                      name,
-                                                                  createdBy:
-                                                                      empId,
-                                                                ));
-                                                              }
-
-                                                              List<
-                                                                      updateRequest
-                                                                          .ListLeadImage>
-                                                                  imageList =
-                                                                  new List();
-                                                              for (int i = 0;
-                                                                  i <
-                                                                      listLeadImage
-                                                                          .length;
-                                                                  i++) {
-                                                                imageList.add(
-                                                                    new updateRequest
-                                                                        .ListLeadImage(
-                                                                  leadId: widget
-                                                                      .leadId,
-                                                                  photoName:
-                                                                      listLeadImage[
-                                                                              i]
-                                                                          .photoName,
-                                                                  createdBy:
-                                                                      empId,
-                                                                ));
-                                                              }
-                                                              if (_listInfluencerDetail
-                                                                      .length !=
-                                                                  0) {
-                                                                if (_listInfluencerDetail[_listInfluencerDetail.length -
-                                                                                1]
-                                                                            .inflName ==
-                                                                        null ||
-                                                                    _listInfluencerDetail[_listInfluencerDetail.length -
-                                                                                1]
-                                                                            .inflName ==
-                                                                        "null" ||
-                                                                    _listInfluencerDetail[
-                                                                            _listInfluencerDetail.length -
-                                                                                1]
-                                                                        .inflName
-                                                                        .text
-                                                                        .isNullOrBlank) {
-                                                                  print(
-                                                                      "here1234");
-                                                                  _listInfluencerDetail
-                                                                      .removeAt(
-                                                                          _listInfluencerDetail.length -
-                                                                              1);
-                                                                }
-                                                              }
-                                                              List<
-                                                                      updateRequest
-                                                                          .LeadInfluencerEntity>
-                                                                  listInfluencer =
-                                                                  new List();
-
-                                                              print(
-                                                                  _listInfluencerDetail
-                                                                      .length);
-
-                                                              for (int i =
-                                                                      initialInfluencerListLength;
-                                                                  i <
-                                                                      _listInfluencerDetail
-                                                                          .length;
-                                                                  i++) {
-                                                                listInfluencer.add(new updateRequest
-                                                                        .LeadInfluencerEntity(
-                                                                    leadId: widget
-                                                                        .leadId,
-                                                                    createdBy:
-                                                                        empId,
-                                                                    inflId: int.parse(
-                                                                        _listInfluencerDetail[i]
-                                                                            .id
-                                                                            .text),
-                                                                    isDelete:
-                                                                        "N"));
-                                                              }
-
-                                                              var updateRequestModel =
-                                                                  {
-                                                                'leadId':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadId,
-                                                                'leadSegment':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadSegment,
-                                                                'assignedTo':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .assignedTo,
-                                                                'leadStatusId':
-                                                                    3,
-                                                                'leadStage':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadStageId,
-                                                                'contactName':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .contactName,
-                                                                'contactNumber':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .contactNumber,
-                                                                'geotagType':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .geotagType,
-                                                                'leadLatitude':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadLatitude,
-                                                                'leadLongitude':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadLongitude,
-                                                                'leadAddress':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadAddress,
-                                                                'leadPincode':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadPincode,
-                                                                'leadStateName':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadStateName,
-                                                                'leadDistrictName':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadDistrictName,
-                                                                'leadTalukName':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadTalukName,
-                                                                'leadSalesPotentialMt':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadSitePotentialMt,
-                                                                'leadReraNumber':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadReraNumber,
-                                                                'isStatus':
-                                                                    "false",
-                                                                'updatedBy':
-                                                                    empId,
-                                                                'leadIsDuplicate':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .leadIsDuplicate,
-                                                                'rejectionComment':
-                                                                    viewLeadDataResponse
-                                                                        .leadsEntity
-                                                                        .rejectionComment,
-                                                                'nextDateCconstruction':
-                                                                    _nextDateofConstruction
-                                                                        .text,
-                                                                'nextStageConstruction':
-                                                                    _selectedNextStageConstructionEntity
-                                                                        .nextStageConsId,
-                                                                'siteDealerId':
-                                                                    null,
-                                                                // 'listLeadcomments':
-                                                                //     new List(),
-                                                                // 'listLeadImage':
-                                                                //     new List(),
-                                                                // 'leadInfluencerEntity':
-                                                                //     new List()
-                                                                'listLeadcomments':
-                                                                    commentsList,
-                                                                'listLeadImage':
-                                                                    viewLeadDataResponse
-                                                                        .leadphotosEntity,
-                                                                'leadInfluencerEntity':
-                                                                    viewLeadDataResponse
-                                                                        .leadInfluencerEntity
-                                                              };
-
-                                                              _addLeadsController.updateLeadData(
-                                                                  updateRequestModel,
-                                                                  new List<
-                                                                      File>(),
-                                                                  context,
-                                                                  viewLeadDataResponse
-                                                                      .leadsEntity
-                                                                      .leadId);
-
-                                                              Get.back();
-                                                            });
+                                                            //});
                                                           }
                                                         },
                                                       ),
@@ -1595,238 +1383,287 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             });
                                           } else if (_selectedValuedummy.id ==
                                               5) {
-                                            String empId;
-                                            String mobileNumber;
-                                            String name;
-                                            Future<SharedPreferences> _prefs =
-                                                SharedPreferences.getInstance();
-                                            _prefs.then((SharedPreferences
-                                                prefs) async {
-                                              empId = prefs.getString(
-                                                      StringConstants
-                                                          .employeeId) ??
-                                                  "empty";
-                                              mobileNumber = prefs.getString(
-                                                      StringConstants
-                                                          .mobileNumber) ??
-                                                  "empty";
-                                              name = prefs.getString(
-                                                      StringConstants
-                                                          .employeeName) ??
-                                                  "empty";
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                5.0))),
+                                                    content: Container(
+                                                      width:
+                                                      MediaQuery.of(context)
+                                                          .size
+                                                          .width,
+                                                      child:
+                                                      SingleChildScrollView(
+                                                        child: Column(
+                                                          children: [
+                                                            DropdownButtonFormField<
+                                                                NextStageConstructionEntity>(
+                                                              value:
+                                                              _selectedNextStageConstructionEntity,
+                                                              items:
+                                                              nextStageConstructionEntity
+                                                                  .map((label) =>
+                                                                  DropdownMenuItem(
+                                                                    child:
+                                                                    Text(
+                                                                      label.nexStageConsText,
+                                                                      style: TextStyle(fontSize: 15, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
+                                                                    ),
+                                                                    value:
+                                                                    label,
+                                                                  ))
+                                                                  .toList(),
 
-                                              print(_comments.text);
-                                              if (_comments.text == "") {
-                                                _comments.text =
-                                                    "Stage Changed";
-                                              }
+                                                              // hint: Text('Rating'),
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  _selectedNextStageConstructionEntity =
+                                                                      value;
+                                                                });
+                                                              },
+                                                              decoration:
+                                                              InputDecoration(
+                                                                focusedBorder:
+                                                                OutlineInputBorder(
+                                                                  borderSide:
+                                                                  BorderSide(
+                                                                      color: ColorConstants
+                                                                          .backgroundColorBlue,
+                                                                      //color: HexColor("#0000001F"),
+                                                                      width:
+                                                                      1.0),
+                                                                ),
+                                                                enabledBorder:
+                                                                OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .black26,
+                                                                      width:
+                                                                      1.0),
+                                                                ),
+                                                                errorBorder:
+                                                                OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .red,
+                                                                      width:
+                                                                      1.0),
+                                                                ),
+                                                                labelText:
+                                                                "Next Stage of Construction",
+                                                                filled: false,
+                                                                focusColor:
+                                                                Colors
+                                                                    .black,
+                                                                isDense: false,
+                                                                labelStyle: TextStyle(
+                                                                    fontFamily:
+                                                                    "Muli",
+                                                                    color: ColorConstants
+                                                                        .inputBoxHintColorDark,
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                                    fontSize:
+                                                                    16.0),
+                                                                fillColor:
+                                                                ColorConstants
+                                                                    .backgroundColor,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: MediaQuery.of(
+                                                                  context)
+                                                                  .size
+                                                                  .height *
+                                                                  0.02,
+                                                            ),
+                                                            TextFormField(
+                                                              controller:
+                                                              _nextDateofConstruction,
+                                                              // validator: (value) {
+                                                              //   if (value.isEmpty) {
+                                                              //     return "Contact Name can't be empty";
+                                                              //   }
+                                                              //   //leagueSize = int.parse(value);
+                                                              //   return null;
+                                                              // },
+                                                              readOnly: true,
+                                                              onChanged:
+                                                                  (data) {
+                                                                // setState(() {
+                                                                //   _contactName.text = data;
+                                                                // });
+                                                              },
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  color: ColorConstants
+                                                                      .inputBoxHintColor,
+                                                                  fontFamily:
+                                                                  "Muli"),
+                                                              keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                              decoration:
+                                                              InputDecoration(
+                                                                focusedBorder:
+                                                                OutlineInputBorder(
+                                                                  borderSide:
+                                                                  BorderSide(
+                                                                      color: ColorConstants
+                                                                          .backgroundColorBlue,
+                                                                      //color: HexColor("#0000001F"),
+                                                                      width:
+                                                                      1.0),
+                                                                ),
+                                                                disabledBorder:
+                                                                OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .black26,
+                                                                      width:
+                                                                      1.0),
+                                                                ),
+                                                                enabledBorder:
+                                                                OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .black26,
+                                                                      width:
+                                                                      1.0),
+                                                                ),
+                                                                errorBorder:
+                                                                OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .red,
+                                                                      width:
+                                                                      1.0),
+                                                                ),
+                                                                labelText:
+                                                                "Next date of construction",
+                                                                suffixIcon:
+                                                                IconButton(
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .date_range_rounded,
+                                                                    size: 22,
+                                                                    color: ColorConstants
+                                                                        .clearAllTextColor,
+                                                                  ),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    print(
+                                                                        "here");
+                                                                    final DateTime picked = await showDatePicker(
+                                                                        context:
+                                                                        context,
+                                                                        initialDate:
+                                                                        DateTime
+                                                                            .now(),
+                                                                        firstDate:
+                                                                        DateTime
+                                                                            .now(),
+                                                                        lastDate:
+                                                                        DateTime(2101));
 
-                                              List<CommentsDetail>
-                                                  commentsDetails = [
-                                                new CommentsDetail(
-                                                    createdBy: empId,
-                                                    commentText: _comments.text,
-                                                    // commentedAt: DateTime.now(),
-                                                    creatorName: name)
-                                              ];
+                                                                    setState(
+                                                                            () {
+                                                                          final DateFormat
+                                                                          formatter =
+                                                                          DateFormat(
+                                                                              "yyyy-MM-dd");
+                                                                          final String
+                                                                          formattedDate =
+                                                                          formatter
+                                                                              .format(picked);
+                                                                          nextStageConstructionPickedDate =
+                                                                              picked;
+                                                                          _nextDateofConstruction
+                                                                              .text =
+                                                                              formattedDate;
+                                                                        });
+                                                                  },
+                                                                ),
+                                                                filled: false,
+                                                                focusColor:
+                                                                Colors
+                                                                    .black,
+                                                                isDense: false,
+                                                                labelStyle: TextStyle(
+                                                                    fontFamily:
+                                                                    "Muli",
+                                                                    color: ColorConstants
+                                                                        .inputBoxHintColorDark,
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                                    fontSize:
+                                                                    16.0),
+                                                                fillColor:
+                                                                ColorConstants
+                                                                    .backgroundColor,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: MediaQuery.of(
+                                                                  context)
+                                                                  .size
+                                                                  .height *
+                                                                  0.02,
+                                                            ),
 
-                                              List<
-                                                      updateRequest
-                                                          .ListLeadcomments>
-                                                  commentsList = new List();
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: Text(
+                                                          'Submit',
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                              fontSize: 17,
+                                                              letterSpacing:
+                                                              1.25,
+                                                              fontStyle:
+                                                              FontStyle
+                                                                  .normal,
+                                                              // fontWeight: FontWeight.bold,
+                                                              color: ColorConstants
+                                                                  .buttonNormalColor),
+                                                        ),
+                                                        onPressed: () {
+                                                          if (!(_selectedNextStageConstructionEntity.nextStageConsId != null &&
+                                                              _selectedNextStageConstructionEntity
+                                                                  .nextStageConsId !=
+                                                                  "" &&
+                                                              _selectedNextStageConstructionEntity
+                                                                  .nextStageConsId !=
+                                                                  null &&
+                                                              _selectedNextStageConstructionEntity
+                                                                  .nextStageConsId !=
+                                                                  "")) {
+                                                            Get.dialog(
+                                                                CustomDialogs()
+                                                                    .errorDialog(
+                                                                    "Please fill the details first"));
+                                                          } else {
+                                                            updateStatusforNextStage(context , 5);
 
-                                              for (int i = 0;
-                                                  i < commentsDetails.length;
-                                                  i++) {
-                                                commentsList.add(
-                                                    new updateRequest
-                                                        .ListLeadcomments(
-                                                  leadId: widget.leadId,
-                                                  commentText:
-                                                      commentsDetails[i]
-                                                          .commentText,
-                                                  creatorName: name,
-                                                  createdBy: empId,
-                                                ));
-                                              }
-
-                                              List<updateRequest.ListLeadImage>
-                                                  imageList = new List();
-                                              for (int i = 0;
-                                                  i < listLeadImage.length;
-                                                  i++) {
-                                                imageList.add(new updateRequest
-                                                    .ListLeadImage(
-                                                  leadId: widget.leadId,
-                                                  photoName: listLeadImage[i]
-                                                      .photoName,
-                                                  createdBy: empId,
-                                                ));
-                                              }
-                                              if (_listInfluencerDetail
-                                                      .length !=
-                                                  0) {
-                                                if (_listInfluencerDetail[
-                                                                _listInfluencerDetail
-                                                                        .length -
-                                                                    1]
-                                                            .inflName ==
-                                                        null ||
-                                                    _listInfluencerDetail[
-                                                                _listInfluencerDetail
-                                                                        .length -
-                                                                    1]
-                                                            .inflName ==
-                                                        "null" ||
-                                                    _listInfluencerDetail[
-                                                            _listInfluencerDetail
-                                                                    .length -
-                                                                1]
-                                                        .inflName
-                                                        .text
-                                                        .isNullOrBlank) {
-                                                  print("here1234");
-                                                  _listInfluencerDetail
-                                                      .removeAt(
-                                                          _listInfluencerDetail
-                                                                  .length -
-                                                              1);
-                                                }
-                                              }
-                                              List<
-                                                      updateRequest
-                                                          .LeadInfluencerEntity>
-                                                  listInfluencer = new List();
-
-                                              print(
-                                                  _listInfluencerDetail.length);
-
-                                              for (int i =
-                                                      initialInfluencerListLength;
-                                                  i <
-                                                      _listInfluencerDetail
-                                                          .length;
-                                                  i++) {
-                                                listInfluencer.add(new updateRequest
-                                                        .LeadInfluencerEntity(
-                                                    leadId: widget.leadId,
-                                                    createdBy: empId,
-                                                    inflId: int.parse(
-                                                        _listInfluencerDetail[i]
-                                                            .id
-                                                            .text),
-                                                    isDelete: "N"));
-                                              }
-
-                                              var updateRequestModel = {
-                                                'leadId': viewLeadDataResponse
-                                                    .leadsEntity.leadId,
-                                                'leadSegment':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadSegment,
-                                                'assignedTo':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity.assignedTo,
-                                                'leadStatusId': 5,
-                                                'leadStage':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadStageId,
-                                                'contactName':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .contactName,
-                                                'contactNumber':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .contactNumber,
-                                                'geotagType':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity.geotagType,
-                                                'leadLatitude':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadLatitude,
-                                                'leadLongitude':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadLongitude,
-                                                'leadAddress':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadAddress,
-                                                'leadPincode':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadPincode,
-                                                'leadStateName':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadStateName,
-                                                'leadDistrictName':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadDistrictName,
-                                                'leadTalukName':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadTalukName,
-                                                'leadSalesPotentialMt':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadSitePotentialMt,
-                                                'leadReraNumber':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadReraNumber,
-                                                'isStatus': "false",
-                                                'updatedBy': empId,
-                                                'leadIsDuplicate':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .leadIsDuplicate,
-                                                'rejectionComment':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .rejectionComment,
-                                                'nextDateCconstruction':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .nextDateCconstruction,
-                                                'nextStageConstruction':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .nextStageConstruction,
-                                                'siteDealerId':
-                                                    viewLeadDataResponse
-                                                        .leadsEntity
-                                                        .siteDealerId,
-                                                'listLeadcomments': new List(),
-                                                'listLeadImage': new List(),
-                                                'leadInfluencerEntity':
-                                                    new List()
-                                                // 'listLeadcomments':
-                                                //     viewLeadDataResponse
-                                                //         .leadcommentsEnitiy,
-                                                // 'listLeadImage':
-                                                //     viewLeadDataResponse
-                                                //         .leadphotosEntity,
-                                                // 'leadInfluencerEntity':
-                                                //     viewLeadDataResponse
-                                                //         .leadInfluencerEntity
-                                              };
-
-                                              _addLeadsController
-                                                  .updateLeadData(
-                                                      updateRequestModel,
-                                                      new List<File>(),
-                                                      context,
-                                                      viewLeadDataResponse
-                                                          .leadsEntity.leadId);
-
-                                              Get.back();
-                                            });
+                                                          }
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                });
                                           }
                                         } else {
                                           Get.dialog(CustomDialogs().errorDialog(
@@ -1837,30 +1674,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                       });
                                     },
 
-                                    // decoration: InputDecoration(
-                                    //   focusedBorder: OutlineInputBorder(
-                                    //     borderSide: BorderSide(
-                                    //         color: ColorConstants.backgroundColorBlue,
-                                    //         //color: HexColor("#0000001F"),
-                                    //         width: 0),
-                                    //   ),
-                                    //   enabledBorder: InputBorder.none,
-                                    //   errorBorder: OutlineInputBorder(
-                                    //     borderSide:
-                                    //         BorderSide(color: Colors.red, width: 0),
-                                    //   ),
-                                    //   // labelText: "Site Subtype",
-                                    //   // filled: false,
-                                    //   hintText: labelText,
-                                    //   focusColor: Colors.black,
-                                    //   isDense: true,
-                                    //   labelStyle: TextStyle(
-                                    //       fontFamily: "Muli",
-                                    //       color: ColorConstants.inputBoxHintColorDark,
-                                    //       fontWeight: FontWeight.normal,
-                                    //       fontSize: 16.0),
-                                    //   fillColor: ColorConstants.backgroundColor,
-                                    // ),
+                                    //
                                   ),
                                 ),
                               ),
@@ -1868,56 +1682,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                           ],
                         ),
                       ),
-
-                      // DropdownButtonFormField<SiteSubTypeEntity>(
-                      //   value: _selectedValue,
-                      //   items: siteSubTypeEntity
-                      //       .map((label) => DropdownMenuItem(
-                      //             child: Text(
-                      //               label.siteSubTypeDesc,
-                      //               style: TextStyle(
-                      //                   fontSize: 18,
-                      //                   color: ColorConstants.inputBoxHintColor,
-                      //                   fontFamily: "Muli"),
-                      //             ),
-                      //             value: label,
-                      //           ))
-                      //       .toList(),
-                      //
-                      //   // hint: Text('Rating'),
-                      //   onChanged: (value) {
-                      //     setState(() {
-                      //       _selectedValue = value;
-                      //     });
-                      //   },
-                      //   decoration: InputDecoration(
-                      //     focusedBorder: OutlineInputBorder(
-                      //       borderSide: BorderSide(
-                      //           color: ColorConstants.backgroundColorBlue,
-                      //           //color: HexColor("#0000001F"),
-                      //           width: 1.0),
-                      //     ),
-                      //     enabledBorder: OutlineInputBorder(
-                      //       borderSide:
-                      //           BorderSide(color: Colors.black26, width: 1.0),
-                      //     ),
-                      //     errorBorder: OutlineInputBorder(
-                      //       borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      //     ),
-                      //     labelText: "Site Subtype",
-                      //     filled: false,
-                      //     focusColor: Colors.black,
-                      //     isDense: false,
-                      //     labelStyle: TextStyle(
-                      //         fontFamily: "Muli",
-                      //         color: ColorConstants.inputBoxHintColorDark,
-                      //         fontWeight: FontWeight.normal,
-                      //         fontSize: 16.0),
-                      //     fillColor: ColorConstants.backgroundColor,
-                      //   ),
-                      // ),
-
-                      //  SizedBox(height: 16),
 
                       TextFormField(
                         controller: _contactName,
@@ -2135,70 +1899,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                           ),
                         ],
                       ),
-//                     Column(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: <Widget>[
-//                         RaisedButton(
-//                           onPressed: () async {
-//                             LocationResult result = await showLocationPicker(
-//                                 context,
-//                                 "AIzaSyBEMGF1RVNoYyxMaYE8v2isPlmeCuHDMlc",
-//                                 initialCenter: LatLng(31.1975844, 29.9598339),
-//                                 automaticallyAnimateToCurrentLocation: true,
-// //                      mapStylePath: 'assets/mapStyle.json',
-//                                 myLocationButtonEnabled: true,
-//                                 // requiredGPS: true,
-//                                 layersButtonEnabled: true,
-//                                 countries: ['AE', 'NG']
-//
-// //                      resultCardAlignment: Alignment.bottomCenter,
-//                                 // desiredAccuracy: LocationAccuracy.best,
-//                                 );
-//                             print("result = $result");
-//                             setState(() => _pickedLocation = result);
-//                           },
-//                        //   child: Text('Pick location'),
-//                         ),
-//                         Text(_pickedLocation.toString()),
-//                       ],
-//                     ),
-//                     Container(
-//                         decoration: BoxDecoration(
-//                           color: Theme.of(context).canvasColor,
-//                         ),
-//                         padding:
-//                             EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                         child: Column(children: <Widget>[
-//                           Row(
-//                             children: <Widget>[
-//                               Icon(Icons.location_on),
-//                               SizedBox(
-//                                 width: 8,
-//                               ),
-//                               Expanded(
-//                                 child: Column(
-//                                   crossAxisAlignment: CrossAxisAlignment.start,
-//                                   children: <Widget>[
-//                                     Text(
-//                                       'Location',
-//                                       style:
-//                                           Theme.of(context).textTheme.caption,
-//                                     ),
-//                                     if (_currentPosition != null &&
-//                                         _currentAddress != null)
-//                                       Text(_currentAddress,
-//                                           style: Theme.of(context)
-//                                               .textTheme
-//                                               .bodyText2),
-//                                   ],
-//                                 ),
-//                               ),
-//                               SizedBox(
-//                                 width: 8,
-//                               ),
-//                             ],
-//                           ),
-//                         ])),
+
                       SizedBox(height: 16),
                       TextFormField(
                         controller: _siteAddress,
@@ -3992,6 +3693,286 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       print(e);
     }
   }
+
+  updateStatusforNextStage(BuildContext context , int statusId){
+    String empId;
+    String mobileNumber;
+    String name;
+    Future<SharedPreferences>
+    _prefs =
+    SharedPreferences
+        .getInstance();
+    _prefs.then(
+            (SharedPreferences
+        prefs) async {
+              empId = prefs.getString(
+                  StringConstants
+                      .employeeId) ??
+                  "empty";
+              mobileNumber =
+                  prefs.getString(
+                      StringConstants
+                          .mobileNumber) ??
+                      "empty";
+              name = prefs.getString(
+                  StringConstants
+                      .employeeName) ??
+                  "empty";
+
+              print(_comments
+                  .text);
+              if (_comments
+                  .text ==
+                  "") {
+                _comments.text =
+                "Stage Changed";
+              }
+
+              List<CommentsDetail>
+              commentsDetails =
+              [
+                new CommentsDetail(
+                    createdBy:
+                    empId,
+                    commentText:
+                    _comments
+                        .text,
+                    // commentedAt: DateTime.now(),
+                    creatorName:
+                    name)
+              ];
+
+              List<
+                  updateRequest
+                      .ListLeadcomments>
+              commentsList =
+              new List();
+
+              for (int i = 0;
+              i <
+                  commentsDetails
+                      .length;
+              i++) {
+                commentsList.add(
+                    new updateRequest
+                        .ListLeadcomments(
+                      leadId: widget
+                          .leadId,
+                      commentText:
+                      commentsDetails[
+                      i]
+                          .commentText,
+                      creatorName:
+                      name,
+                      createdBy:
+                      empId,
+                    ));
+              }
+
+              List<
+                  updateRequest
+                      .ListLeadImage>
+              imageList =
+              new List();
+              for (int i = 0;
+              i <
+                  listLeadImage
+                      .length;
+              i++) {
+                imageList.add(
+                    new updateRequest
+                        .ListLeadImage(
+                      leadId: widget
+                          .leadId,
+                      photoName:
+                      listLeadImage[
+                      i]
+                          .photoName,
+                      createdBy:
+                      empId,
+                    ));
+              }
+              if (_listInfluencerDetail
+                  .length !=
+                  0) {
+                if (_listInfluencerDetail[_listInfluencerDetail.length -
+                    1]
+                    .inflName ==
+                    null ||
+                    _listInfluencerDetail[_listInfluencerDetail.length -
+                        1]
+                        .inflName ==
+                        "null" ||
+                    _listInfluencerDetail[
+                    _listInfluencerDetail.length -
+                        1]
+                        .inflName
+                        .text
+                        .isNullOrBlank) {
+                  print(
+                      "here1234");
+                  _listInfluencerDetail
+                      .removeAt(
+                      _listInfluencerDetail.length -
+                          1);
+                }
+              }
+              List<
+                  updateRequest
+                      .LeadInfluencerEntity>
+              listInfluencer =
+              new List();
+
+              print(
+                  _listInfluencerDetail
+                      .length);
+
+              for (int i =
+                  initialInfluencerListLength;
+              i <
+                  _listInfluencerDetail
+                      .length;
+              i++) {
+                listInfluencer.add(new updateRequest
+                    .LeadInfluencerEntity(
+                    leadId: widget
+                        .leadId,
+                    createdBy:
+                    empId,
+                    inflId: int.parse(
+                        _listInfluencerDetail[i]
+                            .id
+                            .text),
+                    isDelete:
+                    "N"));
+              }
+
+              if (_SelectedDealer ==
+                  null) {
+                _SelectedDealer =
+                new DealerList();
+              }
+              var updateRequestModel =
+              {
+                'leadId':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadId,
+                'leadSegment':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadSegment,
+                'assignedTo':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .assignedTo,
+                'leadStatusId':
+                statusId,
+                'leadStage':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadStageId,
+                'contactName':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .contactName,
+                'contactNumber':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .contactNumber,
+                'geotagType':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .geotagType,
+                'leadLatitude':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadLatitude,
+                'leadLongitude':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadLongitude,
+                'leadAddress':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadAddress,
+                'leadPincode':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadPincode,
+                'leadStateName':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadStateName,
+                'leadDistrictName':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadDistrictName,
+                'leadTalukName':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadTalukName,
+                'leadSalesPotentialMt':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadSitePotentialMt,
+                'leadReraNumber':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadReraNumber,
+                'isStatus':
+                "false",
+                'updatedBy':
+                empId,
+                'leadIsDuplicate':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .leadIsDuplicate,
+                'rejectionComment':
+                viewLeadDataResponse
+                    .leadsEntity
+                    .rejectionComment,
+                'nextDateCconstruction':
+                _nextDateofConstruction
+                    .text,
+                'nextStageConstruction':
+                _selectedNextStageConstructionEntity
+                    .nextStageConsId,
+                'siteDealerId':
+                _SelectedDealer
+                    .dealerId,
+                // 'listLeadcomments':
+                //     new List(),
+                // 'listLeadImage':
+                //     new List(),
+                // 'leadInfluencerEntity':
+                //     new List()
+                'listLeadcomments':
+                commentsList,
+                'listLeadImage':
+                viewLeadDataResponse
+                    .leadphotosEntity,
+                'leadInfluencerEntity':
+                viewLeadDataResponse
+                    .leadInfluencerEntity
+              };
+
+              print(
+                  updateRequestModel);
+
+              _addLeadsController.updateLeadData(
+                  updateRequestModel,
+                  new List<
+                      File>(),
+                  context,
+                  viewLeadDataResponse
+                      .leadsEntity
+                      .leadId);
+
+              Get.back();
+            });
+  }
+
 
   Widget _buildPanel() {
     return ExpansionPanelList(

@@ -112,7 +112,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   String _currentAddress;
   int _initialIndex = 0;
   String geoTagType;
-
+  final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
   SitesModal sitesModal;
   List<SiteFloorsEntity> siteFloorsEntity = new List();
   List<SitephotosEntity> sitephotosEntity = new List();
@@ -268,7 +268,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _siteTotalPt.text = sitesModal.siteTotalSitePotential;
           _siteTotalBags.text =
               (double.parse(_siteTotalPt.text) * 20).round().toString();
-          // print(sitesModal.sitePlotNumber);
+
+          print("Dhawan");
+           print(sitesModal.siteStageId);
+        //  print(sitesModal.);
+        //  print(sit);
+         // print(sitesModal.)
+
           _plotNumber.text = sitesModal.sitePlotNumber;
           _siteAddress.text = sitesModal.siteAddress;
           _pincode.text = sitesModal.sitePincode;
@@ -279,6 +285,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _dealerName.text = sitesModal.siteDealerName;
           _so.text = sitesModal.siteSoname;
           geoTagType = sitesModal.siteGeotagType;
+
+       //   print(sitesModal.);
 
           //   print(sitesModal.siteGeotagLatitude);
           if (sitesModal.siteGeotagLatitude != null &&
@@ -3675,9 +3683,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                 fontSize: 25),
                                           ),
                                           Text(
-                                            siteCommentsEntity[index]
-                                                    .createdOn
-                                                    .toString() ??
+                                            formatter.format(DateTime.fromMillisecondsSinceEpoch(
+                                                siteCommentsEntity[
+                                                siteCommentsEntity.length - 1]
+                                                    .createdOn)) ??
                                                 "",
                                             style: TextStyle(
                                                 color: Colors.black
@@ -3721,10 +3730,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     fontSize: 25),
                               ),
                               Text(
-                                siteCommentsEntity[
-                                        siteCommentsEntity.length - 1]
-                                    .createdOn
-                                    .toString(),
+                                formatter.format(DateTime.fromMillisecondsSinceEpoch(
+                                    siteCommentsEntity[
+                                    siteCommentsEntity.length - 1]
+                                        .createdOn))
+                                ,
                                 style: TextStyle(
                                     color: Colors.black.withOpacity(0.5),
                                     fontSize: 15),
@@ -6026,6 +6036,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "sitePhotosEntity": newSitePhotoEntity,
         "siteInfluencerEntity": newInfluencerEntity,
       };
+
 
       _siteController.updateLeadData(
           updateDataRequest, _imageList, context, widget.siteId);

@@ -29,6 +29,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
 import 'DraftLeadListScreen.dart';
+import 'ViewLeadScreen.dart';
 
 class ViewOldLeadScree extends StatefulWidget {
   @override
@@ -302,8 +303,12 @@ print(labelText);
                       ((leadCreatedBy == gv.currentId))
                           ? FlatButton(
                               onPressed: () {
-                                Get.dialog(CustomDialogs()
-                                    .errorDialog("Coming Soon !!"));
+                                Navigator.pushReplacement(
+                                    context,
+                                    new CupertinoPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ViewLeadScreen(
+                                                int.parse(gv.selectedLeadID))));
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(1.0),
@@ -341,8 +346,13 @@ print(labelText);
                             ),
                       FlatButton(
                         onPressed: () {
-                          Get.dialog(
-                              CustomDialogs().errorDialog("Coming Soon !!"));
+
+                          SaveLeadRequestModel saveLeadRequestModelNew = gv.saveLeadRequestModelNew;
+                          saveLeadRequestModelNew.isStatus = "true";
+                          _addLeadsController.getAccessKeyAndSaveLead(
+                              gv.saveLeadRequestModelNew,
+                              gv.imageList,
+                              context);
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
