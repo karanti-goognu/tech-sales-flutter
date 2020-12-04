@@ -61,6 +61,7 @@ class DraftLeadDBHelper extends ChangeNotifier{
   }
 
   Future<int> updateLeadInDraft(DraftLeadModelforDB draftLeadModelforDB) async {
+    print(draftLeadModelforDB.id);
     var client = await db;
     return client.update('draftLead', draftLeadModelforDB.toMapForDb(),
         where: 'id = ?',
