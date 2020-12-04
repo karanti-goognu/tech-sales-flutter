@@ -170,10 +170,15 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                   onTap: () {
                     //Navigator.pop(context);
                     _siteController.selectedSiteStage = StringConstants.empty;
+                    _siteController.selectedSiteStageValue = StringConstants.empty;
                     _siteController.selectedSiteStatus = StringConstants.empty;
+                    _siteController.selectedSiteStatusValue = StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCat = StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCatValue = StringConstants.empty;
                     _siteController.assignToDate = StringConstants.empty;
                     _siteController.assignFromDate = StringConstants.empty;
                     _siteController.selectedFilterCount = 0;
+                    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                   },
                   child: Text(
                     "Clear All",
@@ -376,6 +381,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 }
                 _siteController.selectedSiteStage = value;
                 _siteController.selectedSiteStageValue = leadStageValue;
+                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
@@ -418,6 +424,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 }
                 _siteController.selectedSiteStatus = value;
                 _siteController.selectedSiteStatusValue = leadStatusValue;
+                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
@@ -520,6 +527,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 }
                 _siteController.selectedSiteInfluencerCat = value;
                 _siteController.selectedSiteInfluencerCatValue = siteStatusValue;
+                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
