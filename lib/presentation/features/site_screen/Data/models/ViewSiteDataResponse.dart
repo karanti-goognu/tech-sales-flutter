@@ -244,6 +244,8 @@ class SitesModal {
   int siteConstructionId;
   int noOfFloors;
 
+
+
   SitesModal(
       {this.siteBuiltArea,
         this.siteProductDemo,
