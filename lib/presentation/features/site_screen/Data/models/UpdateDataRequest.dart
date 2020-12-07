@@ -30,6 +30,10 @@ class UpdateDataRequest {
   String nextVisitDate;
   String closureReasonText;
   String createdBy;
+  String siteProbabilityWinningId;
+  String siteCompetitionId;
+  String siteOppertunityId;
+  String siteConstructionId;
   List<SiteCommentsEntity> siteCommentsEntity;
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
   List<SiteNextStageEntity> siteNextStageEntity;
@@ -70,7 +74,12 @@ class UpdateDataRequest {
         this.siteVisitHistoryEntity,
         this.siteNextStageEntity,
         this.sitePhotosEntity,
-        this.siteInfluencerEntity});
+        this.siteInfluencerEntity,
+        this.siteConstructionId,
+        this.siteCompetitionId,
+        this.siteOppertunityId,
+        this.siteProbabilityWinningId
+      });
 
   UpdateDataRequest.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -102,6 +111,13 @@ class UpdateDataRequest {
     nextVisitDate = json['nextVisitDate'];
     closureReasonText = json['closureReasonText'];
     createdBy = json['createdBy'];
+    siteConstructionId = json['siteConstructionId'];
+    siteCompetitionId = json['siteCompetitionId'];
+    siteOppertunityId = json['siteOppertunityId'];
+    siteProbabilityWinningId = json['siteProbabilityWinningId'];
+
+
+
     if (json['siteCommentsEntity'] != null) {
       siteCommentsEntity = new List<SiteCommentsEntity>();
       json['siteCommentsEntity'].forEach((v) {
@@ -165,6 +181,13 @@ class UpdateDataRequest {
     data['nextVisitDate'] = this.nextVisitDate;
     data['closureReasonText'] = this.closureReasonText;
     data['createdBy'] = this.createdBy;
+    data['siteConstructionId'] = this.siteConstructionId;
+    data['siteCompetitionId'] = this.siteCompetitionId;
+    data['siteOppertunityId'] = this.siteOppertunityId;
+    data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
+
+
+
     if (this.siteCommentsEntity != null) {
       data['siteCommentsEntity'] =
           this.siteCommentsEntity.map((v) => v.toJson()).toList();

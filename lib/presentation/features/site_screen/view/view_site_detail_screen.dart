@@ -38,8 +38,6 @@ class ViewSiteScreen extends StatefulWidget {
 
 class _ViewSiteScreenState extends State<ViewSiteScreen>
     with SingleTickerProviderStateMixin {
-
-
   FocusNode myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
@@ -47,6 +45,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   bool viewMoreActive = false;
   String labelText;
   int labelId;
+  String labelConstructionText;
+  int labelConstructionId;
+  String labelProbabilityText;
+  int labelProbabilityId;
+  String labelCompetetionText;
+  int labelCompetetionId;
+  String labelOpportunityText;
+  int labelOpportunityId;
 
   ConstructionStageEntity _selectedConstructionType;
   ConstructionStageEntity _selectedConstructionTypeVisit;
@@ -57,7 +63,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   SiteBrandEntity _siteBrand;
   SiteBrandEntity _siteBrandNextStage;
   SiteStageEntity _siteStage;
-  SiteProbabilityWinningEntity _siteProbabilityWinningEntity;
+  SiteProbabilityWinningEntity _siteProbabilityWinningEntity ;
   SiteOpportunityStatusEntity _siteOpportunitStatusEnity;
   SiteCompetitionStatusEntity _siteCompetitionStatusEntity;
   List<File> _imageList = new List();
@@ -148,13 +154,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     //_controller.addListener(_handleTabSelection);
     print(widget.siteId);
     getSiteData();
-
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-   // myFocusNode.dispose();
+    // myFocusNode.dispose();
     super.dispose();
   }
 
@@ -174,16 +179,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
         setState(() {
           addNextButtonDisable = false;
-          constructionStageEntity =
-              viewSiteDataResponse.constructionStageEntity;
+
           siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
           siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
-          siteProbabilityWinningEntity =
-              viewSiteDataResponse.siteProbabilityWinningEntity;
-          siteCompetitionStatusEntity =
-              viewSiteDataResponse.siteCompetitionStatusEntity;
-          siteOpportunityStatusEntity =
-              viewSiteDataResponse.siteOpportunityStatusEntity;
+
           siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
 
           sitephotosEntity = viewSiteDataResponse.sitephotosEntity;
@@ -193,8 +192,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           influencerCategoryEntity =
               viewSiteDataResponse.influencerCategoryEntity;
 
+
           if (sitephotosEntity != null) {
             for (int i = 0; i < sitephotosEntity.length; i++) {
+
               File file = new File(UrlConstants.baseUrlforImages +
                   "/" +
                   sitephotosEntity[i].photoName);
@@ -270,10 +271,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               (double.parse(_siteTotalPt.text) * 20).round().toString();
 
           print("Dhawan");
-           print(sitesModal.siteStageId);
-        //  print(sitesModal.);
-        //  print(sit);
-         // print(sitesModal.)
+          print(sitesModal.siteStageId);
+          //  print(sitesModal.);
+          //  print(sit);
+          // print(sitesModal.)
 
           _plotNumber.text = sitesModal.sitePlotNumber;
           _siteAddress.text = sitesModal.siteAddress;
@@ -286,7 +287,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _so.text = sitesModal.siteSoname;
           geoTagType = sitesModal.siteGeotagType;
 
-       //   print(sitesModal.);
+          //   print(sitesModal.);
 
           //   print(sitesModal.siteGeotagLatitude);
           if (sitesModal.siteGeotagLatitude != null &&
@@ -306,22 +307,61 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 siteStageEntity[i].id.toString()) {
               labelText = siteStageEntity[i].siteStageDesc;
               labelId = siteStageEntity[i].id;
-
-              // _siteStage = new SiteStageEntity(
-              //     id : siteStageEntity[i].id,
-              //    siteStageDesc : siteStageEntity[i].siteStageDesc
-              // );
-              // _siteStage.id =siteStageEntity[i].id;
-              // _siteStage.siteStageDesc = siteStageEntity[i].siteStageDesc;
-
-              print(labelText);
-              // _selectedValue.id = leadStatusEntity[i].id;
-              // _selectedValue.leadStatusDesc = leadStatusEntity[i].leadStatusDesc;
-              _siteBuiltupArea.text = sitesModal.siteBuiltArea;
-              myFocusNode = FocusNode();
-              myFocusNode.requestFocus();
             }
           }
+
+          constructionStageEntity =
+              viewSiteDataResponse.constructionStageEntity;
+          for (int i = 0; i < constructionStageEntity.length; i++) {
+            if (viewSiteDataResponse.sitesModal.siteConstructionId.toString() ==
+                constructionStageEntity[i].id.toString()) {
+              _selectedConstructionType = constructionStageEntity[i];
+
+            }
+          }
+
+          siteProbabilityWinningEntity =
+              viewSiteDataResponse.siteProbabilityWinningEntity;
+          if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId !=
+              null) {
+            for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
+              if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId
+                      .toString() ==
+                  siteProbabilityWinningEntity[i].id.toString()) {
+                labelProbabilityId = siteProbabilityWinningEntity[i].id;
+                _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
+
+              }
+            }
+          }
+
+          siteCompetitionStatusEntity =
+              viewSiteDataResponse.siteCompetitionStatusEntity;
+          if (viewSiteDataResponse.sitesModal.siteCompetitionId != null) {
+            for (int i = 0; i < siteCompetitionStatusEntity.length; i++) {
+              if (viewSiteDataResponse.sitesModal.siteCompetitionId
+                      .toString() ==
+                  siteCompetitionStatusEntity[i].id.toString()) {
+               _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
+              }
+            }
+          }
+
+          siteOpportunityStatusEntity =
+              viewSiteDataResponse.siteOpportunityStatusEntity;
+          if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
+            for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
+              if (viewSiteDataResponse.sitesModal.siteOppertunityId
+                      .toString() ==
+                  siteOpportunityStatusEntity[i].id.toString()) {
+               _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
+              }
+            }
+          }
+
+          _siteBuiltupArea.text = sitesModal.siteBuiltArea;
+          myFocusNode = FocusNode();
+          myFocusNode.requestFocus();
         });
       });
       // Future.delayed(
@@ -1112,11 +1152,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   Widget siteDataView() {
-
     return SingleChildScrollView(
       child: Container(
           child: Form(
-
               child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
@@ -1135,8 +1173,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           ),
                         ),
                         DropdownButtonFormField<ConstructionStageEntity>(
-
-                         //
+                          //
                           value: _selectedConstructionType,
                           items: constructionStageEntity
                               .map((label) => DropdownMenuItem(
@@ -1153,8 +1190,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               .toList(),
 
                           // hint: Text('Rating'),
+
                           onChanged: (value) {
                             setState(() {
+
                               _selectedConstructionType = value;
                             });
                           },
@@ -1173,7 +1212,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               borderSide:
                                   BorderSide(color: Colors.red, width: 1.0),
                             ),
-                            labelText: "Type of Construction",
+                           labelText: "Type of Construction",
+
                             filled: false,
                             focusColor: Colors.black,
                             isDense: false,
@@ -1198,7 +1238,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ),
                         SizedBox(height: 16),
                         TextFormField(
-
                           controller: _siteBuiltupArea,
                           validator: (value) {
                             if (value.isEmpty) {
@@ -1268,7 +1307,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 10.0),
                                 child: TextFormField(
-
                                   enabled: false,
                                   style: TextStyle(
                                       fontSize: 18,
@@ -2038,7 +2076,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   BorderSide(color: Colors.red, width: 1.0),
                             ),
                             labelText: "State",
-                            enabled:false,
+                            enabled: false,
                             filled: false,
                             focusColor: Colors.black,
                             labelStyle: TextStyle(
@@ -2093,7 +2131,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   BorderSide(color: Colors.red, width: 1.0),
                             ),
                             labelText: "District",
-                            enabled:false,
+                            enabled: false,
                             filled: false,
                             focusColor: Colors.black,
                             labelStyle: TextStyle(
@@ -2148,7 +2186,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               borderSide:
                                   BorderSide(color: Colors.red, width: 1.0),
                             ),
-                            enabled:false,
+                            enabled: false,
                             labelText: "Taluk",
                             filled: false,
                             focusColor: Colors.black,
@@ -3351,9 +3389,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ))
                   .toList(),
 
-              // hint: Text('Rating'),
               onChanged: (value) {
                 setState(() {
+                  labelProbabilityText = value.siteProbabilityStatus;
+                  labelProbabilityId = value.id;
                   _siteProbabilityWinningEntity = value;
                 });
               },
@@ -3371,6 +3410,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   borderSide: BorderSide(color: Colors.red, width: 1.0),
                 ),
                 labelText: "Probability of winning",
+
+
                 filled: false,
                 focusColor: Colors.black,
                 isDense: false,
@@ -3411,7 +3452,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ))
                   .toList(),
 
-              // hint: Text('Rating'),
+
               onChanged: (value) {
                 setState(() {
                   _siteCompetitionStatusEntity = value;
@@ -3431,6 +3472,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   borderSide: BorderSide(color: Colors.red, width: 1.0),
                 ),
                 labelText: "Competition Status",
+
                 filled: false,
                 focusColor: Colors.black,
                 isDense: false,
@@ -3471,9 +3513,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ))
                   .toList(),
 
-              // hint: Text('Rating'),
+
               onChanged: (value) {
                 setState(() {
+
                   _siteOpportunitStatusEnity = value;
                 });
               },
@@ -3490,6 +3533,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.red, width: 1.0),
                 ),
+
                 labelText: "Opportunity Status",
                 filled: false,
                 focusColor: Colors.black,
@@ -3683,10 +3727,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                 fontSize: 25),
                                           ),
                                           Text(
-                                            formatter.format(DateTime.fromMillisecondsSinceEpoch(
-                                                siteCommentsEntity[
-                                                siteCommentsEntity.length - 1]
-                                                    .createdOn)) ??
+                                            formatter.format(DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        siteCommentsEntity[
+                                                                siteCommentsEntity
+                                                                        .length -
+                                                                    1]
+                                                            .createdOn)) ??
                                                 "",
                                             style: TextStyle(
                                                 color: Colors.black
@@ -3730,11 +3777,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     fontSize: 25),
                               ),
                               Text(
-                                formatter.format(DateTime.fromMillisecondsSinceEpoch(
-                                    siteCommentsEntity[
-                                    siteCommentsEntity.length - 1]
-                                        .createdOn))
-                                ,
+                                formatter.format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        siteCommentsEntity[
+                                                siteCommentsEntity.length - 1]
+                                            .createdOn)),
                                 style: TextStyle(
                                     color: Colors.black.withOpacity(0.5),
                                     fontSize: 15),
@@ -4204,8 +4251,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                     .clear();
                                               }
 
-                                             // Get.back();
-                                            return  Get.dialog(CustomDialogs()
+                                              // Get.back();
+                                              return Get.dialog(CustomDialogs()
                                                   .errorDialog(
                                                       "No influencer registered with this number"));
                                             }
@@ -5798,22 +5845,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   _getCurrentLocation() async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please enable your location service from device settings"));
+    } else {
+      geolocator
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .then((Position position) {
+        setState(() {
+          _currentPosition = position;
+        });
 
-    Get.dialog(CustomDialogs()
-        .errorDialog("Please enable your location service from device settings"));
-    }
-    else{
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-    setState(() {
-    _currentPosition = position;
-    });
-
-    _getAddressFromLatLng();
-    }).catchError((e) {
-    print(e);
-    });
+        _getAddressFromLatLng();
+      }).catchError((e) {
+        print(e);
+      });
     }
   }
 
@@ -5895,8 +5940,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
       name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
-
-      if(_comments.text == null || _comments.text == "null" || _comments.text == ""){
+      if (_comments.text == null ||
+          _comments.text == "null" ||
+          _comments.text == "") {
         _comments.text = "Site updated";
       }
 
@@ -5946,30 +5992,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             new SitephotosEntity(photoName: path.basename(_imageList[i].path)));
       }
 
-
       if (_listInfluencerDetail.length != 0) {
-        if (_listInfluencerDetail[
-        _listInfluencerDetail
-            .length -
-            1]
-            .inflName ==
-            null ||
-            _listInfluencerDetail[
-            _listInfluencerDetail
-                .length -
-                1]
-                .inflName ==
+        if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
+                null ||
+            _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
                 "null" ||
-            _listInfluencerDetail[
-            _listInfluencerDetail
-                .length -
-                1]
+            _listInfluencerDetail[_listInfluencerDetail.length - 1]
                 .inflName
                 .text
                 .isNullOrBlank) {
           print("here1234");
-          _listInfluencerDetail.removeAt(
-              _listInfluencerDetail.length - 1);
+          _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
         }
       }
 
@@ -5988,11 +6021,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         }
       }
 
-      if(_selectedSiteFloor ==  null){
-        _selectedSiteFloor = new SiteFloorsEntity(
-          id:1,
-          siteFloorTxt: "0"
-        );
+      if (_selectedSiteFloor == null) {
+        _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
       }
 
       print(_selectedSiteFloor.id);
@@ -6035,9 +6065,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "siteNextStageEntity": siteNextStageEntity,
         "sitePhotosEntity": newSitePhotoEntity,
         "siteInfluencerEntity": newInfluencerEntity,
+        "siteConstructionId": _selectedConstructionType.id,
+        "siteCompetitionId": _siteCompetitionStatusEntity.id,
+        "siteOppertunityId": _siteOpportunitStatusEnity.id,
+        "siteProbabilityWinningId": _siteProbabilityWinningEntity.id
       };
-
-
       _siteController.updateLeadData(
           updateDataRequest, _imageList, context, widget.siteId);
 

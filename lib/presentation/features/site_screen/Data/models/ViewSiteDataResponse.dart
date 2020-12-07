@@ -241,6 +241,8 @@ class SitesModal {
   String assignedTo;
   int siteStatusId;
   String siteCreationDate;
+  int siteConstructionId;
+  int noOfFloors;
 
   SitesModal(
       {this.siteBuiltArea,
@@ -272,7 +274,9 @@ class SitesModal {
         this.siteOppertunityId,
         this.assignedTo,
         this.siteStatusId,
-        this.siteCreationDate});
+        this.siteCreationDate,
+      this.siteConstructionId,
+      this.noOfFloors});
 
   SitesModal.fromJson(Map<String, dynamic> json) {
     siteBuiltArea = json['siteBuiltArea'];
@@ -305,6 +309,8 @@ class SitesModal {
     assignedTo = json['assignedTo'];
     siteStatusId = json['siteStatusId'];
     siteCreationDate = json['siteCreationDate'];
+    siteConstructionId = json['siteConstructionId'];
+    noOfFloors = json['noOfFloors'];
   }
 
   Map<String, dynamic> toJson() {
@@ -339,6 +345,9 @@ class SitesModal {
     data['assignedTo'] = this.assignedTo;
     data['siteStatusId'] = this.siteStatusId;
     data['siteCreationDate'] = this.siteCreationDate;
+    data['siteConstructionId'] = this.siteConstructionId;
+    data['noOfFloors'] = this.noOfFloors;
+
     return data;
   }
 }
