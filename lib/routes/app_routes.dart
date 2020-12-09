@@ -11,4 +11,5 @@ abstract class Routes {
   static const SEARCH_SITES_SCREEN = '/search_site_screen';
   static const VIEW_OLD_LEAD_SCREEN = '/old_lead_screen';
   static const SITES_SCREEN = '/sites_screen';
+  static const ADD_EVENT_SCREEN = '/add_event';
 }

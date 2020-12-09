@@ -30,5 +30,6 @@ abstract class ColorConstants {
   static Color lightGeyColor = const Color.fromRGBO(238, 238, 238, 1);
   static Color fromDateColor = const Color.fromRGBO(0, 0, 0, 0.87);
   static Color dateBorderColor = const Color.fromRGBO(224, 224, 224, 1);
+  static Color greenText = const Color.fromRGBO(0, 104, 56, 1);
 
 }

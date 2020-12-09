@@ -168,12 +168,6 @@ class MyApiClientLeads {
             AddLeadInitialModel.fromJson(data);
         print(addLeadInitialModel.siteSubTypeEntity[0]);
         return addLeadInitialModel;
-        // print('Initial Add Lead Object is :: $addLeadInitialModel');
-        // return addLeadInitialModel;
-        // print(addLeadInitialModel.siteSubTypeEntity.length);
-        // AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        // //print('Access key Object is :: $accessKeyModel');
-        // return accessKeyModel;
       } else
         print('error');
     } catch (_) {
@@ -303,7 +297,7 @@ class MyApiClientLeads {
                   gv.selectedLeadID = saveLeadResponse.leadId;
                   gv.fromLead = false;
                   Get.dialog(CustomDialogs().showExistingLeadDialog(
-                      "We have an existing lead with this contact number. Do you want to",
+                      saveLeadResponse.respMsg,
                       context , saveLeadRequestModel , imageList));
                 } else if (saveLeadResponse.respCode == "LD2007") {
                   // if (gv.fromLead) {
@@ -320,6 +314,12 @@ class MyApiClientLeads {
 
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead("Lead Added Successfully !!!"));
+                }
+                else if (saveLeadResponse.respCode == "LD2012") {
+                  gv.fromLead = false;
+                  Get.dialog(CustomDialogs().showExistingTSODialog(
+                      saveLeadResponse.respMsg,
+                      context , saveLeadRequestModel , imageList));
                 } else {
                   gv.fromLead = false;
                   Get.back();
@@ -327,19 +327,6 @@ class MyApiClientLeads {
                       CustomDialogs().showDialog("Some Error Occured !!! "));
                 }
 
-
-                //   if (response.statusCode == 200)
-                //   {
-                //     print("Uploaded! ");
-                //     print('response.body '+ response.body);
-                //     Get.back();
-                //       Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
-                //   }
-                // else{
-                //     Get.back();
-                //     Get.dialog(CustomDialogs().showDialog("Response Status : "+response.statusCode.toString()));
-                //   }
-                //  return response.body;
               });
             })
             .catchError((err) => print('error : ' + err.toString()))
@@ -367,8 +354,6 @@ class MyApiClientLeads {
             requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
       print('Response body is  : ${json.decode(response.body)}');
-      // print('Response body is  : ${json.decode(response.body)}');
-
       if (response.statusCode == 200) {
         Get.back();
 
@@ -376,10 +361,6 @@ class MyApiClientLeads {
         print(data);
         ViewLeadDataResponse viewLeadDataResponse =
             ViewLeadDataResponse.fromJson(data);
-        // print(viewLeadDataResponse);
-        //print('Access key Object is :: $accessKeyModel');\
-        //  print(influencerDetailModel.inflName);
-        //print(viewLeadDataResponse.dealerList);
         return viewLeadDataResponse;
       } else
         print('error');
