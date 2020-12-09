@@ -277,8 +277,8 @@ class SitesModal {
         this.assignedTo,
         this.siteStatusId,
         this.siteCreationDate,
-      this.siteConstructionId,
-      this.noOfFloors});
+        this.siteConstructionId,
+        this.noOfFloors});
 
   SitesModal.fromJson(Map<String, dynamic> json) {
     siteBuiltArea = json['siteBuiltArea'];
