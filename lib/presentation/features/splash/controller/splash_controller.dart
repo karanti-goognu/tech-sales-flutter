@@ -144,6 +144,6 @@ class SplashController extends GetxController {
   }
 
   openNextPage() {
-    Get.offNamed(Routes.HOME_SCREEN);
+    Get.offNamed(Routes.ADD_EVENT_SCREEN);
   }
 }

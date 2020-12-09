@@ -12,6 +12,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewO
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/site_search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_screen.dart';
@@ -61,5 +62,9 @@ class AppPages {
         name: Routes.SITES_SCREEN,
         page: () => SiteScreen(),
         binding: SiteBinding()),
+    GetPage(
+        name: Routes.ADD_EVENT_SCREEN,
+        page: () => AddEvent(),
+    ),
   ];
 }
