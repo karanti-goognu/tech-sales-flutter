@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/custom_screen.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
+
 
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
@@ -148,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           "Hello , ${_homeController.employeeName}",
                           style: TextStyle(
                               // color: Colors.white,
-                              fontSize: 25,
+                              fontSize :24,
                               fontWeight: FontWeight.normal,
                               fontFamily: "Muli"),
                         ),

@@ -5,7 +5,6 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/view/Draft
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
-import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -53,7 +52,12 @@ class _SiteScreenState extends State<SiteScreen> {
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
     print(selectedDateString); // something like 20-04-2020
-    return Scaffold(
+    return  WillPopScope(
+        onWillPop: () async {
+      Get.offNamed(Routes.HOME_SCREEN);
+      return true;
+    },
+    child: Scaffold(
       extendBody: true,
       backgroundColor: ColorConstants.backgroundColorGrey,
       appBar: AppBar(
@@ -207,52 +211,53 @@ class _SiteScreenState extends State<SiteScreen> {
                       width: 8,
                     ),
                     Obx(() => (_siteController.selectedSitePincode ==
-                        StringConstants.empty)
+                            StringConstants.empty)
                         ? Container()
                         : FilterChip(
-                      label: Row(
-                        children: [
-                          Icon(
-                            Icons.check,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text("${_siteController.selectedSitePincode}")
-                        ],
-                      ),
-                      backgroundColor: Colors.transparent,
-                      shape: StadiumBorder(side: BorderSide()),
-                      onSelected: (bool value) {
-                        print("selected");
-                      },
-                    )),
+                            label: Row(
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text("${_siteController.selectedSitePincode}")
+                              ],
+                            ),
+                            backgroundColor: Colors.transparent,
+                            shape: StadiumBorder(side: BorderSide()),
+                            onSelected: (bool value) {
+                              print("selected");
+                            },
+                          )),
                     SizedBox(
                       width: 8,
                     ),
                     Obx(() => (_siteController.selectedSiteInfluencerCat ==
-                        StringConstants.empty)
+                            StringConstants.empty)
                         ? Container()
                         : FilterChip(
-                      label: Row(
-                        children: [
-                          Icon(
-                            Icons.check,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text("${_siteController.selectedSiteInfluencerCat}")
-                        ],
-                      ),
-                      backgroundColor: Colors.transparent,
-                      shape: StadiumBorder(side: BorderSide()),
-                      onSelected: (bool value) {
-                        print("selected");
-                      },
-                    )),
+                            label: Row(
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                    "${_siteController.selectedSiteInfluencerCat}")
+                              ],
+                            ),
+                            backgroundColor: Colors.transparent,
+                            shape: StadiumBorder(side: BorderSide()),
+                            onSelected: (bool value) {
+                              print("selected");
+                            },
+                          )),
                   ],
                 ))
           ],
@@ -412,7 +417,7 @@ class _SiteScreenState extends State<SiteScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget leadsDetailWidget() {
@@ -468,14 +473,14 @@ class _SiteScreenState extends State<SiteScreen> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-
                               Navigator.push(
                                   context,
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
-                                          ViewSiteScreen(_siteController.sitesListResponse.sitesEntity[index].siteId
-                                              )));
-
+                                          ViewSiteScreen(_siteController
+                                              .sitesListResponse
+                                              .sitesEntity[index]
+                                              .siteId)));
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,
@@ -514,7 +519,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                             /* Padding(
+                                              /* Padding(
                                                 padding:
                                                     const EdgeInsets.all(2.0),
                                                 child: Text(
@@ -602,10 +607,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     padding: EdgeInsets.only(
                                                         left: 10.0),
                                                     child: Text(
-                                                      " ${ _siteController
-                                                          .sitesListResponse
-                                                          .sitesEntity[index]
-                                                          .siteCreationDate}",
+                                                      " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
                                                       //  textAlign: TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 13,

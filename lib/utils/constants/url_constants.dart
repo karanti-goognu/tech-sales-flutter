@@ -10,11 +10,11 @@ abstract class UrlConstants {
   //static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
 
   //Release
- /* static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+  static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
 
-  static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';*/
+  static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
   //Development
-  static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
+  /*static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
 
   static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
   static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/site';
