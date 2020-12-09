@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/RejectionLeadScreen.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewLeadScreen.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewOldLeadScreen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -251,7 +249,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showUpdatedLeadDialog(String s, BuildContext context) {
+  showUpdatedLeadDialog(String s, BuildContext context) {
     Get.back();
     Get.toNamed(Routes.VIEW_OLD_LEAD_SCREEN);
   }
