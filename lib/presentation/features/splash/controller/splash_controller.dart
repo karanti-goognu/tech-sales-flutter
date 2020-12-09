@@ -98,12 +98,13 @@ class SplashController extends GetxController {
           .then((data) {
         Get.back();
         this.secretKeyResponse = data;
+        print(data);
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);
           getAccessKey(requestId);
         } else {
-          print('Secret kry response is null');
+          print('Secret key response is null');
         }
       });
     });

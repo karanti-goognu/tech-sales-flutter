@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
@@ -38,6 +39,7 @@ class ViewSiteScreen extends StatefulWidget {
 
 class _ViewSiteScreenState extends State<ViewSiteScreen>
     with SingleTickerProviderStateMixin {
+  final db = BrandNameDBHelper();
   FocusNode myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
@@ -53,6 +55,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   int labelCompetetionId;
   String labelOpportunityText;
   int labelOpportunityId;
+  double siteScore = 0.0;
 
   ConstructionStageEntity _selectedConstructionType;
   ConstructionStageEntity _selectedConstructionTypeVisit;
@@ -68,6 +71,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   SiteCompetitionStatusEntity _siteCompetitionStatusEntity;
   List<File> _imageList = new List();
   int initialInfluencerLength = 0;
+  BrandModelforDB _siteBrandFromLocalDB ;
+  BrandModelforDB _siteBrandFromLocalDBNextStage ;
+  BrandModelforDB _siteProductFromLocalDB ;
+  BrandModelforDB _siteProductFromLocalDBNextStage ;
+
+  List<DropdownMenuItem<String>> productSoldVisitSite = new List();
 
   // SiteStageEntity _siteStageNextStage;
   var _siteBuiltupArea = new TextEditingController();
@@ -121,13 +130,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
   SitesModal sitesModal;
   List<SiteFloorsEntity> siteFloorsEntity = new List();
+  List<SiteFloorsEntity> siteFloorsEntityNew = new List();
+  List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List();
   List<SitephotosEntity> sitephotosEntity = new List();
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
+  List<ConstructionStageEntity> constructionStageEntityNew = new List();
+  List<ConstructionStageEntity> constructionStageEntityNewNextStage = new List();
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
   List<SiteBrandEntity> siteBrandEntity = new List();
+  List<BrandModelforDB> siteBrandEntityfromLoaclDB = new List();
+  List<BrandModelforDB> siteProductEntityfromLoaclDB = new List();
+  List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage = new List();
   List<SiteInfluencerEntity> siteInfluencerEntity;
   List<InfluencerTypeEntity> influencerTypeEntity = new List();
   List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
@@ -170,18 +186,35 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       print("AccessKey :: " + accessKeyModel.accessKey);
       await _siteController
           .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
-          .then((data) {
+          .then((data) async {
         print("here");
         print(data);
         viewSiteDataResponse = data;
 
         print(viewSiteDataResponse);
+        await db.clearTable();
+        siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
 
-        setState(() {
+        for(int i = 0 ; i < siteBrandEntity.length ; i++){
+         await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id, siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
+        }
+        print("list Size");
+        siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
+
+        setState(()  {
           addNextButtonDisable = false;
+          siteScore = viewSiteDataResponse.sitesModal.siteScore;
 
           siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
+          siteFloorsEntityNew = viewSiteDataResponse.siteFloorsEntity;
+          siteFloorsEntityNewNextStage = viewSiteDataResponse.siteFloorsEntity;
           siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
+
+
+
+
+
+
 
           siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
 
@@ -310,8 +343,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             }
           }
 
+          constructionStageEntityNew =
+              viewSiteDataResponse.constructionStageEntity;
+          constructionStageEntityNewNextStage =
+          viewSiteDataResponse.constructionStageEntity;
+
           constructionStageEntity =
               viewSiteDataResponse.constructionStageEntity;
+
           for (int i = 0; i < constructionStageEntity.length; i++) {
             if (viewSiteDataResponse.sitesModal.siteConstructionId.toString() ==
                 constructionStageEntity[i].id.toString()) {
@@ -441,6 +480,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     fontFamily: "Muli",
                                   ),
                                 ),
+                                siteScore!= 0.0 ? Text(
+                                  "Site Score: " + siteScore.toString(),
+                                  style: TextStyle(
+
+                                    fontSize: 12,
+                                    color: HexColor("#002A64"),
+                                    fontFamily: "Muli",
+                                  ),
+                                ):Container(),
                               ],
                             ),
                             SizedBox(width: 100),
@@ -2689,25 +2737,119 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 thickness: 1,
               ),
             ),
+            DropdownButtonFormField<ConstructionStageEntity>(
+              value: _selectedConstructionTypeVisit,
+              items: constructionStageEntityNew
+                  .map((label) => DropdownMenuItem(
+                child: Text(
+                  label.constructionStageText,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.inputBoxHintColor,
+                      fontFamily: "Muli"),
+                ),
+                value: label,
+              ))
+                  .toList(),
+
+              // hint: Text('Rating'),
+              onChanged: (value) {
+                setState(() {
+                  _selectedConstructionTypeVisit = value;
+                  print(_selectedConstructionTypeVisit.id);
+                  siteFloorsEntityNew = new List();
+                  _selectedSiteVisitFloor= null;
+                  if(_selectedConstructionTypeVisit.id == 1 || _selectedConstructionTypeVisit.id == 2 ||_selectedConstructionTypeVisit.id == 3  ){
+                   // siteFloorsEntityNew = new List();
+                    siteFloorsEntityNew.add(new SiteFloorsEntity(id: siteFloorsEntity[0].id , siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
+                  }
+                  else{
+
+                    for(int i=1;i<siteFloorsEntity.length;i++){
+
+                      siteFloorsEntityNew.add(new SiteFloorsEntity(id: siteFloorsEntity[i].id , siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
+                    }
+                  }
+                });
+              },
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: ColorConstants.backgroundColorBlue,
+                      //color: HexColor("#0000001F"),
+                      width: 1.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 1.0),
+                ),
+                labelText: "Type of Construction",
+                filled: false,
+                focusColor: Colors.black,
+                isDense: false,
+                labelStyle: TextStyle(
+                    fontFamily: "Muli",
+                    color: ColorConstants.inputBoxHintColorDark,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 16.0),
+                fillColor: ColorConstants.backgroundColor,
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(
+                "Mandatory",
+                style: TextStyle(
+                  fontFamily: "Muli",
+                  color: ColorConstants.inputBoxHintColorDark,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
             DropdownButtonFormField<SiteFloorsEntity>(
               value: _selectedSiteVisitFloor,
-              items: siteFloorsEntity
+              items: siteFloorsEntityNew
                   .map((label) => DropdownMenuItem(
-                        child: Text(
-                          label.siteFloorTxt,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                        ),
-                        value: label,
-                      ))
+                child: Text(
+                  label.siteFloorTxt,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.inputBoxHintColor,
+                      fontFamily: "Muli"),
+                ),
+                value: label,
+              ))
                   .toList(),
 
               // hint: Text('Rating'),
               onChanged: (value) {
                 setState(() {
                   _selectedSiteVisitFloor = value;
+
+                  constructionStageEntityNew = new List();
+                  _selectedConstructionTypeVisit= null;
+                  if(_selectedSiteVisitFloor.id == 1 ){
+                    // siteFloorsEntityNew = new List();
+                    for(int i=0;i<3;i++){
+                      constructionStageEntityNew.add(new ConstructionStageEntity(
+                        id: constructionStageEntity[i].id,
+                        constructionStageText: constructionStageEntity[i].constructionStageText
+                      ));
+                    }
+                  }
+                  else{
+
+                    for(int i=3;i<constructionStageEntity.length;i++){
+                      constructionStageEntityNew.add(new ConstructionStageEntity(
+                          id: constructionStageEntity[i].id,
+                          constructionStageText: constructionStageEntity[i].constructionStageText
+                      ));
+                    }
+                  }
                 });
               },
               decoration: InputDecoration(
@@ -2744,53 +2886,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   color: ColorConstants.inputBoxHintColorDark,
                   fontWeight: FontWeight.normal,
                 ),
-              ),
-            ),
-            SizedBox(height: 16),
-            DropdownButtonFormField<ConstructionStageEntity>(
-              value: _selectedConstructionTypeVisit,
-              items: constructionStageEntity
-                  .map((label) => DropdownMenuItem(
-                        child: Text(
-                          label.constructionStageText,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                        ),
-                        value: label,
-                      ))
-                  .toList(),
-
-              // hint: Text('Rating'),
-              onChanged: (value) {
-                setState(() {
-                  _selectedConstructionTypeVisit = value;
-                });
-              },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Type of Construction",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
               ),
             ),
             SizedBox(height: 16),
@@ -2834,6 +2929,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 fillColor: ColorConstants.backgroundColor,
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -2845,9 +2941,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
               ),
             ),
-            DropdownButtonFormField<SiteBrandEntity>(
-              value: _siteBrand,
-              items: siteBrandEntity
+            SizedBox(height: 16),
+            DropdownButtonFormField<BrandModelforDB>(
+              value: _siteBrandFromLocalDB,
+              items: siteBrandEntityfromLoaclDB
                   .map((label) => DropdownMenuItem(
                         child: Text(
                           label.brandName,
@@ -2861,11 +2958,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   .toList(),
 
               // hint: Text('Rating'),
-              onChanged: (value) {
-                setState(() {
-                  _siteBrand = value;
-                  _productSoldVisit.text = _siteBrand.productName;
-                  if (_siteBrand.brandName.toLowerCase() == "dalmia") {
+              onChanged: (value) async {
+
+                siteProductEntityfromLoaclDB=new List();
+                _siteProductFromLocalDB = null;
+                List<BrandModelforDB> _siteProductEntityfromLoaclDB = await db.fetchAllDistinctProduct(value.brandName);
+                setState(()  {
+                  _siteBrandFromLocalDB = value;
+
+                  siteProductEntityfromLoaclDB = _siteProductEntityfromLoaclDB;
+                 // _productSoldVisit.text = _siteBrand.productName;
+                  if (_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia") {
                     _stageStatus.text = "WON";
                   } else {
                     _stageStatus.text = "LOST";
@@ -2885,7 +2988,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.red, width: 1.0),
                 ),
-                labelText: "Brand in use",
+                labelText: "Brand In Use",
                 filled: false,
                 focusColor: Colors.black,
                 isDense: false,
@@ -2961,20 +3064,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               ),
             ),
             SizedBox(height: 16),
-            TextFormField(
-              controller: _productSoldVisit,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter Site Built-Up Area ';
-                }
+            DropdownButtonFormField<BrandModelforDB>(
+              value: _siteProductFromLocalDB,
+              items: siteProductEntityfromLoaclDB
+                  .map((label) => DropdownMenuItem(
+                child: Text(
+                  label.productName,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.inputBoxHintColor,
+                      fontFamily: "Muli"),
+                ),
+                value: label,
+              ))
+                  .toList(),
 
-                return null;
+              // hint: Text('Rating'),
+              onChanged: (value) {
+                setState(() {
+                  _siteProductFromLocalDB = value;
+                  print(_siteProductFromLocalDB.id);
+                });
               },
-              style: TextStyle(
-                  fontSize: 18,
-                  color: ColorConstants.inputBoxHintColor,
-                  fontFamily: "Muli"),
-              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -2982,23 +3093,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       //color: HexColor("#0000001F"),
                       width: 1.0),
                 ),
-                disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: const Color(0xFF000000).withOpacity(0.4),
-                      width: 1.0),
-                ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: const Color(0xFF000000).withOpacity(0.4),
-                      width: 1.0),
+                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.red, width: 1.0),
                 ),
                 labelText: "Product Sold",
                 filled: false,
-                enabled: false,
                 focusColor: Colors.black,
+                isDense: false,
                 labelStyle: TextStyle(
                     fontFamily: "Muli",
                     color: ColorConstants.inputBoxHintColorDark,
@@ -5137,25 +5241,119 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             thickness: 1,
           ),
         ),
-        DropdownButtonFormField<SiteFloorsEntity>(
-          value: _selectedSiteVisitFloorNextStage,
-          items: siteFloorsEntity
+        DropdownButtonFormField<ConstructionStageEntity>(
+          value: _selectedConstructionTypeVisit,
+          items: constructionStageEntityNewNextStage
               .map((label) => DropdownMenuItem(
-                    child: Text(
-                      label.siteFloorTxt,
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                    ),
-                    value: label,
-                  ))
+            child: Text(
+              label.constructionStageText,
+              style: TextStyle(
+                  fontSize: 18,
+                  color: ColorConstants.inputBoxHintColor,
+                  fontFamily: "Muli"),
+            ),
+            value: label,
+          ))
               .toList(),
 
           // hint: Text('Rating'),
           onChanged: (value) {
             setState(() {
-              _selectedSiteVisitFloorNextStage = value;
+              _selectedConstructionTypeVisit = value;
+              print(_selectedConstructionTypeVisit.id);
+              siteFloorsEntityNewNextStage = new List();
+              _selectedSiteVisitFloor= null;
+              if(_selectedConstructionTypeVisit.id == 1 || _selectedConstructionTypeVisit.id == 2 ||_selectedConstructionTypeVisit.id == 3  ){
+                // siteFloorsEntityNew = new List();
+                siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(id: siteFloorsEntity[0].id , siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
+              }
+              else{
+
+                for(int i=1;i<siteFloorsEntity.length;i++){
+
+                  siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(id: siteFloorsEntity[i].id , siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
+                }
+              }
+            });
+          },
+          decoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: ColorConstants.backgroundColorBlue,
+                  //color: HexColor("#0000001F"),
+                  width: 1.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black26, width: 1.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red, width: 1.0),
+            ),
+            labelText: "Type of Construction",
+            filled: false,
+            focusColor: Colors.black,
+            isDense: false,
+            labelStyle: TextStyle(
+                fontFamily: "Muli",
+                color: ColorConstants.inputBoxHintColorDark,
+                fontWeight: FontWeight.normal,
+                fontSize: 16.0),
+            fillColor: ColorConstants.backgroundColor,
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            "Mandatory",
+            style: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        DropdownButtonFormField<SiteFloorsEntity>(
+          value: _selectedSiteVisitFloor,
+          items: siteFloorsEntityNewNextStage
+              .map((label) => DropdownMenuItem(
+            child: Text(
+              label.siteFloorTxt,
+              style: TextStyle(
+                  fontSize: 18,
+                  color: ColorConstants.inputBoxHintColor,
+                  fontFamily: "Muli"),
+            ),
+            value: label,
+          ))
+              .toList(),
+
+          // hint: Text('Rating'),
+          onChanged: (value) {
+            setState(() {
+              _selectedSiteVisitFloor = value;
+
+              constructionStageEntityNewNextStage = new List();
+              _selectedConstructionTypeVisit= null;
+              if(_selectedSiteVisitFloor.id == 1 ){
+                // siteFloorsEntityNew = new List();
+                for(int i=0;i<3;i++){
+                  constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
+                      id: constructionStageEntity[i].id,
+                      constructionStageText: constructionStageEntity[i].constructionStageText
+                  ));
+                }
+              }
+              else{
+
+                for(int i=3;i<constructionStageEntity.length;i++){
+                  constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
+                      id: constructionStageEntity[i].id,
+                      constructionStageText: constructionStageEntity[i].constructionStageText
+                  ));
+                }
+              }
             });
           },
           decoration: InputDecoration(
@@ -5192,53 +5390,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               color: ColorConstants.inputBoxHintColorDark,
               fontWeight: FontWeight.normal,
             ),
-          ),
-        ),
-        SizedBox(height: 16),
-        DropdownButtonFormField<ConstructionStageEntity>(
-          value: _selectedConstructionTypeVisitNextStage,
-          items: constructionStageEntity
-              .map((label) => DropdownMenuItem(
-                    child: Text(
-                      label.constructionStageText,
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                    ),
-                    value: label,
-                  ))
-              .toList(),
-
-          // hint: Text('Rating'),
-          onChanged: (value) {
-            setState(() {
-              _selectedConstructionTypeVisitNextStage = value;
-            });
-          },
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: ColorConstants.backgroundColorBlue,
-                  //color: HexColor("#0000001F"),
-                  width: 1.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black26, width: 1.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1.0),
-            ),
-            labelText: "Type of Construction",
-            filled: false,
-            focusColor: Colors.black,
-            isDense: false,
-            labelStyle: TextStyle(
-                fontFamily: "Muli",
-                color: ColorConstants.inputBoxHintColorDark,
-                fontWeight: FontWeight.normal,
-                fontSize: 16.0),
-            fillColor: ColorConstants.backgroundColor,
           ),
         ),
         SizedBox(height: 16),
@@ -5292,27 +5443,33 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             ),
           ),
         ),
-        DropdownButtonFormField<SiteBrandEntity>(
-          value: _siteBrandNextStage,
-          items: siteBrandEntity
+        DropdownButtonFormField<BrandModelforDB>(
+          value: _siteBrandFromLocalDBNextStage,
+          items: siteBrandEntityfromLoaclDB
               .map((label) => DropdownMenuItem(
-                    child: Text(
-                      label.brandName,
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                    ),
-                    value: label,
-                  ))
+            child: Text(
+              label.brandName,
+              style: TextStyle(
+                  fontSize: 18,
+                  color: ColorConstants.inputBoxHintColor,
+                  fontFamily: "Muli"),
+            ),
+            value: label,
+          ))
               .toList(),
 
           // hint: Text('Rating'),
-          onChanged: (value) {
-            setState(() {
-              _siteBrandNextStage = value;
-              _productSoldVisitNextStage.text = _siteBrandNextStage.productName;
-              if (_siteBrandNextStage.brandName.toLowerCase() == "dalmia") {
+          onChanged: (value) async {
+
+            siteProductEntityfromLoaclDBNextStage=new List();
+            _siteProductFromLocalDBNextStage = null;
+            List<BrandModelforDB> _siteProductEntityfromLoaclDB = await db.fetchAllDistinctProduct(value.brandName);
+            setState(()  {
+              _siteBrandFromLocalDBNextStage = value;
+
+              siteProductEntityfromLoaclDBNextStage = _siteProductEntityfromLoaclDB;
+              // _productSoldVisit.text = _siteBrand.productName;
+              if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() == "dalmia") {
                 _stageStatusNextStage.text = "WON";
               } else {
                 _stageStatusNextStage.text = "LOST";
@@ -5332,7 +5489,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.red, width: 1.0),
             ),
-            labelText: "Brand in use",
+            labelText: "Brand In Use",
             filled: false,
             focusColor: Colors.black,
             isDense: false,
@@ -5407,20 +5564,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           ),
         ),
         SizedBox(height: 16),
-        TextFormField(
-          controller: _productSoldVisitNextStage,
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter Site Built-Up Area ';
-            }
+        DropdownButtonFormField<BrandModelforDB>(
+          value: _siteProductFromLocalDBNextStage,
+          items: siteProductEntityfromLoaclDBNextStage
+              .map((label) => DropdownMenuItem(
+            child: Text(
+              label.productName,
+              style: TextStyle(
+                  fontSize: 18,
+                  color: ColorConstants.inputBoxHintColor,
+                  fontFamily: "Muli"),
+            ),
+            value: label,
+          ))
+              .toList(),
 
-            return null;
+          // hint: Text('Rating'),
+          onChanged: (value) {
+            setState(() {
+              _siteProductFromLocalDBNextStage = value;
+              print(_siteProductFromLocalDBNextStage.id);
+            });
           },
-          style: TextStyle(
-              fontSize: 18,
-              color: ColorConstants.inputBoxHintColor,
-              fontFamily: "Muli"),
-          keyboardType: TextInputType.text,
           decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
@@ -5429,20 +5594,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   width: 1.0),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
+              borderSide: BorderSide(color: Colors.black26, width: 1.0),
             ),
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.red, width: 1.0),
             ),
             labelText: "Product Sold",
             filled: false,
-            enabled: false,
             focusColor: Colors.black,
+            isDense: false,
             labelStyle: TextStyle(
                 fontFamily: "Muli",
                 color: ColorConstants.inputBoxHintColorDark,
@@ -5931,150 +6091,170 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   Future<void> UpdateRequest() async {
-    String empId;
-    String mobileNumber;
-    String name;
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) {
-      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
-      if (_comments.text == null ||
-          _comments.text == "null" ||
-          _comments.text == "") {
-        _comments.text = "Site updated";
-      }
 
-      List<SiteCommentsEntity> newSiteCommentsEntity = new List();
-      newSiteCommentsEntity.add(new SiteCommentsEntity(
-          siteId: widget.siteId,
-          siteCommentText: _comments.text,
-          creatorName: name,
-          createdBy: empId));
 
-      if (_selectedConstructionTypeVisit != null) {
-        siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
-          totalBalancePotential: _siteTotalBalancePt.text,
-          constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
-          floorId: _selectedSiteVisitFloor.id,
-          stagePotential: _stagePotentialVisit.text,
-          brandId: _siteBrand.id,
-          brandPrice: _brandPriceVisit.text,
-          constructionDate: _dateofConstruction.text,
-          siteId: widget.siteId,
-          supplyDate: _dateOfBagSupplied.text,
-          supplyQty: _stagePotentialVisit.text,
-          stageStatus: _stageStatus.text,
-          createdBy: empId,
-        ));
-      }
+    if(_siteBuiltupArea.text == "" || _siteBuiltupArea.text == null || _siteBuiltupArea.text == "null"){
+      Get.dialog(
+          CustomDialogs().errorDialog("Please fill mandatory fields in \"Site Data\" TAb"));
+    }
+    else if(_selectedConstructionTypeVisit == null || _stagePotentialVisitNextStage.text == null || _stagePotentialVisitNextStage.text == ""
+        || _siteBrand == null || _selectedSiteVisitFloor == null || _brandPriceVisit.text == "" || _brandPriceVisit.text == null
+        // && _dateofConstruction.text == "" && _dateofConstruction.text == null
+        || _dateOfBagSupplied.text == "" || _dateOfBagSupplied.text == null
+        || _stagePotentialVisit.text == "" || _stagePotentialVisit.text == null
+        || _stageStatus.text == "" || _stageStatus.text == null
+        || _siteCompetitionStatusEntity == null ||_siteOpportunitStatusEnity == null  || _siteProbabilityWinningEntity == null){
+      Get.dialog(
+          CustomDialogs().errorDialog("Please fill mandatory fields in \"Visit Data\" Tab"));
+    }
+    else{
+      String empId;
+      String mobileNumber;
+      String name;
+      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+      await _prefs.then((SharedPreferences prefs) {
+        empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+        mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
+        name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
-      if (_selectedConstructionTypeVisitNextStage != null) {
-        siteNextStageEntity.add(new SiteNextStageEntity(
-          siteId: widget.siteId,
-          constructionStageId: _selectedConstructionTypeVisitNextStage.id ?? 1,
-          stagePotential: _stagePotentialVisitNextStage.text,
-          brandId: _siteBrandNextStage.id,
-          brandPrice: _brandPriceVisitNextStage.text,
-          stageStatus: _stageStatusNextStage.text,
-          constructionStartDt: _dateofConstructionNextStage.text,
-          nextStageSupplyDate: _dateOfBagSuppliedNextStage.text,
-          nextStageSupplyQty: _siteCurrentTotalBagsNextStage.text,
-          createdBy: empId,
-        ));
-      }
-
-      List<updateResponse.SitePhotosEntity> newSitePhotoEntity = new List();
-      // sitephotosEntity.clear();
-      for (int i = 0; i < _imageList.length; i++) {
-        sitephotosEntity.add(
-            new SitephotosEntity(photoName: path.basename(_imageList[i].path)));
-      }
-
-      if (_listInfluencerDetail.length != 0) {
-        if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
-                null ||
-            _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
-                "null" ||
-            _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                .inflName
-                .text
-                .isNullOrBlank) {
-          print("here1234");
-          _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
+        if (_comments.text == null ||
+            _comments.text == "null" ||
+            _comments.text == "") {
+          _comments.text = "Site updated";
         }
-      }
 
-      List<updateResponse.SiteInfluencerEntityNew> newInfluencerEntity =
-          new List();
+        List<SiteCommentsEntity> newSiteCommentsEntity = new List();
+        newSiteCommentsEntity.add(new SiteCommentsEntity(
+            siteId: widget.siteId,
+            siteCommentText: _comments.text,
+            creatorName: name,
+            createdBy: empId));
 
-      if (_listInfluencerDetail.length > initialInfluencerLength) {
-        for (int i = initialInfluencerLength;
-            i < _listInfluencerDetail.length;
-            i++) {
-          newInfluencerEntity.add(new updateResponse.SiteInfluencerEntityNew(
-              inflId: int.parse(_listInfluencerDetail[i].id.text),
-              siteId: widget.siteId,
-              isDelete: "N",
-              createdBy: empId));
+        if (_selectedConstructionTypeVisit != null) {
+          siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
+            totalBalancePotential: _siteTotalBalancePt.text,
+            constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
+            floorId: _selectedSiteVisitFloor.id,
+            stagePotential: _stagePotentialVisit.text,
+            brandId: _siteProductFromLocalDB.id,
+            brandPrice: _brandPriceVisit.text,
+            constructionDate: _dateofConstruction.text,
+            siteId: widget.siteId,
+            supplyDate: _dateOfBagSupplied.text,
+            supplyQty: _stagePotentialVisit.text,
+            stageStatus: _stageStatus.text,
+            createdBy: empId,
+          ));
         }
-      }
 
-      if (_selectedSiteFloor == null) {
-        _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
-      }
+        if (_selectedConstructionTypeVisitNextStage != null) {
+          siteNextStageEntity.add(new SiteNextStageEntity(
+            siteId: widget.siteId,
+            constructionStageId: _selectedConstructionTypeVisitNextStage.id ?? 1,
+            stagePotential: _stagePotentialVisitNextStage.text,
+            brandId: _siteProductFromLocalDBNextStage.id,
+            brandPrice: _brandPriceVisitNextStage.text,
+            stageStatus: _stageStatusNextStage.text,
+            constructionStartDt: _dateofConstructionNextStage.text,
+            nextStageSupplyDate: _dateOfBagSuppliedNextStage.text,
+            nextStageSupplyQty: _siteCurrentTotalBagsNextStage.text,
+            createdBy: empId,
+          ));
+        }
 
-      print(_selectedSiteFloor.id);
+        List<updateResponse.SitePhotosEntity> newSitePhotoEntity = new List();
+        // sitephotosEntity.clear();
+        for (int i = 0; i < _imageList.length; i++) {
+          sitephotosEntity.add(
+              new SitephotosEntity(photoName: path.basename(_imageList[i].path)));
+        }
 
-      var updateDataRequest = {
-        "siteId": widget.siteId,
-        "siteSegment": "TRADE",
-        "assignedTo": viewSiteDataResponse.sitesModal.assignedTo,
-        "siteStatusId": viewSiteDataResponse.sitesModal.siteStatusId,
-        "siteStageId": labelId,
-        "contactName": _ownerName.text,
-        "contactNumber": _contactNumber.text,
-        "siteGeotag": geoTagType,
-        "siteGeotagLat": _currentPosition.latitude.toString(),
-        "siteGeotagLong": _currentPosition.longitude.toString(),
-        "plotNumber": _plotNumber.text,
-        "siteAddress": _siteAddress.text,
-        "sitePincode": _pincode.text,
-        "siteState": _state.text,
-        "siteDistrict": _district.text,
-        "siteTaluk": _taluk.text,
-        "sitePotentialMt": _siteTotalPt.text,
-        "reraNumber": _rera.text,
-        "siteCreationDate": viewSiteDataResponse.sitesModal.siteCreationDate,
-        "dealerId": viewSiteDataResponse.sitesModal.siteDealerId,
-        "siteBuiltArea": _siteBuiltupArea.text,
-        "noOfFloors": _selectedSiteFloor.id,
-        "productDemo": _siteProductDemo.text,
-        "productOralBriefing": _siteProductOralBriefing.text,
-        "soCode": viewSiteDataResponse.sitesModal.siteSoId,
-        "inactiveReasonText":
-            (_inactiveReasonText.text != "") ? _inactiveReasonText.text : null,
-        "nextVisitDate":
-            (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
-        "closureReasonText":
-            (closureReasonText.text != "") ? closureReasonText.text : null,
-        "createdBy": "",
-        "siteCommentsEntity": newSiteCommentsEntity,
-        "siteVisitHistoryEntity": siteVisitHistoryEntity,
-        "siteNextStageEntity": siteNextStageEntity,
-        "sitePhotosEntity": newSitePhotoEntity,
-        "siteInfluencerEntity": newInfluencerEntity,
-        "siteConstructionId": _selectedConstructionType.id,
-        "siteCompetitionId": _siteCompetitionStatusEntity.id,
-        "siteOppertunityId": _siteOpportunitStatusEnity.id,
-        "siteProbabilityWinningId": _siteProbabilityWinningEntity.id
-      };
-      _siteController.updateLeadData(
-          updateDataRequest, _imageList, context, widget.siteId);
+        if (_listInfluencerDetail.length != 0) {
+          if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
+              null ||
+              _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
+                  "null" ||
+              _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                  .inflName
+                  .text
+                  .isNullOrBlank) {
+            print("here1234");
+            _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
+          }
+        }
 
-      Get.back();
-    });
+        List<updateResponse.SiteInfluencerEntityNew> newInfluencerEntity =
+        new List();
+
+        if (_listInfluencerDetail.length > initialInfluencerLength) {
+          for (int i = initialInfluencerLength;
+          i < _listInfluencerDetail.length;
+          i++) {
+            newInfluencerEntity.add(new updateResponse.SiteInfluencerEntityNew(
+                inflId: int.parse(_listInfluencerDetail[i].id.text),
+                siteId: widget.siteId,
+                isDelete: "N",
+                createdBy: empId));
+          }
+        }
+
+        if (_selectedSiteFloor == null) {
+          _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
+        }
+
+        print(_selectedSiteFloor.id);
+
+        var updateDataRequest = {
+          "siteId": widget.siteId,
+          "siteSegment": "TRADE",
+          "assignedTo": viewSiteDataResponse.sitesModal.assignedTo,
+          "siteStatusId": viewSiteDataResponse.sitesModal.siteStatusId,
+          "siteStageId": labelId,
+          "contactName": _ownerName.text,
+          "contactNumber": _contactNumber.text,
+          "siteGeotag": geoTagType,
+          "siteGeotagLat": _currentPosition.latitude.toString(),
+          "siteGeotagLong": _currentPosition.longitude.toString(),
+          "plotNumber": _plotNumber.text,
+          "siteAddress": _siteAddress.text,
+          "sitePincode": _pincode.text,
+          "siteState": _state.text,
+          "siteDistrict": _district.text,
+          "siteTaluk": _taluk.text,
+          "sitePotentialMt": _siteTotalPt.text,
+          "reraNumber": _rera.text,
+          "siteCreationDate": viewSiteDataResponse.sitesModal.siteCreationDate,
+          "dealerId": viewSiteDataResponse.sitesModal.siteDealerId,
+          "siteBuiltArea": _siteBuiltupArea.text,
+          "noOfFloors": _selectedSiteFloor.id,
+          "productDemo": _siteProductDemo.text,
+          "productOralBriefing": _siteProductOralBriefing.text,
+          "soCode": viewSiteDataResponse.sitesModal.siteSoId,
+          "inactiveReasonText":
+          (_inactiveReasonText.text != "") ? _inactiveReasonText.text : null,
+          "nextVisitDate":
+          (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
+          "closureReasonText":
+          (closureReasonText.text != "") ? closureReasonText.text : null,
+          "createdBy": "",
+          "siteCommentsEntity": newSiteCommentsEntity,
+          "siteVisitHistoryEntity": siteVisitHistoryEntity,
+          "siteNextStageEntity": siteNextStageEntity,
+          "sitePhotosEntity": newSitePhotoEntity,
+          "siteInfluencerEntity": newInfluencerEntity,
+          "siteConstructionId": _selectedConstructionType.id,
+          "siteCompetitionId": _siteCompetitionStatusEntity != null ? _siteCompetitionStatusEntity.id : null,
+          "siteOppertunityId": _siteOpportunitStatusEnity != null ? _siteOpportunitStatusEnity.id : null,
+          "siteProbabilityWinningId": _siteProbabilityWinningEntity != null ? _siteProbabilityWinningEntity.id : null
+        };
+        _siteController.updateLeadData(
+            updateDataRequest, _imageList, context, widget.siteId);
+
+        Get.back();
+      });
+    }
+
   }
 }
 

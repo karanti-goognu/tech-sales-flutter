@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/RejectionLeadScreen.dart';
@@ -310,5 +311,67 @@ class CustomDialogs {
         ),
       ],
     );
+  }
+
+  Widget showExistingTSODialog(String respMsg, BuildContext context, SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
+
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              respMsg,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'YES',
+            style: GoogleFonts.roboto(
+                fontSize: 17,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.bold,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            Get.back();
+            AddLeadsController _addLeadsController = Get.find();
+            saveLeadRequestModel.isStatus = "true";
+            _addLeadsController.getAccessKeyAndSaveLead(
+                saveLeadRequestModel,
+                imageList,
+                context);
+          },
+
+        ),
+        TextButton(
+          child: Text(
+            'NO',
+            style: GoogleFonts.roboto(
+                fontSize: 17,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.bold,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+Get.back();
+Get.back();
+          },
+
+        ),
+      ],
+    );
+
   }
 }
