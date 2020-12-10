@@ -1873,7 +1873,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                               });
                               LocationResult result = await showLocationPicker(
                                 context,
-                                "AIzaSyBbCRRECpLRmhBJSY2jv9H0SbzQLnCFYFk",
+                                StringConstants.API_Key,
                                 initialCenter: LatLng(31.1975844, 29.9598339),
                                 automaticallyAnimateToCurrentLocation: true,
 //                      mapStylePath: 'assets/mapStyle.json',
