@@ -398,6 +398,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             }
           }
 
+          if (viewSiteDataResponse.sitesModal.noOfFloors != null || viewSiteDataResponse.sitesModal.noOfFloors != 0) {
+            for (int i = 0; i < siteFloorsEntity.length; i++) {
+              if (viewSiteDataResponse.sitesModal.noOfFloors
+                  .toString() ==
+                  siteFloorsEntity[i].id.toString()) {
+                _selectedSiteFloor = siteFloorsEntity[i];
+              }
+            }
+          }
+
+
+
           _siteBuiltupArea.text = sitesModal.siteBuiltArea;
           myFocusNode = FocusNode();
           myFocusNode.requestFocus();
@@ -1916,7 +1928,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 LocationResult result =
                                     await showLocationPicker(
                                   context,
-                                  "AIzaSyBbCRRECpLRmhBJSY2jv9H0SbzQLnCFYFk",
+                                  StringConstants.API_Key,
                                   initialCenter: LatLng(31.1975844, 29.9598339),
                                   automaticallyAnimateToCurrentLocation: true,
 //                      mapStylePath: 'assets/mapStyle.json',
@@ -2830,26 +2842,26 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 setState(() {
                   _selectedSiteVisitFloor = value;
 
-                  constructionStageEntityNew = new List();
-                  _selectedConstructionTypeVisit= null;
-                  if(_selectedSiteVisitFloor.id == 1 ){
-                    // siteFloorsEntityNew = new List();
-                    for(int i=0;i<3;i++){
-                      constructionStageEntityNew.add(new ConstructionStageEntity(
-                        id: constructionStageEntity[i].id,
-                        constructionStageText: constructionStageEntity[i].constructionStageText
-                      ));
-                    }
-                  }
-                  else{
-
-                    for(int i=3;i<constructionStageEntity.length;i++){
-                      constructionStageEntityNew.add(new ConstructionStageEntity(
-                          id: constructionStageEntity[i].id,
-                          constructionStageText: constructionStageEntity[i].constructionStageText
-                      ));
-                    }
-                  }
+                  // constructionStageEntityNew = new List();
+                  // _selectedConstructionTypeVisit= null;
+                  // if(_selectedSiteVisitFloor.id == 1 ){
+                  //   // siteFloorsEntityNew = new List();
+                  //   for(int i=0;i<3;i++){
+                  //     constructionStageEntityNew.add(new ConstructionStageEntity(
+                  //       id: constructionStageEntity[i].id,
+                  //       constructionStageText: constructionStageEntity[i].constructionStageText
+                  //     ));
+                  //   }
+                  // }
+                  // else{
+                  //
+                  //   for(int i=3;i<constructionStageEntity.length;i++){
+                  //     constructionStageEntityNew.add(new ConstructionStageEntity(
+                  //         id: constructionStageEntity[i].id,
+                  //         constructionStageText: constructionStageEntity[i].constructionStageText
+                  //     ));
+                  //   }
+                  // }
                 });
               },
               decoration: InputDecoration(
@@ -5242,7 +5254,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           ),
         ),
         DropdownButtonFormField<ConstructionStageEntity>(
-          value: _selectedConstructionTypeVisit,
+          value: _selectedConstructionTypeVisitNextStage,
           items: constructionStageEntityNewNextStage
               .map((label) => DropdownMenuItem(
             child: Text(
@@ -5259,11 +5271,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           // hint: Text('Rating'),
           onChanged: (value) {
             setState(() {
-              _selectedConstructionTypeVisit = value;
-              print(_selectedConstructionTypeVisit.id);
+              _selectedConstructionTypeVisitNextStage = value;
+              print(_selectedConstructionTypeVisitNextStage.id);
               siteFloorsEntityNewNextStage = new List();
-              _selectedSiteVisitFloor= null;
-              if(_selectedConstructionTypeVisit.id == 1 || _selectedConstructionTypeVisit.id == 2 ||_selectedConstructionTypeVisit.id == 3  ){
+              _selectedSiteVisitFloorNextStage= null;
+              if(_selectedConstructionTypeVisitNextStage.id == 1 || _selectedConstructionTypeVisitNextStage.id == 2 ||_selectedConstructionTypeVisitNextStage.id == 3  ){
                 // siteFloorsEntityNew = new List();
                 siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(id: siteFloorsEntity[0].id , siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
               }
@@ -5315,7 +5327,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         ),
         SizedBox(height: 16),
         DropdownButtonFormField<SiteFloorsEntity>(
-          value: _selectedSiteVisitFloor,
+          value: _selectedSiteVisitFloorNextStage,
           items: siteFloorsEntityNewNextStage
               .map((label) => DropdownMenuItem(
             child: Text(
@@ -5332,28 +5344,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           // hint: Text('Rating'),
           onChanged: (value) {
             setState(() {
-              _selectedSiteVisitFloor = value;
+              _selectedSiteVisitFloorNextStage = value;
 
-              constructionStageEntityNewNextStage = new List();
-              _selectedConstructionTypeVisit= null;
-              if(_selectedSiteVisitFloor.id == 1 ){
-                // siteFloorsEntityNew = new List();
-                for(int i=0;i<3;i++){
-                  constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
-                      id: constructionStageEntity[i].id,
-                      constructionStageText: constructionStageEntity[i].constructionStageText
-                  ));
-                }
-              }
-              else{
-
-                for(int i=3;i<constructionStageEntity.length;i++){
-                  constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
-                      id: constructionStageEntity[i].id,
-                      constructionStageText: constructionStageEntity[i].constructionStageText
-                  ));
-                }
-              }
+              // constructionStageEntityNewNextStage = new List();
+              // _selectedConstructionTypeVisitNextStage= null;
+              // if(_selectedSiteVisitFloor.id == 1 ){
+              //   // siteFloorsEntityNew = new List();
+              //   for(int i=0;i<3;i++){
+              //     constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
+              //         id: constructionStageEntity[i].id,
+              //         constructionStageText: constructionStageEntity[i].constructionStageText
+              //     ));
+              //   }
+              // }
+              // else{
+              //
+              //   for(int i=3;i<constructionStageEntity.length;i++){
+              //     constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
+              //         id: constructionStageEntity[i].id,
+              //         constructionStageText: constructionStageEntity[i].constructionStageText
+              //     ));
+              //   }
+              // }
             });
           },
           decoration: InputDecoration(
@@ -6098,8 +6110,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       Get.dialog(
           CustomDialogs().errorDialog("Please fill mandatory fields in \"Site Data\" TAb"));
     }
-    else if(_selectedConstructionTypeVisit == null || _stagePotentialVisitNextStage.text == null || _stagePotentialVisitNextStage.text == ""
-        || _siteBrand == null || _selectedSiteVisitFloor == null || _brandPriceVisit.text == "" || _brandPriceVisit.text == null
+    else if(_selectedConstructionTypeVisit == null || _stagePotentialVisit.text == null || _stagePotentialVisit.text == ""
+        || _siteProductFromLocalDB == null || _selectedSiteVisitFloor == null || _brandPriceVisit.text == "" || _brandPriceVisit.text == null
         // && _dateofConstruction.text == "" && _dateofConstruction.text == null
         || _dateOfBagSupplied.text == "" || _dateOfBagSupplied.text == null
         || _stagePotentialVisit.text == "" || _stagePotentialVisit.text == null
@@ -6107,6 +6119,29 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         || _siteCompetitionStatusEntity == null ||_siteOpportunitStatusEnity == null  || _siteProbabilityWinningEntity == null){
       Get.dialog(
           CustomDialogs().errorDialog("Please fill mandatory fields in \"Visit Data\" Tab"));
+    }
+    else if(addNextButtonDisable && (_selectedConstructionTypeVisitNextStage == null || _stagePotentialVisitNextStage.text == null || _stagePotentialVisitNextStage.text == ""
+        || _siteProductFromLocalDBNextStage == null || _selectedSiteVisitFloorNextStage == null || _brandPriceVisitNextStage.text == "" || _brandPriceVisitNextStage.text == null
+        // && _dateofConstruction.text == "" && _dateofConstruction.text == null
+        || _dateOfBagSuppliedNextStage.text == "" || _dateOfBagSuppliedNextStage.text == null
+        || _stagePotentialVisitNextStage.text == "" || _stagePotentialVisitNextStage.text == null
+        || _stageStatusNextStage.text == "" || _stageStatusNextStage.text == null)
+        ){
+
+      print(_selectedConstructionTypeVisitNextStage);
+      print(_stagePotentialVisitNextStage);
+      print(_siteProductFromLocalDBNextStage);
+      print(_selectedSiteVisitFloorNextStage);
+      print(_brandPriceVisitNextStage);
+      print(_dateOfBagSuppliedNextStage);
+      print(_stagePotentialVisitNextStage);
+      print(_stageStatusNextStage);
+
+
+
+      Get.dialog(
+      CustomDialogs().errorDialog("Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+
     }
     else{
       String empId;

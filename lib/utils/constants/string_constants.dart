@@ -5,6 +5,9 @@ abstract class StringConstants {
   static String noInternetConnectionError =
       'No active internet connection found.Please check your internet connectivity.';
 
+  //Map Api Key
+  static String API_Key = "AIzaSyBMMbdXDz2Vt9O8hF8l4xNGRQAwHdMegZ4";
+
   //Secret Key for encryption
   static String encryptionKey = "dalmia@techexpert";
   static String encryptedKey = "a8Egz8p4qTjvGNCrS3TKxQ==";//a8Egz8p4qTjvGNCrS3TKxQ==

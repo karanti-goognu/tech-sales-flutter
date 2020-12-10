@@ -639,8 +639,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             });
                             LocationResult result = await showLocationPicker(
                               context,
-                              "AIzaSyBbCRRECpLRmhBJSY2jv9H0SbzQLnCFYFk",
-                              initialCenter: LatLng(31.1975844, 29.9598339),
+                              StringConstants.API_Key,
+                              initialCenter: LatLng(28.644800, 77.216721),
                               automaticallyAnimateToCurrentLocation: true,
 //                      mapStylePath: 'assets/mapStyle.json',
                               myLocationButtonEnabled: true,
