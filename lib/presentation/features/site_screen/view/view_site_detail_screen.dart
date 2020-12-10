@@ -6128,19 +6128,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         || _stageStatusNextStage.text == "" || _stageStatusNextStage.text == null)
         ){
 
-      print(_selectedConstructionTypeVisitNextStage);
-      print(_stagePotentialVisitNextStage);
-      print(_siteProductFromLocalDBNextStage);
-      print(_selectedSiteVisitFloorNextStage);
-      print(_brandPriceVisitNextStage);
-      print(_dateOfBagSuppliedNextStage);
-      print(_stagePotentialVisitNextStage);
-      print(_stageStatusNextStage);
 
 
 
       Get.dialog(
       CustomDialogs().errorDialog("Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+
+
 
     }
     else{
