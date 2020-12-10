@@ -12,7 +12,7 @@ class AddEventVisit extends StatefulWidget {
 }
 
 class AddEventVisitScreenPageState extends State<AddEventVisit> {
-  String dropdownValue = 'Visit';
+  String dropdownValue = 'Select visit sub-types';
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;

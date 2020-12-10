@@ -91,7 +91,8 @@ class AddEventInfluencerMeetScreenPageState
                     },
                     style: _myFormFont(),
                     keyboardType: TextInputType.text,
-                    decoration: _inputDecoration("Non-Dalmia Influencers", false)),
+                    decoration:
+                        _inputDecoration("Non-Dalmia Influencers", false)),
                 _spaceBetweenFields(),
                 TextFormField(
                     validator: (value) {
@@ -102,8 +103,7 @@ class AddEventInfluencerMeetScreenPageState
                     },
                     style: _myFormFont(),
                     keyboardType: TextInputType.text,
-                    decoration:
-                        _inputDecoration("Total participants", false)),
+                    decoration: _inputDecoration("Total participants", false)),
                 _spaceBetweenFields(),
                 Container(
                     width: double.infinity,
@@ -143,8 +143,7 @@ class AddEventInfluencerMeetScreenPageState
                     },
                     style: _myFormFont(),
                     keyboardType: TextInputType.text,
-                    decoration:
-                    _inputDecoration("Add dealer(s)", false)),
+                    decoration: _inputDecoration("Add dealer(s)", false)),
                 _spaceBetweenFields(),
                 TextFormField(
                     validator: (value) {
@@ -155,8 +154,7 @@ class AddEventInfluencerMeetScreenPageState
                     },
                     style: _myFormFont(),
                     keyboardType: TextInputType.text,
-                    decoration:
-                    _inputDecoration("Expected leads", false)),
+                    decoration: _inputDecoration("Expected leads", false)),
                 _spaceBetweenFields(),
                 TextFormField(
                     validator: (value) {
@@ -167,8 +165,7 @@ class AddEventInfluencerMeetScreenPageState
                     },
                     style: _myFormFont(),
                     keyboardType: TextInputType.text,
-                    decoration:
-                    _inputDecoration("Gift distribution", false)),
+                    decoration: _inputDecoration("Gift distribution", false)),
                 _spaceBetweenFields(),
                 TextFormField(
                     validator: (value) {
@@ -179,8 +176,7 @@ class AddEventInfluencerMeetScreenPageState
                     },
                     style: _myFormFont(),
                     keyboardType: TextInputType.text,
-                    decoration:
-                    _inputDecoration("Event location", false)),
+                    decoration: _inputDecoration("Event location", false)),
                 _spaceBetweenFields(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,8 +184,8 @@ class AddEventInfluencerMeetScreenPageState
                     FlatButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0.0),
-                          side: BorderSide(color: ColorConstants.inputBoxBorderSideColor)
-                      ),
+                          side: BorderSide(
+                              color: ColorConstants.inputBoxBorderSideColor)),
                       color: Colors.transparent,
                       highlightColor: ColorConstants.buttonPressedColor,
                       onPressed: () {
@@ -227,7 +223,6 @@ class AddEventInfluencerMeetScreenPageState
                     ),
                   ],
                 )
-
               ],
             ),
           ),
@@ -271,8 +266,10 @@ class AddEventInfluencerMeetScreenPageState
         fontSize: 16.0);
   }
 
-  SizedBox _spaceBetweenFields(){
-    return SizedBox(height: 24,);
+  SizedBox _spaceBetweenFields() {
+    return SizedBox(
+      height: 24,
+    );
   }
 
   Future<void> _selectDate(BuildContext context) async {
