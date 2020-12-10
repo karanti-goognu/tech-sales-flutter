@@ -1,4 +1,5 @@
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
+import 'package:flutter_tech_sales/bindings/app_binding.dart';
 import 'package:flutter_tech_sales/bindings/home_binding.dart';
 import 'package:flutter_tech_sales/bindings/leads__filter_binding.dart';
 import 'package:flutter_tech_sales/bindings/login_binding.dart';
@@ -31,10 +32,9 @@ class AppPages {
         name: Routes.SEARCH_SCREEN,
         page: () => SearchScreen(),
         binding: SearchBinding()),
-
     GetPage(
         name: Routes.SEARCH_SITES_SCREEN,
-        page: () => SiteSearchScreen() ,
+        page: () => SiteSearchScreen(),
         binding: SearchBinding()),
     GetPage(
         name: Routes.LOGIN, page: () => LoginScreen(), binding: LoginBinding()),
@@ -65,6 +65,6 @@ class AppPages {
     GetPage(
         name: Routes.ADD_EVENT_SCREEN,
         page: () => AddEvent(),
-    ),
+        binding: AppBinding()),
   ];
 }

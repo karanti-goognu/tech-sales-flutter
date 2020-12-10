@@ -20,22 +20,13 @@ class AddEventController extends GetxController {
 
   AddEventController({@required this.repository}) : assert(repository != null);
 
-  final _loginResponse = LoginModel().obs;
-  final _retryOtpResponse = RetryOtpModel().obs;
-  final _accessKeyResponse = AccessKeyModel().obs;
-  final _validateOtpResponse = ValidateOtpModel().obs;
+  final _selectedView = "Visit".obs;
   final _phoneNumber = "8860080067".obs;
   final _empId = "_empty".obs;
   final _otpCode = "_empty".obs;
   final _retryOtpActive = false.obs;
 
-  get loginResponse => this._loginResponse.value;
-
-  get retryOtpResponse => this._retryOtpResponse.value;
-
-  get accessKeyResponse => this._accessKeyResponse.value;
-
-  get validateOtpResponse => this._validateOtpResponse.value;
+  get selectedView => this._selectedView.value;
 
   get phoneNumber => this._phoneNumber.value;
 
@@ -45,15 +36,9 @@ class AddEventController extends GetxController {
 
   get retryOtpActive => this._retryOtpActive.value;
 
-  set loginResponse(value) => this._loginResponse.value = value;
-
-  set retryOtpResponse(value) => this._retryOtpResponse.value = value;
-
-  set accessKeyResponse(value) => this._accessKeyResponse.value = value;
-
-  set validateOtpResponse(value) => this._validateOtpResponse.value = value;
-
   set phoneNumber(value) => this._phoneNumber.value = value;
+
+  set selectedView(value) => this._selectedView.value = value;
 
   set empId(value) => this._empId.value = value;
 

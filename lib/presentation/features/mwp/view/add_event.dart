@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -13,15 +15,16 @@ class AddEvent extends StatefulWidget {
 }
 
 class AddEventScreenPageState extends State<AddEvent> {
+  AddEventController _addEventController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, //
+      resizeToAvoidBottomInset: true,
+      //
       backgroundColor: ColorConstants.backgroundColor,
       body: SingleChildScrollView(
         child: _buildAddEventInterface(context),
-
       ),
       floatingActionButton: Container(
         height: 68.0,
@@ -83,9 +86,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                 children: <Widget>[
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {
-
-                    },
+                    onPressed: () {},
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -170,14 +171,13 @@ class AddEventScreenPageState extends State<AddEvent> {
                           color: Colors.white,
                           border: Border.all()),
                       child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: dropdownValue,
+                          child: Obx(
+                        () => DropdownButton<String>(
+                          value: _addEventController.selectedView,
                           onChanged: (String newValue) {
-                            setState(() {
-                              dropdownValue = newValue;
-                            });
+                            _addEventController.selectedView = newValue;
                           },
-                          items: <String>['Visit', 'Influencers meet']
+                          items: <String>['Visit', 'Influencers meet', "1", "2"]
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -185,7 +185,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                             );
                           }).toList(),
                         ),
-                      ),
+                      )),
                     ),
                   ),
                 ],
@@ -193,7 +193,9 @@ class AddEventScreenPageState extends State<AddEvent> {
               SizedBox(
                 height: 30,
               ),
-              AddEventInfluencerMeet()
+              Obx(() => (_addEventController.selectedView == "Visit")
+                  ? AddEventVisit()
+                  : AddEventInfluencerMeet())
             ],
           )),
     );
