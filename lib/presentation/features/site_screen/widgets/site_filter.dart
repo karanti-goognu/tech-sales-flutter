@@ -170,11 +170,15 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                   onTap: () {
                     //Navigator.pop(context);
                     _siteController.selectedSiteStage = StringConstants.empty;
-                    _siteController.selectedSiteStageValue = StringConstants.empty;
+                    _siteController.selectedSiteStageValue =
+                        StringConstants.empty;
                     _siteController.selectedSiteStatus = StringConstants.empty;
-                    _siteController.selectedSiteStatusValue = StringConstants.empty;
-                    _siteController.selectedSiteInfluencerCat = StringConstants.empty;
-                    _siteController.selectedSiteInfluencerCatValue = StringConstants.empty;
+                    _siteController.selectedSiteStatusValue =
+                        StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCat =
+                        StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCatValue =
+                        StringConstants.empty;
                     _siteController.assignToDate = StringConstants.empty;
                     _siteController.assignFromDate = StringConstants.empty;
                     _siteController.selectedFilterCount = 0;
@@ -448,7 +452,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
               height: 100,
               //       <--- BoxDecoration here
               child: TextFormField(
-                onChanged: (_){
+                onChanged: (_) {
                   _siteController.selectedSitePincode = _;
                 },
                 style: TextStyle(
@@ -526,7 +530,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                       _siteController.selectedFilterCount + 1;
                 }
                 _siteController.selectedSiteInfluencerCat = value;
-                _siteController.selectedSiteInfluencerCatValue = siteStatusValue;
+                _siteController.selectedSiteInfluencerCatValue =
+                    siteStatusValue;
                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),

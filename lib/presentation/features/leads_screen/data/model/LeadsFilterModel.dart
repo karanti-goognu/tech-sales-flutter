@@ -1,5 +1,5 @@
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadStageEntity.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadStatusEntity.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/data/models/LeadStatusModel.dart';
 
 class LeadsFilterModel {
   List<LeadStatusEntity> leadStatusEntity;

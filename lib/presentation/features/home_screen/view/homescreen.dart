@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/custom_screen.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -29,17 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("Sites", "assets/images/img3.png"),
     new MenuDetailsModel("Influencers", "assets/images/img4.png"),
     new MenuDetailsModel("My Team", "assets/images/img1.png"),
-    new MenuDetailsModel("My Plan", "assets/images/img1.png"),
-    new MenuDetailsModel("Service", "assets/images/img1.png")
+    new MenuDetailsModel("MWP", "assets/images/img1.png"),
+    new MenuDetailsModel("Service\nRequests", "assets/images/img1.png")
   ];
 
   String employeeName = "empty";
-
-  //Login Otp Response :: {"user-security-key":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFTVAwMDAxMjM0IiwibW9iaWxlTnVtYmVyIjoiODg2MDA4MDA2NyIsImV4cCI6MTYwNTE5ODI1MywiaWF0IjoxNjA1MTk2NDUzLCJyZWZlcmVuY2VJZCI6IkVNUDAwMDEyMzQifQ.D14bPNxOQ6g5zbxsHaUVv6RNz0jdUTj_HoHtwS9f3ZuiDlDMnhjILrKfwQTrjFRqiiZMB-yQKJ8v6OVbClaaXQ",
-  // "resp-code":"DM1011","resp-msg":"Request completed successfully",
-  // "employee-details":{"reference-id":"EMP0001234","mobile-number":"8860080067","employee-name":"ANIL","employee-first-name":"ANIL"},
-  // "user-menu":[{"menu-id":1,"menu-text":"LEADS"},{"menu-id":2,"menu-text":"SITES"},{"menu-id":3,"menu-text":"INFLUENCERS"},{"menu-id":4,"menu-text":"MY TEAM"},{"menu-id":5,"menu-text":"JOURNEY"}],
-  // "journey-details":{"journey-date":null,"journey-start-time":null,"journey-start-lat":null,"journey-start-long":null,"journey-end-time":null,"journey-end-lat":null,"journey-end-long":null,"employee-id":null}}
 
   @override
   void initState() {
@@ -148,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           "Hello , ${_homeController.employeeName}",
                           style: TextStyle(
                               // color: Colors.white,
-                              fontSize: 25,
+                              fontSize: 24,
                               fontWeight: FontWeight.normal,
                               fontFamily: "Muli"),
                         ),
@@ -430,11 +425,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 Get.dialog(CustomDialogs().errorDialog(
                     list[index].value + " Page Coming Soon .... "));
               }
-              if (list[index].value == "My Plan") {
-                Get.dialog(CustomDialogs().errorDialog(
-                    list[index].value + " Page Coming Soon .... "));
+              if (list[index].value == "MWP") {
+                Get.toNamed(Routes.ADD_EVENT_SCREEN);
               }
-              if (list[index].value == "Service") {
+              if (list[index].value == "Service Requests") {
                 print("here");
                 Get.dialog(CustomDialogs().errorDialog(
                     list[index].value + " Page Coming Soon .... "));
@@ -477,17 +471,33 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           width: 6,
                         ),
-                        Text(
-                          list[index].value,
-                          maxLines: 1,
-                          overflow: TextOverflow.clip,
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Muli",
-                              fontWeight: FontWeight.bold
-                              //fontWeight: FontWeight.normal
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              list[index].value,
+                              overflow: TextOverflow.clip,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "Muli",
+                                  fontWeight: FontWeight.bold
+                                //fontWeight: FontWeight.normal
                               ),
-                        ),
+                            ),
+                            (index ==2 || index ==3)?Text(
+                              "coming soon",
+                              overflow: TextOverflow.clip,
+                              style: TextStyle(
+                                color: ColorConstants.inputBoxHintColor,
+                                  fontSize: 12,
+                                  fontFamily: "Muli",
+                                  fontWeight: FontWeight.bold
+                                //fontWeight: FontWeight.normal
+                              ),
+                            ):Container(),
+                          ],
+                        )
                       ],
                     ),
                   ),
