@@ -171,7 +171,9 @@ class InfluencerDetailDraft {
     this.isExpanded,
     this.inflCatValue,
     this.inflTypeValue,
-    this.createdBy
+    this.createdBy,
+    this.isPrimarybool,
+    this.isPrimary
   });
 
   String id ;
@@ -185,11 +187,13 @@ class InfluencerDetailDraft {
   String createdOn;
   String createdBy;
   bool isExpanded;
+  String isPrimary;
+  bool isPrimarybool;
 
 
 
   InfluencerDetailDraft.fromJson(Map<String, dynamic> json) {
-    this.id = json['id'].toString();
+    this.id = json['inflId'].toString();
     this.inflName = json['inflName'].toString();
     this.inflContact = json['inflContact'].toString();
     this.inflTypeId = json['inflTypeId'].toString();
@@ -199,6 +203,8 @@ class InfluencerDetailDraft {
     this.ilpIntrested = json['ilpIntrested'].toString();
     this.createdOn = json['createdOn'].toString();
     this.isExpanded = false;
+    this.isPrimarybool = json['isPrimary'].toString() == "Y" ? true : false;
+    this.isPrimary = json['isPrimary'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -217,6 +223,8 @@ class InfluencerDetailDraft {
    // data['createdOn'] = this.createdOn.toString();
     //data['createdBy'] = this.createdBy;
     data[ 'isDelete'] = 'N';
+    data['isPrimary'] = this.isPrimarybool ? "Y" : "N";
+    data['isPrimarybool'] = this.isPrimarybool;
     return data;
 
 

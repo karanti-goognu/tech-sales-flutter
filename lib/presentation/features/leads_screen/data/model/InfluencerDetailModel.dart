@@ -15,7 +15,10 @@ class InfluencerDetail {
     this.isExpanded,
     this.inflCatValue,
     this.inflTypeValue,
-    this.createdBy
+    this.createdBy,
+    this.isPrimarybool,
+    this.isPrimary,
+    this.originalId,
   });
 
   var id = TextEditingController();
@@ -27,8 +30,11 @@ class InfluencerDetail {
   var inflCatValue= TextEditingController();
   var ilpIntrested= TextEditingController();
   var createdOn= TextEditingController();
+   String isPrimary;
   String createdBy;
   bool isExpanded;
+  bool isPrimarybool;
+  int originalId;
 
 
 
@@ -41,6 +47,8 @@ class InfluencerDetail {
     this.ilpIntrested.text = json['ilpIntrested'].toString();
     this.createdOn.text = json['createdOn'].toString();
     this.isExpanded = false;
+    this.isPrimarybool = json['isPrimary'].toString() == "Y" ? true : false;
+    this.isPrimary = json['isPrimary'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -57,6 +65,7 @@ class InfluencerDetail {
       // data['createdOn'] = this.createdOn.text.toString();
       data['createdBy'] = this.createdBy;
       data[ 'isDelete'] = 'N';
+      data['isPrimary'] = this.isPrimarybool ? "Y" : "N";
       return data;
 
 

@@ -144,7 +144,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<BrandModelforDB> siteBrandEntityfromLoaclDB = new List();
   List<BrandModelforDB> siteProductEntityfromLoaclDB = new List();
   List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage = new List();
-  List<SiteInfluencerEntity> siteInfluencerEntity;
+  List<SiteInfluencerEntity> siteInfluencerEntity = new List();
   List<InfluencerTypeEntity> influencerTypeEntity = new List();
   List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
 
@@ -229,7 +229,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           if (sitephotosEntity != null) {
             for (int i = 0; i < sitephotosEntity.length; i++) {
 
-              File file = new File(UrlConstants.baseUrlforImages +
+              File file = new File(UrlConstants.baseUrlforImagesSites +
                   "/" +
                   sitephotosEntity[i].photoName);
               _imgDetails.add(new ImageDetails("Network", file));
@@ -237,6 +237,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           }
 
           influencerEntity = viewSiteDataResponse.influencerEntity;
+          siteInfluencerEntity = viewSiteDataResponse.siteInfluencerEntity;
 
           // print(viewSiteDataResponse.influencerEntity.length);
           if (viewSiteDataResponse.influencerEntity != null &&
@@ -244,7 +245,23 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             for (int i = 0;
                 i < viewSiteDataResponse.influencerEntity.length;
                 i++) {
+
+              int originalId ;
+              for(int j =0 ; j<  siteInfluencerEntity.length ; j++){
+                if(viewSiteDataResponse.influencerEntity[i].id ==  siteInfluencerEntity[j].inflId){
+                  viewSiteDataResponse.influencerEntity[i].isPrimary =
+                      siteInfluencerEntity[j].isPrimary;
+                  originalId = siteInfluencerEntity[j].id;
+                  break;
+                }
+              }
+
               _listInfluencerDetail.add(new InfluencerDetail(
+                  originalId: originalId,
+                  isPrimary: viewSiteDataResponse.influencerEntity[i].isPrimary,
+                  isPrimarybool: viewSiteDataResponse.influencerEntity[i].isPrimary == "Y"
+                      ? true
+                      : false,
                   id: new TextEditingController(
                       text: viewSiteDataResponse.influencerEntity[i].id
                           .toString()),
@@ -277,7 +294,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 viewSiteDataResponse.influencerEntity.length;
           }
 
-          _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true));
+         // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
           siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
           print(viewSiteDataResponse.siteVisitHistoryEntity.length);
           sitesModal = viewSiteDataResponse.sitesModal;
@@ -4009,6 +4026,44 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
                                   ),
+                                  Switch(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value) {
+                                          for (int i = 0;
+                                          i <
+                                              _listInfluencerDetail
+                                                  .length;
+                                          i++) {
+                                            if (i == index) {
+                                              _listInfluencerDetail[i]
+                                                  .isPrimarybool =
+                                                  value;
+                                            } else {
+                                              _listInfluencerDetail[i]
+                                                  .isPrimarybool =
+                                              !value;
+                                            }
+                                          }
+                                        } else {
+                                          Get.dialog(CustomDialogs()
+                                              .errorDialog(
+                                              "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                        }
+                                      });
+                                    },
+                                    value:
+                                    _listInfluencerDetail[index]
+                                        .isPrimarybool,
+                                    activeColor: HexColor("#009688"),
+                                    activeTrackColor:
+                                    HexColor("#009688")
+                                        .withOpacity(0.5),
+                                    inactiveThumbColor:
+                                    HexColor("#F1F1F1"),
+                                    inactiveTrackColor:
+                                    Colors.black26,
+                                  ),
                                   _listInfluencerDetail[index].isExpanded
                                       ? FlatButton.icon(
                                           // shape: RoundedRectangleBorder(
@@ -4145,6 +4200,71 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 ],
                               ),
                               SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Secondary",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        // color: HexColor("#000000DE"),
+                                        fontFamily: "Muli"),
+                                  ),
+                                  Switch(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value) {
+                                          for (int i = 0;
+                                          i <
+                                              _listInfluencerDetail
+                                                  .length;
+                                          i++) {
+                                            if (i == index) {
+                                              _listInfluencerDetail[i]
+                                                  .isPrimarybool =
+                                                  value;
+                                            } else {
+                                              _listInfluencerDetail[i]
+                                                  .isPrimarybool =
+                                              !value;
+                                            }
+                                          }
+                                        } else {
+                                          Get.dialog(CustomDialogs()
+                                              .errorDialog(
+                                              "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                        }
+                                      });
+                                    },
+                                    value:
+                                    _listInfluencerDetail[index]
+                                        .isPrimarybool,
+                                    activeColor: HexColor("#009688"),
+                                    activeTrackColor:
+                                    HexColor("#009688")
+                                        .withOpacity(0.5),
+                                    inactiveThumbColor:
+                                    HexColor("#F1F1F1"),
+                                    inactiveTrackColor:
+                                    Colors.black26,
+                                  ),
+                                  Text(
+                                    "Primary",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: _listInfluencerDetail[
+                                        index]
+                                            .isPrimarybool
+                                            ? HexColor("#009688")
+                                            : Colors.black,
+                                        // color: HexColor("#000000DE"),
+                                        fontFamily: "Muli"),
+                                  ),
+                                ],
+                              ),
                               TextFormField(
                                 controller:
                                     _listInfluencerDetail[index].inflContact,
@@ -4369,7 +4489,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                                               // Get.back();
                                               return Get.dialog(CustomDialogs()
-                                                  .errorDialog(
+                                                  .showDialog(
                                                       "No influencer registered with this number"));
                                             }
                                           });
@@ -4619,7 +4739,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   // //  print(_listInfluencerDetail[
                   //   _listInfluencerDetail.length - 1]
                   //       .inflName);
-                  if (_listInfluencerDetail[_listInfluencerDetail.length - 1]
+                  if(_listInfluencerDetail.length == 0 ){
+                    setState(() {
+                      _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: true));
+                    });
+
+                  }
+                  else if (_listInfluencerDetail[_listInfluencerDetail.length - 1]
                               .inflName !=
                           null &&
                       _listInfluencerDetail[_listInfluencerDetail.length - 1]
@@ -4631,7 +4757,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           .text
                           .isNullOrBlank) {
                     InfluencerDetail infl =
-                        new InfluencerDetail(isExpanded: true);
+                        new InfluencerDetail(isExpanded: true , isPrimarybool: false);
 
                     // Item item = new Item(
                     //     headerValue: "agx ", expandedValue: "dnxcx");
@@ -6195,9 +6321,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         List<updateResponse.SitePhotosEntity> newSitePhotoEntity = new List();
         // sitephotosEntity.clear();
         for (int i = 0; i < _imageList.length; i++) {
-          sitephotosEntity.add(
-              new SitephotosEntity(photoName: path.basename(_imageList[i].path)));
+          newSitePhotoEntity.add(
+              new updateResponse.SitePhotosEntity(photoName: path.basename(_imageList[i].path),
+              siteId: widget.siteId ,
+              createdBy: empId));
         }
+
+        print("Sumit Length :: "+ newSitePhotoEntity.length.toString());
+
+        //print(sitephotosEntity.)
 
         if (_listInfluencerDetail.length != 0) {
           if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
@@ -6216,23 +6348,30 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         List<updateResponse.SiteInfluencerEntityNew> newInfluencerEntity =
         new List();
 
-        if (_listInfluencerDetail.length > initialInfluencerLength) {
-          for (int i = initialInfluencerLength;
+
+          for (int i = 0;
           i < _listInfluencerDetail.length;
           i++) {
             newInfluencerEntity.add(new updateResponse.SiteInfluencerEntityNew(
+                id: _listInfluencerDetail[i].originalId,
                 inflId: int.parse(_listInfluencerDetail[i].id.text),
                 siteId: widget.siteId,
                 isDelete: "N",
+                isPrimary: _listInfluencerDetail[i]
+                    .isPrimarybool
+                    ? "Y"
+                    : "N",
                 createdBy: empId));
+
           }
-        }
+
+
 
         if (_selectedSiteFloor == null) {
           _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
         }
 
-        print(_selectedSiteFloor.id);
+
 
         var updateDataRequest = {
           "siteId": widget.siteId,

@@ -37,6 +37,8 @@ class BrandNameDBHelper extends ChangeNotifier{
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
           await db.execute(
+              'CREATE TABLE draftLead (id INTEGER PRIMARY KEY AUTOINCREMENT, leadModel TEXT)');
+          await db.execute(
               'CREATE TABLE brandName (id INTEGER , brandName TEXT , productName TEXT)');
         });
     return database;
