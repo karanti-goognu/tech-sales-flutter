@@ -192,19 +192,23 @@ class ListLeadImage {
 }
 
 class LeadInfluencerEntity {
+  int id;
   int leadId;
   int inflId;
   String createdBy;
   String isDelete;
+  String isPrimary;
 
   LeadInfluencerEntity(
-      {this.leadId, this.inflId, this.createdBy, this.isDelete});
+      {this.id,this.isPrimary,this.leadId, this.inflId, this.createdBy, this.isDelete});
 
   LeadInfluencerEntity.fromJson(Map<String, dynamic> json) {
     leadId = json['leadId'];
     inflId = json['inflId'];
     createdBy = json['createdBy'];
     isDelete = json['isDelete'];
+    isPrimary = json['isPrimary'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -213,6 +217,8 @@ class LeadInfluencerEntity {
     data['inflId'] = this.inflId;
     data['createdBy'] = this.createdBy;
     data['isDelete'] = this.isDelete;
+    data['isPrimary'] = this.isPrimary;
+    data['id'] = this.id;
     return data;
   }
 }

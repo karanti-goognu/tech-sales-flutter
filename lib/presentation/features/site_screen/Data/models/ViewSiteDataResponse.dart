@@ -583,9 +583,12 @@ class InfluencerEntity {
   int inflCatId;
   String ilpIntrested;
   int createdOn;
+  String isPrimary;
+  bool isPrimarybool;
+  int originalId;
 
   InfluencerEntity(
-      {this.id,
+      {this.isPrimarybool,this.isPrimary,this.originalId,this.id,
         this.inflName,
         this.inflContact,
         this.inflTypeId,
@@ -601,6 +604,9 @@ class InfluencerEntity {
     inflCatId = json['inflCatId'];
     ilpIntrested = json['ilpIntrested'];
     createdOn = json['createdOn'];
+    isPrimarybool = json['isPrimarybool'];
+    isPrimary = json['isPrimary'];
+    originalId = json['originalId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -612,6 +618,9 @@ class InfluencerEntity {
     data['inflCatId'] = this.inflCatId;
     data['ilpIntrested'] = this.ilpIntrested;
     data['createdOn'] = this.createdOn;
+    data['isPrimarybool'] = this.isPrimarybool;
+    data['isPrimary'] = this.isPrimary;
+    data['originalId'] = this.originalId;
     return data;
   }
 }
@@ -781,9 +790,10 @@ class SiteInfluencerEntity {
   int createdOn;
   Null updatedBy;
   Null updatedOn;
+  String isPrimary;
 
   SiteInfluencerEntity(
-      {this.id,
+      {this.isPrimary,this.id,
         this.siteId,
         this.inflId,
         this.isDelete,
@@ -801,6 +811,7 @@ class SiteInfluencerEntity {
     createdOn = json['createdOn'];
     updatedBy = json['updatedBy'];
     updatedOn = json['updatedOn'];
+    isPrimary = json['isPrimary'];
   }
 
   Map<String, dynamic> toJson() {
@@ -813,6 +824,8 @@ class SiteInfluencerEntity {
     data['createdOn'] = this.createdOn;
     data['updatedBy'] = this.updatedBy;
     data['updatedOn'] = this.updatedOn;
+    data['isPrimary'] = this.isPrimary;
+
     return data;
   }
 

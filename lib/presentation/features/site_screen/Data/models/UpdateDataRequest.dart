@@ -248,9 +248,10 @@ class SiteInfluencerEntityNew {
   int inflId;
   String isDelete;
   String createdBy;
+  String isPrimary;
 
 
-  SiteInfluencerEntityNew({this.id,
+  SiteInfluencerEntityNew({this.isPrimary,this.id,
     this.siteId,
     this.inflId,
     this.isDelete,
@@ -263,6 +264,7 @@ class SiteInfluencerEntityNew {
     inflId = json['inflId'];
     isDelete = json['isDelete'];
     createdBy = json['createdBy'];
+    isPrimary = json['isPrimary'];
   }
 
   Map<String, dynamic> toJson() {
@@ -272,6 +274,7 @@ class SiteInfluencerEntityNew {
     data['inflId'] = this.inflId;
     data['isDelete'] = this.isDelete;
     data['createdBy'] = this.createdBy;
+    data['isPrimary'] = this.isPrimary;
 
 
     return data;

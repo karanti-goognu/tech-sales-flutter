@@ -37,6 +37,8 @@ class DraftLeadDBHelper extends ChangeNotifier{
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
           await db.execute(
+              'CREATE TABLE brandName (id INTEGER , brandName TEXT , productName TEXT)');
+          await db.execute(
               'CREATE TABLE draftLead (id INTEGER PRIMARY KEY AUTOINCREMENT, leadModel TEXT)');
         });
     return database;
@@ -45,6 +47,7 @@ class DraftLeadDBHelper extends ChangeNotifier{
 
   Future<int> addLeadInDraft(DraftLeadModelforDB draftLeadModelforDB) async {
     var client = await db;
+    print(draftLeadModelforDB.leadModel);
     return client.insert('draftLead', draftLeadModelforDB.toMapForDb(),
        conflictAlgorithm: ConflictAlgorithm.replace);
   }
@@ -55,6 +58,8 @@ class DraftLeadDBHelper extends ChangeNotifier{
         client.query('draftLead', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
     if (maps.length != 0) {
+      print("Here:: ");
+      print(maps.first);
       return DraftLeadModelforDB.fromDb(maps.first);
     }
     return null;
@@ -98,6 +103,7 @@ class DraftLeadModelforDB {
 
   Map<String, dynamic> toMapForDb() {
     var map = Map<String, dynamic>();
+
     map['id'] = id;
     map['leadModel'] = leadModel;
     return map;

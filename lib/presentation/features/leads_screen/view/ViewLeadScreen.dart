@@ -118,6 +118,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   List<Item> _data = generateItems(1);
   List<InfluencerDetail> _listInfluencerDetail = new List();
   List<InfluencerEntity> _listInfluencerEntity = new List();
+  List<LeadInfluencerEntity> _listLeadInfluencerEntity = new List();
   Position _currentPosition;
   String _currentAddress;
   List<LeadStatusEntity> leadStatusEntity = new List();
@@ -242,14 +243,32 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
           // }
           // initialImagelistLength = _imageList.length;
           influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+
           influencerCategoryEntity =
               viewLeadDataResponse.influencerCategoryEntity;
 
           _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
+          _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
 
           if (_listInfluencerEntity.length != null) {
             for (int i = 0; i < _listInfluencerEntity.length; i++) {
+              int originalId ;
+              for(int j =0 ; j<  _listLeadInfluencerEntity.length ; j++){
+                if(_listInfluencerEntity[i].id ==  _listLeadInfluencerEntity[j].inflId){
+                  _listInfluencerEntity[i].isPrimary =
+                      _listLeadInfluencerEntity[j].isPrimary;
+                  originalId = _listLeadInfluencerEntity[j].id;
+                  break;
+                }
+              }
+
+              print(_listLeadInfluencerEntity[i].toJson());
               InfluencerDetail inflDetail = new InfluencerDetail(
+                  originalId: originalId,
+                  isPrimary: _listInfluencerEntity[i].isPrimary,
+                  isPrimarybool: _listInfluencerEntity[i].isPrimary == "Y"
+                      ? true
+                      : false,
                   id: new TextEditingController(
                       text: _listInfluencerEntity[i].id.toString()),
                   inflName: new TextEditingController(
@@ -266,7 +285,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                       text: _listInfluencerEntity[i].ilpIntrested.toString()),
                   createdOn: new TextEditingController(
                       text: _listInfluencerEntity[i].createdOn.toString()),
-                  isExpanded: false);
+                  isExpanded: false,
+                 );
               for (int j = 0; j < influencerTypeEntity.length; j++) {
                 if (influencerTypeEntity[j].inflTypeId.toString() ==
                     inflDetail.inflTypeId.text.toString()) {
@@ -287,7 +307,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
               _listInfluencerDetail.add(inflDetail);
             }
           } else {
-            _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true));
+            _listInfluencerDetail.add(
+                new InfluencerDetail(isExpanded: true, isPrimarybool: true));
           }
           initialInfluencerListLength = _listInfluencerDetail.length;
 
@@ -962,48 +983,48 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                   builder:
                                                                       (BuildContext
                                                                           context) {
-                                                                        return AlertDialog(
-                                                                          content: SingleChildScrollView(
-                                                                            child: ListBody(
-                                                                              children: <Widget>[
-                                                                                Text(
-                                                                                  "Next Construction date is more than 31 days from now, "
-                                                                                      "So status will be changed to FUTURE "
-                                                                                      "OPPORTUNITY . "
-                                                                                  ,
-                                                                                  style: GoogleFonts.roboto(
-                                                                                      fontSize: 16,
-                                                                                      height: 1.4,
-                                                                                      letterSpacing: .25,
-                                                                                      fontStyle: FontStyle.normal,
-                                                                                      color: ColorConstants.inputBoxHintColorDark),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                          actions: <Widget>[
-                                                                            TextButton(
-                                                                              child: Text(
-                                                                                'OK',
-                                                                                style: GoogleFonts.roboto(
-                                                                                    fontSize: 17,
-                                                                                    letterSpacing: 1.25,
-                                                                                    fontStyle: FontStyle.normal,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                    color: ColorConstants.buttonNormalColor),
-                                                                              ),
-                                                                              onPressed: () {
-                                                                                updateStatusforNextStage(context , 5);
-                                                                              },
+                                                                    return AlertDialog(
+                                                                      content:
+                                                                          SingleChildScrollView(
+                                                                        child:
+                                                                            ListBody(
+                                                                          children: <
+                                                                              Widget>[
+                                                                            Text(
+                                                                              "Next Construction date is more than 31 days from now, "
+                                                                              "So status will be changed to FUTURE "
+                                                                              "OPPORTUNITY . ",
+                                                                              style: GoogleFonts.roboto(fontSize: 16, height: 1.4, letterSpacing: .25, fontStyle: FontStyle.normal, color: ColorConstants.inputBoxHintColorDark),
                                                                             ),
                                                                           ],
-                                                                        );
+                                                                        ),
+                                                                      ),
+                                                                      actions: <
+                                                                          Widget>[
+                                                                        TextButton(
+                                                                          child:
+                                                                              Text(
+                                                                            'OK',
+                                                                            style: GoogleFonts.roboto(
+                                                                                fontSize: 17,
+                                                                                letterSpacing: 1.25,
+                                                                                fontStyle: FontStyle.normal,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: ColorConstants.buttonNormalColor),
+                                                                          ),
+                                                                          onPressed:
+                                                                              () {
+                                                                            updateStatusforNextStage(context,
+                                                                                5);
+                                                                          },
+                                                                        ),
+                                                                      ],
+                                                                    );
                                                                   });
+                                                            } else {
+                                                              updateStatusforNextStage(
+                                                                  context, 3);
                                                             }
-                                                            else{
-                                                              updateStatusforNextStage(context , 3);
-                                                            }
-
 
                                                             //});
                                                           }
@@ -1120,15 +1141,21 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               print(
                                                   _listInfluencerDetail.length);
 
-                                              for (int i =
-                                                      initialInfluencerListLength;
+                                              for (int i = 0;
                                                   i <
                                                       _listInfluencerDetail
                                                           .length;
                                                   i++) {
+                                                print(_listInfluencerDetail[i]
+                                                    .toJson());
                                                 listInfluencer.add(new updateRequest
                                                         .LeadInfluencerEntity(
                                                     leadId: widget.leadId,
+                                                    isPrimary:
+                                                        _listInfluencerDetail[i]
+                                                                .isPrimarybool
+                                                            ? "Y"
+                                                            : "N",
                                                     createdBy: empId,
                                                     inflId: int.parse(
                                                         _listInfluencerDetail[i]
@@ -1390,35 +1417,35 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                   return AlertDialog(
                                                     shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                5.0))),
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5.0))),
                                                     content: Container(
                                                       width:
-                                                      MediaQuery.of(context)
-                                                          .size
-                                                          .width,
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
                                                       child:
-                                                      SingleChildScrollView(
+                                                          SingleChildScrollView(
                                                         child: Column(
                                                           children: [
                                                             DropdownButtonFormField<
                                                                 NextStageConstructionEntity>(
                                                               value:
-                                                              _selectedNextStageConstructionEntity,
+                                                                  _selectedNextStageConstructionEntity,
                                                               items:
-                                                              nextStageConstructionEntity
-                                                                  .map((label) =>
-                                                                  DropdownMenuItem(
-                                                                    child:
-                                                                    Text(
-                                                                      label.nexStageConsText,
-                                                                      style: TextStyle(fontSize: 15, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
-                                                                    ),
-                                                                    value:
-                                                                    label,
-                                                                  ))
-                                                                  .toList(),
+                                                                  nextStageConstructionEntity
+                                                                      .map((label) =>
+                                                                          DropdownMenuItem(
+                                                                            child:
+                                                                                Text(
+                                                                              label.nexStageConsText,
+                                                                              style: TextStyle(fontSize: 15, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
+                                                                            ),
+                                                                            value:
+                                                                                label,
+                                                                          ))
+                                                                      .toList(),
 
                                                               // hint: Text('Rating'),
                                                               onChanged:
@@ -1429,65 +1456,65 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                 });
                                                               },
                                                               decoration:
-                                                              InputDecoration(
+                                                                  InputDecoration(
                                                                 focusedBorder:
-                                                                OutlineInputBorder(
+                                                                    OutlineInputBorder(
                                                                   borderSide:
-                                                                  BorderSide(
-                                                                      color: ColorConstants
-                                                                          .backgroundColorBlue,
-                                                                      //color: HexColor("#0000001F"),
-                                                                      width:
-                                                                      1.0),
+                                                                      BorderSide(
+                                                                          color: ColorConstants
+                                                                              .backgroundColorBlue,
+                                                                          //color: HexColor("#0000001F"),
+                                                                          width:
+                                                                              1.0),
                                                                 ),
                                                                 enabledBorder:
-                                                                OutlineInputBorder(
+                                                                    OutlineInputBorder(
                                                                   borderSide: BorderSide(
                                                                       color: Colors
                                                                           .black26,
                                                                       width:
-                                                                      1.0),
+                                                                          1.0),
                                                                 ),
                                                                 errorBorder:
-                                                                OutlineInputBorder(
+                                                                    OutlineInputBorder(
                                                                   borderSide: BorderSide(
                                                                       color: Colors
                                                                           .red,
                                                                       width:
-                                                                      1.0),
+                                                                          1.0),
                                                                 ),
                                                                 labelText:
-                                                                "Next Stage of Construction",
+                                                                    "Next Stage of Construction",
                                                                 filled: false,
                                                                 focusColor:
-                                                                Colors
-                                                                    .black,
+                                                                    Colors
+                                                                        .black,
                                                                 isDense: false,
                                                                 labelStyle: TextStyle(
                                                                     fontFamily:
-                                                                    "Muli",
+                                                                        "Muli",
                                                                     color: ColorConstants
                                                                         .inputBoxHintColorDark,
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
+                                                                        FontWeight
+                                                                            .normal,
                                                                     fontSize:
-                                                                    16.0),
+                                                                        16.0),
                                                                 fillColor:
-                                                                ColorConstants
-                                                                    .backgroundColor,
+                                                                    ColorConstants
+                                                                        .backgroundColor,
                                                               ),
                                                             ),
                                                             SizedBox(
                                                               height: MediaQuery.of(
-                                                                  context)
-                                                                  .size
-                                                                  .height *
+                                                                          context)
+                                                                      .size
+                                                                      .height *
                                                                   0.02,
                                                             ),
                                                             TextFormField(
                                                               controller:
-                                                              _nextDateofConstruction,
+                                                                  _nextDateofConstruction,
                                                               // validator: (value) {
                                                               //   if (value.isEmpty) {
                                                               //     return "Contact Name can't be empty";
@@ -1507,50 +1534,50 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                   color: ColorConstants
                                                                       .inputBoxHintColor,
                                                                   fontFamily:
-                                                                  "Muli"),
+                                                                      "Muli"),
                                                               keyboardType:
-                                                              TextInputType
-                                                                  .text,
+                                                                  TextInputType
+                                                                      .text,
                                                               decoration:
-                                                              InputDecoration(
+                                                                  InputDecoration(
                                                                 focusedBorder:
-                                                                OutlineInputBorder(
+                                                                    OutlineInputBorder(
                                                                   borderSide:
-                                                                  BorderSide(
-                                                                      color: ColorConstants
-                                                                          .backgroundColorBlue,
-                                                                      //color: HexColor("#0000001F"),
-                                                                      width:
-                                                                      1.0),
+                                                                      BorderSide(
+                                                                          color: ColorConstants
+                                                                              .backgroundColorBlue,
+                                                                          //color: HexColor("#0000001F"),
+                                                                          width:
+                                                                              1.0),
                                                                 ),
                                                                 disabledBorder:
-                                                                OutlineInputBorder(
+                                                                    OutlineInputBorder(
                                                                   borderSide: BorderSide(
                                                                       color: Colors
                                                                           .black26,
                                                                       width:
-                                                                      1.0),
+                                                                          1.0),
                                                                 ),
                                                                 enabledBorder:
-                                                                OutlineInputBorder(
+                                                                    OutlineInputBorder(
                                                                   borderSide: BorderSide(
                                                                       color: Colors
                                                                           .black26,
                                                                       width:
-                                                                      1.0),
+                                                                          1.0),
                                                                 ),
                                                                 errorBorder:
-                                                                OutlineInputBorder(
+                                                                    OutlineInputBorder(
                                                                   borderSide: BorderSide(
                                                                       color: Colors
                                                                           .red,
                                                                       width:
-                                                                      1.0),
+                                                                          1.0),
                                                                 ),
                                                                 labelText:
-                                                                "Next date of construction",
+                                                                    "Next date of construction",
                                                                 suffixIcon:
-                                                                IconButton(
+                                                                    IconButton(
                                                                   icon: Icon(
                                                                     Icons
                                                                         .date_range_rounded,
@@ -1564,62 +1591,61 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                         "here");
                                                                     final DateTime picked = await showDatePicker(
                                                                         context:
-                                                                        context,
+                                                                            context,
                                                                         initialDate:
-                                                                        DateTime
-                                                                            .now(),
+                                                                            DateTime
+                                                                                .now(),
                                                                         firstDate:
-                                                                        DateTime
-                                                                            .now(),
+                                                                            DateTime
+                                                                                .now(),
                                                                         lastDate:
-                                                                        DateTime(2101));
+                                                                            DateTime(2101));
 
                                                                     setState(
-                                                                            () {
-                                                                          final DateFormat
+                                                                        () {
+                                                                      final DateFormat
                                                                           formatter =
                                                                           DateFormat(
                                                                               "yyyy-MM-dd");
-                                                                          final String
+                                                                      final String
                                                                           formattedDate =
                                                                           formatter
                                                                               .format(picked);
-                                                                          nextStageConstructionPickedDate =
-                                                                              picked;
-                                                                          _nextDateofConstruction
+                                                                      nextStageConstructionPickedDate =
+                                                                          picked;
+                                                                      _nextDateofConstruction
                                                                               .text =
-                                                                              formattedDate;
-                                                                        });
+                                                                          formattedDate;
+                                                                    });
                                                                   },
                                                                 ),
                                                                 filled: false,
                                                                 focusColor:
-                                                                Colors
-                                                                    .black,
+                                                                    Colors
+                                                                        .black,
                                                                 isDense: false,
                                                                 labelStyle: TextStyle(
                                                                     fontFamily:
-                                                                    "Muli",
+                                                                        "Muli",
                                                                     color: ColorConstants
                                                                         .inputBoxHintColorDark,
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
+                                                                        FontWeight
+                                                                            .normal,
                                                                     fontSize:
-                                                                    16.0),
+                                                                        16.0),
                                                                 fillColor:
-                                                                ColorConstants
-                                                                    .backgroundColor,
+                                                                    ColorConstants
+                                                                        .backgroundColor,
                                                               ),
                                                             ),
                                                             SizedBox(
                                                               height: MediaQuery.of(
-                                                                  context)
-                                                                  .size
-                                                                  .height *
+                                                                          context)
+                                                                      .size
+                                                                      .height *
                                                                   0.02,
                                                             ),
-
                                                           ],
                                                         ),
                                                       ),
@@ -1630,34 +1656,34 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                           'Submit',
                                                           style: GoogleFonts
                                                               .roboto(
-                                                              fontSize: 17,
-                                                              letterSpacing:
-                                                              1.25,
-                                                              fontStyle:
-                                                              FontStyle
-                                                                  .normal,
-                                                              // fontWeight: FontWeight.bold,
-                                                              color: ColorConstants
-                                                                  .buttonNormalColor),
+                                                                  fontSize: 17,
+                                                                  letterSpacing:
+                                                                      1.25,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .normal,
+                                                                  // fontWeight: FontWeight.bold,
+                                                                  color: ColorConstants
+                                                                      .buttonNormalColor),
                                                         ),
                                                         onPressed: () {
                                                           if (!(_selectedNextStageConstructionEntity.nextStageConsId != null &&
                                                               _selectedNextStageConstructionEntity
-                                                                  .nextStageConsId !=
+                                                                      .nextStageConsId !=
                                                                   "" &&
                                                               _selectedNextStageConstructionEntity
-                                                                  .nextStageConsId !=
+                                                                      .nextStageConsId !=
                                                                   null &&
                                                               _selectedNextStageConstructionEntity
-                                                                  .nextStageConsId !=
+                                                                      .nextStageConsId !=
                                                                   "")) {
                                                             Get.dialog(
                                                                 CustomDialogs()
                                                                     .errorDialog(
-                                                                    "Please fill the details first"));
+                                                                        "Please fill the details first"));
                                                           } else {
-                                                            updateStatusforNextStage(context , 5);
-
+                                                            updateStatusforNextStage(
+                                                                context, 5);
                                                           }
                                                         },
                                                       ),
@@ -2320,6 +2346,44 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 18),
                                             ),
+                                            Switch(
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  if (value) {
+                                                    for (int i = 0;
+                                                        i <
+                                                            _listInfluencerDetail
+                                                                .length;
+                                                        i++) {
+                                                      if (i == index) {
+                                                        _listInfluencerDetail[i]
+                                                                .isPrimarybool =
+                                                            value;
+                                                      } else {
+                                                        _listInfluencerDetail[i]
+                                                                .isPrimarybool =
+                                                            !value;
+                                                      }
+                                                    }
+                                                  } else {
+                                                    Get.dialog(CustomDialogs()
+                                                        .errorDialog(
+                                                            "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                                  }
+                                                });
+                                              },
+                                              value:
+                                                  _listInfluencerDetail[index]
+                                                      .isPrimarybool,
+                                              activeColor: HexColor("#009688"),
+                                              activeTrackColor:
+                                                  HexColor("#009688")
+                                                      .withOpacity(0.5),
+                                              inactiveThumbColor:
+                                                  HexColor("#F1F1F1"),
+                                              inactiveTrackColor:
+                                                  Colors.black26,
+                                            ),
                                             _listInfluencerDetail[index]
                                                     .isExpanded
                                                 ? FlatButton.icon(
@@ -2478,6 +2542,71 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                           ],
                                         ),
                                         SizedBox(height: 16),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Secondary",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  // color: HexColor("#000000DE"),
+                                                  fontFamily: "Muli"),
+                                            ),
+                                            Switch(
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  if (value) {
+                                                    for (int i = 0;
+                                                        i <
+                                                            _listInfluencerDetail
+                                                                .length;
+                                                        i++) {
+                                                      if (i == index) {
+                                                        _listInfluencerDetail[i]
+                                                                .isPrimarybool =
+                                                            value;
+                                                      } else {
+                                                        _listInfluencerDetail[i]
+                                                                .isPrimarybool =
+                                                            !value;
+                                                      }
+                                                    }
+                                                  } else {
+                                                    Get.dialog(CustomDialogs()
+                                                        .errorDialog(
+                                                            "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                                  }
+                                                });
+                                              },
+                                              value:
+                                                  _listInfluencerDetail[index]
+                                                      .isPrimarybool,
+                                              activeColor: HexColor("#009688"),
+                                              activeTrackColor:
+                                                  HexColor("#009688")
+                                                      .withOpacity(0.5),
+                                              inactiveThumbColor:
+                                                  HexColor("#F1F1F1"),
+                                              inactiveTrackColor:
+                                                  Colors.black26,
+                                            ),
+                                            Text(
+                                              "Primary",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: _listInfluencerDetail[
+                                                              index]
+                                                          .isPrimarybool
+                                                      ? HexColor("#009688")
+                                                      : Colors.black,
+                                                  // color: HexColor("#000000DE"),
+                                                  fontFamily: "Muli"),
+                                            ),
+                                          ],
+                                        ),
                                         TextFormField(
                                           controller:
                                               _listInfluencerDetail[index]
@@ -3030,8 +3159,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                             if (_listInfluencerDetail.length == 0) {
                               setState(() {
-                                _listInfluencerDetail.add(
-                                    new InfluencerDetail(isExpanded: true));
+                                _listInfluencerDetail.add(new InfluencerDetail(
+                                    isExpanded: true, isPrimarybool: true));
                               });
                             } else {
                               if (_listInfluencerDetail[
@@ -3047,8 +3176,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                       .inflName
                                       .text
                                       .isNullOrBlank) {
-                                InfluencerDetail infl =
-                                    new InfluencerDetail(isExpanded: true);
+                                InfluencerDetail infl = new InfluencerDetail(
+                                    isExpanded: true, isPrimarybool: false);
 
                                 // Item item = new Item(
                                 //     headerValue: "agx ", expandedValue: "dnxcx");
@@ -3694,285 +3823,129 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
     }
   }
 
-  updateStatusforNextStage(BuildContext context , int statusId){
+  updateStatusforNextStage(BuildContext context, int statusId) {
     String empId;
     String mobileNumber;
     String name;
-    Future<SharedPreferences>
-    _prefs =
-    SharedPreferences
-        .getInstance();
-    _prefs.then(
-            (SharedPreferences
-        prefs) async {
-              empId = prefs.getString(
-                  StringConstants
-                      .employeeId) ??
-                  "empty";
-              mobileNumber =
-                  prefs.getString(
-                      StringConstants
-                          .mobileNumber) ??
-                      "empty";
-              name = prefs.getString(
-                  StringConstants
-                      .employeeName) ??
-                  "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) async {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
+      name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
-              print(_comments
-                  .text);
-              if (_comments
-                  .text ==
-                  "") {
-                _comments.text =
-                "Stage Changed";
-              }
+      print(_comments.text);
+      if (_comments.text == "") {
+        _comments.text = "Stage Changed";
+      }
 
-              List<CommentsDetail>
-              commentsDetails =
-              [
-                new CommentsDetail(
-                    createdBy:
-                    empId,
-                    commentText:
-                    _comments
-                        .text,
-                    // commentedAt: DateTime.now(),
-                    creatorName:
-                    name)
-              ];
+      List<CommentsDetail> commentsDetails = [
+        new CommentsDetail(
+            createdBy: empId,
+            commentText: _comments.text,
+            // commentedAt: DateTime.now(),
+            creatorName: name)
+      ];
 
-              List<
-                  updateRequest
-                      .ListLeadcomments>
-              commentsList =
-              new List();
+      List<updateRequest.ListLeadcomments> commentsList = new List();
 
-              for (int i = 0;
-              i <
-                  commentsDetails
-                      .length;
-              i++) {
-                commentsList.add(
-                    new updateRequest
-                        .ListLeadcomments(
-                      leadId: widget
-                          .leadId,
-                      commentText:
-                      commentsDetails[
-                      i]
-                          .commentText,
-                      creatorName:
-                      name,
-                      createdBy:
-                      empId,
-                    ));
-              }
+      for (int i = 0; i < commentsDetails.length; i++) {
+        commentsList.add(new updateRequest.ListLeadcomments(
+          leadId: widget.leadId,
+          commentText: commentsDetails[i].commentText,
+          creatorName: name,
+          createdBy: empId,
+        ));
+      }
 
-              List<
-                  updateRequest
-                      .ListLeadImage>
-              imageList =
-              new List();
-              for (int i = 0;
-              i <
-                  listLeadImage
-                      .length;
-              i++) {
-                imageList.add(
-                    new updateRequest
-                        .ListLeadImage(
-                      leadId: widget
-                          .leadId,
-                      photoName:
-                      listLeadImage[
-                      i]
-                          .photoName,
-                      createdBy:
-                      empId,
-                    ));
-              }
-              if (_listInfluencerDetail
-                  .length !=
-                  0) {
-                if (_listInfluencerDetail[_listInfluencerDetail.length -
-                    1]
-                    .inflName ==
-                    null ||
-                    _listInfluencerDetail[_listInfluencerDetail.length -
-                        1]
-                        .inflName ==
-                        "null" ||
-                    _listInfluencerDetail[
-                    _listInfluencerDetail.length -
-                        1]
-                        .inflName
-                        .text
-                        .isNullOrBlank) {
-                  print(
-                      "here1234");
-                  _listInfluencerDetail
-                      .removeAt(
-                      _listInfluencerDetail.length -
-                          1);
-                }
-              }
-              List<
-                  updateRequest
-                      .LeadInfluencerEntity>
-              listInfluencer =
-              new List();
+      List<updateRequest.ListLeadImage> imageList = new List();
+      for (int i = 0; i < listLeadImage.length; i++) {
+        imageList.add(new updateRequest.ListLeadImage(
+          leadId: widget.leadId,
+          photoName: listLeadImage[i].photoName,
+          createdBy: empId,
+        ));
+      }
+      if (_listInfluencerDetail.length != 0) {
+        if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
+                null ||
+            _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
+                "null" ||
+            _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                .inflName
+                .text
+                .isNullOrBlank) {
+          print("here1234");
+          _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
+        }
+      }
+      List<updateRequest.LeadInfluencerEntity> listInfluencer = new List();
 
-              print(
-                  _listInfluencerDetail
-                      .length);
+      print(_listInfluencerDetail.length);
 
-              for (int i =
-                  initialInfluencerListLength;
-              i <
-                  _listInfluencerDetail
-                      .length;
-              i++) {
-                listInfluencer.add(new updateRequest
-                    .LeadInfluencerEntity(
-                    leadId: widget
-                        .leadId,
-                    createdBy:
-                    empId,
-                    inflId: int.parse(
-                        _listInfluencerDetail[i]
-                            .id
-                            .text),
-                    isDelete:
-                    "N"));
-              }
+      for (int i = 0; i < _listInfluencerDetail.length; i++) {
+        print(_listInfluencerDetail[i].toJson());
+        listInfluencer.add(new updateRequest.LeadInfluencerEntity(
+            id: _listInfluencerDetail[i].originalId,
+            leadId: widget.leadId,
+            isPrimary: _listInfluencerDetail[i].isPrimarybool ? "Y" : "N",
+            createdBy: empId,
+            inflId: int.parse(_listInfluencerDetail[i].id.text),
+            isDelete: "N"));
+      }
 
-              if (_SelectedDealer ==
-                  null) {
-                _SelectedDealer =
-                new DealerList();
-              }
-              var updateRequestModel =
-              {
-                'leadId':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadId,
-                'leadSegment':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadSegment,
-                'assignedTo':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .assignedTo,
-                'leadStatusId':
-                statusId,
-                'leadStage':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadStageId,
-                'contactName':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .contactName,
-                'contactNumber':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .contactNumber,
-                'geotagType':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .geotagType,
-                'leadLatitude':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadLatitude,
-                'leadLongitude':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadLongitude,
-                'leadAddress':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadAddress,
-                'leadPincode':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadPincode,
-                'leadStateName':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadStateName,
-                'leadDistrictName':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadDistrictName,
-                'leadTalukName':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadTalukName,
-                'leadSalesPotentialMt':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadSitePotentialMt,
-                'leadReraNumber':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadReraNumber,
-                'isStatus':
-                "false",
-                'updatedBy':
-                empId,
-                'leadIsDuplicate':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .leadIsDuplicate,
-                'rejectionComment':
-                viewLeadDataResponse
-                    .leadsEntity
-                    .rejectionComment,
-                'nextDateCconstruction':
-                _nextDateofConstruction
-                    .text,
-                'nextStageConstruction':
-                _selectedNextStageConstructionEntity
-                    .nextStageConsId,
-                'siteDealerId':
-                _SelectedDealer
-                    .dealerId,
-                // 'listLeadcomments':
-                //     new List(),
-                // 'listLeadImage':
-                //     new List(),
-                // 'leadInfluencerEntity':
-                //     new List()
-                'listLeadcomments':
-                commentsList,
-                'listLeadImage':
-                viewLeadDataResponse
-                    .leadphotosEntity,
-                'leadInfluencerEntity':
-                viewLeadDataResponse
-                    .leadInfluencerEntity
-              };
+      for (int i = 0; i < listInfluencer.length; i++) {
+        print(listInfluencer[i].toJson());
+      }
 
-              print(
-                  updateRequestModel);
+      if (_SelectedDealer == null) {
+        _SelectedDealer = new DealerList();
+      }
+      var updateRequestModel = {
+        'leadId': viewLeadDataResponse.leadsEntity.leadId,
+        'leadSegment': viewLeadDataResponse.leadsEntity.leadSegment,
+        'assignedTo': viewLeadDataResponse.leadsEntity.assignedTo,
+        'leadStatusId': statusId,
+        'leadStage': viewLeadDataResponse.leadsEntity.leadStageId,
+        'contactName': viewLeadDataResponse.leadsEntity.contactName,
+        'contactNumber': viewLeadDataResponse.leadsEntity.contactNumber,
+        'geotagType': viewLeadDataResponse.leadsEntity.geotagType,
+        'leadLatitude': viewLeadDataResponse.leadsEntity.leadLatitude,
+        'leadLongitude': viewLeadDataResponse.leadsEntity.leadLongitude,
+        'leadAddress': viewLeadDataResponse.leadsEntity.leadAddress,
+        'leadPincode': viewLeadDataResponse.leadsEntity.leadPincode,
+        'leadStateName': viewLeadDataResponse.leadsEntity.leadStateName,
+        'leadDistrictName': viewLeadDataResponse.leadsEntity.leadDistrictName,
+        'leadTalukName': viewLeadDataResponse.leadsEntity.leadTalukName,
+        'leadSalesPotentialMt':
+            viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
+        'leadReraNumber': viewLeadDataResponse.leadsEntity.leadReraNumber,
+        'isStatus': "false",
+        'updatedBy': empId,
+        'leadIsDuplicate': viewLeadDataResponse.leadsEntity.leadIsDuplicate,
+        'rejectionComment': viewLeadDataResponse.leadsEntity.rejectionComment,
+        'nextDateCconstruction': _nextDateofConstruction.text,
+        'nextStageConstruction':
+            _selectedNextStageConstructionEntity.nextStageConsId,
+        'siteDealerId': _SelectedDealer.dealerId,
+        // 'listLeadcomments':
+        //     new List(),
+        // 'listLeadImage':
+        //     new List(),
+        // 'leadInfluencerEntity':
+        //     new List()
+        'listLeadcomments': commentsList,
+        'listLeadImage': viewLeadDataResponse.leadphotosEntity,
+        'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity
+      };
 
-              _addLeadsController.updateLeadData(
-                  updateRequestModel,
-                  new List<
-                      File>(),
-                  context,
-                  viewLeadDataResponse
-                      .leadsEntity
-                      .leadId);
+      print(updateRequestModel);
 
-              Get.back();
-            });
+      _addLeadsController.updateLeadData(updateRequestModel, new List<File>(),
+          context, viewLeadDataResponse.leadsEntity.leadId);
+
+      Get.back();
+    });
   }
-
 
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -4174,12 +4147,19 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                                       print(_listInfluencerDetail.length);
 
-                                      for (int i = initialInfluencerListLength;
+                                      for (int i = 0;
                                           i < _listInfluencerDetail.length;
                                           i++) {
+                                        print(
+                                            _listInfluencerDetail[i].toJson());
                                         listInfluencer.add(new updateRequest
                                                 .LeadInfluencerEntity(
+                                            id:_listInfluencerDetail[i].originalId,
                                             leadId: widget.leadId,
+                                            isPrimary: _listInfluencerDetail[i]
+                                                    .isPrimarybool
+                                                ? "Y"
+                                                : "N",
                                             createdBy: empId,
                                             inflId: int.parse(
                                                 _listInfluencerDetail[i]
@@ -4190,6 +4170,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                                       print("Dhawannnnn ::" +
                                           listInfluencer.length.toString());
+                                      for (int i = 0;
+                                          i < listInfluencer.length;
+                                          i++) {
+                                        print(listInfluencer[i].toJson());
+                                      }
 
                                       var updateRequestModel = {
                                         'leadId': viewLeadDataResponse
