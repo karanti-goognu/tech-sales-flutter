@@ -34,9 +34,10 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
     db.fetchAll().then((value) {
       for (int i = 0; i < value.length; i++) {
         setState(() {
-          print(value[i].leadModel);
-          draftList.add(
 
+
+          print(json.decode(value[i].leadModel));
+          draftList.add(
               SaveLeadRequestDraftModel.fromJson(json.decode(value[i].leadModel)));
         });
 
@@ -269,6 +270,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                 onTap: () {
                   gv.draftID = index + 1;
                   gv.fromLead = true;
+                  print(draftList[index].toJson());
                   gv.saveLeadRequestModel = draftList[index];
                   Get.toNamed(Routes.ADD_LEADS_SCREEN);
                 },

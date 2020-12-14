@@ -67,6 +67,7 @@ class ViewLeadDataResponse {
     if (json['influencerEntity'] != null) {
       influencerEntity = new List<InfluencerEntity>();
       json['influencerEntity'].forEach((v) {
+        print(v);
         influencerEntity.add(new InfluencerEntity.fromJson(v));
       });
     }
@@ -207,6 +208,7 @@ class LeadInfluencerEntity {
   int createdOn;
   Null updatedBy;
   Null updatedOn;
+  String isPrimary;
 
   LeadInfluencerEntity(
       {this.id,
@@ -216,7 +218,8 @@ class LeadInfluencerEntity {
         this.createdBy,
         this.createdOn,
         this.updatedBy,
-        this.updatedOn});
+        this.updatedOn,
+      this.isPrimary});
 
   LeadInfluencerEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -227,6 +230,7 @@ class LeadInfluencerEntity {
     createdOn = json['createdOn'];
     updatedBy = json['updatedBy'];
     updatedOn = json['updatedOn'];
+    isPrimary = json['isPrimary'];
   }
 
   Map<String, dynamic> toJson() {
@@ -239,6 +243,7 @@ class LeadInfluencerEntity {
     data['createdOn'] = this.createdOn;
     data['updatedBy'] = this.updatedBy;
     data['updatedOn'] = this.updatedOn;
+    data['isPrimary'] = this.isPrimary;
     return data;
   }
 }
@@ -317,6 +322,7 @@ class InfluencerEntity {
   int inflCatId;
   String ilpIntrested;
   int createdOn;
+  String isPrimary;
 
   InfluencerEntity(
       {this.id,
@@ -325,9 +331,11 @@ class InfluencerEntity {
         this.inflTypeId,
         this.inflCatId,
         this.ilpIntrested,
-        this.createdOn});
+        this.createdOn,this.isPrimary});
 
   InfluencerEntity.fromJson(Map<String, dynamic> json) {
+    print("Sumit Dhawan");
+    print(json['isPrimary']);
     id = json['id'];
     inflName = json['inflName'];
     inflContact = json['inflContact'];
@@ -335,6 +343,7 @@ class InfluencerEntity {
     inflCatId = json['inflCatId'];
     ilpIntrested = json['ilpIntrested'];
     createdOn = json['createdOn'];
+    isPrimary = json['isPrimary'];
   }
 
   Map<String, dynamic> toJson() {
@@ -346,6 +355,7 @@ class InfluencerEntity {
     data['inflCatId'] = this.inflCatId;
     data['ilpIntrested'] = this.ilpIntrested;
     data['createdOn'] = this.createdOn;
+    data['isPrimary'] = this.isPrimary;
     return data;
   }
 }

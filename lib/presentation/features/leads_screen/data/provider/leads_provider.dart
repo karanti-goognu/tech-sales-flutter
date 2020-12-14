@@ -306,9 +306,9 @@ class MyApiClientLeads {
                   // }
                   gv.fromLead = false;
                 //  Get.toNamed(Routes.LEADS_SCREEN);
+
                   Get.back();
-                  Get.back();
-                  Get.back();
+
                  Get.toNamed(Routes.LEADS_SCREEN);
 
 
@@ -428,9 +428,10 @@ class MyApiClientLeads {
                       .showDialog(updateLeadResponseModel.respMsg));*/
                  // Get.back();
                 //  Get.back();
+
                   Get.back();
                  // Get.back();
-                  Get.toNamed(Routes.LEADS_SCREEN);
+                  Get.offNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead(updateLeadResponseModel.respMsg));
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
