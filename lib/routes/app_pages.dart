@@ -67,5 +67,10 @@ class AppPages {
         name: Routes.ADD_MWP_SCREEN,
         page: () => AddMWP(),
         binding: AppBinding()),
+
+    GetPage(
+        name: Routes.ADD_EVENT_SCREEN,
+        page: () => AddEvent(),
+        binding: AppBinding()),
   ];
 }
