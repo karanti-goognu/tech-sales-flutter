@@ -21,12 +21,14 @@ class AddEventController extends GetxController {
   AddEventController({@required this.repository}) : assert(repository != null);
 
   final _selectedView = "Visit".obs;
+  final _selectedMonth = "January".obs;
   final _phoneNumber = "8860080067".obs;
   final _empId = "_empty".obs;
   final _otpCode = "_empty".obs;
   final _retryOtpActive = false.obs;
 
   get selectedView => this._selectedView.value;
+  get selectedMonth => this._selectedMonth.value;
 
   get phoneNumber => this._phoneNumber.value;
 
@@ -39,6 +41,7 @@ class AddEventController extends GetxController {
   set phoneNumber(value) => this._phoneNumber.value = value;
 
   set selectedView(value) => this._selectedView.value = value;
+  set selectedMonth(value) => this._selectedMonth.value = value;
 
   set empId(value) => this._empId.value = value;
 

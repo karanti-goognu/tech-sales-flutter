@@ -31,5 +31,7 @@ abstract class ColorConstants {
   static Color fromDateColor = const Color.fromRGBO(0, 0, 0, 0.87);
   static Color dateBorderColor = const Color.fromRGBO(224, 224, 224, 1);
   static Color greenText = const Color.fromRGBO(0, 104, 56, 1);
+  static Color lightGreyColor = const Color.fromRGBO(0, 0, 0, 0.6);
+  static Color lightOutlineColor = const Color.fromRGBO(0, 0, 0, 0.12);
 
 }
