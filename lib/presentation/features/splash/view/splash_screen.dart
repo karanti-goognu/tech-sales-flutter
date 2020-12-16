@@ -78,7 +78,7 @@ class SplashScreenPageState extends State<SplashScreen> {
           prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
       print('$isUserLoggedIn');
       if (isUserLoggedIn == "false") {
-        Get.offNamed(Routes.ADD_CALENDER_SCREEN);
+        Get.offNamed(Routes.LOGIN);
       } else {
         _splashController.getSecretKey(RequestIds.REFRESH_DATA);
       }
