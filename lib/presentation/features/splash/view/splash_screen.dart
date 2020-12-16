@@ -6,10 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/app_shared_preference.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,8 +66,8 @@ Future<void> _initializeFlutterFire() async {
 }
 
 class SplashScreenPageState extends State<SplashScreen> {
-
   SplashController _splashController = Get.find();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -77,13 +77,13 @@ class SplashScreenPageState extends State<SplashScreen> {
       String isUserLoggedIn =
           prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
       print('$isUserLoggedIn');
-      if(isUserLoggedIn == "false"){
+      if (isUserLoggedIn == "false") {
         Get.offNamed(Routes.LOGIN);
-      }else{
+      } else {
         _splashController.getSecretKey(RequestIds.REFRESH_DATA);
       }
     });
-    print('hello');
+    //print('hello');
     _initializeFlutterFireFuture = _initializeFlutterFire();
   }
 
@@ -91,15 +91,16 @@ class SplashScreenPageState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.backgroundColor,
-      body: Container(
-          child: Center(
-              child: Text(
-        "TSO App",
-        style: TextStyle(
-            color: ColorConstants.blackColor,
-            fontSize: 32,
-            fontFamily: "Raleway"),
-      ))),
+      body: Center(
+        child: Container(
+          margin: EdgeInsets.all(32),
+          child: Image.asset(
+            "assets/images/Logo(Whitebg).png",
+            width: SizeConfig.blockSizeHorizontal,
+            height: 160,
+          ),
+        ),
+      ),
     );
   }
 }

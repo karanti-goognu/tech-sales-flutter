@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -82,16 +83,11 @@ class _HomeScreenState extends State<HomeScreen> {
               // titleSpacing: 50,
               backgroundColor: ColorConstants.appBarColor,
               toolbarHeight: 100,
-              centerTitle: false,
-              title: Text(
-                "Home",
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 34,
-                    color: Colors.white,
-                    fontFamily: "Muli"),
+              title: Image.asset(
+                "assets/images/Logo(Bluebg).png",
+                height: 48,
               ),
-              automaticallyImplyLeading: true,
+              automaticallyImplyLeading: false,
               actions: [
                 Padding(
                   padding: const EdgeInsets.only(right: 25.0, top: 20),
@@ -426,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     list[index].value + " Page Coming Soon .... "));
               }
               if (list[index].value == "MWP") {
-                Get.toNamed(Routes.ADD_EVENT_SCREEN);
+                Get.toNamed(Routes.ADD_MWP_SCREEN);
               }
               if (list[index].value == "Service Requests") {
                 print("here");

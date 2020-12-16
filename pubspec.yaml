@@ -61,7 +61,8 @@ dependencies:
   path_provider: ^1.6.24
   unicorndial: ^1.1.5
   permission_handler: ^5.0.1+1
-
+  flutter_svg: ^0.19.1
+  flutter_calendar_carousel: 1.4.12
 
 
   flutter_localizations:
@@ -92,6 +93,13 @@ flutter:
      - assets/images/img4.png
      - assets/images/Container.png
      - assets/images/rejected.png
+     - assets/images/app_icon.png
+     - assets/images/Logo(Bluebg).svg
+     - assets/images/Logo(Whitebg).svg
+     - assets/images/Logo(yellowbg).svg
+     - assets/images/Logo(Bluebg).png
+     - assets/images/Logo(Whitebg).png
+     - assets/images/Logo(yellowbg).png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

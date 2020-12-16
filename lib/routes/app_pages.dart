@@ -13,7 +13,9 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewO
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/add_calender_event.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_event.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/site_search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_screen.dart';
@@ -63,8 +65,18 @@ class AppPages {
         page: () => SiteScreen(),
         binding: SiteBinding()),
     GetPage(
+        name: Routes.ADD_MWP_SCREEN,
+        page: () => AddMWP(),
+        binding: AppBinding()),
+
+    GetPage(
         name: Routes.ADD_EVENT_SCREEN,
         page: () => AddEvent(),
+        binding: AppBinding()),
+
+    GetPage(
+        name: Routes.ADD_CALENDER_SCREEN,
+        page: () => AddCalenderEventPage(),
         binding: AppBinding()),
   ];
 }
