@@ -83,9 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
               // titleSpacing: 50,
               backgroundColor: ColorConstants.appBarColor,
               toolbarHeight: 100,
-              title: SvgPicture.asset(
-                "assets/images/Logo(Bluebg).svg",
-                height: 60,
+              title: Image.asset(
+                "assets/images/Logo(Bluebg).png",
+                height: 48,
               ),
               automaticallyImplyLeading: false,
               actions: [

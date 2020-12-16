@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -79,12 +78,12 @@ class SplashScreenPageState extends State<SplashScreen> {
           prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
       print('$isUserLoggedIn');
       if (isUserLoggedIn == "false") {
-        Get.offNamed(Routes.LOGIN);
+        Get.offNamed(Routes.ADD_CALENDER_SCREEN);
       } else {
         _splashController.getSecretKey(RequestIds.REFRESH_DATA);
       }
     });
-    print('hello');
+    //print('hello');
     _initializeFlutterFireFuture = _initializeFlutterFire();
   }
 
@@ -94,9 +93,9 @@ class SplashScreenPageState extends State<SplashScreen> {
       backgroundColor: ColorConstants.backgroundColor,
       body: Center(
         child: Container(
-          margin: EdgeInsets.all(20),
-          child: SvgPicture.asset(
-            "assets/images/Logo(Whitebg).svg",
+          margin: EdgeInsets.all(32),
+          child: Image.asset(
+            "assets/images/Logo(Whitebg).png",
             width: SizeConfig.blockSizeHorizontal,
             height: 160,
           ),
@@ -104,24 +103,4 @@ class SplashScreenPageState extends State<SplashScreen> {
       ),
     );
   }
-}
-
-class OpenPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint1 = Paint()
-      ..color = Color(0xff63aa65)
-      ..style = PaintingStyle.fill
-      ..strokeWidth = 5;
-    //draw arc
-    canvas.drawArc(
-        Offset(0, 0) & Size(200, 200),
-        0, //radians
-        2, //radians
-        false,
-        paint1);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }

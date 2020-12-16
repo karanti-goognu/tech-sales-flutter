@@ -5,17 +5,17 @@ import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
 
 class LoginOtpScreen extends StatefulWidget {
   final String mobileNumber;
@@ -142,24 +142,13 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
+              padding: EdgeInsets.all(32),
               height: SizeConfig.safeBlockVertical * 40,
               width: SizeConfig.safeBlockVertical * 100,
               child: Center(
-                  child: Text(
-                "TSO",
-                style: TextStyle(
-                    fontSize: 47,
-                    fontFamily: "Raleway",
-                    letterSpacing: 0,
-                    fontWeight: FontWeight.w800),
-              )),
-              /*decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/assets/alucard.jpg'),
-                  fit: BoxFit.fill,
-                ),
-                shape: BoxShape.circle,
-              ),*/
+                child: Image.asset(
+                  "assets/images/Logo(Whitebg).png",
+                ),),
             ),
             Text(
               "Welcome, please login ",
@@ -288,7 +277,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                   SizedBox(
                     height: 40,
                   ),
-                 /* Row(
+                  /* Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
