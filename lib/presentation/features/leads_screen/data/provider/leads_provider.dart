@@ -306,11 +306,10 @@ class MyApiClientLeads {
                   // }
                   gv.fromLead = false;
                 //  Get.toNamed(Routes.LEADS_SCREEN);
-
+                  Get.back();
                   Get.back();
 
-                 Get.toNamed(Routes.LEADS_SCREEN);
-
+                 /*Get.toNamed(Routes.LEADS_SCREEN);*/
 
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead("Lead Added Successfully !!!"));

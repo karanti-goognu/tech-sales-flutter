@@ -1,36 +1,32 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/DraftLeadModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:intl/intl.dart';
-import 'package:path/path.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/DraftLeadModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
 class AddNewLeadForm extends StatefulWidget {
   @override
@@ -89,7 +85,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   List<Item> _data = generateItems(1);
   List<InfluencerDetail> _listInfluencerDetail = new List();
 
-
   Position _currentPosition = new Position();
   String _currentAddress;
 
@@ -102,7 +97,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   List<InfluencerCategoryEntity> influencerCategoryEntity;
 
-  AddLeadsController _addLeadsController;
+  AddLeadsController _addLeadsController = Get.find();
   SaveLeadRequestDraftModel saveLeadRequestModelFromDraft =
       new SaveLeadRequestDraftModel();
 
@@ -118,86 +113,111 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   @override
   void dispose() {
     super.dispose();
-     _addLeadsController.dispose();
-  //  _formKey.currentState.dispose();
+    //_addLeadsController.dispose();
+    //  _formKey.currentState.dispose();
   }
 
   getInitialData() {
     setState(() {
       print(gv.fromLead);
-      if (gv.fromLead) {
-        saveLeadRequestModelFromDraft = gv.saveLeadRequestModel;
-        _contactName = saveLeadRequestModelFromDraft.contactName;
-        geoTagType = saveLeadRequestModelFromDraft.geotagType;
-        _contactNumber = saveLeadRequestModelFromDraft.contactNumber;
-        if (saveLeadRequestModelFromDraft.leadLatitude != "null" && saveLeadRequestModelFromDraft.leadLatitude != null) {
-          _currentPosition = new Position(
-              latitude:
-                  double.parse(saveLeadRequestModelFromDraft.leadLatitude),
-              longitude:
-                  double.parse(saveLeadRequestModelFromDraft.leadLongitude));
-        }
-        _siteAddress.text = saveLeadRequestModelFromDraft.leadAddress;
-        _pincode.text = saveLeadRequestModelFromDraft.leadPincode;
-        _state.text = saveLeadRequestModelFromDraft.leadStateName;
-        _district.text = saveLeadRequestModelFromDraft.leadDistrictName;
-        _taluk.text = saveLeadRequestModelFromDraft.leadTalukName;
-        _totalMT.text = saveLeadRequestModelFromDraft.leadSalesPotentialMt;
-        _totalBags.text = saveLeadRequestModelFromDraft.leadBags;
-        _rera.text = saveLeadRequestModelFromDraft.leadReraNumber;
-        if(_totalMT.text != null && _totalMT.text != "null" && _totalMT.text != ""){
-          _totalBags.text =
-              (double.parse(_totalMT.text) * 20).round().toString();
-        }
+      try {
+        if (gv.fromLead) {
+          saveLeadRequestModelFromDraft = gv.saveLeadRequestModel;
+          _contactName = saveLeadRequestModelFromDraft.contactName;
+          geoTagType = saveLeadRequestModelFromDraft.geotagType;
+          _contactNumber = saveLeadRequestModelFromDraft.contactNumber;
+          if (saveLeadRequestModelFromDraft.leadLatitude != "null" &&
+              saveLeadRequestModelFromDraft.leadLatitude != null) {
+            _currentPosition = new Position(
+                latitude:
+                double.parse(saveLeadRequestModelFromDraft.leadLatitude),
+                longitude:
+                double.parse(saveLeadRequestModelFromDraft.leadLongitude));
+          }
+          _siteAddress.text = saveLeadRequestModelFromDraft.leadAddress;
+          _pincode.text = saveLeadRequestModelFromDraft.leadPincode;
+          _state.text = saveLeadRequestModelFromDraft.leadStateName;
+          _district.text = saveLeadRequestModelFromDraft.leadDistrictName;
+          _taluk.text = saveLeadRequestModelFromDraft.leadTalukName;
+          _totalMT.text = saveLeadRequestModelFromDraft.leadSalesPotentialMt;
+          _totalBags.text = saveLeadRequestModelFromDraft.leadBags;
+          _rera.text = saveLeadRequestModelFromDraft.leadReraNumber;
+          if (_totalMT.text != null &&
+              _totalMT.text != "null" &&
+              _totalMT.text != "") {
+            _totalBags.text =
+                (double.parse(_totalMT.text) * 20).round().toString();
+          }
 
-        // listLeadImage = saveLeadRequestModelFromDraft.listLeadImage;
-        print(saveLeadRequestModelFromDraft.influencerList[0].toJson());
-        if(saveLeadRequestModelFromDraft.influencerList.length != 0){
-          print(saveLeadRequestModelFromDraft.influencerList[0].inflName);
-          for(int i = 0 ; i < saveLeadRequestModelFromDraft.influencerList.length ; i ++){
-            print(23454);
+          // listLeadImage = saveLeadRequestModelFromDraft.listLeadImage;
+          //print(saveLeadRequestModelFromDraft.influencerList[0].toJson());
+          if (saveLeadRequestModelFromDraft.influencerList.length != 0) {
+            print(saveLeadRequestModelFromDraft.influencerList[0].inflName);
+            for (int i = 0;
+            i < saveLeadRequestModelFromDraft.influencerList.length;
+            i++) {
+              /*print(23454);
             print(saveLeadRequestModelFromDraft.influencerList[i].toJson());
-            print(saveLeadRequestModelFromDraft.influencerList[i].id);
-            _listInfluencerDetail.add(new InfluencerDetail(
-                id : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].id),
-                inflName : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflName),
-                inflContact : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflContact),
-                inflTypeId : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflTypeId),
-                inflTypeValue : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflTypeValue),
-                inflCatId : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflCatId),
-                inflCatValue : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].inflCatValue),
-                ilpIntrested : new TextEditingController(text: saveLeadRequestModelFromDraft.influencerList[i].ilpIntrested),
-                isExpanded: saveLeadRequestModelFromDraft.influencerList[i].isExpanded,
-                isPrimarybool: saveLeadRequestModelFromDraft.influencerList[i].isPrimarybool,
-                isPrimary: saveLeadRequestModelFromDraft.influencerList[i].isPrimary
-
-            ));
+            print(saveLeadRequestModelFromDraft.influencerList[i].id);*/
+              _listInfluencerDetail.add(new InfluencerDetail(
+                  id: new TextEditingController(
+                      text: saveLeadRequestModelFromDraft.influencerList[i].id),
+                  inflName: new TextEditingController(
+                      text: saveLeadRequestModelFromDraft
+                          .influencerList[i].inflName),
+                  inflContact: new TextEditingController(
+                      text: saveLeadRequestModelFromDraft
+                          .influencerList[i].inflContact),
+                  inflTypeId: new TextEditingController(
+                      text: saveLeadRequestModelFromDraft
+                          .influencerList[i].inflTypeId),
+                  inflTypeValue: new TextEditingController(
+                      text: saveLeadRequestModelFromDraft
+                          .influencerList[i].inflTypeValue),
+                  inflCatId: new TextEditingController(
+                      text: saveLeadRequestModelFromDraft
+                          .influencerList[i].inflCatId),
+                  inflCatValue: new TextEditingController(
+                      text: saveLeadRequestModelFromDraft
+                          .influencerList[i].inflCatValue),
+                  ilpIntrested: new TextEditingController(
+                      text: saveLeadRequestModelFromDraft
+                          .influencerList[i].ilpIntrested),
+                  isExpanded:
+                  saveLeadRequestModelFromDraft.influencerList[i].isExpanded,
+                  isPrimarybool: saveLeadRequestModelFromDraft
+                      .influencerList[i].isPrimarybool,
+                  isPrimary:
+                  saveLeadRequestModelFromDraft.influencerList[i].isPrimary));
+            }
           }
-        }
 
-        if(saveLeadRequestModelFromDraft.listLeadImage.length != null){
-          for(int i = 0 ; i < saveLeadRequestModelFromDraft.listLeadImage.length ; i++){
-            _imageList.add(new File(saveLeadRequestModelFromDraft.listLeadImage[i].photoPath));
-            listLeadImage.add(new ListLeadImage(
-              photoName: basename(saveLeadRequestModelFromDraft.listLeadImage[i].photoPath)
-            ));
+          if (saveLeadRequestModelFromDraft.listLeadImage.length != null) {
+            for (int i = 0;
+            i < saveLeadRequestModelFromDraft.listLeadImage.length;
+            i++) {
+              _imageList.add(new File(
+                  saveLeadRequestModelFromDraft.listLeadImage[i].photoPath));
+              listLeadImage.add(new ListLeadImage(
+                  photoName: basename(
+                      saveLeadRequestModelFromDraft.listLeadImage[i].photoPath)));
+            }
           }
+
+          // _commentsListNew = saveLeadRequestModelFromDraft.comments;
+          if (saveLeadRequestModelFromDraft.comments.length != 0) {
+            _comments.text =
+                saveLeadRequestModelFromDraft.comments[0].commentText;
+          }
+
+          //print (saveLeadRequestModelFromDraft.comments[0].commentText);
+          saveLeadRequestModelFromDraft = new SaveLeadRequestDraftModel();
+          gv.saveLeadRequestModel = new SaveLeadRequestDraftModel();
         }
-
-
-        // _commentsListNew = saveLeadRequestModelFromDraft.comments;
-        if(saveLeadRequestModelFromDraft.comments.length != 0){
-          _comments.text = saveLeadRequestModelFromDraft.comments[0].commentText;
-
-        }
-
-        //print (saveLeadRequestModelFromDraft.comments[0].commentText);
-        saveLeadRequestModelFromDraft = new SaveLeadRequestDraftModel();
-        gv.saveLeadRequestModel = new SaveLeadRequestDraftModel();
-
-
-
+      } catch (_) {
+        print('We are in catch :: Add New Form');
       }
+
     });
     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
     AccessKeyModel accessKeyModel = new AccessKeyModel();
@@ -216,8 +236,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           //  print(influencerCategoryEntity[0].inflCatDesc);
         });
       });
-      if(_listInfluencerDetail.length == 0){
-        _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: true ));
+      if (_listInfluencerDetail.length == 0) {
+        _listInfluencerDetail
+            .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
       }
 
       Get.back();
@@ -230,38 +251,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   // titleSpacing: 50,
-      //   // leading: new Container(),
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   toolbarHeight: 90,
-      //   centerTitle: false,
-      //   title: Column(
-      //     mainAxisAlignment: MainAxisAlignment.start,
-      //     children: [
-      //       Row(
-      //         // mainAxisSize: MainAxisSize.max,
-      //         // crossAxisAlignment: CrossAxisAlignment.center,
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //         children: [
-      //           Text(
-      //             "Add a new Trade lead",
-      //             style: TextStyle(
-      //                 fontWeight: FontWeight.normal,
-      //                 fontSize: 22,
-      //                 color: HexColor("#006838"),
-      //                 fontFamily: "Muli"),
-      //           ),
-      //         ],
-      //       ),
-      //
-      //
-      //     ],
-      //   ),
-      //   automaticallyImplyLeading: false,
-      //
-      // ),
       floatingActionButton: Container(
         height: 68.0,
         width: 68.0,
@@ -372,7 +361,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           ),
         ),
       ),
-
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -411,54 +399,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             fontFamily: "Muli"),
                       ),
                     ),
-
-                    // DropdownButtonFormField<SiteSubTypeEntity>(
-                    //   value: _selectedValue,
-                    //   items: siteSubTypeEntity
-                    //       .map((label) => DropdownMenuItem(
-                    //             child: Text(
-                    //               label.siteSubTypeDesc,
-                    //               style: TextStyle(
-                    //                   fontSize: 18,
-                    //                   color: ColorConstants.inputBoxHintColor,
-                    //                   fontFamily: "Muli"),
-                    //             ),
-                    //             value: label,
-                    //           ))
-                    //       .toList(),
-                    //
-                    //   // hint: Text('Rating'),
-                    //   onChanged: (value) {
-                    //     setState(() {
-                    //       _selectedValue = value;
-                    //     });
-                    //   },
-                    //   decoration: InputDecoration(
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(
-                    //           color: ColorConstants.backgroundColorBlue,
-                    //           //color: HexColor("#0000001F"),
-                    //           width: 1.0),
-                    //     ),
-                    //     enabledBorder: OutlineInputBorder(
-                    //       borderSide:
-                    //           BorderSide(color: Colors.black26, width: 1.0),
-                    //     ),
-                    //     errorBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.red, width: 1.0),
-                    //     ),
-                    //     labelText: "Site Subtype",
-                    //     filled: false,
-                    //     focusColor: Colors.black,
-                    //     isDense: false,
-                    //     labelStyle: TextStyle(
-                    //         fontFamily: "Muli",
-                    //         color: ColorConstants.inputBoxHintColorDark,
-                    //         fontWeight: FontWeight.normal,
-                    //         fontSize: 16.0),
-                    //     fillColor: ColorConstants.backgroundColor,
-                    //   ),
-                    // ),
 
                     SizedBox(height: 16),
 
@@ -975,7 +915,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         ),
                         labelText: "Taluk",
                         filled: false,
-                        enabled:false,
+                        enabled: false,
                         focusColor: Colors.black,
                         labelStyle: TextStyle(
                             fontFamily: "Muli",
@@ -1138,34 +1078,41 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 fontSize: 18),
                                           ),
                                           Switch(
-                                            onChanged: (value){
+                                            onChanged: (value) {
                                               setState(() {
-                                                if(value){
-                                                  for(int i=0 ; i < _listInfluencerDetail.length ; i++){
-                                                    if(i == index ){
-                                                      _listInfluencerDetail[i].isPrimarybool = value;
-                                                    }
-                                                    else{
-                                                      _listInfluencerDetail[i].isPrimarybool = !value;
+                                                if (value) {
+                                                  for (int i = 0;
+                                                      i <
+                                                          _listInfluencerDetail
+                                                              .length;
+                                                      i++) {
+                                                    if (i == index) {
+                                                      _listInfluencerDetail[i]
+                                                              .isPrimarybool =
+                                                          value;
+                                                    } else {
+                                                      _listInfluencerDetail[i]
+                                                              .isPrimarybool =
+                                                          !value;
                                                     }
                                                   }
-                                                }
-                                                else{
+                                                } else {
                                                   Get.dialog(CustomDialogs()
                                                       .errorDialog(
-                                                      "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                                          "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                 }
-
                                               });
                                             },
-                                            value: _listInfluencerDetail[index].isPrimarybool,
+                                            value: _listInfluencerDetail[index]
+                                                .isPrimarybool,
                                             activeColor: HexColor("#009688"),
                                             activeTrackColor:
-                                            HexColor("#009688").withOpacity(0.5),
-                                            inactiveThumbColor: HexColor("#F1F1F1"),
+                                                HexColor("#009688")
+                                                    .withOpacity(0.5),
+                                            inactiveThumbColor:
+                                                HexColor("#F1F1F1"),
                                             inactiveTrackColor: Colors.black26,
                                           ),
-
                                           _listInfluencerDetail[index]
                                                   .isExpanded
                                               ? FlatButton.icon(
@@ -1321,7 +1268,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       ),
                                       SizedBox(height: 10),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             "Secondary",
@@ -1332,31 +1280,39 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 fontFamily: "Muli"),
                                           ),
                                           Switch(
-                                            onChanged: (value){
+                                            onChanged: (value) {
                                               setState(() {
-                                                if(value){
-                                                  for(int i=0 ; i < _listInfluencerDetail.length ; i++){
-                                                    if(i == index ){
-                                                      _listInfluencerDetail[i].isPrimarybool = value;
-                                                    }
-                                                    else{
-                                                      _listInfluencerDetail[i].isPrimarybool = !value;
+                                                if (value) {
+                                                  for (int i = 0;
+                                                      i <
+                                                          _listInfluencerDetail
+                                                              .length;
+                                                      i++) {
+                                                    if (i == index) {
+                                                      _listInfluencerDetail[i]
+                                                              .isPrimarybool =
+                                                          value;
+                                                    } else {
+                                                      _listInfluencerDetail[i]
+                                                              .isPrimarybool =
+                                                          !value;
                                                     }
                                                   }
-                                                }
-                                                else{
+                                                } else {
                                                   Get.dialog(CustomDialogs()
                                                       .errorDialog(
-                                                      "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                                          "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                 }
-
                                               });
                                             },
-                                            value: _listInfluencerDetail[index].isPrimarybool,
+                                            value: _listInfluencerDetail[index]
+                                                .isPrimarybool,
                                             activeColor: HexColor("#009688"),
                                             activeTrackColor:
-                                            HexColor("#009688").withOpacity(0.5),
-                                            inactiveThumbColor: HexColor("#F1F1F1"),
+                                                HexColor("#009688")
+                                                    .withOpacity(0.5),
+                                            inactiveThumbColor:
+                                                HexColor("#F1F1F1"),
                                             inactiveTrackColor: Colors.black26,
                                           ),
                                           Text(
@@ -1364,9 +1320,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18,
-                                                color: _listInfluencerDetail[index].isPrimarybool
-                                                    ? HexColor("#009688")
-                                                    : Colors.black,
+                                                color:
+                                                    _listInfluencerDetail[index]
+                                                            .isPrimarybool
+                                                        ? HexColor("#009688")
+                                                        : Colors.black,
                                                 // color: HexColor("#000000DE"),
                                                 fontFamily: "Muli"),
                                           ),
@@ -1402,14 +1360,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                               "inflContact": value
                                             };
 
-                                            if(_listInfluencerDetail
-                                                .length != 0){
+                                            if (_listInfluencerDetail.length !=
+                                                0) {
                                               for (int i = 0;
-                                              i <
-                                                  _listInfluencerDetail
-                                                      .length -
-                                                      1;
-                                              i++) {
+                                                  i <
+                                                      _listInfluencerDetail
+                                                              .length -
+                                                          1;
+                                                  i++) {
                                                 if (value ==
                                                     _listInfluencerDetail[i]
                                                         .inflContact
@@ -1419,7 +1377,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 }
                                               }
                                             }
-
 
                                             if (match) {
                                               Get.dialog(CustomDialogs()
@@ -1472,7 +1429,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   print(
                                                       inflDetail.inflName.text);
 
-                                                  setState(()  {
+                                                  setState(() {
                                                     if (inflDetail
                                                             .inflName.text !=
                                                         "null") {
@@ -1639,25 +1596,25 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                         }
                                                       }
                                                     } else {
-
-
-                                                      if( _listInfluencerDetail[
-                                                      index]
-                                                          .inflContact != null){
+                                                      if (_listInfluencerDetail[
+                                                                  index]
+                                                              .inflContact !=
+                                                          null) {
                                                         _listInfluencerDetail[
-                                                        index]
+                                                                index]
                                                             .inflContact
                                                             .clear();
                                                         _listInfluencerDetail[
-                                                        index]
+                                                                index]
                                                             .inflName
                                                             .clear();
                                                       }
                                                       //Get.back();
                                                       //print("hehehhehe");
-                                                    return  Get.dialog(CustomDialogs().showDialog(
-                                                          "No influencer registered with this number"));
-
+                                                      return Get.dialog(
+                                                          CustomDialogs()
+                                                              .showDialog(
+                                                                  "No influencer registered with this number"));
                                                     }
                                                   });
                                                   Get.back();
@@ -1929,8 +1886,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   .inflName
                                   .text
                                   .isNullOrBlank) {
-                            InfluencerDetail infl =
-                                new InfluencerDetail(isExpanded: true , isPrimarybool: false);
+                            InfluencerDetail infl = new InfluencerDetail(
+                                isExpanded: true, isPrimarybool: false);
 
                             // Item item = new Item(
                             //     headerValue: "agx ", expandedValue: "dnxcx");
@@ -2403,7 +2360,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           setState(() {
                             viewMoreActive = !viewMoreActive;
                           });
-
                         },
                       ),
                     ),
@@ -2433,7 +2389,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             // print(_comments.text);
 
                             if (_contactNumber != null &&
-                                _contactNumber != '' && _contactNumber.length == 10) {
+                                _contactNumber != '' &&
+                                _contactNumber.length == 10) {
                               print("here");
                               setState(() {
                                 String empId;
@@ -2491,38 +2448,63 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     }
                                   }
 
-                                  List<InfluencerDetailDraft> influencerDetailDraft = new List();
-                                  for(int i = 0 ; i < _listInfluencerDetail.length ;i++){
-
-                                    influencerDetailDraft.add(new InfluencerDetailDraft(
-                                      id: _listInfluencerDetail[i].id.text,
-                                      inflName:  _listInfluencerDetail[i].inflName.text,
-                                       inflContact: _listInfluencerDetail[i].inflContact.text,
-                                       inflTypeId : _listInfluencerDetail[i].inflTypeId.text,
-                                      inflTypeValue: _listInfluencerDetail[i].inflTypeValue.text,
-                                      inflCatId : _listInfluencerDetail[i].inflCatId.text,
-                                      inflCatValue:_listInfluencerDetail[i].inflCatValue.text,
-                                      ilpIntrested : _listInfluencerDetail[i].ilpIntrested.text,
-                                      isExpanded : _listInfluencerDetail[i].isExpanded,
-                                      isPrimarybool: _listInfluencerDetail[i].isPrimarybool,
-                                      isPrimary: _listInfluencerDetail[i].isPrimary
-
-                                    ));
+                                  List<InfluencerDetailDraft>
+                                      influencerDetailDraft = new List();
+                                  for (int i = 0;
+                                      i < _listInfluencerDetail.length;
+                                      i++) {
+                                    influencerDetailDraft.add(
+                                        new InfluencerDetailDraft(
+                                            id: _listInfluencerDetail[i]
+                                                .id
+                                                .text,
+                                            inflName: _listInfluencerDetail[i]
+                                                .inflName
+                                                .text,
+                                            inflContact: _listInfluencerDetail[i]
+                                                .inflContact
+                                                .text,
+                                            inflTypeId: _listInfluencerDetail[i]
+                                                .inflTypeId
+                                                .text,
+                                            inflTypeValue:
+                                                _listInfluencerDetail[i]
+                                                    .inflTypeValue
+                                                    .text,
+                                            inflCatId: _listInfluencerDetail[i]
+                                                .inflCatId
+                                                .text,
+                                            inflCatValue:
+                                                _listInfluencerDetail[i]
+                                                    .inflCatValue
+                                                    .text,
+                                            ilpIntrested:
+                                                _listInfluencerDetail[i]
+                                                    .ilpIntrested
+                                                    .text,
+                                            isExpanded: _listInfluencerDetail[i]
+                                                .isExpanded,
+                                            isPrimarybool:
+                                                _listInfluencerDetail[i]
+                                                    .isPrimarybool,
+                                            isPrimary: _listInfluencerDetail[i]
+                                                .isPrimary));
                                   }
 
-                                  List<ListLeadImageDraft> listLeadImageDraft = new List();
+                                  List<ListLeadImageDraft> listLeadImageDraft =
+                                      new List();
 
-                                  for(int i = 0 ;i< _imageList.length ; i++){
-                                    listLeadImageDraft.add( new ListLeadImageDraft(
-                                      photoPath: _imageList[i].path
-                                    )
-                                    );
+                                  for (int i = 0; i < _imageList.length; i++) {
+                                    listLeadImageDraft.add(
+                                        new ListLeadImageDraft(
+                                            photoPath: _imageList[i].path));
                                   }
 
                                   final DateFormat formatter =
                                       DateFormat("dd-MM-yyyy");
 
-                                  SaveLeadRequestDraftModel saveLeadRequestDraftModel =
+                                  SaveLeadRequestDraftModel
+                                      saveLeadRequestDraftModel =
                                       new SaveLeadRequestDraftModel(
                                           siteSubTypeId: "2",
                                           contactName: _contactName,
@@ -2544,12 +2526,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           leadBags: _totalBags.text,
                                           leadReraNumber: _rera.text,
                                           isStatus: "false",
-                                         // listLeadImage: new List(),
-                                        //  influencerList: new List(),
-                                         // comments: new List(),
-                                           listLeadImage: listLeadImageDraft,
-                                           influencerList: influencerDetailDraft,
-                                           comments: _commentsListNew,
+                                          // listLeadImage: new List(),
+                                          //  influencerList: new List(),
+                                          // comments: new List(),
+                                          listLeadImage: listLeadImageDraft,
+                                          influencerList: influencerDetailDraft,
+                                          comments: _commentsListNew,
                                           assignDate:
                                               formatter.format(DateTime.now()));
 
@@ -2560,16 +2542,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   print(gv.fromLead);
                                   if (!gv.fromLead) {
                                     DraftLeadModelforDB draftLeadModelforDB =
-                                        new DraftLeadModelforDB(null,
-                                            json.encode(saveLeadRequestDraftModel));
+                                        new DraftLeadModelforDB(
+                                            null,
+                                            json.encode(
+                                                saveLeadRequestDraftModel));
                                     print(draftLeadModelforDB.leadModel);
                                     await db
                                         .addLeadInDraft(draftLeadModelforDB);
                                   } else {
-                                    print(json.encode(saveLeadRequestDraftModel));
+                                    print(
+                                        json.encode(saveLeadRequestDraftModel));
                                     DraftLeadModelforDB draftLeadModelforDB =
-                                        new DraftLeadModelforDB(gv.draftID,
-                                            json.encode(saveLeadRequestDraftModel));
+                                        new DraftLeadModelforDB(
+                                            gv.draftID,
+                                            json.encode(
+                                                saveLeadRequestDraftModel));
 
                                     await db
                                         .updateLeadInDraft(draftLeadModelforDB);
@@ -2583,8 +2570,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       new CupertinoPageRoute(
                                           builder: (BuildContext context) =>
                                               DraftLeadListScreen()));
-
-
                                 });
 
                                 //  _comments.clear();
@@ -2607,15 +2592,16 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                           onPressed: () async {
                             //print(_comments.text);
-                            if (_contactNumber != null && _contactNumber.length == 10 &&
-                            _contactNumber != '' &&
-                                _currentPosition.latitude != null &&
-                                _currentPosition.latitude != '' &&
-                                _pincode.text != null &&
-                                _pincode.text != ''
-                            //&&
-                               // _listInfluencerDetail.length != 0
-                            ) {
+                            if (_contactNumber != null &&
+                                    _contactNumber.length == 10 &&
+                                    _contactNumber != '' &&
+                                    _currentPosition.latitude != null &&
+                                    _currentPosition.latitude != '' &&
+                                    _pincode.text != null &&
+                                    _pincode.text != ''
+                                //&&
+                                // _listInfluencerDetail.length != 0
+                                ) {
                               // print(_comments.text);
                               print("here");
                               setState(() {
@@ -2649,28 +2635,31 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   );
                                   // print("DHAWAM " + _commentsListNew[0].commentText);
 
-                                  if (
-                                  _listInfluencerDetail.length != 0 && (_listInfluencerDetail[
+                                  if (_listInfluencerDetail.length != 0 &&
+                                      (_listInfluencerDetail[
+                                                      _listInfluencerDetail
+                                                              .length -
+                                                          1]
+                                                  .inflName ==
+                                              null ||
+                                          _listInfluencerDetail[
+                                                      _listInfluencerDetail
+                                                              .length -
+                                                          1]
+                                                  .inflName ==
+                                              "null" ||
+                                          _listInfluencerDetail[
                                                   _listInfluencerDetail.length -
                                                       1]
-                                              .inflName ==
-                                          null ||
-                                      _listInfluencerDetail[
-                                                  _listInfluencerDetail.length -
-                                                      1]
-                                              .inflName ==
-                                          "null" ||
-                                      _listInfluencerDetail[
-                                              _listInfluencerDetail.length - 1]
-                                          .inflName
-                                          .text
-                                          .isNullOrBlank)) {
+                                              .inflName
+                                              .text
+                                              .isNullOrBlank)) {
                                     print("here1234");
                                     _listInfluencerDetail.removeAt(
                                         _listInfluencerDetail.length - 1);
                                   }
-                                 //  print(22112);
-                                 // print(_listInfluencerDetail[1].toJson());
+                                  //  print(22112);
+                                  // print(_listInfluencerDetail[1].toJson());
                                   SaveLeadRequestModel saveLeadRequestModel =
                                       new SaveLeadRequestModel(
                                           siteSubTypeId: "2",
@@ -2699,16 +2688,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           influencerList: _listInfluencerDetail,
                                           comments: _commentsListNew);
 
-
-                                  if(
-                                  !gv.fromLead
-                                  ){
-                                    gv.draftID= 0;
+                                  if (!gv.fromLead) {
+                                    gv.draftID = 0;
                                   }
 
-                                    _addLeadsController.getAccessKeyAndSaveLead(
-                                        saveLeadRequestModel,
-                                        _imageList,
+                                  _addLeadsController.getAccessKeyAndSaveLead(
+                                      saveLeadRequestModel,
+                                      _imageList,
                                       context);
                                   _commentsListNew = new List();
 
@@ -2798,13 +2784,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   }
 
   _getCurrentLocation() async {
-
     if (!(await Geolocator().isLocationServiceEnabled())) {
-
-      Get.dialog(CustomDialogs()
-          .errorDialog("Please enable your location service from device settings"));
-    }
-    else{
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please enable your location service from device settings"));
+    } else {
       geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
@@ -2817,8 +2800,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         print(e);
       });
     }
-
-
   }
 
   _getAddressFromLatLng() async {
@@ -2880,7 +2861,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     setState(() {
       isSwitchedPrimary = value;
     });
-
   }
 }
 

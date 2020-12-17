@@ -29,7 +29,7 @@ class _LeadScreenState extends State<LeadScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
   // Instantiate your class using Get.put() to make it available for all "child" routes there.
   LeadsFilterController _leadsFilterController = Get.find();
-  LoginController _loginController = Get.find();
+  //LoginController _loginController = Get.find();
   SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
@@ -43,7 +43,7 @@ class _LeadScreenState extends State<LeadScreen> {
   @override
   void initState() {
     super.initState();
-    try {
+   /* try {
       if (_loginController.validateOtpResponse.leadStatusEntity != null) {
         if (_loginController.validateOtpResponse.leadStatusEntity.length != 0) {
           _splashController.splashDataModel.leadStatusEntity =
@@ -52,7 +52,7 @@ class _LeadScreenState extends State<LeadScreen> {
       }
     } catch (_) {
       print('${_.toString()}');
-    }
+    }*/
 
     _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
   }

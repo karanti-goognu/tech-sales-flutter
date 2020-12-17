@@ -1326,7 +1326,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               fontSize: 18,
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -2931,7 +2931,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   fontSize: 18,
                   color: ColorConstants.inputBoxHintColor,
                   fontFamily: "Muli"),
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -3054,7 +3054,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   fontSize: 18,
                   color: ColorConstants.inputBoxHintColor,
                   fontFamily: "Muli"),
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -6365,13 +6365,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
           }
 
-
-
         if (_selectedSiteFloor == null) {
           _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
         }
-
-
 
         var updateDataRequest = {
           "siteId": widget.siteId,

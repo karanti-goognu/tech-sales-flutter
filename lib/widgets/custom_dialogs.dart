@@ -2,17 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/RejectionLeadScreen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
-
+import 'package:http/http.dart' as http;
 
 class CustomDialogs {
   Widget errorDialog(String message) {
@@ -199,13 +201,15 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
+            Get.toNamed(Routes.HOME_SCREEN);
           },
         ),
       ],
     );
   }
 
-  Widget showExistingLeadDialog(String message, BuildContext context, SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
+  Widget showExistingLeadDialog(String message, BuildContext context,
+      SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -236,7 +240,6 @@ class CustomDialogs {
           onPressed: () {
             gv.saveLeadRequestModelNew = saveLeadRequestModel;
             gv.imageList = imageList;
-
 
             Get.back();
             Get.toNamed(Routes.VIEW_OLD_LEAD_SCREEN);
@@ -311,8 +314,8 @@ class CustomDialogs {
     );
   }
 
-  Widget showExistingTSODialog(String respMsg, BuildContext context, SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
-
+  Widget showExistingTSODialog(String respMsg, BuildContext context,
+      SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -342,15 +345,16 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-            Get.back();
+            Get.lazyPut<AddLeadsController>(() {
+              return AddLeadsController(
+                  repository: MyRepositoryLeads(
+                      apiClient: MyApiClientLeads(httpClient: http.Client())));
+            });
             AddLeadsController _addLeadsController = Get.find();
             saveLeadRequestModel.isStatus = "true";
             _addLeadsController.getAccessKeyAndSaveLead(
-                saveLeadRequestModel,
-                imageList,
-                context);
+                saveLeadRequestModel, imageList, context);
           },
-
         ),
         TextButton(
           child: Text(
@@ -363,13 +367,11 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-Get.back();
-Get.back();
+            Get.back();
+            Get.back();
           },
-
         ),
       ],
     );
-
   }
 }

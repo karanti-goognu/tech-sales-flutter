@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/size/custom_screen.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -99,8 +97,45 @@ class _HomeScreenState extends State<HomeScreen> {
                               .errorDialog("Page Coming Soon .... "));
                         },
                         child: Container(
-                          height: 50,
-                          width: 50,
+                          height: 40,
+                          width: 40,
+                          padding: EdgeInsets.all(4),
+                          // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.black, width: 0.0),
+                            borderRadius:
+                                new BorderRadius.all(Radius.circular(70)),
+                          ),
+                          child: Icon(
+                            Icons.calendar_today_sharp,
+                            color: HexColor("#FFCD00"),
+                            size: 18,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        "My Calender",
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 25.0, top: 20),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.dialog(CustomDialogs()
+                              .errorDialog("Page Coming Soon .... "));
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
                           // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                           decoration: new BoxDecoration(
                             color: Colors.white,
@@ -115,9 +150,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 8,
+                      ),
                       Text(
                         "Notification",
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                        style: TextStyle(color: Colors.white, fontSize: 12),
                       )
                     ],
                   ),
@@ -406,28 +444,20 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              print(list[index].value + " Page");
-              if (list[index].value == "Leads") {
-                Get.toNamed(Routes.LEADS_SCREEN);
-              }
-              if (list[index].value == "Sites") {
-                Get.toNamed(Routes.SITES_SCREEN);
-              }
-              if (list[index].value == "Influencers") {
-                Get.dialog(CustomDialogs().errorDialog(
-                    list[index].value + " Page Coming Soon .... "));
-              }
-              if (list[index].value == "My Team") {
-                Get.dialog(CustomDialogs().errorDialog(
-                    list[index].value + " Page Coming Soon .... "));
-              }
-              if (list[index].value == "MWP") {
-                Get.toNamed(Routes.ADD_MWP_SCREEN);
-              }
-              if (list[index].value == "Service Requests") {
-                print("here");
-                Get.dialog(CustomDialogs().errorDialog(
-                    list[index].value + " Page Coming Soon .... "));
+              switch (index) {
+                case 0:
+                  Get.toNamed(Routes.LEADS_SCREEN);
+                  break;
+                case 1:
+                  Get.toNamed(Routes.SITES_SCREEN);
+                  break;
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                  Get.dialog(CustomDialogs().errorDialog(
+                      list[index].value + " Page Coming Soon .... "));
+                  break;
               }
             },
             child: Card(
@@ -478,20 +508,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontSize: 16,
                                   fontFamily: "Muli",
                                   fontWeight: FontWeight.bold
-                                //fontWeight: FontWeight.normal
-                              ),
+                                  //fontWeight: FontWeight.normal
+                                  ),
                             ),
-                            (index ==2 || index ==3)?Text(
-                              "coming soon",
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                color: ColorConstants.inputBoxHintColor,
-                                  fontSize: 12,
-                                  fontFamily: "Muli",
-                                  fontWeight: FontWeight.bold
-                                //fontWeight: FontWeight.normal
-                              ),
-                            ):Container(),
+                            (index == 2 || index == 3 || index == 4)
+                                ? Text(
+                                    "coming soon",
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontSize: 12,
+                                        fontFamily: "Muli",
+                                        fontWeight: FontWeight.bold
+                                        //fontWeight: FontWeight.normal
+                                        ),
+                                  )
+                                : Container(),
                           ],
                         )
                       ],
