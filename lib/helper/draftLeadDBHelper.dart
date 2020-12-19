@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DraftLeadDBHelper extends ChangeNotifier{
@@ -75,6 +72,7 @@ class DraftLeadDBHelper extends ChangeNotifier{
   }
 
   Future<void> removeLeadInDraft(int id) async {
+    print('Draft id $id');
     var client = await db;
     return client.delete('draftLead', where: 'id = ?', whereArgs: [id]);
   }

@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -452,6 +455,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.SITES_SCREEN);
                   break;
                 case 2:
+                  final db = DraftLeadDBHelper();
+                  db.fetchAll().then((value) {
+                    for (int i = 0; i < value.length; i++) {
+                      print(json.decode(value[i].leadModel));
+                      print("id's are :: ${value[i].id}");
+                    }
+                  });
+                  //db.removeLeadInDraft(4);
+                  break;
                 case 3:
                 case 4:
                 case 5:

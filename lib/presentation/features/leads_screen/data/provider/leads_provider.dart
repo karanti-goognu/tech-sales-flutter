@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
@@ -12,15 +11,11 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
-
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -30,12 +25,12 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
 class MyApiClientLeads {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   final db = DraftLeadDBHelper();
+
   MyApiClientLeads({@required this.httpClient});
 
   getAccessKey() async {
@@ -214,7 +209,7 @@ class MyApiClientLeads {
       SaveLeadRequestModel saveLeadRequestModel,
       List<File> imageList,
       BuildContext context) async {
-   // print(imageList.length);
+    // print(imageList.length);
 
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.saveLeadsData));
@@ -298,34 +293,37 @@ class MyApiClientLeads {
                   gv.fromLead = false;
                   Get.dialog(CustomDialogs().showExistingLeadDialog(
                       saveLeadResponse.respMsg,
-                      context , saveLeadRequestModel , imageList));
+                      context,
+                      saveLeadRequestModel,
+                      imageList));
                 } else if (saveLeadResponse.respCode == "LD2007") {
-                  // if (gv.fromLead) {
-                  //   await db.removeLeadInDraft(gv.draftID);
-                  //   gv.fromLead = false;
-                  // }
+                  if (gv.fromLead) {
+                    print('Draft id :: ${gv.draftID}');
+                    db.removeLeadInDraft(gv.draftID);
+                    gv.fromLead = false;
+                  }
                   gv.fromLead = false;
-                //  Get.toNamed(Routes.LEADS_SCREEN);
+                  //  Get.toNamed(Routes.LEADS_SCREEN);
                   Get.back();
                   Get.back();
 
-                 /*Get.toNamed(Routes.LEADS_SCREEN);*/
+                  /*Get.toNamed(Routes.LEADS_SCREEN);*/
 
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead("Lead Added Successfully !!!"));
-                }
-                else if (saveLeadResponse.respCode == "LD2012") {
+                } else if (saveLeadResponse.respCode == "LD2012") {
                   gv.fromLead = false;
                   Get.dialog(CustomDialogs().showExistingTSODialog(
                       saveLeadResponse.respMsg,
-                      context , saveLeadRequestModel , imageList));
+                      context,
+                      saveLeadRequestModel,
+                      imageList));
                 } else {
                   gv.fromLead = false;
                   Get.back();
                   Get.dialog(
                       CustomDialogs().showDialog("Some Error Occured !!! "));
                 }
-
               });
             })
             .catchError((err) => print('error : ' + err.toString()))
@@ -425,11 +423,11 @@ class MyApiClientLeads {
                   gv.selectedLeadID = updateLeadResponseModel.leadId;
                   /*  Get.dialog(CustomDialogs()
                       .showDialog(updateLeadResponseModel.respMsg));*/
-                 // Get.back();
-                //  Get.back();
+                  // Get.back();
+                  //  Get.back();
 
                   Get.back();
-                 // Get.back();
+                  // Get.back();
                   Get.offNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead(updateLeadResponseModel.respMsg));

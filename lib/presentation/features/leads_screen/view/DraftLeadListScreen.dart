@@ -20,6 +20,7 @@ class DraftLeadListScreen extends StatefulWidget {
 class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   final db = DraftLeadDBHelper();
   List<SaveLeadRequestDraftModel> draftList = new List();
+  List<int> draftIdList = new List();
 
   @override
   void initState() {
@@ -34,9 +35,8 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
     db.fetchAll().then((value) {
       for (int i = 0; i < value.length; i++) {
         setState(() {
-
-
           print(json.decode(value[i].leadModel));
+          draftIdList.add(value[i].id);
           draftList.add(
               SaveLeadRequestDraftModel.fromJson(json.decode(value[i].leadModel)));
         });
@@ -268,7 +268,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
 
               return GestureDetector(
                 onTap: () {
-                  gv.draftID = index + 1;
+                  gv.draftID = draftIdList[index];
                   gv.fromLead = true;
                   print(draftList[index].toJson());
                   gv.saveLeadRequestModel = draftList[index];

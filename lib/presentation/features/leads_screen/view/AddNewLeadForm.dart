@@ -44,6 +44,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   var txt = TextEditingController();
   SiteSubTypeEntity _selectedValue;
   String _contactName;
+  FocusNode myFocusNode;
   String _contactNumber;
   String _comment;
   var _siteAddress = TextEditingController();
@@ -106,7 +107,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     // TODO: implement initState
     super.initState();
     _addLeadsController = Get.find();
-
+    myFocusNode = FocusNode();
     getInitialData();
   }
 
@@ -242,6 +243,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       }
 
       Get.back();
+      myFocusNode.requestFocus();
     });
   }
 
@@ -404,6 +406,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                     TextFormField(
                       initialValue: _contactName,
+                      focusNode: myFocusNode,
                       // validator: (value) {
                       //   if (value.isEmpty) {
                       //     return "Contact Name can't be empty";
