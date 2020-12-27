@@ -66,15 +66,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   SiteBrandEntity _siteBrand;
   SiteBrandEntity _siteBrandNextStage;
   SiteStageEntity _siteStage;
-  SiteProbabilityWinningEntity _siteProbabilityWinningEntity ;
+  SiteProbabilityWinningEntity _siteProbabilityWinningEntity;
+
   SiteOpportunityStatusEntity _siteOpportunitStatusEnity;
   SiteCompetitionStatusEntity _siteCompetitionStatusEntity;
   List<File> _imageList = new List();
   int initialInfluencerLength = 0;
-  BrandModelforDB _siteBrandFromLocalDB ;
-  BrandModelforDB _siteBrandFromLocalDBNextStage ;
-  BrandModelforDB _siteProductFromLocalDB ;
-  BrandModelforDB _siteProductFromLocalDBNextStage ;
+  BrandModelforDB _siteBrandFromLocalDB;
+
+  BrandModelforDB _siteBrandFromLocalDBNextStage;
+
+  BrandModelforDB _siteProductFromLocalDB;
+
+  BrandModelforDB _siteProductFromLocalDBNextStage;
 
   List<DropdownMenuItem<String>> productSoldVisitSite = new List();
 
@@ -99,6 +103,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   var _comments = new TextEditingController();
   var _inactiveReasonText = new TextEditingController();
   var closureReasonText = new TextEditingController();
+
   //var _commentsRejectionController = new TextEditingController();
 
   var _siteTotalBags = new TextEditingController();
@@ -136,7 +141,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<ConstructionStageEntity> constructionStageEntityNew = new List();
-  List<ConstructionStageEntity> constructionStageEntityNewNextStage = new List();
+  List<ConstructionStageEntity> constructionStageEntityNewNextStage =
+      new List();
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
@@ -151,6 +157,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteStageEntity> siteStageEntity = new List();
   List<InfluencerEntity> influencerEntity = new List();
   List<InfluencerDetail> _listInfluencerDetail = new List();
+
   // List<Influencer>
 
   List<SiteNextStageEntity> siteNextStageEntity = new List();
@@ -195,13 +202,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         await db.clearTable();
         siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
 
-        for(int i = 0 ; i < siteBrandEntity.length ; i++){
-         await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id, siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
+        for (int i = 0; i < siteBrandEntity.length; i++) {
+          await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
+              siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
         }
         print("list Size");
         siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
 
-        setState(()  {
+        setState(() {
           addNextButtonDisable = false;
           siteScore = viewSiteDataResponse.sitesModal.siteScore;
 
@@ -209,12 +217,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           siteFloorsEntityNew = viewSiteDataResponse.siteFloorsEntity;
           siteFloorsEntityNewNextStage = viewSiteDataResponse.siteFloorsEntity;
           siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
-
-
-
-
-
-
 
           siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
 
@@ -225,10 +227,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           influencerCategoryEntity =
               viewSiteDataResponse.influencerCategoryEntity;
 
-
           if (sitephotosEntity != null) {
             for (int i = 0; i < sitephotosEntity.length; i++) {
-
               File file = new File(UrlConstants.baseUrlforImagesSites +
                   "/" +
                   sitephotosEntity[i].photoName);
@@ -245,10 +245,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             for (int i = 0;
                 i < viewSiteDataResponse.influencerEntity.length;
                 i++) {
-
-              int originalId ;
-              for(int j =0 ; j<  siteInfluencerEntity.length ; j++){
-                if(viewSiteDataResponse.influencerEntity[i].id ==  siteInfluencerEntity[j].inflId){
+              int originalId;
+              for (int j = 0; j < siteInfluencerEntity.length; j++) {
+                if (viewSiteDataResponse.influencerEntity[i].id ==
+                    siteInfluencerEntity[j].inflId) {
                   viewSiteDataResponse.influencerEntity[i].isPrimary =
                       siteInfluencerEntity[j].isPrimary;
                   originalId = siteInfluencerEntity[j].id;
@@ -259,9 +259,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               _listInfluencerDetail.add(new InfluencerDetail(
                   originalId: originalId,
                   isPrimary: viewSiteDataResponse.influencerEntity[i].isPrimary,
-                  isPrimarybool: viewSiteDataResponse.influencerEntity[i].isPrimary == "Y"
-                      ? true
-                      : false,
+                  isPrimarybool:
+                      viewSiteDataResponse.influencerEntity[i].isPrimary == "Y"
+                          ? true
+                          : false,
                   id: new TextEditingController(
                       text: viewSiteDataResponse.influencerEntity[i].id
                           .toString()),
@@ -281,20 +282,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   inflCatValue: inflCatValue(new TextEditingController(
                       text: viewSiteDataResponse.influencerEntity[i].inflCatId
                           .toString())),
-                  inflName: new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].inflName),
-                  ilpIntrested: new TextEditingController(
-                      text: viewSiteDataResponse
-                          .influencerEntity[i].ilpIntrested),
-                  createdOn: new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].createdOn.toString()),
+                  inflName:
+                      new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflName),
+                  ilpIntrested: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].ilpIntrested),
+                  createdOn: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].createdOn.toString()),
                   isExpanded: false));
             }
             initialInfluencerLength =
                 viewSiteDataResponse.influencerEntity.length;
           }
 
-         // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
+          // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
           siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
           print(viewSiteDataResponse.siteVisitHistoryEntity.length);
           sitesModal = viewSiteDataResponse.sitesModal;
@@ -363,7 +361,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           constructionStageEntityNew =
               viewSiteDataResponse.constructionStageEntity;
           constructionStageEntityNewNextStage =
-          viewSiteDataResponse.constructionStageEntity;
+              viewSiteDataResponse.constructionStageEntity;
 
           constructionStageEntity =
               viewSiteDataResponse.constructionStageEntity;
@@ -372,7 +370,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             if (viewSiteDataResponse.sitesModal.siteConstructionId.toString() ==
                 constructionStageEntity[i].id.toString()) {
               _selectedConstructionType = constructionStageEntity[i];
-
             }
           }
 
@@ -386,7 +383,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   siteProbabilityWinningEntity[i].id.toString()) {
                 labelProbabilityId = siteProbabilityWinningEntity[i].id;
                 _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
-
               }
             }
           }
@@ -398,7 +394,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               if (viewSiteDataResponse.sitesModal.siteCompetitionId
                       .toString() ==
                   siteCompetitionStatusEntity[i].id.toString()) {
-               _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
+                _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
               }
             }
           }
@@ -410,22 +406,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               if (viewSiteDataResponse.sitesModal.siteOppertunityId
                       .toString() ==
                   siteOpportunityStatusEntity[i].id.toString()) {
-               _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
+                _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
               }
             }
           }
 
-          if (viewSiteDataResponse.sitesModal.noOfFloors != null || viewSiteDataResponse.sitesModal.noOfFloors != 0) {
+          if (viewSiteDataResponse.sitesModal.noOfFloors != null ||
+              viewSiteDataResponse.sitesModal.noOfFloors != 0) {
             for (int i = 0; i < siteFloorsEntity.length; i++) {
-              if (viewSiteDataResponse.sitesModal.noOfFloors
-                  .toString() ==
+              if (viewSiteDataResponse.sitesModal.noOfFloors.toString() ==
                   siteFloorsEntity[i].id.toString()) {
                 _selectedSiteFloor = siteFloorsEntity[i];
               }
             }
           }
-
-
 
           _siteBuiltupArea.text = sitesModal.siteBuiltArea;
           myFocusNode = FocusNode();
@@ -509,15 +503,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     fontFamily: "Muli",
                                   ),
                                 ),
-                                siteScore!= 0.0 ? Text(
-                                  "Site Score: " + siteScore.toString(),
-                                  style: TextStyle(
-
-                                    fontSize: 12,
-                                    color: HexColor("#002A64"),
-                                    fontFamily: "Muli",
-                                  ),
-                                ):Container(),
+                                siteScore != 0.0
+                                    ? Text(
+                                        "Site Score: " + siteScore.toString(),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: HexColor("#002A64"),
+                                          fontFamily: "Muli",
+                                        ),
+                                      )
+                                    : Container(),
                               ],
                             ),
                             SizedBox(width: 100),
@@ -1270,7 +1265,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                           onChanged: (value) {
                             setState(() {
-
                               _selectedConstructionType = value;
                             });
                           },
@@ -1289,8 +1283,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               borderSide:
                                   BorderSide(color: Colors.red, width: 1.0),
                             ),
-                           labelText: "Type of Construction",
-
+                            labelText: "Type of Construction",
                             filled: false,
                             focusColor: Colors.black,
                             isDense: false,
@@ -2770,15 +2763,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               value: _selectedConstructionTypeVisit,
               items: constructionStageEntityNew
                   .map((label) => DropdownMenuItem(
-                child: Text(
-                  label.constructionStageText,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                ),
-                value: label,
-              ))
+                        child: Text(
+                          label.constructionStageText,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                        ),
+                        value: label,
+                      ))
                   .toList(),
 
               // hint: Text('Rating'),
@@ -2787,16 +2780,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   _selectedConstructionTypeVisit = value;
                   print(_selectedConstructionTypeVisit.id);
                   siteFloorsEntityNew = new List();
-                  _selectedSiteVisitFloor= null;
-                  if(_selectedConstructionTypeVisit.id == 1 || _selectedConstructionTypeVisit.id == 2 ||_selectedConstructionTypeVisit.id == 3  ){
-                   // siteFloorsEntityNew = new List();
-                    siteFloorsEntityNew.add(new SiteFloorsEntity(id: siteFloorsEntity[0].id , siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
-                  }
-                  else{
-
-                    for(int i=1;i<siteFloorsEntity.length;i++){
-
-                      siteFloorsEntityNew.add(new SiteFloorsEntity(id: siteFloorsEntity[i].id , siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
+                  _selectedSiteVisitFloor = null;
+                  if (_selectedConstructionTypeVisit.id == 1 ||
+                      _selectedConstructionTypeVisit.id == 2 ||
+                      _selectedConstructionTypeVisit.id == 3) {
+                    // siteFloorsEntityNew = new List();
+                    siteFloorsEntityNew.add(new SiteFloorsEntity(
+                        id: siteFloorsEntity[0].id,
+                        siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
+                  } else {
+                    for (int i = 1; i < siteFloorsEntity.length; i++) {
+                      siteFloorsEntityNew.add(new SiteFloorsEntity(
+                          id: siteFloorsEntity[i].id,
+                          siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
                     }
                   }
                 });
@@ -2843,15 +2839,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               value: _selectedSiteVisitFloor,
               items: siteFloorsEntityNew
                   .map((label) => DropdownMenuItem(
-                child: Text(
-                  label.siteFloorTxt,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                ),
-                value: label,
-              ))
+                        child: Text(
+                          label.siteFloorTxt,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                        ),
+                        value: label,
+                      ))
                   .toList(),
 
               // hint: Text('Rating'),
@@ -2988,16 +2984,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
               // hint: Text('Rating'),
               onChanged: (value) async {
-
-                siteProductEntityfromLoaclDB=new List();
+                siteProductEntityfromLoaclDB = new List();
                 _siteProductFromLocalDB = null;
-                List<BrandModelforDB> _siteProductEntityfromLoaclDB = await db.fetchAllDistinctProduct(value.brandName);
-                setState(()  {
+                List<BrandModelforDB> _siteProductEntityfromLoaclDB =
+                    await db.fetchAllDistinctProduct(value.brandName);
+                setState(() {
                   _siteBrandFromLocalDB = value;
 
                   siteProductEntityfromLoaclDB = _siteProductEntityfromLoaclDB;
-                 // _productSoldVisit.text = _siteBrand.productName;
-                  if (_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia") {
+                  // _productSoldVisit.text = _siteBrand.productName;
+                  if (_siteBrandFromLocalDB.brandName.toLowerCase() ==
+                      "dalmia") {
                     _stageStatus.text = "WON";
                   } else {
                     _stageStatus.text = "LOST";
@@ -3097,15 +3094,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               value: _siteProductFromLocalDB,
               items: siteProductEntityfromLoaclDB
                   .map((label) => DropdownMenuItem(
-                child: Text(
-                  label.productName,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                ),
-                value: label,
-              ))
+                        child: Text(
+                          label.productName,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                        ),
+                        value: label,
+                      ))
                   .toList(),
 
               // hint: Text('Rating'),
@@ -3521,7 +3518,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         value: label,
                       ))
                   .toList(),
-
               onChanged: (value) {
                 setState(() {
                   labelProbabilityText = value.siteProbabilityStatus;
@@ -3543,8 +3539,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   borderSide: BorderSide(color: Colors.red, width: 1.0),
                 ),
                 labelText: "Probability of winning",
-
-
                 filled: false,
                 focusColor: Colors.black,
                 isDense: false,
@@ -3584,8 +3578,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         value: label,
                       ))
                   .toList(),
-
-
               onChanged: (value) {
                 setState(() {
                   _siteCompetitionStatusEntity = value;
@@ -3605,7 +3597,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   borderSide: BorderSide(color: Colors.red, width: 1.0),
                 ),
                 labelText: "Competition Status",
-
                 filled: false,
                 focusColor: Colors.black,
                 isDense: false,
@@ -3645,11 +3636,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         value: label,
                       ))
                   .toList(),
-
-
               onChanged: (value) {
                 setState(() {
-
                   _siteOpportunitStatusEnity = value;
                 });
               },
@@ -3666,7 +3654,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.red, width: 1.0),
                 ),
-
                 labelText: "Opportunity Status",
                 filled: false,
                 focusColor: Colors.black,
@@ -4031,38 +4018,29 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       setState(() {
                                         if (value) {
                                           for (int i = 0;
-                                          i <
-                                              _listInfluencerDetail
-                                                  .length;
-                                          i++) {
+                                              i < _listInfluencerDetail.length;
+                                              i++) {
                                             if (i == index) {
                                               _listInfluencerDetail[i]
-                                                  .isPrimarybool =
-                                                  value;
+                                                  .isPrimarybool = value;
                                             } else {
                                               _listInfluencerDetail[i]
-                                                  .isPrimarybool =
-                                              !value;
+                                                  .isPrimarybool = !value;
                                             }
                                           }
                                         } else {
-                                          Get.dialog(CustomDialogs()
-                                              .errorDialog(
+                                          Get.dialog(CustomDialogs().errorDialog(
                                               "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                         }
                                       });
                                     },
-                                    value:
-                                    _listInfluencerDetail[index]
+                                    value: _listInfluencerDetail[index]
                                         .isPrimarybool,
                                     activeColor: HexColor("#009688"),
                                     activeTrackColor:
-                                    HexColor("#009688")
-                                        .withOpacity(0.5),
-                                    inactiveThumbColor:
-                                    HexColor("#F1F1F1"),
-                                    inactiveTrackColor:
-                                    Colors.black26,
+                                        HexColor("#009688").withOpacity(0.5),
+                                    inactiveThumbColor: HexColor("#F1F1F1"),
+                                    inactiveTrackColor: Colors.black26,
                                   ),
                                   _listInfluencerDetail[index].isExpanded
                                       ? FlatButton.icon(
@@ -4201,8 +4179,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               SizedBox(height: 16),
                               Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     "Secondary",
@@ -4217,47 +4194,37 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       setState(() {
                                         if (value) {
                                           for (int i = 0;
-                                          i <
-                                              _listInfluencerDetail
-                                                  .length;
-                                          i++) {
+                                              i < _listInfluencerDetail.length;
+                                              i++) {
                                             if (i == index) {
                                               _listInfluencerDetail[i]
-                                                  .isPrimarybool =
-                                                  value;
+                                                  .isPrimarybool = value;
                                             } else {
                                               _listInfluencerDetail[i]
-                                                  .isPrimarybool =
-                                              !value;
+                                                  .isPrimarybool = !value;
                                             }
                                           }
                                         } else {
-                                          Get.dialog(CustomDialogs()
-                                              .errorDialog(
+                                          Get.dialog(CustomDialogs().errorDialog(
                                               "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                         }
                                       });
                                     },
-                                    value:
-                                    _listInfluencerDetail[index]
+                                    value: _listInfluencerDetail[index]
                                         .isPrimarybool,
                                     activeColor: HexColor("#009688"),
                                     activeTrackColor:
-                                    HexColor("#009688")
-                                        .withOpacity(0.5),
-                                    inactiveThumbColor:
-                                    HexColor("#F1F1F1"),
-                                    inactiveTrackColor:
-                                    Colors.black26,
+                                        HexColor("#009688").withOpacity(0.5),
+                                    inactiveThumbColor: HexColor("#F1F1F1"),
+                                    inactiveTrackColor: Colors.black26,
                                   ),
                                   Text(
                                     "Primary",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
-                                        color: _listInfluencerDetail[
-                                        index]
-                                            .isPrimarybool
+                                        color: _listInfluencerDetail[index]
+                                                .isPrimarybool
                                             ? HexColor("#009688")
                                             : Colors.black,
                                         // color: HexColor("#000000DE"),
@@ -4739,13 +4706,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   // //  print(_listInfluencerDetail[
                   //   _listInfluencerDetail.length - 1]
                   //       .inflName);
-                  if(_listInfluencerDetail.length == 0 ){
+                  if (_listInfluencerDetail.length == 0) {
                     setState(() {
-                      _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: true));
+                      _listInfluencerDetail.add(new InfluencerDetail(
+                          isExpanded: true, isPrimarybool: true));
                     });
-
-                  }
-                  else if (_listInfluencerDetail[_listInfluencerDetail.length - 1]
+                  } else if (_listInfluencerDetail[
+                                  _listInfluencerDetail.length - 1]
                               .inflName !=
                           null &&
                       _listInfluencerDetail[_listInfluencerDetail.length - 1]
@@ -4756,8 +4723,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           .inflName
                           .text
                           .isNullOrBlank) {
-                    InfluencerDetail infl =
-                        new InfluencerDetail(isExpanded: true , isPrimarybool: false);
+                    InfluencerDetail infl = new InfluencerDetail(
+                        isExpanded: true, isPrimarybool: false);
 
                     // Item item = new Item(
                     //     headerValue: "agx ", expandedValue: "dnxcx");
@@ -5383,15 +5350,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           value: _selectedConstructionTypeVisitNextStage,
           items: constructionStageEntityNewNextStage
               .map((label) => DropdownMenuItem(
-            child: Text(
-              label.constructionStageText,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: ColorConstants.inputBoxHintColor,
-                  fontFamily: "Muli"),
-            ),
-            value: label,
-          ))
+                    child: Text(
+                      label.constructionStageText,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  ))
               .toList(),
 
           // hint: Text('Rating'),
@@ -5400,16 +5367,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               _selectedConstructionTypeVisitNextStage = value;
               print(_selectedConstructionTypeVisitNextStage.id);
               siteFloorsEntityNewNextStage = new List();
-              _selectedSiteVisitFloorNextStage= null;
-              if(_selectedConstructionTypeVisitNextStage.id == 1 || _selectedConstructionTypeVisitNextStage.id == 2 ||_selectedConstructionTypeVisitNextStage.id == 3  ){
+              _selectedSiteVisitFloorNextStage = null;
+              if (_selectedConstructionTypeVisitNextStage.id == 1 ||
+                  _selectedConstructionTypeVisitNextStage.id == 2 ||
+                  _selectedConstructionTypeVisitNextStage.id == 3) {
                 // siteFloorsEntityNew = new List();
-                siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(id: siteFloorsEntity[0].id , siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
-              }
-              else{
-
-                for(int i=1;i<siteFloorsEntity.length;i++){
-
-                  siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(id: siteFloorsEntity[i].id , siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
+                siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(
+                    id: siteFloorsEntity[0].id,
+                    siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
+              } else {
+                for (int i = 1; i < siteFloorsEntity.length; i++) {
+                  siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(
+                      id: siteFloorsEntity[i].id,
+                      siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
                 }
               }
             });
@@ -5439,7 +5409,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             fillColor: ColorConstants.backgroundColor,
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Text(
@@ -5456,15 +5425,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           value: _selectedSiteVisitFloorNextStage,
           items: siteFloorsEntityNewNextStage
               .map((label) => DropdownMenuItem(
-            child: Text(
-              label.siteFloorTxt,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: ColorConstants.inputBoxHintColor,
-                  fontFamily: "Muli"),
-            ),
-            value: label,
-          ))
+                    child: Text(
+                      label.siteFloorTxt,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  ))
               .toList(),
 
           // hint: Text('Rating'),
@@ -5585,29 +5554,31 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           value: _siteBrandFromLocalDBNextStage,
           items: siteBrandEntityfromLoaclDB
               .map((label) => DropdownMenuItem(
-            child: Text(
-              label.brandName,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: ColorConstants.inputBoxHintColor,
-                  fontFamily: "Muli"),
-            ),
-            value: label,
-          ))
+                    child: Text(
+                      label.brandName,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  ))
               .toList(),
 
           // hint: Text('Rating'),
           onChanged: (value) async {
-
-            siteProductEntityfromLoaclDBNextStage=new List();
+            siteProductEntityfromLoaclDBNextStage = new List();
             _siteProductFromLocalDBNextStage = null;
-            List<BrandModelforDB> _siteProductEntityfromLoaclDB = await db.fetchAllDistinctProduct(value.brandName);
-            setState(()  {
+            List<BrandModelforDB> _siteProductEntityfromLoaclDB =
+                await db.fetchAllDistinctProduct(value.brandName);
+            setState(() {
               _siteBrandFromLocalDBNextStage = value;
 
-              siteProductEntityfromLoaclDBNextStage = _siteProductEntityfromLoaclDB;
+              siteProductEntityfromLoaclDBNextStage =
+                  _siteProductEntityfromLoaclDB;
               // _productSoldVisit.text = _siteBrand.productName;
-              if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() == "dalmia") {
+              if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
+                  "dalmia") {
                 _stageStatusNextStage.text = "WON";
               } else {
                 _stageStatusNextStage.text = "LOST";
@@ -5706,15 +5677,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           value: _siteProductFromLocalDBNextStage,
           items: siteProductEntityfromLoaclDBNextStage
               .map((label) => DropdownMenuItem(
-            child: Text(
-              label.productName,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: ColorConstants.inputBoxHintColor,
-                  fontFamily: "Muli"),
-            ),
-            value: label,
-          ))
+                    child: Text(
+                      label.productName,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  ))
               .toList(),
 
           // hint: Text('Rating'),
@@ -6229,41 +6200,50 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   Future<void> UpdateRequest() async {
-
-
-
-    if(_siteBuiltupArea.text == "" || _siteBuiltupArea.text == null || _siteBuiltupArea.text == "null"){
-      Get.dialog(
-          CustomDialogs().errorDialog("Please fill mandatory fields in \"Site Data\" TAb"));
-    }
-    else if(_selectedConstructionTypeVisit == null || _stagePotentialVisit.text == null || _stagePotentialVisit.text == ""
-        || _siteProductFromLocalDB == null || _selectedSiteVisitFloor == null || _brandPriceVisit.text == "" || _brandPriceVisit.text == null
+    if (_siteBuiltupArea.text == "" ||
+        _siteBuiltupArea.text == null ||
+        _siteBuiltupArea.text == "null") {
+      Get.dialog(CustomDialogs()
+          .errorDialog("Please fill mandatory fields in \"Site Data\" TAb"));
+    } else if (_selectedConstructionTypeVisit == null ||
+        _stagePotentialVisit.text == null ||
+        _stagePotentialVisit.text == "" ||
+        _siteProductFromLocalDB == null ||
+        _selectedSiteVisitFloor == null ||
+        _brandPriceVisit.text == "" ||
+        _brandPriceVisit.text == null
         // && _dateofConstruction.text == "" && _dateofConstruction.text == null
-        || _dateOfBagSupplied.text == "" || _dateOfBagSupplied.text == null
-        || _stagePotentialVisit.text == "" || _stagePotentialVisit.text == null
-        || _stageStatus.text == "" || _stageStatus.text == null
-        || _siteCompetitionStatusEntity == null ||_siteOpportunitStatusEnity == null  || _siteProbabilityWinningEntity == null){
-      Get.dialog(
-          CustomDialogs().errorDialog("Please fill mandatory fields in \"Visit Data\" Tab"));
-    }
-    else if(addNextButtonDisable && (_selectedConstructionTypeVisitNextStage == null || _stagePotentialVisitNextStage.text == null || _stagePotentialVisitNextStage.text == ""
-        || _siteProductFromLocalDBNextStage == null || _selectedSiteVisitFloorNextStage == null || _brandPriceVisitNextStage.text == "" || _brandPriceVisitNextStage.text == null
-        // && _dateofConstruction.text == "" && _dateofConstruction.text == null
-        || _dateOfBagSuppliedNextStage.text == "" || _dateOfBagSuppliedNextStage.text == null
-        || _stagePotentialVisitNextStage.text == "" || _stagePotentialVisitNextStage.text == null
-        || _stageStatusNextStage.text == "" || _stageStatusNextStage.text == null)
-        ){
-
-
-
-
-      Get.dialog(
-      CustomDialogs().errorDialog("Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
-
-
-
-    }
-    else{
+        ||
+        _dateOfBagSupplied.text == "" ||
+        _dateOfBagSupplied.text == null ||
+        _stagePotentialVisit.text == "" ||
+        _stagePotentialVisit.text == null ||
+        _stageStatus.text == "" ||
+        _stageStatus.text == null ||
+        _siteCompetitionStatusEntity == null ||
+        _siteOpportunitStatusEnity == null ||
+        _siteProbabilityWinningEntity == null) {
+      Get.dialog(CustomDialogs()
+          .errorDialog("Please fill mandatory fields in \"Visit Data\" Tab"));
+    } else if (addNextButtonDisable &&
+        (_selectedConstructionTypeVisitNextStage == null ||
+            _stagePotentialVisitNextStage.text == null ||
+            _stagePotentialVisitNextStage.text == "" ||
+            _siteProductFromLocalDBNextStage == null ||
+            _selectedSiteVisitFloorNextStage == null ||
+            _brandPriceVisitNextStage.text == "" ||
+            _brandPriceVisitNextStage.text == null
+            // && _dateofConstruction.text == "" && _dateofConstruction.text == null
+            ||
+            _dateOfBagSuppliedNextStage.text == "" ||
+            _dateOfBagSuppliedNextStage.text == null ||
+            _stagePotentialVisitNextStage.text == "" ||
+            _stagePotentialVisitNextStage.text == null ||
+            _stageStatusNextStage.text == "" ||
+            _stageStatusNextStage.text == null)) {
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+    } else {
       String empId;
       String mobileNumber;
       String name;
@@ -6306,7 +6286,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         if (_selectedConstructionTypeVisitNextStage != null) {
           siteNextStageEntity.add(new SiteNextStageEntity(
             siteId: widget.siteId,
-            constructionStageId: _selectedConstructionTypeVisitNextStage.id ?? 1,
+            constructionStageId:
+                _selectedConstructionTypeVisitNextStage.id ?? 1,
             stagePotential: _stagePotentialVisitNextStage.text,
             brandId: _siteProductFromLocalDBNextStage.id,
             brandPrice: _brandPriceVisitNextStage.text,
@@ -6321,20 +6302,22 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         List<updateResponse.SitePhotosEntity> newSitePhotoEntity = new List();
         // sitephotosEntity.clear();
         for (int i = 0; i < _imageList.length; i++) {
-          newSitePhotoEntity.add(
-              new updateResponse.SitePhotosEntity(photoName: path.basename(_imageList[i].path),
-              siteId: widget.siteId ,
+          newSitePhotoEntity.add(new updateResponse.SitePhotosEntity(
+              photoName: path.basename(_imageList[i].path),
+              siteId: widget.siteId,
               createdBy: empId));
         }
 
-        print("Sumit Length :: "+ newSitePhotoEntity.length.toString());
+        print("Sumit Length :: " + newSitePhotoEntity.length.toString());
 
         //print(sitephotosEntity.)
 
         if (_listInfluencerDetail.length != 0) {
-          if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
-              null ||
-              _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
+          if (_listInfluencerDetail[_listInfluencerDetail.length - 1]
+                      .inflName ==
+                  null ||
+              _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                      .inflName ==
                   "null" ||
               _listInfluencerDetail[_listInfluencerDetail.length - 1]
                   .inflName
@@ -6346,24 +6329,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         }
 
         List<updateResponse.SiteInfluencerEntityNew> newInfluencerEntity =
-        new List();
+            new List();
 
-
-          for (int i = 0;
-          i < _listInfluencerDetail.length;
-          i++) {
-            newInfluencerEntity.add(new updateResponse.SiteInfluencerEntityNew(
-                id: _listInfluencerDetail[i].originalId,
-                inflId: int.parse(_listInfluencerDetail[i].id.text),
-                siteId: widget.siteId,
-                isDelete: "N",
-                isPrimary: _listInfluencerDetail[i]
-                    .isPrimarybool
-                    ? "Y"
-                    : "N",
-                createdBy: empId));
-
-          }
+        for (int i = 0; i < _listInfluencerDetail.length; i++) {
+          newInfluencerEntity.add(new updateResponse.SiteInfluencerEntityNew(
+              id: _listInfluencerDetail[i].originalId,
+              inflId: int.parse(_listInfluencerDetail[i].id.text),
+              siteId: widget.siteId,
+              isDelete: "N",
+              isPrimary: _listInfluencerDetail[i].isPrimarybool ? "Y" : "N",
+              createdBy: empId));
+        }
 
         if (_selectedSiteFloor == null) {
           _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
@@ -6395,12 +6371,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           "productDemo": _siteProductDemo.text,
           "productOralBriefing": _siteProductOralBriefing.text,
           "soCode": viewSiteDataResponse.sitesModal.siteSoId,
-          "inactiveReasonText":
-          (_inactiveReasonText.text != "") ? _inactiveReasonText.text : null,
+          "inactiveReasonText": (_inactiveReasonText.text != "")
+              ? _inactiveReasonText.text
+              : null,
           "nextVisitDate":
-          (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
+              (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
           "closureReasonText":
-          (closureReasonText.text != "") ? closureReasonText.text : null,
+              (closureReasonText.text != "") ? closureReasonText.text : null,
           "createdBy": "",
           "siteCommentsEntity": newSiteCommentsEntity,
           "siteVisitHistoryEntity": siteVisitHistoryEntity,
@@ -6408,9 +6385,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           "sitePhotosEntity": newSitePhotoEntity,
           "siteInfluencerEntity": newInfluencerEntity,
           "siteConstructionId": _selectedConstructionType.id,
-          "siteCompetitionId": _siteCompetitionStatusEntity != null ? _siteCompetitionStatusEntity.id : null,
-          "siteOppertunityId": _siteOpportunitStatusEnity != null ? _siteOpportunitStatusEnity.id : null,
-          "siteProbabilityWinningId": _siteProbabilityWinningEntity != null ? _siteProbabilityWinningEntity.id : null
+          "siteCompetitionId": _siteCompetitionStatusEntity != null
+              ? _siteCompetitionStatusEntity.id
+              : null,
+          "siteOppertunityId": _siteOpportunitStatusEnity != null
+              ? _siteOpportunitStatusEnity.id
+              : null,
+          "siteProbabilityWinningId": _siteProbabilityWinningEntity != null
+              ? _siteProbabilityWinningEntity.id
+              : null
         };
         _siteController.updateLeadData(
             updateDataRequest, _imageList, context, widget.siteId);
@@ -6418,7 +6401,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         Get.back();
       });
     }
-
   }
 }
 

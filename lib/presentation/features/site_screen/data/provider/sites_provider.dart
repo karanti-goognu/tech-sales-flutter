@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -19,7 +19,6 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
 class MyApiClientSites {
   final http.Client httpClient;
@@ -142,7 +141,8 @@ class MyApiClientSites {
     }
   }
 
-  getSiteDetailsData(String accessKey, String userSecurityKey, int siteId) async {
+  getSiteDetailsData(
+      String accessKey, String userSecurityKey, int siteId) async {
     try {
       //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var bodyEncrypted = {"SiteId": siteId};
@@ -150,12 +150,13 @@ class MyApiClientSites {
       // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
 
       print("URL is :: " + UrlConstants.getSiteData + "$siteId");
-      print("Request Header :: " + json.encode(
-          requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey)));
+      print("Request Header :: " +
+          json.encode(requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey)));
       final response = await get(
         Uri.parse(UrlConstants.getSiteData + "$siteId"),
         headers:
-        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
       print('Response body is  : ${json.decode(response.body)}');
       // print('Response body is  : ${json.decode(response.body)}');
@@ -167,9 +168,8 @@ class MyApiClientSites {
         print(data);
         //print("herssssssse");
 
-
-        ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse
-            .fromJson(data);
+        ViewSiteDataResponse viewSiteDataResponse =
+            ViewSiteDataResponse.fromJson(data);
 
         // print(response.);
 
@@ -177,15 +177,11 @@ class MyApiClientSites {
           return viewSiteDataResponse;
         } else if (viewSiteDataResponse.respCode == "ST2011") {
           Get.back();
-          Get.dialog(CustomDialogs()
-              .showDialog(viewSiteDataResponse.respMsg));
+          Get.dialog(CustomDialogs().showDialog(viewSiteDataResponse.respMsg));
         } else {
           Get.back();
-          Get.dialog(
-              CustomDialogs().showDialog("Some Error Occured !!! "));
+          Get.dialog(CustomDialogs().showDialog("Some Error Occured !!! "));
         }
-
-
       } else
         print('error');
     } catch (_) {
@@ -193,11 +189,12 @@ class MyApiClientSites {
     }
   }
 
-  updateSiteData(accessKey, String userSecurityKey, updateDataRequest, List<File> list, BuildContext context, int siteId) async {
-
-    http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateSiteData));
-    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey));
-
+  updateSiteData(accessKey, String userSecurityKey, updateDataRequest,
+      List<File> list, BuildContext context, int siteId) async {
+    http.MultipartRequest request = new http.MultipartRequest(
+        'POST', Uri.parse(UrlConstants.updateSiteData));
+    request.headers.addAll(
+        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
 
     for (var file in list) {
       String fileName = file.path.split("/").last;
@@ -209,7 +206,7 @@ class MyApiClientSites {
 
       // multipart that takes file
       var multipartFileSign =
-      new http.MultipartFile('file', stream, length, filename: fileName);
+          new http.MultipartFile('file', stream, length, filename: fileName);
 
       request.files.add(multipartFileSign);
     }
@@ -228,7 +225,7 @@ class MyApiClientSites {
       request.fields['uploadImageWithUpdateSiteModel'] =
           json.encode(updateDataRequest);
 
-/// rint(saveLeadRequestModel.comments[0].commentedBy);
+      /// rint(saveLeadRequestModel.comments[0].commentedBy);
       print("Request headers :: " + request.headers.toString());
       print("Request Body/Fields :: " + request.fields.toString());
       print("Files:: " + request.files.toString());
@@ -236,36 +233,32 @@ class MyApiClientSites {
         request
             .send()
             .then((result) async {
-          http.Response.fromStream(result).then((response) {
-            print(response.statusCode);
-            print(response.body);
+              http.Response.fromStream(result).then((response) {
+                print(response.statusCode);
+                print(response.body);
 
-            var data = json.decode(response.body);
-        //    print(data);
+                var data = json.decode(response.body);
+                //    print(data);
 
-      //      print(response.body)  ;
-            UpdateLeadResponseModel updateLeadResponseModel =
-            UpdateLeadResponseModel.fromJson(data);
-          //  print(response.body);
-            if (updateLeadResponseModel.respCode == "ST2033") {
-              Get.back();
-              Get.dialog(
-                  CustomDialogs().showDialog(updateLeadResponseModel.respMsg));
-
-            } else  {
-              Get.dialog(
-                  CustomDialogs().showDialog(updateLeadResponseModel.respMsg));
-            }
-
-          });
-        })
+                //      print(response.body)  ;
+                UpdateLeadResponseModel updateLeadResponseModel =
+                    UpdateLeadResponseModel.fromJson(data);
+                //  print(response.body);
+                if (updateLeadResponseModel.respCode == "ST2033") {
+                  Get.back();
+                  Get.dialog(CustomDialogs()
+                      .showDialog(updateLeadResponseModel.respMsg));
+                } else {
+                  Get.dialog(CustomDialogs()
+                      .showDialog(updateLeadResponseModel.respMsg));
+                }
+              });
+            })
             .catchError((err) => print('error : ' + err.toString()))
             .whenComplete(() {});
       } catch (_) {
         print('exception ${_.toString()}');
       }
     });
-
-
   }
 }

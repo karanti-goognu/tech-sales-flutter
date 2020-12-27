@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:path/path.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,23 +8,22 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/controller
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
 import 'DraftLeadListScreen.dart';
 import 'ViewLeadScreen.dart';
@@ -42,7 +39,8 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
   String _myActivity;
   LocationResult _pickedLocation;
   var txt = TextEditingController();
-  LeadStatusEntity _selectedValue ;
+  LeadStatusEntity _selectedValue;
+
   var _contactName = TextEditingController();
   var _contactNumber = TextEditingController();
   String _comment;
@@ -60,7 +58,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
   var _influencerCategory = TextEditingController();
   var geoTagType = TextEditingController();
   var leadCreatedBy;
-  bool isEditable=false;
+  bool isEditable = false;
 
   var _totalBags = TextEditingController();
   var _totalMT = TextEditingController();
@@ -93,6 +91,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
   Position _currentPosition;
   String _currentAddress;
   List<LeadStatusEntity> leadStatusEntity = new List();
+
   // List<SiteSubTypeEntity> siteSubTypeEntity = [
   //   new SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
   //   new SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
@@ -106,7 +105,6 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
 
   @override
   void initState() {
-
     super.initState();
     _addLeadsController = Get.find();
     getLeadData();
@@ -129,28 +127,26 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
 
         setState(() {
           leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
-          LeadStatusEntity list ;
+          LeadStatusEntity list;
           for (int i = 0; i < leadStatusEntity.length; i++) {
-            if(viewLeadDataResponse.leadsEntity.leadStatusId.toString() == leadStatusEntity[i].id.toString()){
-                labelText = leadStatusEntity[i].leadStatusDesc;
-                list = new LeadStatusEntity(
-                  id:leadStatusEntity[i].id,
-                  leadStatusDesc:leadStatusEntity[i].leadStatusDesc
-                );
+            if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
+                leadStatusEntity[i].id.toString()) {
+              labelText = leadStatusEntity[i].leadStatusDesc;
+              list = new LeadStatusEntity(
+                  id: leadStatusEntity[i].id,
+                  leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
 
-print(labelText);
+              print(labelText);
               // _selectedValue.id = leadStatusEntity[i].id;
               // _selectedValue.leadStatusDesc = leadStatusEntity[i].leadStatusDesc;
 
             }
-
           }
-
 
           leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
           print(leadCreatedBy);
 
-         // siteSubTypeEntity = viewLeadDataResponse.siteSubTypeEntity;
+          // siteSubTypeEntity = viewLeadDataResponse.siteSubTypeEntity;
           influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
           influencerCategoryEntity =
               viewLeadDataResponse.influencerCategoryEntity;
@@ -230,8 +226,8 @@ print(labelText);
           }
           _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
           _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
-          _totalBags.text =  (double.parse(_totalMT.text) *20).round().toString();
-
+          _totalBags.text =
+              (double.parse(_totalMT.text) * 20).round().toString();
 
           // _totalBags.text = viewLeadDataResponse.
 
@@ -346,8 +342,8 @@ print(labelText);
                             ),
                       FlatButton(
                         onPressed: () {
-
-                          SaveLeadRequestModel saveLeadRequestModelNew = gv.saveLeadRequestModelNew;
+                          SaveLeadRequestModel saveLeadRequestModelNew =
+                              gv.saveLeadRequestModelNew;
                           saveLeadRequestModelNew.isStatus = "true";
                           _addLeadsController.getAccessKeyAndSaveLead(
                               gv.saveLeadRequestModelNew,
@@ -551,7 +547,6 @@ print(labelText);
             Container(
               child: Form(
                 key: _formKey,
-
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
@@ -593,88 +588,87 @@ print(labelText);
                             SizedBox(width: 50),
                             Expanded(
                               child: Container(
-                                padding: const EdgeInsets.only(left: 1.0, right: 1.0),
+                                padding: const EdgeInsets.only(
+                                    left: 1.0, right: 1.0),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
                                     color: Colors.white,
                                     //border: Border.all()
                                     boxShadow: [
                                       BoxShadow(
-                                          color:Colors.grey[500],
+                                          color: Colors.grey[500],
                                           offset: Offset(5.0, 5.0),
                                           blurRadius: 10.0,
                                           spreadRadius: 4.0)
-                                    ]
-                                  ),
-                              child: DropdownButtonHideUnderline(
+                                    ]),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton(
+                                    // elevation: 100,
 
-
-
-                                child: DropdownButton(
-                                  // elevation: 100,
-
-
-
-                                  value: _selectedValue,
-                                  items: leadStatusEntity
-                                      .map((label) => DropdownMenuItem(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(left:8.0),
-                                              child: Text(
-                                                label.leadStatusDesc,
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: ColorConstants
-                                                        .inputBoxHintColor,
-                                                    fontFamily: "Muli"),
+                                    value: _selectedValue,
+                                    items: leadStatusEntity
+                                        .map((label) => DropdownMenuItem(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: Text(
+                                                  label.leadStatusDesc,
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: ColorConstants
+                                                          .inputBoxHintColor,
+                                                      fontFamily: "Muli"),
+                                                ),
                                               ),
-                                            ),
-                                            value: label,
-                                          ))
-                                      .toList(),
-                                  //  elevation: 0,
-                                  iconSize: 40,
-                                  hint: Padding(
-                                    padding: const EdgeInsets.only(left:8.0),
-                                    child: (labelText!= null)?Text(labelText):Text(""),
+                                              value: label,
+                                            ))
+                                        .toList(),
+                                    //  elevation: 0,
+                                    iconSize: 40,
+                                    hint: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: (labelText != null)
+                                          ? Text(labelText)
+                                          : Text(""),
+                                    ),
+
+                                    // hint: Text('Rating'),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedValue = value;
+                                        Get.dialog(CustomDialogs()
+                                            .errorDialog("Coming Soon !!"));
+                                      });
+                                    },
+
+                                    // decoration: InputDecoration(
+                                    //   focusedBorder: OutlineInputBorder(
+                                    //     borderSide: BorderSide(
+                                    //         color: ColorConstants.backgroundColorBlue,
+                                    //         //color: HexColor("#0000001F"),
+                                    //         width: 0),
+                                    //   ),
+                                    //   enabledBorder: InputBorder.none,
+                                    //   errorBorder: OutlineInputBorder(
+                                    //     borderSide:
+                                    //         BorderSide(color: Colors.red, width: 0),
+                                    //   ),
+                                    //   // labelText: "Site Subtype",
+                                    //   // filled: false,
+                                    //   hintText: labelText,
+                                    //   focusColor: Colors.black,
+                                    //   isDense: true,
+                                    //   labelStyle: TextStyle(
+                                    //       fontFamily: "Muli",
+                                    //       color: ColorConstants.inputBoxHintColorDark,
+                                    //       fontWeight: FontWeight.normal,
+                                    //       fontSize: 16.0),
+                                    //   fillColor: ColorConstants.backgroundColor,
+                                    // ),
                                   ),
-
-                                  // hint: Text('Rating'),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedValue = value;
-                                      Get.dialog(CustomDialogs()
-                                          .errorDialog("Coming Soon !!"));
-                                    });
-                                  },
-
-                                  // decoration: InputDecoration(
-                                  //   focusedBorder: OutlineInputBorder(
-                                  //     borderSide: BorderSide(
-                                  //         color: ColorConstants.backgroundColorBlue,
-                                  //         //color: HexColor("#0000001F"),
-                                  //         width: 0),
-                                  //   ),
-                                  //   enabledBorder: InputBorder.none,
-                                  //   errorBorder: OutlineInputBorder(
-                                  //     borderSide:
-                                  //         BorderSide(color: Colors.red, width: 0),
-                                  //   ),
-                                  //   // labelText: "Site Subtype",
-                                  //   // filled: false,
-                                  //   hintText: labelText,
-                                  //   focusColor: Colors.black,
-                                  //   isDense: true,
-                                  //   labelStyle: TextStyle(
-                                  //       fontFamily: "Muli",
-                                  //       color: ColorConstants.inputBoxHintColorDark,
-                                  //       fontWeight: FontWeight.normal,
-                                  //       fontSize: 16.0),
-                                  //   fillColor: ColorConstants.backgroundColor,
-                                  // ),
                                 ),
                               ),
-                            ),)
+                            )
                           ],
                         ),
                       ),
@@ -760,7 +754,8 @@ print(labelText);
                                 BorderSide(color: Colors.black26, width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Contact Name",
                           filled: false,
@@ -812,7 +807,8 @@ print(labelText);
                                 BorderSide(color: Colors.black26, width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Contact Number",
                           filled: false,
@@ -832,8 +828,8 @@ print(labelText);
                       ),
 
                       Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 20, left: 5),
                         child: Text(
                           "Geo Tag",
                           style: TextStyle(
@@ -929,7 +925,8 @@ print(labelText);
                                 _pickedLocation = result;
                                 _currentPosition = new Position(
                                     latitude: _pickedLocation.latLng.latitude,
-                                    longitude: _pickedLocation.latLng.longitude);
+                                    longitude:
+                                        _pickedLocation.latLng.longitude);
                                 _getAddressFromLatLng();
                                 //print(_pickedLocation.latLng.latitude);
                               });
@@ -1029,7 +1026,8 @@ print(labelText);
                                 width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Address",
                           filled: false,
@@ -1078,7 +1076,8 @@ print(labelText);
                                 width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Pincode",
                           enabled: false,
@@ -1131,10 +1130,11 @@ print(labelText);
                                 width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "State",
-                          enabled:false,
+                          enabled: false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -1184,10 +1184,11 @@ print(labelText);
                                 width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "District",
-                          enabled:false,
+                          enabled: false,
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -1238,7 +1239,8 @@ print(labelText);
                                 width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Taluk",
                           enabled: false,
@@ -1287,8 +1289,8 @@ print(labelText);
                             if (_imageList.length < 5) {
                               _showPicker(context);
                             } else {
-                              Get.dialog(CustomDialogs()
-                                  .errorDialog("You can add only upto 5 photos"));
+                              Get.dialog(CustomDialogs().errorDialog(
+                                  "You can add only upto 5 photos"));
                             }
                           },
                         ),
@@ -1308,13 +1310,15 @@ print(labelText);
                                           onTap: () {
                                             return showDialog(
                                                 context: context,
-                                                builder: (BuildContext context) {
+                                                builder:
+                                                    (BuildContext context) {
                                                   return AlertDialog(
                                                     content: new Container(
                                                       // width: 500,
                                                       // height: 500,
                                                       child: Image.network(
-                                                          _imageList[index].path),
+                                                          _imageList[index]
+                                                              .path),
                                                     ),
                                                   );
                                                 });
@@ -1368,8 +1372,8 @@ print(labelText);
                       ),
 
                       Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 20, left: 5),
                         child: Text(
                           "Influencer Details",
                           style: TextStyle(
@@ -1390,7 +1394,8 @@ print(labelText);
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: _listInfluencerDetail.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  if (!_listInfluencerDetail[index].isExpanded) {
+                                  if (!_listInfluencerDetail[index]
+                                      .isExpanded) {
                                     return Column(
                                       // mainAxisAlignment:
                                       // MainAxisAlignment.spaceBetween,
@@ -1414,14 +1419,15 @@ print(labelText);
                                                     color: Colors.transparent,
                                                     icon: Icon(
                                                       Icons.remove,
-                                                      color: HexColor("#F9A61A"),
+                                                      color:
+                                                          HexColor("#F9A61A"),
                                                       size: 18,
                                                     ),
                                                     label: Text(
                                                       "COLLAPSE",
                                                       style: TextStyle(
-                                                          color:
-                                                              HexColor("#F9A61A"),
+                                                          color: HexColor(
+                                                              "#F9A61A"),
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           // letterSpacing: 2,
@@ -1446,14 +1452,15 @@ print(labelText);
                                                     color: Colors.transparent,
                                                     icon: Icon(
                                                       Icons.add,
-                                                      color: HexColor("#F9A61A"),
+                                                      color:
+                                                          HexColor("#F9A61A"),
                                                       size: 18,
                                                     ),
                                                     label: Text(
                                                       "EXPAND",
                                                       style: TextStyle(
-                                                          color:
-                                                              HexColor("#F9A61A"),
+                                                          color: HexColor(
+                                                              "#F9A61A"),
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           // letterSpacing: 2,
@@ -1499,14 +1506,15 @@ print(labelText);
                                                     color: Colors.transparent,
                                                     icon: Icon(
                                                       Icons.remove,
-                                                      color: HexColor("#F9A61A"),
+                                                      color:
+                                                          HexColor("#F9A61A"),
                                                       size: 18,
                                                     ),
                                                     label: Text(
                                                       "COLLAPSE",
                                                       style: TextStyle(
-                                                          color:
-                                                              HexColor("#F9A61A"),
+                                                          color: HexColor(
+                                                              "#F9A61A"),
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           // letterSpacing: 2,
@@ -1531,14 +1539,15 @@ print(labelText);
                                                     color: Colors.transparent,
                                                     icon: Icon(
                                                       Icons.add,
-                                                      color: HexColor("#F9A61A"),
+                                                      color:
+                                                          HexColor("#F9A61A"),
                                                       size: 18,
                                                     ),
                                                     label: Text(
                                                       "EXPAND",
                                                       style: TextStyle(
-                                                          color:
-                                                              HexColor("#F9A61A"),
+                                                          color: HexColor(
+                                                              "#F9A61A"),
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           // letterSpacing: 2,
@@ -1560,8 +1569,9 @@ print(labelText);
                                         ),
                                         SizedBox(height: 16),
                                         TextFormField(
-                                          controller: _listInfluencerDetail[index]
-                                              .inflContact,
+                                          controller:
+                                              _listInfluencerDetail[index]
+                                                  .inflContact,
                                           maxLength: 10,
                                           onChanged: (value) async {
                                             bool match = false;
@@ -1613,8 +1623,8 @@ print(labelText);
                                                 String empId;
                                                 String mobileNumber;
                                                 String name;
-                                                Future<SharedPreferences> _prefs =
-                                                    SharedPreferences
+                                                Future<SharedPreferences>
+                                                    _prefs = SharedPreferences
                                                         .getInstance();
                                                 await _prefs.then(
                                                     (SharedPreferences prefs) {
@@ -1635,8 +1645,8 @@ print(labelText);
                                                 AddLeadsController
                                                     _addLeadsController =
                                                     Get.find();
-                                                _addLeadsController.phoneNumber =
-                                                    value;
+                                                _addLeadsController
+                                                    .phoneNumber = value;
                                                 AccessKeyModel accessKeyModel =
                                                     new AccessKeyModel();
                                                 await _addLeadsController
@@ -1659,41 +1669,53 @@ print(labelText);
                                                         new TextEditingController();
                                                     ;
 
-                                                    InfluencerDetail inflDetail =
-                                                        data;
+                                                    InfluencerDetail
+                                                        inflDetail = data;
                                                     print(data);
                                                     setState(() {
                                                       FocusScope.of(context)
                                                           .unfocus();
                                                       //  print(inflDetail.inflName.text);
-                                                      _listInfluencerDetail[index]
+                                                      _listInfluencerDetail[
+                                                                  index]
                                                               .inflTypeValue =
                                                           new TextEditingController();
-                                                      _listInfluencerDetail[index]
+                                                      _listInfluencerDetail[
+                                                                  index]
                                                               .inflCatValue =
                                                           new TextEditingController();
-                                                      _listInfluencerDetail[index]
+                                                      _listInfluencerDetail[
+                                                                  index]
                                                               .inflTypeId =
                                                           new TextEditingController();
-                                                      _listInfluencerDetail[index]
+                                                      _listInfluencerDetail[
+                                                                  index]
                                                               .inflCatId =
                                                           new TextEditingController();
 
-                                                      _listInfluencerDetail[index]
+                                                      _listInfluencerDetail[
+                                                                  index]
                                                               .inflContact =
-                                                          inflDetail.inflContact;
-                                                      _listInfluencerDetail[index]
+                                                          inflDetail
+                                                              .inflContact;
+                                                      _listInfluencerDetail[
+                                                                  index]
                                                               .inflName =
                                                           inflDetail.inflName;
-                                                      _listInfluencerDetail[index]
+                                                      _listInfluencerDetail[
+                                                              index]
                                                           .id = inflDetail.id;
-                                                      _listInfluencerDetail[index]
+                                                      _listInfluencerDetail[
+                                                                  index]
                                                               .ilpIntrested =
-                                                          inflDetail.ilpIntrested;
-                                                      _listInfluencerDetail[index]
+                                                          inflDetail
+                                                              .ilpIntrested;
+                                                      _listInfluencerDetail[
+                                                                  index]
                                                               .createdOn =
                                                           inflDetail.createdOn;
-                                                      _listInfluencerDetail[index]
+                                                      _listInfluencerDetail[
+                                                              index]
                                                           .createdBy = empId;
 
                                                       for (int i = 0;
@@ -1705,7 +1727,8 @@ print(labelText);
                                                                     i]
                                                                 .inflTypeId
                                                                 .toString() ==
-                                                            inflDetail.inflTypeId
+                                                            inflDetail
+                                                                .inflTypeId
                                                                 .text) {
                                                           _listInfluencerDetail[
                                                                       index]
@@ -1752,8 +1775,8 @@ print(labelText);
                                                                     i]
                                                                 .inflCatId
                                                                 .toString() ==
-                                                            inflDetail
-                                                                .inflCatId.text) {
+                                                            inflDetail.inflCatId
+                                                                .text) {
                                                           _listInfluencerDetail[
                                                                       index]
                                                                   .inflCatId =
@@ -1761,14 +1784,13 @@ print(labelText);
                                                                   .inflCatId;
                                                           //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                                                           _listInfluencerDetail[
-                                                                      index]
-                                                                  .inflCatValue
-                                                                  .text =
-                                                              influencerCategoryEntity[
-                                                                      influencerCategoryEntity[
-                                                                              i]
-                                                                          .inflCatId]
-                                                                  .inflCatDesc;
+                                                                  index]
+                                                              .inflCatValue
+                                                              .text = influencerCategoryEntity[
+                                                                  influencerCategoryEntity[
+                                                                          i]
+                                                                      .inflCatId]
+                                                              .inflCatDesc;
                                                           break;
                                                         } else {
                                                           _listInfluencerDetail[
@@ -1815,7 +1837,8 @@ print(labelText);
                                               fontFamily: "Muli"),
                                           keyboardType: TextInputType.phone,
                                           inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter.digitsOnly
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
                                           ],
                                           decoration: InputDecoration(
                                             focusedBorder: OutlineInputBorder(
@@ -1833,7 +1856,8 @@ print(labelText);
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Colors.red, width: 1.0),
+                                                  color: Colors.red,
+                                                  width: 1.0),
                                             ),
                                             labelText: "Infl. Contact",
                                             filled: false,
@@ -1851,8 +1875,9 @@ print(labelText);
                                         SizedBox(height: 16),
                                         TextFormField(
                                           //  initialValue: _listInfluencerDetail[index].inflName,
-                                          controller: _listInfluencerDetail[index]
-                                              .inflName,
+                                          controller:
+                                              _listInfluencerDetail[index]
+                                                  .inflName,
 
                                           // validator: (value) {
                                           //   if (value.isEmpty) {
@@ -1883,7 +1908,8 @@ print(labelText);
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Colors.red, width: 1.0),
+                                                  color: Colors.red,
+                                                  width: 1.0),
                                             ),
                                             disabledBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
@@ -1907,8 +1933,9 @@ print(labelText);
                                         ),
                                         SizedBox(height: 16),
                                         TextFormField(
-                                          controller: _listInfluencerDetail[index]
-                                              .inflTypeValue,
+                                          controller:
+                                              _listInfluencerDetail[index]
+                                                  .inflTypeValue,
                                           // validator: (value) {
                                           //   if (value.isEmpty) {
                                           //     return 'Please enter Influencer Number ';
@@ -1938,7 +1965,8 @@ print(labelText);
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Colors.red, width: 1.0),
+                                                  color: Colors.red,
+                                                  width: 1.0),
                                             ),
                                             disabledBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
@@ -1962,8 +1990,9 @@ print(labelText);
                                         ),
                                         SizedBox(height: 16),
                                         TextFormField(
-                                          controller: _listInfluencerDetail[index]
-                                              .inflCatValue,
+                                          controller:
+                                              _listInfluencerDetail[index]
+                                                  .inflCatValue,
                                           // validator: (value) {
                                           //   if (value.isEmpty) {
                                           //     return 'Please enter Influencer Number ';
@@ -1993,7 +2022,8 @@ print(labelText);
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Colors.red, width: 1.0),
+                                                  color: Colors.red,
+                                                  width: 1.0),
                                             ),
                                             disabledBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
@@ -2086,8 +2116,8 @@ print(labelText);
                         thickness: 1,
                       ),
                       Padding(
-                        padding:
-                        const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 20, left: 5),
                         child: Text(
                           "Total Site Potential",
                           style: TextStyle(
@@ -2138,7 +2168,8 @@ print(labelText);
                                 decoration: InputDecoration(
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: ColorConstants.backgroundColorBlue,
+                                        color:
+                                            ColorConstants.backgroundColorBlue,
                                         //color: HexColor("#0000001F"),
                                         width: 1.0),
                                   ),
@@ -2149,15 +2180,16 @@ print(labelText);
                                         width: 1.0),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: Colors.red, width: 1.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1.0),
                                   ),
                                   labelText: "Bags",
                                   filled: false,
                                   focusColor: Colors.black,
                                   labelStyle: TextStyle(
                                       fontFamily: "Muli",
-                                      color: ColorConstants.inputBoxHintColorDark,
+                                      color:
+                                          ColorConstants.inputBoxHintColorDark,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 16.0),
                                   fillColor: ColorConstants.backgroundColor,
@@ -2199,7 +2231,8 @@ print(labelText);
                                 decoration: InputDecoration(
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: ColorConstants.backgroundColorBlue,
+                                        color:
+                                            ColorConstants.backgroundColorBlue,
                                         //color: HexColor("#0000001F"),
                                         width: 1.0),
                                   ),
@@ -2216,8 +2249,8 @@ print(labelText);
                                         width: 1.0),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: Colors.red, width: 1.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1.0),
                                   ),
                                   labelText: "MT",
                                   filled: false,
@@ -2225,7 +2258,8 @@ print(labelText);
                                   focusColor: Colors.black,
                                   labelStyle: TextStyle(
                                       fontFamily: "Muli",
-                                      color: ColorConstants.inputBoxHintColorDark,
+                                      color:
+                                          ColorConstants.inputBoxHintColorDark,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 16.0),
                                   fillColor: ColorConstants.backgroundColor,
@@ -2268,7 +2302,8 @@ print(labelText);
                                 width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "RERA Number",
                           filled: false,
@@ -2320,7 +2355,8 @@ print(labelText);
                                 width: 1.0),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
                           ),
                           labelText: "Comment",
                           filled: false,
@@ -2378,15 +2414,17 @@ print(labelText);
                                   children: [
                                     Expanded(
                                       child: ListView.builder(
-                                          physics: NeverScrollableScrollPhysics(),
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           reverse: true,
                                           shrinkWrap: true,
                                           itemCount: _commentsList.length,
-                                          itemBuilder:
-                                              (BuildContext context, int index) {
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
                                             return Column(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
@@ -2443,14 +2481,16 @@ print(labelText);
                                           height: 20,
                                         ),
                                         Text(
-                                          _commentsList[_commentsList.length - 1]
+                                          _commentsList[
+                                                  _commentsList.length - 1]
                                               .creatorName,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 25),
                                         ),
                                         Text(
-                                          _commentsList[_commentsList.length - 1]
+                                          _commentsList[
+                                                  _commentsList.length - 1]
                                               .commentText,
                                           style: TextStyle(
                                               color:
@@ -2458,7 +2498,8 @@ print(labelText);
                                               fontSize: 25),
                                         ),
                                         Text(
-                                          _commentsList[_commentsList.length - 1]
+                                          _commentsList[
+                                                  _commentsList.length - 1]
                                               .commentedAt
                                               .toString(),
                                           style: TextStyle(
@@ -2746,22 +2787,20 @@ print(labelText);
 
   _getCurrentLocation() async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please enable your location service from device settings"));
+    } else {
+      geolocator
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .then((Position position) {
+        setState(() {
+          _currentPosition = position;
+        });
 
-    Get.dialog(CustomDialogs()
-        .errorDialog("Please enable your location service from device settings"));
-    }
-    else{
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-    setState(() {
-    _currentPosition = position;
-    });
-
-    _getAddressFromLatLng();
-    }).catchError((e) {
-    print(e);
-    });
+        _getAddressFromLatLng();
+      }).catchError((e) {
+        print(e);
+      });
     }
   }
 

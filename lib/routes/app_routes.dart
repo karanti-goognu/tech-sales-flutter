@@ -13,5 +13,6 @@ abstract class Routes {
   static const SITES_SCREEN = '/sites_screen';
   static const ADD_EVENT_SCREEN = '/add_event';
   static const ADD_MWP_SCREEN = '/add_mwp';
+  static const ADD_MWP_PLAN_SCREEN = '/add_mwp_plan';
   static const ADD_CALENDER_SCREEN = '/add_calender_event';
 }

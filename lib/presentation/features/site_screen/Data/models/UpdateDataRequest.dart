@@ -42,44 +42,43 @@ class UpdateDataRequest {
 
   UpdateDataRequest(
       {this.siteId,
-        this.siteSegment,
-        this.assignedTo,
-        this.siteStatusId,
-        this.siteStageId,
-        this.contactName,
-        this.contactNumber,
-        this.siteGeotag,
-        this.siteGeotagLat,
-        this.siteGeotagLong,
-        this.siteAddress,
-        this.sitePincode,
-        this.siteState,
-        this.siteDistrict,
-        this.siteTaluk,
-        this.sitePotentialMt,
-        this.reraNumber,
-        this.siteCreationDate,
-        this.dealerId,
-        this.siteBuiltArea,
-        this.noOfFloors,
-        this.productDemo,
-        this.productOralBriefing,
-        this.soCode,
-        this.plotNumber,
-        this.inactiveReasonText,
-        this.nextVisitDate,
-        this.closureReasonText,
-        this.createdBy,
-        this.siteCommentsEntity,
-        this.siteVisitHistoryEntity,
-        this.siteNextStageEntity,
-        this.sitePhotosEntity,
-        this.siteInfluencerEntity,
-        this.siteConstructionId,
-        this.siteCompetitionId,
-        this.siteOppertunityId,
-        this.siteProbabilityWinningId
-      });
+      this.siteSegment,
+      this.assignedTo,
+      this.siteStatusId,
+      this.siteStageId,
+      this.contactName,
+      this.contactNumber,
+      this.siteGeotag,
+      this.siteGeotagLat,
+      this.siteGeotagLong,
+      this.siteAddress,
+      this.sitePincode,
+      this.siteState,
+      this.siteDistrict,
+      this.siteTaluk,
+      this.sitePotentialMt,
+      this.reraNumber,
+      this.siteCreationDate,
+      this.dealerId,
+      this.siteBuiltArea,
+      this.noOfFloors,
+      this.productDemo,
+      this.productOralBriefing,
+      this.soCode,
+      this.plotNumber,
+      this.inactiveReasonText,
+      this.nextVisitDate,
+      this.closureReasonText,
+      this.createdBy,
+      this.siteCommentsEntity,
+      this.siteVisitHistoryEntity,
+      this.siteNextStageEntity,
+      this.sitePhotosEntity,
+      this.siteInfluencerEntity,
+      this.siteConstructionId,
+      this.siteCompetitionId,
+      this.siteOppertunityId,
+      this.siteProbabilityWinningId});
 
   UpdateDataRequest.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -115,8 +114,6 @@ class UpdateDataRequest {
     siteCompetitionId = json['siteCompetitionId'];
     siteOppertunityId = json['siteOppertunityId'];
     siteProbabilityWinningId = json['siteProbabilityWinningId'];
-
-
 
     if (json['siteCommentsEntity'] != null) {
       siteCommentsEntity = new List<SiteCommentsEntity>();
@@ -186,8 +183,6 @@ class UpdateDataRequest {
     data['siteOppertunityId'] = this.siteOppertunityId;
     data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
 
-
-
     if (this.siteCommentsEntity != null) {
       data['siteCommentsEntity'] =
           this.siteCommentsEntity.map((v) => v.toJson()).toList();
@@ -211,11 +206,6 @@ class UpdateDataRequest {
     return data;
   }
 }
-
-
-
-
-
 
 class SitePhotosEntity {
   int id;
@@ -250,8 +240,9 @@ class SiteInfluencerEntityNew {
   String createdBy;
   String isPrimary;
 
-
-  SiteInfluencerEntityNew({this.isPrimary,this.id,
+  SiteInfluencerEntityNew({
+    this.isPrimary,
+    this.id,
     this.siteId,
     this.inflId,
     this.isDelete,
@@ -276,8 +267,6 @@ class SiteInfluencerEntityNew {
     data['createdBy'] = this.createdBy;
     data['isPrimary'] = this.isPrimary;
 
-
     return data;
   }
-
 }

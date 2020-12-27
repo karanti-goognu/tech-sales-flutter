@@ -10,11 +10,11 @@ class MyRepositorySplash {
     return apiClient.getAccessKey();
   }
 
-  getRefreshData(String url,String accessKey,String securityKey) {
+  getRefreshData(String url, String accessKey, String securityKey) {
     return apiClient.getRefreshData(url, accessKey, securityKey);
   }
 
-  getSecretKey(String empId,String mobileNumber) {
-    return apiClient.getSecretKey(empId,mobileNumber);
+  getSecretKey(String empId, String mobileNumber) {
+    return apiClient.getSecretKey(empId, mobileNumber);
   }
 }

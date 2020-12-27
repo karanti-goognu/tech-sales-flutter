@@ -37,14 +37,14 @@ class JourneyEntity {
 
   JourneyEntity(
       {this.id,
-        this.referenceId,
-        this.journeyDate,
-        this.journeyStartTime,
-        this.journeyStartLat,
-        this.journeyStartLong,
-        this.journeyEndTime,
-        this.journeyEndLat,
-        this.journeyEndLong});
+      this.referenceId,
+      this.journeyDate,
+      this.journeyStartTime,
+      this.journeyStartLat,
+      this.journeyStartLong,
+      this.journeyEndTime,
+      this.journeyEndLat,
+      this.journeyEndLong});
 
   JourneyEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];

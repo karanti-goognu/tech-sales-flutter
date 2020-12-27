@@ -1,7 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class InfluencerDetail {
   InfluencerDetail({
@@ -22,21 +19,19 @@ class InfluencerDetail {
   });
 
   var id = TextEditingController();
-  var inflName= TextEditingController();
-  var inflContact= TextEditingController();
-  var inflTypeId= TextEditingController();
-  var inflTypeValue= TextEditingController();
-  var inflCatId= TextEditingController();
-  var inflCatValue= TextEditingController();
-  var ilpIntrested= TextEditingController();
-  var createdOn= TextEditingController();
-   String isPrimary;
+  var inflName = TextEditingController();
+  var inflContact = TextEditingController();
+  var inflTypeId = TextEditingController();
+  var inflTypeValue = TextEditingController();
+  var inflCatId = TextEditingController();
+  var inflCatValue = TextEditingController();
+  var ilpIntrested = TextEditingController();
+  var createdOn = TextEditingController();
+  String isPrimary;
   String createdBy;
   bool isExpanded;
   bool isPrimarybool;
   int originalId;
-
-
 
   InfluencerDetail.fromJson(Map<String, dynamic> json) {
     this.id.text = json['id'].toString();
@@ -52,23 +47,18 @@ class InfluencerDetail {
   }
 
   Map<String, dynamic> toJson() {
-
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
-
-      data['inflId'] = int.parse(this.id.text);
-      // data['inflName'] = this.inflName.text;
-      // data['inflContact'] = this.inflContact.text;
-      // data['inflTypeId'] = this.inflTypeId.text;
-      // data['inflCatId'] = this.inflCatId.text;
-      // data['ilpIntrested'] = this.ilpIntrested.text;
-      // data['createdOn'] = this.createdOn.text.toString();
-      data['createdBy'] = this.createdBy;
-      data[ 'isDelete'] = 'N';
-      data['isPrimary'] = this.isPrimarybool ? "Y" : "N";
-      return data;
-
-
+    data['inflId'] = int.parse(this.id.text);
+    // data['inflName'] = this.inflName.text;
+    // data['inflContact'] = this.inflContact.text;
+    // data['inflTypeId'] = this.inflTypeId.text;
+    // data['inflCatId'] = this.inflCatId.text;
+    // data['ilpIntrested'] = this.ilpIntrested.text;
+    // data['createdOn'] = this.createdOn.text.toString();
+    data['createdBy'] = this.createdBy;
+    data['isDelete'] = 'N';
+    data['isPrimary'] = this.isPrimarybool ? "Y" : "N";
+    return data;
   }
-
 }

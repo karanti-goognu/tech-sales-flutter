@@ -7,10 +7,10 @@ class SitesListModel {
 
   SitesListModel(
       {this.sitesEntity,
-        this.respCode,
-        this.respMsg,
-        this.totalSitePotential,
-        this.totalSiteCount});
+      this.respCode,
+      this.respMsg,
+      this.totalSitePotential,
+      this.totalSiteCount});
 
   SitesListModel.fromJson(Map<String, dynamic> json) {
     if (json['sitesEntity'] != null) {
@@ -74,37 +74,37 @@ class SitesEntity {
 
   SitesEntity(
       {this.siteId,
-        this.leadId,
-        this.siteSegment,
-        this.assignedTo,
-        this.siteStatusId,
-        this.siteStageId,
-        this.contactName,
-        this.contactNumber,
-        this.siteCreationDate,
-        this.siteGeotag,
-        this.siteGeotagLat,
-        this.siteGeotagLong,
-        this.sitePincode,
-        this.siteState,
-        this.siteDistrict,
-        this.siteTaluk,
-        this.sitePotentialMt,
-        this.reraNumber,
-        this.dealerId,
-        this.siteBuiltArea,
-        this.noOfFloors,
-        this.productDemo,
-        this.productOralBriefing,
-        this.soCode,
-        this.plotNumber,
-        this.inactiveReasonText,
-        this.nextVisitDate,
-        this.closureReasonText,
-        this.createdBy,
-        this.createdOn,
-        this.updatedBy,
-        this.updatedOn});
+      this.leadId,
+      this.siteSegment,
+      this.assignedTo,
+      this.siteStatusId,
+      this.siteStageId,
+      this.contactName,
+      this.contactNumber,
+      this.siteCreationDate,
+      this.siteGeotag,
+      this.siteGeotagLat,
+      this.siteGeotagLong,
+      this.sitePincode,
+      this.siteState,
+      this.siteDistrict,
+      this.siteTaluk,
+      this.sitePotentialMt,
+      this.reraNumber,
+      this.dealerId,
+      this.siteBuiltArea,
+      this.noOfFloors,
+      this.productDemo,
+      this.productOralBriefing,
+      this.soCode,
+      this.plotNumber,
+      this.inactiveReasonText,
+      this.nextVisitDate,
+      this.closureReasonText,
+      this.createdBy,
+      this.createdOn,
+      this.updatedBy,
+      this.updatedOn});
 
   SitesEntity.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];

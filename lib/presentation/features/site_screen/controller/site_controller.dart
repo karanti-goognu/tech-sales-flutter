@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
@@ -156,8 +154,7 @@ class SiteController extends GetxController {
 
       String siteInfluencerCat = "";
       if (this.selectedSiteInfluencerCatValue != StringConstants.empty) {
-        siteStage =
-            "&siteInflCat=${this.selectedSiteInfluencerCatValue}";
+        siteStage = "&siteInflCat=${this.selectedSiteInfluencerCatValue}";
       }
       //debugPrint('request without encryption: $body');
       String url =

@@ -1,4 +1,3 @@
-
 class ViewLeadDataResponse {
   String respCode;
   String respMsg;
@@ -17,19 +16,19 @@ class ViewLeadDataResponse {
 
   ViewLeadDataResponse(
       {this.respCode,
-        this.respMsg,
-        this.leadStageEntity,
-        this.leadStatusEntity,
-        this.leadInfluencerEntity,
-        this.leadcommentsEnitiy,
-        this.leadphotosEntity,
-        this.influencerEntity,
-        this.influencerCategoryEntity,
-        this.influencerTypeEntity,
-        this.leadRejectReasonEntity,
-        this.nextStageConstructionEntity,
-        this.leadsEntity,
-        this.dealerList});
+      this.respMsg,
+      this.leadStageEntity,
+      this.leadStatusEntity,
+      this.leadInfluencerEntity,
+      this.leadcommentsEnitiy,
+      this.leadphotosEntity,
+      this.influencerEntity,
+      this.influencerCategoryEntity,
+      this.influencerTypeEntity,
+      this.leadRejectReasonEntity,
+      this.nextStageConstructionEntity,
+      this.leadsEntity,
+      this.dealerList});
 
   ViewLeadDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -212,13 +211,13 @@ class LeadInfluencerEntity {
 
   LeadInfluencerEntity(
       {this.id,
-        this.leadId,
-        this.inflId,
-        this.isDelete,
-        this.createdBy,
-        this.createdOn,
-        this.updatedBy,
-        this.updatedOn,
+      this.leadId,
+      this.inflId,
+      this.isDelete,
+      this.createdBy,
+      this.createdOn,
+      this.updatedBy,
+      this.updatedOn,
       this.isPrimary});
 
   LeadInfluencerEntity.fromJson(Map<String, dynamic> json) {
@@ -258,11 +257,11 @@ class LeadcommentsEnitiy {
 
   LeadcommentsEnitiy(
       {this.id,
-        this.leadId,
-        this.commentText,
-        this.creatorName,
-        this.createdBy,
-        this.createdOn});
+      this.leadId,
+      this.commentText,
+      this.creatorName,
+      this.createdBy,
+      this.createdOn});
 
   LeadcommentsEnitiy.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -326,12 +325,13 @@ class InfluencerEntity {
 
   InfluencerEntity(
       {this.id,
-        this.inflName,
-        this.inflContact,
-        this.inflTypeId,
-        this.inflCatId,
-        this.ilpIntrested,
-        this.createdOn,this.isPrimary});
+      this.inflName,
+      this.inflContact,
+      this.inflTypeId,
+      this.inflCatId,
+      this.ilpIntrested,
+      this.createdOn,
+      this.isPrimary});
 
   InfluencerEntity.fromJson(Map<String, dynamic> json) {
     print("Sumit Dhawan");
@@ -455,7 +455,6 @@ class DealerList {
   }
 }
 
-
 class LeadsEntity {
   int leadId;
   String leadSegment;
@@ -492,37 +491,37 @@ class LeadsEntity {
 
   LeadsEntity(
       {this.leadId,
-        this.leadSegment,
-        this.assignedTo,
-        this.siteSubTypeId,
-        this.leadStatusId,
-        this.leadStageId,
-        this.contactName,
-        this.contactNumber,
-        this.geotagType,
-        this.leadLatitude,
-        this.leadLongitude,
-        this.leadAddress,
-        this.leadPincode,
-        this.leadStateName,
-        this.leadDistrictName,
-        this.leadTalukName,
-        this.leadSitePotentialMt,
-        this.leadReraNumber,
-        this.leadRejectReason,
-        this.leadIsDuplicate,
-        this.leadOriginalId,
-        this.siteConverted,
-        this.createdBy,
-        this.createdOn,
-        this.updatedBy,
-        this.updatedOn,
-        this.assignDate,
-        this.rejectionComment,
-        this.leadscol,
-        this.nextDateCconstruction,
-        this.nextStageConstruction,
-        this.siteDealerId});
+      this.leadSegment,
+      this.assignedTo,
+      this.siteSubTypeId,
+      this.leadStatusId,
+      this.leadStageId,
+      this.contactName,
+      this.contactNumber,
+      this.geotagType,
+      this.leadLatitude,
+      this.leadLongitude,
+      this.leadAddress,
+      this.leadPincode,
+      this.leadStateName,
+      this.leadDistrictName,
+      this.leadTalukName,
+      this.leadSitePotentialMt,
+      this.leadReraNumber,
+      this.leadRejectReason,
+      this.leadIsDuplicate,
+      this.leadOriginalId,
+      this.siteConverted,
+      this.createdBy,
+      this.createdOn,
+      this.updatedBy,
+      this.updatedOn,
+      this.assignDate,
+      this.rejectionComment,
+      this.leadscol,
+      this.nextDateCconstruction,
+      this.nextStageConstruction,
+      this.siteDealerId});
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
     leadId = json['leadId'];

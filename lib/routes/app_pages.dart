@@ -16,6 +16,7 @@ import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_sc
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_calender_event.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp_plan_view.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/site_search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_screen.dart';
@@ -67,6 +68,10 @@ class AppPages {
     GetPage(
         name: Routes.ADD_MWP_SCREEN,
         page: () => AddMWP(),
+        binding: AppBinding()),
+    GetPage(
+        name: Routes.ADD_MWP_PLAN_SCREEN,
+        page: () => AddMWPPlan(),
         binding: AppBinding()),
 
     GetPage(

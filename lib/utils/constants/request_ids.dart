@@ -13,4 +13,8 @@ abstract class RequestIds {
   static const int CHECK_OUT = 12;
   static const int GET_SITES_LIST = 13;
   static const int SEARCH_SITES = 14;
+  static const int SAVE_MWP_PLAN = 15;
+  static const int GET_MWP_PLAN = 16;
+  static const int GET_CALENDER_EVENTS = 17;
+  static const int TARGET_VS_ACTUAL = 18;
 }

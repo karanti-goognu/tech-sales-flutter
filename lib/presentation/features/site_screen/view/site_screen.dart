@@ -52,90 +52,91 @@ class _SiteScreenState extends State<SiteScreen> {
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
     print(selectedDateString); // something like 20-04-2020
-    return  WillPopScope(
+    return WillPopScope(
         onWillPop: () async {
-      Get.offNamed(Routes.HOME_SCREEN);
-      return true;
-    },
-    child: Scaffold(
-      extendBody: true,
-      backgroundColor: ColorConstants.backgroundColorGrey,
-      appBar: AppBar(
-        // titleSpacing: 50,
-        // leading: new Container(),
-        backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: 120,
-        centerTitle: false,
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              // mainAxisSize: MainAxisSize.max,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Get.offNamed(Routes.HOME_SCREEN);
+          return true;
+        },
+        child: Scaffold(
+          extendBody: true,
+          backgroundColor: ColorConstants.backgroundColorGrey,
+          appBar: AppBar(
+            // titleSpacing: 50,
+            // leading: new Container(),
+            backgroundColor: ColorConstants.appBarColor,
+            toolbarHeight: 120,
+            centerTitle: false,
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  "OPEN SITES",
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontFamily: "Muli"),
+                Row(
+                  // mainAxisSize: MainAxisSize.max,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "OPEN SITES",
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontFamily: "Muli"),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        _settingModalBottomSheet(context);
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.white)),
+                      color: Colors.transparent,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: Row(
+                          children: [
+                            //  Icon(Icons.exposure_zero_outlined),
+                            Container(
+                                height: 18,
+                                width: 18,
+                                // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                                decoration: new BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.black, width: 0.0),
+                                  borderRadius:
+                                      new BorderRadius.all(Radius.circular(3)),
+                                ),
+                                child: Center(
+                                    child: Obx(() => Text(
+                                        "${_siteController.selectedFilterCount}",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            //fontFamily: 'Raleway',
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.normal))))),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                'FILTER',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                FlatButton(
-                  onPressed: () {
-                    _settingModalBottomSheet(context);
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)),
-                  color: Colors.transparent,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
+                SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        //  Icon(Icons.exposure_zero_outlined),
-                        Container(
-                            height: 18,
-                            width: 18,
-                            // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                            decoration: new BoxDecoration(
-                              color: Colors.white,
-                              border:
-                                  Border.all(color: Colors.black, width: 0.0),
-                              borderRadius:
-                                  new BorderRadius.all(Radius.circular(3)),
-                            ),
-                            child: Center(
-                                child: Obx(() => Text(
-                                    "${_siteController.selectedFilterCount}",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        //fontFamily: 'Raleway',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.normal))))),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            'FILTER',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
+                        SizedBox(
+                          width: 8,
                         ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-            SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Obx(() =>
-                        (_siteController.assignToDate == StringConstants.empty)
+                        Obx(() => (_siteController.assignToDate ==
+                                StringConstants.empty)
                             ? Container()
                             : FilterChip(
                                 label: Row(
@@ -157,267 +158,270 @@ class _SiteScreenState extends State<SiteScreen> {
                                   print("selected");
                                 },
                               )),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Obx(() => (_siteController.selectedSiteStatus ==
-                            StringConstants.empty)
-                        ? Container()
-                        : FilterChip(
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.black,
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Obx(() => (_siteController.selectedSiteStatus ==
+                                StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                                label: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                        "${_siteController.selectedSiteStatus}")
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 4,
+                                backgroundColor: Colors.transparent,
+                                shape: StadiumBorder(side: BorderSide()),
+                                onSelected: (bool value) {
+                                  print("selected");
+                                },
+                              )),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Obx(() => (_siteController.selectedSiteStage ==
+                                StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                                label: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text("${_siteController.selectedSiteStage}")
+                                  ],
                                 ),
-                                Text("${_siteController.selectedSiteStatus}")
-                              ],
-                            ),
-                            backgroundColor: Colors.transparent,
-                            shape: StadiumBorder(side: BorderSide()),
-                            onSelected: (bool value) {
-                              print("selected");
-                            },
-                          )),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Obx(() => (_siteController.selectedSiteStage ==
-                            StringConstants.empty)
-                        ? Container()
-                        : FilterChip(
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.black,
+                                backgroundColor: Colors.transparent,
+                                shape: StadiumBorder(side: BorderSide()),
+                                onSelected: (bool value) {
+                                  print("selected");
+                                },
+                              )),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Obx(() => (_siteController.selectedSitePincode ==
+                                StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                                label: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                        "${_siteController.selectedSitePincode}")
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 4,
+                                backgroundColor: Colors.transparent,
+                                shape: StadiumBorder(side: BorderSide()),
+                                onSelected: (bool value) {
+                                  print("selected");
+                                },
+                              )),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Obx(() => (_siteController.selectedSiteInfluencerCat ==
+                                StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                                label: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                        "${_siteController.selectedSiteInfluencerCat}")
+                                  ],
                                 ),
-                                Text("${_siteController.selectedSiteStage}")
-                              ],
-                            ),
-                            backgroundColor: Colors.transparent,
-                            shape: StadiumBorder(side: BorderSide()),
-                            onSelected: (bool value) {
-                              print("selected");
-                            },
-                          )),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Obx(() => (_siteController.selectedSitePincode ==
-                            StringConstants.empty)
-                        ? Container()
-                        : FilterChip(
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text("${_siteController.selectedSitePincode}")
-                              ],
-                            ),
-                            backgroundColor: Colors.transparent,
-                            shape: StadiumBorder(side: BorderSide()),
-                            onSelected: (bool value) {
-                              print("selected");
-                            },
-                          )),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Obx(() => (_siteController.selectedSiteInfluencerCat ==
-                            StringConstants.empty)
-                        ? Container()
-                        : FilterChip(
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                    "${_siteController.selectedSiteInfluencerCat}")
-                              ],
-                            ),
-                            backgroundColor: Colors.transparent,
-                            shape: StadiumBorder(side: BorderSide()),
-                            onSelected: (bool value) {
-                              print("selected");
-                            },
-                          )),
-                  ],
-                ))
-          ],
-        ),
-        automaticallyImplyLeading: false,
-      ),
-      floatingActionButton: Container(
-        height: 68.0,
-        width: 68.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: Colors.amber,
-            child: Icon(
-              Icons.add,
-              color: Colors.black,
+                                backgroundColor: Colors.transparent,
+                                shape: StadiumBorder(side: BorderSide()),
+                                onSelected: (bool value) {
+                                  print("selected");
+                                },
+                              )),
+                      ],
+                    ))
+              ],
             ),
-            onPressed: () {
-              gv.fromLead = false;
-              Get.toNamed(Routes.ADD_LEADS_SCREEN);
-            },
+            automaticallyImplyLeading: false,
           ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: ColorConstants.appBarColor,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        // currentScreen =
-                        //     Dashboard(); // if user taps on this dashboard tab will be active
-                        // currentTab = 0;
-                        Get.toNamed(Routes.HOME_SCREEN);
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: Colors.white60,
-                        ),
-                        Text(
-                          'Home',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+          floatingActionButton: Container(
+            height: 68.0,
+            width: 68.0,
+            child: FittedBox(
+              child: FloatingActionButton(
+                backgroundColor: Colors.amber,
+                child: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  gv.fromLead = false;
+                  Get.toNamed(Routes.ADD_LEADS_SCREEN);
+                },
               ),
-
-              // Right Tab bar icons
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          new CupertinoPageRoute(
-                              builder: (BuildContext context) =>
-                                  DraftLeadListScreen()));
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.drafts,
-                          color: Colors.white60,
-                        ),
-                        Text(
-                          'Drafts',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Get.toNamed(Routes.SEARCH_SCREEN);
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.search,
-                          color: Colors.white60,
-                        ),
-                        Text(
-                          'Search',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ), //
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
+            ),
           ),
-        ),
-      ),
-      body: Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 10.0, left: 15.0, bottom: 5, right: 15.0),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            color: ColorConstants.appBarColor,
+            shape: CircularNotchedRectangle(),
+            notchMargin: 10,
+            child: Container(
+              height: 60,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Obx(
-                    () => Text(
-                      "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
-                      style: TextStyle(
-                        fontFamily: "Muli",
-                        fontSize: 15,
-                        // color: HexColor("#FFFFFF99"),
-                      ),
-                    ),
-                  ),
-                  Obx(() => Text(
-                        "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : _siteController.sitesListResponse.totalSitePotential}",
-                        style: TextStyle(
-                          fontFamily: "Muli",
-                          fontSize: 15,
-                          // color: HexColor("#FFFFFF99"),
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          setState(() {
+                            // currentScreen =
+                            //     Dashboard(); // if user taps on this dashboard tab will be active
+                            // currentTab = 0;
+                            Get.toNamed(Routes.HOME_SCREEN);
+                          });
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.home,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Home',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ),
+                            ),
+                          ],
                         ),
-                      )),
+                      ),
+                    ],
+                  ),
+
+                  // Right Tab bar icons
+
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              new CupertinoPageRoute(
+                                  builder: (BuildContext context) =>
+                                      DraftLeadListScreen()));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.drafts,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Drafts',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          Get.toNamed(Routes.SEARCH_SCREEN);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.search,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Search',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ), //
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
-            Expanded(child: leadsDetailWidget()),
-            // SizedBox(
-            //   height: 30,
-            // ),
-          ],
-        ),
-      ),
-    ));
+          ),
+          body: Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10.0, left: 15.0, bottom: 5, right: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Obx(
+                        () => Text(
+                          "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            fontSize: 15,
+                            // color: HexColor("#FFFFFF99"),
+                          ),
+                        ),
+                      ),
+                      Obx(() => Text(
+                            "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : _siteController.sitesListResponse.totalSitePotential}",
+                            style: TextStyle(
+                              fontFamily: "Muli",
+                              fontSize: 15,
+                              // color: HexColor("#FFFFFF99"),
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+                Expanded(child: leadsDetailWidget()),
+                // SizedBox(
+                //   height: 30,
+                // ),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget leadsDetailWidget() {

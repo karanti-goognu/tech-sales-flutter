@@ -90,7 +90,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   List<DealerList> dealerList = new List();
   List<ImageDetails> _imgDetails = new List();
 
-
   FocusNode myFocusNode;
   bool viewMoreActive = false;
 
@@ -337,7 +336,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       //         barrierDismissible: false));
       //  Get.back();
     });
-
   }
 
   @override
@@ -544,17 +542,21 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              "ID: " + widget.leadId.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                //color: HexColor("#006838"),
-                                fontFamily: "Muli",
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                "ID: " + widget.leadId.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  //color: HexColor("#006838"),
+                                  fontFamily: "Muli",
+                                ),
                               ),
                             ),
                             SizedBox(width: 50),
                             Expanded(
+                              flex: 4,
                               child: Container(
                                 padding: const EdgeInsets.only(
                                     left: 1.0, right: 1.0),
@@ -572,17 +574,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton(
                                     // elevation: 100,
-
                                     value: _selectedValue,
                                     items: leadStatusEntity
                                         .map((label) => DropdownMenuItem(
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
-                                                    left: 8.0),
+                                                    left: 2.0),
                                                 child: Text(
                                                   label.leadStatusDesc,
                                                   style: TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: 14,
                                                       color: ColorConstants
                                                           .inputBoxHintColor,
                                                       fontFamily: "Muli"),
@@ -1710,6 +1711,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                       TextFormField(
                         controller: _contactName,
+                        enabled: false,
                         focusNode: myFocusNode,
                         // validator: (value) {
                         //   if (value.isEmpty) {
@@ -1743,7 +1745,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             borderSide:
                                 BorderSide(color: Colors.red, width: 1.0),
                           ),
-                          labelText: "Contact Name",
+                          labelText: "Name",
                           filled: false,
                           focusColor: Colors.black,
                           isDense: false,
@@ -1761,10 +1763,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                         enabled: false,
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'Please enter contact number ';
+                            return 'Please enter mobile number ';
                           }
                           if (value.length <= 9) {
-                            return 'Contact number is incorrect';
+                            return 'Mobile number is incorrect';
                           }
                           return null;
                         },
@@ -1801,7 +1803,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             borderSide:
                                 BorderSide(color: Colors.red, width: 1.0),
                           ),
-                          labelText: "Contact Number",
+                          labelText: "Mobile Number",
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(

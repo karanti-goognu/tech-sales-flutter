@@ -10,6 +10,9 @@ abstract class ButtonStyles {
   static TextStyle buttonStyleWhite = GoogleFonts.robotoCondensed(
       fontSize: 14, color: Colors.blue, letterSpacing: 1.25);
 
+  static TextStyle buttonStyleWhiteBold = GoogleFonts.robotoCondensed(
+      fontSize: 14, color: Colors.blue, letterSpacing: 1.25,fontWeight: FontWeight.bold);
+
   static TextStyle buttonStyleGreen = GoogleFonts.robotoCondensed(
       fontSize: 14, color: Colors.green, letterSpacing: 1.25);
 }

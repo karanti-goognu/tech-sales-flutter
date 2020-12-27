@@ -8,33 +8,32 @@ import 'package:http/http.dart';
 import 'CommentDetailModel.dart';
 
 class SaveLeadRequestDraftModel {
-  SaveLeadRequestDraftModel({
-    //this.leadSegmane,
-    this.siteSubTypeId,
-    this.assignedTo,
-    this.leadStatusId,
-    this.leadStage,
-    this.contactName,
-    this.contactNumber,
-    this.geotagType,
-    this.leadLatitude,
-    this.leadLongitude,
-    this.leadAddress,
-    this.leadPincode,
-    this.leadStateName,
-    this.leadDistrictName,
-    this.leadTalukName,
-    this.leadSalesPotentialMt,
-    this.leadReraNumber,
-    this.assignDate,
-    this.isStatus,
-    this.photos,
-    this.comments,
-    this.influencerList,
-    this.listLeadImage,
-    this.leadBags
-  });
-
+  SaveLeadRequestDraftModel(
+      {
+      //this.leadSegmane,
+      this.siteSubTypeId,
+      this.assignedTo,
+      this.leadStatusId,
+      this.leadStage,
+      this.contactName,
+      this.contactNumber,
+      this.geotagType,
+      this.leadLatitude,
+      this.leadLongitude,
+      this.leadAddress,
+      this.leadPincode,
+      this.leadStateName,
+      this.leadDistrictName,
+      this.leadTalukName,
+      this.leadSalesPotentialMt,
+      this.leadReraNumber,
+      this.assignDate,
+      this.isStatus,
+      this.photos,
+      this.comments,
+      this.influencerList,
+      this.listLeadImage,
+      this.leadBags});
 
   // String leadSegmane;
   String siteSubTypeId;
@@ -44,26 +43,22 @@ class SaveLeadRequestDraftModel {
   String contactName;
   String contactNumber;
   String geotagType;
-  String  leadLatitude;
+  String leadLatitude;
   String leadLongitude;
   String leadAddress;
   String leadPincode;
   String leadStateName;
-  String  leadDistrictName;
-  String  leadTalukName;
-  String  leadSalesPotentialMt;
-  String  leadReraNumber;
-  String  assignDate;
+  String leadDistrictName;
+  String leadTalukName;
+  String leadSalesPotentialMt;
+  String leadReraNumber;
+  String assignDate;
   String isStatus;
   String leadBags;
   List<MultipartFile> photos;
   List<CommentsDetail> comments;
-  List <InfluencerDetailDraft> influencerList;
+  List<InfluencerDetailDraft> influencerList;
   List<ListLeadImageDraft> listLeadImage;
-
-
-
-
 
   SaveLeadRequestDraftModel.fromJson(Map<String, dynamic> json) {
     siteSubTypeId = json['siteSubTypeId'];
@@ -102,43 +97,40 @@ class SaveLeadRequestDraftModel {
       listLeadImage = new List<ListLeadImageDraft>();
       json['listLeadImage'].forEach((v) {
         listLeadImage.add(new ListLeadImageDraft.fromJson(v));
-      }
-      );
+      });
     }
   }
-
-
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
     //data['leadSegmane']=this.leadSegmane;
-    data['siteSubTypeId']=this.siteSubTypeId;
-    data['assignedTo']=this.assignedTo;
-    data['leadStatusId']=this.leadStatusId;
-    data['leadStage']=this.leadStage;
-    data['contactName']=this.contactName;
-    data['contactNumber']=this.contactNumber;
-    data['geotagType']=this.geotagType;
-    data['leadLatitude']=this.leadLatitude;
-    data['leadLongitude']=this.leadLongitude;
-    data['leadAddress']=this.leadAddress;
-    data['leadPincode']=this.leadPincode;
-    data['leadStateName']=this.leadStateName;
-    data['leadDistrictName']=this.leadDistrictName;
-    data['leadTalukName']=this.leadTalukName;
-    data['leadSalesPotentialMt']=this.leadSalesPotentialMt;
-    data['leadReraNumber']=this.leadReraNumber;
-    data['assignDate']=this.assignDate;
-    data['isStatus']=this.isStatus;
-    data['photos']=jsonEncode(this.photos);
-    data['comments']=this.comments.map((e) => e.toJson()).toList();
-    data['influencerList']=this.influencerList.map((e) => e.toJson()).toList();
-    data['listLeadImage']=this.listLeadImage.map((e) => e.toJson()).toList();
+    data['siteSubTypeId'] = this.siteSubTypeId;
+    data['assignedTo'] = this.assignedTo;
+    data['leadStatusId'] = this.leadStatusId;
+    data['leadStage'] = this.leadStage;
+    data['contactName'] = this.contactName;
+    data['contactNumber'] = this.contactNumber;
+    data['geotagType'] = this.geotagType;
+    data['leadLatitude'] = this.leadLatitude;
+    data['leadLongitude'] = this.leadLongitude;
+    data['leadAddress'] = this.leadAddress;
+    data['leadPincode'] = this.leadPincode;
+    data['leadStateName'] = this.leadStateName;
+    data['leadDistrictName'] = this.leadDistrictName;
+    data['leadTalukName'] = this.leadTalukName;
+    data['leadSalesPotentialMt'] = this.leadSalesPotentialMt;
+    data['leadReraNumber'] = this.leadReraNumber;
+    data['assignDate'] = this.assignDate;
+    data['isStatus'] = this.isStatus;
+    data['photos'] = jsonEncode(this.photos);
+    data['comments'] = this.comments.map((e) => e.toJson()).toList();
+    data['influencerList'] =
+        this.influencerList.map((e) => e.toJson()).toList();
+    data['listLeadImage'] = this.listLeadImage.map((e) => e.toJson()).toList();
 
     return data;
   }
-
 }
 
 class ListLeadImageDraft {
@@ -157,26 +149,24 @@ class ListLeadImageDraft {
   }
 }
 
-
-
 class InfluencerDetailDraft {
-  InfluencerDetailDraft({
-    this.id,
-    this.inflName,
-    this.inflContact,
-    this.inflTypeId,
-    this.inflCatId,
-    this.ilpIntrested,
-    this.createdOn,
-    this.isExpanded,
-    this.inflCatValue,
-    this.inflTypeValue,
-    this.createdBy,
-    this.isPrimarybool,
-    this.isPrimary
-  });
+  InfluencerDetailDraft(
+      {this.id,
+      this.inflName,
+      this.inflContact,
+      this.inflTypeId,
+      this.inflCatId,
+      this.ilpIntrested,
+      this.createdOn,
+      this.isExpanded,
+      this.inflCatValue,
+      this.inflTypeValue,
+      this.createdBy,
+      this.isPrimarybool,
+      this.isPrimary});
 
-  String id ;
+  String id;
+
   String inflName;
   String inflContact;
   String inflTypeId;
@@ -189,8 +179,6 @@ class InfluencerDetailDraft {
   bool isExpanded;
   String isPrimary;
   bool isPrimarybool;
-
-
 
   InfluencerDetailDraft.fromJson(Map<String, dynamic> json) {
     this.id = json['inflId'].toString();
@@ -208,9 +196,7 @@ class InfluencerDetailDraft {
   }
 
   Map<String, dynamic> toJson() {
-
     final Map<String, dynamic> data = new Map<String, dynamic>();
-
 
     data['inflId'] = this.id;
     data['inflName'] = this.inflName;
@@ -220,14 +206,11 @@ class InfluencerDetailDraft {
     data['inflTypeValue'] = this.inflTypeValue;
     data['inflCatValue'] = this.inflCatValue;
     data['ilpIntrested'] = this.ilpIntrested;
-   // data['createdOn'] = this.createdOn.toString();
+    // data['createdOn'] = this.createdOn.toString();
     //data['createdBy'] = this.createdBy;
-    data[ 'isDelete'] = 'N';
+    data['isDelete'] = 'N';
     data['isPrimary'] = this.isPrimarybool ? "Y" : "N";
     data['isPrimarybool'] = this.isPrimarybool;
     return data;
-
-
   }
-
 }

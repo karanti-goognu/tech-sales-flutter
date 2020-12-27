@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -96,8 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Get.dialog(CustomDialogs()
-                              .errorDialog("Page Coming Soon .... "));
+                          Get.toNamed(Routes.ADD_CALENDER_SCREEN);
                         },
                         child: Container(
                           height: 40,
@@ -121,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 8,
                       ),
                       Text(
-                        "My Calender",
+                        "My Calendar",
                         style: TextStyle(color: Colors.white, fontSize: 12),
                       )
                     ],
@@ -157,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 8,
                       ),
                       Text(
-                        "Notification",
+                        "Notifications",
                         style: TextStyle(color: Colors.white, fontSize: 12),
                       )
                     ],
@@ -392,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ///Put label over here
       label: Text(
-        "Slide to Check-Out !",
+        "Slide to Check-Out!",
         style: TextStyle(
             color: Color(0xff4a4a4a),
             fontWeight: FontWeight.w500,
@@ -455,17 +451,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.SITES_SCREEN);
                   break;
                 case 2:
-                  final db = DraftLeadDBHelper();
-                  db.fetchAll().then((value) {
-                    for (int i = 0; i < value.length; i++) {
-                      print(json.decode(value[i].leadModel));
-                      print("id's are :: ${value[i].id}");
-                    }
-                  });
-                  //db.removeLeadInDraft(4);
-                  break;
                 case 3:
                 case 4:
+                  Get.toNamed(Routes.ADD_MWP_SCREEN);
+                  break;
                 case 5:
                   Get.dialog(CustomDialogs().errorDialog(
                       list[index].value + " Page Coming Soon .... "));
@@ -478,7 +467,9 @@ class _HomeScreenState extends State<HomeScreen> {
               //shadowColor: colornew,
               elevation: 20,
               margin: EdgeInsets.all(10.0),
-              color: Colors.white,
+              color: ((index == 0) || (index == 1))
+                  ? Colors.white
+                  : Colors.white60,
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

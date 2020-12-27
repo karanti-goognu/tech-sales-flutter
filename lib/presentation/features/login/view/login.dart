@@ -1,10 +1,8 @@
-import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
@@ -68,9 +66,10 @@ class LoginScreenPageState extends State<LoginScreen> {
               height: SizeConfig.safeBlockVertical * 40,
               width: SizeConfig.safeBlockVertical * 100,
               child: Center(
-                  child: Image.asset(
-                    "assets/images/Logo(Whitebg).png",
-                  ),),
+                child: Image.asset(
+                  "assets/images/Logo(Whitebg).png",
+                ),
+              ),
             ),
             Text(
               "Welcome, please login ",
@@ -84,14 +83,14 @@ class LoginScreenPageState extends State<LoginScreen> {
             SizedBox(
               height: 16,
             ),
-            Text(
+            /*Text(
               "Continue to TSO App",
               style: TextStyle(
                   fontFamily: "Muli",
                   fontSize: 20,
                   letterSpacing: .5,
                   color: const Color(0xFF000000).withOpacity(0.6)),
-            ),
+            ),*/
             SizedBox(
               height: 20,
             ),
@@ -167,7 +166,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                           InputBordersDecorations.outLineInputBorderError,
                       enabledBorder:
                           InputBordersDecorations.outLineInputBorderEnabled,
-                      labelText: "Register Mobile Number",
+                      labelText: "Registered Mobile Number",
                       filled: true,
                       focusColor: Colors.black,
                       labelStyle: TextStyle(

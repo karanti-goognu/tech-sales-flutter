@@ -3,8 +3,17 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
+import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 class AddCalenderEventPage extends StatefulWidget {
@@ -14,9 +23,12 @@ class AddCalenderEventPage extends StatefulWidget {
 
 class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
   DateTime _currentDate = DateTime(2020, 8, 3);
-  DateTime _currentDate2 = DateTime(2020, 8, 4);
+  DateTime _currentDate2 = DateTime.now();
   String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 8, 3));
   DateTime _targetDateTime = DateTime(2020, 8, 3);
+
+  CalendarEventController _calendarEventController = Get.find();
+  AppController _appController = Get.find();
 
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
@@ -56,6 +68,12 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
 
   @override
   void initState() {
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('MMMM-yyyy');
+    final String formatted = formatter.format(now);
+    _calendarEventController.selectedMonth = formatted;
+    _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
+    _calendarEventController.isLoading = true;
     /* _markedDateMap.addAll(new DateTime(2020, 8, 13), [
       new Event(
         date: new DateTime(2020, 8, 13),
@@ -111,9 +129,16 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
         fontSize: 16,
       ),
       onCalendarChanged: (DateTime date) {
+        final DateFormat formatter = DateFormat('MMMM-yyyy');
+        final String formatted = formatter.format(date);
+        _calendarEventController.selectedMonth = formatted;
+        _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
+        _calendarEventController.isLoading = true;
         this.setState(() {
+          print('hello');
           _targetDateTime = date;
           _currentMonth = DateFormat.yMMM().format(_targetDateTime);
+          print('$_currentMonth');
         });
       },
       onDayLongPressed: (DateTime date) {
@@ -121,26 +146,61 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
       },
     );
 
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("Add Calender"),
-          actions: [],
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                //custom icon
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: _calendarCarousel,
+    return WillPopScope(
+        onWillPop: () async {
+          // You can do some work here.
+          // Returning true allows the pop to happen, returning false prevents it.
+          Get.offNamed(Routes.HOME_SCREEN);
+          return true;
+        },
+        child: Scaffold(
+            resizeToAvoidBottomPadding: false,
+            //resizeToAvoidBottomInset: true,
+            extendBody: true,
+            appBar: new AppBar(
+              title: new Text("Add Calender"),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 18, 8),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _settingModalBottomSheet(context);
+                        },
+                        child: Icon(
+                          Icons.add_circle,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "ADD",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      )
+                    ],
+                  ),
                 ),
-                // This trailing comma makes auto-formatting nicer for build methods.
-                //custom icon without header
-                /*Container(
+              ],
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    //custom icon
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: _calendarCarousel,
+                    ),
+                    // This trailing comma makes auto-formatting nicer for build methods.
+                    //custom icon without header
+                    /*Container(
                   margin: EdgeInsets.only(
                     top: 30.0,
                     bottom: 16.0,
@@ -178,38 +238,367 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                     ],
                   ),
                 ),*/
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: _calendarCarouselNoHeader,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
                     Container(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: ColorConstants.lightGeyColor)
-                      ),
-                      child: Text(
-                        'TARGET VS ACTUAL/PLAN',
-                        style: ButtonStyles.buttonStyleWhite,
-                      ),
+                      margin: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: _calendarCarouselNoHeader,
                     ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: ColorConstants.lightGeyColor)
-                      ),
-                      child: Text(
-                        'MWP STATUS',
-                        style: ButtonStyles.buttonStyleWhite,
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _settingModalBottomSheetTVP(context);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: ColorConstants.lineColorFilter)),
+                            child: Text(
+                              'TARGET VS ACTUAL/PLAN',
+                              style: ButtonStyles.buttonStyleWhiteBold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: ColorConstants.lineColorFilter)),
+                          child: Text(
+                            'MWP STATUS',
+                            style: ButtonStyles.buttonStyleWhiteBold,
+                          ),
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-          ),
-        ));
+                ),
+              ),
+            )));
   }
+
+  void _settingModalBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return new Container(
+            height: 350.0,
+            color: Colors.transparent, //could change this to Color(0xFF737373),
+            //so you don't have to change MaterialApp canvasColor
+            child: addPlanBody(),
+          );
+        });
+  }
+
+  void _settingModalBottomSheetTVP(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return new Container(
+            height: 350.0,
+            color: Colors.transparent, //could change this to Color(0xFF737373),
+            //so you don't have to change MaterialApp canvasColor
+            child: addTVsPBody(),
+          );
+        });
+  }
+
+  Widget addTVsPBody() {
+    _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL);
+    _calendarEventController.isLoading = true;
+    List<String> mwpNames = [
+      "Sites Conv.(Total Sites)",
+      "Sites visit(Total)",
+      "Counter Meet",
+    ];
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "TARGET VS ACTUAL",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 18),
+          ),
+          SizedBox(height: 16,),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[],
+                ),
+                flex: 5,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Text(
+                    "Tgt.",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstants.lightGreyColor,
+                    ),
+                  ),
+                ),
+                flex: 1,
+              ),
+              SizedBox(
+                width: 4,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Text(
+                    //_mwpPlanController.getMWPResponse.respCode,
+                    "Act.",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstants.lightGreyColor,
+                    ),
+                  ),
+                ),
+                flex: 1,
+              ),
+            ],
+          ),
+          Obx(
+            () => (_calendarEventController.isLoading)
+                ? Container()
+                : ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(height: 2),
+                    //  padding: const EdgeInsets.all(8.0),
+                    itemCount:  mwpNames.length,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 56,
+                        child: new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Text(
+                                    mwpNames[index],
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16,
+                                      color: ColorConstants.lightGreyColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              flex: 5,
+                            ),
+                            Flexible(
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(16,8,16,8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(2),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        width: 1,
+                                        color: ColorConstants.lightOutlineColor)),
+                                child: Text(
+                                  "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountTarget}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: ColorConstants.lightGreyColor,
+                                      fontFamily: "Muli"),
+                                ),
+                              ),
+                              flex: 1,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Obx(
+                              () => Flexible(
+                                child: Container(
+                                  padding: const EdgeInsets.fromLTRB(16,8,16,8),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(2),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          width: 1,
+                                          color:
+                                              ColorConstants.lightOutlineColor)),
+                                  child: Text(
+                                    "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountActual}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: ColorConstants.lightGreyColor,
+                                        fontFamily: "Muli"),
+                                  ),
+                                ),
+                                flex: 1,
+                              ),
+                            )
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        ),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget addPlanBody() {
+    return Container(
+      /*height: SizeConfig.safeBlockVertical * 50,
+      width: SizeConfig.screenWidth,*/
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "ADD PLAN",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 18),
+            ),
+            returnContainer(StringConstants.visits),
+            returnContainer(StringConstants.influencersMeet),
+            returnContainer(StringConstants.services),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget returnContainer(String title) {
+    AddEventController _addEventController = Get.find();
+    return GestureDetector(
+      onTap: () {
+        if (title == StringConstants.visits) {
+          _addEventController.selectedView = 'Visit';
+        } else if (title == StringConstants.influencersMeet) {
+          _addEventController.selectedView = 'Influencers meet';
+        } else {
+          //Get.toNamed(Routes.ADD_EVENT_SCREEN);
+        }
+        Get.offNamed(Routes.ADD_EVENT_SCREEN);
+      },
+      child: Container(
+        height: 60,
+        width: double.infinity,
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(border: Border.all(color: Colors.black45)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyles.robotoBold16,
+            ),
+            Icon(
+              Icons.keyboard_arrow_right_outlined,
+              size: 20,
+              color: Colors.black,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+/* Widget returnTextField(int index, List<AddMwpModel> mwpPlanList) {
+    return Obx(
+          () => TextFormField(
+          initialValue: (_calendarEventController.getMWPResponse != null)
+              ? (_calendarEventController.getMWPResponse.mwpplanModel != null)
+              ? returnValue(index)
+              : ""
+              : "",
+          textAlign: TextAlign.center,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+          ),
+          onChanged: (_) {
+            try {
+              switch (index) {
+                case 0:
+                  _calendarEventController.totalConversionVol = int.parse(_);
+                  print('${_calendarEventController.totalConversionVol}');
+                  break;
+                case 1:
+                  _calendarEventController.newILPMembers = int.parse(_);
+                  break;
+                case 2:
+                  _calendarEventController.dspSlab = int.parse(_);
+                  break;
+              }
+            } catch (_) {
+              print('In exception');
+            }
+          },
+          style: TextStyle(
+              fontSize: 14,
+              color: ColorConstants.lightGreyColor,
+              fontFamily: "Muli"),
+          keyboardType: TextInputType.number),
+    );
+  }
+
+  String returnActualValue(int index) {
+    if (_calendarEventController.getMWPResponse.mwpplanModel != null) {
+      return (index == 0)
+          ? _calendarEventController.getMWPResponse.mwpplanModel.actualTotalConvMt
+          .toString()
+          : (index == 1)
+          ? _calendarEventController.getMWPResponse.mwpplanModel.actualNewIlpMembers
+          .toString()
+          : (index == 2)
+          ? _calendarEventController.getMWPResponse.mwpplanModel.actualDspSlabConvNo
+          .toString()
+          : "0";
+    } else {
+      return "0";
+    }
+  }
+
+  String returnValue(int index) {
+    if (_calendarEventController.getMWPResponse.mwpplanModel != null) {
+      return (index == 0)
+          ? _mwpPlanController.getMWPResponse.mwpplanModel.totalConvMt
+          .toString()
+          : (index == 1)
+          ? _mwpPlanController.getMWPResponse.mwpplanModel.newIlpMembers
+          .toString()
+          : (index == 2)
+          ? _mwpPlanController.getMWPResponse.mwpplanModel.dspSlabConvNo
+          .toString()
+          : "0";
+    } else {
+      return "0";
+    }
+  }*/
 }

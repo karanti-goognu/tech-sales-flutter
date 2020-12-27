@@ -4,7 +4,8 @@ class UpdateLeadResponseModel {
   String leadId;
   String assignedTo;
 
-  UpdateLeadResponseModel({this.respCode, this.respMsg, this.leadId, this.assignedTo});
+  UpdateLeadResponseModel(
+      {this.respCode, this.respMsg, this.leadId, this.assignedTo});
 
   UpdateLeadResponseModel.fromJson(Map<String, dynamic> json) {
     respCode = json['resp-code'];

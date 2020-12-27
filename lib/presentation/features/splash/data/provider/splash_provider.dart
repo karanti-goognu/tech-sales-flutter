@@ -64,7 +64,7 @@ class MyApiClientSplash {
     }
   }
 
-  getRefreshData(String url,String accessKey,String securityKey) async {
+  getRefreshData(String url, String accessKey, String securityKey) async {
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
@@ -74,8 +74,8 @@ class MyApiClientSplash {
         'user-security-key': securityKey,
       };
 
-      var response = await httpClient.get(url,
-          headers: requestHeadersEmpIdAndNo);
+      var response =
+          await httpClient.get(url, headers: requestHeadersEmpIdAndNo);
       print('Response body is : ${(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

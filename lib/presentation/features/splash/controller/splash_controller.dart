@@ -5,14 +5,12 @@ import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/repository/splash_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +25,6 @@ class SplashController extends GetxController {
   final _splashDataModel = SplashDataModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
 
-
   get login => this._login.value;
 
   get accessKeyResponse => this._accessKeyResponse.value;
@@ -36,13 +33,11 @@ class SplashController extends GetxController {
 
   get secretKeyResponse => this._secretKeyResponse.value;
 
-
   set splashDataModel(value) => this._splashDataModel.value = value;
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
 
   set secretKeyResponse(value) => this._secretKeyResponse.value = value;
-
 
   getAccessKey(int requestId) {
     Future.delayed(

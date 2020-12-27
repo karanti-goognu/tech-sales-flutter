@@ -5,7 +5,6 @@ class AccessKeyModel {
 
   AccessKeyModel({this.accessKey, this.respCode, this.respMsg});
 
-
   //{resp-code: 200, resp-msg: SUCCESS, access-key: 37416479-0939-4056-9f7d-e7a24cd22725}
   AccessKeyModel.fromJson(Map<String, dynamic> json) {
     this.accessKey = json['access-key'];

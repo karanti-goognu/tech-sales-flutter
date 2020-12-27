@@ -15,7 +15,7 @@ class CommentsDetail {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['createdBy'] = this.createdBy;
     data['commentText'] = this.commentText;
-   // data['commentedAt'] = this.commentedAt.toString();
+    // data['commentedAt'] = this.commentedAt.toString();
     data['creatorName'] = this.creatorName;
 
     return data;

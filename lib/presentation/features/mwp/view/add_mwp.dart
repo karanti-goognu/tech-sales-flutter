@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
+import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp_plan_view.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AddMWP extends StatefulWidget {
   @override
@@ -14,7 +17,8 @@ class AddMWP extends StatefulWidget {
 }
 
 class AddMWPScreenPageState extends State<AddMWP> {
-  AddEventController _addEventController = Get.find();
+  MWPPlanController _mwpPlanController = Get.find();
+  AppController _appController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +141,11 @@ class AddMWPScreenPageState extends State<AddMWP> {
 
   Widget _buildAddEventInterface(BuildContext context) {
     SizeConfig().init(context);
-
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('MMMM-yyyy');
+    final String formatted = formatter.format(now);
+    print(formatted); // something like 2013-04-20
+    _mwpPlanController.selectedMonth = formatted;
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -150,7 +158,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      flex: 3,
+                      flex: 2,
                       child: Text(
                         "MWP Planning",
                         style: TextStyle(
@@ -160,50 +168,56 @@ class AddMWPScreenPageState extends State<AddMWP> {
                             letterSpacing: .15),
                       ),
                     ),
-                    Flexible(
-                      flex: 2,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Colors.white,
-                          boxShadow: [
-                            new BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 8.0,
+                    Obx(
+                      () => (_mwpPlanController
+                                  .getMWPResponse.listOfMonthYear !=
+                              null)
+                          ? Flexible(
+                              flex: 2,
+                              child: Container(
+                                  width: double.infinity,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(12, 4, 4, 4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      new BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 8.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      value: _mwpPlanController.selectedMonth,
+                                      onChanged: (String newValue) {
+                                        _mwpPlanController.selectedMonth =
+                                            newValue;
+                                        _appController.getAccessKey(
+                                            RequestIds.GET_MWP_PLAN);
+                                        _mwpPlanController.isLoading = true;
+                                      },
+                                      items: _mwpPlanController
+                                          .getMWPResponse.listOfMonthYear
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(
+                                            value,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  )),
+                            )
+                          : Container(
+                              child: Text("Error"),
                             ),
-                          ],
-                        ),
-                        child: DropdownButtonHideUnderline(
-                            child: Obx(
-                          () => DropdownButton<String>(
-                            value: _addEventController.selectedMonth,
-                            onChanged: (String newValue) {
-                              _addEventController.selectedMonth = newValue;
-                            },
-                            items: <String>[
-                              'January',
-                              'February',
-                              "March",
-                              "April",
-                              "May",
-                              "June",
-                              "July",
-                              "August",
-                              "September",
-                              "October",
-                              "November",
-                              "December"
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        )),
-                      ),
                     ),
                   ],
                 ),

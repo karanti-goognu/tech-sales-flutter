@@ -1,4 +1,8 @@
 import 'package:flutter_tech_sales/core/data/provider/app_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMWPModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:meta/meta.dart';
 
 class MyRepositoryApp {
@@ -12,5 +16,29 @@ class MyRepositoryApp {
 
   getSecretKey(String empId, String mobileNumber) {
     return apiClient.getSecretKey(empId, mobileNumber);
+  }
+
+  saveMWPPlan(String accessKey,String userSecurityKey,String url,SaveMWPModel saveMWPModel) {
+    return apiClient.saveMWPData(accessKey,userSecurityKey,url,saveMWPModel);
+  }
+
+  saveVisitPlan(String accessKey,String userSecurityKey,String url,SaveVisitRequest saveVisitRequest) {
+    return apiClient.saveVisitRequest(accessKey,userSecurityKey,url,saveVisitRequest);
+  }
+
+  saveMeetPlan(String accessKey,String userSecurityKey,String url,SaveMeetRequest saveMeetRequest) {
+    return apiClient.saveMeetRequest(accessKey,userSecurityKey,url,saveMeetRequest);
+  }
+
+  getMWPPlan(String accessKey,String userSecurityKey,String url) {
+    return apiClient.getMWPData(accessKey,userSecurityKey,url);
+  }
+
+  getCalenderPlan(String accessKey,String userSecurityKey,String url) {
+    return apiClient.getCalendarPlan(accessKey,userSecurityKey,url);
+  }
+
+  getTargetVsActualPlan(String accessKey,String userSecurityKey,String url) {
+    return apiClient.getTargetSsActualPlan(accessKey,userSecurityKey,url);
   }
 }

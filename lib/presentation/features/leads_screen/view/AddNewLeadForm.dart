@@ -131,9 +131,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               saveLeadRequestModelFromDraft.leadLatitude != null) {
             _currentPosition = new Position(
                 latitude:
-                double.parse(saveLeadRequestModelFromDraft.leadLatitude),
+                    double.parse(saveLeadRequestModelFromDraft.leadLatitude),
                 longitude:
-                double.parse(saveLeadRequestModelFromDraft.leadLongitude));
+                    double.parse(saveLeadRequestModelFromDraft.leadLongitude));
           }
           _siteAddress.text = saveLeadRequestModelFromDraft.leadAddress;
           _pincode.text = saveLeadRequestModelFromDraft.leadPincode;
@@ -155,8 +155,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           if (saveLeadRequestModelFromDraft.influencerList.length != 0) {
             print(saveLeadRequestModelFromDraft.influencerList[0].inflName);
             for (int i = 0;
-            i < saveLeadRequestModelFromDraft.influencerList.length;
-            i++) {
+                i < saveLeadRequestModelFromDraft.influencerList.length;
+                i++) {
               /*print(23454);
             print(saveLeadRequestModelFromDraft.influencerList[i].toJson());
             print(saveLeadRequestModelFromDraft.influencerList[i].id);*/
@@ -184,24 +184,24 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   ilpIntrested: new TextEditingController(
                       text: saveLeadRequestModelFromDraft
                           .influencerList[i].ilpIntrested),
-                  isExpanded:
-                  saveLeadRequestModelFromDraft.influencerList[i].isExpanded,
+                  isExpanded: saveLeadRequestModelFromDraft
+                      .influencerList[i].isExpanded,
                   isPrimarybool: saveLeadRequestModelFromDraft
                       .influencerList[i].isPrimarybool,
-                  isPrimary:
-                  saveLeadRequestModelFromDraft.influencerList[i].isPrimary));
+                  isPrimary: saveLeadRequestModelFromDraft
+                      .influencerList[i].isPrimary));
             }
           }
 
           if (saveLeadRequestModelFromDraft.listLeadImage.length != null) {
             for (int i = 0;
-            i < saveLeadRequestModelFromDraft.listLeadImage.length;
-            i++) {
+                i < saveLeadRequestModelFromDraft.listLeadImage.length;
+                i++) {
               _imageList.add(new File(
                   saveLeadRequestModelFromDraft.listLeadImage[i].photoPath));
               listLeadImage.add(new ListLeadImage(
-                  photoName: basename(
-                      saveLeadRequestModelFromDraft.listLeadImage[i].photoPath)));
+                  photoName: basename(saveLeadRequestModelFromDraft
+                      .listLeadImage[i].photoPath)));
             }
           }
 
@@ -218,7 +218,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       } catch (_) {
         print('We are in catch :: Add New Form');
       }
-
     });
     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
     AccessKeyModel accessKeyModel = new AccessKeyModel();
@@ -438,7 +437,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         errorBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.red, width: 1.0),
                         ),
-                        labelText: "Contact Name",
+                        labelText: "Name",
                         filled: false,
                         focusColor: Colors.black,
                         isDense: false,
@@ -455,10 +454,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       initialValue: _contactNumber,
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Please enter contact number ';
+                          return 'Please enter mobile number ';
                         }
                         if (value.length <= 9) {
-                          return 'Contact number is incorrect';
+                          return 'Mobile number is incorrect';
                         }
                         return null;
                       },
@@ -490,7 +489,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         errorBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.red, width: 1.0),
                         ),
-                        labelText: "Contact Number",
+                        labelText: "Mobile Number",
                         filled: false,
                         focusColor: Colors.black,
                         labelStyle: TextStyle(
@@ -1074,12 +1073,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            "Influencer Details ${(index + 1)} ",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18),
-                                          ),
+                                          (index == 0)
+                                              ? Text(
+                                                  "Influencer Details",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                )
+                                              : Text(
+                                                  "Influencer Details ${(index)} ",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                ),
                                           Switch(
                                             onChanged: (value) {
                                               setState(() {
@@ -1195,12 +1203,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            "Influencer Details ${(index + 1)} ",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18),
-                                          ),
+                                          (index == 0)
+                                              ? Text(
+                                                  "Influencer Details",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                )
+                                              : Text(
+                                                  "Influencer Details ${(index)} ",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                ),
                                           _listInfluencerDetail[index]
                                                   .isExpanded
                                               ? FlatButton.icon(
@@ -2882,7 +2899,7 @@ class Item {
 List<Item> generateItems(int numberOfItems) {
   return List.generate(numberOfItems, (int index) {
     return Item(
-      headerValue: 'Influencer Details 1',
+      headerValue: 'Influencer Details ',
       expandedValue: 'This is item number $index',
     );
   });

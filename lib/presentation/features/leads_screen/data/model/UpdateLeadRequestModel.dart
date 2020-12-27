@@ -29,32 +29,32 @@ class UpdateLeadRequestModel {
 
   UpdateLeadRequestModel(
       {this.leadId,
-        this.leadSegment,
-        this.assignedTo,
-        this.leadStatusId,
-        this.leadStage,
-        this.contactName,
-        this.contactNumber,
-        this.geotagType,
-        this.leadLatitude,
-        this.leadLongitude,
-        this.leadAddress,
-        this.leadPincode,
-        this.leadStateName,
-        this.leadDistrictName,
-        this.leadTalukName,
-        this.leadSalesPotentialMt,
-        this.leadReraNumber,
-        this.isStatus,
-        this.updatedBy,
-        this.leadIsDuplicate,
-        this.rejectionComment,
-        this.nextDateCconstruction,
-        this.nextStageConstruction,
-        this.siteDealerId,
-        this.listLeadcomments,
-        this.listLeadImage,
-        this.leadInfluencerEntity});
+      this.leadSegment,
+      this.assignedTo,
+      this.leadStatusId,
+      this.leadStage,
+      this.contactName,
+      this.contactNumber,
+      this.geotagType,
+      this.leadLatitude,
+      this.leadLongitude,
+      this.leadAddress,
+      this.leadPincode,
+      this.leadStateName,
+      this.leadDistrictName,
+      this.leadTalukName,
+      this.leadSalesPotentialMt,
+      this.leadReraNumber,
+      this.isStatus,
+      this.updatedBy,
+      this.leadIsDuplicate,
+      this.rejectionComment,
+      this.nextDateCconstruction,
+      this.nextStageConstruction,
+      this.siteDealerId,
+      this.listLeadcomments,
+      this.listLeadImage,
+      this.leadInfluencerEntity});
 
   UpdateLeadRequestModel.fromJson(Map<String, dynamic> json) {
     leadId = json['leadId'];
@@ -200,7 +200,12 @@ class LeadInfluencerEntity {
   String isPrimary;
 
   LeadInfluencerEntity(
-      {this.id,this.isPrimary,this.leadId, this.inflId, this.createdBy, this.isDelete});
+      {this.id,
+      this.isPrimary,
+      this.leadId,
+      this.inflId,
+      this.createdBy,
+      this.isDelete});
 
   LeadInfluencerEntity.fromJson(Map<String, dynamic> json) {
     leadId = json['leadId'];

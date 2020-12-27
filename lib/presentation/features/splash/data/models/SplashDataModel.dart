@@ -285,4 +285,3 @@ class UserMenu {
     return data;
   }
 }
-
