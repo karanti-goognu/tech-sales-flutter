@@ -25,8 +25,7 @@ class AddEventScreenPageState extends State<AddEvent> {
           return true;
         },
         child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          //
+          extendBody: true,
           backgroundColor: ColorConstants.backgroundColor,
           body: SingleChildScrollView(
             child: _buildAddEventInterface(context),
@@ -146,8 +145,6 @@ class AddEventScreenPageState extends State<AddEvent> {
 
   Widget _buildAddEventInterface(BuildContext context) {
     SizeConfig().init(context);
-    String dropdownValue = 'Visit';
-
     return SafeArea(
       child: Padding(
           padding: EdgeInsets.all(16),

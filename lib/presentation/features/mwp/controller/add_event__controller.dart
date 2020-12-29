@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerListResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
@@ -24,7 +26,12 @@ class AddEventController extends GetxController {
   AddEventController({@required this.repository}) : assert(repository != null);
 
   final _saveVisitResponse = SaveVisitResponse().obs;
+  final _dealerListResponse = DealerListResponse().obs;
+  final _dealerList = List<DealerModel>().obs;
+  final _dealerListSelected = List<DealerModelSelected>().obs;
   final _selectedView = "Visit".obs;
+  final _selectedEventTypeMeet = "MASOON MEET".obs;
+  final _selectedVenueTypeMeet = "BOOKED".obs;
   final _selectedMonth = "January".obs;
   final _phoneNumber = "8860080067".obs;
   final _empId = "_empty".obs;
@@ -34,23 +41,37 @@ class AddEventController extends GetxController {
   final _visitSiteId = StringConstants.empty.obs;
   final _visitDateTime = StringConstants.empty.obs;
   final _visitRemarks = StringConstants.empty.obs;
+  final _totalParticipants = StringConstants.empty.obs;
+  final _isLoading = false.obs;
 
-  final _dalmiaInflCount = StringConstants.empty.obs;
-  final _nonDalmiaInflCount = StringConstants.empty.obs;
+  final _dalmiaInflCount = 0.obs;
+  final _nonDalmiaInflCount = 0.obs;
   final _venue = StringConstants.empty.obs;
-  final _expectedLeadsCount = StringConstants.empty.obs;
-  final _giftsDistributedCount = StringConstants.empty.obs;
+  final _expectedLeadsCount = 0.obs;
+  final _giftsDistributedCount = 0.obs;
   final _eventLocation = StringConstants.empty.obs;
   final _isSaveDraft = StringConstants.empty.obs;
   final _createdBy = StringConstants.empty.obs;
 
+  get isLoading => this._isLoading.value;
+
+  get dealerList => this._dealerList;
+
+  get dealerListSelected => this._dealerListSelected;
+
   get saveVisitResponse => this._saveVisitResponse.value;
 
+  get dealerListResponse => this._dealerListResponse.value;
+
   get selectedView => this._selectedView.value;
+  get selectedEventTypeMeet => this._selectedEventTypeMeet.value;
+  get selectedVenueTypeMeet => this._selectedVenueTypeMeet.value;
 
   get selectedMonth => this._selectedMonth.value;
 
   get phoneNumber => this._phoneNumber.value;
+
+  get totalParticipants => this._totalParticipants.value;
 
   get empId => this._empId.value;
 
@@ -82,7 +103,17 @@ class AddEventController extends GetxController {
 
   get createdBy => this._createdBy.value;
 
+  set isLoading(value) => this._isLoading.value = value;
+
   set saveVisitResponse(value) => this._saveVisitResponse.value = value;
+
+  set dealerList(value) => this._dealerList.value = value;
+
+  set dealerListSelected(value) => this._dealerListSelected.value = value;
+
+  set dealerListResponse(value) => this._dealerListResponse.value = value;
+
+  set totalParticipants(value) => this._totalParticipants.value = value;
 
   set phoneNumber(value) => this._phoneNumber.value = value;
 
@@ -119,6 +150,8 @@ class AddEventController extends GetxController {
   set isSaveDraft(value) => this._isSaveDraft.value = value;
 
   set createdBy(value) => this._createdBy.value = value;
+  set selectedEventTypeMeet(value) => this._selectedEventTypeMeet.value = value;
+  set selectedVenueTypeMeet(value) => this._selectedVenueTypeMeet.value = value;
 
   saveVisit(String accessKey) {
     String empId = "empty";
@@ -133,8 +166,8 @@ class AddEventController extends GetxController {
 
       SaveVisitRequest saveVisitRequest = new SaveVisitRequest(
         empId,
-        "visit",
-        this.visitSubType,
+        "VISIT",
+        "RETENTION SITE" /*this.visitSubType*/,
         this.visitSiteId,
         this.visitDateTime,
         this.visitRemarks,
@@ -151,7 +184,7 @@ class AddEventController extends GetxController {
         } else {
           debugPrint('Save Visit Response is not null');
           this.saveVisitResponse = data;
-          if (saveVisitResponse.respCode == "MWP2007") {
+          if (saveVisitResponse.respCode == "MWP2021") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
             print('${saveVisitResponse.respMsg}');
@@ -163,6 +196,10 @@ class AddEventController extends GetxController {
   }
 
   saveMeet(String accessKey) {
+    List<MwpMeetDealers> list = new List();
+    for (int i = 0; i < this.dealerListSelected.length; i++) {
+      list.add(new MwpMeetDealers(dealerId: dealerListSelected[i].dealerId));
+    }
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -176,20 +213,19 @@ class AddEventController extends GetxController {
       SaveMeetRequest saveMeetRequest = new SaveMeetRequest(
         empId,
         "MEET",
-        "CONTRACTOR MEET",
+        this.selectedEventTypeMeet,
         this.visitDateTime,
         this.dalmiaInflCount,
         this.nonDalmiaInflCount,
-        this.venue,
+        this.selectedVenueTypeMeet,
         this.expectedLeadsCount,
         this.giftsDistributedCount,
         this.eventLocation,
-        this.isSaveDraft,
-        this.createdBy,
-        this.eventLocation,
+        "S",
+        empId,
+        list,
       );
 
-      debugPrint('Save MWP Model : ${json.encode(saveMeetRequest)}');
       String url = "${UrlConstants.saveVisit}";
       debugPrint('Url is : $url');
       repository
@@ -200,11 +236,48 @@ class AddEventController extends GetxController {
         } else {
           debugPrint('Save Visit Response is not null');
           this.saveVisitResponse = data;
-          if (saveVisitResponse.respCode == "MWP2007") {
+          if (saveVisitResponse.respCode == "MWP2021") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
             print('${saveVisitResponse.respMsg}');
             //SitesDetailWidget();
+          }
+        }
+      });
+    });
+  }
+
+  getDealersList(String accessKey) async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String empId = prefs.getString(StringConstants.employeeId);
+      String url = UrlConstants.getDealersList + "$empId";
+      print('$url');
+      repository.getDealerList(accessKey, userSecurityKey, url).then((data) {
+        this.isLoading = false;
+        if (data == null) {
+          debugPrint('Dealer List Response is null');
+        } else {
+          debugPrint('Dealer List Response is not null');
+          this.dealerListResponse = data;
+          this.isLoading = false;
+          if (this.dealerListResponse.dealerList.length != 0) {
+            for (int i = 0;
+                i < this.dealerListResponse.dealerList.length;
+                i++) {
+              this.dealerList.add(new DealerModel(
+                  dealerListResponse.dealerList[i].dealerId,
+                  dealerListResponse.dealerList[i].dealerName,
+                  false));
+            }
+          }
+          if (dealerListResponse.respCode == "MWP2013") {
+            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
+            print('${dealerListResponse.respMsg}');
+            //SitesDetailWidget();
+          } else {
+            // Get.dialog(CustomDialogs().errorDialog(dealerListResponse.respMsg));
           }
         }
       });

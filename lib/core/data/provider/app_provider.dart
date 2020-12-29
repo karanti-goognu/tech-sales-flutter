@@ -4,7 +4,9 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/CalendarDataByDay.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/CalendarPlanModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerListResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/GetMWPResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMWPModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMWPResponse.dart';
@@ -119,7 +121,7 @@ class MyApiClientApp {
   saveMeetRequest(String accessKey, String userSecurityKey, String url,
       SaveMeetRequest saveMeetRequest) async {
     try {
-      var body = jsonEncode(saveVisitRequest);
+      var body = jsonEncode(saveMeetRequest);
       print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -158,6 +160,24 @@ class MyApiClientApp {
     }
   }
 
+
+  getDealerList(String accessKey, String userSecurityKey, String url) async {
+    try {
+      var response = await httpClient.get(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey));
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return DealerListResponse.fromJson(data);
+      } else {
+        print('Error in else');
+      }
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
+
   getCalendarPlan(String accessKey, String userSecurityKey, String url) async {
     try {
       var response = await httpClient.get(url,
@@ -167,6 +187,23 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return CalendarPlanModel.fromJson(data);
+      } else {
+        print('Error in else');
+      }
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
+
+  getCalenderPlanByDay(String accessKey, String userSecurityKey, String url) async {
+    try {
+      var response = await httpClient.get(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey));
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return CalendarDataByDay.fromJson(data);
       } else {
         print('Error in else');
       }

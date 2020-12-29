@@ -17,6 +17,8 @@ import 'package:flutter_tech_sales/presentation/features/mwp/view/add_calender_e
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp_plan_view.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/site_search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_screen.dart';
@@ -82,6 +84,14 @@ class AppPages {
     GetPage(
         name: Routes.ADD_CALENDER_SCREEN,
         page: () => AddCalenderEventPage(),
+        binding: AppBinding()),
+    GetPage(
+        name: Routes.VISIT_SCREEN,
+        page: () => AddEventVisit(),
+        binding: AppBinding()),
+    GetPage(
+        name: Routes.MEET_SCREEN,
+        page: () => AddEventInfluencerMeet(),
         binding: AppBinding()),
   ];
 }

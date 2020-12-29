@@ -17,4 +17,8 @@ abstract class RequestIds {
   static const int GET_MWP_PLAN = 16;
   static const int GET_CALENDER_EVENTS = 17;
   static const int TARGET_VS_ACTUAL = 18;
+  static const int GET_DEALERS_LIST = 19;
+  static const int GET_CALENDER_EVENTS_OF_DAY = 20;
+  static const int SAVE_VISIT = 21;
+  static const int SAVE_MEET = 22;
 }

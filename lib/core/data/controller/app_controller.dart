@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -24,6 +25,7 @@ class AppController extends GetxController {
   final SiteController _siteController = Get.find();
   final MWPPlanController _mwpPlanController = Get.find();
   final CalendarEventController _calendarEventController = Get.find();
+  final AddEventController _addEventController = Get.find();
 
   AppController({@required this.repository}) : assert(repository != null);
 
@@ -110,16 +112,34 @@ class AppController extends GetxController {
                     .saveMWPPlan(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.GET_MWP_PLAN:
-                _mwpPlanController
-                    .getMWPPlan(this.accessKeyResponse.accessKey);
+                _mwpPlanController.getMWPPlan(this.accessKeyResponse.accessKey);
+                break;
+              case RequestIds.GET_MWP_PLAN:
+                _addEventController.saveVisit(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.GET_CALENDER_EVENTS:
                 _calendarEventController
                     .getCalendarEvent(this.accessKeyResponse.accessKey);
                 break;
+              case RequestIds.GET_CALENDER_EVENTS_OF_DAY:
+                _calendarEventController
+                    .getCalendarEventOfDay(this.accessKeyResponse.accessKey);
+                break;
               case RequestIds.TARGET_VS_ACTUAL:
                 _calendarEventController
                     .getTargetVsActualEvent(this.accessKeyResponse.accessKey);
+                break;
+              case RequestIds.GET_DEALERS_LIST:
+                _addEventController
+                    .getDealersList(this.accessKeyResponse.accessKey);
+                break;
+              case RequestIds.SAVE_VISIT:
+                _addEventController
+                    .saveVisit(this.accessKeyResponse.accessKey);
+                break;
+              case RequestIds.SAVE_MEET:
+                _addEventController
+                    .saveMeet(this.accessKeyResponse.accessKey);
                 break;
             }
           }

@@ -34,8 +34,16 @@ class MyRepositoryApp {
     return apiClient.getMWPData(accessKey,userSecurityKey,url);
   }
 
+  getDealerList(String accessKey,String userSecurityKey,String url) {
+    return apiClient.getDealerList(accessKey,userSecurityKey,url);
+  }
+
   getCalenderPlan(String accessKey,String userSecurityKey,String url) {
     return apiClient.getCalendarPlan(accessKey,userSecurityKey,url);
+  }
+
+  getCalenderPlanByDay(String accessKey,String userSecurityKey,String url) {
+    return apiClient.getCalenderPlanByDay(accessKey,userSecurityKey,url);
   }
 
   getTargetVsActualPlan(String accessKey,String userSecurityKey,String url) {

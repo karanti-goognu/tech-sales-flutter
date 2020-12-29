@@ -22,7 +22,7 @@ class AddCalenderEventPage extends StatefulWidget {
 }
 
 class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
-  DateTime _currentDate = DateTime(2020, 8, 3);
+  DateTime _currentDate = DateTime.now();
   DateTime _currentDate2 = DateTime.now();
   String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 8, 3));
   DateTime _targetDateTime = DateTime(2020, 8, 3);
@@ -41,28 +41,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     ),
   );
 
-  EventList<Event> _markedDateMap = new EventList<Event>(
-    events: {
-      new DateTime(2020, 8, 5): [
-        new Event(
-          date: new DateTime(2020, 8, 5),
-          title: 'Event 1',
-          icon: _eventIcon,
-          dot: Container(
-            margin: EdgeInsets.symmetric(horizontal: 1.0),
-            color: Colors.green,
-            height: 5.0,
-            width: 5.0,
-          ),
-        ),
-        new Event(
-          date: new DateTime(2020, 8, 5),
-          title: 'Event 2',
-          icon: _eventIcon,
-        ),
-      ],
-    },
-  );
+  EventList<Event> _markedDateMap = new EventList<Event>();
 
   CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
 
@@ -74,28 +53,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     _calendarEventController.selectedMonth = formatted;
     _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
     _calendarEventController.isLoading = true;
-    /* _markedDateMap.addAll(new DateTime(2020, 8, 13), [
-      new Event(
-        date: new DateTime(2020, 8, 13),
-        title: 'Event 1',
-        icon: _eventIcon,
-      ),
-      new Event(
-        date: new DateTime(2020, 8, 13),
-        title: 'Event 2',
-        icon: _eventIcon,
-      ),
-      new Event(
-        date: new DateTime(2020, 8, 13),
-        title: 'Event 3',
-        icon: _eventIcon,
-      ),
-      new Event(
-        date: new DateTime(2020, 8, 13),
-        title: 'Event 3',
-        icon: _eventIcon,
-      ),
-    ]);*/
     super.initState();
   }
 
@@ -104,6 +61,11 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       todayBorderColor: Colors.green,
       onDayPressed: (DateTime date, List<Event> events) {
+        _calendarEventController.selectedDate =
+            "${date.year}-${date.month}-${date.day}";
+        print('${_calendarEventController.selectedDate}');
+        _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS_OF_DAY);
+        _calendarEventController.isLoading = true;
         this.setState(() => _currentDate2 = date);
         events.forEach((event) => print(event.title));
       },
@@ -114,8 +76,12 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
       ),
       thisMonthDayBorderColor: Colors.grey,
       weekFormat: false,
+      markedDateMoreCustomDecoration: new BoxDecoration(
+        borderRadius: new BorderRadius.circular(10.0),
+        color: Colors.grey,
+      ),
 //      firstDayOfWeek: 4,
-      /*markedDatesMap: _markedDateMap,*/
+      /*markedDatesMap: _calendarEventController.markedDateMap,*/
       height: 420.0,
       selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
@@ -130,12 +96,13 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
       ),
       onCalendarChanged: (DateTime date) {
         final DateFormat formatter = DateFormat('MMMM-yyyy');
+        print('$date');
         final String formatted = formatter.format(date);
         _calendarEventController.selectedMonth = formatted;
         _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
         _calendarEventController.isLoading = true;
+
         this.setState(() {
-          print('hello');
           _targetDateTime = date;
           _currentMonth = DateFormat.yMMM().format(_targetDateTime);
           print('$_currentMonth');
@@ -194,9 +161,13 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     //custom icon
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: _calendarCarousel,
+                    Obx(
+                      () => (_calendarEventController.isLoading == false)
+                          ? Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _calendarCarousel,
+                            )
+                          : Container(),
                     ),
                     // This trailing comma makes auto-formatting nicer for build methods.
                     //custom icon without header
@@ -238,9 +209,13 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                     ],
                   ),
                 ),*/
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: _calendarCarouselNoHeader,
+                    Obx(
+                      () => (_calendarEventController.isLoading == false)
+                          ? Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _calendarCarouselNoHeader,
+                            )
+                          : Container(),
                     ),
                     SizedBox(
                       height: 20,
@@ -263,18 +238,107 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                             ),
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: ColorConstants.lineColorFilter)),
-                          child: Text(
-                            'MWP STATUS',
-                            style: ButtonStyles.buttonStyleWhiteBold,
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.ADD_MWP_SCREEN);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: ColorConstants.lineColorFilter)),
+                            child: Text(
+                              'MWP STATUS',
+                              style: ButtonStyles.buttonStyleWhiteBold,
+                            ),
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Obx(() => (_calendarEventController
+                                .calendarPlanResponse.listOfEventDetails ==
+                            null)
+                        ? Container()
+                        : (_calendarEventController.calendarPlanResponse
+                                    .listOfEventDetails.length ==
+                                0)
+                            ? Container()
+                            : ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                separatorBuilder: (BuildContext context,
+                                        int index) =>
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Divider(),
+                                    ),
+                                itemCount: _calendarEventController
+                                    .calendarPlanResponse
+                                    .listOfEventDetails
+                                    .length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        new Container(
+                                          width: 18,
+                                          height: 18,
+                                          decoration: new BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 18,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                _calendarEventController
+                                                    .calendarPlanResponse
+                                                    .listOfEventDetails[index]
+                                                    .eventType,
+                                                style:
+                                                    TextStyles.mulliRegular14,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                "${_calendarEventController.calendarPlanResponse.listOfEventDetails[index].displayMessage2}",
+                                                style: TextStyles.robotoBold16,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                "${_calendarEventController.calendarPlanResponse.listOfEventDetails[index].displayMessage1}",
+                                                style:
+                                                    TextStyles.mulliRegular14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                })),
                   ],
                 ),
               ),
@@ -323,11 +387,11 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
           Text(
             "TARGET VS ACTUAL",
             style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 18),
+                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
           ),
-          SizedBox(height: 16,),
+          SizedBox(
+            height: 16,
+          ),
           Row(
             children: [
               Expanded(
@@ -382,7 +446,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                     separatorBuilder: (BuildContext context, int index) =>
                         SizedBox(height: 2),
                     //  padding: const EdgeInsets.all(8.0),
-                    itemCount:  mwpNames.length,
+                    itemCount: mwpNames.length,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -396,7 +460,8 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Text(
                                     mwpNames[index],
@@ -411,13 +476,15 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                             ),
                             Flexible(
                               child: Container(
-                                padding: const EdgeInsets.fromLTRB(16,8,16,8),
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 8, 16, 8),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(2),
                                     color: Colors.white,
                                     border: Border.all(
                                         width: 1,
-                                        color: ColorConstants.lightOutlineColor)),
+                                        color:
+                                            ColorConstants.lightOutlineColor)),
                                 child: Text(
                                   "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountTarget}",
                                   textAlign: TextAlign.center,
@@ -435,14 +502,15 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                             Obx(
                               () => Flexible(
                                 child: Container(
-                                  padding: const EdgeInsets.fromLTRB(16,8,16,8),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 8, 16, 8),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(2),
                                       color: Colors.white,
                                       border: Border.all(
                                           width: 1,
-                                          color:
-                                              ColorConstants.lightOutlineColor)),
+                                          color: ColorConstants
+                                              .lightOutlineColor)),
                                   child: Text(
                                     "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountActual}",
                                     textAlign: TextAlign.center,
