@@ -37,27 +37,28 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   color: Colors.white,
                   border: Border.all(
                       color: ColorConstants.inputBoxBorderSideColor)),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: dropdownValue,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      dropdownValue = newValue;
-                    });
-                  },
-                  items: <String>['RETENTION SITE', 'Two', 'Free', 'Four']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: GoogleFonts.roboto(
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                      ),
-                    );
-                  }).toList(),
+              child: Obx(()=> DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value:_addEventController.visitSubType,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _addEventController.visitSubType = newValue;
+                      });
+                    },
+                    items: <String>['RETENTION SITE', 'LEADS', 'CONVERSION OPPORTUNITY', 'COUNTER','TECHNOCRAT']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: GoogleFonts.roboto(
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16.0),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
               )),
           SizedBox(
@@ -132,7 +133,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                       return null;
                     },
                     onChanged: (_) {
-                      _addEventController.visitSiteId = _.toString();
+                      _addEventController.visitRemarks = _.toString();
                     },
                     style: TextStyle(
                         fontSize: 18,
@@ -159,7 +160,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
                     child: Text(
-                      'ADD EVENT',
+                      'Update EVENT',
                       style: ButtonStyles.buttonStyleBlue,
                     ),
                   ),

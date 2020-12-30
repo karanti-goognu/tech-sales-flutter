@@ -2,6 +2,7 @@ import 'package:flutter_tech_sales/core/data/provider/app_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMWPModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:meta/meta.dart';
 
@@ -30,12 +31,24 @@ class MyRepositoryApp {
     return apiClient.saveMeetRequest(accessKey,userSecurityKey,url,saveMeetRequest);
   }
 
+  updateVisitPlan(String accessKey,String userSecurityKey,String url,UpdateVisitRequest updateVisitRequest) {
+    return apiClient.updateVisitPlan(accessKey,userSecurityKey,url,updateVisitRequest);
+  }
+
   getMWPPlan(String accessKey,String userSecurityKey,String url) {
     return apiClient.getMWPData(accessKey,userSecurityKey,url);
   }
 
   getDealerList(String accessKey,String userSecurityKey,String url) {
     return apiClient.getDealerList(accessKey,userSecurityKey,url);
+  }
+
+  getVisitData(String accessKey,String userSecurityKey,String url) {
+    return apiClient.getVisitData(accessKey,userSecurityKey,url);
+  }
+
+  getMeetData(String accessKey,String userSecurityKey,String url) {
+    return apiClient.getMeetData(accessKey,userSecurityKey,url);
   }
 
   getCalenderPlan(String accessKey,String userSecurityKey,String url) {

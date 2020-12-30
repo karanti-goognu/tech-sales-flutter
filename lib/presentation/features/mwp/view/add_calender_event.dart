@@ -29,6 +29,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
 
   CalendarEventController _calendarEventController = Get.find();
   AppController _appController = Get.find();
+  AddEventController _addEventController = Get.find();
 
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
@@ -52,7 +53,8 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     final String formatted = formatter.format(now);
     _calendarEventController.selectedMonth = formatted;
     _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
-    _calendarEventController.isLoading = true;
+    _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL);
+    /*_calendarEventController.isLoading = true;*/
     super.initState();
   }
 
@@ -100,7 +102,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
         final String formatted = formatter.format(date);
         _calendarEventController.selectedMonth = formatted;
         _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
-        _calendarEventController.isLoading = true;
+        //_calendarEventController.isLoading = true;
 
         this.setState(() {
           _targetDateTime = date;
@@ -171,44 +173,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                     ),
                     // This trailing comma makes auto-formatting nicer for build methods.
                     //custom icon without header
-                    /*Container(
-                  margin: EdgeInsets.only(
-                    top: 30.0,
-                    bottom: 16.0,
-                    left: 16.0,
-                    right: 16.0,
-                  ),
-                  child: new Row(
-                    children: <Widget>[
-                      Expanded(
-                          child: Text(
-                            _currentMonth,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24.0,
-                            ),
-                          )),
-                      FlatButton(
-                        child: Text('PREV'),
-                        onPressed: () {
-                          setState(() {
-                            _targetDateTime = DateTime(_targetDateTime.year, _targetDateTime.month -1);
-                            _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-                          });
-                        },
-                      ),
-                      FlatButton(
-                        child: Text('NEXT'),
-                        onPressed: () {
-                          setState(() {
-                            _targetDateTime = DateTime(_targetDateTime.year, _targetDateTime.month +1);
-                            _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-                          });
-                        },
-                      )
-                    ],
-                  ),
-                ),*/
                     Obx(
                       () => (_calendarEventController.isLoading == false)
                           ? Container(
@@ -280,62 +244,83 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                     .listOfEventDetails
                                     .length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(16, 4, 16, 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        new Container(
-                                          width: 18,
-                                          height: 18,
-                                          decoration: new BoxDecoration(
-                                            color: Colors.red,
-                                            shape: BoxShape.circle,
+                                  return GestureDetector(
+                                    onTap: (){
+                                      print('${_calendarEventController
+                                          .calendarPlanResponse
+                                          .listOfEventDetails[index].eventType}');
+
+                                      if(_calendarEventController
+                                          .calendarPlanResponse
+                                          .listOfEventDetails[index].eventType == 'VISIT'){
+                                        _addEventController.visitId = _calendarEventController
+                                            .calendarPlanResponse
+                                            .listOfEventDetails[index].id;
+                                        Get.toNamed(Routes.VISIT_VIEW_SCREEN);
+                                      }else{
+                                        _addEventController.visitId = _calendarEventController
+                                            .calendarPlanResponse
+                                            .listOfEventDetails[index].id;
+                                        Get.toNamed(Routes.VIEW_MEET_SCREEN);
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          new Container(
+                                            width: 18,
+                                            height: 18,
+                                            decoration: new BoxDecoration(
+                                              color: Colors.red,
+                                              shape: BoxShape.circle,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 18,
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: Text(
-                                                _calendarEventController
-                                                    .calendarPlanResponse
-                                                    .listOfEventDetails[index]
-                                                    .eventType,
-                                                style:
-                                                    TextStyles.mulliRegular14,
+                                          SizedBox(
+                                            width: 18,
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: Text(
+                                                  _calendarEventController
+                                                      .calendarPlanResponse
+                                                      .listOfEventDetails[index]
+                                                      .eventType,
+                                                  style:
+                                                      TextStyles.mulliRegular14,
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: Text(
-                                                "${_calendarEventController.calendarPlanResponse.listOfEventDetails[index].displayMessage2}",
-                                                style: TextStyles.robotoBold16,
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: Text(
+                                                  "${_calendarEventController.calendarPlanResponse.listOfEventDetails[index].displayMessage2}",
+                                                  style: TextStyles.robotoBold16,
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: Text(
-                                                "${_calendarEventController.calendarPlanResponse.listOfEventDetails[index].displayMessage1}",
-                                                style:
-                                                    TextStyles.mulliRegular14,
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: Text(
+                                                  "${_calendarEventController.calendarPlanResponse.listOfEventDetails[index].displayMessage1}",
+                                                  style:
+                                                      TextStyles.mulliRegular14,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   );
                                 })),
@@ -372,8 +357,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
   }
 
   Widget addTVsPBody() {
-    _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL);
-    _calendarEventController.isLoading = true;
     List<String> mwpNames = [
       "Sites Conv.(Total Sites)",
       "Sites visit(Total)",
@@ -416,7 +399,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                     ),
                   ),
                 ),
-                flex: 1,
+                flex: 2,
               ),
               SizedBox(
                 width: 4,
@@ -435,7 +418,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                     ),
                   ),
                 ),
-                flex: 1,
+                flex: 2,
               ),
             ],
           ),
@@ -486,7 +469,11 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                         color:
                                             ColorConstants.lightOutlineColor)),
                                 child: Text(
-                                  "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountTarget}",
+                                  (index == 0)
+                                      ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountTarget}"
+                                      : (index == 1)
+                                          ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountTarget}"
+                                          : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountTarget}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 14,
@@ -494,7 +481,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                       fontFamily: "Muli"),
                                 ),
                               ),
-                              flex: 1,
+                              flex: 2,
                             ),
                             SizedBox(
                               width: 4,
@@ -512,7 +499,11 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                           color: ColorConstants
                                               .lightOutlineColor)),
                                   child: Text(
-                                    "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountActual}",
+                                    (index == 0)
+                                        ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountActual}"
+                                        : (index == 1)
+                                        ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountActual}"
+                                        : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountActual}",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 14,
@@ -520,7 +511,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                         fontFamily: "Muli"),
                                   ),
                                 ),
-                                flex: 1,
+                                flex: 2,
                               ),
                             )
                           ],
@@ -597,76 +588,4 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
       ),
     );
   }
-
-/* Widget returnTextField(int index, List<AddMwpModel> mwpPlanList) {
-    return Obx(
-          () => TextFormField(
-          initialValue: (_calendarEventController.getMWPResponse != null)
-              ? (_calendarEventController.getMWPResponse.mwpplanModel != null)
-              ? returnValue(index)
-              : ""
-              : "",
-          textAlign: TextAlign.center,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-          ),
-          onChanged: (_) {
-            try {
-              switch (index) {
-                case 0:
-                  _calendarEventController.totalConversionVol = int.parse(_);
-                  print('${_calendarEventController.totalConversionVol}');
-                  break;
-                case 1:
-                  _calendarEventController.newILPMembers = int.parse(_);
-                  break;
-                case 2:
-                  _calendarEventController.dspSlab = int.parse(_);
-                  break;
-              }
-            } catch (_) {
-              print('In exception');
-            }
-          },
-          style: TextStyle(
-              fontSize: 14,
-              color: ColorConstants.lightGreyColor,
-              fontFamily: "Muli"),
-          keyboardType: TextInputType.number),
-    );
-  }
-
-  String returnActualValue(int index) {
-    if (_calendarEventController.getMWPResponse.mwpplanModel != null) {
-      return (index == 0)
-          ? _calendarEventController.getMWPResponse.mwpplanModel.actualTotalConvMt
-          .toString()
-          : (index == 1)
-          ? _calendarEventController.getMWPResponse.mwpplanModel.actualNewIlpMembers
-          .toString()
-          : (index == 2)
-          ? _calendarEventController.getMWPResponse.mwpplanModel.actualDspSlabConvNo
-          .toString()
-          : "0";
-    } else {
-      return "0";
-    }
-  }
-
-  String returnValue(int index) {
-    if (_calendarEventController.getMWPResponse.mwpplanModel != null) {
-      return (index == 0)
-          ? _mwpPlanController.getMWPResponse.mwpplanModel.totalConvMt
-          .toString()
-          : (index == 1)
-          ? _mwpPlanController.getMWPResponse.mwpplanModel.newIlpMembers
-          .toString()
-          : (index == 2)
-          ? _mwpPlanController.getMWPResponse.mwpplanModel.dspSlabConvNo
-          .toString()
-          : "0";
-    } else {
-      return "0";
-    }
-  }*/
 }

@@ -126,7 +126,7 @@ class MWPPlanController extends GetxController {
       print('User Security key is :: $userSecurityKey');
 
       SaveMWPModel saveMWPModel = new SaveMWPModel(
-          "December-20",
+          this.selectedMonth,
           empId,
           this.totalConversionVol,
           this.newILPMembers,
@@ -143,7 +143,7 @@ class MWPPlanController extends GetxController {
           this.consumerMeet,
          this.action,
           empId,
-          "test data");
+          empId);
 
       debugPrint('Save MWP Model : ${json.encode(saveMWPModel)}');
       String url = "${UrlConstants.saveMWPData}";

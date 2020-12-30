@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list_view.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
@@ -129,6 +130,7 @@ class AddEventInfluencerMeetScreenPageState
                         onChanged: (_) {
                           _addEventController.dalmiaInflCount = int.parse(_);
                         },
+                        initialValue: _addEventController.dalmiaInflCount,
                         style: _myFormFont(),
                         keyboardType: TextInputType.number,
                         decoration:
@@ -146,6 +148,7 @@ class AddEventInfluencerMeetScreenPageState
                             _addEventController.nonDalmiaInflCount =
                                 int.parse(_);
                           },
+                          initialValue: _addEventController.nonDalmiaInflCount,
                           style: _myFormFont(),
                           keyboardType: TextInputType.number,
                           decoration: _inputDecoration(
@@ -158,6 +161,7 @@ class AddEventInfluencerMeetScreenPageState
                             }
                             return null;
                           },
+                          initialValue: _addEventController.expectedLeadsCount,
                           onChanged: (_) {
                             _addEventController.totalParticipants = _;
                           },
@@ -274,6 +278,7 @@ class AddEventInfluencerMeetScreenPageState
                             _addEventController.expectedLeadsCount =
                                 int.parse(_);
                           },
+                          initialValue: _addEventController.expectedLeadsCount,
                           style: _myFormFont(),
                           keyboardType: TextInputType.number,
                           decoration:
@@ -290,6 +295,7 @@ class AddEventInfluencerMeetScreenPageState
                             _addEventController.giftsDistributedCount =
                                 int.parse(_);
                           },
+                          initialValue: _addEventController.giftsDistributedCount,
                           style: _myFormFont(),
                           keyboardType: TextInputType.number,
                           decoration:
@@ -305,6 +311,7 @@ class AddEventInfluencerMeetScreenPageState
                           onChanged: (_) {
                             _addEventController.eventLocation = _.toString();
                           },
+                          initialValue: _addEventController.eventLocation,
                           style: _myFormFont(),
                           keyboardType: TextInputType.text,
                           decoration:
@@ -449,7 +456,7 @@ class AddEventInfluencerMeetScreenPageState
             //so you don't have to change MaterialApp canvasColor
             child: (_addEventController.dealerListResponse == null)
                 ? Container()
-                : DealersListWidget(),
+                : DealersListViewWidget(),
           );
         });
   }

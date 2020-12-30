@@ -170,7 +170,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                     child: Container(
                       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(16.0),
                           color: Colors.white,
                           border: Border.all()),
                       child: DropdownButtonHideUnderline(
@@ -180,8 +180,11 @@ class AddEventScreenPageState extends State<AddEvent> {
                           onChanged: (String newValue) {
                             _addEventController.selectedView = newValue;
                           },
-                          items: <String>['Visit', 'Influencers meet', "1", "2"]
-                              .map<DropdownMenuItem<String>>((String value) {
+                          items: <String>[
+                            'Visit',
+                            'Influencers meet',
+                            'Service Requests'
+                          ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),

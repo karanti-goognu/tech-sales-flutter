@@ -8,11 +8,14 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/CalendarDataBy
 import 'package:flutter_tech_sales/presentation/features/mwp/data/CalendarPlanModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerListResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/GetMWPResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/MeetResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMWPModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMWPResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/TargetVsActualModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -142,6 +145,30 @@ class MyApiClientApp {
     }
   }
 
+  updateVisitPlan(String accessKey, String userSecurityKey, String url,
+      UpdateVisitRequest updateVisitRequest) async {
+    try {
+      var body = jsonEncode(updateVisitRequest);
+      print('body is  :: $body');
+      var response = await httpClient.post(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey),
+          body: body,
+          encoding: Encoding.getByName("utf-8"));
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
+        //print('Access key Object is :: $accessKeyModel');
+        return saveVisitResponse;
+      } else {
+        print('Error in else');
+      }
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
+
 
   getMWPData(String accessKey, String userSecurityKey, String url) async {
     try {
@@ -170,6 +197,40 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return DealerListResponse.fromJson(data);
+      } else {
+        print('Error in else');
+      }
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
+
+  getVisitData(String accessKey, String userSecurityKey, String url) async {
+    try {
+      var response = await httpClient.get(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey));
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return VisitResponseModel.fromJson(data);
+      } else {
+        print('Error in else');
+      }
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
+
+  getMeetData(String accessKey, String userSecurityKey, String url) async {
+    try {
+      var response = await httpClient.get(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey));
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return MeetResponseModelView.fromJson(data);
       } else {
         print('Error in else');
       }

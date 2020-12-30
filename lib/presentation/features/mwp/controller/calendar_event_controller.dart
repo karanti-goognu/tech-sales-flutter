@@ -29,6 +29,7 @@ class CalendarEventController extends GetxController {
   final _targetVsActual = TargetVsActualModel().obs;
  /* final _listOfEventDetails = ListOfEventDetails().obs;*/
   final _markedDateMap = EventList<Event>().obs;
+  final _dateList = List<String>().obs;
 
   final _isLoading = false.obs;
   final _action = "SAVE".obs;
@@ -67,6 +68,10 @@ class CalendarEventController extends GetxController {
 
   get selectedMonth => this._selectedMonth.value;
 
+  set dateList(value) => this._dateList.value = value;
+
+  get dateList => this._dateList;
+
   getCalendarEvent(String accessKey) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -77,15 +82,19 @@ class CalendarEventController extends GetxController {
           "monthYear=${this.selectedMonth}";
       print('$url');
       repository.getCalenderPlan(accessKey, userSecurityKey, url).then((data) {
-        this.isLoading = false;
+        /*this.isLoading = false;*/
         if (data == null) {
           debugPrint('MWP Data Response is null');
         } else {
           debugPrint('MWP Data Response is not null');
           this.calendarPlanResponse = data;
+          if(this.calendarPlanResponse.listOfEventDates.length>0){
+            for(int i=0;i<this.calendarPlanResponse.listOfEventDates.length;i++){
+              this.dateList.add(this.calendarPlanResponse.listOfEventDates[i]);
+            }
+          }
          /* markedDateMap.addAll(new DateTime(2020, 12, 13), []);
           markedDateMap.addAll(new DateTime(2020, 12, 14), []);*/
-          this.isLoading = false;
           /*if (calendarPlanResponse.respCode == "MWP2013") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('${calendarPlanResponse.respMsg}');

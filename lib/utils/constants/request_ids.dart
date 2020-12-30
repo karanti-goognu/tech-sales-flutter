@@ -21,4 +21,7 @@ abstract class RequestIds {
   static const int GET_CALENDER_EVENTS_OF_DAY = 20;
   static const int SAVE_VISIT = 21;
   static const int SAVE_MEET = 22;
+  static const int VIEW_VISIT = 23;
+  static const int VIEW_MEET = 24;
+  static const int UPDATE_VISIT = 25;
 }

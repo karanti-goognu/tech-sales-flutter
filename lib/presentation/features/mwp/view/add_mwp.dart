@@ -21,6 +21,17 @@ class AddMWPScreenPageState extends State<AddMWP> {
   AppController _appController = Get.find();
 
   @override
+  void initState() {
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('MMMM-yyyy');
+    final String formatted = formatter.format(now);
+    _mwpPlanController.selectedMonth = formatted;
+    _appController.getAccessKey(RequestIds.GET_MWP_PLAN);
+    _mwpPlanController.isLoading = true;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -141,11 +152,6 @@ class AddMWPScreenPageState extends State<AddMWP> {
 
   Widget _buildAddEventInterface(BuildContext context) {
     SizeConfig().init(context);
-    final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('MMMM-yyyy');
-    final String formatted = formatter.format(now);
-    print(formatted); // something like 2013-04-20
-    _mwpPlanController.selectedMonth = formatted;
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -189,29 +195,32 @@ class AddMWPScreenPageState extends State<AddMWP> {
                                     ],
                                   ),
                                   child: DropdownButtonHideUnderline(
-                                    child: DropdownButton<String>(
-                                      value: _mwpPlanController.selectedMonth,
-                                      onChanged: (String newValue) {
-                                        _mwpPlanController.selectedMonth =
-                                            newValue;
-                                        _appController.getAccessKey(
-                                            RequestIds.GET_MWP_PLAN);
-                                        _mwpPlanController.isLoading = true;
-                                      },
-                                      items: _mwpPlanController
-                                          .getMWPResponse.listOfMonthYear
-                                          .map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        );
-                                      }).toList(),
+                                    child: Obx(
+                                      () => DropdownButton<String>(
+                                        value: _mwpPlanController.selectedMonth,
+                                        onChanged: (String newValue) {
+                                          print('$newValue');
+                                          _mwpPlanController.selectedMonth =
+                                              newValue;
+                                          _appController.getAccessKey(
+                                              RequestIds.GET_MWP_PLAN);
+                                          _mwpPlanController.isLoading = true;
+                                        },
+                                        items: _mwpPlanController
+                                            .getMWPResponse.listOfMonthYear
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
                                     ),
                                   )),
                             )

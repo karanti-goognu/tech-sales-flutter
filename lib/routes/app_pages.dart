@@ -17,8 +17,11 @@ import 'package:flutter_tech_sales/presentation/features/mwp/view/add_calender_e
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp_plan_view.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_influencer_meet_view.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_visit_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list_view.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/site_search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_screen.dart';
@@ -75,12 +78,10 @@ class AppPages {
         name: Routes.ADD_MWP_PLAN_SCREEN,
         page: () => AddMWPPlan(),
         binding: AppBinding()),
-
     GetPage(
         name: Routes.ADD_EVENT_SCREEN,
         page: () => AddEvent(),
         binding: AppBinding()),
-
     GetPage(
         name: Routes.ADD_CALENDER_SCREEN,
         page: () => AddCalenderEventPage(),
@@ -90,8 +91,21 @@ class AppPages {
         page: () => AddEventVisit(),
         binding: AppBinding()),
     GetPage(
+        name: Routes.VISIT_VIEW_SCREEN,
+        page: () => EditEventVisit(),
+        binding: AppBinding()),
+    GetPage(
         name: Routes.MEET_SCREEN,
         page: () => AddEventInfluencerMeet(),
+        binding: AppBinding()),
+    GetPage(
+        name: Routes.VIEW_MEET_SCREEN,
+        page: () => ViewEventVisit(),
+        binding: AppBinding()),
+
+    GetPage(
+        name: Routes.DEALER_LIST_VIEW,
+        page: () => DealersListViewWidget(),
         binding: AppBinding()),
   ];
 }

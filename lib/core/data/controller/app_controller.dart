@@ -141,6 +141,18 @@ class AppController extends GetxController {
                 _addEventController
                     .saveMeet(this.accessKeyResponse.accessKey);
                 break;
+              case RequestIds.VIEW_VISIT:
+                _addEventController
+                    .viewVisitData(this.accessKeyResponse.accessKey);
+                break;
+              case RequestIds.VIEW_MEET:
+                _addEventController
+                    .viewMeetData(this.accessKeyResponse.accessKey);
+                break;
+              case RequestIds.UPDATE_VISIT:
+                _addEventController
+                    .updateVisit(this.accessKeyResponse.accessKey);
+                break;
             }
           }
         }

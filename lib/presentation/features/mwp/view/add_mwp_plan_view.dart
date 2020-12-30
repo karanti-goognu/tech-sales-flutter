@@ -8,7 +8,6 @@ import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class AddMWPPlan extends StatefulWidget {
   @override
@@ -24,12 +23,6 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   @override
   void initState() {
     super.initState();
-    final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('MMMM-yyyy');
-    final String formatted = formatter.format(now);
-    _mwpPlanController.selectedMonth = formatted;
-    _appController.getAccessKey(RequestIds.GET_MWP_PLAN);
-    _mwpPlanController.isLoading = true;
   }
 
   @override
@@ -166,6 +159,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                             ColorConstants.lightOutlineColor)),
                                 child: TextFormField(
                                     enabled: false,
+                                    maxLength: 4,
                                     initialValue:
                                         (_mwpPlanController.getMWPResponse !=
                                                 null)
@@ -178,12 +172,15 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
+                                      counterText: '',
+                                      counterStyle: TextStyle(fontSize: 0),
                                     ),
                                     style: TextStyle(
                                         fontSize: 14,
                                         color: ColorConstants.lightGreyColor,
                                         fontFamily: "Muli"),
                                     keyboardType: TextInputType.number),
+
                               ),
                               flex: 1,
                             ),
@@ -198,19 +195,21 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
         SizedBox(
           height: 16,
         ),
-        (_mwpPlanController.getMWPResponse.mwpplanModel == null)
+        Obx(() => (_mwpPlanController.getMWPResponse.mwpplanModel == null)
             ? returnSaveRow()
             : (_mwpPlanController.getMWPResponse.mwpplanModel.status ==
-                    "APPROVE")
-                ? returnApprovedRow()
-                : returnSaveRow()
+                    "SUBMIT")
+                ? returnSubmitRow()
+                : (_mwpPlanController.getMWPResponse.mwpplanModel.status ==
+                        "APPROVE")
+                    ? returnApprovedRow()
+                    : returnSaveRow())
       ],
     );
   }
 
   Widget returnApprovedRow() {
-    return Flexible(
-      child: RaisedButton(
+    return RaisedButton(
         color: Colors.orange,
         highlightColor: ColorConstants.buttonPressedColor,
         onPressed: () {},
@@ -221,9 +220,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
             style: ButtonStyles.buttonStyleBlue,
           ),
         ),
-      ),
-      flex: 5,
-    );
+      );
   }
 
   Widget returnSaveRow() {
@@ -232,39 +229,65 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       children: [
         Flexible(
           child: RaisedButton(
-                color: ColorConstants.greenText,
-                highlightColor: ColorConstants.buttonPressedColor,
-                onPressed: (_mwpPlanController.getMWPResponse.mwpplanModel ==
-                        null)
-                    ? () {
+            color: ColorConstants.greenText,
+            highlightColor: ColorConstants.buttonPressedColor,
+            onPressed: (_mwpPlanController.getMWPResponse.mwpplanModel == null)
+                ? () {
+                    // Validate returns true if the form is valid, or false
+                    // otherwise.
+                    _mwpPlanController.action = "SAVE";
+                    _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN);
+                  }
+                : (_mwpPlanController.getMWPResponse.mwpplanModel.status ==
+                        "SUBMIT")
+                    ? null
+                    : () {
                         // Validate returns true if the form is valid, or false
                         // otherwise.
                         _mwpPlanController.action = "SAVE";
                         _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN);
-                      }
-                    : (_mwpPlanController.getMWPResponse.mwpplanModel.status ==
-                            "SUBMIT")
-                        ? null
-                        : () {
-                            // Validate returns true if the form is valid, or false
-                            // otherwise.
-                            _mwpPlanController.action = "SAVE";
-                            _appController
-                                .getAccessKey(RequestIds.SAVE_MWP_PLAN);
-                          },
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
-                  child: Text(
-                    'SAVE',
-                    style: ButtonStyles.buttonStyleBlue,
-                  ),
-                ),
+                      },
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+              child: Text(
+                'SAVE',
+                style: ButtonStyles.buttonStyleBlue,
               ),
+            ),
+          ),
           flex: 5,
         ),
         SizedBox(
           width: 4,
         ),
+        Flexible(
+          child: RaisedButton(
+            color: ColorConstants.buttonNormalColor,
+            highlightColor: ColorConstants.buttonPressedColor,
+            onPressed: () {
+              // Validate returns true if the form is valid, or false
+              // otherwise.
+              _mwpPlanController.action = "SUBMIT";
+              _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN);
+            },
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+              child: Text(
+                'SUBMIT',
+                style: ButtonStyles.buttonStyleBlue,
+              ),
+            ),
+          ),
+          flex: 5,
+        ),
+      ],
+    );
+  }
+
+  Widget returnSubmitRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
         Flexible(
           child: RaisedButton(
             color: ColorConstants.buttonNormalColor,
@@ -297,9 +320,12 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                   ? returnValue(index)
                   : ""
               : "",
+          maxLength: 4,
           textAlign: TextAlign.center,
           decoration: InputDecoration(
             border: InputBorder.none,
+            counterText: '',
+            counterStyle: TextStyle(fontSize: 0),
           ),
           onChanged: (_) {
             try {
