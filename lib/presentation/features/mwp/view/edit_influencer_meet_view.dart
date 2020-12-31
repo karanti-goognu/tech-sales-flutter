@@ -28,9 +28,8 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
 
   @override
   void initState() {
-    /* _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);*/
+     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
     _appController.getAccessKey(RequestIds.VIEW_MEET);
-    _addEventController.isLoadingVisitView = true;
     super.initState();
   }
 
@@ -378,7 +377,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                FlatButton(
+                                /*FlatButton(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(0.0),
                                       side: BorderSide(
@@ -401,7 +400,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                       style: ButtonStyles.buttonStyleWhite,
                                     ),
                                   ),
-                                ),
+                                ),*/
                                 RaisedButton(
                                   color: ColorConstants.buttonNormalColor,
                                   highlightColor:

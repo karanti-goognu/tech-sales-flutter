@@ -288,6 +288,7 @@ class AddEventController extends GetxController {
   }
 
   getDealersList(String accessKey) async {
+    this.isLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -359,6 +360,7 @@ class AddEventController extends GetxController {
   }
 
   viewMeetData(String accessKey) async {
+    this.isLoadingVisitView = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -387,18 +389,17 @@ class AddEventController extends GetxController {
               this.meetResponseModelView.mwpMeetModel.giftsDistributedCount;
           this.eventLocation =
               this.meetResponseModelView.mwpMeetModel.eventLocation;
-          if (this.meetResponseModelView.dealerModel.length != 0) {
+          /*if (this.meetResponseModelView.dealerModel.length != 0) {
             for (int i = 0;
                 i < this.meetResponseModelView.dealerModel.length;
                 i++) {
-              print('${this.meetResponseModelView.dealerModel[i].dealerId}');
+              print('${this.meetResponseModelView.dealerModel[i].dealerName}');
               this.dealerList.add(new DealerModel(
                   this.meetResponseModelView.dealerModel[i].dealerId,
                   this.meetResponseModelView.dealerModel[i].dealerName,
                   false));
             }
-          }
-
+          }*/
           this.isLoadingVisitView = false;
         }
       });
@@ -434,11 +435,12 @@ class AddEventController extends GetxController {
           var journeyStartLat = position.latitude;
           var journeyStartLong = position.longitude;
           print('$journeyStartLong   $journeyStartLat');
+          DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
           mwpVisitModelUpdate = new MwpVisitModelUpdate(
               this.visitId,
               this.visitDateTime,
               visitType,
-              DateTime.now().toString(),
+              dateFormat.format(DateTime.now()),
               journeyStartLat,
               journeyStartLong,
               "",

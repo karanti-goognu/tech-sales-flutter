@@ -88,77 +88,84 @@ class _DealersListViewWidgetState extends State<DealersListViewWidget> {
   }
 
   Widget showDealerListBody() {
-    return Obx(() => (_addEventController.dealerList == null)
-        ? Container(child: Text('List is null'))
-        : (_addEventController.dealerList.length == 0)
-            ? Container(child: Text('List size is 0',style: TextStyles.mulliBold18,))
-            : Container(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      new Container(
-                        color: Colors.transparent,
-                        child: new Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: new Card(
-                            elevation: 8,
-                            child: new ListTile(
-                              leading: new Icon(Icons.search),
-                              title: new TextField(
-                                controller: controller,
-                                decoration: new InputDecoration(
-                                    hintText: 'Search',
-                                    border: InputBorder.none),
-                                onChanged: onSearchTextChanged,
-                              ),
-                              trailing: new IconButton(
-                                icon: new Icon(Icons.cancel),
-                                onPressed: () {
-                                  controller.clear();
-                                  onSearchTextChanged('');
-                                },
+    return Obx(() => (_addEventController.isLoading == false)
+        ? (_addEventController.dealerList == null)
+            ? Container(child: Text('List is null'))
+            : (_addEventController.dealerList.length == 0)
+                ? Container(
+                    child: Text(
+                    'List size is 0',
+                    style: TextStyles.mulliBold18,
+                  ))
+                : Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          new Container(
+                            color: Colors.transparent,
+                            child: new Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: new Card(
+                                elevation: 8,
+                                child: new ListTile(
+                                  leading: new Icon(Icons.search),
+                                  title: new TextField(
+                                    controller: controller,
+                                    decoration: new InputDecoration(
+                                        hintText: 'Search',
+                                        border: InputBorder.none),
+                                    onChanged: onSearchTextChanged,
+                                  ),
+                                  trailing: new IconButton(
+                                    icon: new Icon(Icons.cancel),
+                                    onPressed: () {
+                                      controller.clear();
+                                      onSearchTextChanged('');
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount:
+                                  5 /*_addEventController.dealerList.length*/,
+                              itemBuilder: (BuildContext context, int index) {
+                                print(
+                                    '${_addEventController.dealerList.length}');
+                                return new Container(
+                                  padding: new EdgeInsets.all(8.0),
+                                  child: new Column(
+                                    children: <Widget>[
+                                      new CheckboxListTile(
+                                          value: _addEventController
+                                              .dealerList[index].isSelected,
+                                          title: new Text(
+                                              '${_addEventController.dealerList[index].dealerName}'),
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          onChanged: (bool val) {
+                                            itemChange(val, index);
+                                          })
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ],
                       ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      5/*_addEventController.dealerList.length*/,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    print('${_addEventController.dealerList.length}');
-                                    return new Container(
-                                      padding: new EdgeInsets.all(8.0),
-                                      child: new Column(
-                                        children: <Widget>[
-                                          new CheckboxListTile(
-                                              value: _addEventController
-                                                  .dealerList[index].isSelected,
-                                              title: new Text(
-                                                  '${_addEventController.dealerList[index].dealerName}'),
-                                              controlAffinity:
-                                                  ListTileControlAffinity
-                                                      .leading,
-                                              onChanged: (bool val) {
-                                                itemChange(val, index);
-                                              })
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                    ],
-                  ),
-                ),
-              ));
+                    ),
+                  )
+        : Container(
+            child: Text("Error"),
+          ));
   }
 
   onSearchTextChanged(String text) async {
