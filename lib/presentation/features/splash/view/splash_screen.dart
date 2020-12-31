@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -74,8 +73,7 @@ class SplashScreenPageState extends State<SplashScreen> {
     super.initState();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String isUserLoggedIn =
-          prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
+      String isUserLoggedIn = prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
       print('$isUserLoggedIn');
       if (isUserLoggedIn == "false") {
         Get.offNamed(Routes.LOGIN);
@@ -83,7 +81,6 @@ class SplashScreenPageState extends State<SplashScreen> {
         _splashController.getSecretKey(RequestIds.REFRESH_DATA);
       }
     });
-    //print('hello');
     _initializeFlutterFireFuture = _initializeFlutterFire();
   }
 

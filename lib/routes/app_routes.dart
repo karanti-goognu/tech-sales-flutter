@@ -20,4 +20,7 @@ abstract class Routes {
   static const MEET_SCREEN = '/meet_screen';
   static const VIEW_MEET_SCREEN = '/view_meet_screen';
   static const DEALER_LIST_VIEW = '/dealers_list_view';
+  static const SERVICE_REQUESTS = '/service_requests';
+  static const SERVICE_REQUEST_CREATION = '/create_service_request';
+
 }

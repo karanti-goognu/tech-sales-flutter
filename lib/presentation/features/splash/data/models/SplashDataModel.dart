@@ -1,12 +1,15 @@
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/JourneyDetailsModel.dart';
 
 class SplashDataModel {
+  List<SrComplainResolutionEntity> srComplainResolutionEntity;
+  List<SrComplaintTypeEntity> srComplaintTypeEntity;
   List<LeadStatusEntity> leadStatusEntity;
   List<LeadStageEntity> leadStageEntity;
   List<SiteStageEntity> siteStageEntity;
   List<SiteStatusEntity> siteStatusEntity;
   List<SiteSubTypeEntity> siteSubTypeEntity;
   List<InfluencerCategoryEntity> influencerCategoryEntity;
+  List<String> severity;
   Null userSecurityKey;
   Null respCode;
   Null respMsg;
@@ -20,7 +23,10 @@ class SplashDataModel {
       this.siteStageEntity,
       this.siteStatusEntity,
       this.siteSubTypeEntity,
+      this.srComplainResolutionEntity,
+      this.srComplaintTypeEntity,
       this.influencerCategoryEntity,
+      this.severity,
       this.userSecurityKey,
       this.respCode,
       this.respMsg,
@@ -59,12 +65,26 @@ class SplashDataModel {
         siteSubTypeEntity.add(new SiteSubTypeEntity.fromJson(v));
       });
     }
+    if (json['srComplainResolutionEntity'] != null) {
+      srComplainResolutionEntity = new List<SrComplainResolutionEntity>();
+      json['srComplainResolutionEntity'].forEach((v) {
+        srComplainResolutionEntity
+            .add(new SrComplainResolutionEntity.fromJson(v));
+      });
+    }
+    if (json['srComplaintTypeEntity'] != null) {
+      srComplaintTypeEntity = new List<SrComplaintTypeEntity>();
+      json['srComplaintTypeEntity'].forEach((v) {
+        srComplaintTypeEntity.add(new SrComplaintTypeEntity.fromJson(v));
+      });
+    }
     if (json['influencerCategoryEntity'] != null) {
       influencerCategoryEntity = new List<InfluencerCategoryEntity>();
       json['influencerCategoryEntity'].forEach((v) {
         influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
+    severity = json['severity'].cast<String>();
     userSecurityKey = json['user-security-key'];
     respCode = json['resp-code'];
     respMsg = json['resp-msg'];
@@ -108,9 +128,19 @@ class SplashDataModel {
       data['influencerCategoryEntity'] =
           this.influencerCategoryEntity.map((v) => v.toJson()).toList();
     }
+    if (this.srComplainResolutionEntity != null) {
+      data['srComplainResolutionEntity'] =
+          this.srComplainResolutionEntity.map((v) => v.toJson()).toList();
+    }
+    if (this.srComplaintTypeEntity != null) {
+      data['srComplaintTypeEntity'] =
+          this.srComplaintTypeEntity.map((v) => v.toJson()).toList();
+    }
     data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
+    data['severity'] = this.severity;
+
     if (this.employeeDetails != null) {
       data['employee-details'] = this.employeeDetails.toJson();
     }
@@ -282,6 +312,54 @@ class UserMenu {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['menu-id'] = this.menuId;
     data['menu-text'] = this.menuText;
+    return data;
+  }
+}
+
+class SrComplainResolutionEntity {
+  int id;
+  String resolutionText;
+
+  SrComplainResolutionEntity({this.id, this.resolutionText});
+
+  SrComplainResolutionEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    resolutionText = json['resolutionText'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['resolutionText'] = this.resolutionText;
+    return data;
+  }
+}
+
+class SrComplaintTypeEntity {
+  int id;
+  int requestId;
+  String serviceRequestTypeText;
+  String complaintSeverity;
+
+  SrComplaintTypeEntity(
+      {this.id,
+      this.requestId,
+      this.serviceRequestTypeText,
+      this.complaintSeverity});
+
+  SrComplaintTypeEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    requestId = json['requestId'];
+    serviceRequestTypeText = json['serviceRequestTypeText'];
+    complaintSeverity = json['complaintSeverity'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['request_id'] = this.requestId;
+    data['service_request_type_text'] = this.serviceRequestTypeText;
+    data['complaint_severity'] = this.complaintSeverity;
     return data;
   }
 }

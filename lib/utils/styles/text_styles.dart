@@ -5,6 +5,12 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class TextStyles {
+  static TextStyle formfieldLabelText = TextStyle(
+      fontFamily: "Muli",
+      color: ColorConstants.inputBoxHintColorDark,
+      fontWeight: FontWeight.normal,
+      fontSize: 16.0);
+
   static TextStyle resendOtpTextStyleEnabled = TextStyle(
       fontFamily: "Muli",
       fontSize: 14,

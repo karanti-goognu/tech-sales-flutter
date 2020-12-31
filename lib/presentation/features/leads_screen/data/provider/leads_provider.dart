@@ -61,6 +61,7 @@ class MyApiClientLeads {
         'mobile-number': mobile,
       };
 
+
       var response = await httpClient.get(UrlConstants.getSecretKey,
           headers: requestHeadersEmpIdAndNo);
       print('Response body is : ${json.decode(response.body)}');
@@ -387,7 +388,6 @@ class MyApiClientLeads {
 
       request.files.add(multipartFileSign);
     }
-
     String empId;
     String mobileNumber;
     String name;
@@ -438,7 +438,8 @@ class MyApiClientLeads {
                 } else {
                   Get.back();
                   Get.dialog(
-                      CustomDialogs().showDialog("Some Error Occured !!! "));
+                      CustomDialogs().showDialog("Some Error Occured !!! "),
+                  );
                 }
               });
             })

@@ -23,6 +23,7 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _leadsFilterController.getSecretKey(10);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);

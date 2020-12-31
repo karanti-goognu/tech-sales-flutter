@@ -51,7 +51,6 @@ class SplashController extends GetxController {
       _prefs.then((SharedPreferences prefs) {
         String userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-        print('User Security key is :: $userSecurityKey');
         if (userSecurityKey != "empty") {
           //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
@@ -66,6 +65,7 @@ class SplashController extends GetxController {
                 break;
             }
           }
+          return data;
         }
       });
     });
@@ -97,7 +97,7 @@ class SplashController extends GetxController {
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);
-          getAccessKey(requestId);
+          return getAccessKey(requestId);
         } else {
           print('Secret key response is null');
         }
@@ -111,10 +111,8 @@ class SplashController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
 

@@ -63,12 +63,11 @@ dependencies:
   permission_handler: ^5.0.1+1
   flutter_svg: ^0.19.1
   flutter_calendar_carousel: 1.4.12
-
+  flutter_speed_dial_material_design: ^2.0.0
+  autocomplete_textfield: ^1.7.3
 
   flutter_localizations:
     sdk: flutter
-
-
 
 dev_dependencies:
   flutter_test:

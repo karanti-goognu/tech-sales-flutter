@@ -1036,11 +1036,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         : Container(),
 
                     SizedBox(height: 16),
-                    Divider(
+               Divider(
                       color: Colors.black26,
                       thickness: 1,
                     ),
-
                     Padding(
                       padding:
                           const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
@@ -2451,11 +2450,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 .inflName ==
                                             null ||
                                         _listInfluencerDetail[
-                                                    _listInfluencerDetail
-                                                            .length -
-                                                        1]
-                                                .inflName ==
-                                            "null" ||
+                                                    _listInfluencerDetail.length -1].inflName == "null" ||
                                         _listInfluencerDetail[
                                                 _listInfluencerDetail.length -
                                                     1]

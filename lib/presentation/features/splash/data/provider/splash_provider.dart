@@ -13,13 +13,11 @@ import 'package:meta/meta.dart';
 
 class MyApiClientSplash {
   final http.Client httpClient;
-  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   MyApiClientSplash({@required this.httpClient});
 
   getAccessKey() async {
     try {
-      // print("dsacsdcc" + requestHeaders.toString());
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
       print('Response body is : ${json.decode(response.body)}');
@@ -79,9 +77,12 @@ class MyApiClientSplash {
       print('Response body is : ${(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        print('waheguru ${data['severity']}');
+
         SplashDataModel splashDataModel = SplashDataModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return splashDataModel;
+        print(2);
       } else {
         print('Error in else');
       }
