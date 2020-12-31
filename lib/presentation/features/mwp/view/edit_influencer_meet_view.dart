@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list_view.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -417,7 +418,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
                                     child: Text(
-                                      'ADD EVENT',
+                                      'SUBMIT',
                                       style: ButtonStyles.buttonStyleBlue,
                                     ),
                                   ),
@@ -516,7 +517,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
             //so you don't have to change MaterialApp canvasColor
             child: (_addEventController.meetResponseModelView == null)
                 ? Container()
-                : DealersListWidget(),
+                : DealersListViewWidget(),
           );
         });
   }

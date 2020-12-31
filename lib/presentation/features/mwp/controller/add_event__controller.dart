@@ -222,13 +222,13 @@ class AddEventController extends GetxController {
         if (data == null) {
           debugPrint('Save Visit Response is null');
         } else {
-          debugPrint('Save Visit Response is not null');
           this.saveVisitResponse = data;
-          if (saveVisitResponse.respCode == "MWP2021") {
+          if (saveVisitResponse.respCode == "MWP2022") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
-            print('${saveVisitResponse.respMsg}');
-            //SitesDetailWidget();
+          } else {
+            Get.dialog(
+                CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
           }
         }
       });
@@ -426,6 +426,28 @@ class AddEventController extends GetxController {
         print('update');
         mwpVisitModelUpdate = new MwpVisitModelUpdate(this.visitId,
             this.visitDateTime, visitType, "", 0.0, 0.0, "", 0.0, 0.0);
+        repository
+            .updateVisitPlan(accessKey, userSecurityKey, url,
+            new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
+            .then((data) {
+          this.isLoadingVisitView = false;
+          if (data == null) {
+            debugPrint('Update Visit Response is null');
+          } else {
+            debugPrint('Update Visit Response is not null');
+            this.saveVisitResponse = data;
+            if (saveVisitResponse.respCode == "MWP2028") {
+              Get.dialog(CustomDialogs()
+                  .messageDialogMWP(saveVisitResponse.respMsg));
+              print('${saveVisitResponse.respMsg}');
+              //SitesDetailWidget();
+            } else {
+              Get.dialog(CustomDialogs()
+                  .messageDialogMWP(saveVisitResponse.respMsg));
+              print('${saveVisitResponse.respMsg}');
+            }
+          }
+        });
       } else if (this.visitActionType == "START") {
         print('start');
         geolocator

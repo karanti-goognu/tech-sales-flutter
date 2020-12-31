@@ -452,14 +452,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   break;
                 case 2:
                 case 3:
-                Get.dialog(CustomDialogs().errorDialog(" Page Coming Soon .... "));
+                  Get.dialog(
+                      CustomDialogs().errorDialog(" Page Coming Soon .... "));
                   break;
                 case 4:
                   Get.toNamed(Routes.ADD_MWP_SCREEN);
                   break;
                 case 5:
-                  Get.dialog(CustomDialogs().errorDialog(
-                      list[index].value + " Page Coming Soon .... "));
+                  Get.toNamed(Routes.SERVICE_REQUESTS);
                   break;
               }
             },
@@ -469,9 +469,10 @@ class _HomeScreenState extends State<HomeScreen> {
               //shadowColor: colornew,
               elevation: 20,
               margin: EdgeInsets.all(10.0),
-              color: ((index == 0) || (index == 1)|| (index == 4))
-                  ? Colors.white
-                  : Colors.white60,
+              color:
+                  ((index == 0) || (index == 1) || (index == 4) || (index == 5))
+                      ? Colors.white
+                      : Colors.white60,
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -516,7 +517,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //fontWeight: FontWeight.normal
                                   ),
                             ),
-                            (index == 2 || index == 3 )
+                            (index == 2 || index == 3)
                                 ? Text(
                                     "coming soon",
                                     overflow: TextOverflow.clip,

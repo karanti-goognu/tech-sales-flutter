@@ -160,7 +160,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
                     child: Text(
-                      'Update EVENT',
+                      'ADD EVENT',
                       style: ButtonStyles.buttonStyleBlue,
                     ),
                   ),

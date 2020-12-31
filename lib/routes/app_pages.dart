@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/bindings/login_binding.dart';
 import 'package:flutter_tech_sales/bindings/search_binding.dart';
 import 'package:flutter_tech_sales/bindings/site_binding.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
+import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
@@ -24,6 +25,8 @@ import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dar
 import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list_view.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/site_search_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_creation.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/view/servicerequests.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:get/get.dart';
@@ -102,10 +105,19 @@ class AppPages {
         name: Routes.VIEW_MEET_SCREEN,
         page: () => ViewEventVisit(),
         binding: AppBinding()),
-
     GetPage(
         name: Routes.DEALER_LIST_VIEW,
         page: () => DealersListViewWidget(),
         binding: AppBinding()),
+    GetPage(
+      name: Routes.SERVICE_REQUESTS,
+      page: () => ServiceRequests(),
+      binding: SRBinding(),
+    ),
+    GetPage(
+      name: Routes.SERVICE_REQUEST_CREATION,
+      page: () => RequestCreation(),
+      binding: SRBinding(),
+    ),
   ];
 }

@@ -208,7 +208,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                   Expanded(
                     child: Container(
                       child: ListView.builder(
-                          itemCount: 3,
+                          itemCount: siteListModel.srComplaintListModal.length,
                           itemBuilder: (context, index) {
                             return Card(
                               clipBehavior: Clip.antiAlias,

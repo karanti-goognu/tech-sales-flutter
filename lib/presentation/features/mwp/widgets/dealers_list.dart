@@ -134,7 +134,7 @@ class _DealersListWidgetState extends State<DealersListWidget> {
                     : ListView.builder(
                         shrinkWrap: true,
                         itemCount: _addEventController
-                            .dealerListResponse.dealerList.length,
+                            .dealerList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return new Container(
                             padding: new EdgeInsets.all(8.0),

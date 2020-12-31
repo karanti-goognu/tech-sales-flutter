@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list_view.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
@@ -30,6 +29,7 @@ class AddEventInfluencerMeetScreenPageState
 
   @override
   void initState() {
+    _addEventController.dealerList.clear();
     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
     _addEventController.isLoading = true;
     super.initState();
@@ -51,37 +51,38 @@ class AddEventInfluencerMeetScreenPageState
                         border: Border.all(
                             color: ColorConstants.inputBoxBorderSideColor)),
                     child: DropdownButtonHideUnderline(
-                      child: Obx(() =>DropdownButton<String>(
-                        value: _addEventController.selectedEventTypeMeet,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropdownValue = newValue;
-                            _addEventController.selectedEventTypeMeet = newValue;
-                          });
-                        },
-                        items: <String>[
-                          'MASOON MEET',
-                          'DEALER MEET',
-                          'CONTRACTOR MEET',
-                          'ENGINEER MEET',
-                          'CONSUMER MEET',
-                          'MINI CONTRACTOR MEET'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: _myFormFont(),
-                            ),
-                          );
-                        }).toList(),
-                      )),
+                      child: Obx(() => DropdownButton<String>(
+                            value: _addEventController.selectedEventTypeMeet,
+                            onChanged: (String newValue) {
+                              setState(() {
+                                dropdownValue = newValue;
+                                _addEventController.selectedEventTypeMeet =
+                                    newValue;
+                              });
+                            },
+                            items: <String>[
+                              'MASOON MEET',
+                              'DEALER MEET',
+                              'CONTRACTOR MEET',
+                              'ENGINEER MEET',
+                              'CONSUMER MEET',
+                              'MINI CONTRACTOR MEET'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: _myFormFont(),
+                                ),
+                              );
+                            }).toList(),
+                          )),
                     )),
                 _spaceBetweenFields(),
                 Form(
                   key: _formKey,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Container(
@@ -130,7 +131,6 @@ class AddEventInfluencerMeetScreenPageState
                         onChanged: (_) {
                           _addEventController.dalmiaInflCount = int.parse(_);
                         },
-                        initialValue: _addEventController.dalmiaInflCount,
                         style: _myFormFont(),
                         keyboardType: TextInputType.number,
                         decoration:
@@ -148,27 +148,24 @@ class AddEventInfluencerMeetScreenPageState
                             _addEventController.nonDalmiaInflCount =
                                 int.parse(_);
                           },
-                          initialValue: _addEventController.nonDalmiaInflCount,
                           style: _myFormFont(),
                           keyboardType: TextInputType.number,
                           decoration: _inputDecoration(
                               "Non-Dalmia Influencers", false)),
                       _spaceBetweenFields(),
-                      TextFormField(
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "Total participants can't be empty ";
-                            }
-                            return null;
-                          },
-                          initialValue: _addEventController.expectedLeadsCount,
-                          onChanged: (_) {
-                            _addEventController.totalParticipants = _;
-                          },
-                          style: _myFormFont(),
-                          keyboardType: TextInputType.text,
-                          decoration:
-                              _inputDecoration("Total participants", false)),
+                      Text('Total Participants'),
+                      Obx(() => Container(
+                          margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: Colors.white,
+                              border: Border.all(
+                                  color:
+                                      ColorConstants.inputBoxBorderSideColor)),
+                          child: Text(
+                              "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}"))),
                       _spaceBetweenFields(),
                       Container(
                           width: double.infinity,
@@ -180,12 +177,14 @@ class AddEventInfluencerMeetScreenPageState
                                   color:
                                       ColorConstants.inputBoxBorderSideColor)),
                           child: DropdownButtonHideUnderline(
-                            child: Obx(() =>DropdownButton<String>(
-                              value:  _addEventController.selectedVenueTypeMeet,
+                              child: Obx(
+                            () => DropdownButton<String>(
+                              value: _addEventController.selectedVenueTypeMeet,
                               onChanged: (String newValue) {
                                 setState(() {
                                   dropdownValue = newValue;
-                                  _addEventController.selectedVenueTypeMeet = newValue;
+                                  _addEventController.selectedVenueTypeMeet =
+                                      newValue;
                                 });
                               },
                               items: <String>[
@@ -193,7 +192,7 @@ class AddEventInfluencerMeetScreenPageState
                                 'NOT BOOKED',
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
-                                  value:value,
+                                  value: value,
                                   child: Text(
                                     value,
                                     style: _myFormFont(),
@@ -278,7 +277,6 @@ class AddEventInfluencerMeetScreenPageState
                             _addEventController.expectedLeadsCount =
                                 int.parse(_);
                           },
-                          initialValue: _addEventController.expectedLeadsCount,
                           style: _myFormFont(),
                           keyboardType: TextInputType.number,
                           decoration:
@@ -295,7 +293,6 @@ class AddEventInfluencerMeetScreenPageState
                             _addEventController.giftsDistributedCount =
                                 int.parse(_);
                           },
-                          initialValue: _addEventController.giftsDistributedCount,
                           style: _myFormFont(),
                           keyboardType: TextInputType.number,
                           decoration:
@@ -311,7 +308,6 @@ class AddEventInfluencerMeetScreenPageState
                           onChanged: (_) {
                             _addEventController.eventLocation = _.toString();
                           },
-                          initialValue: _addEventController.eventLocation,
                           style: _myFormFont(),
                           keyboardType: TextInputType.text,
                           decoration:
@@ -358,7 +354,7 @@ class AddEventInfluencerMeetScreenPageState
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
                               child: Text(
-                                'ADD EVENT',
+                                'ADD MEET',
                                 style: ButtonStyles.buttonStyleBlue,
                               ),
                             ),
@@ -456,7 +452,7 @@ class AddEventInfluencerMeetScreenPageState
             //so you don't have to change MaterialApp canvasColor
             child: (_addEventController.dealerListResponse == null)
                 ? Container()
-                : DealersListViewWidget(),
+                : DealersListWidget(),
           );
         });
   }

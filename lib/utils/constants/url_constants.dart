@@ -50,8 +50,6 @@ abstract class UrlConstants {
   static const String updateVisit = '$baseUrl/mwp/update-visit';
   static const String getDealersList = '$baseUrl/mwp/add-visit?referenceID=';
   static const String viewVisitData = '$baseUrl/mwp/view-mwp-visit-meet?referenceID=';
-  static const String getSitesList = '$baseUrl/sites/site-list-view?referenceID=';
-  static const String getTargetVsActualData = '$baseUrl/mwp/targetVsActual?referenceID=';
   static const String getServiceRequestFormData = '$baseUrl/srcomplaint/sr_complaint_add';
   static const String getRequestorDetails = '$baseUrl/srcomplaint/sr_requester_search?referenceId=';
   static const String getComplaintListData = '$baseUrl/srcomplaint/sr_list_view?referenceId=';

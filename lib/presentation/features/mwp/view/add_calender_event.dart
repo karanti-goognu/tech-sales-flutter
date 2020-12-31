@@ -559,12 +559,14 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
       onTap: () {
         if (title == StringConstants.visits) {
           _addEventController.selectedView = 'Visit';
+          Get.offNamed(Routes.ADD_EVENT_SCREEN);
         } else if (title == StringConstants.influencersMeet) {
           _addEventController.selectedView = 'Influencers meet';
-        } else {
-          //Get.toNamed(Routes.ADD_EVENT_SCREEN);
+          Get.offNamed(Routes.ADD_EVENT_SCREEN);
+        } else if (title == StringConstants.services)  {
+          Get.toNamed(Routes.SERVICE_REQUEST_CREATION);
         }
-        Get.offNamed(Routes.ADD_EVENT_SCREEN);
+
       },
       child: Container(
         height: 60,

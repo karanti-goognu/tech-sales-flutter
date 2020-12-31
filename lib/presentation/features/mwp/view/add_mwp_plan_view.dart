@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/AddMWPPlanModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/model/AddMWPPlanModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';

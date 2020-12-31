@@ -83,54 +83,6 @@ class AddEventScreenPageState extends State<AddEvent> {
                       ),
                     ],
                   ),
-
-                  // Right Tab bar icons
-
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      MaterialButton(
-                        minWidth: 40,
-                        onPressed: () {},
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.drafts,
-                              color: Colors.white60,
-                            ),
-                            Text(
-                              'Drafts',
-                              style: TextStyle(
-                                color: Colors.white60,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      MaterialButton(
-                        minWidth: 40,
-                        onPressed: () {
-                          Get.toNamed(Routes.SEARCH_SCREEN);
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.search,
-                              color: Colors.white60,
-                            ),
-                            Text(
-                              'Search',
-                              style: TextStyle(
-                                color: Colors.white60,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
                 ],
               ),
             ),

@@ -20,7 +20,6 @@ abstract class FormFieldStyle {
       enabledBorder: InputBordersDecorations.outLineInputBorderEnabled,
       errorBorder: InputBordersDecorations.outLineInputBorderError,
       labelText: labelText,
-      hintText: "Test",
       filled: false,
       focusColor: Colors.black,
       isDense: false,
