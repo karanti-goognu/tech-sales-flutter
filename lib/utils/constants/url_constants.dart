@@ -1,4 +1,3 @@
-
 import 'package:http/http.dart';
 
 final client = Client();
@@ -6,7 +5,7 @@ final client = Client();
 
 abstract class UrlConstants {
 
-  //Base Url
+ //Base Url
   //static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
 
   //Release
@@ -14,7 +13,7 @@ abstract class UrlConstants {
 
    static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
    static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';*/
-  //Development
+ //Development
   static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
 
   static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
@@ -40,6 +39,12 @@ abstract class UrlConstants {
   static const String getSiteSearchData = '$baseUrl/sites/site-search/?';
   static const String getCheckInDetails = '$baseUrl/journey/details';
   static const String getSitesList = '$baseUrl/sites/site-list-view?referenceID=';
+  static const String getTargetVsActualData = '$baseUrl/mwp/targetVsActual?referenceID=';
+  static const String getServiceRequestFormData = '$baseUrl/srcomplaint/sr_complaint_add';
+  static const String getRequestorDetails = '$baseUrl/srcomplaint/sr_requester_search?referenceId=';
+  static const String getComplaintListData = '$baseUrl/srcomplaint/sr_list_view?referenceId=';
+  static const String addServiceRequest = '$baseUrl/srcomplaint/sr_complaint_save';
+  static const String srComplaintView = '$baseUrl/srcomplaint/sr_complaint_view?referenceId=';
 
 
 

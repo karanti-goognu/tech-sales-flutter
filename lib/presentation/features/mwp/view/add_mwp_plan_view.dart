@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/AddMWPPlanModel.dart';
+import 'file:///D:/Development/flutter/TechSalesFlutter/lib/presentation/features/mwp/data/model/AddMWPPlanModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -55,19 +55,12 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text(
-                      mwpPlanList[index].title,
-                      style: GoogleFonts.roboto(
-                        fontSize: 16,
-                        color: ColorConstants.lightGreyColor,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  mwpPlanList[index].title,
+                  style: GoogleFonts.roboto(
+                    fontSize: 16,
+                    color: ColorConstants.lightGreyColor,
+                  ),
                 ),
                 flex: 5,
               ),

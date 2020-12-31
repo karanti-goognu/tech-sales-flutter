@@ -146,6 +146,8 @@ class LeadsFilterController extends GetxController {
       repository
           .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
+            print("WAHEGURU");
+            print(data.toJson()['secret-key']);
         Get.back();
         this.secretKeyResponse = data;
         if (data != null) {
@@ -160,6 +162,7 @@ class LeadsFilterController extends GetxController {
   }
 
   getAccessKey(int requestId) {
+
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),

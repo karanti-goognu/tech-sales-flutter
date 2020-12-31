@@ -13,4 +13,8 @@ class MyRepositoryApp {
   getSecretKey(String empId, String mobileNumber) {
     return apiClient.getSecretKey(empId, mobileNumber);
   }
+
+  getTargetVsActualData(String url) {
+    return apiClient.getTargetVsActualData(url);
+  }
 }

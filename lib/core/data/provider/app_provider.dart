@@ -44,6 +44,7 @@ class MyApiClientApp {
         'mobile-number': mobile,
       };
 
+
       var response = await httpClient.get(UrlConstants.getSecretKey,
           headers: requestHeadersEmpIdAndNo);
       print('Response body is : ${json.decode(response.body)}');
@@ -55,6 +56,24 @@ class MyApiClientApp {
       } else {
         print('Error in else');
       }
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
+
+  getTargetVsActualData(String url) async {
+    try {
+      print('$requestHeaders');
+      var response = await httpClient.get(url,
+          headers: requestHeaders);
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
+        //print('Access key Object is :: $accessKeyModel');
+        return accessKeyModel;
+      } else
+        print('error');
     } catch (_) {
       print('exception ${_.toString()}');
     }

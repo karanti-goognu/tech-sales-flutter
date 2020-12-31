@@ -265,7 +265,8 @@ class SiteController extends GetxController {
       this.accessKeyResponse = data;
 //print(this.accessKeyResponse.accessKey);
       updateSiteDataInBackend(updateDataRequest, list, context, siteId);
-    });
+    }
+    );
   }
 
   Future<void> updateSiteDataInBackend(updateDataRequest, List<File> list,

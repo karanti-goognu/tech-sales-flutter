@@ -2293,7 +2293,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           child: FlatButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(0),
-                                side: BorderSide(color: Colors.black26)),
+                                side: BorderSide(color: Colors.black26),),
                             color: Colors.transparent,
                             child: Padding(
                               padding: const EdgeInsets.only(

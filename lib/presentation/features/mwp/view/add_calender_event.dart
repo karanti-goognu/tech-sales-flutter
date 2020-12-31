@@ -3,8 +3,12 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_calendar_event_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/model/TargetVSActualModel.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 class AddCalenderEventPage extends StatefulWidget {
@@ -12,11 +16,283 @@ class AddCalenderEventPage extends StatefulWidget {
   _AddCalenderEventPageState createState() => new _AddCalenderEventPageState();
 }
 
+
 class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
   DateTime _currentDate = DateTime(2020, 8, 3);
   DateTime _currentDate2 = DateTime(2020, 8, 4);
   String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 8, 3));
   DateTime _targetDateTime = DateTime(2020, 8, 3);
+  TargetVsActualModel targetVsActualModel;
+
+  AddCalendarEventController eventController = Get.find();
+  List calendarEventTitle = [
+    'Site Conv. (No. of sites)',
+    'Site Visits (Total)',
+    'Counter Meet'
+  ];
+  // List calendarTargetData=[];
+
+  Future<dynamic> showBottomSheet(context) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: MediaQuery.of(context).size.height / 2.5,
+            color: Colors.white,
+            child: targetVsActualModel.siteConversionCountTarget != null
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16.5, 16.5, 16.5, 0),
+                        child: Text(
+                          'Target Vs Actual',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(),
+                            flex: 5,
+                          ),
+                          Expanded(
+                            child: Text('Tgt.'),
+                          ),
+                          Expanded(
+                            child: Text('Act.'),
+                          ),
+                        ],
+                      ),
+                      // SizedBox(height: 24,),
+                      Expanded(
+                        child: Column(children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(calendarEventTitle[0]),
+                                  flex: 4,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ColorConstants
+                                                  .lightOutlineColor)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          targetVsActualModel
+                                              .siteConversionCountTarget
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color:
+                                                  ColorConstants.lightGreyColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ColorConstants
+                                                  .lightOutlineColor)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          targetVsActualModel
+                                              .siteConversionCountActual
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color:
+                                                  ColorConstants.lightGreyColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(calendarEventTitle[1]),
+                                  flex: 4,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ColorConstants
+                                                  .lightOutlineColor)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          targetVsActualModel
+                                              .siteVisitsCountTarget
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color:
+                                                  ColorConstants.lightGreyColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ColorConstants
+                                                  .lightOutlineColor)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          targetVsActualModel
+                                              .siteVisitsCountActual
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color:
+                                                  ColorConstants.lightGreyColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(calendarEventTitle[2]),
+                                  flex: 4,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ColorConstants
+                                                  .lightOutlineColor)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          targetVsActualModel
+                                              .counterMeetCountTarget
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color:
+                                                  ColorConstants.lightGreyColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ColorConstants
+                                                  .lightOutlineColor)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          targetVsActualModel
+                                              .counterMeetCountActual
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color:
+                                                  ColorConstants.lightGreyColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ]),
+                      )
+                    ],
+                  )
+                : Center(
+                    child: Text(
+                      targetVsActualModel.respMsg,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+          );
+        });
+  }
 
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
@@ -52,10 +328,20 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     },
   );
 
+  getBottomSheetData() async {
+    eventController.getAccessKey().then((data) async {
+      targetVsActualModel =
+          await eventController.getTargetVsActualData(data.accessKey);
+      print(targetVsActualModel.toJson());
+    });
+  }
+
   CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
 
   @override
   void initState() {
+    getBottomSheetData();
+    // getBottomSheetData();
     /* _markedDateMap.addAll(new DateTime(2020, 8, 13), [
       new Event(
         date: new DateTime(2020, 8, 13),
@@ -123,8 +409,24 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
 
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Add Calender"),
-          actions: [],
+          title: new Text("My Plan"),
+          actions: [
+            MaterialButton(
+              onPressed: () {},
+              child: Row(
+                children: [
+                  Icon(Icons.add_circle_outline, color: Colors.white),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Add',
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -185,24 +487,32 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: ColorConstants.lightGeyColor)
-                      ),
-                      child: Text(
-                        'TARGET VS ACTUAL/PLAN',
-                        style: ButtonStyles.buttonStyleWhite,
+                    GestureDetector(
+                      onTap: () => showBottomSheet(context),
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: ColorConstants.lightGeyColor)),
+                        child: Text(
+                          'TARGET VS ACTUAL/PLAN',
+                          style: ButtonStyles.buttonStyleWhite,
+                        ),
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: ColorConstants.lightGeyColor)
-                      ),
-                      child: Text(
-                        'MWP STATUS',
-                        style: ButtonStyles.buttonStyleWhite,
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.ADD_MWP_SCREEN);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: ColorConstants.lightGeyColor)),
+                        child: Text(
+                          'MWP STATUS',
+                          style: ButtonStyles.buttonStyleWhite,
+                        ),
                       ),
                     ),
                   ],

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/view/servicerequests.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
@@ -90,7 +91,39 @@ class _HomeScreenState extends State<HomeScreen> {
               automaticallyImplyLeading: false,
               actions: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 25.0, top: 20),
+                  padding: const EdgeInsets.only(right: 8.0, top: 20),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                        Get.toNamed(Routes.ADD_CALENDER_SCREEN);
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.black, width: 0.0),
+                            borderRadius:
+                            new BorderRadius.all(Radius.circular(70),),
+                          ),
+                          child: Icon(
+                            Icons.calendar_today_outlined,
+                            color: HexColor("#FFCD00"),
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "My Calendar",
+                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 5.0, top: 20),
                   child: Column(
                     children: [
                       GestureDetector(
@@ -294,7 +327,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-            )));
+            ),
+        ),);
   }
 
   Widget checkInSliderButton() {
@@ -424,10 +458,11 @@ class _HomeScreenState extends State<HomeScreen> {
               if (list[index].value == "MWP") {
                 Get.toNamed(Routes.ADD_MWP_SCREEN);
               }
-              if (list[index].value == "Service Requests") {
-                print("here");
-                Get.dialog(CustomDialogs().errorDialog(
-                    list[index].value + " Page Coming Soon .... "));
+              if (list[index].value == "Service\nRequests") {
+                // Navigator.push(context, MaterialPageRoute(
+                //   builder: (context)=>ServiceRequests()
+                // ));
+                Get.toNamed(Routes.SERVICE_REQUESTS);
               }
             },
             child: Card(
