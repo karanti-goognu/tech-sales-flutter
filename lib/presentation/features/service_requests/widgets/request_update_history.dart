@@ -1,100 +1,103 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:flutter_tech_sales/widgets/datepicker.dart';
+import 'package:intl/intl.dart';
 
 class RequestUpdateHistory extends StatefulWidget {
+  final List<SrComplaintActionList> srComplaintActionList;
+  RequestUpdateHistory({this.srComplaintActionList});
   @override
   _RequestUpdateHistoryState createState() => _RequestUpdateHistoryState();
 }
 
 class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
+  List<bool> isExpanded = [false, false];
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Theme(
-          data: ThemeData(
-            splashColor: Colors.transparent,
-              accentColor: Colors.black
-          ),
-          child: ExpansionTile(
-            // onExpansionChanged: ,
-            tilePadding: EdgeInsets.zero,
-            title: Text('Visit Date 10-Nov-2020'),
-            trailing: Container(
-              width: 100,
-              child: Row(
-                children: [
-                  Icon(Icons.add, color: HexColor('#F9A61A')),
-                  SizedBox(width: 2,),
-                  Text(
-                    'EXPAND',
-                    style: TextStyle(color: HexColor('#F9A61A')),
+        Container(
+          child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.srComplaintActionList.length,
+              itemBuilder: (context, index) {
+                final DateFormat formatter = DateFormat('dd-MMM-yyyy');
+                String selectedDateString = formatter.format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                        widget.srComplaintActionList[index].createdOn));
+
+                List<TextEditingController> _commentList = List.generate(
+                    widget.srComplaintActionList.length,
+                    (index) => TextEditingController(
+                        text: widget.srComplaintActionList[index].comment));
+                List<dynamic> _nextVisitDate = List.generate(
+                    widget.srComplaintActionList.length,
+                    (index) =>
+                        widget.srComplaintActionList[index].nextVisitDate);
+                String visitDate = formatter.format(
+                    DateTime.fromMillisecondsSinceEpoch(_nextVisitDate[index]));
+                TextEditingController _visitDate =
+                    TextEditingController(text: visitDate);
+
+                return Theme(
+                  data: ThemeData(
+                      splashColor: Colors.transparent,
+                      accentColor: Colors.black),
+                  child: ExpansionTile(
+                    onExpansionChanged: (val) {
+                      setState(() {
+                        isExpanded[index] = val;
+                      });
+                    },
+                    tilePadding: EdgeInsets.zero,
+                    title: Text('Visit Date $selectedDateString'),
+                    trailing: Container(
+                      width: 100,
+                      child: Row(
+                        children: [
+                          Icon(
+                            isExpanded[index] ? Icons.remove : Icons.add,
+                            color: HexColor('#F9A61A'),
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text(
+                            isExpanded[index] == true ? 'COLLAPSE' : 'EXPAND',
+                            style: TextStyle(
+                              color: HexColor('#F9A61A'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    children: <Widget>[
+                      TextFormField(
+                        maxLines: 4,
+                        controller: _commentList[index],
+                        readOnly: true,
+                        maxLength: 500,
+                        style: FormFieldStyle.formFieldTextStyle,
+                        keyboardType: TextInputType.text,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Comment*"),
+                      ),
+                      TextFormField(
+                        controller: _visitDate,
+                        readOnly: true,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: 'Next Visit Date',
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      )
+                    ],
                   ),
-                ],
-              ),
-            ),
-            children: <Widget>[
-              TextFormField(
-                maxLines: 4,
-                maxLength: 500,
-              style: FormFieldStyle.formFieldTextStyle,
-                keyboardType: TextInputType.text,
-                decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Comment*"),
-              ),
-              TextFormField(
-                readOnly: true,
-                onTap: () => PickDate.selectDate(context),
-                decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: 'Date and time',
-                    suffixIcon: Icon(Icons.calendar_today_outlined, color: HexColor('#F6A902'),),),
-              ),
-              SizedBox(height: 16,)
-            ],
-          ),
-        ),
-        Theme(
-          data: ThemeData(
-              splashColor: Colors.transparent,
-            accentColor: Colors.black
-          ),
-          child: ExpansionTile(
-            tilePadding: EdgeInsets.zero,
-            title: Text('Visit Date 08-Nov-2020'),
-            trailing: Container(
-              width: 100,
-              child: Row(
-                children: [
-                  Icon(Icons.remove, color: HexColor('#F9A61A')),
-                  SizedBox(width: 2,),
-                  Text(
-                    'COLLAPSE',
-                    style: TextStyle(color: HexColor('#F9A61A')),
-                  ),
-                ],
-              ),
-            ),
-            children: <Widget>[
-              TextFormField(
-                maxLines: 4,
-                maxLength: 500,
-                style: FormFieldStyle.formFieldTextStyle,
-                keyboardType: TextInputType.text,
-                decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Comment*"),
-              ),
-              TextFormField(
-                readOnly: true,
-                onTap: () => PickDate.selectDate(context),
-                decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: 'Date and time',
-                    suffixIcon: Icon(Icons.calendar_today_outlined, color: HexColor('#F6A902'),),),
-              ),
-              SizedBox(height: 16,)
-            ],
-          ),
+                );
+              }),
         ),
         RaisedButton(
           onPressed: () {},
@@ -111,5 +114,4 @@ class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
       ],
     );
   }
-
 }

@@ -20,6 +20,7 @@ class RequestUpdation extends StatefulWidget {
 
 class _RequestUpdationState extends State<RequestUpdation> {
   int option = 1;
+  String dropdownValue = 'Select visit sub-types';
   // ComplaintViewController complaintViewController = Get.find();
   SRListController srListController= Get.find();
   ComplaintViewModel complaintViewModel;
@@ -41,7 +42,6 @@ class _RequestUpdationState extends State<RequestUpdation> {
   void initState() {
   getComplaintViewData();
   //     .whenComplete((){
-  //   print('waheguru');
   //   setState(() {
   //   complaintViewModel = data;
   //   });
@@ -224,14 +224,18 @@ class _RequestUpdationState extends State<RequestUpdation> {
                                 fontFamily: "Muli",
                                 fontWeight: FontWeight.bold),
                           ),
-                          Container(
+                          Card(
+                            elevation: 6,
                             color: Colors.white,
-
-                            child: DropdownButton(
-                              hint: Text('In Progress'),
-                              value: 123,
-                              onChanged: (value) {},
-                              elevation: 8,
+                            child: DropdownButtonHideUnderline (
+                              child: DropdownButton(
+                                items: complaintViewModel.srcResolutionEntity.map((e) => DropdownMenuItem(child: Text(e.resolutionText),value: e.id,),).toList(),
+                              
+                                // hint: Text('In Progress'),
+                                value: complaintViewModel.resoulutionStatus,
+                                onChanged: (value) {},
+                                elevation: 8,
+                              ),
                             ),
                           ),
                         ],
@@ -297,10 +301,13 @@ class _RequestUpdationState extends State<RequestUpdation> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: option == 1
-                              ? RequestUpdateDetails()
+                              ? RequestUpdateDetails(complaintViewModel: complaintViewModel,id: widget.id,)
                               : option == 2
-                                  ? RequestUpdateAction()
-                                  : RequestUpdateHistory()
+                                  ? RequestUpdateAction(dept: complaintViewModel.deaprtmentText,)
+                                  : RequestUpdateHistory(
+                            srComplaintActionList: complaintViewModel.srComplaintActionList,
+                            // srComplaintActionList: complaintViewModel.srComplaintActionList,
+                          )
                         ),
                         SizedBox(height: 100,)
                       ],

@@ -38,7 +38,7 @@ class SrRepository{
     return apiClient.getSiteListData(accessKey, userSecretKey, empID, siteID);
   }
 
-  Future saveServiceRequest(List<File> imageList,String accessKey, String userSecretKey, SaveServiceRequest saveRequestModel) async{
+  Future<Map> saveServiceRequest(List<File> imageList,String accessKey, String userSecretKey, SaveServiceRequest saveRequestModel) async{
     return apiClient.saveServiceRequest(imageList, accessKey, userSecretKey,  saveRequestModel);
   }
 

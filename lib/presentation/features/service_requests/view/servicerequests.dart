@@ -285,7 +285,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          data != null
+                          serviceRequestComplaintListModel.totalCount != null
                               ? "Total Count : ${serviceRequestComplaintListModel.totalCount}"
                               : "Total Count : 0",
                           style: TextStyle(
@@ -295,7 +295,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           ),
                         ),
                         Text(
-                          data != null
+                          serviceRequestComplaintListModel.totalPotential != null
                               ? "Total Potential : ${serviceRequestComplaintListModel.totalPotential} MT"
                               : "Total Potential : 0 MT",
                           style: TextStyle(

@@ -5,23 +5,55 @@ import 'package:flutter_tech_sales/widgets/datepicker.dart';
 import 'package:flutter_tech_sales/widgets/image_upload.dart';
 
 class RequestUpdateAction extends StatefulWidget {
+  final dept;
+  RequestUpdateAction({this.dept});
   @override
   _RequestUpdateActionState createState() => _RequestUpdateActionState();
 }
 
 class _RequestUpdateActionState extends State<RequestUpdateAction> {
+  TextEditingController _location = TextEditingController();
+  TextEditingController _noOfBags = TextEditingController();
+  TextEditingController _comment = TextEditingController();
+  String _productComplaint;
+  String _techVan;
+  String _productType;
+  String _resolutionStatus;
+ String requestNature;
+
+  // String _productComplaint;
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Form(
       child: Column(
         children: [
           DropdownButtonFormField(
+            onChanged: (value) {
+              setState(() {
+                requestNature = value;
+              });
+            },
+            items: [
+              'geniune',
+              'not geniune'
+            ]
+                .map((e) => DropdownMenuItem(
+                      child: Text(
+                        e.toUpperCase(),
+                      ),
+                      value: e,
+                    ))
+                .toList(),
             style: FormFieldStyle.formFieldTextStyle,
-            decoration: FormFieldStyle.buildInputDecoration(
-                labelText: "Request Nature*"),
+            decoration:
+                FormFieldStyle.buildInputDecoration(labelText: "Request Nature*"),
           ),
           SizedBox(height: 16),
           TextFormField(
+            controller: _location,
             style: FormFieldStyle.formFieldTextStyle,
             keyboardType: TextInputType.text,
             decoration:
@@ -37,29 +69,67 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Product Complaint"),
+            items: ['YES', 'NO']
+                .map(
+                  (e) => DropdownMenuItem(
+                    child: Text(e),
+                    value: e,
+                  ),
+                )
+                .toList(),
+            onChanged: (val) {
+              setState(() {
+                _productComplaint=val;
+              });
+            },
           ),
           SizedBox(height: 16),
+          widget.dept=='TECHNICAL SERVICES'?
           DropdownButtonFormField(
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "TechVan Required"),
-          ),
-          SizedBox(height: 16),
+            items: ['YES', 'NO']
+                .map(
+                  (e) => DropdownMenuItem(
+                    child: Text(e),
+                    value: e,
+                  ),
+                )
+                .toList(),
+            onChanged: (val) {
+              print(widget.dept);
+            },
+          ): Container(),
+          widget.dept=='TECHNICAL SERVICES'?
+          SizedBox(height: 16): Container(),
           DropdownButtonFormField(
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
                 FormFieldStyle.buildInputDecoration(labelText: "Product Type"),
+            items: ['GENIUNE', 'NOT GENIUNE']
+                .map(
+                  (e) => DropdownMenuItem(
+                    child: Text(e),
+                    value: e,
+                  ),
+                )
+                .toList(),
+            onChanged: (val) {
+              print('test');
+            },
           ),
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
             onTap: () => PickDate.selectDate(context),
             decoration: FormFieldStyle.buildInputDecoration(
-                labelText: 'Date and time',
-                suffixIcon: Icon(
-                  Icons.calendar_today_outlined,
-                  color: HexColor('#F9A61A'),
-                ),),
+              labelText: 'Date of Purchase',
+              suffixIcon: Icon(
+                Icons.calendar_today_outlined,
+                color: HexColor('#F9A61A'),
+              ),
+            ),
           ),
           SizedBox(height: 16),
           TextFormField(
@@ -70,13 +140,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
           ),
           SizedBox(height: 16),
           TextFormField(
-            style: FormFieldStyle.formFieldTextStyle,
-            keyboardType: TextInputType.text,
-            decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "No. of Bags"),
-          ),
-          SizedBox(height: 16),
-          TextFormField(
+            controller: _noOfBags,
             style: FormFieldStyle.formFieldTextStyle,
             keyboardType: TextInputType.text,
             decoration:
@@ -87,10 +151,22 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Resolution Status*"),
+            items: ['GENIUNE', 'NOT GENIUNE']
+                .map(
+                  (e) => DropdownMenuItem(
+                    child: Text(e),
+                    value: e,
+                  ),
+                )
+                .toList(),
+            onChanged: (val) {
+              print('test');
+            },
           ),
           SizedBox(height: 16),
           TextFormField(
             maxLines: 4,
+            controller: _comment,
             maxLength: 500,
             style: FormFieldStyle.formFieldTextStyle,
             keyboardType: TextInputType.text,

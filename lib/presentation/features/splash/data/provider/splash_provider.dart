@@ -77,8 +77,6 @@ class MyApiClientSplash {
       print('Response body is : ${(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print('waheguru ${data['severity']}');
-
         SplashDataModel splashDataModel = SplashDataModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return splashDataModel;

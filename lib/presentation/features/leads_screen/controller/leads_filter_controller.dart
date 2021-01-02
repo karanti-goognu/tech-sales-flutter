@@ -146,7 +146,6 @@ class LeadsFilterController extends GetxController {
       repository
           .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
-            print("WAHEGURU");
             print(data.toJson()['secret-key']);
         Get.back();
         this.secretKeyResponse = data;

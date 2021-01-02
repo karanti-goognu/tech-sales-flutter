@@ -125,7 +125,8 @@ class MyApiClient {
     return serviceRequestComplaintListModel;
   }
 
-  Future<ServiceRequestComplaintListModel> saveServiceRequest(List<File> imageList,String accessKey, String userSecretKey, SaveServiceRequest saveServiceRequest) async{
+  Future<Map> saveServiceRequest(List<File> imageList,String accessKey, String userSecretKey, SaveServiceRequest saveServiceRequest) async{
+    http.Response response;
     try{
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.addServiceRequest));
       request.headers.addAll(
@@ -148,10 +149,12 @@ class MyApiClient {
 
         request.files.add(multipartFileSign);
       }
-      request.send().then((value) async {
+      await request.send().then((value) async {
 
-        http.Response response = await http.Response.fromStream(value);
+        response = await http.Response.fromStream(value);
         print(response.body);
+        return json.decode(response.body);
+
       });
 
       // var response = await http.post(Uri.parse(UrlConstants.addServiceRequest),
@@ -162,7 +165,9 @@ class MyApiClient {
     }
     catch(e){
       print("Exception at SR Repo $e");
+      return null;
     }
+  return json.decode(response.body);
   }
 
   Future<ComplaintViewModel> getComplaintViewData(String accessKey, String userSecretKey,String empID, String id) async{
@@ -173,12 +178,9 @@ class MyApiClient {
       print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
-      print("data inside provider"+response.body);
       var data = json.decode(response.body);
       print(data);
       complaintViewModel =  ComplaintViewModel.fromJson(data);
-      print("Working");
-      // data =response.body;
     }
     catch(e){
       print("Exception at SR Repo $e");

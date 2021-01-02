@@ -12,6 +12,7 @@ abstract class FormFieldStyle {
 
   static InputDecoration buildInputDecoration({
     String labelText,
+    String hintText,
     Widget suffixIcon,
     Widget prefixIcon,
   }) {
@@ -20,7 +21,7 @@ abstract class FormFieldStyle {
       enabledBorder: InputBordersDecorations.outLineInputBorderEnabled,
       errorBorder: InputBordersDecorations.outLineInputBorderError,
       labelText: labelText,
-      hintText: "Test",
+      hintText: hintText,
       filled: false,
       focusColor: Colors.black,
       isDense: false,

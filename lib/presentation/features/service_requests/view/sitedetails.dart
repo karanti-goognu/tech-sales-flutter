@@ -31,8 +31,6 @@ class _SiteDetailsState extends State<SiteDetails> {
       setState(() {
         siteListModel = data;
       });
-      print('yes');
-      print(data.toJson());
     });
     super.initState();
   }

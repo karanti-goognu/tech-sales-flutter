@@ -2,7 +2,12 @@ class ComplaintViewModel {
   String resCode;
   String resMsg;
   int id;
+  String allocatedToName;
+  int dayOpen;
+  String sitePotentialMt;
   String escalationLevel;
+  String srComplaintDate;
+  String creatorContactNumber;
   String sla;
   int tsoId;
   String referenceId;
@@ -12,7 +17,7 @@ class ComplaintViewModel {
   String requestText;
   String creatorType;
   String creatorId;
-  Null creatorName;
+  String creatorName;
   int siteId;
   String description;
   String severity;
@@ -33,8 +38,13 @@ class ComplaintViewModel {
       {this.resCode,
         this.resMsg,
         this.id,
+        this.dayOpen,
+        this.srComplaintDate,
+        this.sitePotentialMt,
+        this.allocatedToName,
         this.escalationLevel,
         this.sla,
+        this.creatorContactNumber,
         this.tsoId,
         this.referenceId,
         this.requestDepartment,
@@ -64,8 +74,13 @@ class ComplaintViewModel {
     resCode = json['resCode'];
     resMsg = json['resMsg'];
     id = json['id'];
+    allocatedToName = json['allocatedToName'];
+    dayOpen = json['dayOpen'];
+    sitePotentialMt = json['sitePotentialMt'];
+    srComplaintDate = json['srComplaintDate'];
     escalationLevel = json['escalationLevel'];
     sla = json['sla'];
+    creatorContactNumber = json['creatorContactNumber'];
     tsoId = json['tsoId'];
     referenceId = json['referenceId'];
     requestDepartment = json['requestDepartment'];
@@ -112,9 +127,12 @@ class ComplaintViewModel {
     data['resCode'] = this.resCode;
     data['resMsg'] = this.resMsg;
     data['id'] = this.id;
+    data['allocatedToName'] = this.allocatedToName;
     data['escalationLevel'] = this.escalationLevel;
+    data['srComplaintDate'] = this.srComplaintDate;
     data['sla'] = this.sla;
     data['tsoId'] = this.tsoId;
+    data['creatorContactNumber'] = this.creatorContactNumber;
     data['referenceId'] = this.referenceId;
     data['requestDepartment'] = this.requestDepartment;
     data['deaprtmentText'] = this.deaprtmentText;

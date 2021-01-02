@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/widget
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -52,6 +53,10 @@ class _RequestCreationState extends State<RequestCreation> {
   }
 
   getRequestorData(String requestorType) async {
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     await eventController.getAccessKey().then((value) async {
       await eventController
           .getRequestorDetails(value.accessKey, requestorType)
@@ -59,24 +64,25 @@ class _RequestCreationState extends State<RequestCreation> {
         setState(() {
           requestorDetailsModel = data;
         });
-        print(data.toJson());
         for (int i = 0;
             i < requestorDetailsModel.srComplaintRequesterList.length;
             i++) {
           setState(() {
             suggestions.add(requestorDetailsModel
-                .srComplaintRequesterList[i].requesterName +
+                    .srComplaintRequesterList[i].requesterName +
                 " (${requestorDetailsModel.srComplaintRequesterList[i].requesterCode})");
           });
-
         }
+        Get.back();
       });
     });
   }
 
   List<String> suggestions = [];
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _requestSubType = TextEditingController();
   TextEditingController _severity = TextEditingController();
+  TextEditingController _siteID = TextEditingController();
   TextEditingController _customerID = TextEditingController();
   TextEditingController _requestorContact = TextEditingController();
   TextEditingController _requestorName = TextEditingController();
@@ -142,351 +148,499 @@ class _RequestCreationState extends State<RequestCreation> {
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Form(
+                            key: _formKey,
                             child: Column(
-                          children: [
-                            DropdownButtonFormField(
-                              onChanged: (value) {
-                                setState(() {
-                                  requestDepartmentId=value;
-                                });
-                              },
-                              items: srComplaintModel
-                                  .serviceRequestComplaintDepartmentEntity
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.id,
-                                        child: Text(e.departmentText),
-                                      ))
-                                  .toList(),
-                              style: FormFieldStyle.formFieldTextStyle,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Department*"),
-                            ),
-                            SizedBox(height: 16),
-                            DropdownButtonFormField(
-                              onChanged: (value) {
-                                setState(() {
-                                  requestId=value;
-                                  requestId==2?isComplaint=true:isComplaint=false;
-                                });
-                              },
-                              items: srComplaintModel
-                                  .serviceRequestComplaintRequestEntity
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.id,
-                                        child: Text(e.requestText),
-                                      ))
-                                  .toList(),
-                              style: FormFieldStyle.formFieldTextStyle,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Request Type*"),
-                            ),
-                            SizedBox(height: 16),
-                            TextFormField(
-                              controller: _requestSubType,
-                              onTap: getBottomSheet,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                labelText: "Request Sub-type*",
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 12),
-                                  child: Text(
-                                    'Select',
-                                    style: TextStyle(
-                                      color: HexColor('#F9A61A'),
+                              children: [
+                                DropdownButtonFormField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      requestDepartmentId = value;
+                                    });
+                                  },
+                                  items: srComplaintModel
+                                      .serviceRequestComplaintDepartmentEntity
+                                      .map((e) => DropdownMenuItem(
+                                            value: e.id,
+                                            child: Text(e.departmentText),
+                                          ))
+                                      .toList(),
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Department*"),
+                                ),
+                                SizedBox(height: 16),
+                                DropdownButtonFormField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      requestId = value;
+                                      requestId == 2
+                                          ? isComplaint = true
+                                          : isComplaint = false;
+                                    });
+                                  },
+                                  items: srComplaintModel
+                                      .serviceRequestComplaintRequestEntity
+                                      .map((e) => DropdownMenuItem(
+                                            value: e.id,
+                                            child: Text(e.requestText),
+                                          ))
+                                      .toList(),
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Request Type*"),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _requestSubType,
+                                  onTap: getBottomSheet,
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                    labelText: "Request Sub-type*",
+                                    suffixIcon: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 12),
+                                      child: Text(
+                                        'Select',
+                                        style: TextStyle(
+                                          color: HexColor('#F9A61A'),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  readOnly: true,
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _severity,
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  keyboardType: TextInputType.text,
+                                  readOnly: true,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Severity"),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _siteID,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter the site ID';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  keyboardType: TextInputType.phone,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Site ID"),
+                                ),
+                                SizedBox(height: 16),
+                                DropdownButtonFormField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      creatorType = value;
+                                    });
+                                    getRequestorData(value);
+                                  },
+                                  items: [
+                                    'IHB',
+                                    'IS',
+                                    'Influencer',
+                                    'Dealer',
+                                    'SDlr',
+                                    'Sales Officer',
+                                    'Employee',
+                                    'Customer'
+                                  ]
+                                      .map((e) => DropdownMenuItem(
+                                            child: Text(
+                                              e.toUpperCase(),
+                                            ),
+                                            value: e,
+                                          ))
+                                      .toList(),
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Customer Type"),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _customerID,
+                                  readOnly: true,
+                                  onTap: () {
+                                    requestorDetailsModel == null
+                                        ? Get.rawSnackbar(
+                                            titleText: Text("Message"),
+                                            messageText: Text(
+                                                "Please select a customer type"),
+                                            backgroundColor: Colors.white,
+                                          )
+                                        : Get.bottomSheet(
+                                            Container(
+                                              color: Colors.white,
+                                              height: 300,
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  Text(
+                                                    'Please select an option from the below list',
+                                                    style: TextStyles
+                                                        .mulliBoldYellow18,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  Divider(),
+                                                  requestorDetailsModel
+                                                              .srComplaintRequesterList ==
+                                                          null
+                                                      ? Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        )
+                                                      : ListView(
+                                                          physics:
+                                                              ScrollPhysics(),
+                                                          children:
+                                                              requestorDetailsModel
+                                                                  .srComplaintRequesterList
+                                                                  .map(
+                                                                    (e) =>
+                                                                        RadioListTile(
+                                                                      value: e,
+                                                                      // selected: ,
+                                                                      title: Text(
+                                                                          '${e.requesterName} (${e.requesterCode})'),
+                                                                      groupValue: [
+                                                                        e.requesterName,
+                                                                        e.requesterName,
+                                                                        e.requesterName
+                                                                      ],
+                                                                      onChanged:
+                                                                          (text) =>
+                                                                              setState(() {
+                                                                        _requestorName.text = e
+                                                                            .requesterName
+                                                                            .replaceAll('(',
+                                                                                '.')
+                                                                            .replaceAll(')',
+                                                                                '')
+                                                                            .split('.')
+                                                                            .first;
+                                                                        _customerID.text = e
+                                                                            .requesterCode
+                                                                            .replaceAll(' ',
+                                                                                '')
+                                                                            .replaceAll('(',
+                                                                                '.')
+                                                                            .replaceAll(')',
+                                                                                '')
+                                                                            .split('.')
+                                                                            .last;
+                                                                      }),
+                                                                    ),
+                                                                  )
+                                                                  .toList(),
+                                                          shrinkWrap: true,
+                                                        ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                  },
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                    labelText: "Customer ID*",
+                                    suffixIcon: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 12),
+                                      child: Text(
+                                        'Select',
+                                        style: TextStyle(
+                                          color: HexColor('#F9A61A'),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              readOnly: true,
-                            ),
-                            SizedBox(height: 16),
-                            TextFormField(
-                              controller: _severity,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              keyboardType: TextInputType.text,
-                              readOnly: true,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Severity"),
-                            ),
-                            SizedBox(height: 16),
-                            DropdownButtonFormField(
-
-                              onChanged: (value) {
-                                setState(() {
-                                  creatorType=value;
-                                });
-                                getRequestorData(value);
-                              },
-                              items: [
-                                'IHB',
-                                'IS',
-                                'Influencer',
-                                'Dealer',
-                                'SDlr',
-                                'Sales Officer',
-                                'Employee',
-                                'Customer'
-                              ]
-                                  .map((e) => DropdownMenuItem(
-                                        child: Text(
-                                          e.toUpperCase(),
-                                        ),
-                                        value: e,
-                                      ))
-                                  .toList(),
-                              style: FormFieldStyle.formFieldTextStyle,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Customer Type"),
-                            ),
-                            SizedBox(height: 16),
-                            SimpleAutoCompleteTextField(
-                              key: key,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Customer ID*"),
-                              controller: _customerID,
-                              suggestions: suggestions,
-                              // textChanged: (text) => setState(() {
-                              //   _customerID.text = text;
-                              // }),
-                              clearOnSubmit: false,
-                              textSubmitted: (text) => setState(() {
-                                _requestorName.text = text.replaceAll('(', '.').replaceAll(')','').split('.').first;
-                                _customerID.text = text.replaceAll(' ', '').replaceAll('(', '.').replaceAll(')','').split('.').last;
-                                print(_customerID.text);
-                              }),
-                            ),
-                            SizedBox(height: 16),
-                            TextFormField(
-                              controller: _requestorContact,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              keyboardType: TextInputType.phone,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Requestor Contact*"),
-                            ),
-                            SizedBox(height: 16),
-                            TextFormField(
-                              controller: _requestorName,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              keyboardType: TextInputType.text,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Requestor Name"),
-                            ),
-                            SizedBox(height: 16),
-                            TextFormField(
-                              controller: _description,
-                              maxLines: 4,
-                              maxLength: 500,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              keyboardType: TextInputType.text,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Description"),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: FlatButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                  side: BorderSide(color: Colors.black26),
+                                SizedBox(height: 16),
+                                // SimpleAutoCompleteTextField(
+                                //   key: key,
+                                //   decoration: FormFieldStyle.buildInputDecoration(
+                                //       labelText: "Customer ID*"),
+                                //   controller: _customerID,
+                                //   suggestions: suggestions,
+                                //   // textChanged: (text) => setState(() {
+                                //   //   _customerID.text = text;
+                                //   // }),
+                                //   clearOnSubmit: false,
+                                //   textSubmitted: (text) => setState(() {
+                                //     _requestorName.text = text
+                                //         .replaceAll('(', '.')
+                                //         .replaceAll(')', '')
+                                //         .split('.')
+                                //         .first;
+                                //     _customerID.text = text
+                                //         .replaceAll(' ', '')
+                                //         .replaceAll('(', '.')
+                                //         .replaceAll(')', '')
+                                //         .split('.')
+                                //         .last;
+                                //     print(_customerID.text);
+                                //   }),
+                                // ),
+                                // SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _requestorContact,
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  keyboardType: TextInputType.phone,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Requestor Contact*"),
                                 ),
-                                color: Colors.transparent,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 5, bottom: 10, top: 10),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _requestorName,
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  keyboardType: TextInputType.text,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Requestor Name"),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _description,
+                                  maxLines: 4,
+                                  maxLength: 500,
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  keyboardType: TextInputType.text,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Description"),
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: FlatButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                      side: BorderSide(color: Colors.black26),
+                                    ),
+                                    color: Colors.transparent,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 5, bottom: 10, top: 10),
+                                      child: Text(
+                                        "UPLOAD PHOTOS",
+                                        style: TextStyle(
+                                            color: HexColor("#1C99D4"),
+                                            fontWeight: FontWeight.bold,
+                                            // letterSpacing: 2,
+                                            fontSize: 17),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      if (_imageList.length < 5) {
+                                        // _showPicker(context);
+                                        _imgFromCamera();
+                                      } else {
+                                        Get.dialog(CustomDialogs().errorDialog(
+                                            "You can add only upto 5 photos"));
+                                      }
+                                    },
+                                  ),
+                                ),
+                                _imageList != null
+                                    ? Row(
+                                        children: [
+                                          Expanded(
+                                            child: ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: _imageList.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      return showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return AlertDialog(
+                                                              content:
+                                                                  new Container(
+                                                                // width: 500,
+                                                                // height: 500,
+                                                                child: Image.file(
+                                                                    _imageList[
+                                                                        index]),
+                                                              ),
+                                                            );
+                                                          });
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              "Picture ${(index + 1)}. ",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 15),
+                                                            ),
+                                                            Text(
+                                                              "Image_${(index + 1)}.jpg",
+                                                              style: TextStyle(
+                                                                  color: HexColor(
+                                                                      "#007CBF"),
+                                                                  fontSize: 15),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        GestureDetector(
+                                                          child: Icon(
+                                                            Icons.delete,
+                                                            color: HexColor(
+                                                                "#FFCD00"),
+                                                          ),
+                                                          onTap: () {
+                                                            setState(() {
+                                                              _imageList
+                                                                  .removeAt(
+                                                                      index);
+                                                            });
+                                                          },
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                }),
+                                          ),
+                                        ],
+                                      )
+                                    : Container(
+                                        color: Colors.blue,
+                                        height: 10,
+                                      ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                _imageList.length != 0
+                                    ? Divider(
+                                        color: Colors.black26,
+                                        thickness: 1,
+                                      )
+                                    : Container(),
+                                TextFormField(
+                                  controller: _state,
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  keyboardType: TextInputType.text,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "State"),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _district,
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  keyboardType: TextInputType.text,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "District"),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _taluk,
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  keyboardType: TextInputType.text,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Taluk"),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _pin,
+                                  style: FormFieldStyle.formFieldTextStyle,
+                                  keyboardType: TextInputType.phone,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Pincode"),
+                                ),
+                                SizedBox(height: 16),
+                                RaisedButton(
+                                  onPressed: () async {
+                                    if (!_formKey.currentState.validate()) {
+                                      print("Error");
+                                    } else {
+                                      String empId = await getEmpId();
+                                      List imageDetails = List();
+                                      _imageList.forEach((element) {
+                                        setState(() {
+                                          imageDetails.add({
+                                            //ToDo: Change srComplaint Id to some dynamic value
+                                            'srComplaintId': null,
+                                            'photoName':
+                                                element.path.split('/').last,
+                                            'createdBy': empId
+                                          });
+                                        });
+                                      });
+                                      SaveServiceRequest _saveServiceRequest =
+                                          SaveServiceRequest.fromJson({
+                                        "createdBy": empId,
+                                        "creatorContactNumber":
+                                            _requestorContact.text,
+                                        "creatorId": _customerID.text,
+                                        "creatorType": creatorType,
+                                        "description": _description.text,
+                                        "district": _district.text,
+                                        "pincode": _pin.text,
+                                        "requestDepartmentId":
+                                            requestDepartmentId,
+                                        "requestId": requestId,
+                                        "resolutionStatusId": 1,
+                                        "siteId": int.parse(_siteID.text),
+                                        "severity": _severity.text,
+                                        "srComplaintPhotosEntity": imageDetails,
+                                        "srComplaintSubtypeMappingEntity": [
+                                          {
+                                            "createdBy": empId,
+                                            "serviceRequestComplaintId": null,
+                                            "serviceRequestComplaintTypeId":
+                                                serviceRequestComplaintTypeId
+                                          }
+                                        ],
+                                        "state": _state.text,
+                                        "taluk": _taluk.text
+                                      });
+                                      saveRequest.getAccessKeyAndSaveRequest(
+                                          _imageList, _saveServiceRequest);
+                                    }
+                                  },
+                                  color: HexColor("#1C99D4"),
                                   child: Text(
-                                    "UPLOAD PHOTOS",
+                                    "SUBMIT",
                                     style: TextStyle(
-                                        color: HexColor("#1C99D4"),
+                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         // letterSpacing: 2,
                                         fontSize: 17),
                                   ),
                                 ),
-                                onPressed: () async {
-                                  if (_imageList.length < 5) {
-                                    // _showPicker(context);
-                                    _imgFromCamera();
-
-                                  } else {
-                                    Get.dialog(CustomDialogs().errorDialog(
-                                        "You can add only upto 5 photos"));
-                                  }
-                                },
-                              ),
-                            ),
-                            _imageList != null
-                                ? Row(
-                                    children: [
-                                      Expanded(
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: _imageList.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  return showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertDialog(
-                                                          content:
-                                                              new Container(
-                                                            // width: 500,
-                                                            // height: 500,
-                                                            child: Image.file(
-                                                                _imageList[
-                                                                    index]),
-                                                          ),
-                                                        );
-                                                      });
-                                                },
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "Picture ${(index + 1)}. ",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 15),
-                                                        ),
-                                                        Text(
-                                                          "Image_${(index + 1)}.jpg",
-                                                          style: TextStyle(
-                                                              color: HexColor(
-                                                                  "#007CBF"),
-                                                              fontSize: 15),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    GestureDetector(
-                                                      child: Icon(
-                                                        Icons.delete,
-                                                        color:
-                                                            HexColor("#FFCD00"),
-                                                      ),
-                                                      onTap: () {
-                                                        setState(() {
-                                                          _imageList
-                                                              .removeAt(index);
-                                                        });
-                                                      },
-                                                    )
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                                    ],
-                                  )
-                                : Container(
-                                    color: Colors.blue,
-                                    height: 10,
-                                  ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            _imageList.length != 0
-                                ? Divider(
-                                    color: Colors.black26,
-                                    thickness: 1,
-                                  )
-                                : Container(),
-                            TextFormField(
-                              controller: _state,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              keyboardType: TextInputType.text,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "State"),
-                            ),
-                            SizedBox(height: 16),
-                            TextFormField(
-                              controller: _district,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              keyboardType: TextInputType.text,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "District"),
-                            ),
-                            SizedBox(height: 16),
-                            TextFormField(
-                              controller: _taluk,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              keyboardType: TextInputType.text,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Taluk"),
-                            ),
-                            SizedBox(height: 16),
-                            TextFormField(
-                              controller: _pin,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              keyboardType: TextInputType.phone,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Pincode"),
-                            ),
-                            SizedBox(height: 16),
-                            RaisedButton(
-                              onPressed: () async {
-                                String empId= await getEmpId();
-                                List imageDetails =
-                                    List();
-                                _imageList.forEach((element) {
-                                  imageDetails.add(
-                                    {
-                                        //ToDo: Change srComplaint Id to some dynamic value
-                                        'srComplaintId': null,
-                                        'photoName': element.path.split('/').last,
-                                        'createdBy': empId}
-                                  );
-                                });
-                                SaveServiceRequest _saveServiceRequest =
-                                SaveServiceRequest.fromJson({
-                                  "createdBy": empId,
-                                  "creatorContactNumber": _requestorContact.text,
-                                  "creatorId": _customerID.text,
-                                  "creatorType": creatorType,
-                                  "description": _description.text,
-                                  "district": _district.text,
-                                  "pincode": _pin.text,
-                                  "requestDepartmentId": requestDepartmentId,
-                                  "requestId": requestId,
-                                  "resolutionStatusId": 1,
-                                  "severity": _severity.text,
-                                  "siteId": 1,
-                                  "srComplaintPhotosEntity": imageDetails,
-                                  "srComplaintSubtypeMappingEntity":
-                                  [
-                                    {
-                                      "createdBy": empId,
-                                      "serviceRequestComplaintId": null,
-                                      "serviceRequestComplaintTypeId": serviceRequestComplaintTypeId
-                                    }
-                                  ]
-                                  ,
-                                  "state": _state.text,
-                                  "taluk": _taluk.text
-                                }
-                                );
-                                saveRequest.getAccessKeyAndSaveRequest(
-                                    _imageList, _saveServiceRequest);
-                              },
-                              color: HexColor("#1C99D4"),
-                              child: Text(
-                                "SUBMIT",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    // letterSpacing: 2,
-                                    fontSize: 17),
-                              ),
-                            )
-                          ],
-                        )),
+                              ],
+                            )),
                       )
                     ],
                   )
@@ -509,16 +663,16 @@ class _RequestCreationState extends State<RequestCreation> {
       isScrollControlled: true,
     );
   }
-int serviceRequestComplaintTypeId;
+
+  int serviceRequestComplaintTypeId;
   // List<ServiceRequestComplaintTypeEntity> serviceRequestComplaintType;
   ServiceRequestComplaintTypeEntity serviceRequestComplaintType;
   customFunction(dataFromOtherClass) {
-    print('ih');
     setState(() {
       serviceRequestComplaintType = dataFromOtherClass;
       _requestSubType.text = serviceRequestComplaintType.serviceRequestTypeText;
       _severity.text = serviceRequestComplaintType.complaintSeverity;
-      serviceRequestComplaintTypeId= serviceRequestComplaintType.id;
+      serviceRequestComplaintTypeId = serviceRequestComplaintType.id;
     });
     // serviceRequestComplaintType.map((e) {
     //   print('hi');
@@ -532,64 +686,62 @@ int serviceRequestComplaintTypeId;
         source: ImageSource.camera, imageQuality: 50);
     if (image != null) {
       print(1);
-      print(basename(image.path));
       setState(() {
         _imageList.add(image);
       });
     }
   }
 
-  // _imgFromGallery() async {
-  //   File image = await ImagePicker.pickImage(
-  //       source: ImageSource.gallery, imageQuality: 50);
-  //   // print(image.path);
-  //   // setState(() {
-  //   if (image != null) {
-  //     print(2);
-  //     print(basename(image.path));
-  //     setState(() {
-  //       _imageList.add(image);
-  //     });
-  //
-  //     // saveServiceRequest.srComplaintPhotosEntity.add(image);
-  //
-  //   }
-  //   //     // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-  //   //     _imageList.add(image);
-  //   //
-  //   //     _imgDetails.add(new ImageDetails("asset", image));
-  //   //   }
-  //   //   // _imageList.insert(0,image);
-  //   // });
-  // }
+  _imgFromGallery() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+    // print(image.path);
+    // setState(() {
+    if (image != null) {
+      print(basename(image.path));
+      setState(() {
+        _imageList.add(image);
+      });
 
-  // void _showPicker(context) {
-  //   showModalBottomSheet(
-  //       context: context,
-  //       builder: (BuildContext bc) {
-  //         return SafeArea(
-  //           child: Container(
-  //             child: new Wrap(
-  //               children: <Widget>[
-  //                 new ListTile(
-  //                     leading: new Icon(Icons.photo_library),
-  //                     title: new Text('Photo Library'),
-  //                     onTap: () {
-  //                       _imgFromGallery();
-  //                       Navigator.of(context).pop();
-  //                     }),
-  //                 new ListTile(
-  //                   leading: new Icon(Icons.photo_camera),
-  //                   title: new Text('Camera'),
-  //                   onTap: () {
-  //                     _imgFromCamera();
-  //                     Navigator.of(context).pop();
-  //                   },
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }
+      // saveServiceRequest.srComplaintPhotosEntity.add(image);
+
+    }
+    //     // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
+    //     _imageList.add(image);
+    //
+    //     _imgDetails.add(new ImageDetails("asset", image));
+    //   }
+    //   // _imageList.insert(0,image);
+    // });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 }
