@@ -1,9 +1,27 @@
-class SaveMeetRequest {
-  String id;
-  String referenceId;
-  String eventType;
-  String visitMeetType;
-  String visitMeetDate;
+class UpdateMeetRequest {
+  MwpMeetModel mwpMeetModel;
+
+  UpdateMeetRequest({this.mwpMeetModel});
+
+  UpdateMeetRequest.fromJson(Map<String, dynamic> json) {
+    mwpMeetModel = json['mwpMeetModel'] != null
+        ? new MwpMeetModel.fromJson(json['mwpMeetModel'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.mwpMeetModel != null) {
+      data['mwpMeetModel'] = this.mwpMeetModel.toJson();
+    }
+    return data;
+  }
+}
+
+class MwpMeetModel {
+  int id;
+  String meetType;
+  String meetDate;
   int dalmiaInflCount;
   int nonDalmiaInflCount;
   String venue;
@@ -11,14 +29,13 @@ class SaveMeetRequest {
   int giftsDistributedCount;
   String eventLocation;
   String isSaveDraft;
-  String createdBy;
-  List<MwpMeetDealers> mwpMeetDealers;
+  String updatedBy;
+  List<MwpMeetDealersUpdate> mwpMeetDealers;
 
-  SaveMeetRequest(
-      this.referenceId,
-        this.eventType,
-        this.visitMeetType,
-        this.visitMeetDate,
+  MwpMeetModel(
+      {this.id,
+        this.meetType,
+        this.meetDate,
         this.dalmiaInflCount,
         this.nonDalmiaInflCount,
         this.venue,
@@ -26,14 +43,13 @@ class SaveMeetRequest {
         this.giftsDistributedCount,
         this.eventLocation,
         this.isSaveDraft,
-        this.createdBy,
-        this.mwpMeetDealers,{this.id});
+        this.updatedBy,
+        this.mwpMeetDealers});
 
-  SaveMeetRequest.fromJson(Map<String, dynamic> json) {
-    referenceId = json['referenceId'];
-    eventType = json['eventType'];
-    visitMeetType = json['visitMeetType'];
-    visitMeetDate = json['visitMeetDate'];
+  MwpMeetModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    meetType = json['meetType'];
+    meetDate = json['meetDate'];
     dalmiaInflCount = json['dalmiaInflCount'];
     nonDalmiaInflCount = json['nonDalmiaInflCount'];
     venue = json['venue'];
@@ -41,21 +57,20 @@ class SaveMeetRequest {
     giftsDistributedCount = json['giftsDistributedCount'];
     eventLocation = json['eventLocation'];
     isSaveDraft = json['isSaveDraft'];
-    createdBy = json['createdBy'];
+    updatedBy = json['updatedBy'];
     if (json['mwpMeetDealers'] != null) {
-      mwpMeetDealers = new List<MwpMeetDealers>();
+      mwpMeetDealers = new List<MwpMeetDealersUpdate>();
       json['mwpMeetDealers'].forEach((v) {
-        mwpMeetDealers.add(new MwpMeetDealers.fromJson(v));
+        mwpMeetDealers.add(new MwpMeetDealersUpdate.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['referenceId'] = this.referenceId;
-    data['eventType'] = this.eventType;
-    data['visitMeetType'] = this.visitMeetType;
-    data['visitMeetDate'] = this.visitMeetDate;
+    data['id'] = this.id;
+    data['meetType'] = this.meetType;
+    data['meetDate'] = this.meetDate;
     data['dalmiaInflCount'] = this.dalmiaInflCount;
     data['nonDalmiaInflCount'] = this.nonDalmiaInflCount;
     data['venue'] = this.venue;
@@ -63,7 +78,7 @@ class SaveMeetRequest {
     data['giftsDistributedCount'] = this.giftsDistributedCount;
     data['eventLocation'] = this.eventLocation;
     data['isSaveDraft'] = this.isSaveDraft;
-    data['createdBy'] = this.createdBy;
+    data['updatedBy'] = this.updatedBy;
     if (this.mwpMeetDealers != null) {
       data['mwpMeetDealers'] =
           this.mwpMeetDealers.map((v) => v.toJson()).toList();
@@ -72,17 +87,23 @@ class SaveMeetRequest {
   }
 }
 
-class MwpMeetDealers {
+class MwpMeetDealersUpdate {
+  int id;
+  int mwpMeetId;
   String dealerId;
 
-  MwpMeetDealers({this.dealerId});
+  MwpMeetDealersUpdate({this.id, this.mwpMeetId, this.dealerId});
 
-  MwpMeetDealers.fromJson(Map<String, dynamic> json) {
+  MwpMeetDealersUpdate.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    mwpMeetId = json['mwpMeetId'];
     dealerId = json['dealerId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['mwpMeetId'] = this.mwpMeetId;
     data['dealerId'] = this.dealerId;
     return data;
   }

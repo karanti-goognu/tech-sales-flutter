@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -24,27 +23,12 @@ class AddCalenderEventPage extends StatefulWidget {
 class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
   DateTime _currentDate = DateTime.now();
   DateTime _currentDate2 = DateTime.now();
-  String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 8, 3));
-  DateTime _targetDateTime = DateTime(2020, 8, 3);
+  String _currentMonth = DateFormat.yMMM().format(DateTime.now());
+  DateTime _targetDateTime = DateTime.now();
 
   CalendarEventController _calendarEventController = Get.find();
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
-
-  static Widget _eventIcon = new Container(
-    decoration: new BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(1000)),
-        border: Border.all(color: Colors.blue, width: 2.0)),
-    child: new Icon(
-      Icons.person,
-      color: Colors.amber,
-    ),
-  );
-
-  EventList<Event> _markedDateMap = new EventList<Event>();
-
-  CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
 
   @override
   void initState() {
@@ -54,66 +38,11 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     _calendarEventController.selectedMonth = formatted;
     _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
     _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL);
-    /*_calendarEventController.isLoading = true;*/
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      todayBorderColor: Colors.green,
-      onDayPressed: (DateTime date, List<Event> events) {
-        _calendarEventController.selectedDate =
-            "${date.year}-${date.month}-${date.day}";
-        print('${_calendarEventController.selectedDate}');
-        _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS_OF_DAY);
-        _calendarEventController.isLoading = true;
-        this.setState(() => _currentDate2 = date);
-        events.forEach((event) => print(event.title));
-      },
-      daysHaveCircularBorder: false,
-      showOnlyCurrentMonthDate: true,
-      weekendTextStyle: TextStyle(
-        color: Colors.black,
-      ),
-      thisMonthDayBorderColor: Colors.grey,
-      weekFormat: false,
-      markedDateMoreCustomDecoration: new BoxDecoration(
-        borderRadius: new BorderRadius.circular(10.0),
-        color: Colors.grey,
-      ),
-//      firstDayOfWeek: 4,
-      /*markedDatesMap: _calendarEventController.markedDateMap,*/
-      height: 420.0,
-      selectedDateTime: _currentDate2,
-      targetDateTime: _targetDateTime,
-      customGridViewPhysics: NeverScrollableScrollPhysics(),
-
-      minSelectedDate: _currentDate.subtract(Duration(days: 360)),
-      maxSelectedDate: _currentDate.add(Duration(days: 360)),
-
-      inactiveDaysTextStyle: TextStyle(
-        color: Colors.tealAccent,
-        fontSize: 16,
-      ),
-      onCalendarChanged: (DateTime date) {
-        final DateFormat formatter = DateFormat('MMMM-yyyy');
-        print('$date');
-        final String formatted = formatter.format(date);
-        _calendarEventController.selectedMonth = formatted;
-        _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
-        //_calendarEventController.isLoading = true;
-
-        this.setState(() {
-          _targetDateTime = date;
-          _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-          print('$_currentMonth');
-        });
-      },
-      onDayLongPressed: (DateTime date) {
-        print('long pressed date $date');
-      },
-    );
 
     return WillPopScope(
         onWillPop: () async {
@@ -162,172 +91,112 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    //custom icon
-                    Obx(
-                      () => (_calendarEventController.isLoading == false)
-                          ? Container(
-                              margin: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _calendarCarousel,
-                            )
-                          : Container(),
-                    ),
-                    // This trailing comma makes auto-formatting nicer for build methods.
-                    //custom icon without header
-                    Obx(
-                      () => (_calendarEventController.isLoading == false)
-                          ? Container(
-                              margin: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _calendarCarouselNoHeader,
-                            )
-                          : Container(),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _settingModalBottomSheetTVP(context);
+                    Container(
+                        margin: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: CalendarCarousel<Event>(
+                          todayBorderColor: Colors.green,
+                          onDayPressed: (DateTime date, List<Event> events) {
+                            _calendarEventController.selectedDate =
+                                "${date.year}-${date.month}-${date.day}";
+                            print('${_calendarEventController.selectedDate}');
+                            _appController.getAccessKey(
+                                RequestIds.GET_CALENDER_EVENTS_OF_DAY);
+                            _calendarEventController.isDayEventLoading = true;
+                            /*this.setState(() => _currentDate2 = date);*/
                           },
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: ColorConstants.lineColorFilter)),
-                            child: Text(
-                              'TARGET VS ACTUAL/PLAN',
-                              style: ButtonStyles.buttonStyleWhiteBold,
-                            ),
+                          daysHaveCircularBorder: false,
+                          showOnlyCurrentMonthDate: true,
+                          weekendTextStyle: TextStyle(
+                            color: Colors.black,
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.ADD_MWP_SCREEN);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: ColorConstants.lineColorFilter)),
-                            child: Text(
-                              'MWP STATUS',
-                              style: ButtonStyles.buttonStyleWhiteBold,
-                            ),
+                          thisMonthDayBorderColor: Colors.grey,
+                          weekFormat: false,
+                          markedDateMoreCustomDecoration: new BoxDecoration(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            color: Colors.grey,
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Obx(() => (_calendarEventController
-                                .calendarPlanResponse.listOfEventDetails ==
-                            null)
-                        ? Container()
-                        : (_calendarEventController.calendarPlanResponse
-                                    .listOfEventDetails.length ==
-                                0)
-                            ? Container()
-                            : ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                separatorBuilder: (BuildContext context,
-                                        int index) =>
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Divider(),
-                                    ),
-                                itemCount: _calendarEventController
-                                    .calendarPlanResponse
-                                    .listOfEventDetails
-                                    .length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return GestureDetector(
-                                    onTap: (){
-                                      print('${_calendarEventController
-                                          .calendarPlanResponse
-                                          .listOfEventDetails[index].eventType}');
+                          markedDatesMap:
+                              _calendarEventController.markedDateMap,
+                          height: 420.0,
+                          selectedDateTime: _currentDate2,
+                          targetDateTime: _targetDateTime,
+                          customGridViewPhysics: NeverScrollableScrollPhysics(),
+                          minSelectedDate:
+                              _currentDate.subtract(Duration(days: 360)),
+                          maxSelectedDate:
+                              _currentDate.add(Duration(days: 360)),
+                          inactiveDaysTextStyle: TextStyle(
+                            color: Colors.tealAccent,
+                            fontSize: 16,
+                          ),
+                          onCalendarChanged: (DateTime date) {
+                            final DateFormat formatter =
+                                DateFormat('MMMM-yyyy');
+                            print('$date');
+                            final String formatted = formatter.format(date);
+                            _calendarEventController.selectedMonth = formatted;
+                            _appController
+                                .getAccessKey(RequestIds.GET_CALENDER_EVENTS);
+                            //_calendarEventController.isLoading = true;
 
-                                      if(_calendarEventController
-                                          .calendarPlanResponse
-                                          .listOfEventDetails[index].eventType == 'VISIT'){
-                                        _addEventController.visitId = _calendarEventController
-                                            .calendarPlanResponse
-                                            .listOfEventDetails[index].id;
-                                        Get.toNamed(Routes.VISIT_VIEW_SCREEN);
-                                      }else{
-                                        _addEventController.visitId = _calendarEventController
-                                            .calendarPlanResponse
-                                            .listOfEventDetails[index].id;
-                                        Get.toNamed(Routes.VIEW_MEET_SCREEN);
-                                      }
-                                    },
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(16, 4, 16, 4),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          new Container(
-                                            width: 18,
-                                            height: 18,
-                                            decoration: new BoxDecoration(
-                                              color: Colors.red,
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 18,
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Text(
-                                                  _calendarEventController
-                                                      .calendarPlanResponse
-                                                      .listOfEventDetails[index]
-                                                      .eventType,
-                                                  style:
-                                                      TextStyles.mulliRegular14,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Text(
-                                                  "${_calendarEventController.calendarPlanResponse.listOfEventDetails[index].displayMessage2}",
-                                                  style: TextStyles.robotoBold16,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Text(
-                                                  "${_calendarEventController.calendarPlanResponse.listOfEventDetails[index].displayMessage1}",
-                                                  style:
-                                                      TextStyles.mulliRegular14,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                })),
+                            this.setState(() {
+                              _targetDateTime = date;
+                              _currentMonth =
+                                  DateFormat.yMMM().format(_targetDateTime);
+                            });
+                          },
+                          onDayLongPressed: (DateTime date) {
+                            print('long pressed date $date');
+                          },
+                        )),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    returnRow(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    returnEventsList(),
                   ],
                 ),
               ),
             )));
+  }
+
+  Widget returnRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        GestureDetector(
+          onTap: () {
+            _settingModalBottomSheetTVP(context);
+          },
+          child: Container(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+            decoration: BoxDecoration(
+                border: Border.all(color: ColorConstants.lineColorFilter)),
+            child: Text(
+              'TARGET VS ACTUAL/PLAN',
+              style: ButtonStyles.buttonStyleWhiteBold,
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Get.toNamed(Routes.ADD_MWP_SCREEN);
+          },
+          child: Container(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+            decoration: BoxDecoration(
+                border: Border.all(color: ColorConstants.lineColorFilter)),
+            child: Text(
+              'MWP STATUS',
+              style: ButtonStyles.buttonStyleWhiteBold,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   void _settingModalBottomSheet(context) {
@@ -341,6 +210,88 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
             child: addPlanBody(),
           );
         });
+  }
+
+  Widget returnEventsList() {
+    return Obx(() => (_calendarEventController.listOfEvents == null)
+        ? Container()
+        : (_calendarEventController.listOfEvents.length == 0)
+            ? Container()
+            : Obx(() => ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                separatorBuilder: (BuildContext context, int index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Divider(),
+                    ),
+                itemCount: _calendarEventController.listOfEvents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      print(
+                          '${_calendarEventController.listOfEvents[index].eventType}');
+
+                      if (_calendarEventController
+                              .listOfEvents[index].eventType ==
+                          'VISIT') {
+                        _addEventController.visitId =
+                            _calendarEventController.listOfEvents[index].id;
+                        Get.toNamed(Routes.VISIT_VIEW_SCREEN);
+                      } else {
+                        _addEventController.visitId =
+                            _calendarEventController.listOfEvents[index].id;
+                        Get.toNamed(Routes.VIEW_MEET_SCREEN);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          new Container(
+                            width: 18,
+                            height: 18,
+                            decoration: new BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 18,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  _calendarEventController
+                                      .listOfEvents[index].eventType,
+                                  style: TextStyles.mulliRegular14,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "${_calendarEventController.listOfEvents[index].displayMessage2}",
+                                  style: TextStyles.robotoBold16,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "${_calendarEventController.listOfEvents[index].displayMessage1}",
+                                  style: TextStyles.mulliRegular14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                })));
   }
 
   void _settingModalBottomSheetTVP(context) {
@@ -502,8 +453,8 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                     (index == 0)
                                         ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountActual}"
                                         : (index == 1)
-                                        ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountActual}"
-                                        : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountActual}",
+                                            ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountActual}"
+                                            : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountActual}",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 14,
@@ -563,10 +514,9 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
         } else if (title == StringConstants.influencersMeet) {
           _addEventController.selectedView = 'Influencers meet';
           Get.offNamed(Routes.ADD_EVENT_SCREEN);
-        } else if (title == StringConstants.services)  {
+        } else if (title == StringConstants.services) {
           Get.toNamed(Routes.SERVICE_REQUEST_CREATION);
         }
-
       },
       child: Container(
         height: 60,

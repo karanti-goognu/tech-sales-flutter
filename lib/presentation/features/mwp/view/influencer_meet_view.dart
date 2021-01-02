@@ -329,6 +329,9 @@ class AddEventInfluencerMeetScreenPageState
                               // otherwise.
                               if (_formKey.currentState.validate()) {
                                 //afterRequestLayout(empId, mobileNumber);
+                                _addEventController.meetAction = "D";
+                                _appController
+                                    .getAccessKey(RequestIds.SAVE_MEET);
                               }
                             },
                             child: Padding(
@@ -347,6 +350,7 @@ class AddEventInfluencerMeetScreenPageState
                               // otherwise.
                               if (_formKey.currentState.validate()) {
                                 //afterRequestLayout(empId, mobileNumber);
+                                _addEventController.meetAction = "S";
                                 _appController
                                     .getAccessKey(RequestIds.SAVE_MEET);
                               }

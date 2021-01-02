@@ -14,6 +14,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMWPRespons
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/TargetVsActualModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
@@ -169,6 +170,29 @@ class MyApiClientApp {
     }
   }
 
+  updateMeetPlan(String accessKey, String userSecurityKey, String url,
+      UpdateMeetRequest saveMeetRequest) async {
+    try {
+      var body = jsonEncode(saveMeetRequest);
+      print('body is  :: $body');
+      var response = await httpClient.post(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey),
+          body: body,
+          encoding: Encoding.getByName("utf-8"));
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
+        //print('Access key Object is :: $accessKeyModel');
+        return saveVisitResponse;
+      } else {
+        print('Error in else');
+      }
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
 
   getMWPData(String accessKey, String userSecurityKey, String url) async {
     try {
@@ -186,7 +210,6 @@ class MyApiClientApp {
       print('exception ${_.toString()}');
     }
   }
-
 
   getDealerList(String accessKey, String userSecurityKey, String url) async {
     try {
@@ -256,7 +279,8 @@ class MyApiClientApp {
     }
   }
 
-  getCalenderPlanByDay(String accessKey, String userSecurityKey, String url) async {
+  getCalenderPlanByDay(
+      String accessKey, String userSecurityKey, String url) async {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -273,7 +297,8 @@ class MyApiClientApp {
     }
   }
 
-  getTargetSsActualPlan(String accessKey, String userSecurityKey, String url) async {
+  getTargetSsActualPlan(
+      String accessKey, String userSecurityKey, String url) async {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(

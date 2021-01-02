@@ -24,4 +24,5 @@ abstract class RequestIds {
   static const int VIEW_VISIT = 23;
   static const int VIEW_MEET = 24;
   static const int UPDATE_VISIT = 25;
+  static const int UPDATE_MEET = 26;
 }

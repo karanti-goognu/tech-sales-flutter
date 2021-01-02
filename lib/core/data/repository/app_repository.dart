@@ -2,8 +2,8 @@ import 'package:flutter_tech_sales/core/data/provider/app_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMWPModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:meta/meta.dart';
 
 class MyRepositoryApp {
@@ -19,47 +19,60 @@ class MyRepositoryApp {
     return apiClient.getSecretKey(empId, mobileNumber);
   }
 
-  saveMWPPlan(String accessKey,String userSecurityKey,String url,SaveMWPModel saveMWPModel) {
-    return apiClient.saveMWPData(accessKey,userSecurityKey,url,saveMWPModel);
+  saveMWPPlan(String accessKey, String userSecurityKey, String url,
+      SaveMWPModel saveMWPModel) {
+    return apiClient.saveMWPData(accessKey, userSecurityKey, url, saveMWPModel);
   }
 
-  saveVisitPlan(String accessKey,String userSecurityKey,String url,SaveVisitRequest saveVisitRequest) {
-    return apiClient.saveVisitRequest(accessKey,userSecurityKey,url,saveVisitRequest);
+  saveVisitPlan(String accessKey, String userSecurityKey, String url,
+      SaveVisitRequest saveVisitRequest) {
+    return apiClient.saveVisitRequest(
+        accessKey, userSecurityKey, url, saveVisitRequest);
   }
 
-  saveMeetPlan(String accessKey,String userSecurityKey,String url,SaveMeetRequest saveMeetRequest) {
-    return apiClient.saveMeetRequest(accessKey,userSecurityKey,url,saveMeetRequest);
+  saveMeetPlan(String accessKey, String userSecurityKey, String url,
+      SaveMeetRequest saveMeetRequest) {
+    return apiClient.saveMeetRequest(
+        accessKey, userSecurityKey, url, saveMeetRequest);
   }
 
-  updateVisitPlan(String accessKey,String userSecurityKey,String url,UpdateVisitRequest updateVisitRequest) {
-    return apiClient.updateVisitPlan(accessKey,userSecurityKey,url,updateVisitRequest);
+  updateVisitPlan(String accessKey, String userSecurityKey, String url,
+      UpdateVisitRequest updateVisitRequest) {
+    return apiClient.updateVisitPlan(
+        accessKey, userSecurityKey, url, updateVisitRequest);
   }
 
-  getMWPPlan(String accessKey,String userSecurityKey,String url) {
-    return apiClient.getMWPData(accessKey,userSecurityKey,url);
+  updateMeetPlan(String accessKey, String userSecurityKey, String url,
+      UpdateMeetRequest saveMeetRequest) {
+    return apiClient.updateMeetPlan(
+        accessKey, userSecurityKey, url, saveMeetRequest);
   }
 
-  getDealerList(String accessKey,String userSecurityKey,String url) {
-    return apiClient.getDealerList(accessKey,userSecurityKey,url);
+  getMWPPlan(String accessKey, String userSecurityKey, String url) {
+    return apiClient.getMWPData(accessKey, userSecurityKey, url);
   }
 
-  getVisitData(String accessKey,String userSecurityKey,String url) {
-    return apiClient.getVisitData(accessKey,userSecurityKey,url);
+  getDealerList(String accessKey, String userSecurityKey, String url) {
+    return apiClient.getDealerList(accessKey, userSecurityKey, url);
   }
 
-  getMeetData(String accessKey,String userSecurityKey,String url) {
-    return apiClient.getMeetData(accessKey,userSecurityKey,url);
+  getVisitData(String accessKey, String userSecurityKey, String url) {
+    return apiClient.getVisitData(accessKey, userSecurityKey, url);
   }
 
-  getCalenderPlan(String accessKey,String userSecurityKey,String url) {
-    return apiClient.getCalendarPlan(accessKey,userSecurityKey,url);
+  getMeetData(String accessKey, String userSecurityKey, String url) {
+    return apiClient.getMeetData(accessKey, userSecurityKey, url);
   }
 
-  getCalenderPlanByDay(String accessKey,String userSecurityKey,String url) {
-    return apiClient.getCalenderPlanByDay(accessKey,userSecurityKey,url);
+  getCalenderPlan(String accessKey, String userSecurityKey, String url) {
+    return apiClient.getCalendarPlan(accessKey, userSecurityKey, url);
   }
 
-  getTargetVsActualPlan(String accessKey,String userSecurityKey,String url) {
-    return apiClient.getTargetSsActualPlan(accessKey,userSecurityKey,url);
+  getCalenderPlanByDay(String accessKey, String userSecurityKey, String url) {
+    return apiClient.getCalenderPlanByDay(accessKey, userSecurityKey, url);
+  }
+
+  getTargetVsActualPlan(String accessKey, String userSecurityKey, String url) {
+    return apiClient.getTargetSsActualPlan(accessKey, userSecurityKey, url);
   }
 }

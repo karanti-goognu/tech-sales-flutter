@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,16 +28,31 @@ class CalendarEventController extends GetxController {
   final _calendarPlanResponse = CalendarPlanModel().obs;
   final _calendarDataByDay = CalendarDataByDay().obs;
   final _targetVsActual = TargetVsActualModel().obs;
- /* final _listOfEventDetails = ListOfEventDetails().obs;*/
+  final _listOfEvents = List<ListOfEventDetails>().obs;
+
   final _markedDateMap = EventList<Event>().obs;
   final _dateList = List<String>().obs;
 
   final _isLoading = false.obs;
+  final _isCalenderLoading = false.obs;
+  final _isDayEventLoading = false.obs;
   final _action = "SAVE".obs;
   final _selectedMonth = StringConstants.empty.obs;
   final _selectedDate = StringConstants.empty.obs;
 
   set isLoading(value) => this._isLoading.value = value;
+
+  set isDayEventLoading(value) => this._isDayEventLoading.value = value;
+
+  get isDayEventLoading => this._isDayEventLoading.value;
+
+  set isCalenderLoading(value) => this._isCalenderLoading.value = value;
+
+  get isCalenderLoading => this._isCalenderLoading.value;
+
+  set listOfEvents(value) => this._listOfEvents.value = value;
+
+  get listOfEvents => this._listOfEvents;
 
   set selectedDate(value) => this._selectedDate.value = value;
 
@@ -72,7 +88,19 @@ class CalendarEventController extends GetxController {
 
   get dateList => this._dateList;
 
+  static Widget _eventIcon = new Container(
+    decoration: new BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(1000)),
+        border: Border.all(color: Colors.blue, width: 2.0)),
+    child: new Icon(
+      Icons.person,
+      color: Colors.amber,
+    ),
+  );
+
   getCalendarEvent(String accessKey) async {
+    this.isCalenderLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -82,27 +110,46 @@ class CalendarEventController extends GetxController {
           "monthYear=${this.selectedMonth}";
       print('$url');
       repository.getCalenderPlan(accessKey, userSecurityKey, url).then((data) {
+        this.isCalenderLoading = false;
         /*this.isLoading = false;*/
         if (data == null) {
           debugPrint('MWP Data Response is null');
         } else {
           debugPrint('MWP Data Response is not null');
           this.calendarPlanResponse = data;
-          if(this.calendarPlanResponse.listOfEventDates.length>0){
-            for(int i=0;i<this.calendarPlanResponse.listOfEventDates.length;i++){
-              this.dateList.add(this.calendarPlanResponse.listOfEventDates[i]);
+          this.listOfEvents = this.calendarPlanResponse.listOfEventDetails;
+          markedDateMap.clear();
+          if (this.calendarPlanResponse.listOfEventDates.length > 0) {
+            for (int i = 0;
+                i < this.calendarPlanResponse.listOfEventDates.length;
+                i++) {
+              String date = this.calendarPlanResponse.listOfEventDates[i];
+              //2020-12-22
+              DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(date);
+              markedDateMap.add(
+                  new DateTime(tempDate.year, tempDate.month, tempDate.day),
+                  new Event(
+                    date: new DateTime(tempDate.year, tempDate.month, tempDate.day),
+                    title: 'Event 5',
+                    icon: _eventIcon,
+                   /* dot: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 1.0),
+                      color: Colors.red,
+                      height: 5.0,
+                      width: 5.0,
+                    ),*/
+                  ));
             }
           }
-         /* markedDateMap.addAll(new DateTime(2020, 12, 13), []);
-          markedDateMap.addAll(new DateTime(2020, 12, 14), []);*/
-          /*if (calendarPlanResponse.respCode == "MWP2013") {
+
+          if (calendarPlanResponse.respCode == "MWP2013") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('${calendarPlanResponse.respMsg}');
             //SitesDetailWidget();
           } else {
-            Get.dialog(
-                CustomDialogs().errorDialog(calendarPlanResponse.respMsg));
-          }*/
+            /*Get.dialog(
+                CustomDialogs().errorDialog(calendarPlanResponse.respMsg));*/
+          }
         }
       });
     });
@@ -121,14 +168,14 @@ class CalendarEventController extends GetxController {
           .getCalenderPlanByDay(accessKey, userSecurityKey, url)
           .then((data) {
         if (data == null) {
-          this.isLoading = false;
+          this.isDayEventLoading = false;
           debugPrint('MWP Data Response is null');
         } else {
           debugPrint('MWP Data Response is not null');
           this.calendarDataByDay = data;
-          this.calendarPlanResponse.listOfEventDetails =
+          this.listOfEvents =
               this.calendarDataByDay.listOfEventDetails;
-          this.isLoading = false;
+          this.isDayEventLoading = false;
           if (calendarDataByDay.respCode == "MWP2019") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('${calendarDataByDay.respMsg}');

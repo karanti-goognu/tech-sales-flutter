@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/MeetResponseMo
 import 'package:flutter_tech_sales/presentation/features/mwp/data/MwpVisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
@@ -45,6 +46,7 @@ class AddEventController extends GetxController {
   final _empId = "_empty".obs;
   final _otpCode = "_empty".obs;
   final _visitId = 0.obs;
+  final _meetAction = "S".obs;
   final _visitActionType = "UPDATE".obs;
   final _retryOtpActive = false.obs;
   final _visitSubType = 'RETENTION SITE'.obs;
@@ -68,6 +70,8 @@ class AddEventController extends GetxController {
   get isLoading => this._isLoading.value;
 
   get visitActionType => this._visitActionType.value;
+
+  get meetAction => this._meetAction.value;
 
   get isLoadingVisitView => this._isLoadingVisitView.value;
 
@@ -132,6 +136,8 @@ class AddEventController extends GetxController {
   set isLoading(value) => this._isLoading.value = value;
 
   set visitActionType(value) => this._visitActionType.value = value;
+
+  set meetAction(value) => this._meetAction.value = value;
 
   set isLoadingVisitView(value) => this._isLoadingVisitView.value = value;
 
@@ -261,7 +267,7 @@ class AddEventController extends GetxController {
         this.expectedLeadsCount,
         this.giftsDistributedCount,
         this.eventLocation,
-        "S",
+        this.meetAction,
         empId,
         list,
       );
@@ -381,6 +387,8 @@ class AddEventController extends GetxController {
           this.visitDateTime = this.meetResponseModelView.mwpMeetModel.meetDate;
           this.dalmiaInflCount =
               this.meetResponseModelView.mwpMeetModel.dalmiaInflCount;
+          this.isSaveDraft =
+              this.meetResponseModelView.mwpMeetModel.isSaveDraft;
           this.nonDalmiaInflCount =
               this.meetResponseModelView.mwpMeetModel.nonDalmiaInflCount;
           this.expectedLeadsCount =
@@ -428,7 +436,7 @@ class AddEventController extends GetxController {
             this.visitDateTime, visitType, "", 0.0, 0.0, "", 0.0, 0.0);
         repository
             .updateVisitPlan(accessKey, userSecurityKey, url,
-            new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
+                new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
             .then((data) {
           this.isLoadingVisitView = false;
           if (data == null) {
@@ -437,13 +445,13 @@ class AddEventController extends GetxController {
             debugPrint('Update Visit Response is not null');
             this.saveVisitResponse = data;
             if (saveVisitResponse.respCode == "MWP2028") {
-              Get.dialog(CustomDialogs()
-                  .messageDialogMWP(saveVisitResponse.respMsg));
+              Get.dialog(
+                  CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
               print('${saveVisitResponse.respMsg}');
               //SitesDetailWidget();
             } else {
-              Get.dialog(CustomDialogs()
-                  .messageDialogMWP(saveVisitResponse.respMsg));
+              Get.dialog(
+                  CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
               print('${saveVisitResponse.respMsg}');
             }
           }
@@ -537,6 +545,60 @@ class AddEventController extends GetxController {
         mwpVisitModelUpdate = new MwpVisitModelUpdate(this.visitId,
             this.visitDateTime, visitType, "", 0.0, 0.0, "", 0.0, 0.0);
       }
+    });
+  }
+
+  updateMeet(String accessKey) {
+    List<MwpMeetDealersUpdate> list = new List();
+    for (int i = 0; i < this.dealerListSelected.length; i++) {
+      list.add(new MwpMeetDealersUpdate(
+          id: 10,
+          mwpMeetId: this.visitId,
+          dealerId: dealerListSelected[i].dealerId));
+    }
+    String empId = "empty";
+    String userSecurityKey = "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      print('$empId');
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      print('User Security key is :: $userSecurityKey');
+
+      MwpMeetModel mwpMeetModel = new MwpMeetModel(
+          id: visitId,
+          meetType: this.selectedEventTypeMeet,
+          meetDate: this.visitDateTime,
+          dalmiaInflCount: this.dalmiaInflCount,
+          nonDalmiaInflCount: this.nonDalmiaInflCount,
+          venue: this.selectedVenueTypeMeet,
+          expectedLeadsCount: this.expectedLeadsCount,
+          giftsDistributedCount: this.giftsDistributedCount,
+          eventLocation: this.eventLocation,
+          isSaveDraft: this.meetAction,
+          updatedBy: empId,
+          mwpMeetDealers: list);
+      UpdateMeetRequest updateMeetRequest =
+          new UpdateMeetRequest(mwpMeetModel: mwpMeetModel);
+
+      String url = "${UrlConstants.updateVisit}";
+      debugPrint('Url is : $url');
+      repository
+          .updateMeetPlan(accessKey, userSecurityKey, url, updateMeetRequest)
+          .then((data) {
+        if (data == null) {
+          debugPrint('Save Visit Response is null');
+        } else {
+          debugPrint('Save Visit Response is not null');
+          this.saveVisitResponse = data;
+
+          Get.dialog(
+              CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+          print('${saveVisitResponse.respMsg}');
+          //SitesDetailWidget();
+        }
+      });
     });
   }
 

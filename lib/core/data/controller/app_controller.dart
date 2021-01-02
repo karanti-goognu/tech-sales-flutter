@@ -153,6 +153,10 @@ class AppController extends GetxController {
                 _addEventController
                     .updateVisit(this.accessKeyResponse.accessKey);
                 break;
+              case RequestIds.UPDATE_MEET:
+                _addEventController
+                    .updateMeet(this.accessKeyResponse.accessKey);
+                break;
             }
           }
         }

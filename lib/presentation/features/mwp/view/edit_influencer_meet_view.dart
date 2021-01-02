@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list_view.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -29,7 +28,8 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
 
   @override
   void initState() {
-     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
+
+    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
     _appController.getAccessKey(RequestIds.VIEW_MEET);
     super.initState();
   }
@@ -66,7 +66,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              "Add Event",
+                              "View Meet",
                               style: TextStyle(
                                   color: ColorConstants.greenText,
                                   fontFamily: "Muli-Semibold.ttf",
@@ -122,7 +122,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                       Form(
                         key: _formKey,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Container(
@@ -202,22 +202,19 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                 decoration: _inputDecoration(
                                     "Non-Dalmia Influencers", false))),
                             _spaceBetweenFields(),
-                            Obx(() => TextFormField(
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return "Total participants can't be empty ";
-                                  }
-                                  return null;
-                                },
-                                onChanged: (_) {
-                                  _addEventController.totalParticipants = _;
-                                },
-                                initialValue:
-                                    _addEventController.totalParticipants,
-                                style: _myFormFont(),
-                                keyboardType: TextInputType.text,
-                                decoration: _inputDecoration(
-                                    "Total participants", false))),
+                            Text('Total Participants'),
+                            Obx(() => Container(
+                                margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color:
+                                        ColorConstants.inputBoxBorderSideColor)),
+                                child: Text(
+                                    "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}"))),
                             _spaceBetweenFields(),
                             Container(
                                 width: double.infinity,
@@ -375,61 +372,93 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                 decoration:
                                     _inputDecoration("Event location", false))),
                             _spaceBetweenFields(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                /*FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0.0),
-                                      side: BorderSide(
-                                          color: ColorConstants
-                                              .inputBoxBorderSideColor)),
-                                  color: Colors.transparent,
-                                  highlightColor:
-                                      ColorConstants.buttonPressedColor,
-                                  onPressed: () {
-                                    // Validate returns true if the form is valid, or false
-                                    // otherwise.
-                                    if (_formKey.currentState.validate()) {
-                                      //afterRequestLayout(empId, mobileNumber);
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                                    child: Text(
-                                      'SAVE AS DRAFT',
-                                      style: ButtonStyles.buttonStyleWhite,
-                                    ),
-                                  ),
-                                ),*/
-                                RaisedButton(
-                                  color: ColorConstants.buttonNormalColor,
-                                  highlightColor:
-                                      ColorConstants.buttonPressedColor,
-                                  onPressed: () {
-                                    // Validate returns true if the form is valid, or false
-                                    // otherwise.
-                                    if (_formKey.currentState.validate()) {
-                                      //afterRequestLayout(empId, mobileNumber);
-                                      _appController
-                                          .getAccessKey(RequestIds.SAVE_MEET);
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                                    child: Text(
-                                      'SUBMIT',
-                                      style: ButtonStyles.buttonStyleBlue,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                            Obx(()=>(_addEventController.isSaveDraft == "D")
+                                ? returnSaveDraft()
+                                : returnSubmit())
                           ],
                         ),
                       ),
                     ])
               : Container())),
+    );
+  }
+
+  Widget returnSaveDraft() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        FlatButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0.0),
+              side: BorderSide(color: ColorConstants.inputBoxBorderSideColor)),
+          color: Colors.transparent,
+          highlightColor: ColorConstants.buttonPressedColor,
+          onPressed: () {
+            // Validate returns true if the form is valid, or false
+            // otherwise.
+            if (_formKey.currentState.validate()) {
+              _addEventController.meetAction = "D";
+              _appController
+                  .getAccessKey(RequestIds.UPDATE_MEET);
+            }
+          },
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+            child: Text(
+              'SAVE ',
+              style: ButtonStyles.buttonStyleWhite,
+            ),
+          ),
+        ),
+        RaisedButton(
+          color: ColorConstants.buttonNormalColor,
+          highlightColor: ColorConstants.buttonPressedColor,
+          onPressed: () {
+            // Validate returns true if the form is valid, or false
+            // otherwise.
+            if (_formKey.currentState.validate()) {
+              _addEventController.meetAction = "S";
+              _appController
+                  .getAccessKey(RequestIds.UPDATE_MEET);
+            }
+          },
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+            child: Text(
+              'SUBMIT',
+              style: ButtonStyles.buttonStyleBlue,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget returnSubmit() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        RaisedButton(
+          color: ColorConstants.buttonNormalColor,
+          highlightColor: ColorConstants.buttonPressedColor,
+          onPressed: () {
+            // Validate returns true if the form is valid, or false
+            // otherwise.
+            if (_formKey.currentState.validate()) {
+              _addEventController.meetAction = "S";
+              _appController
+                  .getAccessKey(RequestIds.UPDATE_MEET);
+            }
+          },
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+            child: Text(
+              'SUBMIT',
+              style: ButtonStyles.buttonStyleBlue,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -491,20 +520,6 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
       });
   }
 
-  /*void _settingModalBottomSheetDealers(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return new Container(
-            height: 350.0,
-            color: Colors.transparent, //could change this to Color(0xFF737373),
-            //so you don't have to change MaterialApp canvasColor
-            child: (_addEventController.dealerListResponse == null)
-                ? Container()
-                : showDealerListBody(),
-          );
-        });
-  }*/
 
   void _settingModalBottomSheetDealers(context) {
     showModalBottomSheet(
@@ -517,7 +532,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
             //so you don't have to change MaterialApp canvasColor
             child: (_addEventController.meetResponseModelView == null)
                 ? Container()
-                : DealersListViewWidget(),
+                : DealersListWidget(),
           );
         });
   }
