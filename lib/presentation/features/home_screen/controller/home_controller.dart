@@ -1,22 +1,15 @@
-import 'dart:convert';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/repository/home_repository.dart';
-import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
@@ -143,10 +136,14 @@ class HomeController extends GetxController {
           } else {
             this.checkInResponse = data;
             checkInStatus = StringConstants.checkOut;
-            _splashController.splashDataModel.journeyDetails.journeyStartLat= this.checkInResponse.journeyEntity.journeyStartLat;
-            _splashController.splashDataModel.journeyDetails.journeyStartLong = this.checkInResponse.journeyEntity.journeyStartLong;
-            _splashController.splashDataModel.journeyDetails.journeyDate = this.checkInResponse.journeyEntity.journeyDate;
-            _splashController.splashDataModel.journeyDetails.journeyStartTime = this.checkInResponse.journeyEntity.journeyStartTime;
+            _splashController.splashDataModel.journeyDetails.journeyStartLat =
+                this.checkInResponse.journeyEntity.journeyStartLat;
+            _splashController.splashDataModel.journeyDetails.journeyStartLong =
+                this.checkInResponse.journeyEntity.journeyStartLong;
+            _splashController.splashDataModel.journeyDetails.journeyDate =
+                this.checkInResponse.journeyEntity.journeyDate;
+            _splashController.splashDataModel.journeyDetails.journeyStartTime =
+                this.checkInResponse.journeyEntity.journeyStartTime;
             print("${this.checkInResponse}");
           }
         });

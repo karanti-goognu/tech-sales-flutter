@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
-import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_calendar_event_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/model/TargetVSActualModel.dart';
+import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 class AddCalenderEventPage extends StatefulWidget {
@@ -16,510 +20,524 @@ class AddCalenderEventPage extends StatefulWidget {
   _AddCalenderEventPageState createState() => new _AddCalenderEventPageState();
 }
 
-
 class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
-  DateTime _currentDate = DateTime(2020, 8, 3);
-  DateTime _currentDate2 = DateTime(2020, 8, 4);
-  String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 8, 3));
-  DateTime _targetDateTime = DateTime(2020, 8, 3);
-  TargetVsActualModel targetVsActualModel;
+  DateTime _currentDate = DateTime.now();
+  DateTime _currentDate2 = DateTime.now();
+  String _currentMonth = DateFormat.yMMM().format(DateTime.now());
+  DateTime _targetDateTime = DateTime.now();
 
-  AddCalendarEventController eventController = Get.find();
-  List calendarEventTitle = [
-    'Site Conv. (No. of sites)',
-    'Site Visits (Total)',
-    'Counter Meet'
-  ];
-  // List calendarTargetData=[];
-
-  Future<dynamic> showBottomSheet(context) {
-    return showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            height: MediaQuery.of(context).size.height / 2.5,
-            color: Colors.white,
-            child: targetVsActualModel.siteConversionCountTarget != null
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16.5, 16.5, 16.5, 0),
-                        child: Text(
-                          'Target Vs Actual',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(),
-                            flex: 5,
-                          ),
-                          Expanded(
-                            child: Text('Tgt.'),
-                          ),
-                          Expanded(
-                            child: Text('Act.'),
-                          ),
-                        ],
-                      ),
-                      // SizedBox(height: 24,),
-                      Expanded(
-                        child: Column(children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(calendarEventTitle[0]),
-                                  flex: 4,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: ColorConstants
-                                                  .lightOutlineColor)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          targetVsActualModel
-                                              .siteConversionCountTarget
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color:
-                                                  ColorConstants.lightGreyColor,
-                                              fontFamily: "Muli"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: ColorConstants
-                                                  .lightOutlineColor)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          targetVsActualModel
-                                              .siteConversionCountActual
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color:
-                                                  ColorConstants.lightGreyColor,
-                                              fontFamily: "Muli"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(calendarEventTitle[1]),
-                                  flex: 4,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: ColorConstants
-                                                  .lightOutlineColor)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          targetVsActualModel
-                                              .siteVisitsCountTarget
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color:
-                                                  ColorConstants.lightGreyColor,
-                                              fontFamily: "Muli"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: ColorConstants
-                                                  .lightOutlineColor)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          targetVsActualModel
-                                              .siteVisitsCountActual
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color:
-                                                  ColorConstants.lightGreyColor,
-                                              fontFamily: "Muli"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(calendarEventTitle[2]),
-                                  flex: 4,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: ColorConstants
-                                                  .lightOutlineColor)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          targetVsActualModel
-                                              .counterMeetCountTarget
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color:
-                                                  ColorConstants.lightGreyColor,
-                                              fontFamily: "Muli"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: ColorConstants
-                                                  .lightOutlineColor)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          targetVsActualModel
-                                              .counterMeetCountActual
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color:
-                                                  ColorConstants.lightGreyColor,
-                                              fontFamily: "Muli"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ]),
-                      )
-                    ],
-                  )
-                : Center(
-                    child: Text(
-                      targetVsActualModel.respMsg,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-          );
-        });
-  }
-
-  static Widget _eventIcon = new Container(
-    decoration: new BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(1000)),
-        border: Border.all(color: Colors.blue, width: 2.0)),
-    child: new Icon(
-      Icons.person,
-      color: Colors.amber,
-    ),
-  );
-
-  EventList<Event> _markedDateMap = new EventList<Event>(
-    events: {
-      new DateTime(2020, 8, 5): [
-        new Event(
-          date: new DateTime(2020, 8, 5),
-          title: 'Event 1',
-          icon: _eventIcon,
-          dot: Container(
-            margin: EdgeInsets.symmetric(horizontal: 1.0),
-            color: Colors.green,
-            height: 5.0,
-            width: 5.0,
-          ),
-        ),
-        new Event(
-          date: new DateTime(2020, 8, 5),
-          title: 'Event 2',
-          icon: _eventIcon,
-        ),
-      ],
-    },
-  );
-
-  getBottomSheetData() async {
-    eventController.getAccessKey().then((data) async {
-      targetVsActualModel =
-          await eventController.getTargetVsActualData(data.accessKey);
-      print(targetVsActualModel.toJson());
-    });
-  }
-
-  CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
+  CalendarEventController _calendarEventController = Get.find();
+  AppController _appController = Get.find();
+  AddEventController _addEventController = Get.find();
 
   @override
   void initState() {
-    getBottomSheetData();
-    // getBottomSheetData();
-    /* _markedDateMap.addAll(new DateTime(2020, 8, 13), [
-      new Event(
-        date: new DateTime(2020, 8, 13),
-        title: 'Event 1',
-        icon: _eventIcon,
-      ),
-      new Event(
-        date: new DateTime(2020, 8, 13),
-        title: 'Event 2',
-        icon: _eventIcon,
-      ),
-      new Event(
-        date: new DateTime(2020, 8, 13),
-        title: 'Event 3',
-        icon: _eventIcon,
-      ),
-      new Event(
-        date: new DateTime(2020, 8, 13),
-        title: 'Event 3',
-        icon: _eventIcon,
-      ),
-    ]);*/
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('MMMM-yyyy');
+    final String formatted = formatter.format(now);
+    _calendarEventController.selectedMonth = formatted;
+    _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
+    _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      todayBorderColor: Colors.green,
-      onDayPressed: (DateTime date, List<Event> events) {
-        this.setState(() => _currentDate2 = date);
-        events.forEach((event) => print(event.title));
-      },
-      daysHaveCircularBorder: false,
-      showOnlyCurrentMonthDate: true,
-      weekendTextStyle: TextStyle(
-        color: Colors.black,
-      ),
-      thisMonthDayBorderColor: Colors.grey,
-      weekFormat: false,
-//      firstDayOfWeek: 4,
-      /*markedDatesMap: _markedDateMap,*/
-      height: 420.0,
-      selectedDateTime: _currentDate2,
-      targetDateTime: _targetDateTime,
-      customGridViewPhysics: NeverScrollableScrollPhysics(),
 
-      minSelectedDate: _currentDate.subtract(Duration(days: 360)),
-      maxSelectedDate: _currentDate.add(Duration(days: 360)),
-
-      inactiveDaysTextStyle: TextStyle(
-        color: Colors.tealAccent,
-        fontSize: 16,
-      ),
-      onCalendarChanged: (DateTime date) {
-        this.setState(() {
-          _targetDateTime = date;
-          _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-        });
-      },
-      onDayLongPressed: (DateTime date) {
-        print('long pressed date $date');
-      },
-    );
-
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("My Plan"),
-          actions: [
-            MaterialButton(
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(Icons.add_circle_outline, color: Colors.white),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Add',
-                    style: TextStyle(color: Colors.white),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                //custom icon
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: _calendarCarousel,
-                ),
-                // This trailing comma makes auto-formatting nicer for build methods.
-                //custom icon without header
-                /*Container(
-                  margin: EdgeInsets.only(
-                    top: 30.0,
-                    bottom: 16.0,
-                    left: 16.0,
-                    right: 16.0,
-                  ),
-                  child: new Row(
-                    children: <Widget>[
-                      Expanded(
-                          child: Text(
-                            _currentMonth,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24.0,
-                            ),
-                          )),
-                      FlatButton(
-                        child: Text('PREV'),
-                        onPressed: () {
-                          setState(() {
-                            _targetDateTime = DateTime(_targetDateTime.year, _targetDateTime.month -1);
-                            _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-                          });
+    return WillPopScope(
+        onWillPop: () async {
+          // You can do some work here.
+          // Returning true allows the pop to happen, returning false prevents it.
+          Get.offNamed(Routes.HOME_SCREEN);
+          return true;
+        },
+        child: Scaffold(
+            resizeToAvoidBottomPadding: false,
+            //resizeToAvoidBottomInset: true,
+            extendBody: true,
+            appBar: new AppBar(
+              title: new Text("Add Calender"),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 18, 8),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _settingModalBottomSheet(context);
                         },
+                        child: Icon(
+                          Icons.add_circle,
+                          color: Colors.white,
+                          size: 24,
+                        ),
                       ),
-                      FlatButton(
-                        child: Text('NEXT'),
-                        onPressed: () {
-                          setState(() {
-                            _targetDateTime = DateTime(_targetDateTime.year, _targetDateTime.month +1);
-                            _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-                          });
-                        },
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "ADD",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
                       )
                     ],
                   ),
-                ),*/
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: _calendarCarouselNoHeader,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: () => showBottomSheet(context),
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: ColorConstants.lightGeyColor)),
-                        child: Text(
-                          'TARGET VS ACTUAL/PLAN',
-                          style: ButtonStyles.buttonStyleWhite,
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.ADD_MWP_SCREEN);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: ColorConstants.lightGeyColor)),
-                        child: Text(
-                          'MWP STATUS',
-                          style: ButtonStyles.buttonStyleWhite,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                        margin: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: CalendarCarousel<Event>(
+                          todayBorderColor: Colors.green,
+                          onDayPressed: (DateTime date, List<Event> events) {
+                            _calendarEventController.selectedDate =
+                                "${date.year}-${date.month}-${date.day}";
+                            print('${_calendarEventController.selectedDate}');
+                            _appController.getAccessKey(
+                                RequestIds.GET_CALENDER_EVENTS_OF_DAY);
+                            _calendarEventController.isDayEventLoading = true;
+                            /*this.setState(() => _currentDate2 = date);*/
+                          },
+                          daysHaveCircularBorder: false,
+                          showOnlyCurrentMonthDate: true,
+                          weekendTextStyle: TextStyle(
+                            color: Colors.black,
+                          ),
+                          thisMonthDayBorderColor: Colors.grey,
+                          weekFormat: false,
+                          markedDateMoreCustomDecoration: new BoxDecoration(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            color: Colors.grey,
+                          ),
+                          markedDatesMap:
+                              _calendarEventController.markedDateMap,
+                          height: 420.0,
+                          selectedDateTime: _currentDate2,
+                          targetDateTime: _targetDateTime,
+                          customGridViewPhysics: NeverScrollableScrollPhysics(),
+                          minSelectedDate:
+                              _currentDate.subtract(Duration(days: 360)),
+                          maxSelectedDate:
+                              _currentDate.add(Duration(days: 360)),
+                          inactiveDaysTextStyle: TextStyle(
+                            color: Colors.tealAccent,
+                            fontSize: 16,
+                          ),
+                          onCalendarChanged: (DateTime date) {
+                            final DateFormat formatter =
+                                DateFormat('MMMM-yyyy');
+                            print('$date');
+                            final String formatted = formatter.format(date);
+                            _calendarEventController.selectedMonth = formatted;
+                            _appController
+                                .getAccessKey(RequestIds.GET_CALENDER_EVENTS);
+                            //_calendarEventController.isLoading = true;
+
+                            this.setState(() {
+                              _targetDateTime = date;
+                              _currentMonth =
+                                  DateFormat.yMMM().format(_targetDateTime);
+                            });
+                          },
+                          onDayLongPressed: (DateTime date) {
+                            print('long pressed date $date');
+                          },
+                        )),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    returnRow(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    returnEventsList(),
+                  ],
+                ),
+              ),
+            )));
+  }
+
+  Widget returnRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        GestureDetector(
+          onTap: () {
+            _settingModalBottomSheetTVP(context);
+          },
+          child: Container(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+            decoration: BoxDecoration(
+                border: Border.all(color: ColorConstants.lineColorFilter)),
+            child: Text(
+              'TARGET VS ACTUAL/PLAN',
+              style: ButtonStyles.buttonStyleWhiteBold,
+            ),
           ),
-        ));
+        ),
+        GestureDetector(
+          onTap: () {
+            Get.toNamed(Routes.ADD_MWP_SCREEN);
+          },
+          child: Container(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+            decoration: BoxDecoration(
+                border: Border.all(color: ColorConstants.lineColorFilter)),
+            child: Text(
+              'MWP STATUS',
+              style: ButtonStyles.buttonStyleWhiteBold,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _settingModalBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return new Container(
+            height: 350.0,
+            color: Colors.transparent, //could change this to Color(0xFF737373),
+            //so you don't have to change MaterialApp canvasColor
+            child: addPlanBody(),
+          );
+        });
+  }
+
+  Widget returnEventsList() {
+    return Obx(() => (_calendarEventController.listOfEvents == null)
+        ? Container()
+        : (_calendarEventController.listOfEvents.length == 0)
+            ? Container()
+            : Obx(() => ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                separatorBuilder: (BuildContext context, int index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Divider(),
+                    ),
+                itemCount: _calendarEventController.listOfEvents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      print(
+                          '${_calendarEventController.listOfEvents[index].eventType}');
+
+                      if (_calendarEventController
+                              .listOfEvents[index].eventType ==
+                          'VISIT') {
+                        _addEventController.visitId =
+                            _calendarEventController.listOfEvents[index].id;
+                        Get.toNamed(Routes.VISIT_VIEW_SCREEN);
+                      } else {
+                        _addEventController.visitId =
+                            _calendarEventController.listOfEvents[index].id;
+                        Get.toNamed(Routes.VIEW_MEET_SCREEN);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          new Container(
+                            width: 18,
+                            height: 18,
+                            decoration: new BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 18,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  _calendarEventController
+                                      .listOfEvents[index].eventType,
+                                  style: TextStyles.mulliRegular14,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "${_calendarEventController.listOfEvents[index].displayMessage2}",
+                                  style: TextStyles.robotoBold16,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "${_calendarEventController.listOfEvents[index].displayMessage1}",
+                                  style: TextStyles.mulliRegular14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                })));
+  }
+
+  void _settingModalBottomSheetTVP(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return new Container(
+            height: 350.0,
+            color: Colors.transparent, //could change this to Color(0xFF737373),
+            //so you don't have to change MaterialApp canvasColor
+            child: addTVsPBody(),
+          );
+        });
+  }
+
+  Widget addTVsPBody() {
+    List<String> mwpNames = [
+      "Sites Conv.(Total Sites)",
+      "Sites visit(Total)",
+      "Counter Meet",
+    ];
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "TARGET VS ACTUAL",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[],
+                ),
+                flex: 5,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Text(
+                    "Tgt.",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstants.lightGreyColor,
+                    ),
+                  ),
+                ),
+                flex: 2,
+              ),
+              SizedBox(
+                width: 4,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Text(
+                    //_mwpPlanController.getMWPResponse.respCode,
+                    "Act.",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstants.lightGreyColor,
+                    ),
+                  ),
+                ),
+                flex: 2,
+              ),
+            ],
+          ),
+          Obx(
+            () => (_calendarEventController.isLoading)
+                ? Container()
+                : ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(height: 2),
+                    //  padding: const EdgeInsets.all(8.0),
+                    itemCount: mwpNames.length,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 56,
+                        child: new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Text(
+                                    mwpNames[index],
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16,
+                                      color: ColorConstants.lightGreyColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              flex: 5,
+                            ),
+                            Flexible(
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(2),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        width: 1,
+                                        color:
+                                            ColorConstants.lightOutlineColor)),
+                                child: Text(
+                                  (index == 0)
+                                      ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountTarget}"
+                                      : (index == 1)
+                                          ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountTarget}"
+                                          : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountTarget}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: ColorConstants.lightGreyColor,
+                                      fontFamily: "Muli"),
+                                ),
+                              ),
+                              flex: 2,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Obx(
+                              () => Flexible(
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(2),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          width: 1,
+                                          color: ColorConstants
+                                              .lightOutlineColor)),
+                                  child: Text(
+                                    (index == 0)
+                                        ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountActual}"
+                                        : (index == 1)
+                                            ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountActual}"
+                                            : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountActual}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: ColorConstants.lightGreyColor,
+                                        fontFamily: "Muli"),
+                                  ),
+                                ),
+                                flex: 2,
+                              ),
+                            )
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        ),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget addPlanBody() {
+    return Container(
+      /*height: SizeConfig.safeBlockVertical * 50,
+      width: SizeConfig.screenWidth,*/
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "ADD PLAN",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 18),
+            ),
+            returnContainer(StringConstants.visits),
+            returnContainer(StringConstants.influencersMeet),
+            returnContainer(StringConstants.services),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget returnContainer(String title) {
+    AddEventController _addEventController = Get.find();
+    return GestureDetector(
+      onTap: () {
+        if (title == StringConstants.visits) {
+          _addEventController.selectedView = 'Visit';
+          Get.offNamed(Routes.ADD_EVENT_SCREEN);
+        } else if (title == StringConstants.influencersMeet) {
+          _addEventController.selectedView = 'Influencers meet';
+          Get.offNamed(Routes.ADD_EVENT_SCREEN);
+        } else if (title == StringConstants.services) {
+          Get.toNamed(Routes.SERVICE_REQUEST_CREATION);
+        }
+      },
+      child: Container(
+        height: 60,
+        width: double.infinity,
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(border: Border.all(color: Colors.black45)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyles.robotoBold16,
+            ),
+            Icon(
+              Icons.keyboard_arrow_right_outlined,
+              size: 20,
+              color: Colors.black,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

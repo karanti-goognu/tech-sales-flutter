@@ -19,118 +19,75 @@ class AddEventScreenPageState extends State<AddEvent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      //
-      backgroundColor: ColorConstants.backgroundColor,
-      body: SingleChildScrollView(
-        child: _buildAddEventInterface(context),
-      ),
-      floatingActionButton: Container(
-        height: 68.0,
-        width: 68.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: ColorConstants.checkinColor,
-            child: Icon(
-              Icons.keyboard_backspace,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+    return WillPopScope(
+        onWillPop: () async {
+          Get.toNamed(Routes.ADD_CALENDER_SCREEN);
+          return true;
+        },
+        child: Scaffold(
+          extendBody: true,
+          backgroundColor: ColorConstants.backgroundColor,
+          body: SingleChildScrollView(
+            child: _buildAddEventInterface(context),
           ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: ColorConstants.appBarColor,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          floatingActionButton: Container(
+            height: 68.0,
+            width: 68.0,
+            child: FittedBox(
+              child: FloatingActionButton(
+                backgroundColor: ColorConstants.checkinColor,
+                child: Icon(
+                  Icons.keyboard_backspace,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            color: ColorConstants.appBarColor,
+            shape: CircularNotchedRectangle(),
+            notchMargin: 10,
+            child: Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Get.toNamed(Routes.HOME_SCREEN);
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: Colors.white60,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          Get.toNamed(Routes.HOME_SCREEN);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.home,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Home',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Home',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-
-              // Right Tab bar icons
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.drafts,
-                          color: Colors.white60,
-                        ),
-                        Text(
-                          'Drafts',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Get.toNamed(Routes.SEARCH_SCREEN);
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.search,
-                          color: Colors.white60,
-                        ),
-                        Text(
-                          'Search',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   @override
@@ -140,8 +97,6 @@ class AddEventScreenPageState extends State<AddEvent> {
 
   Widget _buildAddEventInterface(BuildContext context) {
     SizeConfig().init(context);
-    String dropdownValue = 'Visit';
-
     return SafeArea(
       child: Padding(
           padding: EdgeInsets.all(16),
@@ -167,7 +122,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                     child: Container(
                       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(16.0),
                           color: Colors.white,
                           border: Border.all()),
                       child: DropdownButtonHideUnderline(
@@ -177,8 +132,11 @@ class AddEventScreenPageState extends State<AddEvent> {
                           onChanged: (String newValue) {
                             _addEventController.selectedView = newValue;
                           },
-                          items: <String>['Visit', 'Influencers meet', "1", "2"]
-                              .map<DropdownMenuItem<String>>((String value) {
+                          items: <String>[
+                            'Visit',
+                            'Influencers meet',
+                            'Service Requests'
+                          ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),

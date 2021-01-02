@@ -20,6 +20,7 @@ class DraftLeadListScreen extends StatefulWidget {
 class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   final db = DraftLeadDBHelper();
   List<SaveLeadRequestDraftModel> draftList = new List();
+  List<int> draftIdList = new List();
 
   @override
   void initState() {
@@ -34,19 +35,14 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
     db.fetchAll().then((value) {
       for (int i = 0; i < value.length; i++) {
         setState(() {
-
-
           print(json.decode(value[i].leadModel));
-          draftList.add(
-              SaveLeadRequestDraftModel.fromJson(json.decode(value[i].leadModel)));
+          draftIdList.add(value[i].id);
+          draftList.add(SaveLeadRequestDraftModel.fromJson(
+              json.decode(value[i].leadModel)));
         });
-
-
       }
-
     });
     //await db.removeLeadInDraft(2);
-
   }
 
   @override
@@ -81,7 +77,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                           color: Colors.white,
                           fontFamily: "Muli"),
                     ),
-
                   ],
                 ),
               ],
@@ -265,10 +260,9 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
             padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
             // itemExtent: 125.0,
             itemBuilder: (context, index) {
-
               return GestureDetector(
                 onTap: () {
-                  gv.draftID = index + 1;
+                  gv.draftID = draftIdList[index];
                   gv.fromLead = true;
                   print(draftList[index].toJson());
                   gv.saveLeadRequestModel = draftList[index];

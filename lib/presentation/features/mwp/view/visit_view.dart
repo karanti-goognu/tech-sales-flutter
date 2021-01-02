@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -12,10 +16,12 @@ class AddEventVisit extends StatefulWidget {
 }
 
 class AddEventVisitScreenPageState extends State<AddEventVisit> {
-  String dropdownValue = 'Select visit sub-types';
+  String dropdownValue = 'RETENTION SITE';
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
+  AppController _appController = Get.find();
+  AddEventController _addEventController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -31,31 +37,28 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   color: Colors.white,
                   border: Border.all(
                       color: ColorConstants.inputBoxBorderSideColor)),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: dropdownValue,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      dropdownValue = newValue;
-                    });
-                  },
-                  items: <String>[
-                    'Select visit sub-types',
-                    'Two',
-                    'Free',
-                    'Four'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: GoogleFonts.roboto(
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                      ),
-                    );
-                  }).toList(),
+              child: Obx(()=> DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value:_addEventController.visitSubType,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _addEventController.visitSubType = newValue;
+                      });
+                    },
+                    items: <String>['RETENTION SITE', 'LEADS', 'CONVERSION OPPORTUNITY', 'COUNTER','TECHNOCRAT']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: GoogleFonts.roboto(
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16.0),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
               )),
           SizedBox(
@@ -74,6 +77,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     }
                     return null;
                   },
+                  onChanged: (_) {
+                    _addEventController.visitSiteId = _.toString();
+                  },
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -82,28 +88,52 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   decoration: _inputDecoration("Site Id", false),
                 ),
                 SizedBox(height: 16),
-                TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter date and time ';
-                      }
-                      return null;
-                    },
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: ColorConstants.inputBoxHintColor,
-                        fontFamily: "Muli"),
-                    keyboardType: TextInputType.datetime,
-                    decoration: _inputDecoration("Date and time", true)),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      color: Colors.white,
+                      border: Border.all(
+                          width: 1, color: ColorConstants.lineColorFilter)),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(() => Text(
+                                "${this._addEventController.visitDateTime}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: ColorConstants.blackColor,
+                                    fontFamily: "Muli"),
+                              )),
+                          GestureDetector(
+                            onTap: () {
+                              _selectDate(context);
+                            },
+                            child: Icon(
+                              Icons.calendar_today_sharp,
+                              color: Colors.orange,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(
                   height: 16,
                 ),
                 TextFormField(
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter date and time ';
+                        return 'Please enter remarks ';
                       }
                       return null;
+                    },
+                    onChanged: (_) {
+                      _addEventController.visitRemarks = _.toString();
                     },
                     style: TextStyle(
                         fontSize: 18,
@@ -123,6 +153,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     // otherwise.
                     if (_formKey.currentState.validate()) {
                       //afterRequestLayout(empId, mobileNumber);
+                      _appController.getAccessKey(RequestIds.SAVE_VISIT);
+                      _addEventController.isLoading = true;
                     }
                   },
                   child: Padding(
@@ -183,6 +215,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);
         selectedDateString = formattedDate;
+        this._addEventController.visitDateTime = selectedDateString;
       });
   }
 }

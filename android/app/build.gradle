@@ -29,6 +29,14 @@ apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
+            storePassword 'dalmiadigitaltso'
+            keyAlias 'dalmiadigitaltso'
+            keyPassword 'dalmiadigitaltso'
+        }
+    }
     compileSdkVersion 30
 
     sourceSets {
@@ -46,6 +54,7 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        signingConfig signingConfigs.release
     }
 
     buildTypes {

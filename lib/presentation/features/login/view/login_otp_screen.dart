@@ -5,7 +5,6 @@ import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
@@ -148,7 +147,8 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
               child: Center(
                 child: Image.asset(
                   "assets/images/Logo(Whitebg).png",
-                ),),
+                ),
+              ),
             ),
             Text(
               "Welcome, please login ",
@@ -158,7 +158,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
               height: 16,
             ),
             Text(
-              "Enter the 6 - digit OTP sent to you at",
+              "Enter the 6-digit OTP sent to you at",
               style: TextStyles.enterMsgTextStyle16,
             ),
             SizedBox(

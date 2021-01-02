@@ -1,14 +1,5 @@
 import 'dart:io';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart'
-    as initmodel;
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart'
-    as updateRequest;
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:path/path.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,26 +9,29 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/controller
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart'
+    as updateRequest;
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
 import 'DraftLeadListScreen.dart';
-import 'RejectionLeadScreen.dart';
 
 class ViewLeadScreen extends StatefulWidget {
   int leadId;
@@ -96,6 +90,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   List<DealerList> dealerList = new List();
   List<ImageDetails> _imgDetails = new List();
 
+  FocusNode myFocusNode;
   bool viewMoreActive = false;
 
   List<String> _items = new List(); // to store comments
@@ -140,6 +135,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
     super.initState();
     print("sumitdhawan");
     _addLeadsController = Get.find();
+    myFocusNode = FocusNode();
     getLeadData();
   }
 
@@ -147,6 +143,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   void dispose() {
     super.dispose();
     _addLeadsController.dispose();
+    myFocusNode.dispose();
   }
 
   getLeadData() async {
@@ -164,7 +161,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
         viewLeadDataResponse = data;
 
         print(viewLeadDataResponse);
-
+        myFocusNode.requestFocus();
         setState(() {
           leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
           LeadStatusEntity list;
@@ -252,9 +249,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
           if (_listInfluencerEntity.length != null) {
             for (int i = 0; i < _listInfluencerEntity.length; i++) {
-              int originalId ;
-              for(int j =0 ; j<  _listLeadInfluencerEntity.length ; j++){
-                if(_listInfluencerEntity[i].id ==  _listLeadInfluencerEntity[j].inflId){
+              int originalId;
+              for (int j = 0; j < _listLeadInfluencerEntity.length; j++) {
+                if (_listInfluencerEntity[i].id ==
+                    _listLeadInfluencerEntity[j].inflId) {
                   _listInfluencerEntity[i].isPrimary =
                       _listLeadInfluencerEntity[j].isPrimary;
                   originalId = _listLeadInfluencerEntity[j].id;
@@ -264,29 +262,28 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
               print(_listLeadInfluencerEntity[i].toJson());
               InfluencerDetail inflDetail = new InfluencerDetail(
-                  originalId: originalId,
-                  isPrimary: _listInfluencerEntity[i].isPrimary,
-                  isPrimarybool: _listInfluencerEntity[i].isPrimary == "Y"
-                      ? true
-                      : false,
-                  id: new TextEditingController(
-                      text: _listInfluencerEntity[i].id.toString()),
-                  inflName: new TextEditingController(
-                      text: _listInfluencerEntity[i].inflName.toString()),
-                  inflContact: new TextEditingController(
-                      text: _listInfluencerEntity[i].inflContact.toString()),
-                  inflTypeId: new TextEditingController(
-                      text: _listInfluencerEntity[i].inflTypeId.toString()),
-                  // inflTypeValue: new TextEditingController(text: influencerTypeEntity[_listInfluencerEntity[i].inflTypeId-1].inflTypeDesc),
-                  inflCatId: new TextEditingController(
-                      text: _listInfluencerEntity[i].inflCatId.toString()),
-                  // inflCatValue:  new TextEditingController(text: influencerCategoryEntity[_listInfluencerEntity[i].inflCatId-1].inflCatDesc),
-                  ilpIntrested: new TextEditingController(
-                      text: _listInfluencerEntity[i].ilpIntrested.toString()),
-                  createdOn: new TextEditingController(
-                      text: _listInfluencerEntity[i].createdOn.toString()),
-                  isExpanded: false,
-                 );
+                originalId: originalId,
+                isPrimary: _listInfluencerEntity[i].isPrimary,
+                isPrimarybool:
+                    _listInfluencerEntity[i].isPrimary == "Y" ? true : false,
+                id: new TextEditingController(
+                    text: _listInfluencerEntity[i].id.toString()),
+                inflName: new TextEditingController(
+                    text: _listInfluencerEntity[i].inflName.toString()),
+                inflContact: new TextEditingController(
+                    text: _listInfluencerEntity[i].inflContact.toString()),
+                inflTypeId: new TextEditingController(
+                    text: _listInfluencerEntity[i].inflTypeId.toString()),
+                // inflTypeValue: new TextEditingController(text: influencerTypeEntity[_listInfluencerEntity[i].inflTypeId-1].inflTypeDesc),
+                inflCatId: new TextEditingController(
+                    text: _listInfluencerEntity[i].inflCatId.toString()),
+                // inflCatValue:  new TextEditingController(text: influencerCategoryEntity[_listInfluencerEntity[i].inflCatId-1].inflCatDesc),
+                ilpIntrested: new TextEditingController(
+                    text: _listInfluencerEntity[i].ilpIntrested.toString()),
+                createdOn: new TextEditingController(
+                    text: _listInfluencerEntity[i].createdOn.toString()),
+                isExpanded: false,
+              );
               for (int j = 0; j < influencerTypeEntity.length; j++) {
                 if (influencerTypeEntity[j].inflTypeId.toString() ==
                     inflDetail.inflTypeId.text.toString()) {
@@ -545,17 +542,21 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              "ID: " + widget.leadId.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                //color: HexColor("#006838"),
-                                fontFamily: "Muli",
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                "ID: " + widget.leadId.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  //color: HexColor("#006838"),
+                                  fontFamily: "Muli",
+                                ),
                               ),
                             ),
                             SizedBox(width: 50),
                             Expanded(
+                              flex: 4,
                               child: Container(
                                 padding: const EdgeInsets.only(
                                     left: 1.0, right: 1.0),
@@ -573,17 +574,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton(
                                     // elevation: 100,
-
                                     value: _selectedValue,
                                     items: leadStatusEntity
                                         .map((label) => DropdownMenuItem(
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
-                                                    left: 8.0),
+                                                    left: 2.0),
                                                 child: Text(
                                                   label.leadStatusDesc,
                                                   style: TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: 14,
                                                       color: ColorConstants
                                                           .inputBoxHintColor,
                                                       fontFamily: "Muli"),
@@ -1711,6 +1711,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                       TextFormField(
                         controller: _contactName,
+                        enabled: false,
+                        focusNode: myFocusNode,
                         // validator: (value) {
                         //   if (value.isEmpty) {
                         //     return "Contact Name can't be empty";
@@ -1743,7 +1745,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             borderSide:
                                 BorderSide(color: Colors.red, width: 1.0),
                           ),
-                          labelText: "Contact Name",
+                          labelText: "Name",
                           filled: false,
                           focusColor: Colors.black,
                           isDense: false,
@@ -1761,10 +1763,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                         enabled: false,
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'Please enter contact number ';
+                            return 'Please enter mobile number ';
                           }
                           if (value.length <= 9) {
-                            return 'Contact number is incorrect';
+                            return 'Mobile number is incorrect';
                           }
                           return null;
                         },
@@ -1801,7 +1803,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             borderSide:
                                 BorderSide(color: Colors.red, width: 1.0),
                           ),
-                          labelText: "Contact Number",
+                          labelText: "Mobile Number",
                           filled: false,
                           focusColor: Colors.black,
                           labelStyle: TextStyle(
@@ -4154,7 +4156,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             _listInfluencerDetail[i].toJson());
                                         listInfluencer.add(new updateRequest
                                                 .LeadInfluencerEntity(
-                                            id:_listInfluencerDetail[i].originalId,
+                                            id: _listInfluencerDetail[i]
+                                                .originalId,
                                             leadId: widget.leadId,
                                             isPrimary: _listInfluencerDetail[i]
                                                     .isPrimarybool

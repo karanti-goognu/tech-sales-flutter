@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +75,6 @@ class MyApiClient {
       final response = await post(Uri.parse(UrlConstants.loginCheck),
           headers: requestHeadersWithAccessKey(accessKey),
           body: json.encode(bodyEncrypted),
-
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
       print('response is :  ${response.body}');
@@ -96,7 +94,6 @@ class MyApiClient {
   retryOtp(String empId, String mobileNumber, String accessKey,
       String otpTokenId) async {
     try {
-
       print('Token Id :: $otpTokenId');
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
@@ -117,8 +114,7 @@ class MyApiClient {
 
       debugPrint('request without encryption: $body');
       debugPrint('request without encryption: ${json.encode(body)}');
-      debugPrint(
-          'request headers : ${requestHeadersWithAccessKey(accessKey)}');
+      debugPrint('request headers : ${requestHeadersWithAccessKey(accessKey)}');
       final response = await post(Uri.parse(UrlConstants.retryOtp),
           headers: requestHeadersWithAccessKey(accessKey),
           body: json.encode(body),

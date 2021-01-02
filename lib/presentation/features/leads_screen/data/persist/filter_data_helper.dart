@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static final _databaseName = "TSO_APP.db";
@@ -71,7 +71,6 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.insert(tableName, row);
   }
-
 
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.

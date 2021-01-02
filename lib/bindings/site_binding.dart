@@ -4,6 +4,9 @@ import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/provider/sites_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
@@ -27,6 +30,21 @@ class SiteBinding implements Bindings {
       return LeadsFilterController(
           repository: MyRepositoryLeads(
               apiClient: MyApiClientLeads(httpClient: http.Client())));
+    });
+    Get.lazyPut<MWPPlanController>(() {
+      return MWPPlanController(
+          repository: MyRepositoryApp(
+              apiClient: MyApiClientApp(httpClient: http.Client())));
+    });
+    Get.lazyPut<CalendarEventController>(() {
+      return CalendarEventController(
+          repository: MyRepositoryApp(
+              apiClient: MyApiClientApp(httpClient: http.Client())));
+    });
+    Get.lazyPut<AddEventController>(() {
+      return AddEventController(
+          repository: MyRepositoryApp(
+              apiClient: MyApiClientApp(httpClient: http.Client())));
     });
   }
 }

@@ -1,11 +1,12 @@
-class AddLeadInitialModel{
-
+class AddLeadInitialModel {
   List<SiteSubTypeEntity> siteSubTypeEntity;
   List<InfluencerCategoryEntity> influencerCategoryEntity;
   List<InfluencerTypeEntity> influencerTypeEntity;
 
-
-  AddLeadInitialModel({this.siteSubTypeEntity, this.influencerCategoryEntity,this.influencerTypeEntity });
+  AddLeadInitialModel(
+      {this.siteSubTypeEntity,
+      this.influencerCategoryEntity,
+      this.influencerTypeEntity});
 
   AddLeadInitialModel.fromJson(Map<String, dynamic> json) {
     if (json['siteSubTypeEntity'] != null) {
@@ -45,13 +46,6 @@ class AddLeadInitialModel{
     return data;
   }
 }
-
-
-
-
-
-
-
 
 class SiteSubTypeEntity {
   int siteSubId;
@@ -98,7 +92,7 @@ class InfluencerTypeEntity {
   InfluencerTypeEntity({this.inflTypeId, this.inflTypeDesc});
 
   InfluencerTypeEntity.fromJson(Map<String, dynamic> json) {
-    inflTypeId= json['inflTypeId'];
+    inflTypeId = json['inflTypeId'];
     inflTypeDesc = json['inflTypeDesc'];
   }
 

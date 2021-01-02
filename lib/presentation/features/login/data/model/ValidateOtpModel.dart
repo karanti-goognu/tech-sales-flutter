@@ -13,13 +13,13 @@ class ValidateOtpModel {
 
   ValidateOtpModel(
       {this.respCode,
-        this.respMsg,
-        this.employeeDetails,
-        this.userMenu,
-        this.journeyDetails,
-        this.leadStatusEntity,
-        this.leadStageEntity,
-        this.userSecurityKey});
+      this.respMsg,
+      this.employeeDetails,
+      this.userMenu,
+      this.journeyDetails,
+      this.leadStatusEntity,
+      this.leadStageEntity,
+      this.userSecurityKey});
 
   ValidateOtpModel.fromJson(Map<String, dynamic> json) {
     respCode = json['resp-code'];
@@ -86,10 +86,10 @@ class EmployeeDetails {
 
   EmployeeDetails(
       {this.referenceId,
-        this.mobileNumber,
-        this.employeeName,
-        this.employeeFirstName,
-        this.userType});
+      this.mobileNumber,
+      this.employeeName,
+      this.employeeFirstName,
+      this.userType});
 
   EmployeeDetails.fromJson(Map<String, dynamic> json) {
     referenceId = json['reference-id'];
@@ -128,7 +128,6 @@ class UserMenu {
     return data;
   }
 }
-
 
 class LeadStageEntity {
   int id;
