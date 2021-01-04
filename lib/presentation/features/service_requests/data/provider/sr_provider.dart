@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/RequestorDetailsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SaveServiceRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -24,11 +25,10 @@ class MyApiClient {
 
   Future<AccessKeyModel> getAccessKey() async {
     try {
-      print('$requestHeaders');
-      print('Me');
+      // print('$requestHeaders');
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
-      print('Response body is : ${json.decode(response.body)}');
+      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -44,14 +44,14 @@ class MyApiClient {
   Future<SrComplaintModel> getSrComplaintData(String accessKey, String userSecretKey) async{
     SrComplaintModel complaintModel;
     try{
-      print(accessKey);
-      print(userSecretKey);
+      // print(accessKey);
+      // print(userSecretKey);
 
 
       var response = await http.get(Uri.parse(UrlConstants.getServiceRequestFormData),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       complaintModel = SrComplaintModel.fromJson(json.decode(response.body));
-      print(response.body);
+      // print(response.body);
     }
     catch(e){
       print("Exception at SR Repo $e");
@@ -99,7 +99,7 @@ class MyApiClient {
       if (typeOfReqId.isNotEmpty){
         url=url+'&typeOfReqId=$typeOfReqId';
       }
-      print(url);
+      // print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
@@ -114,7 +114,7 @@ class MyApiClient {
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
       var url=UrlConstants.getComplaintListData+empID+'&siteId='+siteID;
-      print(url);
+      // print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
@@ -132,12 +132,12 @@ class MyApiClient {
       request.headers.addAll(
           requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey));
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
-      print("Request Body/Fields :: " + request.fields.toString());
+      // print("Request Body/Fields :: " + request.fields.toString());
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
-        print(fileName);
+        print("Filename "+fileName);
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-        print(stream.toStringStream());
+        print("stream "+stream.toStringStream().toString());
 
         // get file length
 
@@ -146,13 +146,15 @@ class MyApiClient {
         // multipart that takes file
         var multipartFileSign =
         new http.MultipartFile('file', stream, length, filename: fileName);
-
+        print(multipartFileSign.contentType);
         request.files.add(multipartFileSign);
       }
+
+      print( request.files);
       await request.send().then((value) async {
 
         response = await http.Response.fromStream(value);
-        print(response.body);
+        // print(response.body);
         return json.decode(response.body);
 
       });
@@ -170,12 +172,45 @@ class MyApiClient {
   return json.decode(response.body);
   }
 
+  Future<Map> updateServiceRequest(List<File> imageList,String accessKey, String userSecretKey, UpdateSRModel updateServiceRequest) async{
+    http.Response response;
+    try{
+      http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateServiceRequest));
+      request.headers.addAll(
+          requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey));
+      request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
+      print("Request Body/Fields :: " + request.fields.toString());
+      for (var file in imageList) {
+        String fileName = file.path.split("/").last;
+        print(fileName);
+        var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+        print(stream.toStringStream());
+        // get file length
+        var length = await file.length(); //imageFile is your image file
+        // multipart that takes file
+        var multipartFileSign =
+        new http.MultipartFile('file', stream, length, filename: fileName);
+        request.files.add(multipartFileSign);
+      }
+      await request.send().then((value) async {
+        response = await http.Response.fromStream(value);
+        print(response.body);
+        return json.decode(response.body);
+      });
+    }
+    catch(e){
+      print("Exception at SR Repo $e");
+      return null;
+    }
+    return json.decode(response.body);
+  }
+
+
   Future<ComplaintViewModel> getComplaintViewData(String accessKey, String userSecretKey,String empID, String id) async{
     ComplaintViewModel complaintViewModel;
-    // var data;
     try{
       var url=UrlConstants.srComplaintView+empID+'&id='+id;
-      print(url);
+      print(userSecretKey);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       var data = json.decode(response.body);
@@ -203,7 +238,7 @@ class MyApiClient {
         var response = await httpClient.get(UrlConstants.getFilterData,
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey));
-        print('Response body is : ${json.decode(response.body)}');
+        // print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);

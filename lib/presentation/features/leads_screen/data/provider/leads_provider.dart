@@ -276,7 +276,7 @@ class MyApiClientLeads {
 //print(saveLeadRequestModel.comments[0].commentedBy);
       print("Request headers :: " + request.headers.toString());
       print("Request Body/Fields :: " + request.fields.toString());
-      // print("Files:: " + request.files.toString());
+      print("Files:: " + request.files.toString());
       try {
         request
             .send()
@@ -387,6 +387,7 @@ class MyApiClientLeads {
           new http.MultipartFile('file', stream, length, filename: fileName);
 
       request.files.add(multipartFileSign);
+
     }
     String empId;
     String mobileNumber;
