@@ -52,7 +52,9 @@ class AddEventController extends GetxController {
   final _visitSubType = 'RETENTION SITE'.obs;
   final _visitType = 'PHYSICAL'.obs;
   final _visitSiteId = StringConstants.empty.obs;
-  final _visitDateTime = StringConstants.empty.obs;
+  final _visitDateTime = "Visit Date".obs;
+  final _visitStartTime = StringConstants.empty.obs;
+  final _nextVisitDate = "Next Visit Date".obs;
   final _visitRemarks = StringConstants.empty.obs;
   final _totalParticipants = StringConstants.empty.obs;
   final _isLoading = false.obs;
@@ -82,6 +84,8 @@ class AddEventController extends GetxController {
   get dealerListSelected => this._dealerListSelected;
 
   get meetResponseModelView => this._meetResponseModelView.value;
+
+  get nextVisitDate => this._nextVisitDate.value;
 
   get saveVisitResponse => this._saveVisitResponse.value;
 
@@ -114,6 +118,8 @@ class AddEventController extends GetxController {
   get visitSiteId => this._visitSiteId.value;
 
   get visitDateTime => this._visitDateTime.value;
+
+  get visitStartTime => this._visitStartTime.value;
 
   get visitRemarks => this._visitRemarks.value;
 
@@ -151,6 +157,8 @@ class AddEventController extends GetxController {
 
   set dealerListResponse(value) => this._dealerListResponse.value = value;
 
+  set visitStartTime(value) => this._visitStartTime.value = value;
+
   set meetResponseModelView(value) => this._meetResponseModelView.value = value;
 
   set totalParticipants(value) => this._totalParticipants.value = value;
@@ -162,6 +170,8 @@ class AddEventController extends GetxController {
   set selectedMonth(value) => this._selectedMonth.value = value;
 
   set empId(value) => this._empId.value = value;
+
+  set nextVisitDate(value) => this._nextVisitDate.value = value;
 
   set otpCode(value) => this._otpCode.value = value;
 
@@ -352,6 +362,19 @@ class AddEventController extends GetxController {
           this.visitDateTime =
               this.visitResponseModel.mwpVisitModel.visitDate.toString();
 
+          if (this.visitResponseModel.mwpVisitModel.visitStartTime != null) {
+            this.visitStartTime =
+                this.visitResponseModel.mwpVisitModel.visitStartTime.toString();
+          }
+          if (this.visitResponseModel.mwpVisitModel.nextVisitDate != null) {
+
+            var date = DateTime.fromMillisecondsSinceEpoch( this.visitResponseModel.mwpVisitModel.nextVisitDate);
+            final DateFormat formatter = DateFormat("yyyy-MM-dd");
+            final String formattedDate = formatter.format(date);
+            this.nextVisitDate =
+                formattedDate;
+          }
+
           if (this.visitResponseModel.mwpVisitModel.visitType == null) {
             this.visitType = "PHYSICAL";
           } else {
@@ -432,8 +455,18 @@ class AddEventController extends GetxController {
       debugPrint('Url is : $url');
       if (this.visitActionType == "UPDATE") {
         print('update');
-        mwpVisitModelUpdate = new MwpVisitModelUpdate(this.visitId,
-            this.visitDateTime, visitType, "", 0.0, 0.0, "", 0.0, 0.0);
+        mwpVisitModelUpdate = new MwpVisitModelUpdate(
+            this.visitId,
+            this.visitDateTime,
+            visitType,
+            "",
+            0.0,
+            0.0,
+            "",
+            0.0,
+            0.0,
+            this.nextVisitDate);
+        mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
         repository
             .updateVisitPlan(accessKey, userSecurityKey, url,
                 new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
@@ -475,7 +508,9 @@ class AddEventController extends GetxController {
               journeyStartLong,
               "",
               0.0,
-              0.0);
+              0.0,
+              this.nextVisitDate);
+          mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
                   new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
@@ -517,7 +552,9 @@ class AddEventController extends GetxController {
                   this.visitResponseModel.mwpVisitModel.visitStartLong),
               dateFormat.format(DateTime.now()),
               journeyEndLat,
-              journeyEndLong);
+              journeyEndLong,
+              this.nextVisitDate);
+          mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
                   new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
@@ -542,8 +579,17 @@ class AddEventController extends GetxController {
           });
         });
       } else {
-        mwpVisitModelUpdate = new MwpVisitModelUpdate(this.visitId,
-            this.visitDateTime, visitType, "", 0.0, 0.0, "", 0.0, 0.0);
+        mwpVisitModelUpdate = new MwpVisitModelUpdate(
+            this.visitId,
+            this.visitDateTime,
+            visitType,
+            "",
+            0.0,
+            0.0,
+            "",
+            0.0,
+            0.0,
+            this.nextVisitDate);
       }
     });
   }

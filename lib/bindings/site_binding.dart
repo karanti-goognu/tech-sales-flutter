@@ -1,6 +1,7 @@
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/core/data/provider/app_provider.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
@@ -20,6 +21,11 @@ class SiteBinding implements Bindings {
       return AppController(
           repository: MyRepositoryApp(
               apiClient: MyApiClientApp(httpClient: http.Client())));
+    });
+    Get.lazyPut<AddLeadsController>(() {
+      return AddLeadsController(
+          repository: MyRepositoryLeads(
+              apiClient: MyApiClientLeads(httpClient: http.Client())));
     });
     Get.lazyPut<SiteController>(() {
       return SiteController(

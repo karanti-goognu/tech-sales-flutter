@@ -57,7 +57,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                   padding: EdgeInsets.all(16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -209,6 +209,43 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                       GestureDetector(
                                         onTap: () {
                                           _selectDate(context);
+                                        },
+                                        child: Icon(
+                                          Icons.calendar_today_sharp,
+                                          color: Colors.orange,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      width: 1, color: ColorConstants.lineColorFilter)),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Obx(() => Text(
+                                        "${this._addEventController.nextVisitDate}",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: ColorConstants.blackColor,
+                                            fontFamily: "Muli"),
+                                      )),
+                                      GestureDetector(
+                                        onTap: () {
+                                          _selectDateNextVisit(context);
                                         },
                                         child: Icon(
                                           Icons.calendar_today_sharp,
@@ -406,6 +443,21 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         final String formattedDate = formatter.format(picked);
         selectedDateString = formattedDate;
         this._addEventController.visitDateTime = selectedDateString;
+      });
+  }
+
+  Future<void> _selectDateNextVisit(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        final DateFormat formatter = DateFormat("yyyy-MM-dd");
+        final String formattedDate = formatter.format(picked);
+        selectedDateString = formattedDate;
+        this._addEventController.nextVisitDate = selectedDateString;
       });
   }
 }

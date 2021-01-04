@@ -6,8 +6,11 @@ class MwpVisitModelUpdate {
   double visitStartLat;
   double visitStartLong;
   String visitEndTime;
+  String nextVisitDate;
   double visitEndLat;
   double visitEndLong;
+
+
 
   MwpVisitModelUpdate(
       this.id,
@@ -18,7 +21,10 @@ class MwpVisitModelUpdate {
       this.visitStartLong,
       this.visitEndTime,
       this.visitEndLat,
-      this.visitEndLong);
+      this.visitEndLong,
+      this.nextVisitDate
+  );
+
 
   MwpVisitModelUpdate.fromJson(Map<String, dynamic> json) {
     id = json['id'];

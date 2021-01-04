@@ -3038,6 +3038,65 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               ),
             ),
             SizedBox(height: 16),
+            DropdownButtonFormField<BrandModelforDB>(
+              value: _siteProductFromLocalDB,
+              items: siteProductEntityfromLoaclDB
+                  .map((label) => DropdownMenuItem(
+                child: Text(
+                  label.productName,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.inputBoxHintColor,
+                      fontFamily: "Muli"),
+                ),
+                value: label,
+              ))
+                  .toList(),
+
+              // hint: Text('Rating'),
+              onChanged: (value) {
+                setState(() {
+                  _siteProductFromLocalDB = value;
+                  print(_siteProductFromLocalDB.id);
+                });
+              },
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: ColorConstants.backgroundColorBlue,
+                      //color: HexColor("#0000001F"),
+                      width: 1.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 1.0),
+                ),
+                labelText: "Product Sold",
+                filled: false,
+                focusColor: Colors.black,
+                isDense: false,
+                labelStyle: TextStyle(
+                    fontFamily: "Muli",
+                    color: ColorConstants.inputBoxHintColorDark,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 16.0),
+                fillColor: ColorConstants.backgroundColor,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(
+                "Mandatory",
+                style: TextStyle(
+                  fontFamily: "Muli",
+                  color: ColorConstants.inputBoxHintColorDark,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
             TextFormField(
               controller: _brandPriceVisit,
               validator: (value) {
@@ -3070,65 +3129,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 labelText: "Brand Price",
                 filled: false,
                 focusColor: Colors.black,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-            DropdownButtonFormField<BrandModelforDB>(
-              value: _siteProductFromLocalDB,
-              items: siteProductEntityfromLoaclDB
-                  .map((label) => DropdownMenuItem(
-                        child: Text(
-                          label.productName,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                        ),
-                        value: label,
-                      ))
-                  .toList(),
-
-              // hint: Text('Rating'),
-              onChanged: (value) {
-                setState(() {
-                  _siteProductFromLocalDB = value;
-                  print(_siteProductFromLocalDB.id);
-                });
-              },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Product Sold",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
                 labelStyle: TextStyle(
                     fontFamily: "Muli",
                     color: ColorConstants.inputBoxHintColorDark,
@@ -4504,7 +4504,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     borderSide: BorderSide(
                                         color: Colors.red, width: 1.0),
                                   ),
-                                  labelText: "Infl. Contact",
+                                  labelText: "Mobile Number",
                                   filled: false,
                                   focusColor: Colors.black,
                                   labelStyle: TextStyle(
@@ -4558,7 +4558,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                             .withOpacity(0.4),
                                         width: 1.0),
                                   ),
-                                  labelText: "Infl. Name",
+                                  labelText: "Name",
                                   enabled: false,
                                   filled: false,
                                   focusColor: Colors.black,
@@ -4612,7 +4612,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                         width: 1.0),
                                   ),
                                   enabled: false,
-                                  labelText: "Infl. Type",
+                                  labelText: "Type",
                                   filled: false,
                                   focusColor: Colors.black,
                                   labelStyle: TextStyle(
@@ -4665,7 +4665,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                         width: 1.0),
                                   ),
                                   enabled: false,
-                                  labelText: "Infl. Category",
+                                  labelText: "Category",
                                   filled: false,
                                   focusColor: Colors.black,
                                   labelStyle: TextStyle(

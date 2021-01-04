@@ -8,6 +8,8 @@ class SplashDataModel {
   List<SiteStageEntity> siteStageEntity;
   List<SiteStatusEntity> siteStatusEntity;
   List<SiteSubTypeEntity> siteSubTypeEntity;
+  List<SiteOpportuityStatus> siteOpportunityStatusRepository;
+  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity;
   List<InfluencerCategoryEntity> influencerCategoryEntity;
   List<String> severity;
   Null userSecurityKey;
@@ -23,6 +25,8 @@ class SplashDataModel {
       this.siteStageEntity,
       this.siteStatusEntity,
       this.siteSubTypeEntity,
+      this.siteOpportunityStatusRepository,
+      this.siteProbabilityWinningEntity,
       this.srComplainResolutionEntity,
       this.srComplaintTypeEntity,
       this.influencerCategoryEntity,
@@ -45,6 +49,20 @@ class SplashDataModel {
       leadStageEntity = new List<LeadStageEntity>();
       json['leadStageEntity'].forEach((v) {
         leadStageEntity.add(new LeadStageEntity.fromJson(v));
+      });
+    }
+
+    if (json['siteOpportunityStatusEntity'] != null) {
+      siteOpportunityStatusRepository = new List<SiteOpportuityStatus>();
+      json['siteOpportunityStatusEntity'].forEach((v) {
+        siteOpportunityStatusRepository.add(new SiteOpportuityStatus.fromJson(v));
+      });
+    }
+
+    if (json['siteProbabilityWinningEntity'] != null) {
+      siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>();
+      json['siteProbabilityWinningEntity'].forEach((v) {
+        siteProbabilityWinningEntity.add(new SiteProbabilityWinningEntity.fromJson(v));
       });
     }
     if (json['siteStageEntity'] != null) {
@@ -123,6 +141,15 @@ class SplashDataModel {
     if (this.siteSubTypeEntity != null) {
       data['siteSubTypeEntity'] =
           this.siteSubTypeEntity.map((v) => v.toJson()).toList();
+    }
+
+    if (this.siteOpportunityStatusRepository != null) {
+      data['siteOpportunityStatusEntity'] =
+          this.siteOpportunityStatusRepository.map((v) => v.toJson()).toList();
+    }
+    if (this.siteProbabilityWinningEntity != null) {
+      data['siteProbabilityWinningEntity'] =
+          this.siteProbabilityWinningEntity.map((v) => v.toJson()).toList();
     }
     if (this.influencerCategoryEntity != null) {
       data['influencerCategoryEntity'] =
@@ -312,6 +339,44 @@ class UserMenu {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['menu-id'] = this.menuId;
     data['menu-text'] = this.menuText;
+    return data;
+  }
+}
+
+class SiteOpportuityStatus {
+  int id;
+  String opportunityStatus;
+
+  SiteOpportuityStatus({this.id, this.opportunityStatus});
+
+  SiteOpportuityStatus.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    opportunityStatus = json['opportunityStatus'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['opportunityStatus'] = this.opportunityStatus;
+    return data;
+  }
+}
+
+class SiteProbabilityWinningEntity {
+  int id;
+  String siteProbabilityStatus;
+
+  SiteProbabilityWinningEntity({this.id, this.siteProbabilityStatus});
+
+  SiteProbabilityWinningEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    siteProbabilityStatus = json['siteProbabilityStatus'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['siteProbabilityStatus'] = this.siteProbabilityStatus;
     return data;
   }
 }

@@ -92,7 +92,7 @@ class CalendarEventController extends GetxController {
     decoration: new BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(1000)),
-        border: Border.all(color: Colors.blue, width: 2.0)),
+        border: Border.all(color: Colors.blue, width: 10.0)),
     child: new Icon(
       Icons.person,
       color: Colors.amber,

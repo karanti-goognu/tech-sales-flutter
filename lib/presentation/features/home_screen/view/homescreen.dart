@@ -519,7 +519,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             (index == 2 || index == 3)
                                 ? Text(
-                                    "coming soon",
+                                    "Coming Soon",
                                     overflow: TextOverflow.clip,
                                     style: TextStyle(
                                         color: ColorConstants.inputBoxHintColor,

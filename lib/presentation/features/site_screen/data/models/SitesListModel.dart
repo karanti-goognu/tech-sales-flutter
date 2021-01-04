@@ -44,6 +44,8 @@ class SitesEntity {
   String siteSegment;
   String assignedTo;
   int siteStatusId;
+  int siteOppertunityId;
+  int siteProbabilityWinningId;
   int siteStageId;
   String contactName;
   String contactNumber;
@@ -55,6 +57,7 @@ class SitesEntity {
   String siteState;
   String siteDistrict;
   String siteTaluk;
+  double siteScore;
   String sitePotentialMt;
   String reraNumber;
   String dealerId;
@@ -81,6 +84,7 @@ class SitesEntity {
       this.siteStageId,
       this.contactName,
       this.contactNumber,
+      this.siteOppertunityId,
       this.siteCreationDate,
       this.siteGeotag,
       this.siteGeotagLat,
@@ -89,6 +93,8 @@ class SitesEntity {
       this.siteState,
       this.siteDistrict,
       this.siteTaluk,
+      this.siteScore,
+      this.siteProbabilityWinningId,
       this.sitePotentialMt,
       this.reraNumber,
       this.dealerId,
@@ -115,6 +121,8 @@ class SitesEntity {
     siteStageId = json['siteStageId'];
     contactName = json['contactName'];
     contactNumber = json['contactNumber'];
+    siteOppertunityId = json['siteOppertunityId'];
+    siteProbabilityWinningId = json['siteProbabilityWinningId'];
     siteCreationDate = json['siteCreationDate'];
     siteGeotag = json['siteGeotag'];
     siteGeotagLat = json['siteGeotagLat'];
@@ -123,6 +131,7 @@ class SitesEntity {
     siteState = json['siteState'];
     siteDistrict = json['siteDistrict'];
     siteTaluk = json['siteTaluk'];
+    siteScore = json['siteScore'];
     sitePotentialMt = json['sitePotentialMt'];
     reraNumber = json['reraNumber'];
     dealerId = json['dealerId'];
@@ -151,6 +160,8 @@ class SitesEntity {
     data['siteStageId'] = this.siteStageId;
     data['contactName'] = this.contactName;
     data['contactNumber'] = this.contactNumber;
+    data['siteOppertunityId'] = this.siteOppertunityId;
+    data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
     data['siteCreationDate'] = this.siteCreationDate;
     data['siteGeotag'] = this.siteGeotag;
     data['siteGeotagLat'] = this.siteGeotagLat;
@@ -159,6 +170,7 @@ class SitesEntity {
     data['siteState'] = this.siteState;
     data['siteDistrict'] = this.siteDistrict;
     data['siteTaluk'] = this.siteTaluk;
+    data['siteScore'] = this.siteScore;
     data['sitePotentialMt'] = this.sitePotentialMt;
     data['reraNumber'] = this.reraNumber;
     data['dealerId'] = this.dealerId;

@@ -24,6 +24,11 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   AddEventController _addEventController = Get.find();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -37,16 +42,22 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   color: Colors.white,
                   border: Border.all(
                       color: ColorConstants.inputBoxBorderSideColor)),
-              child: Obx(()=> DropdownButtonHideUnderline(
+              child: Obx(
+                () => DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    value:_addEventController.visitSubType,
+                    value: _addEventController.visitSubType,
                     onChanged: (String newValue) {
                       setState(() {
                         _addEventController.visitSubType = newValue;
                       });
                     },
-                    items: <String>['RETENTION SITE', 'LEADS', 'CONVERSION OPPORTUNITY', 'COUNTER','TECHNOCRAT']
-                        .map<DropdownMenuItem<String>>((String value) {
+                    items: <String>[
+                      'RETENTION SITE',
+                      'LEADS',
+                      'CONVERSION OPPORTUNITY',
+                      'COUNTER',
+                      'TECHNOCRAT'
+                    ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(
@@ -126,12 +137,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   height: 16,
                 ),
                 TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter remarks ';
-                      }
-                      return null;
-                    },
                     onChanged: (_) {
                       _addEventController.visitRemarks = _.toString();
                     },

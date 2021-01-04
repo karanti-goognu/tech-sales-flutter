@@ -43,7 +43,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
         onWillPop: () async {
           // You can do some work here.
@@ -60,27 +59,26 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
               actions: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 18, 8),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _settingModalBottomSheet(context);
-                        },
-                        child: Icon(
-                          Icons.add_circle,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        "ADD",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      )
-                    ],
-                  ),
+                  child: GestureDetector(
+                      onTap: () {
+                        _settingModalBottomSheet(context);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add_circle,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "ADD",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          )
+                        ],
+                      )),
                 ),
               ],
             ),

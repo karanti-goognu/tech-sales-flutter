@@ -1628,8 +1628,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                             .inflName
                                                             .clear();
                                                       }
-                                                      //Get.back();
-                                                      //print("hehehhehe");
                                                       return Get.dialog(
                                                           CustomDialogs()
                                                               .showDialog(
@@ -1640,7 +1638,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 });
                                               });
 
-                                              print("Dhawan :: ");
                                             }
                                           }
                                           // setState(() {
@@ -1681,7 +1678,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             borderSide: BorderSide(
                                                 color: Colors.red, width: 1.0),
                                           ),
-                                          labelText: "Infl. Contact",
+                                          labelText: "Mobile Number",
                                           filled: false,
                                           focusColor: Colors.black,
                                           labelStyle: TextStyle(
@@ -1737,7 +1734,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                     .withOpacity(0.4),
                                                 width: 1.0),
                                           ),
-                                          labelText: "Infl. Name",
+                                          labelText: "Name",
                                           enabled: false,
                                           filled: false,
                                           focusColor: Colors.black,
@@ -1793,7 +1790,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 width: 1.0),
                                           ),
                                           enabled: false,
-                                          labelText: "Infl. Type",
+                                          labelText: "Type",
                                           filled: false,
                                           focusColor: Colors.black,
                                           labelStyle: TextStyle(
@@ -1848,7 +1845,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 width: 1.0),
                                           ),
                                           enabled: false,
-                                          labelText: "Infl. Category",
+                                          labelText: "Category",
                                           filled: false,
                                           focusColor: Colors.black,
                                           labelStyle: TextStyle(

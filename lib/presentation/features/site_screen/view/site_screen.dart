@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -5,6 +7,8 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/view/Draft
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -12,6 +16,7 @@ import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,6 +31,7 @@ class _SiteScreenState extends State<SiteScreen> {
   // Instantiate your class using Get.put() to make it available for all "child" routes there.
   SiteController _siteController = Get.find();
   AppController _appController = Get.find();
+  SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
 
@@ -404,7 +410,7 @@ class _SiteScreenState extends State<SiteScreen> {
                         ),
                       ),
                       Obx(() => Text(
-                            "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : _siteController.sitesListResponse.totalSitePotential}",
+                            "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : double.parse(_siteController.sitesListResponse.totalSitePotential).toStringAsFixed(2)}",
                             style: TextStyle(
                               fontFamily: "Muli",
                               fontSize: 15,
@@ -671,7 +677,17 @@ class _SiteScreenState extends State<SiteScreen> {
                                                 ),
                                               ),
                                               Text(
-                                                "Retention Site ",
+                                                (_siteController
+                                                            .sitesListResponse
+                                                            .sitesEntity[index]
+                                                            .siteOppertunityId ==
+                                                        null)
+                                                    ? "EMPTY"
+                                                    : printOpportuityStatus(
+                                                        _siteController
+                                                            .sitesListResponse
+                                                            .sitesEntity[index]
+                                                            .siteOppertunityId),
                                                 style: TextStyle(
                                                     color: Colors.blue,
                                                     fontSize: 12,
@@ -679,6 +695,14 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     fontWeight: FontWeight.bold
                                                     //fontWeight: FontWeight.normal
                                                     ),
+                                              ),
+                                              SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text(
+                                                "Site Score - ${_siteController.sitesListResponse.sitesEntity[index].siteScore}",
+                                                style:
+                                                    TextStyles.robotoRegular14,
                                               ),
                                               SizedBox(
                                                 height: 30,
@@ -738,7 +762,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
+                                          /*Text(
                                             "Exclusive Dalmia ",
                                             style: TextStyle(
                                                 color: Colors.blue,
@@ -747,9 +771,19 @@ class _SiteScreenState extends State<SiteScreen> {
                                                 fontWeight: FontWeight.bold
                                                 //fontWeight: FontWeight.normal
                                                 ),
-                                          ),
+                                          ),*/
                                           Text(
-                                            "Hot ",
+                                            (_siteController
+                                                        .sitesListResponse
+                                                        .sitesEntity[index]
+                                                        .siteProbabilityWinningId ==
+                                                    null)
+                                                ? "Empty"
+                                                : printProbabilityOfWinning(
+                                                    _siteController
+                                                        .sitesListResponse
+                                                        .sitesEntity[index]
+                                                        .siteProbabilityWinningId),
                                             style: TextStyle(
                                                 color: Colors.blue,
                                                 fontSize: 12,
@@ -783,5 +817,33 @@ class _SiteScreenState extends State<SiteScreen> {
     return BoxDecoration(
         border: Border.all(color: ColorConstants.dateBorderColor),
         color: Colors.white);
+  }
+
+  String printOpportuityStatus(int value) {
+    List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
+        _splashController.splashDataModel.siteOpportunityStatusRepository
+            .where((i) => i.id == value));
+    if (data.length >= 1) {
+      print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
+      return "${data[0].opportunityStatus}";
+    } else {
+      print("size is 0");
+      return "";
+    }
+  }
+
+  String printProbabilityOfWinning(int value) {
+    List<SiteProbabilityWinningEntity> data =
+        List<SiteProbabilityWinningEntity>.from(_splashController
+            .splashDataModel.siteProbabilityWinningEntity
+            .where((i) => i.id == value));
+    if (data.length >= 1) {
+      print(
+          "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
+      return "${data[0].siteProbabilityStatus}";
+    } else {
+      print("size is 0");
+      return "";
+    }
   }
 }

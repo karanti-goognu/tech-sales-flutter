@@ -1,4 +1,3 @@
-
 import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -83,14 +82,14 @@ class LoginScreenPageState extends State<LoginScreen> {
             SizedBox(
               height: 16,
             ),
-            /*Text(
-              "Continue to TSO App",
+            Text(
+              "Employee ID is 10 digit long and starts with EMP",
               style: TextStyle(
                   fontFamily: "Muli",
-                  fontSize: 20,
+                  fontSize: 14,
                   letterSpacing: .5,
                   color: const Color(0xFF000000).withOpacity(0.6)),
-            ),*/
+            ),
             SizedBox(
               height: 20,
             ),
