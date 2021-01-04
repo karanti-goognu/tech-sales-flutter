@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/RequestorDetailsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SaveServiceRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/provider/sr_provider.dart';
 
 class SrRepository{
@@ -14,7 +15,6 @@ class SrRepository{
   SrRepository({this.apiClient});
 
   Future<AccessKeyModel> getAccessKey(){
-    print("Hi");
     return apiClient.getAccessKey();
   }
 
@@ -40,6 +40,10 @@ class SrRepository{
 
   Future<Map> saveServiceRequest(List<File> imageList,String accessKey, String userSecretKey, SaveServiceRequest saveRequestModel) async{
     return apiClient.saveServiceRequest(imageList, accessKey, userSecretKey,  saveRequestModel);
+  }
+
+  Future<Map> updateServiceRequest(List<File> imageList,String accessKey, String userSecretKey, UpdateSRModel updateRequestModel) async{
+    return apiClient.updateServiceRequest(imageList, accessKey, userSecretKey,  updateRequestModel);
   }
 
   getFilterData(String accessKey) {

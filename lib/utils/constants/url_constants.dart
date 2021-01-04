@@ -55,6 +55,7 @@ abstract class UrlConstants {
   static const String getComplaintListData = '$baseUrl/srcomplaint/sr_list_view?referenceId=';
   static const String addServiceRequest = '$baseUrl/srcomplaint/sr_complaint_save';
   static const String srComplaintView = '$baseUrl/srcomplaint/sr_complaint_view?referenceId=';
+  static const String updateServiceRequest = '$baseUrl/srcomplaint/sr_complaint_update';
 
 
 

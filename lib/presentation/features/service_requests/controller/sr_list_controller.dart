@@ -91,8 +91,8 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         empID = prefs.getString(StringConstants.employeeId);
         complaintListData = await repository.getComplaintViewData(accessKey,userSecurityKey, empID, id);
+        print(complaintListData);
       });
-      print(complaintListData.runtimeType);
       return complaintListData;
 
   }

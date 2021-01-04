@@ -16,7 +16,10 @@ class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return
+      widget.srComplaintActionList==null?
+      Center(child: Text('No Data available'),):
+      Column(
       children: [
         Container(
           child: ListView.builder(

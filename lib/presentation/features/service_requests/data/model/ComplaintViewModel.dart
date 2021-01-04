@@ -28,7 +28,7 @@ class ComplaintViewModel {
   int resoulutionStatus;
   String createdBy;
   String createdOn;
-  Null updatedBy;
+  String updatedBy;
   String updatedOn;
   List<SrcSubtypeMappingModal> srcSubtypeMappingModal;
   List<SrcResolutionEntity> srcResolutionEntity;

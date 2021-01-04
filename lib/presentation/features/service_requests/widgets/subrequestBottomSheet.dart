@@ -6,8 +6,8 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:get/get.dart';
 
 class SRRequestSubTypeBottomSheet extends StatefulWidget {
-  final srComplaintModel, customFunction, isComplaint;
-  SRRequestSubTypeBottomSheet({this.srComplaintModel, this.customFunction, this.isComplaint});
+  final srComplaintModel, customFunction, isComplaint, requestID;
+  SRRequestSubTypeBottomSheet({this.srComplaintModel, this.customFunction, this.isComplaint, this.requestID});
   @override
   _SRRequestSubTypeBottomSheetState createState() =>
       _SRRequestSubTypeBottomSheetState();
@@ -21,6 +21,7 @@ class _SRRequestSubTypeBottomSheetState
 
   @override
   void initState() {
+    print(widget.requestID);
     setState(() {
       checkedValues=List.generate(widget.srComplaintModel.serviceRequestComplaintTypeEntity.length, (index) => false);
     });
@@ -62,7 +63,9 @@ class _SRRequestSubTypeBottomSheetState
             child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemBuilder: (context, index) {
-                  return CheckboxListTile(
+                  return
+                    widget.requestID==widget.srComplaintModel.serviceRequestComplaintTypeEntity[index].requestId?
+                    CheckboxListTile(
                     activeColor: Colors.black,
                     dense: true,
                     title: Text(widget
@@ -97,13 +100,15 @@ class _SRRequestSubTypeBottomSheetState
                       // }
                     },
                     controlAffinity: ListTileControlAffinity.leading,
-                  );
+                  ):Container();
                 },
                 separatorBuilder: (context, index) {
-                  return Padding(
+                  return
+                    widget.requestID==widget.srComplaintModel.serviceRequestComplaintTypeEntity[index].requestId?
+                    Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Divider(),
-                  );
+                  ):Container();
                 },
                 itemCount: widget
                     .srComplaintModel.serviceRequestComplaintTypeEntity.length),

@@ -248,13 +248,9 @@ class _RequestCreationState extends State<RequestCreation> {
                                   },
                                   items: [
                                     'IHB',
-                                    'IS',
-                                    'Influencer',
                                     'Dealer',
-                                    'SDlr',
-                                    'Sales Officer',
-                                    'Employee',
-                                    'Customer'
+                                    'SUBDEALER',
+                                    'SALESOFFICER'
                                   ]
                                       .map((e) => DropdownMenuItem(
                                             child: Text(
@@ -639,6 +635,11 @@ class _RequestCreationState extends State<RequestCreation> {
                                         fontSize: 17),
                                   ),
                                 ),
+                                Container(
+                                  child:
+                                  _imageList.isNotEmpty?
+                                  Image.file(_imageList[0]):Container(),
+                                )
                               ],
                             )),
                       )
@@ -656,6 +657,7 @@ class _RequestCreationState extends State<RequestCreation> {
   getBottomSheet() {
     Get.bottomSheet(
       SRRequestSubTypeBottomSheet(
+        requestID: requestId,
         srComplaintModel: srComplaintModel,
         customFunction: customFunction,
         isComplaint: isComplaint,
@@ -683,9 +685,8 @@ class _RequestCreationState extends State<RequestCreation> {
 
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50);
+        source: ImageSource.gallery, imageQuality: 10, maxWidth: 480, maxHeight: 600 );
     if (image != null) {
-      print(1);
       setState(() {
         _imageList.add(image);
       });

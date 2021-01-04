@@ -28,7 +28,6 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
 
   @override
   void initState() {
-
     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
     _appController.getAccessKey(RequestIds.VIEW_MEET);
     super.initState();

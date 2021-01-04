@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
@@ -62,7 +61,8 @@ class SaveServiceRequestController extends GetxController{
          } else{
            Get.defaultDialog(title:"Message",
              middleText: value['resp-msg'].toString(),
-             confirm: MaterialButton(onPressed: ()=>Get.toNamed(Routes.HOME_SCREEN),child: Text('OK'),),
+             confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
+             // confirm: MaterialButton(onPressed: ()=>Get.toNamed(Routes.HOME_SCREEN),child: Text('OK'),),
            );
          }
         });
