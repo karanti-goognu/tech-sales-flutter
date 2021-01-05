@@ -141,7 +141,7 @@ class MWPPlanController extends GetxController {
           this.contractorMeet,
           this.miniContractorMeet,
           this.consumerMeet,
-         this.action,
+          this.action,
           empId,
           empId);
 
@@ -185,7 +185,9 @@ class MWPPlanController extends GetxController {
     _prefs.then((SharedPreferences prefs) {
       String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       String empId = prefs.getString(StringConstants.employeeId);
-      String url = UrlConstants.getMWPData +"referenceID=$empId&"+ "monthYear=${this.selectedMonth}";
+      String url = UrlConstants.getMWPData +
+          "referenceID=$empId&" +
+          "monthYear=${this.selectedMonth}";
       print('$url');
       repository.getMWPPlan(accessKey, userSecurityKey, url).then((data) {
         this.isLoading = false;
@@ -196,9 +198,23 @@ class MWPPlanController extends GetxController {
           this.getMWPResponse = data;
           this.isLoading = false;
           if (getMWPResponse.respCode == "MWP2013") {
-            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
-            print('${getMWPResponse.respMsg}');
-            //SitesDetailWidget();
+            this.totalConversionVol =
+                this.getMWPResponse.mwpplanModel.totalConvMt.toInt();
+            this.newILPMembers = this.getMWPResponse.mwpplanModel.newIlpMembers;
+            this.dspSlab = this.getMWPResponse.mwpplanModel.dspSlabConvNo;
+            this.siteConVol = this.getMWPResponse.mwpplanModel.siteConvMt.toInt();
+            this.siteConNo = this.getMWPResponse.mwpplanModel.siteConvNo;
+            this.siteVisitsTotal = this.getMWPResponse.mwpplanModel.siteVisitesNo;
+            this.siteVisitsUnique =
+                this.getMWPResponse.mwpplanModel.siteUniqueVisitsNo;
+            this.influencerVisit = this.getMWPResponse.mwpplanModel.inflVisitsNo;
+            this.masonMeet = this.getMWPResponse.mwpplanModel.masonMeetNo;
+            this.consumerMeet = this.getMWPResponse.mwpplanModel.counterMeetNo;
+            this.contractorMeet =
+                this.getMWPResponse.mwpplanModel.contractorMeetNo;
+            this.miniContractorMeet =
+                this.getMWPResponse.mwpplanModel.miniContractorMeetNo;
+            this.consumerMeet = this.getMWPResponse.mwpplanModel.consumerMeetNo;
           } else {
             Get.dialog(CustomDialogs().errorDialog(saveMWPResponse.respMsg));
           }

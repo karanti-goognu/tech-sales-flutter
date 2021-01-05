@@ -590,14 +590,12 @@ class _SiteScreenState extends State<SiteScreen> {
                                                               .withOpacity(0.1),
                                                       label: Obx(
                                                         () => Text(
-                                                          ((_siteController
-                                                                      .sitesListResponse
-                                                                      .sitesEntity[
-                                                                          index]
-                                                                      .siteStageId) ==
-                                                                  1)
-                                                              ? "Active"
-                                                              : "Rejected",
+                                                          (printSiteStage(
+                                                              _siteController
+                                                                  .sitesListResponse
+                                                                  .sitesEntity[
+                                                                      index]
+                                                                  .siteStageId)),
                                                           style: TextStyle(
                                                               color: HexColor(
                                                                   "#39B54A"),
@@ -841,6 +839,19 @@ class _SiteScreenState extends State<SiteScreen> {
       print(
           "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
       return "${data[0].siteProbabilityStatus}";
+    } else {
+      print("size is 0");
+      return "";
+    }
+  }
+
+  String printSiteStage(int value) {
+    List<SiteStageEntity> data = List<SiteStageEntity>.from(_splashController
+        .splashDataModel.siteStageEntity
+        .where((i) => i.id == value));
+    if (data.length >= 1) {
+      print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
+      return "${data[0].siteStageDesc}";
     } else {
       print("size is 0");
       return "";

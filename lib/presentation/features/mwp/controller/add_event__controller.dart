@@ -367,12 +367,11 @@ class AddEventController extends GetxController {
                 this.visitResponseModel.mwpVisitModel.visitStartTime.toString();
           }
           if (this.visitResponseModel.mwpVisitModel.nextVisitDate != null) {
-
-            var date = DateTime.fromMillisecondsSinceEpoch( this.visitResponseModel.mwpVisitModel.nextVisitDate);
+            var date = DateTime.fromMillisecondsSinceEpoch(
+                this.visitResponseModel.mwpVisitModel.nextVisitDate);
             final DateFormat formatter = DateFormat("yyyy-MM-dd");
             final String formattedDate = formatter.format(date);
-            this.nextVisitDate =
-                formattedDate;
+            this.nextVisitDate = formattedDate;
           }
 
           if (this.visitResponseModel.mwpVisitModel.visitType == null) {
