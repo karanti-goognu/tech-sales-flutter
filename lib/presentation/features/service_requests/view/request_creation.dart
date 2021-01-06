@@ -61,17 +61,19 @@ class _RequestCreationState extends State<RequestCreation> {
       await eventController
           .getRequestorDetails(value.accessKey, requestorType)
           .then((data) {
-        setState(() {
-          requestorDetailsModel = data;
-        });
-        for (int i = 0;
-            i < requestorDetailsModel.srComplaintRequesterList.length;
-            i++) {
+        if (data != null) {
           setState(() {
-            suggestions.add(requestorDetailsModel
-                    .srComplaintRequesterList[i].requesterName +
-                " (${requestorDetailsModel.srComplaintRequesterList[i].requesterCode})");
+            requestorDetailsModel = data;
           });
+          for (int i = 0;
+              i < requestorDetailsModel.srComplaintRequesterList.length;
+              i++) {
+            setState(() {
+              suggestions.add(requestorDetailsModel
+                      .srComplaintRequesterList[i].requesterName +
+                  " (${requestorDetailsModel.srComplaintRequesterList[i].requesterCode})");
+            });
+          }
         }
         Get.back();
       });
@@ -276,80 +278,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                                 "Please select a customer type"),
                                             backgroundColor: Colors.white,
                                           )
-                                        : Get.bottomSheet(
-                                            Container(
-                                              color: Colors.white,
-                                              height: 300,
-                                              child: Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 15,
-                                                  ),
-                                                  Text(
-                                                    'Please select an option from the below list',
-                                                    style: TextStyles
-                                                        .mulliBoldYellow18,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 15,
-                                                  ),
-                                                  Divider(),
-                                                  requestorDetailsModel
-                                                              .srComplaintRequesterList ==
-                                                          null
-                                                      ? Center(
-                                                          child:
-                                                              CircularProgressIndicator(),
-                                                        )
-                                                      : ListView(
-                                                          physics:
-                                                              ScrollPhysics(),
-                                                          children:
-                                                              requestorDetailsModel
-                                                                  .srComplaintRequesterList
-                                                                  .map(
-                                                                    (e) =>
-                                                                        RadioListTile(
-                                                                      value: e,
-                                                                      // selected: ,
-                                                                      title: Text(
-                                                                          '${e.requesterName} (${e.requesterCode})'),
-                                                                      groupValue: [
-                                                                        e.requesterName,
-                                                                        e.requesterName,
-                                                                        e.requesterName
-                                                                      ],
-                                                                      onChanged:
-                                                                          (text) =>
-                                                                              setState(() {
-                                                                        _requestorName.text = e
-                                                                            .requesterName
-                                                                            .replaceAll('(',
-                                                                                '.')
-                                                                            .replaceAll(')',
-                                                                                '')
-                                                                            .split('.')
-                                                                            .first;
-                                                                        _customerID.text = e
-                                                                            .requesterCode
-                                                                            .replaceAll(' ',
-                                                                                '')
-                                                                            .replaceAll('(',
-                                                                                '.')
-                                                                            .replaceAll(')',
-                                                                                '')
-                                                                            .split('.')
-                                                                            .last;
-                                                                      }),
-                                                                    ),
-                                                                  )
-                                                                  .toList(),
-                                                          shrinkWrap: true,
-                                                        ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
+                                        : Get.bottomSheet(requestorDetails());
                                   },
                                   style: FormFieldStyle.formFieldTextStyle,
                                   decoration:
@@ -636,9 +565,9 @@ class _RequestCreationState extends State<RequestCreation> {
                                   ),
                                 ),
                                 Container(
-                                  child:
-                                  _imageList.isNotEmpty?
-                                  Image.file(_imageList[0]):Container(),
+                                  child: _imageList.isNotEmpty
+                                      ? Image.file(_imageList[0])
+                                      : Container(),
                                 )
                               ],
                             )),
@@ -685,7 +614,10 @@ class _RequestCreationState extends State<RequestCreation> {
 
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 10, maxWidth: 480, maxHeight: 600 );
+        source: ImageSource.gallery,
+        imageQuality: 10,
+        maxWidth: 480,
+        maxHeight: 600);
     if (image != null) {
       setState(() {
         _imageList.add(image);
@@ -744,5 +676,52 @@ class _RequestCreationState extends State<RequestCreation> {
             ),
           );
         });
+  }
+
+  String customer = '';
+  Widget requestorDetails() {
+    return Container(
+      color: Colors.white,
+      height: 300,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            'Please select an option from the below list',
+            style: TextStyles.mulliBoldYellow18,
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Divider(),
+          requestorDetailsModel.srComplaintRequesterList == null
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView(
+                  physics: ScrollPhysics(),
+                  children: requestorDetailsModel.srComplaintRequesterList
+                      .map(
+                        (e) => RadioListTile(
+                            value: e,
+                            title: Text('${e.requesterName} (${e.requesterCode})'),
+                            groupValue: customer,
+                            onChanged: (text) {
+                              print(text.requesterName);
+                              setState(() {
+                                _requestorName.text=text.requesterName;
+                                _customerID.text = text.requesterCode;
+                                customer='${text.requesterName} (${text.requesterCode})';
+                              });
+                            }),
+                      )
+                      .toList(),
+                  shrinkWrap: true,
+                ),
+        ],
+      ),
+    );
   }
 }

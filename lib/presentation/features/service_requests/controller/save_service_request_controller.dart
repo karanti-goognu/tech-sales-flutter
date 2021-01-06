@@ -31,10 +31,6 @@ class SaveServiceRequestController extends GetxController{
   Future<AccessKeyModel> getAccessKey(){
     return repository.getAccessKey();
   }
-  // addImage(File image){
-  //   imageList.add(image);
-  //   update();
-  // }
 
   getAccessKeyAndSaveRequest(List<File> imageList, SaveServiceRequest saveRequestModel) {
     String userSecurityKey = "";
@@ -61,8 +57,8 @@ class SaveServiceRequestController extends GetxController{
          } else{
            Get.defaultDialog(title:"Message",
              middleText: value['resp-msg'].toString(),
-             confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
-             // confirm: MaterialButton(onPressed: ()=>Get.toNamed(Routes.HOME_SCREEN),child: Text('OK'),),
+             // confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
+             confirm: MaterialButton(onPressed: ()=>Get.toNamed(Routes.HOME_SCREEN),child: Text('OK'),),
            );
          }
         });
