@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/widget
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 
 class RequestUpdation extends StatefulWidget {
@@ -228,28 +229,41 @@ class _RequestUpdationState extends State<RequestUpdation> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Card(
-                                  elevation: 6,
-                                  color: Colors.white,
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton(
-                                      items:
-                                          complaintViewModel.srcResolutionEntity
-                                              .map(
-                                                (e) => DropdownMenuItem(
-                                                  child: Text(e.resolutionText),
-                                                  value: e.id,
-                                                ),
-                                              )
-                                              .toList(),
-
-                                      // hint: Text('In Progress'),
-                                      value:
-                                          complaintViewModel.resoulutionStatus,
-                                      onChanged: (value) {},
-                                      elevation: 8,
+                                    elevation: 6,
+                                    color: Colors.white,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        complaintViewModel
+                                            .srcResolutionEntity[
+                                                complaintViewModel
+                                                        .resoulutionStatus -
+                                                    1]
+                                            .resolutionText,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    )
+                                    // child: DropdownButtonHideUnderline(
+                                    //   child: DropdownButton(
+                                    //     items:
+                                    //         complaintViewModel.srcResolutionEntity
+                                    //             .map(
+                                    //               (e) => DropdownMenuItem(
+                                    //                 child: Text(e.resolutionText),
+                                    //                 value: e.id,
+                                    //               ),
+                                    //             )
+                                    //             .toList(),
+                                    //
+                                    //     value:
+                                    //         complaintViewModel.resoulutionStatus,
+                                    //     onChanged: (value) {},
+                                    //     elevation: 8,
+                                    //   ),
+                                    // ),
                                     ),
-                                  ),
-                                ),
                               ],
                             ),
                             Row(

@@ -177,31 +177,23 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                       fontFamily: "Muli"),
                 ),
                 FlatButton(
-                  onPressed: () => Get.bottomSheet(FilterWidget()).then(
-                      (value)
-                      {
-                          eventController.getAccessKey().then((accessKeyModel) {
-                            eventController
-                                .getSrListDataWithFilters(
-                                    accessKeyModel.accessKey,
-                                    value[0],
-                                    value[1],
-                                    value[2])
-                                .then((value)
-                            {
-                              print(value.toJson());
-                              setState(() {
-                                serviceRequestComplaintListModel= value;
-                              });
-                            }
-                            );
-
-                          });
-                          setState(() {
-                            totalFilters = value[3];
-                          });
-  }
-                      ),
+                  onPressed: () =>
+                      Get.bottomSheet(FilterWidget()).then((value) {
+                    eventController.getAccessKey().then((accessKeyModel) {
+                      eventController
+                          .getSrListDataWithFilters(accessKeyModel.accessKey,
+                              value[0], value[1], value[2])
+                          .then((value) {
+                        print(value.toJson());
+                        setState(() {
+                          serviceRequestComplaintListModel = value;
+                        });
+                      });
+                    });
+                    setState(() {
+                      totalFilters = value[3];
+                    });
+                  }),
                   // filterBottomSheet,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
@@ -222,13 +214,16 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                                 new BorderRadius.all(Radius.circular(3)),
                           ),
                           child: Center(
-                            child:  Text(totalFilters!=null? totalFilters.toString():0.toString(),
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    //fontFamily: 'Raleway',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal),
-                              ),
+                            child: Text(
+                              totalFilters != null
+                                  ? totalFilters.toString()
+                                  : 0.toString(),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  //fontFamily: 'Raleway',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal),
+                            ),
                           ),
                         ),
                         Padding(
@@ -250,8 +245,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton:
-      // isVisible ? _buildFloatingActionButton() : null,
-      // isVisible ?  : null,
+          // isVisible ? _buildFloatingActionButton() : null,
+          // isVisible ?  : null,
           Container(
         height: 68.0,
         width: 68.0,
@@ -264,7 +259,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
             ),
             onPressed: () {
               // gv.fromLead = false;
-              Get.toNamed(Routes.SERVICE_REQUEST_CREATION);
+              Get.toNamed(Routes.SERVICE_REQUEST_CREATION,);
             },
           ),
         ),
@@ -295,7 +290,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           ),
                         ),
                         Text(
-                          serviceRequestComplaintListModel.totalPotential != null
+                          serviceRequestComplaintListModel.totalPotential !=
+                                  null
                               ? "Total Potential : ${serviceRequestComplaintListModel.totalPotential} MT"
                               : "Total Potential : 0 MT",
                           style: TextStyle(
@@ -353,7 +349,11 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () => Get.to(
-                                    RequestUpdation(id:serviceRequestComplaintListModel.srComplaintListModal[index].srComplaintId),
+                                    RequestUpdation(
+                                        id: serviceRequestComplaintListModel
+                                            .srComplaintListModal[index]
+                                            .srComplaintId),
+                                    transition: Transition.rightToLeft,
                                   ),
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,

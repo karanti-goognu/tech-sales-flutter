@@ -46,9 +46,5 @@ class SRBinding implements Bindings {
           ),
       );
     });
-
-
-
-
   }
 }

@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
+
 
 class UpdateServiceRequestController extends GetxController{
   @override
@@ -42,7 +43,6 @@ class UpdateServiceRequestController extends GetxController{
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         updateServiceRequest(imageList, data.accessKey, userSecurityKey, updateRequestModel).then((value){
-          print(value);
           Get.back();
           // if(value['resp-code']=='SRC2035'){
             // Get.defaultDialog(title:"Message",
@@ -52,9 +52,9 @@ class UpdateServiceRequestController extends GetxController{
           // } else{
             Get.defaultDialog(title:"Message",
               middleText: value['resp-msg'].toString(),
-                confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
+                // confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
 
-              // confirm: MaterialButton(onPressed: ()=>Get.toNamed(Routes.HOME_SCREEN),child: Text('OK'),),
+              confirm: MaterialButton(onPressed: ()=>Get.toNamed(Routes.HOME_SCREEN),child: Text('OK'),),
             );
           // }
         });

@@ -135,35 +135,20 @@ class MyApiClient {
       // print("Request Body/Fields :: " + request.fields.toString());
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
-        print("Filename "+fileName);
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-        print("stream "+stream.toStringStream().toString());
-
         // get file length
 
         var length = await file.length(); //imageFile is your image file
-
         // multipart that takes file
-        var multipartFileSign =
-        new http.MultipartFile('file', stream, length, filename: fileName);
-        print(multipartFileSign.contentType);
+        var multipartFileSign = new http.MultipartFile('file', stream, length, filename: fileName);
         request.files.add(multipartFileSign);
       }
-
-      print( request.files);
       await request.send().then((value) async {
 
         response = await http.Response.fromStream(value);
-        // print(response.body);
         return json.decode(response.body);
 
       });
-
-      // var response = await http.post(Uri.parse(UrlConstants.addServiceRequest),
-      //     headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey),
-      // body:data
-      // );
-      // print(response.body);
     }
     catch(e){
       print("Exception at SR Repo $e");
@@ -176,22 +161,21 @@ class MyApiClient {
     http.Response response;
     try{
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateServiceRequest));
-      request.headers.addAll(
-          requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey));
+      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey));
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       print("Request Body/Fields :: " + request.fields.toString());
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
-        print(fileName);
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-        print(stream.toStringStream());
         // get file length
         var length = await file.length(); //imageFile is your image file
         // multipart that takes file
+
         var multipartFileSign =
         new http.MultipartFile('file', stream, length, filename: fileName);
         request.files.add(multipartFileSign);
       }
+
       await request.send().then((value) async {
         response = await http.Response.fromStream(value);
         print(response.body);
