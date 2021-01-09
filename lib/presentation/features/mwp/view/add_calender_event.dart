@@ -93,15 +93,20 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                         margin: EdgeInsets.symmetric(horizontal: 16.0),
                         child: CalendarCarousel<Event>(
                           todayBorderColor: Colors.green,
+                          todayButtonColor: Colors.green,
                           onDayPressed: (DateTime date, List<Event> events) {
-                            _calendarEventController.selectedDate =
-                                "${date.year}-${date.month}-${date.day}";
+                             this.setState(() {
+                               _currentDate2=date;
+                             });
+                            _calendarEventController.selectedDate ="${date.year}-${date.month}-${date.day}";
                             print('${_calendarEventController.selectedDate}');
                             _appController.getAccessKey(
                                 RequestIds.GET_CALENDER_EVENTS_OF_DAY);
                             _calendarEventController.isDayEventLoading = true;
                             /*this.setState(() => _currentDate2 = date);*/
                           },
+                          selectedDayButtonColor: Colors.grey.shade300,
+                          selectedDayBorderColor: Colors.grey,
                           daysHaveCircularBorder: false,
                           showOnlyCurrentMonthDate: true,
                           weekendTextStyle: TextStyle(

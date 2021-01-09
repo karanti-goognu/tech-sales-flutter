@@ -61,8 +61,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
       _sitePotential.text = widget.complaintViewModel.sitePotentialMt;
       _department.text = widget.complaintViewModel.deaprtmentText;
       _requestType.text = widget.complaintViewModel.requestText;
-      _requestSubType.text =
-          widget.complaintViewModel.srcSubtypeMappingModal[0].requestTypeText;
+      _requestSubType.text = widget.complaintViewModel.srcSubtypeMappingModal==null || widget.complaintViewModel.srcSubtypeMappingModal.isEmpty?' ': widget.complaintViewModel.srcSubtypeMappingModal[0].requestTypeText;
       _customerType.text = widget.complaintViewModel.creatorType;
       _severity.text = widget.complaintViewModel.severity;
       _customerID.text = widget.complaintViewModel.creatorId.toString();

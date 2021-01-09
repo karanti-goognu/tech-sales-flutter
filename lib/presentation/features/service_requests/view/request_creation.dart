@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+// import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/get_sr_complaint_data_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/save_service_request_controller.dart';
@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/presentation/features/service_requests/widgets/subrequestBottomSheet.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -41,6 +42,7 @@ class _RequestCreationState extends State<RequestCreation> {
 
   getDropdownData() async {
     await eventController.getAccessKey().then((value) async {
+      // print(value.accessKey);
       await eventController
           .getSrComplaintFormData(value.accessKey)
           .then((data) {
@@ -75,6 +77,8 @@ class _RequestCreationState extends State<RequestCreation> {
             });
           }
         }
+        _requestorName.text='';
+        _customerID.text='';
         Get.back();
       });
     });
@@ -98,8 +102,8 @@ class _RequestCreationState extends State<RequestCreation> {
   String creatorType;
   bool isComplaint;
 
-  GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
-  GlobalKey<AutoCompleteTextFieldState<String>> key1 = new GlobalKey();
+  // GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
+  // GlobalKey<AutoCompleteTextFieldState<String>> key1 = new GlobalKey();
 
   @override
   void initState() {
@@ -170,11 +174,19 @@ class _RequestCreationState extends State<RequestCreation> {
                                   decoration:
                                       FormFieldStyle.buildInputDecoration(
                                           labelText: "Department*"),
+                                  validator: (value) => value == null
+                                      ? 'Please select the Department'
+                                      : null,
                                 ),
                                 SizedBox(height: 16),
                                 DropdownButtonFormField(
                                   onChanged: (value) {
                                     setState(() {
+
+                                      selectedRequestSubtypeSeverity=[];
+                                      selectedRequestSubtypeObjectList=[];
+                                      selectedRequestSubtype=[];
+                                      _severity.text = '';
                                       requestId = value;
                                       requestId == 2
                                           ? isComplaint = true
@@ -192,27 +204,72 @@ class _RequestCreationState extends State<RequestCreation> {
                                   decoration:
                                       FormFieldStyle.buildInputDecoration(
                                           labelText: "Request Type*"),
+                                  validator: (value) => value == null
+                                      ? 'Please select the Request Type'
+                                      : null,
                                 ),
                                 SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _requestSubType,
-                                  onTap: getBottomSheet,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                    labelText: "Request Sub-type*",
-                                    suffixIcon: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 12),
-                                      child: Text(
-                                        'Select',
-                                        style: TextStyle(
-                                          color: HexColor('#F9A61A'),
+                                GestureDetector(
+                                  onTap:()=>
+                                  requestId == null
+                                      ? Get.rawSnackbar(
+                                    titleText: Text("Message"),
+                                    messageText: Text(
+                                        "Please select a Request type"),
+                                    backgroundColor: Colors.white,
+                                  )
+                                      :
+                                      getBottomSheet(),
+                                  child: FormField(
+                                    validator: (value) => value,
+                                    builder: (state){
+                                      return  InputDecorator(
+                                        decoration: FormFieldStyle.buildInputDecoration(
+                                          labelText: 'Request Sub-type*',
+                                            suffixIcon: Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                  vertical: 10.0, horizontal: 12),
+                                              child: Text(
+                                                'Select',
+                                                style: TextStyle(
+                                                  color: HexColor('#F9A61A'),
+                                                ),
+                                              ),
+                                            ),
                                         ),
-                                      ),
-                                    ),
+                                        child: selectedRequestSubtypeObjectList.isEmpty?Text(''):Container(
+                                          height:  30,
+                                          child: ListView(
+                                            scrollDirection: Axis.horizontal,
+                                            children: selectedRequestSubtypeObjectList.map((e) => Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal:4.0),
+                                              child: Chip(label: Text(e.serviceRequestTypeText,style: TextStyle(fontSize: 10),),
+                                              backgroundColor: Colors.lightGreen.withOpacity(0.2),),
+                                            )).toList(),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    // controller: _requestSubType,
+                                    // onTap: getBottomSheet,
+                                    // style: FormFieldStyle.formFieldTextStyle,
+                                    // decoration:
+                                    //     FormFieldStyle.buildInputDecoration(
+                                    //   labelText: "Request Sub-type*",
+                                    //   suffixIcon: Padding(
+                                    //     padding: const EdgeInsets.symmetric(
+                                    //         vertical: 10.0, horizontal: 12),
+                                    //     child: Text(
+                                    //       'Select',
+                                    //       style: TextStyle(
+                                    //         color: HexColor('#F9A61A'),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // readOnly: true,
+                                    // validator: (value)=> value.isEmpty? 'Please select the Request subtype': null,
                                   ),
-                                  readOnly: true,
                                 ),
                                 SizedBox(height: 16),
                                 TextFormField(
@@ -227,26 +284,26 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 TextFormField(
                                   controller: _siteID,
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Please enter the site ID';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+                                  validator: (value) => value.isEmpty
+                                      ? 'Please enter the Site ID'
+                                      : null,
                                   style: FormFieldStyle.formFieldTextStyle,
                                   keyboardType: TextInputType.phone,
                                   decoration:
                                       FormFieldStyle.buildInputDecoration(
-                                          labelText: "Site ID"),
+                                          labelText: "Site ID*"),
                                 ),
                                 SizedBox(height: 16),
                                 DropdownButtonFormField(
+                                  validator: (value) => value == null
+                                      ? 'Please select Customer Type'
+                                      : null,
                                   onChanged: (value) {
                                     setState(() {
                                       creatorType = value;
                                     });
                                     getRequestorData(value);
+
                                   },
                                   items: [
                                     'IHB',
@@ -268,6 +325,9 @@ class _RequestCreationState extends State<RequestCreation> {
                                 ),
                                 SizedBox(height: 16),
                                 TextFormField(
+                                  validator: (value) => value.isEmpty
+                                      ? 'Please select the Customer ID'
+                                      : null,
                                   controller: _customerID,
                                   readOnly: true,
                                   onTap: () {
@@ -325,17 +385,23 @@ class _RequestCreationState extends State<RequestCreation> {
                                 // SizedBox(height: 16),
                                 TextFormField(
                                   controller: _requestorContact,
+                                  enableInteractiveSelection: false,
                                   style: FormFieldStyle.formFieldTextStyle,
                                   keyboardType: TextInputType.phone,
+                                  maxLength: 10,
+                                  validator: (value) => value.isEmpty ||
+                                          value.length != 10
+                                      ? 'Please enter a valid Contact Number'
+                                      : null,
                                   decoration:
                                       FormFieldStyle.buildInputDecoration(
                                           labelText: "Requestor Contact*"),
                                 ),
-                                SizedBox(height: 16),
+                                SizedBox(height: 2),
                                 TextFormField(
                                   controller: _requestorName,
                                   style: FormFieldStyle.formFieldTextStyle,
-                                  keyboardType: TextInputType.text,
+                                  readOnly: true,
                                   decoration:
                                       FormFieldStyle.buildInputDecoration(
                                           labelText: "Requestor Name"),
@@ -471,6 +537,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 TextFormField(
                                   controller: _state,
                                   style: FormFieldStyle.formFieldTextStyle,
+                                  // validator: (value)=> value.isEmpty? 'Please select the Customer ID': null,
                                   keyboardType: TextInputType.text,
                                   decoration:
                                       FormFieldStyle.buildInputDecoration(
@@ -511,6 +578,20 @@ class _RequestCreationState extends State<RequestCreation> {
                                     } else {
                                       String empId = await getEmpId();
                                       List imageDetails = List();
+                                      List subTypeDetails = List();
+                                      selectedRequestSubtypeObjectList.forEach((element) {
+                                        setState(() {
+                                          subTypeDetails.add(
+                                              {
+                                                "createdBy": empId,
+                                                "serviceRequestComplaintId": null,
+                                                "serviceRequestComplaintTypeId":
+                                                element.id
+                                              }
+                                          );
+                                        });
+                                      });
+
                                       _imageList.forEach((element) {
                                         setState(() {
                                           imageDetails.add({
@@ -539,19 +620,13 @@ class _RequestCreationState extends State<RequestCreation> {
                                         "siteId": int.parse(_siteID.text),
                                         "severity": _severity.text,
                                         "srComplaintPhotosEntity": imageDetails,
-                                        "srComplaintSubtypeMappingEntity": [
-                                          {
-                                            "createdBy": empId,
-                                            "serviceRequestComplaintId": null,
-                                            "serviceRequestComplaintTypeId":
-                                                serviceRequestComplaintTypeId
-                                          }
-                                        ],
+                                        "srComplaintSubtypeMappingEntity": subTypeDetails,
                                         "state": _state.text,
                                         "taluk": _taluk.text
                                       });
                                       saveRequest.getAccessKeyAndSaveRequest(
                                           _imageList, _saveServiceRequest);
+                                      // print(_saveServiceRequest);
                                     }
                                   },
                                   color: HexColor("#1C99D4"),
@@ -564,11 +639,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                         fontSize: 17),
                                   ),
                                 ),
-                                Container(
-                                  child: _imageList.isNotEmpty
-                                      ? Image.file(_imageList[0])
-                                      : Container(),
-                                )
                               ],
                             )),
                       )
@@ -583,16 +653,203 @@ class _RequestCreationState extends State<RequestCreation> {
     );
   }
 
+  List<bool> checkedValues;
+  List<String> selectedRequestSubtype = [];
+  List<String> selectedRequestSubtypeSeverity = [];
+  List<ServiceRequestComplaintTypeEntity> selectedRequestSubtypeObjectList=[];
+  // List<ServiceRequestComplaintTypeEntity> dataToBeSentBack = List<ServiceRequestComplaintTypeEntity>();
+  // ServiceRequestComplaintTypeEntity dataToBeSentBack;
+  TextEditingController _query = TextEditingController();
+
+  requestSubTypeBottomSheetWidget() {
+    List<ServiceRequestComplaintTypeEntity> requestSubtype =
+        srComplaintModel.serviceRequestComplaintTypeEntity;
+    checkedValues = List.generate(
+        srComplaintModel.serviceRequestComplaintTypeEntity.length,
+        (index) => false);
+    return StatefulBuilder(builder: (context, StateSetter setState) {
+      return Container(
+        height: SizeConfig.screenHeight / 1.5,
+        color: Colors.white,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  right: 16, left: 16, bottom: 16, top: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Request Sub-type*',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                      onPressed: () => Get.back(), icon: Icon(Icons.clear))
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextFormField(
+                controller: _query,
+                onChanged: (value) {
+                  setState(() {
+                    requestSubtype = srComplaintModel
+                        .serviceRequestComplaintTypeEntity
+                        .where((element) {
+                      return element.serviceRequestTypeText
+                          .toString()
+                          .toLowerCase()
+                          .contains(value);
+                    }).toList();
+                  });
+                },
+                decoration: FormFieldStyle.buildInputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    ),
+                    labelText: 'Search'),
+              ),
+            ),
+            Expanded(
+              child: ListView.separated(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                itemCount: requestSubtype.length,
+                itemBuilder: (context, index) {
+                  return requestId == requestSubtype[index].requestId
+                      ? CheckboxListTile(
+                          activeColor: Colors.black,
+                          dense: true,
+                          title: Text(
+                              requestSubtype[index].serviceRequestTypeText),
+                          value: selectedRequestSubtype.contains(
+                              requestSubtype[index].serviceRequestTypeText),
+                          onChanged: (newValue) {
+                            // if (!checkedValues.contains(true) ||
+                            //     checkedValues[index] == true) {
+                            setState(() {
+                              selectedRequestSubtype.contains(
+                                      requestSubtype[index]
+                                          .serviceRequestTypeText)
+                                  ? selectedRequestSubtype.remove(
+                                      requestSubtype[index]
+                                          .serviceRequestTypeText)
+                                  : selectedRequestSubtype.add(
+                                      requestSubtype[index].serviceRequestTypeText);
+
+                              selectedRequestSubtypeObjectList.contains(
+                                  requestSubtype[index]
+                                      )
+                                  ? selectedRequestSubtypeObjectList.remove(
+                                  requestSubtype[index])
+                                  : selectedRequestSubtypeObjectList.add(
+                                  requestSubtype[index]);
+
+                              selectedRequestSubtypeSeverity = [];
+                              selectedRequestSubtypeObjectList.forEach((element) {
+                                setState((){
+                                  selectedRequestSubtypeSeverity.add(element.complaintSeverity);
+                                });
+                              });
+                              print(selectedRequestSubtypeSeverity);
+
+                              checkedValues[index] = newValue;
+                              // dataToBeSentBack = requestSubtype[index];
+                            });
+                            // } else {
+                            //   Get.snackbar(
+                            //     'Please uncheck the previous option',
+                            //     '',
+                            //     snackPosition: SnackPosition.BOTTOM,
+                            //   );
+                            // }
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        )
+                      : Container();
+                },
+                separatorBuilder: (context, index) {
+                  return requestId == requestSubtype[index].requestId
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Divider(),
+                        )
+                      : Container();
+                },
+              ),
+            ),
+            Container(
+              decoration:
+                  BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
+              padding: EdgeInsets.only(top: 24, bottom: 9, left: 30, right: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 40,
+                  ),
+                  // Text(
+                  //   'Clear All',
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     fontWeight: FontWeight.bold,
+                  //     color: HexColor('#F6A902'),
+                  //   ),
+                  // ),
+                  MaterialButton(
+                    color: HexColor('#1C99D4'),
+                    onPressed: () {
+                      print(selectedRequestSubtype);
+                      print(selectedRequestSubtypeSeverity);
+                      if (selectedRequestSubtypeSeverity.contains('HIGH')) {
+                        setState(() {
+                          _severity.text='HIGH';
+                        });
+                      }
+                      else if(selectedRequestSubtypeSeverity.contains('MEDIUM')){
+                        setState(() {
+                          _severity.text='MEDIUM';
+                        });
+                      }
+                      else{
+                        setState(() {
+                        _severity.text='LOW';
+                      });
+                      }
+                      // dataToBeSentBack.isEmpty
+                      //     ? widget.customFunction(dataToBeSentBack)
+                      //     : null;
+                      // print(dataToBeSentBack);
+                      Get.back();
+                    },
+                    child: Text(
+                      'OK',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
   getBottomSheet() {
+
+
     Get.bottomSheet(
-      SRRequestSubTypeBottomSheet(
-        requestID: requestId,
-        srComplaintModel: srComplaintModel,
-        customFunction: customFunction,
-        isComplaint: isComplaint,
-      ),
+      requestSubTypeBottomSheetWidget(),
+      // SRRequestSubTypeBottomSheet(
+      //   requestID: requestId,
+      //   srComplaintModel: srComplaintModel,
+      //   customFunction: customFunction,
+      //   isComplaint: isComplaint,
+      // ),
       isScrollControlled: true,
-    );
+    ).then((value) => setState((){}));
   }
 
   int serviceRequestComplaintTypeId;
@@ -678,49 +935,53 @@ class _RequestCreationState extends State<RequestCreation> {
         });
   }
 
-  String customer = '';
-  Widget requestorDetails() {
-    return Container(
-      color: Colors.white,
-      height: 300,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            'Please select an option from the below list',
-            style: TextStyles.mulliBoldYellow18,
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Divider(),
-          requestorDetailsModel.srComplaintRequesterList == null
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : ListView(
-                  physics: ScrollPhysics(),
-                  children: requestorDetailsModel.srComplaintRequesterList
-                      .map(
-                        (e) => RadioListTile(
-                            value: e,
-                            title: Text('${e.requesterName} (${e.requesterCode})'),
-                            groupValue: customer,
-                            onChanged: (text) {
-                              print(text.requesterName);
-                              setState(() {
-                                _requestorName.text=text.requesterName;
-                                _customerID.text = text.requesterCode;
-                                customer='${text.requesterName} (${text.requesterCode})';
-                              });
-                            }),
-                      )
-                      .toList(),
-                  shrinkWrap: true,
-                ),
-        ],
+  var customer;
+  requestorDetails() {
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) => Container(
+        color: Colors.white,
+        height: 300,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              'Please select an option from the below list',
+              style: TextStyles.mulliBoldYellow18,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Divider(),
+            requestorDetailsModel.srComplaintRequesterList == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Expanded(
+                    child: ListView(
+                      children: requestorDetailsModel.srComplaintRequesterList
+                          .map(
+                            (e) => RadioListTile(
+                                value: e,
+                                title: Text(
+                                    '${e.requesterName} (${e.requesterCode})'),
+                                groupValue: customer,
+                                onChanged: (text) {
+                                  setState(() {
+                                    _requestorName.text = text.requesterName;
+                                    _customerID.text = text.requesterCode;
+                                    customer = text;
+                                  });
+                                  Get.back();
+                                }),
+                          )
+                          .toList(),
+                      shrinkWrap: true,
+                    ),
+                  ),
+          ],
+        ),
       ),
     );
   }

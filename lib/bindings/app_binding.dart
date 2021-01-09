@@ -42,6 +42,5 @@ class AppBinding implements Bindings {
               apiClient: MyApiClientSites(httpClient: http.Client())));
     });
 
-
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan
 import 'package:flutter_tech_sales/presentation/features/mwp/data/model/AddMWPPlanModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -98,7 +99,9 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
         ),
         Obx(
           () => (_mwpPlanController.isLoading)
-              ? Container()
+              ? Container(
+            height: SizeConfig.screenHeight,
+          )
               : ListView.separated(
                   separatorBuilder: (BuildContext context, int index) =>
                       SizedBox(height: 2),

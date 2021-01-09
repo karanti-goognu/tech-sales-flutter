@@ -7,7 +7,6 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/widget
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 
 class RequestUpdation extends StatefulWidget {
@@ -221,25 +220,31 @@ class _RequestUpdationState extends State<RequestUpdation> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'ID: ${complaintViewModel.id}',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.bold),
+                                Column(
+                                  children:[ Text(
+                                    'ID: ${complaintViewModel.id}',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "Muli",
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                    Chip(
+                                      label: Text('${complaintViewModel.escalationLevel}'),
+                                    ),
+                                  ]
                                 ),
+                                // Chip(
+                                //   label: Text('${complaintViewModel.r}'),
+                                // ),
                                 Card(
                                     elevation: 6,
                                     color: Colors.white,
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        complaintViewModel
-                                            .srcResolutionEntity[
-                                                complaintViewModel
-                                                        .resoulutionStatus -
-                                                    1]
-                                            .resolutionText,
+                                      child:
+                                      complaintViewModel.srcResolutionEntity==null?Container()
+                                      :Text(
+                                        complaintViewModel.srcResolutionEntity[complaintViewModel.srcResolutionEntity.indexWhere((element) => element.id==complaintViewModel.resoulutionStatus)].resolutionText,
                                         style: TextStyle(
                                           fontSize: 18,
                                         ),
@@ -364,7 +369,8 @@ class _RequestUpdationState extends State<RequestUpdation> {
                                                   complaintViewModel
                                                       .srComplaintActionList,
                                               // srComplaintActionList: complaintViewModel.srComplaintActionList,
-                                            )),
+                                            ),
+                              ),
                               SizedBox(
                                 height: 100,
                               )

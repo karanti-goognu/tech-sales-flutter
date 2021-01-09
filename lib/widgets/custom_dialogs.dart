@@ -189,6 +189,7 @@ class CustomDialogs {
           ],
         ),
       ),
+      
       actions: <Widget>[
         TextButton(
           child: Text(

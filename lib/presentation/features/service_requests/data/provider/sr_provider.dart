@@ -76,9 +76,11 @@ class MyApiClient {
   Future<ServiceRequestComplaintListModel> getSrListData(String accessKey, String userSecretKey,String empID) async{
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
+      //+'&offset=30'
       var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
+      print(response.body);
     }
     catch(e){
       print("Exception at SR Repo $e");
@@ -132,7 +134,7 @@ class MyApiClient {
       request.headers.addAll(
           requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey));
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
-      // print("Request Body/Fields :: " + request.fields.toString());
+      print("Request Body/Fields :: " + request.fields.toString());
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));

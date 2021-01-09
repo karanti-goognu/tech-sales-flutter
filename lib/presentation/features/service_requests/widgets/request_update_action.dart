@@ -323,14 +323,15 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Resolution Status*"),
-            items: widget.resolutionStatus
+            items: widget.resolutionStatus!=null?
+            widget.resolutionStatus
                 .map(
                   (e) => DropdownMenuItem(
                     child: Text(e.resolutionText),
                     value: e.id,
                   ),
                 )
-                .toList(),
+                .toList():[],
             onChanged: (val) {
               _resolutionStatus = val;
             },

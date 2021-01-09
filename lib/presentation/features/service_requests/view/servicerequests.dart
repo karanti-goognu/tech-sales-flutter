@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial_material_design/flutter_speed_dial_material_design.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/sr_list_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/sitedetails.dart';
@@ -21,9 +22,7 @@ class ServiceRequests extends StatefulWidget {
 class _ServiceRequestsState extends State<ServiceRequests> {
   bool isVisible = true;
   List<Text> tabs = [
-    Text(
-      'Resolution Status',
-    ),
+    Text('Resolution Status',),
     Text('Severity'),
     Text('Type of Request'),
   ];
@@ -32,6 +31,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   ServiceRequestComplaintListModel serviceRequestComplaintListModel;
   SRListController eventController = Get.find();
+  UpdateServiceRequestController _updateServiceRequestController = Get.find();
   int totalFilters;
   var data;
   getSRListData() async {
@@ -46,7 +46,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       setState(() {
         serviceRequestComplaintListModel = data;
       });
-      print(data.toJson());
     });
     super.initState();
   }
@@ -179,19 +178,21 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                 FlatButton(
                   onPressed: () =>
                       Get.bottomSheet(FilterWidget()).then((value) {
-                    eventController.getAccessKey().then((accessKeyModel) {
+                        print(value);
+
+                        eventController.getAccessKey().then((accessKeyModel) {
                       eventController
                           .getSrListDataWithFilters(accessKeyModel.accessKey,
                               value[0], value[1], value[2])
-                          .then((value) {
-                        print(value.toJson());
+                          .then((data) {
+                        // print(data.toJson());
                         setState(() {
-                          serviceRequestComplaintListModel = value;
+                          serviceRequestComplaintListModel = data;
                         });
                       });
                     });
                     setState(() {
-                      totalFilters = value[3];
+                      totalFilters = value.isEmpty ? value[3] : 0;
                     });
                   }),
                   // filterBottomSheet,
@@ -259,7 +260,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
             ),
             onPressed: () {
               // gv.fromLead = false;
-              Get.toNamed(Routes.SERVICE_REQUEST_CREATION,);
+              Get.toNamed(
+                Routes.SERVICE_REQUEST_CREATION,
+              );
             },
           ),
         ),
@@ -348,13 +351,18 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                                   .srComplaintListModal.length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
-                                  onTap: () => Get.to(
-                                    RequestUpdation(
-                                        id: serviceRequestComplaintListModel
-                                            .srComplaintListModal[index]
-                                            .srComplaintId),
-                                    transition: Transition.rightToLeft,
-                                  ),
+                                  onTap: () {
+                                    // _updateServiceRequestController.siteId = serviceRequestComplaintListModel
+                                    //     .srComplaintListModal[index]
+                                    //     .srComplaintId;
+                                    Get.to(
+                                      RequestUpdation(
+                                          id: serviceRequestComplaintListModel
+                                              .srComplaintListModal[index]
+                                              .srComplaintId),
+                                      transition: Transition.rightToLeft,
+                                    );
+                                  },
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,
                                     borderOnForeground: true,
@@ -373,8 +381,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                                               color: serviceRequestComplaintListModel
                                                           .srComplaintListModal[
                                                               index]
-                                                          .request ==
-                                                      'COMPLAINT'
+                                                          .request !=
+                                                      'SERVICE REQUEST'
                                                   ? HexColor('#9E3A0D')
                                                   : HexColor('#F9A61A'),
                                               height: 165,

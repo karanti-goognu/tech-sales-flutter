@@ -20,6 +20,7 @@ abstract class FormFieldStyle {
       focusedBorder: InputBordersDecorations.outLineInputBorderFocused,
       enabledBorder: InputBordersDecorations.outLineInputBorderEnabled,
       errorBorder: InputBordersDecorations.outLineInputBorderError,
+      focusedErrorBorder: InputBordersDecorations.outLineInputBorderError,
       labelText: labelText,
       hintText: hintText,
       filled: false,

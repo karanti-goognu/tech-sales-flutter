@@ -53,12 +53,14 @@ class SaveServiceRequestController extends GetxController{
            Get.defaultDialog(title:"Message",
              middleText: value['resp-msg'].toString(),
              confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
+               barrierDismissible: false
            );
          } else{
            Get.defaultDialog(title:"Message",
              middleText: value['resp-msg'].toString(),
              // confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
              confirm: MaterialButton(onPressed: ()=>Get.toNamed(Routes.HOME_SCREEN),child: Text('OK'),),
+               barrierDismissible: false
            );
          }
         });

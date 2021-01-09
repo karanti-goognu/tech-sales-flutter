@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:get/get.dart';
@@ -23,7 +25,7 @@ class BottomNavigator extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 MaterialButton(
-                  onPressed: () =>Get.toNamed(Routes.HOME_SCREEN),
+                  onPressed: () => Get.toNamed(Routes.HOME_SCREEN),
                   minWidth: 40,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -52,11 +54,13 @@ class BottomNavigator extends StatelessWidget {
                 MaterialButton(
                   minWidth: 40,
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     new CupertinoPageRoute(
-                    //         builder: (BuildContext context) =>
-                    //             DraftLeadListScreen()));
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (BuildContext context) =>
+                            DraftLeadListScreen(),
+                      ),
+                    );
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

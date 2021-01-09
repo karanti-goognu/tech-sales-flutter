@@ -25,7 +25,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     setState(() {
       splashDataModel = _splashController.splashDataModel;
     });
-    splashDataModel.srComplaintTypeEntity.forEach((element) {
+    splashDataModel.srctRequestEntity.forEach((element) {
       print(element.toJson());
     });
     splashDataModel.srComplainResolutionEntity.forEach((element) {
@@ -41,7 +41,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     SizeConfig().init(context);
     // TODO: implement build
     return Container(
-      height: MediaQuery.of(context).size.height * 0.70,
+      // height: MediaQuery.of(context).size.height * 0.70,
       decoration: new BoxDecoration(
         color: Colors.white,
         borderRadius: new BorderRadius.only(
@@ -51,6 +51,7 @@ class _FilterWidgetState extends State<FilterWidget> {
       ),
       child: Stack(children: [
         SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -88,7 +89,7 @@ class _FilterWidgetState extends State<FilterWidget> {
               alignment: Alignment.centerRight,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  Get.back(result: [resolutionStatus,severityGroup,requestGroup, totalFilters]);
                 },
                 child: Icon(
                   Icons.cancel,
@@ -184,6 +185,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 Spacer(),
                 RaisedButton(
                   onPressed: () {
+                    print(requestGroup);
                     Get.back(result: [resolutionStatus,severityGroup,requestGroup, totalFilters]);
                   },
                   color: ColorConstants.buttonNormalColor,
@@ -334,13 +336,14 @@ class _FilterWidgetState extends State<FilterWidget> {
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: splashDataModel.srComplaintTypeEntity.length,
+            itemCount: splashDataModel.srctRequestEntity.length,
             itemExtent: 50,
             itemBuilder: (context, index) {
               return requestTypeListTile(
                   splashDataModel
-                      .srComplaintTypeEntity[index].serviceRequestTypeText,
-                  (index).toString());
+                      .srctRequestEntity[index].requestText,
+                  splashDataModel
+                      .srctRequestEntity[index].id.toString());
             }));
   }
 

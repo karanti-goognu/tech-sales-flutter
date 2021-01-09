@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/presentation/features/splash/data/models/Jour
 class SplashDataModel {
   List<SrComplainResolutionEntity> srComplainResolutionEntity;
   List<SrComplaintTypeEntity> srComplaintTypeEntity;
+  List<SrctRequestEntity> srctRequestEntity;
   List<LeadStatusEntity> leadStatusEntity;
   List<LeadStageEntity> leadStageEntity;
   List<SiteStageEntity> siteStageEntity;
@@ -29,6 +30,7 @@ class SplashDataModel {
       this.siteProbabilityWinningEntity,
       this.srComplainResolutionEntity,
       this.srComplaintTypeEntity,
+      this.srctRequestEntity,
       this.influencerCategoryEntity,
       this.severity,
       this.userSecurityKey,
@@ -94,6 +96,12 @@ class SplashDataModel {
       srComplaintTypeEntity = new List<SrComplaintTypeEntity>();
       json['srComplaintTypeEntity'].forEach((v) {
         srComplaintTypeEntity.add(new SrComplaintTypeEntity.fromJson(v));
+      });
+    }
+    if (json['srctRequestEntity'] != null) {
+      srctRequestEntity = new List<SrctRequestEntity>();
+      json['srctRequestEntity'].forEach((v) {
+        srctRequestEntity.add(new SrctRequestEntity.fromJson(v));
       });
     }
     if (json['influencerCategoryEntity'] != null) {
@@ -162,6 +170,10 @@ class SplashDataModel {
     if (this.srComplaintTypeEntity != null) {
       data['srComplaintTypeEntity'] =
           this.srComplaintTypeEntity.map((v) => v.toJson()).toList();
+    }
+    if (this.srctRequestEntity != null) {
+      data['srctRequestEntity'] =
+          this.srctRequestEntity.map((v) => v.toJson()).toList();
     }
     data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
@@ -425,6 +437,25 @@ class SrComplaintTypeEntity {
     data['request_id'] = this.requestId;
     data['service_request_type_text'] = this.serviceRequestTypeText;
     data['complaint_severity'] = this.complaintSeverity;
+    return data;
+  }
+}
+
+class SrctRequestEntity {
+  int id;
+  String requestText;
+
+  SrctRequestEntity({this.id, this.requestText});
+
+  SrctRequestEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    requestText = json['requestText'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['requestText'] = this.requestText;
     return data;
   }
 }
