@@ -3,14 +3,17 @@ import 'package:http/http.dart';
 
 final client = Client();
 
+
 abstract class UrlConstants {
+
   //Base Url
   //static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
 
   //Release
-  /*static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+ /* static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
   static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
   static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';*/
+
 
   //Development
   static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
@@ -54,8 +57,7 @@ abstract class UrlConstants {
   static const String srComplaintView = '$baseUrl/srcomplaint/sr_complaint_view?referenceId=';
   static const String updateServiceRequest = '$baseUrl/srcomplaint/sr_complaint_update';
 
-//
-//
+
 
 
 }
