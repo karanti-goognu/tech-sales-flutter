@@ -61,6 +61,7 @@ class UpdateServiceRequestController extends GetxController {
           Get.defaultDialog(
             title: "Message",
             middleText: value['resp-msg'].toString(),
+            barrierDismissible: false,
             // confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
 
             confirm: MaterialButton(

@@ -71,6 +71,7 @@ class MyApiClientSplash {
         'access-key': accessKey,
         'user-security-key': securityKey,
       };
+      print(requestHeadersEmpIdAndNo);
 
       var response =
           await httpClient.get(url, headers: requestHeadersEmpIdAndNo);

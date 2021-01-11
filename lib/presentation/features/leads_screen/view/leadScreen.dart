@@ -582,14 +582,15 @@ class _LeadScreenState extends State<LeadScreen> {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    new CupertinoPageRoute(
-                                        builder: (BuildContext context) =>
-                                            ViewLeadScreen(
-                                                _leadsFilterController
-                                                    .leadsListResponse
-                                                    .leadsEntity[index]
-                                                    .leadId)));
+                                  context,
+                                  new CupertinoPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ViewLeadScreen(_leadsFilterController
+                                            .leadsListResponse
+                                            .leadsEntity[index]
+                                            .leadId),
+                                  ),
+                                );
                               },
                               child: Card(
                                 clipBehavior: Clip.antiAlias,

@@ -220,7 +220,7 @@ class _RequestUpdationState extends State<RequestUpdation> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Column(
+                                Row(
                                   children:[ Text(
                                     'ID: ${complaintViewModel.id}',
                                     style: TextStyle(
@@ -229,7 +229,15 @@ class _RequestUpdationState extends State<RequestUpdation> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                     Chip(
-                                      label: Text('${complaintViewModel.escalationLevel}'),
+                                      backgroundColor: Colors.red.withOpacity(0.09),
+                                      label: Text('Escl. Level-${complaintViewModel.escalationLevel}', style: TextStyle(fontSize: 10, color: Colors.red),),
+                                      padding: EdgeInsets.zero,
+                                      shape: StadiumBorder(
+                                        side: BorderSide(
+                                            color: option == 1
+                                                ? Colors.red
+                                                : Colors.black12),
+                                      ),
                                     ),
                                   ]
                                 ),

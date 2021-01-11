@@ -871,7 +871,7 @@ class _RequestCreationState extends State<RequestCreation> {
 
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery,
+        source: ImageSource.camera,
         imageQuality: 10,
         maxWidth: 480,
         maxHeight: 600);

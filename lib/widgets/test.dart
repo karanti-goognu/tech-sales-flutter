@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
-import 'package:get/get.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_map_location_picker/generated/l10n.dart'
+as location_picker;
+import 'package:google_map_location_picker/google_map_location_picker.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+
 
 class Test extends StatefulWidget {
   @override
@@ -10,35 +13,62 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
-  SplashController eventController = Get.find();
-  SplashDataModel _splashDataModel;
-  var data;
-  getData() async {
-    await eventController.getAccessKey(RequestIds.REFRESH_DATA);
-        // .then((value) async {
-      print(eventController.splashDataModel.srComplainResolutionEntity[0].toJson());
-    // });
-  }
+  LocationResult _pickedLocation;
 
   @override
-  void initState() {
-    getData();
-    // getData().whenComplete((){
-    //   setState(() {
-    //     _splashDataModel=data;
-    //   });
-    //   print(_splashDataModel.srComplaintTypeEntity);
-    // });
-    super.initState();
-  }
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: [
-          Text('Hello'
-          )
-        ],
+    return MaterialApp(
+//      theme: ThemeData.dark(),
+      title: 'location picker',
+      localizationsDelegates: const [
+        location_picker.S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const <Locale>[
+        Locale('en', ''),
+        Locale('ar', ''),
+        Locale('pt', ''),
+        Locale('tr', ''),
+        Locale('es', ''),
+        Locale('it', ''),
+        Locale('ru', ''),
+      ],
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('location picker'),
+        ),
+        body: Builder(builder: (context) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () async {
+                    LocationResult result = await showLocationPicker(
+                      context, StringConstants.API_Key,
+                      initialCenter: LatLng(31.1975844, 29.9598339),
+//                      automaticallyAnimateToCurrentLocation: true,
+//                      mapStylePath: 'assets/mapStyle.json',
+                      myLocationButtonEnabled: true,
+                      // requiredGPS: true,
+                      layersButtonEnabled: true,
+                      // countries: ['AE', 'NG']
+
+//                      resultCardAlignment: Alignment.bottomCenter,
+//                       desiredAccuracy: LocationAccuracy.best,
+                    );
+                    print("result = $result");
+                    setState(() => _pickedLocation = result);
+                  },
+                  child: Text('Pick location'),
+                ),
+                Text(_pickedLocation.toString()),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
