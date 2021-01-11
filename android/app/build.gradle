@@ -31,7 +31,8 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     signingConfigs {
         release {
-            storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
+            //storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
+            storeFile file('/Users/admin/Documents/Development/jks/dalmiadigitaltso.jks')
             storePassword 'dalmiadigitaltso'
             keyAlias 'dalmiadigitaltso'
             keyPassword 'dalmiadigitaltso'
