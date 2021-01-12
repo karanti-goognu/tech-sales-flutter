@@ -158,36 +158,22 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                     color: Colors.white,
                                     border: Border.all(
                                         width: 1,
-                                        color:
-                                            ColorConstants.lightOutlineColor)),
+                                        color: ColorConstants.lightOutlineColor),),
                                 child: TextFormField(
                                     enabled: false,
                                     maxLength: 4,
                                     initialValue:
-                                        (_mwpPlanController.getMWPResponse !=
-                                                null)
-                                            ? (_mwpPlanController.getMWPResponse
-                                                        .mwpplanModel !=
-                                                    null)
-                                                ? returnActualValue(index)
-                                                : "0"
-                                            : "0",
+                                        (_mwpPlanController.getMWPResponse !=null)
+                                            ? (_mwpPlanController.getMWPResponse.mwpplanModel !=null)
+                                            ? returnActualValue(index): "0" : "0",
                                     textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      counterText: '',
-                                      counterStyle: TextStyle(fontSize: 0),
-                                    ),
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: ColorConstants.lightGreyColor,
-                                        fontFamily: "Muli"),
+                                    decoration: InputDecoration(border: InputBorder.none,  counterText: '',  counterStyle: TextStyle(fontSize: 0),),
+                                    style: TextStyle(fontSize: 14, color: ColorConstants.lightGreyColor, fontFamily: "Muli"),
                                     keyboardType: TextInputType.number),
-
                               ),
                               flex: 1,
                             ),
-                          )
+                          ),
                         ],
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       ),
@@ -195,16 +181,12 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                   },
                 ),
         ),
-        SizedBox(
-          height: 16,
-        ),
+        SizedBox(height: 16,),
         Obx(() => (_mwpPlanController.getMWPResponse.mwpplanModel == null)
             ? returnSaveRow()
-            : (_mwpPlanController.getMWPResponse.mwpplanModel.status ==
-                    "SUBMIT")
+            : (_mwpPlanController.getMWPResponse.mwpplanModel.status =="SUBMIT")
                 ? returnSubmitRow()
-                : (_mwpPlanController.getMWPResponse.mwpplanModel.status ==
-                        "APPROVE")
+                : (_mwpPlanController.getMWPResponse.mwpplanModel.status == "APPROVE")
                     ? returnApprovedRow()
                     : returnSaveRow())
       ],
@@ -316,15 +298,17 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   }
 
   Widget returnTextField(int index, List<AddMwpModel> mwpPlanList) {
+    final node = FocusScope.of(context);
     return Obx(
       () => TextFormField(
           initialValue: (_mwpPlanController.getMWPResponse != null)
               ? (_mwpPlanController.getMWPResponse.mwpplanModel != null)
-                  ? returnValue(index)
+                  ? returnTargetValue(index)
                   : ""
               : "",
           maxLength: 4,
           textAlign: TextAlign.center,
+          onEditingComplete: ()=>node.nextFocus(),
           decoration: InputDecoration(
             border: InputBorder.none,
             counterText: '',
@@ -376,6 +360,48 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
               }
             } catch (_) {
               print('In exception');
+              switch (index) {
+                case 0:
+                  _mwpPlanController.totalConversionVol = 0;
+                  print('${_mwpPlanController.totalConversionVol}');
+                  break;
+                case 1:
+                  _mwpPlanController.newILPMembers = 0;
+                  break;
+                case 2:
+                  _mwpPlanController.dspSlab = 0;
+                  break;
+                case 3:
+                  _mwpPlanController.siteConVol = 0;
+                  break;
+                case 4:
+                  _mwpPlanController.siteConNo = 0;
+                  break;
+                case 5:
+                  _mwpPlanController.siteVisitsTotal = 0;
+                  break;
+                case 6:
+                  _mwpPlanController.siteVisitsUnique = 0;
+                  break;
+                case 7:
+                  _mwpPlanController.influencerVisit = 0;
+                  break;
+                case 8:
+                  _mwpPlanController.masonMeet = 0;
+                  break;
+                case 9:
+                  _mwpPlanController.counterMeet = 0;
+                  break;
+                case 10:
+                  _mwpPlanController.contractorMeet = 0;
+                  break;
+                case 11:
+                  _mwpPlanController.miniContractorMeet = 0;
+                  break;
+                case 12:
+                  _mwpPlanController.consumerMeet = 0;
+                  break;
+              }
             }
           },
           style: TextStyle(
@@ -443,13 +469,13 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                                               .mwpplanModel
                                                               .actualConsumerMeetNo
                                                               .toString()
-                                                          : "0";
-    } else {
+                                                          : "0";}
+    else {
       return "0";
     }
   }
 
-  String returnValue(int index) {
+  String returnTargetValue(int index) {
     if (_mwpPlanController.getMWPResponse.mwpplanModel != null) {
       return (index == 0)
           ? _mwpPlanController.getMWPResponse.mwpplanModel.totalConvMt

@@ -376,6 +376,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
               ),
             ],
           ),
+          _calendarEventController.targetVsActual.mwpPlanTargetVsActualModel!=null?
           Obx(
             () => (_calendarEventController.isLoading)
                 ? Container()
@@ -474,7 +475,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                       );
                     },
                   ),
-          ),
+          ):Container(),
         ],
       ),
     );

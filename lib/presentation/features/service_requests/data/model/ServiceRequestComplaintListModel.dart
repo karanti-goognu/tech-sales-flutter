@@ -50,7 +50,7 @@ class SrComplaintListModal {
   String severity;
   int slaRemaining;
   String status;
-  int escalationLevel;
+  String escalationLevel;
   String creatorContact;
   String siteContact;
   String summarySrOfSite;

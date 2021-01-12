@@ -222,14 +222,15 @@ class _RequestUpdationState extends State<RequestUpdation> {
                               children: [
                                 Row(
                                   children:[ Text(
-                                    'ID: ${complaintViewModel.id}',
+                                    'ID: ${complaintViewModel.id}   ',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontFamily: "Muli",
                                         fontWeight: FontWeight.bold),
                                   ),
                                     Chip(
-                                      backgroundColor: Colors.red.withOpacity(0.09),
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                        backgroundColor: Colors.red.withOpacity(0.09),
                                       label: Text('Escl. Level-${complaintViewModel.escalationLevel}', style: TextStyle(fontSize: 10, color: Colors.red),),
                                       padding: EdgeInsets.zero,
                                       shape: StadiumBorder(

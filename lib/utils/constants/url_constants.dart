@@ -7,23 +7,23 @@ final client = Client();
 abstract class UrlConstants {
 
   //PROD
-  static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
-  static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
-  static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
+  // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
+  // static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
+  // static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
   //Base Url
   // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
 
   //QA
- /* static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+  static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
   static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
-  static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';*/
+  static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
 
   //Development
-  /*static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
-  static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
-  static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
-*/
+// static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
+//   static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
+//   static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
+
   //End points
   static const String loginCheck = '$baseUrl/login/login-otp';
   static const String getAccessKey = '$baseUrl/validation/generate-access-key';
@@ -43,8 +43,7 @@ abstract class UrlConstants {
   static const String getSearchData = '$baseUrl/leads/lead-search?';
   static const String getSiteSearchData = '$baseUrl/sites/site-search/?';
   static const String getCheckInDetails = '$baseUrl/journey/details';
-  static const String getSitesList =
-      '$baseUrl/sites/site-list-view?referenceID=';
+  static const String getSitesList = '$baseUrl/sites/site-list-view?referenceID=';
   static const String saveMWPData = '$baseUrl/mwp/mwp-save';
   static const String getMWPData = '$baseUrl/mwp/view-mwp?';
   static const String getCalendarEventData = '$baseUrl/mwp/visit-view-list?';

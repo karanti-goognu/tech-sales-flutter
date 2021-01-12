@@ -11,7 +11,6 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:flutter_tech_sales/widgets/test.dart';
 import 'package:get/get.dart';
 
 class ServiceRequests extends StatefulWidget {
@@ -22,7 +21,9 @@ class ServiceRequests extends StatefulWidget {
 class _ServiceRequestsState extends State<ServiceRequests> {
   bool isVisible = true;
   List<Text> tabs = [
-    Text('Resolution Status',),
+    Text(
+      'Resolution Status',
+    ),
     Text('Severity'),
     Text('Type of Request'),
   ];
@@ -177,9 +178,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                 FlatButton(
                   onPressed: () =>
                       Get.bottomSheet(FilterWidget()).then((value) {
-                        print(value);
+                    print(value);
 
-                        eventController.getAccessKey().then((accessKeyModel) {
+                    eventController.getAccessKey().then((accessKeyModel) {
                       eventController
                           .getSrListDataWithFilters(accessKeyModel.accessKey,
                               value[0], value[1], value[2])
@@ -275,36 +276,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, left: 15.0, bottom: 5, right: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          serviceRequestComplaintListModel.totalCount != null
-                              ? "Total Count : ${serviceRequestComplaintListModel.totalCount}"
-                              : "Total Count : 0",
-                          style: TextStyle(
-                            fontFamily: "Muli",
-                            fontSize: 12,
-                            // color: HexColor("#FFFFFF99"),
-                          ),
-                        ),
-                        Text(
-                          serviceRequestComplaintListModel.totalPotential !=
-                                  null
-                              ? "Total Potential : ${serviceRequestComplaintListModel.totalPotential} MT"
-                              : "Total Potential : 0 MT",
-                          style: TextStyle(
-                            fontFamily: "Muli",
-                            fontSize: 12,
-                            // color: HexColor("#FFFFFF99"),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  totalCountAndTotalPotential(),
                   Row(
                     children: [
                       CircleAvatar(
@@ -391,255 +363,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                                             flex: 50,
                                             child: Column(
                                               children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 5.0),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(2.0),
-                                                            child: Text(
-                                                              "Date of SR ${serviceRequestComplaintListModel.srComplaintListModal[index].createdOn}",
-                                                              style: TextStyle(
-                                                                  color: HexColor(
-                                                                      '#FF000099'),
-                                                                  fontSize: 12,
-                                                                  fontFamily:
-                                                                      "Muli",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal
-                                                                  //fontWeight: FontWeight.normal
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(2.0),
-                                                            child: Text(
-                                                              "Site ID (${serviceRequestComplaintListModel.srComplaintListModal[index].siteId})",
-                                                              style: TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontFamily:
-                                                                      "Muli",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold
-                                                                  //fontWeight: FontWeight.normal
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(2.0),
-                                                            child: Text(
-                                                              "District: ${serviceRequestComplaintListModel.srComplaintListModal[index].district}",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black38,
-                                                                  fontSize: 12,
-                                                                  fontFamily:
-                                                                      "Muli",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold
-                                                                  //fontWeight: FontWeight.normal
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            1.0),
-                                                                child: Chip(
-                                                                  shape:
-                                                                      StadiumBorder(
-                                                                    side:
-                                                                        BorderSide(
-                                                                      color: serviceRequestComplaintListModel.srComplaintListModal[index].severity ==
-                                                                              'HIGH'
-                                                                          ? HexColor(
-                                                                              '#9E3A0D')
-                                                                          : serviceRequestComplaintListModel.srComplaintListModal[index].severity == 'MEDIUM'
-                                                                              ? HexColor('#F9A61A')
-                                                                              : HexColor('#0054A6'),
-                                                                    ),
-                                                                  ),
-                                                                  backgroundColor: HexColor(serviceRequestComplaintListModel.srComplaintListModal[index].severity ==
-                                                                              'HIGH'
-                                                                          ? "#FFCD0014"
-                                                                          : serviceRequestComplaintListModel.srComplaintListModal[index].severity ==
-                                                                                  'MEDIUM'
-                                                                              ? "#FFCD00"
-                                                                              : "#0054A6")
-                                                                      .withOpacity(
-                                                                          0.1),
-                                                                  label: Text(
-                                                                    "${serviceRequestComplaintListModel.srComplaintListModal[index].severity}",
-                                                                    style: TextStyle(
-                                                                        color: serviceRequestComplaintListModel.srComplaintListModal[index].severity == 'HIGH'
-                                                                            ? HexColor('#9E3A0D')
-                                                                            : serviceRequestComplaintListModel.srComplaintListModal[index].severity == 'MEDIUM'
-                                                                                ? HexColor('#F9A61A')
-                                                                                : HexColor('#0054A6'),
-                                                                        fontSize: 12,
-                                                                        fontFamily: "Muli",
-                                                                        fontWeight: FontWeight.bold
-                                                                        //fontWeight: FontWeight.normal
-                                                                        ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              Padding(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            10.0),
-                                                                child: Text(
-                                                                  "",
-                                                                  //  textAlign: TextAlign.start,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        13,
-                                                                    fontFamily:
-                                                                        "Muli",
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    //fontWeight: FontWeight.normal
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          0, 0, 10, 0),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    top: 8.0,
-                                                                    bottom: 10),
-                                                            child: Row(
-                                                              children: [
-                                                                Text(
-                                                                  "Site Pt: ",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black38,
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontFamily:
-                                                                          "Muli",
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold
-                                                                      //fontWeight: FontWeight.normal
-                                                                      ),
-                                                                ),
-                                                                Text(
-                                                                  "${serviceRequestComplaintListModel.srComplaintListModal[index].sitePotential}MT",
-                                                                  style: TextStyle(
-                                                                      // color: Colors.black38,
-                                                                      fontSize: 15,
-                                                                      fontFamily: "Muli",
-                                                                      fontWeight: FontWeight.bold
-                                                                      //fontWeight: FontWeight.normal
-                                                                      ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            "SLA Remaining: ${serviceRequestComplaintListModel.srComplaintListModal[index].slaRemaining}",
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    '#000000'),
-                                                                fontSize: 12,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
-                                                          ),
-                                                          // Expanded(
-                                                          //   child: Container(),
-                                                          // ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 1.0,
-                                                                    top: 20),
-                                                            child: Chip(
-                                                              shape:
-                                                                  StadiumBorder(
-                                                                side:
-                                                                    BorderSide(
-                                                                  color: HexColor(
-                                                                      "#666666"),
-                                                                ),
-                                                              ),
-                                                              backgroundColor:
-                                                                  HexColor(
-                                                                          "#00000014")
-                                                                      .withOpacity(
-                                                                          0.1),
-                                                              label: Text(
-                                                                "Status: ${serviceRequestComplaintListModel.srComplaintListModal[index].status}",
-                                                                style: TextStyle(
-                                                                    color: HexColor(
-                                                                        "#666666"),
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontFamily:
-                                                                        "Muli",
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold
-                                                                    //fontWeight: FontWeight.normal
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                topRowWithSiteId(index),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
@@ -650,61 +374,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                                                     height: 1,
                                                   ),
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        "Request Id (${serviceRequestComplaintListModel.srComplaintListModal[index].srComplaintId}) "
-                                                            .toUpperCase(),
-                                                        style: TextStyle(
-                                                            color: HexColor(
-                                                                '#002A64'),
-                                                            fontSize: 12,
-                                                            fontFamily: "Muli",
-                                                            fontWeight:
-                                                                FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
-                                                            ),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          Get.to(
-                                                              SiteDetails(
-                                                                siteId: serviceRequestComplaintListModel
-                                                                    .srComplaintListModal[
-                                                                        index]
-                                                                    .siteId
-                                                                    .toString(),
-                                                              ),
-                                                              transition: Transition
-                                                                  .rightToLeft);
-                                                        },
-                                                        child: Text(
-                                                          "${serviceRequestComplaintListModel.srComplaintListModal[index].summarySrOfSite}",
-                                                          style: TextStyle(
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .underline,
-                                                              color: HexColor(
-                                                                  '#007CBF'),
-                                                              fontSize: 12,
-                                                              fontFamily:
-                                                                  "Muli",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold
-                                                              //fontWeight: FontWeight.normal
-                                                              ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
+                                                bottomRowWithRequestId(index),
                                               ],
                                             ),
                                           ),
@@ -727,6 +397,272 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                 ],
               ),
             ),
+    );
+  }
+
+  Padding totalCountAndTotalPotential() {
+    return Padding(
+      padding:
+          const EdgeInsets.only(top: 10.0, left: 15.0, bottom: 5, right: 15.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            serviceRequestComplaintListModel.totalCount != null
+                ? "Total Count : ${serviceRequestComplaintListModel.totalCount}"
+                : "Total Count : 0",
+            style: TextStyle(
+              fontFamily: "Muli",
+              fontSize: 12,
+              // color: HexColor("#FFFFFF99"),
+            ),
+          ),
+          Text(
+            serviceRequestComplaintListModel.totalPotential != null
+                ? "Total Potential : ${serviceRequestComplaintListModel.totalPotential} MT"
+                : "Total Potential : 0 MT",
+            style: TextStyle(
+              fontFamily: "Muli",
+              fontSize: 12,
+              // color: HexColor("#FFFFFF99"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Row topRowWithSiteId(int index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 5.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Text(
+                  "Date of SR ${serviceRequestComplaintListModel.srComplaintListModal[index].createdOn}",
+                  style: TextStyle(
+                      color: HexColor('#FF000099'),
+                      fontSize: 12,
+                      fontFamily: "Muli",
+                      fontWeight: FontWeight.normal
+                      //fontWeight: FontWeight.normal
+                      ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Text(
+                  "Site ID (${serviceRequestComplaintListModel.srComplaintListModal[index].siteId})",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: "Muli",
+                      fontWeight: FontWeight.bold
+                      //fontWeight: FontWeight.normal
+                      ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Text(
+                  "District: ${serviceRequestComplaintListModel.srComplaintListModal[index].district}",
+                  style: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 12,
+                      fontFamily: "Muli",
+                      fontWeight: FontWeight.bold
+                      //fontWeight: FontWeight.normal
+                      ),
+                ),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 1.0),
+                    child: Chip(
+                      shape: StadiumBorder(
+                        side: BorderSide(
+                          color: serviceRequestComplaintListModel
+                                      .srComplaintListModal[index].severity ==
+                                  'HIGH'
+                              ? HexColor('#9E3A0D')
+                              : serviceRequestComplaintListModel
+                                          .srComplaintListModal[index]
+                                          .severity ==
+                                      'MEDIUM'
+                                  ? HexColor('#F9A61A')
+                                  : HexColor('#0054A6'),
+                        ),
+                      ),
+                      backgroundColor: HexColor(serviceRequestComplaintListModel
+                                      .srComplaintListModal[index].severity ==
+                                  'HIGH'
+                              ? "#FFCD0014"
+                              : serviceRequestComplaintListModel
+                                          .srComplaintListModal[index]
+                                          .severity ==
+                                      'MEDIUM'
+                                  ? "#FFCD00"
+                                  : "#0054A6")
+                          .withOpacity(0.1),
+                      label: Text(
+                        "${serviceRequestComplaintListModel.srComplaintListModal[index].severity}",
+                        style: TextStyle(
+                            color: serviceRequestComplaintListModel
+                                        .srComplaintListModal[index].severity ==
+                                    'HIGH'
+                                ? HexColor('#9E3A0D')
+                                : serviceRequestComplaintListModel
+                                            .srComplaintListModal[index]
+                                            .severity ==
+                                        'MEDIUM'
+                                    ? HexColor('#F9A61A')
+                                    : HexColor('#0054A6'),
+                            fontSize: 12,
+                            fontFamily: "Muli",
+                            fontWeight: FontWeight.bold
+                            //fontWeight: FontWeight.normal
+                            ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      "",
+                      //  textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Muli",
+                        fontWeight: FontWeight.bold,
+                        //fontWeight: FontWeight.normal
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      "Site Pt: ",
+                      style: TextStyle(
+                          color: Colors.black38,
+                          fontSize: 15,
+                          fontFamily: "Muli",
+                          fontWeight: FontWeight.bold
+                          //fontWeight: FontWeight.normal
+                          ),
+                    ),
+                    Text(
+                      "${serviceRequestComplaintListModel.srComplaintListModal[index].sitePotential}MT",
+                      style: TextStyle(
+                          // color: Colors.black38,
+                          fontSize: 15,
+                          fontFamily: "Muli",
+                          fontWeight: FontWeight.bold
+                          //fontWeight: FontWeight.normal
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                "SLA Remaining: ${serviceRequestComplaintListModel.srComplaintListModal[index].slaRemaining}",
+                style: TextStyle(
+                    color: HexColor('#000000'),
+                    fontSize: 12,
+                    fontFamily: "Muli",
+                    fontWeight: FontWeight.bold
+                    //fontWeight: FontWeight.normal
+                    ),
+              ),
+              // Expanded(
+              //   child: Container(),
+              // ),
+              Padding(
+                padding: const EdgeInsets.only(left: 1.0, top: 20),
+                child: Chip(
+                  shape: StadiumBorder(
+                    side: BorderSide(
+                      color: HexColor("#666666"),
+                    ),
+                  ),
+                  backgroundColor: HexColor("#00000014").withOpacity(0.1),
+                  label: Text(
+                    "Status: ${serviceRequestComplaintListModel.srComplaintListModal[index].status}",
+                    style: TextStyle(
+                        color: HexColor("#666666"),
+                        fontSize: 12,
+                        fontFamily: "Muli",
+                        fontWeight: FontWeight.bold
+                        //fontWeight: FontWeight.normal
+                        ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Padding bottomRowWithRequestId(int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Request Id (${serviceRequestComplaintListModel.srComplaintListModal[index].srComplaintId}) "
+                .toUpperCase(),
+            style: TextStyle(
+                color: HexColor('#002A64'),
+                fontSize: 12,
+                fontFamily: "Muli",
+                fontWeight: FontWeight.bold
+                //fontWeight: FontWeight.normal
+                ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Get.to(
+                  SiteDetails(
+                    siteId: serviceRequestComplaintListModel
+                        .srComplaintListModal[index].siteId
+                        .toString(),
+                  ),
+                  transition: Transition.rightToLeft);
+            },
+            child: Text(
+              "${serviceRequestComplaintListModel.srComplaintListModal[index].summarySrOfSite}",
+              style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: HexColor('#007CBF'),
+                  fontSize: 10,
+                  fontFamily: "Muli",
+                  fontWeight: FontWeight.bold
+                  //fontWeight: FontWeight.normal
+                  ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

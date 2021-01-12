@@ -23,7 +23,7 @@ class MWPPlanController extends GetxController {
   MWPPlanController({@required this.repository}) : assert(repository != null);
 
   final _saveMWPResponse = new SaveMWPResponse().obs;
-  final _getMWPResponse = new GetMWPResponse().obs;
+  final  _getMWPResponse = new GetMWPResponse().obs;
 
   final _isLoading = false.obs;
   final _totalConversionVol = 0.obs;
@@ -158,22 +158,22 @@ class MWPPlanController extends GetxController {
           this.saveMWPResponse = data;
           if (saveMWPResponse.respCode == "MWP2007") {
             Get.dialog(
-                CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg));
+                CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
             print('${saveMWPResponse.respMsg}');
             //SitesDetailWidget();
           } else if (saveMWPResponse.respCode == "MWP2011") {
             Get.dialog(
-                CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg));
+                CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
             print('${saveMWPResponse.respMsg}');
             //SitesDetailWidget();
           } else if (saveMWPResponse.respCode == "MWP2016") {
             Get.dialog(
-                CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg));
+                CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
             print('${saveMWPResponse.respMsg}');
             //SitesDetailWidget();
           } else {
             Get.dialog(
-                CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg));
+                CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
           }
         }
       });
@@ -188,35 +188,46 @@ class MWPPlanController extends GetxController {
       String url = UrlConstants.getMWPData +
           "referenceID=$empId&" +
           "monthYear=${this.selectedMonth}";
-      print('$url');
+      print('######$url');
       repository.getMWPPlan(accessKey, userSecurityKey, url).then((data) {
         this.isLoading = false;
-        if (data == null) {
+        print(data);
+        if (data.mwpplanModel == null) {
+          this.getMWPResponse = data;
           debugPrint('MWP Data Response is null');
+          this.totalConversionVol = 0;
+          this.newILPMembers = 0;
+          this.dspSlab = 0;
+          this.siteConVol = 0;
+          this.siteConNo = 0;
+          this.siteVisitsTotal = 0;
+          this.siteVisitsUnique = 0;
+          this.influencerVisit = 0;
+          this.masonMeet = 0;
+          this.consumerMeet = 0;
+          this.contractorMeet = 0;
+          this.miniContractorMeet = 0;
+          this.consumerMeet = 0;
         } else {
           debugPrint('MWP Data Response is not null');
           this.getMWPResponse = data;
           this.isLoading = false;
           if (getMWPResponse.respCode == "MWP2013") {
-            this.totalConversionVol =
-                this.getMWPResponse.mwpplanModel.totalConvMt.toInt();
+            this.totalConversionVol = this.getMWPResponse.mwpplanModel.totalConvMt.toInt();
             this.newILPMembers = this.getMWPResponse.mwpplanModel.newIlpMembers;
             this.dspSlab = this.getMWPResponse.mwpplanModel.dspSlabConvNo;
             this.siteConVol = this.getMWPResponse.mwpplanModel.siteConvMt.toInt();
             this.siteConNo = this.getMWPResponse.mwpplanModel.siteConvNo;
             this.siteVisitsTotal = this.getMWPResponse.mwpplanModel.siteVisitesNo;
-            this.siteVisitsUnique =
-                this.getMWPResponse.mwpplanModel.siteUniqueVisitsNo;
+            this.siteVisitsUnique = this.getMWPResponse.mwpplanModel.siteUniqueVisitsNo;
             this.influencerVisit = this.getMWPResponse.mwpplanModel.inflVisitsNo;
             this.masonMeet = this.getMWPResponse.mwpplanModel.masonMeetNo;
             this.consumerMeet = this.getMWPResponse.mwpplanModel.counterMeetNo;
-            this.contractorMeet =
-                this.getMWPResponse.mwpplanModel.contractorMeetNo;
-            this.miniContractorMeet =
-                this.getMWPResponse.mwpplanModel.miniContractorMeetNo;
+            this.contractorMeet = this.getMWPResponse.mwpplanModel.contractorMeetNo;
+            this.miniContractorMeet = this.getMWPResponse.mwpplanModel.miniContractorMeetNo;
             this.consumerMeet = this.getMWPResponse.mwpplanModel.consumerMeetNo;
           } else {
-            Get.dialog(CustomDialogs().errorDialog(saveMWPResponse.respMsg));
+            Get.dialog(CustomDialogs().errorDialog(saveMWPResponse.respMsg),barrierDismissible: false);
           }
         }
       });

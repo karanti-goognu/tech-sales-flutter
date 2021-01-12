@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -25,6 +27,8 @@ class AddMWPScreenPageState extends State<AddMWP> {
 
   @override
   void initState() {
+    print(json.encode(_mwpPlanController.getMWPResponse));
+    print(1);
     final DateTime now = DateTime.now();
     final DateFormat formatter = DateFormat('MMMM-yyyy');
     final String formatted = formatter.format(now);
@@ -185,10 +189,11 @@ class AddMWPScreenPageState extends State<AddMWP> {
                       ),
                     ),
                     Obx(
-                      () => (_mwpPlanController
+                      () =>
+                      (_mwpPlanController
                                   .getMWPResponse.listOfMonthYear !=
-                              null)
-                          ? Flexible(
+                              null) ?
+                      Flexible(
                               flex: 2,
                               child: Container(
                                   width: double.infinity,
