@@ -225,7 +225,7 @@ class _VideoRequestsState extends State<VideoRequests> {
         content: Container(
           color: Colors.black,
           height: 300,width: 300,
-          child: VideoPlayerScreen(url:'https://mobileqacloud.dalmiabharat.com//tso/tutorial/lead_creation_module.mp4'),
+          child: VideoPlayerScreen(url:'${tsoAppTutorialListModel.tsoAppTutorial[index].url}'),
         ),
         title: Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}", style: TextStyle(fontSize: 12),),
         // actions: <Widget>[
