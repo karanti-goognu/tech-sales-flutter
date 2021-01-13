@@ -214,10 +214,10 @@ class MWPPlanController extends GetxController {
           this.getMWPResponse = data;
           this.isLoading = false;
           if (getMWPResponse.respCode == "MWP2013") {
-            this.totalConversionVol = this.getMWPResponse.mwpplanModel.totalConvMt.toInt();
+            this.totalConversionVol = this.getMWPResponse.mwpplanModel.totalConvMt.toInt()??0;
             this.newILPMembers = this.getMWPResponse.mwpplanModel.newIlpMembers;
             this.dspSlab = this.getMWPResponse.mwpplanModel.dspSlabConvNo;
-            this.siteConVol = this.getMWPResponse.mwpplanModel.siteConvMt.toInt();
+            this.siteConVol = this.getMWPResponse.mwpplanModel.siteConvMt.toInt()??0;
             this.siteConNo = this.getMWPResponse.mwpplanModel.siteConvNo;
             this.siteVisitsTotal = this.getMWPResponse.mwpplanModel.siteVisitesNo;
             this.siteVisitsUnique = this.getMWPResponse.mwpplanModel.siteUniqueVisitsNo;
