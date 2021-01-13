@@ -83,7 +83,8 @@ class MyApiClientApp {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey),
           body: body,
-          encoding: Encoding.getByName("utf-8"));
+          // encoding: Encoding.getByName("utf-8")
+      );
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

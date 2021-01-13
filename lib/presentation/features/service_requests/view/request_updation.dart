@@ -226,18 +226,21 @@ class _RequestUpdationState extends State<RequestUpdation> {
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontFamily: "Muli",
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,),
                                   ),
-                                    Chip(
-                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                        backgroundColor: Colors.red.withOpacity(0.09),
-                                      label: Text('Escl. Level-${complaintViewModel.escalationLevel}', style: TextStyle(fontSize: 10, color: Colors.red),),
-                                      padding: EdgeInsets.zero,
-                                      shape: StadiumBorder(
-                                        side: BorderSide(
-                                            color: option == 1
-                                                ? Colors.red
-                                                : Colors.black12),
+                                    Transform(
+                                      transform: new Matrix4.identity()..scale(0.7),
+                                      alignment: Alignment.center,
+                                      child: Chip(
+                                          backgroundColor: Colors.red.withOpacity(0.09),
+                                        label: Text('Escl. Level-${complaintViewModel.escalationLevel}', style: TextStyle(fontSize: 10, color: Colors.red),),
+                                        padding: EdgeInsets.zero,
+                                        shape: StadiumBorder(
+                                          side: BorderSide(
+                                              color: option == 1
+                                                  ? Colors.red
+                                                  : Colors.red),
+                                        ),
                                       ),
                                     ),
                                   ]

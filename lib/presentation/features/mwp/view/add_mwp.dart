@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
-import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 

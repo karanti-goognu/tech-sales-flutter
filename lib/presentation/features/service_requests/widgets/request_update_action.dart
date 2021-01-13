@@ -381,7 +381,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     print(element);
                     imageDetails.add({
                       //ToDo: Change srComplaint Id to some dynamic value
-                      'srComplaintId': 1,
+                      'srComplaintId': widget.id,
                       'photoName': element.path.split('/').last,
                     });
                   });

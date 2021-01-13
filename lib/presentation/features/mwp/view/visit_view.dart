@@ -22,6 +22,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   String selectedDateString;
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
+  String siteIdText = "Site Id";
 
   @override
   void initState() {
@@ -67,6 +68,28 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                               fontWeight: FontWeight.normal,
                               fontSize: 16.0),
                         ),
+                        onTap: (){
+                          print(value);
+                          setState(() {
+                            switch(value){
+                              case "RETENTION SITE":
+                                siteIdText="Site ID";
+                                break;
+                              case "LEADS":
+                                siteIdText="Lead ID";
+                                break;
+                              case "CONVERSION OPPORTUNITY":
+                                siteIdText="Site ID";
+                                break;
+                              case "COUNTER":
+                                siteIdText="Counter Code";
+                                break;
+                              case "TECHNOCRAT":
+                                siteIdText="Technocrat ID";
+                                break;
+                            }
+                          });
+                        },
                       );
                     }).toList(),
                   ),
@@ -84,7 +107,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                 TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
-                      return "Site ID can't be empty";
+                      return "$siteIdText can't be empty";
                     }
                     return null;
                   },
@@ -96,7 +119,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                       color: ColorConstants.inputBoxHintColor,
                       fontFamily: "Muli"),
                   keyboardType: TextInputType.text,
-                  decoration: _inputDecoration("Site Id", false),
+                  decoration: _inputDecoration("$siteIdText", false),
                 ),
                 SizedBox(height: 16),
                 Container(

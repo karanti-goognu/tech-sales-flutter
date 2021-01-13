@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
-import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -14,7 +14,6 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'ViewLeadScreen.dart';
 
 class LeadScreen extends StatefulWidget {
@@ -581,16 +580,24 @@ class _LeadScreenState extends State<LeadScreen> {
                                 '${_splashController.splashDataModel.leadStatusEntity[(_leadsFilterController.leadsListResponse.leadsEntity[index].leadStatusId) - 1].leadStatusDesc}');
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  new CupertinoPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ViewLeadScreen(_leadsFilterController
-                                            .leadsListResponse
-                                            .leadsEntity[index]
-                                            .leadId),
-                                  ),
+                                Get.to(
+                                  ViewLeadScreen(_leadsFilterController
+                                      .leadsListResponse
+                                      .leadsEntity[index]
+                                      .leadId),
+                                    binding: AddLeadsBinding()
                                 );
+
+                                // Navigator.push(
+                                //   context,
+                                //   new CupertinoPageRoute(
+                                //     builder: (BuildContext context) =>
+                                //         ViewLeadScreen(_leadsFilterController
+                                //             .leadsListResponse
+                                //             .leadsEntity[index]
+                                //             .leadId),
+                                //   ),
+                                // );
                               },
                               child: Card(
                                 clipBehavior: Clip.antiAlias,
