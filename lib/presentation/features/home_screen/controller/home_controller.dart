@@ -34,6 +34,12 @@ class HomeController extends GetxController {
   final _empId = "_empty".obs;
   final _employeeName = "_empty".obs;
   final _checkInStatus = StringConstants.empty.obs;
+  final _disableSlider = false.obs;
+
+  //test
+  get disableSlider => this._disableSlider.value;
+  set disableSlider(value) => this._disableSlider.value = value;
+  //
 
   get accessKeyResponse => this._accessKeyResponse.value;
 
@@ -69,6 +75,15 @@ class HomeController extends GetxController {
         colorText: Colors.white,
         backgroundColor: Colors.red,
         snackPosition: SnackPosition.BOTTOM);
+  }
+
+
+  disable(){
+    this.disableSlider=true;
+  }
+
+  enable(){
+    this.disableSlider=false;
   }
 
   getAccessKey(int requestId) {
@@ -116,7 +131,8 @@ class HomeController extends GetxController {
         var formattedDate = "${date.year}-${date.month}-${(date.day)}";
         print(
             'Date is ${date.toString()} Formatted Date :: $formattedDate Latitude $journeyStartLat Longitude $journeyStartLong');
-
+        print('Disable the button');
+        this.disableSlider=true;
         repository
             .getCheckInDetails(
                 url,
@@ -145,6 +161,8 @@ class HomeController extends GetxController {
             _splashController.splashDataModel.journeyDetails.journeyStartTime =
                 this.checkInResponse.journeyEntity.journeyStartTime;
             print("${this.checkInResponse}");
+            print('Enable the button');
+            this.disableSlider=false;
           }
         });
       }).catchError((e) {

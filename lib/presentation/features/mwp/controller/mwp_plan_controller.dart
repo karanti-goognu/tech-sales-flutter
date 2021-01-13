@@ -147,7 +147,7 @@ class MWPPlanController extends GetxController {
 
       debugPrint('Save MWP Model : ${json.encode(saveMWPModel)}');
       String url = "${UrlConstants.saveMWPData}";
-      debugPrint('Url is : $url');
+      debugPrint('---------Url is : $url');
       repository
           .saveMWPPlan(accessKey, userSecurityKey, url, saveMWPModel)
           .then((data) {
@@ -164,7 +164,7 @@ class MWPPlanController extends GetxController {
           } else if (saveMWPResponse.respCode == "MWP2011") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
-            print('${saveMWPResponse.respMsg}');
+            // print('${saveMWPResponse.respMsg}');
             //SitesDetailWidget();
           } else if (saveMWPResponse.respCode == "MWP2016") {
             Get.dialog(
@@ -208,6 +208,7 @@ class MWPPlanController extends GetxController {
           this.contractorMeet = 0;
           this.miniContractorMeet = 0;
           this.consumerMeet = 0;
+          this.counterMeet=0;
         } else {
           debugPrint('MWP Data Response is not null');
           this.getMWPResponse = data;
@@ -226,6 +227,7 @@ class MWPPlanController extends GetxController {
             this.contractorMeet = this.getMWPResponse.mwpplanModel.contractorMeetNo;
             this.miniContractorMeet = this.getMWPResponse.mwpplanModel.miniContractorMeetNo;
             this.consumerMeet = this.getMWPResponse.mwpplanModel.consumerMeetNo;
+            this.counterMeet = this.getMWPResponse.mwpplanModel.counterMeetNo;
           } else {
             Get.dialog(CustomDialogs().errorDialog(saveMWPResponse.respMsg),barrierDismissible: false);
           }

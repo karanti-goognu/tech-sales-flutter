@@ -83,7 +83,7 @@ class MyApiClient {
       print(response.body);
     }
     catch(e){
-      print("Exception at SR Repo $e");
+      print("Exception at SR Repo - SR List View $e");
     }
     return serviceRequestComplaintListModel;
   }
@@ -166,6 +166,7 @@ class MyApiClient {
       request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey));
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       print("Request Body/Fields :: " + request.fields.toString());
+      print("Headers"+ request.headers.toString());
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));

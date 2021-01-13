@@ -16,7 +16,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
 import 'package:flutter_tech_sales/widgets/test.dart';
 
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -200,13 +199,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                Obx(() =>
-                    (_homeController.checkInStatus == StringConstants.checkIn)
+                Obx(() {
+                  if(_homeController.disableSlider!=true){
+                    return (_homeController.checkInStatus == StringConstants.checkIn)
                         ? checkInSliderButton()
                         : (_homeController.checkInStatus ==
-                                StringConstants.checkOut)
-                            ? checkOutSliderButton()
-                            : journeyEnded()),
+                        StringConstants.checkOut)
+                        ? checkOutSliderButton()
+                        : journeyEnded();
+                  }
+                  else {
+                    return disabledSliderButton();
+                  }
+                }),
                 SizedBox(
                   height: 15,
                 ),
@@ -228,10 +233,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    // gv.fromLead = false;
-                    // Get.toNamed(Routes.ADD_LEADS_SCREEN);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Test()
-                    ));
+                    gv.fromLead = false;
+                    Get.toNamed(Routes.ADD_LEADS_SCREEN);
 
                   },
                 ),
@@ -337,6 +340,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             )));
+  }
+
+  Widget disabledSliderButton() {
+    return SliderButton(
+      ///Put label over here
+      label: Text(
+        "Disabled ",
+        style: TextStyle(
+            color: Color(0xff4a4a4a),
+            fontWeight: FontWeight.w500,
+            fontSize: 17),
+      ),
+      icon: Center(
+          child: Icon(
+            Icons.play_disabled,
+            color: Colors.white,
+            size: 40.0,
+            //  semanticLabel: 'Text to announce in accessibility modes',
+          )),
+      ///Change All the color and size from here.
+      alignLabel: Alignment.center,
+      width: MediaQuery.of(context).size.width,
+      radius: 10,
+      buttonColor: ColorConstants.buttonDisableColor,
+      backgroundColor: ColorConstants.buttonDisableColor,
+      highlightedColor: Colors.grey,
+      baseColor: Colors.white,
+      vibrationFlag: true,
+      dismissible: false,
+    );
   }
 
   Widget checkInSliderButton() {
