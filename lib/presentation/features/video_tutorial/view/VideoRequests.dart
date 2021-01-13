@@ -130,13 +130,9 @@ class _VideoRequestsState extends State<VideoRequests> {
                           margin: EdgeInsets.all(5.0),
                           color: Colors.white,
                           child: Container(
+                            height: 120,
                             padding: EdgeInsets.fromLTRB(8, 4, 8, 0),
-                            child: Row (
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                bottomRowWithRequestId(index),
-                              ],
-                            ),
+                            child: bottomRowWithRequestId(index),
                           ),
                         ),
                       );
@@ -180,41 +176,40 @@ class _VideoRequestsState extends State<VideoRequests> {
     );
   }
 
-  Padding bottomRowWithRequestId(int index) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget bottomRowWithRequestId(int index) {
+    return Row(
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             color: Colors.grey,
             child: Image.asset('assets/images/Container.png', width: 92, height: 52,),
             margin: EdgeInsets.only(top: 0, left: 0, right: 10),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}",
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}",
+                    style: TextStyle(
+                        color: HexColor('#002A64'),
+                        fontSize: 14,
+                        fontFamily: "Muli",
+                    ),
+                  textAlign: TextAlign.left,
+                  ),
+                Text("${tsoAppTutorialListModel.tsoAppTutorial[index].category}",
                   style: TextStyle(
                       color: HexColor('#002A64'),
                       fontSize: 14,
                       fontFamily: "Muli",
+                      fontWeight: FontWeight.bold
+                    //fontWeight: FontWeight.normal
                   ),
-                ),
-
-              Text("${tsoAppTutorialListModel.tsoAppTutorial[index].category}",
-                style: TextStyle(
-                    color: HexColor('#002A64'),
-                    fontSize: 14,
-                    fontFamily: "Muli",
-                    fontWeight: FontWeight.bold
-                  //fontWeight: FontWeight.normal
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ],
-    ),
     );
   }
 
