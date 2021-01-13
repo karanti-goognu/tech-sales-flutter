@@ -23,5 +23,6 @@ abstract class Routes {
   static const SERVICE_REQUESTS = '/service_requests';
   static const SERVICE_REQUEST_CREATION = '/create_service_request';
   static const SERVICE_REQUEST_UPDATESCREEN = '/update_service_request';
+  static const VIDEO_TUTORIAL = '/video_tutorial';
 
 }

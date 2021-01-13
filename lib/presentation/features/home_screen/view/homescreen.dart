@@ -30,9 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
     new MenuDetailsModel("Sites", "assets/images/img3.png"),
     new MenuDetailsModel("Influencers", "assets/images/img4.png"),
-    new MenuDetailsModel("My Team", "assets/images/img1.png"),
     new MenuDetailsModel("MWP", "assets/images/img1.png"),
-    new MenuDetailsModel("Service\nRequests", "assets/images/img1.png")
+    new MenuDetailsModel("SR &\nComplaint", "assets/images/img1.png"),
+    new MenuDetailsModel("Video\nTutorial", "assets/images/img1.png")
   ];
 
   String employeeName = "empty";
@@ -456,15 +456,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.SITES_SCREEN);
                   break;
                 case 2:
-                case 3:
                   Get.dialog(
                       CustomDialogs().errorDialog(" Page Coming Soon .... "));
                   break;
-                case 4:
+                case 3:
                   Get.toNamed(Routes.ADD_MWP_SCREEN);
                   break;
-                case 5:
+                case 4:
                   Get.toNamed(Routes.SERVICE_REQUESTS);
+                  break;
+                case 5:
+                  Get.toNamed(Routes.VIDEO_TUTORIAL);
                   break;
               }
             },
@@ -475,7 +477,7 @@ class _HomeScreenState extends State<HomeScreen> {
               elevation: 20,
               margin: EdgeInsets.all(10.0),
               color:
-                  ((index == 0) || (index == 1) || (index == 4) || (index == 5))
+                  ((index == 0) || (index == 1) ||(index == 3) || (index == 4) || (index == 5))
                       ? Colors.white
                       : Colors.white60,
               child: Row(
@@ -522,7 +524,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //fontWeight: FontWeight.normal
                                   ),
                             ),
-                            (index == 2 || index == 3)
+                            (index == 2 )
                                 ? Text(
                                     "Coming Soon",
                                     overflow: TextOverflow.clip,

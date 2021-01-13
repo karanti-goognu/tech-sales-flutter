@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/bindings/search_binding.dart';
 import 'package:flutter_tech_sales/bindings/site_binding.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
 import 'package:flutter_tech_sales/bindings/sr_binding.dart';
+import 'package:flutter_tech_sales/bindings/tutorial_binding.dart';
 import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
@@ -30,6 +31,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/view/r
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/servicerequests.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoRequests.dart';
 import 'package:get/get.dart';
 
 part './app_routes.dart';
@@ -115,10 +117,16 @@ class AppPages {
       page: () => ServiceRequests(),
       binding: SRBinding(),
     ),
+
     GetPage(
       name: Routes.SERVICE_REQUEST_CREATION,
       page: () => RequestCreation(),
       binding: SRBinding(),
+    ),
+    GetPage(
+      name: Routes.VIDEO_TUTORIAL,
+      page: () => VideoRequests(),
+      binding: TutorialBinding(),
     ),
     // GetPage(
     //   name: Routes.SERVICE_REQUEST_UPDATESCREEN,
