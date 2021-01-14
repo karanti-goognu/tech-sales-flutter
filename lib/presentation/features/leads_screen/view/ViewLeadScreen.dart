@@ -1193,6 +1193,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                       //   _contactName.text = data;
                                                                       // });
                                                                     },
+                                                                    maxLength: 6,
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             18,
@@ -1202,7 +1203,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                             "Muli"),
                                                                     keyboardType:
                                                                         TextInputType
-                                                                            .text,
+                                                                            .phone,
                                                                     decoration:
                                                                         InputDecoration(
                                                                       focusedBorder:
@@ -1712,6 +1713,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                       TextFormField(
                         controller: _contactName,
                         enabled: false,
+                        //autofocus: true,
                         focusNode: myFocusNode,
                         // validator: (value) {
                         //   if (value.isEmpty) {

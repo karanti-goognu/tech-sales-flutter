@@ -21,7 +21,7 @@ class LeadScreen extends StatefulWidget {
   _LeadScreenState createState() => _LeadScreenState();
 }
 
-final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> _formKey = new GlobalKey<ScaffoldState>();
 PersistentBottomSheetController controller;
 
 class _LeadScreenState extends State<LeadScreen> {
@@ -79,7 +79,7 @@ class _LeadScreenState extends State<LeadScreen> {
           resizeToAvoidBottomPadding: false,
           //resizeToAvoidBottomInset: true,
           extendBody: true,
-          key: _scaffoldKey,
+          key: _formKey,
           backgroundColor: ColorConstants.backgroundColorGrey,
           appBar: AppBar(
             // titleSpacing: 50,
@@ -871,7 +871,7 @@ class _LeadScreenState extends State<LeadScreen> {
   }
 
   void _settingModalBottomSheet(context) {
-    _scaffoldKey.currentState
+    _formKey.currentState
         .showBottomSheet<Null>((BuildContext context) {
           /*return  showModalBottomSheet(
         backgroundColor: Colors.transparent,

@@ -284,6 +284,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 TextFormField(
                                   controller: _siteID,
+                                  maxLength: 6,
                                   validator: (value) => value.isEmpty
                                       ? 'Please enter the Site ID'
                                       : null,
