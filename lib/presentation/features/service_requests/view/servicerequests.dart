@@ -179,7 +179,11 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   onPressed: () =>
                       Get.bottomSheet(FilterWidget()).then((value) {
                     print(value);
-
+                    setState(() {
+                      // totalFilters = value.isEmpty ? value[3] : 0;
+                      totalFilters = value[3] ;
+                    });
+                    print("------+$totalFilters");
                     eventController.getAccessKey().then((accessKeyModel) {
                       eventController
                           .getSrListDataWithFilters(accessKeyModel.accessKey,
@@ -190,9 +194,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           serviceRequestComplaintListModel = data;
                         });
                       });
-                    });
-                    setState(() {
-                      totalFilters = value.isEmpty ? value[3] : 0;
                     });
                   }),
                   // filterBottomSheet,
