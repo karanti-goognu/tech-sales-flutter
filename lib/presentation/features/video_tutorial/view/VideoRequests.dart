@@ -185,7 +185,7 @@ class _VideoRequestsState extends State<VideoRequests> {
               height: 80,
               width: 100,
               color: Colors.grey,
-              child: Image.asset('assets/images/Container.png', width: 92, height: 52,),
+              child: Image.network('${tsoAppTutorialListModel.tsoAppTutorial[index].thumbnailUrl}', width: 92, height: 52,),
             ),
             SizedBox(width: 10,),
             Expanded(
