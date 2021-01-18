@@ -284,6 +284,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 TextFormField(
                                   controller: _siteID,
+                                  maxLength: 6,
                                   validator: (value) => value.isEmpty
                                       ? 'Please enter the Site ID'
                                       : null,
@@ -575,6 +576,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                   onPressed: () async {
                                     if (!_formKey.currentState.validate()) {
                                       print("Error");
+                                      Get.dialog(CustomDialogs().errorDialog('Please enter the mandatory details'));
                                     } else {
                                       String empId = await getEmpId();
                                       List imageDetails = List();

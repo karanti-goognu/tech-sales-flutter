@@ -29,9 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
     new MenuDetailsModel("Sites", "assets/images/img3.png"),
     new MenuDetailsModel("Influencers", "assets/images/img4.png"),
-    new MenuDetailsModel("MWP", "assets/images/img1.png"),
-    new MenuDetailsModel("SR &\nComplaint", "assets/images/img1.png"),
-    new MenuDetailsModel("Video\nTutorial", "assets/images/img1.png")
+    new MenuDetailsModel("MWP", "assets/images/mwp.png"),
+    new MenuDetailsModel("SR &\nComplaint", "assets/images/sr.png"),
+    new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png")
   ];
 
   String employeeName = "empty";

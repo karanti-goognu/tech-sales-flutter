@@ -119,7 +119,7 @@ class MWPPlanController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
+      print('======$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('User Security key is :: $userSecurityKey');
@@ -190,7 +190,7 @@ class MWPPlanController extends GetxController {
       print('######$url');
       repository.getMWPPlan(accessKey, userSecurityKey, url).then((data) {
         this.isLoading = false;
-        print(data);
+        print('JJJJJJ'+data.toString());
         if (data.mwpplanModel == null) {
           this.getMWPResponse = data;
           debugPrint('MWP Data Response is null');

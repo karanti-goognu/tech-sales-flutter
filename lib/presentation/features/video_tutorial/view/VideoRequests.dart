@@ -3,19 +3,20 @@ import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/mod
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_speed_dial_material_design/flutter_speed_dial_material_design.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/controller/tutorial_list_controller.dart';
-import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoRequests extends StatefulWidget {
+class VideoRequests extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => _VideoRequestsState();
-}
+  }
 
 class _VideoRequestsState extends State<VideoRequests> {
+
   TsoAppTutorialListModel tsoAppTutorialListModel;
   TutorialListController eventController = Get.find();
 
@@ -35,6 +36,7 @@ class _VideoRequestsState extends State<VideoRequests> {
     });
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,91 +70,92 @@ class _VideoRequestsState extends State<VideoRequests> {
         automaticallyImplyLeading: false,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        height: 68.0,
-        width: 68.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: ColorConstants.checkinColor,
-            child: Icon(
-              Icons.keyboard_backspace,
-              color: Colors.black,
+        floatingActionButton:
+        Container(
+          height: 68.0,
+          width: 68.0,
+          child: FittedBox(
+            child: FloatingActionButton(
+              backgroundColor: Colors.amber,
+              child: Icon(
+                Icons.keyboard_backspace,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                // gv.fromLead = false;
+                Get.toNamed(
+                  Routes.HOME_SCREEN,
+                );
+              },
             ),
-            onPressed: () {
-              // gv.fromLead = false;
-              Get.toNamed(
-                Routes.HOME_SCREEN,
-              );
-            },
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigator(),
-      body: data == null
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  totalCountTutorials(),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  tsoAppTutorialListModel.tsoAppTutorial != null
-                      ? Expanded(
-                          child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount:
-                                  tsoAppTutorialListModel.tsoAppTutorial.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    activityVideo(context, index);
-                                    // _updateServiceRequestController.siteId = serviceRequestComplaintListModel
-                                    //     .srComplaintListModal[index]
-                                    //     .srComplaintId;
-                                    // Get.to(
-                                    //   RequestUpdation(
-                                    //       id: tsoAppTutorialListModel
-                                    //           .tsoAppTutorial[index]
-                                    //           .id),
-                                    //   transition: Transition.rightToLeft,
-                                    // );
-                                  },
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    borderOnForeground: true,
-                                    elevation: 6,
-                                    color: Colors.white,
-                                    child: Container(
-                                      height: 120,
-                                      child: bottomRowWithRequestId(index),
-                                    ),
-                                  ),
-                                );
-                              }),
-                        )
-                      : Expanded(
+        bottomNavigationBar: BottomNavigator(),
+        body: data == null
+            ? Center(
+          child: CircularProgressIndicator(),
+        )
+       : Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              totalCountTutorials(),
+              SizedBox(
+                height: 5,
+              ),
+              tsoAppTutorialListModel.tsoAppTutorial != null
+              ? Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                    itemCount: tsoAppTutorialListModel
+                        .tsoAppTutorial.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          activityVideo(context, index);
+                          // _updateServiceRequestController.siteId = serviceRequestComplaintListModel
+                          //     .srComplaintListModal[index]
+                          //     .srComplaintId;
+                          // Get.to(
+                          //   RequestUpdation(
+                          //       id: tsoAppTutorialListModel
+                          //           .tsoAppTutorial[index]
+                          //           .id),
+                          //   transition: Transition.rightToLeft,
+                          // );
+                        },
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          borderOnForeground: true,
+                          elevation: 6,
+                          color: Colors.white,
                           child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              tsoAppTutorialListModel.respMsg,
-                              textAlign: TextAlign.center,
-                            ),
+                            height: 120,
+                            child: bottomRowWithRequestId(index),
                           ),
                         ),
-                ],
+                      );
+                    }),
+              ) :
+                   Expanded(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    tsoAppTutorialListModel.respMsg,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-            ),
+            ],
+          ),
+        ),
     );
   }
 
   Padding totalCountTutorials() {
     return Padding(
       padding:
-          const EdgeInsets.only(top: 10.0, left: 15.0, bottom: 5, right: 15.0),
+      const EdgeInsets.only(top: 10.0, left: 15.0, bottom: 5, right: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -166,6 +169,7 @@ class _VideoRequestsState extends State<VideoRequests> {
               // color: HexColor("#FFFFFF99"),
             ),
           ),
+
         ],
       ),
     );
@@ -173,94 +177,73 @@ class _VideoRequestsState extends State<VideoRequests> {
 
   Widget bottomRowWithRequestId(int index) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24.0, 24.0, 27),
+      padding: const EdgeInsets.fromLTRB(16,24.0,24.0,27),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 80,
-            width: 100,
-            color: Colors.grey,
-            child: Image.asset(
-              'assets/images/Container.png',
-              width: 92,
-              height: 52,
+          children: [
+            Container(
+              height: 80,
+              width: 100,
+              color: Colors.grey,
+              child: Image.asset('assets/images/Container.png', width: 92, height: 52,),
             ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${tsoAppTutorialListModel.tsoAppTutorial[index].description}",
-                  style: TextStyle(
-                    color: HexColor('#002A64'),
-                    fontSize: 14,
-                    fontFamily: "Muli",
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                Text(
-                  "${tsoAppTutorialListModel.tsoAppTutorial[index].category}",
-                  style: TextStyle(
-                      color: HexColor('#002A64'),
-                      fontSize: 14,
-                      fontFamily: "Muli",
-                      fontWeight: FontWeight.bold
-                      //fontWeight: FontWeight.normal
+            SizedBox(width: 10,),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}",
+                      style: TextStyle(
+                          color: HexColor('#002A64'),
+                          fontSize: 14,
+                          fontFamily: "Muli",
                       ),
-                )
-              ],
+                    textAlign: TextAlign.left,
+                    ),
+                  Text("${tsoAppTutorialListModel.tsoAppTutorial[index].category}",
+                    style: TextStyle(
+                        color: HexColor('#002A64'),
+                        fontSize: 14,
+                        fontFamily: "Muli",
+                        fontWeight: FontWeight.bold
+                      //fontWeight: FontWeight.normal
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
       ),
     );
   }
 
-  void activityVideo(BuildContext context, int index) {
-    var _controller = VideoPlayerController.network(
-        "${tsoAppTutorialListModel.tsoAppTutorial[index].category}");
+  void activityVideo(BuildContext context, int index){
+   var _controller = VideoPlayerController.network("${tsoAppTutorialListModel.tsoAppTutorial[index].category}");
     var alertDialog = AlertDialog(
-      contentTextStyle: TextStyles.robotoBold16,
-      contentPadding: EdgeInsets.all(0),
-      titlePadding: EdgeInsets.only(top: 10),
-      content: Container(
-        alignment: Alignment.topCenter,
-        color: Colors.black,
-        height: 200,
-        width: double.maxFinite,
-        child: VideoPlayerScreen(
-            url:
-                'https://mobileqacloud.dalmiabharat.com//tso/tutorial/lead_creation_module.mp4'),
-      ),
-      title: Text(
-        "${tsoAppTutorialListModel.tsoAppTutorial[index].description}",
-        style: TextStyle(
-          fontSize: 12,
+      actionsPadding: EdgeInsets.all(0),
+        contentPadding: EdgeInsets.all(0),
+        content: Container(
+          color: Colors.black,
+          height: 300,width: 300,
+          child: VideoPlayerScreen(url:'https://mobileqacloud.dalmiabharat.com//tso/tutorial/lead_creation_module.mp4'),
         ),
-        textAlign: TextAlign.center,
-      ),
-      // actions: <Widget>[
-      //
-      //   FlatButton(
-      //       child: Text('Finish'),
-      //       onPressed: () {
-      //         Navigator.of(context).pop();
-      //       }),
-      // ],
+        title: Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}", style: TextStyle(fontSize: 12),),
+        // actions: <Widget>[
+        //
+        //   FlatButton(
+        //       child: Text('Finish'),
+        //       onPressed: () {
+        //         Navigator.of(context).pop();
+        //       }),
+        // ],
     );
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
+    showDialog(context: context,
+        builder: (BuildContext context){
           return alertDialog;
-        });
+        }
+    );
   }
 }
-
 class VideoPlayerScreen extends StatefulWidget {
   final url;
   VideoPlayerScreen({Key key, this.url}) : super(key: key);
@@ -275,7 +258,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   void initState() {
-    print('####' + widget.url);
+    print('####'+widget.url);
     // Create and store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.
@@ -324,7 +307,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: ColorConstants.backgroundColorBlue,
         onPressed: () {
           // Wrap the play or pause in a call to `setState`. This ensures the
           // correct icon is shown.

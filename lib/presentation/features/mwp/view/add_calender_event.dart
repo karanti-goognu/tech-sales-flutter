@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
@@ -84,7 +85,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
             ),
             body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal:8.0, vertical: 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -92,13 +93,14 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                     Container(
                         margin: EdgeInsets.symmetric(horizontal: 16.0),
                         child: CalendarCarousel<Event>(
-                          todayBorderColor: Colors.green,
+                          // todayBorderColor: Colors.green,
                           todayButtonColor: Colors.green,
                           onDayPressed: (DateTime date, List<Event> events) {
-                             this.setState(() {
-                               _currentDate2=date;
-                             });
-                            _calendarEventController.selectedDate ="${date.year}-${date.month}-${date.day}";
+                            this.setState(() {
+                              _currentDate2 = date;
+                            });
+                            _calendarEventController.selectedDate =
+                                "${date.year}-${date.month}-${date.day}";
                             print('${_calendarEventController.selectedDate}');
                             _appController.getAccessKey(
                                 RequestIds.GET_CALENDER_EVENTS_OF_DAY);
@@ -106,13 +108,13 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                             /*this.setState(() => _currentDate2 = date);*/
                           },
                           selectedDayButtonColor: Colors.grey.shade300,
-                          selectedDayBorderColor: Colors.grey,
+                          // selectedDayBorderColor: Colors.grey,
                           daysHaveCircularBorder: false,
                           showOnlyCurrentMonthDate: true,
                           weekendTextStyle: TextStyle(
                             color: Colors.black,
                           ),
-                          thisMonthDayBorderColor: Colors.grey,
+                          // thisMonthDayBorderColor: Colors.grey,
                           weekFormat: false,
                           markedDateMoreCustomDecoration: new BoxDecoration(
                             borderRadius: new BorderRadius.circular(10.0),
@@ -120,7 +122,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                           ),
                           markedDatesMap:
                               _calendarEventController.markedDateMap,
-                          height: 420.0,
+                          height: 400.0,
                           selectedDateTime: _currentDate2,
                           targetDateTime: _targetDateTime,
                           customGridViewPhysics: NeverScrollableScrollPhysics(),
@@ -153,11 +155,11 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                           },
                         )),
                     SizedBox(
-                      height: 20,
+                      height: 16,
                     ),
                     returnRow(),
                     SizedBox(
-                      height: 20,
+                      height: 16,
                     ),
                     returnEventsList(),
                   ],
@@ -224,7 +226,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (BuildContext context, int index) => Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Divider(),
                     ),
                 itemCount: _calendarEventController.listOfEvents.length,
@@ -255,7 +257,57 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                             width: 18,
                             height: 18,
                             decoration: new BoxDecoration(
-                              color: Colors.red,
+                              color: (_calendarEventController
+                                              .listOfEvents[index]
+                                              .meetingType ==
+                                          'RETENTION SITE' ||
+                                      _calendarEventController
+                                              .listOfEvents[index]
+                                              .meetingType ==
+                                          'CONVERSION OPPORTUNITY')
+                                  ? HexColor('#52B6E2')
+                                  : _calendarEventController.listOfEvents[index]
+                                              .meetingType ==
+                                          'LEADS'
+                                      ? HexColor('#52E2BB')
+                                      : _calendarEventController
+                                                  .listOfEvents[index]
+                                                  .meetingType ==
+                                              'SR'
+                                          ? HexColor('#7F39FB')
+                                          : _calendarEventController
+                                                      .listOfEvents[index]
+                                                      .meetingType ==
+                                                  'COMPLAINT'
+                                              ? HexColor('#9E3A0D')
+                                              : (_calendarEventController
+                                                              .listOfEvents[
+                                                                  index]
+                                                              .meetingType ==
+                                                          'MASSON MEET' ||
+                                                      _calendarEventController
+                                                              .listOfEvents[
+                                                                  index]
+                                                              .meetingType ==
+                                                          'CONTRACTOR MEET' ||
+                                                      _calendarEventController
+                                                              .listOfEvents[
+                                                                  index]
+                                                              .meetingType ==
+                                                          'ENGINEER MEET' ||
+                                                      _calendarEventController
+                                                              .listOfEvents[
+                                                                  index]
+                                                              .meetingType ==
+                                                          'MINI CONTRACTOR')
+                                                  ? HexColor('#FD4066')
+                                                  : _calendarEventController
+                                                              .listOfEvents[
+                                                                  index]
+                                                              .meetingType ==
+                                                          'CONSUMER MEET'
+                                                      ? HexColor('#F6A902')
+                                                      : Colors.red,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -376,106 +428,115 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
               ),
             ],
           ),
-          _calendarEventController.targetVsActual.mwpPlanTargetVsActualModel!=null?
-          Obx(
-            () => (_calendarEventController.isLoading)
-                ? Container()
-                : ListView.separated(
-                    separatorBuilder: (BuildContext context, int index) =>
-                        SizedBox(height: 2),
-                    //  padding: const EdgeInsets.all(8.0),
-                    itemCount: mwpNames.length,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 56,
-                        child: new Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+          _calendarEventController.targetVsActual.mwpPlanTargetVsActualModel !=
+                  null
+              ? Obx(
+                  () => (_calendarEventController.isLoading)
+                      ? Container()
+                      : ListView.separated(
+                          separatorBuilder: (BuildContext context, int index) =>
+                              SizedBox(height: 2),
+                          //  padding: const EdgeInsets.all(8.0),
+                          itemCount: mwpNames.length,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              height: 56,
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Text(
+                                          mwpNames[index],
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 16,
+                                            color:
+                                                ColorConstants.lightGreyColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    flex: 5,
+                                  ),
+                                  Flexible(
+                                    child: Container(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          16, 8, 16, 8),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ColorConstants
+                                                  .lightOutlineColor)),
+                                      child: Text(
+                                        (index == 0)
+                                            ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountTarget}"
+                                            : (index == 1)
+                                                ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountTarget}"
+                                                : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountTarget}",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color:
+                                                ColorConstants.lightGreyColor,
+                                            fontFamily: "Muli"),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Obx(
+                                    () => Flexible(
+                                      child: Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 8, 16, 8),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                width: 1,
+                                                color: ColorConstants
+                                                    .lightOutlineColor)),
+                                        child: Text(
+                                          (index == 0)
+                                              ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountActual}"
+                                              : (index == 1)
+                                                  ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountActual}"
+                                                  : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountActual}",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color:
+                                                  ColorConstants.lightGreyColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                      ),
+                                      flex: 2,
+                                    ),
+                                  )
+                                ],
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Text(
-                                    mwpNames[index],
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16,
-                                      color: ColorConstants.lightGreyColor,
-                                    ),
-                                  ),
-                                ],
                               ),
-                              flex: 5,
-                            ),
-                            Flexible(
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(2),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        width: 1,
-                                        color:
-                                            ColorConstants.lightOutlineColor)),
-                                child: Text(
-                                  (index == 0)
-                                      ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountTarget}"
-                                      : (index == 1)
-                                          ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountTarget}"
-                                          : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountTarget}",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: ColorConstants.lightGreyColor,
-                                      fontFamily: "Muli"),
-                                ),
-                              ),
-                              flex: 2,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Obx(
-                              () => Flexible(
-                                child: Container(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(2),
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          width: 1,
-                                          color: ColorConstants
-                                              .lightOutlineColor)),
-                                  child: Text(
-                                    (index == 0)
-                                        ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteConversionCountActual}"
-                                        : (index == 1)
-                                            ? "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.siteVisitsCountActual}"
-                                            : "${_calendarEventController.targetVsActual.mwpPlanTargetVsActualModel.counterMeetCountActual}",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: ColorConstants.lightGreyColor,
-                                        fontFamily: "Muli"),
-                                  ),
-                                ),
-                                flex: 2,
-                              ),
-                            )
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-          ):Container(),
+                )
+              : Container(),
         ],
       ),
     );

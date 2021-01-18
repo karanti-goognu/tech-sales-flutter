@@ -200,9 +200,12 @@ class MyApiClientApp {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey));
-      print('Response body is : ${json.decode(response.body)}');
+      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        print('ho');
+        print(data['listOfMonthYear']);
+        // print(GetMWPResponse.fromJson(data).listOfMonthYear);
         return GetMWPResponse.fromJson(data);
       } else {
         print('Error in else');

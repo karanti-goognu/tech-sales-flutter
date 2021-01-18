@@ -163,7 +163,7 @@ class CalendarEventController extends GetxController {
       String url = UrlConstants.getCalendarEventDataByDay +
           "referenceID=$empId&" +
           "&date=${this.selectedDate}";
-      print('$url');
+      print('---++---$url');
       repository
           .getCalenderPlanByDay(accessKey, userSecurityKey, url)
           .then((data) {
