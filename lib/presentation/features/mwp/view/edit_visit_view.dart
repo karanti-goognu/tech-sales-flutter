@@ -25,10 +25,15 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
 
+  String siteIdText = "Site Id";
+
+
   @override
   void initState() {
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
     super.initState();
+
+
   }
 
   @override
@@ -48,7 +53,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   }
 
   Widget _buildAddEventInterface(BuildContext context) {
+
     SizeConfig().init(context);
+
     return SafeArea(
         child: Obx(
       () => (_addEventController.isLoadingVisitView == false)
@@ -91,7 +98,20 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                             () => DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 value: _addEventController.visitSubType,
-                                onChanged: (String newValue) {},
+
+                                onChanged: (String newValue) {
+                                  if (_addEventController.visitSubType == "RETENTION SITE"){
+                                    siteIdText="Site ID";
+                                  } else if (_addEventController.visitSubType == "LEADS"){
+                                    siteIdText="Lead ID";
+                                  }  else if (_addEventController.visitSubType == "CONVERSION OPPORTUNITY"){
+                                    siteIdText="Site ID";
+                                  } else if (_addEventController.visitSubType == "COUNTER"){
+                                    siteIdText="COUNTER Code";
+                                  } else if (_addEventController.visitSubType == "TECHNOCRAT"){
+                                    siteIdText="Technocrat ID";
+                                  }
+                                },
                                 items: <String>[
                                   'RETENTION SITE',
                                   'LEADS',
@@ -101,6 +121,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                 ].map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
+
+
                                     child: Text(
                                       value,
                                       style: GoogleFonts.roboto(
@@ -134,13 +156,15 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                               },
                               onChanged: (_) {
                                 _addEventController.visitSiteId = _.toString();
+
                               },
                               style: TextStyle(
                                   fontSize: 18,
                                   color: ColorConstants.inputBoxHintColor,
                                   fontFamily: "Muli"),
                               keyboardType: TextInputType.text,
-                              decoration: _inputDecoration("Site Id", false),
+
+                              decoration: _inputDecoration("${_visitSubType(_addEventController.visitSubType)}", false),
                             ),
                             SizedBox(height: 16),
                             Container(
@@ -429,6 +453,24 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
           fontSize: 16.0),
       fillColor: ColorConstants.backgroundColor,
     );
+  }
+
+
+
+  String _visitSubType (String visitSubType){
+    String visitSubTypeText="";
+    if (_addEventController.visitSubType == "RETENTION SITE"){
+      visitSubTypeText="Site ID";
+    } else if (_addEventController.visitSubType == "LEADS"){
+      visitSubTypeText="Lead ID";
+    }  else if (_addEventController.visitSubType == "CONVERSION OPPORTUNITY"){
+      visitSubTypeText="Site ID";
+    } else if (_addEventController.visitSubType == "COUNTER"){
+      visitSubTypeText="COUNTER Code";
+    } else if (_addEventController.visitSubType == "TECHNOCRAT"){
+      visitSubTypeText="Technocrat ID";
+    }
+    return visitSubTypeText;
   }
 
   Future<void> _selectDate(BuildContext context) async {

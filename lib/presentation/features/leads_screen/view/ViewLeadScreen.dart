@@ -2285,7 +2285,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              GestureDetector(
+                                             /* GestureDetector(
                                                 child: Icon(
                                                   Icons.delete,
                                                   color: HexColor("#FFCD00"),
@@ -2295,7 +2295,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                     _imgDetails.removeAt(index);
                                                   });
                                                 },
-                                              )
+                                              )*/
                                             ],
                                           ),
                                         );

@@ -43,7 +43,7 @@ abstract class StringConstants {
   static String duplicateValue = '4';
   static String futureOpportunity = 'Future Opportunity';
   static String futureOpportunityValue = '5';
-  static String empty = 'Empty';
+  static String empty = '';
   static String checkInStatus = 'checkIn';
   static String checkIn = 'checkIn';
   static String checkOut = 'checkOut';

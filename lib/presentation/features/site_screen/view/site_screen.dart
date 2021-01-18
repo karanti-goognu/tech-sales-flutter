@@ -680,7 +680,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                             .sitesEntity[index]
                                                             .siteOppertunityId ==
                                                         null)
-                                                    ? "EMPTY"
+                                                    ? ""
                                                     : printOpportuityStatus(
                                                         _siteController
                                                             .sitesListResponse
@@ -776,7 +776,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                         .sitesEntity[index]
                                                         .siteProbabilityWinningId ==
                                                     null)
-                                                ? "Empty"
+                                                ? ""
                                                 : printProbabilityOfWinning(
                                                     _siteController
                                                         .sitesListResponse

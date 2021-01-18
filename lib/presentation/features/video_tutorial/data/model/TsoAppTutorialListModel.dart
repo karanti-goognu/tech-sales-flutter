@@ -38,11 +38,12 @@ String category;
 String type;
 String description;
 String url;
+String thumbnailUrl;
 int createdOn;
 String createdBy;
 
 TsoAppTutorial({this.id, this.category, this.type, this.description,
-      this.url, this.createdOn, this.createdBy});
+      this.url, this.thumbnailUrl, this.createdOn, this.createdBy});
 
 TsoAppTutorial.fromJson(Map<String, dynamic> json){
   id = json['id'];
@@ -50,6 +51,7 @@ TsoAppTutorial.fromJson(Map<String, dynamic> json){
   type = json['type'];
   description = json['description'];
   url = json['url'];
+  thumbnailUrl = json['thumbnailUrl'];
   createdOn = json['createdOn'];
   createdBy = json['createdBy'];
 
@@ -62,6 +64,7 @@ Map<String, dynamic> toJson() {
   data['type'] = this.type;
   data['description'] = this.description;
   data['url'] = this.url;
+  data['thumbnailUrl'] = this.thumbnailUrl;
   data['createdOn'] = this.createdOn;
   data['createdBy'] = this.createdBy;
   return data;
