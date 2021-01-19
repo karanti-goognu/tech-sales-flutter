@@ -24,7 +24,7 @@ class AddCalenderEventPage extends StatefulWidget {
 class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
   DateTime _currentDate = DateTime.now();
   DateTime _currentDate2 = DateTime.now();
-  String _currentMonth = DateFormat.yMMM().format(DateTime.now());
+  // String _currentMonth = DateFormat.yMMM().format(DateTime.now());
   DateTime _targetDateTime = DateTime.now();
 
   CalendarEventController _calendarEventController = Get.find();
@@ -90,72 +90,77 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CalendarCarousel<Event>(
-                        // todayBorderColor: Colors.green,
-                        todayButtonColor: Colors.green,
-                        selectedDayButtonColor: Colors.grey.shade300,
-                        weekdayTextStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
-                        dayPadding: 4,
-                        // dayButtonColor: Colors.grey,
-                        onDayPressed: (DateTime date, List<Event> events) {
-                          this.setState(() {
-                            _currentDate2 = date;
-                          });
-                          _calendarEventController.selectedDate =
-                              "${date.year}-${date.month}-${date.day}";
-                          print('${_calendarEventController.selectedDate}');
-                          _appController.getAccessKey(
-                              RequestIds.GET_CALENDER_EVENTS_OF_DAY);
-                          _calendarEventController.isDayEventLoading = true;
-                          /*this.setState(() => _currentDate2 = date);*/
-                        },
-                        // selectedDayBorderColor: Colors.grey,
-                        // daysHaveCircularBorder: false,
-                        // showOnlyCurrentMonthDate: true,
-                        selectedDayTextStyle: TextStyle(color: Colors.black),
-                        weekendTextStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        // thisMonthDayBorderColor: Colors.grey,
-                        weekFormat: false,
-                        markedDateMoreCustomDecoration: new BoxDecoration(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          color: Colors.grey,
-                        ),
-                        markedDatesMap:
-                            _calendarEventController.markedDateMap,
-                        height: 400.0,
-                        selectedDateTime: _currentDate2,
-                        targetDateTime: _targetDateTime,
-                        customGridViewPhysics: NeverScrollableScrollPhysics(),
-                        minSelectedDate:
-                            _currentDate.subtract(Duration(days: 360)),
-                        maxSelectedDate:
-                            _currentDate.add(Duration(days: 360)),
-                        inactiveDaysTextStyle: TextStyle(
-                          color: Colors.tealAccent,
-                          fontSize: 16,
-                        ),
-                        onCalendarChanged: (DateTime date) {
-                          final DateFormat formatter =
-                              DateFormat('MMMM-yyyy');
-                          print('$date');
-                          final String formatted = formatter.format(date);
-                          _calendarEventController.selectedMonth = formatted;
-                          _appController
-                              .getAccessKey(RequestIds.GET_CALENDER_EVENTS);
-                          //_calendarEventController.isLoading = true;
+                    color: Colors.white,
+                      // margin: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: CalendarCarousel<Event>(
+                          // todayBorderColor: Colors.green,
+                          todayButtonColor: Colors.green,
+                          headerMargin: EdgeInsets.zero,
+                          selectedDayButtonColor: Colors.grey.shade300,
+                          weekdayTextStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
+                          dayPadding: 4,
+                          // dayButtonColor: Colors.grey,
+                          onDayPressed: (DateTime date, List<Event> events) {
+                            this.setState(() {
+                              _currentDate2 = date;
+                            });
+                            _calendarEventController.selectedDate =
+                                "${date.year}-${date.month}-${date.day}";
+                            print('${_calendarEventController.selectedDate}');
+                            _appController.getAccessKey(
+                                RequestIds.GET_CALENDER_EVENTS_OF_DAY);
+                            _calendarEventController.isDayEventLoading = true;
+                            /*this.setState(() => _currentDate2 = date);*/
+                          },
+                          // selectedDayBorderColor: Colors.grey,
+                          // daysHaveCircularBorder: false,
+                          // showOnlyCurrentMonthDate: true,
+                          selectedDayTextStyle: TextStyle(color: Colors.black),
+                          weekendTextStyle: TextStyle(
+                            color: Colors.black,
+                          ),
+                          // thisMonthDayBorderColor: Colors.grey,
+                          weekFormat: false,
+                          markedDateMoreCustomDecoration: new BoxDecoration(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            color: Colors.grey,
+                          ),
+                          markedDatesMap:
+                              _calendarEventController.markedDateMap,
+                          height: 400.0,
+                          selectedDateTime: _currentDate2,
+                          targetDateTime: _targetDateTime,
+                          customGridViewPhysics: NeverScrollableScrollPhysics(),
+                          minSelectedDate:
+                              _currentDate.subtract(Duration(days: 360)),
+                          maxSelectedDate:
+                              _currentDate.add(Duration(days: 360)),
+                          inactiveDaysTextStyle: TextStyle(
+                            color: Colors.tealAccent,
+                            fontSize: 16,
+                          ),
+                          onCalendarChanged: (DateTime date) {
+                            final DateFormat formatter =
+                                DateFormat('MMMM-yyyy');
+                            print('$date');
+                            final String formatted = formatter.format(date);
+                            _calendarEventController.selectedMonth = formatted;
+                            _appController
+                                .getAccessKey(RequestIds.GET_CALENDER_EVENTS);
+                            //_calendarEventController.isLoading = true;
 
-                          this.setState(() {
-                            _targetDateTime = date;
-                            _currentMonth =
-                                DateFormat.yMMM().format(_targetDateTime);
-                          });
-                        },
-                        onDayLongPressed: (DateTime date) {
-                          print('long pressed date $date');
-                        },
+                            this.setState(() {
+                              _targetDateTime = date;
+                              _currentMonth =
+                                  DateFormat.yMMM().format(_targetDateTime);
+                            });
+                          },
+                          onDayLongPressed: (DateTime date) {
+                            print('long pressed date $date');
+                          },
+                        ),
                       )),
                   SizedBox(
                     height: 16,
