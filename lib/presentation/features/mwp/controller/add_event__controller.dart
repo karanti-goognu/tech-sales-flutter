@@ -43,6 +43,7 @@ class AddEventController extends GetxController {
   final _selectedVenueTypeMeet = "BOOKED".obs;
   final _selectedMonth = "January".obs;
   final _phoneNumber = "8860080067".obs;
+  final _siteIdText = "Site Id".obs;
   final _empId = "_empty".obs;
   final _otpCode = "_empty".obs;
   final _visitId = 0.obs;
@@ -70,6 +71,8 @@ class AddEventController extends GetxController {
   final _createdBy = StringConstants.empty.obs;
 
   get isLoading => this._isLoading.value;
+
+  get siteIdText => this._siteIdText.value;
 
   get visitActionType => this._visitActionType.value;
 
@@ -140,6 +143,9 @@ class AddEventController extends GetxController {
   get createdBy => this._createdBy.value;
 
   set isLoading(value) => this._isLoading.value = value;
+
+  set siteIdText(value) => this._siteIdText.value = value;
+
 
   set visitActionType(value) => this._visitActionType.value = value;
 

@@ -17,6 +17,7 @@ class AddEvent extends StatefulWidget {
 class AddEventScreenPageState extends State<AddEvent> {
   AddEventController _addEventController = Get.find();
 
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -42,6 +43,11 @@ class AddEventScreenPageState extends State<AddEvent> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  if(_addEventController.selectedView == "Visit"){
+                    this._addEventController.visitDateTime = "Visit Date";
+
+
+                  }
                 },
               ),
             ),

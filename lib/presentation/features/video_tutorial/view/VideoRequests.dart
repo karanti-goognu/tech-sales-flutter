@@ -3,7 +3,6 @@ import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/mod
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_speed_dial_material_design/flutter_speed_dial_material_design.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/controller/tutorial_list_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -76,7 +75,7 @@ class _VideoRequestsState extends State<VideoRequests> {
           width: 68.0,
           child: FittedBox(
             child: FloatingActionButton(
-              backgroundColor: Colors.amber,
+              backgroundColor: ColorConstants.checkinColor,
               child: Icon(
                 Icons.keyboard_backspace,
                 color: Colors.black,
@@ -185,7 +184,7 @@ class _VideoRequestsState extends State<VideoRequests> {
               height: 80,
               width: 100,
               color: Colors.grey,
-              child: Image.network('${tsoAppTutorialListModel.tsoAppTutorial[index].thumbnailUrl}', width: 92, height: 52,),
+              child: Image.network('${tsoAppTutorialListModel.tsoAppTutorial[index].thumbnailUrl}', fit: BoxFit.fill,),
             ),
             SizedBox(width: 10,),
             Expanded(
@@ -218,24 +217,16 @@ class _VideoRequestsState extends State<VideoRequests> {
   }
 
   void activityVideo(BuildContext context, int index){
-   var _controller = VideoPlayerController.network("${tsoAppTutorialListModel.tsoAppTutorial[index].category}");
+   // var _controller = VideoPlayerController.network("${tsoAppTutorialListModel.tsoAppTutorial[index].category}");
     var alertDialog = AlertDialog(
-      actionsPadding: EdgeInsets.all(0),
+        titlePadding: EdgeInsets.all(10),
         contentPadding: EdgeInsets.all(0),
         content: Container(
           color: Colors.black,
-          height: 300,width: 300,
+          height: 230,width: 300,
           child: VideoPlayerScreen(url:'https://mobileqacloud.dalmiabharat.com//tso/tutorial/lead_creation_module.mp4'),
         ),
         title: Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}", style: TextStyle(fontSize: 12),),
-        // actions: <Widget>[
-        //
-        //   FlatButton(
-        //       child: Text('Finish'),
-        //       onPressed: () {
-        //         Navigator.of(context).pop();
-        //       }),
-        // ],
     );
     showDialog(context: context,
         builder: (BuildContext context){
@@ -300,27 +291,21 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               child: VideoPlayer(_controller),
             );
           } else {
-            // If the VideoPlayerController is still initializing, show a
-            // loading spinner.
             return Center(child: CircularProgressIndicator());
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: ColorConstants.backgroundColorBlue,
         onPressed: () {
-          // Wrap the play or pause in a call to `setState`. This ensures the
-          // correct icon is shown.
           setState(() {
-            // If the video is playing, pause it.
             if (_controller.value.isPlaying) {
               _controller.pause();
             } else {
-              // If the video is paused, play it.
               _controller.play();
             }
           });
         },
-        // Display the correct icon depending on the state of the player.
         child: Icon(
           _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
         ),

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -45,6 +47,121 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         },
         child: Scaffold(
           extendBody: true,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: Container(
+            height: 68.0,
+            width: 68.0,
+            child: FittedBox(
+              child: FloatingActionButton(
+                backgroundColor: ColorConstants.checkinColor,
+                child: Icon(
+                  Icons.keyboard_backspace_outlined,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+            ),
+          ),
+          bottomNavigationBar: BottomAppBar(
+            color: ColorConstants.appBarColor,
+            shape: CircularNotchedRectangle(),
+            notchMargin: 10,
+            child: Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          setState(() {
+                            // currentScreen =
+                            //     Dashboard(); // if user taps on this dashboard tab will be active
+                            // currentTab = 0;
+                            Get.toNamed(Routes.HOME_SCREEN);
+                          });
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.home,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Home',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Right Tab bar icons
+
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              new CupertinoPageRoute(
+                                  builder: (BuildContext context) =>
+                                      DraftLeadListScreen()));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.drafts,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Drafts',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: () {
+                          Get.toNamed(Routes.SEARCH_SCREEN);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.search,
+                              color: Colors.white60,
+                            ),
+                            Text(
+                              'Search',
+                              style: TextStyle(
+                                color: Colors.white60,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
           backgroundColor: ColorConstants.backgroundColor,
           body: SingleChildScrollView(
             child: _buildAddEventInterface(context),
@@ -83,7 +200,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                         ],
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 20,
                       ),
                       Container(
                           width: double.infinity,
@@ -137,7 +254,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                             ),
                           )),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Form(
                         key: _formKey,

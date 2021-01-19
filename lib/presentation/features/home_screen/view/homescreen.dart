@@ -14,7 +14,6 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
-import 'package:flutter_tech_sales/widgets/test.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -339,7 +338,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-            )));
+            )
+        ));
   }
 
   Widget disabledSliderButton() {
