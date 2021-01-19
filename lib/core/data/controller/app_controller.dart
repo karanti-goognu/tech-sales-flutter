@@ -81,7 +81,7 @@ class AppController extends GetxController {
     });
   }
 
-  getAccessKey(int requestId) {
+   getAccessKey(int requestId) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -93,7 +93,7 @@ class AppController extends GetxController {
       _prefs.then((SharedPreferences prefs) {
         String userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-        print('User Security key is :: $userSecurityKey');
+        // print('User Security key is :: $userSecurityKey');
         if (userSecurityKey != "empty") {
           //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
@@ -101,7 +101,7 @@ class AppController extends GetxController {
             print('Has expired');
             getSecretKey(requestId);
           } else {
-            print('Not expired');
+            // print('Not expired');
             switch (requestId) {
               case RequestIds.GET_SITES_LIST:
                 _siteController.getSitesData(this.accessKeyResponse.accessKey);

@@ -50,6 +50,10 @@ class SrRepository{
     return apiClient.getFilterData(accessKey);
   }
 
+  getSiteAreaDetails(String accessKey, String userSecretKey,String empID, String siteID) {
+    return apiClient.getSiteAreaDetails(accessKey, userSecretKey,empID, siteID);
+  }
+
   Future<ComplaintViewModel> getComplaintViewData(String accessKey, String userSecretKey,String empID, String id) async{
     return apiClient.getComplaintViewData(accessKey, userSecretKey, empID, id);
   }

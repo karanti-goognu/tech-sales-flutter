@@ -20,7 +20,6 @@ Map<String, String> requestHeadersWithAccessKey(String accessKey) {
 }
 
 Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String accessKey , String userSecurityKey) {
-
   Map<String, String> requestHeaders = new Map();
   requestHeaders = {
     'Content-type': 'application/json',

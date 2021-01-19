@@ -30,8 +30,9 @@ class CalendarEventController extends GetxController {
   final _targetVsActual = TargetVsActualModel().obs;
   final _listOfEvents = List<ListOfEventDetails>().obs;
 
-  final _markedDateMap = EventList<Event>().obs;
+  var _markedDateMap = EventList<Event>().obs;
   final _dateList = List<String>().obs;
+  final _testMap = Map<DateTime, List<Event>>().obs;
 
   final _isLoading = false.obs;
   final _isCalenderLoading = false.obs;
@@ -39,6 +40,11 @@ class CalendarEventController extends GetxController {
   final _action = "SAVE".obs;
   final _selectedMonth = StringConstants.empty.obs;
   final _selectedDate = StringConstants.empty.obs;
+
+  get testMap => this._testMap.value;
+
+  set testMap(value) => this._testMap.value = value;
+
 
   set isLoading(value) => this._isLoading.value = value;
 
@@ -99,7 +105,7 @@ class CalendarEventController extends GetxController {
     ),
   );
 
-  getCalendarEvent(String accessKey) async {
+ Future getCalendarEvent(String accessKey) async {
     this.isCalenderLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -111,6 +117,7 @@ class CalendarEventController extends GetxController {
       print('$url');
       repository.getCalenderPlan(accessKey, userSecurityKey, url).then((data) {
         this.isCalenderLoading = false;
+        // print('@${json.encode(data)}');
         /*this.isLoading = false;*/
         if (data == null) {
           debugPrint('MWP Data Response is null');
@@ -120,16 +127,29 @@ class CalendarEventController extends GetxController {
           this.listOfEvents = this.calendarPlanResponse.listOfEventDetails;
           markedDateMap.clear();
           if (this.calendarPlanResponse.listOfEventDates.length > 0) {
+            var temp=EventList<Event>();
             for (int i = 0;
                 i < this.calendarPlanResponse.listOfEventDates.length;
                 i++) {
               String date = this.calendarPlanResponse.listOfEventDates[i];
+              print(date);
               //2020-12-22
               DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(date);
-              markedDateMap.add(
+              print('hi'+DateTime(tempDate.year, tempDate.month, tempDate.day).toString());
+              // markedDateMap.add(
+              //
+              // );
+              var key=DateTime(tempDate.year, tempDate.month, tempDate.day);
+              testMap[key]=[
+                new Event(
+                date: new DateTime(tempDate.year, tempDate.month, tempDate.day),
+                title: 'Event 5',
+              )];
+              temp.add(
                   new DateTime(tempDate.year, tempDate.month, tempDate.day),
                   new Event(
                     date: new DateTime(tempDate.year, tempDate.month, tempDate.day),
+                    // date: new DateTime(tempDate.year, tempDate.month, tempDate.day),
                     title: 'Event 5',
                     icon: _eventIcon,
                    /* dot: Container(
@@ -139,7 +159,10 @@ class CalendarEventController extends GetxController {
                       width: 5.0,
                     ),*/
                   ));
+              print(markedDateMap);
+              print(testMap);
             }
+            markedDateMap=temp;
           }
 
           if (calendarPlanResponse.respCode == "MWP2013") {

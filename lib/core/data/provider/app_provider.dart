@@ -35,7 +35,7 @@ class MyApiClientApp {
       // print("dsacsdcc" + requestHeaders.toString());
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
-      print('Response body is : ${json.decode(response.body)}');
+      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -266,12 +266,12 @@ class MyApiClientApp {
     }
   }
 
-  getCalendarPlan(String accessKey, String userSecurityKey, String url) async {
+  Future<CalendarPlanModel> getCalendarPlan(String accessKey, String userSecurityKey, String url) async {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey));
-      print('Response body is : ${json.decode(response.body)}');
+      print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return CalendarPlanModel.fromJson(data);

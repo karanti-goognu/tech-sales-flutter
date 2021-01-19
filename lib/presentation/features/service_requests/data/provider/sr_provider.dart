@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SaveServiceRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SiteAreaDetailsModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -240,4 +241,21 @@ class MyApiClient {
       print('exception ${_.toString()}');
     }
   }
+
+  getSiteAreaDetails(String accessKey,  String userSecretKey,String empID, String siteID) async{
+    SiteAreaModel siteAreaDetailsModel;
+    try {
+      var url=UrlConstants.getSiteAreaDetails+empID+'&siteId='+siteID;
+      print(url);
+      var response = await http.get(Uri.parse(url),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+      print(response.body);
+      siteAreaDetailsModel = SiteAreaModel.fromJson(json.decode(response.body));
+      return siteAreaDetailsModel;
+    } catch (_) {
+      print('exception at SR repo ${_.toString()}');
+    }
+
+  }
 }
+

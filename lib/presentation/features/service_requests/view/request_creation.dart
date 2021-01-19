@@ -17,6 +17,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SiteAreaDetailsModel.dart';
 
 class RequestCreation extends StatefulWidget {
   @override
@@ -77,8 +78,8 @@ class _RequestCreationState extends State<RequestCreation> {
             });
           }
         }
-        _requestorName.text='';
-        _customerID.text='';
+        _requestorName.text = '';
+        _customerID.text = '';
         Get.back();
       });
     });
@@ -182,10 +183,9 @@ class _RequestCreationState extends State<RequestCreation> {
                                 DropdownButtonFormField(
                                   onChanged: (value) {
                                     setState(() {
-
-                                      selectedRequestSubtypeSeverity=[];
-                                      selectedRequestSubtypeObjectList=[];
-                                      selectedRequestSubtype=[];
+                                      selectedRequestSubtypeSeverity = [];
+                                      selectedRequestSubtypeObjectList = [];
+                                      selectedRequestSubtype = [];
                                       _severity.text = '';
                                       requestId = value;
                                       requestId == 2
@@ -210,44 +210,64 @@ class _RequestCreationState extends State<RequestCreation> {
                                 ),
                                 SizedBox(height: 16),
                                 GestureDetector(
-                                  onTap:()=>
-                                  requestId == null
+                                  onTap: () => requestId == null
                                       ? Get.rawSnackbar(
-                                    titleText: Text("Message"),
-                                    messageText: Text(
-                                        "Please select a Request type"),
-                                    backgroundColor: Colors.white,
-                                  )
-                                      :
-                                      getBottomSheet(),
+                                          titleText: Text("Message"),
+                                          messageText: Text(
+                                              "Please select a Request type"),
+                                          backgroundColor: Colors.white,
+                                        )
+                                      : getBottomSheet(),
                                   child: FormField(
                                     validator: (value) => value,
-                                    builder: (state){
-                                      return  InputDecorator(
-                                        decoration: FormFieldStyle.buildInputDecoration(
+                                    builder: (state) {
+                                      return InputDecorator(
+                                        decoration:
+                                            FormFieldStyle.buildInputDecoration(
                                           labelText: 'Request Sub-type*',
-                                            suffixIcon: Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 10.0, horizontal: 12),
-                                              child: Text(
-                                                'Select',
-                                                style: TextStyle(
-                                                  color: HexColor('#F9A61A'),
-                                                ),
+                                          suffixIcon: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10.0, horizontal: 12),
+                                            child: Text(
+                                              'Select',
+                                              style: TextStyle(
+                                                color: HexColor('#F9A61A'),
                                               ),
                                             ),
-                                        ),
-                                        child: selectedRequestSubtypeObjectList.isEmpty?Text(''):Container(
-                                          height:  30,
-                                          child: ListView(
-                                            scrollDirection: Axis.horizontal,
-                                            children: selectedRequestSubtypeObjectList.map((e) => Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal:4.0),
-                                              child: Chip(label: Text(e.serviceRequestTypeText,style: TextStyle(fontSize: 10),),
-                                              backgroundColor: Colors.lightGreen.withOpacity(0.2),),
-                                            )).toList(),
                                           ),
                                         ),
+                                        child:
+                                            selectedRequestSubtypeObjectList
+                                                    .isEmpty
+                                                ? Text('')
+                                                : Container(
+                                                    height: 30,
+                                                    child: ListView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      children:
+                                                          selectedRequestSubtypeObjectList
+                                                              .map(
+                                                                  (e) =>
+                                                                      Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(horizontal: 4.0),
+                                                                        child:
+                                                                            Chip(
+                                                                          label:
+                                                                              Text(
+                                                                            e.serviceRequestTypeText,
+                                                                            style:
+                                                                                TextStyle(fontSize: 10),
+                                                                          ),
+                                                                          backgroundColor: Colors
+                                                                              .lightGreen
+                                                                              .withOpacity(0.2),
+                                                                        ),
+                                                                      ))
+                                                              .toList(),
+                                                    ),
+                                                  ),
                                       );
                                     },
                                     // controller: _requestSubType,
@@ -283,6 +303,24 @@ class _RequestCreationState extends State<RequestCreation> {
                                 ),
                                 SizedBox(height: 16),
                                 TextFormField(
+                                  onChanged: (val) async{
+                                    if (val.length==6){
+                                      SiteAreaModel siteDetails= await eventController
+                                          .getSiteAreaDetails(_siteID.text);
+                                      siteDetails.siteAreaDetailsModel!=null?
+                                      setState(() {
+                                        _pin.text=siteDetails.siteAreaDetailsModel.sitePincode;
+                                        _state.text=siteDetails.siteAreaDetailsModel.siteState;
+                                        _taluk.text=siteDetails.siteAreaDetailsModel.siteTaluk;
+                                        _district.text=siteDetails.siteAreaDetailsModel.siteDistrict;
+                                      }):
+                                      Get.rawSnackbar(
+                                          title: "Message",
+                                          message: siteDetails.respMsg
+                                      );
+                                    }
+
+                                  },
                                   controller: _siteID,
                                   maxLength: 6,
                                   validator: (value) => value.isEmpty
@@ -304,7 +342,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                       creatorType = value;
                                     });
                                     getRequestorData(value);
-
                                   },
                                   items: [
                                     'IHB',
@@ -537,6 +574,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                     : Container(),
                                 TextFormField(
                                   controller: _state,
+                                  readOnly: true,
                                   style: FormFieldStyle.formFieldTextStyle,
                                   // validator: (value)=> value.isEmpty? 'Please select the Customer ID': null,
                                   keyboardType: TextInputType.text,
@@ -547,6 +585,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 TextFormField(
                                   controller: _district,
+                                  readOnly: true,
                                   style: FormFieldStyle.formFieldTextStyle,
                                   keyboardType: TextInputType.text,
                                   decoration:
@@ -556,6 +595,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 TextFormField(
                                   controller: _taluk,
+                                  readOnly: true,
                                   style: FormFieldStyle.formFieldTextStyle,
                                   keyboardType: TextInputType.text,
                                   decoration:
@@ -565,6 +605,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 TextFormField(
                                   controller: _pin,
+                                  readOnly: true,
                                   style: FormFieldStyle.formFieldTextStyle,
                                   keyboardType: TextInputType.phone,
                                   decoration:
@@ -576,21 +617,21 @@ class _RequestCreationState extends State<RequestCreation> {
                                   onPressed: () async {
                                     if (!_formKey.currentState.validate()) {
                                       print("Error");
-                                      Get.dialog(CustomDialogs().errorDialog('Please enter the mandatory details'));
+                                      Get.dialog(CustomDialogs().errorDialog(
+                                          'Please enter the mandatory details'));
                                     } else {
                                       String empId = await getEmpId();
                                       List imageDetails = List();
                                       List subTypeDetails = List();
-                                      selectedRequestSubtypeObjectList.forEach((element) {
+                                      selectedRequestSubtypeObjectList
+                                          .forEach((element) {
                                         setState(() {
-                                          subTypeDetails.add(
-                                              {
-                                                "createdBy": empId,
-                                                "serviceRequestComplaintId": null,
-                                                "serviceRequestComplaintTypeId":
+                                          subTypeDetails.add({
+                                            "createdBy": empId,
+                                            "serviceRequestComplaintId": null,
+                                            "serviceRequestComplaintTypeId":
                                                 element.id
-                                              }
-                                          );
+                                          });
                                         });
                                       });
 
@@ -622,7 +663,8 @@ class _RequestCreationState extends State<RequestCreation> {
                                         "siteId": int.parse(_siteID.text),
                                         "severity": _severity.text,
                                         "srComplaintPhotosEntity": imageDetails,
-                                        "srComplaintSubtypeMappingEntity": subTypeDetails,
+                                        "srComplaintSubtypeMappingEntity":
+                                            subTypeDetails,
                                         "state": _state.text,
                                         "taluk": _taluk.text
                                       });
@@ -658,7 +700,7 @@ class _RequestCreationState extends State<RequestCreation> {
   List<bool> checkedValues;
   List<String> selectedRequestSubtype = [];
   List<String> selectedRequestSubtypeSeverity = [];
-  List<ServiceRequestComplaintTypeEntity> selectedRequestSubtypeObjectList=[];
+  List<ServiceRequestComplaintTypeEntity> selectedRequestSubtypeObjectList = [];
   // List<ServiceRequestComplaintTypeEntity> dataToBeSentBack = List<ServiceRequestComplaintTypeEntity>();
   // ServiceRequestComplaintTypeEntity dataToBeSentBack;
   TextEditingController _query = TextEditingController();
@@ -738,20 +780,22 @@ class _RequestCreationState extends State<RequestCreation> {
                                       requestSubtype[index]
                                           .serviceRequestTypeText)
                                   : selectedRequestSubtype.add(
-                                      requestSubtype[index].serviceRequestTypeText);
+                                      requestSubtype[index]
+                                          .serviceRequestTypeText);
 
-                              selectedRequestSubtypeObjectList.contains(
-                                  requestSubtype[index]
-                                      )
-                                  ? selectedRequestSubtypeObjectList.remove(
-                                  requestSubtype[index])
-                                  : selectedRequestSubtypeObjectList.add(
-                                  requestSubtype[index]);
+                              selectedRequestSubtypeObjectList
+                                      .contains(requestSubtype[index])
+                                  ? selectedRequestSubtypeObjectList
+                                      .remove(requestSubtype[index])
+                                  : selectedRequestSubtypeObjectList
+                                      .add(requestSubtype[index]);
 
                               selectedRequestSubtypeSeverity = [];
-                              selectedRequestSubtypeObjectList.forEach((element) {
-                                setState((){
-                                  selectedRequestSubtypeSeverity.add(element.complaintSeverity);
+                              selectedRequestSubtypeObjectList
+                                  .forEach((element) {
+                                setState(() {
+                                  selectedRequestSubtypeSeverity
+                                      .add(element.complaintSeverity);
                                 });
                               });
                               print(selectedRequestSubtypeSeverity);
@@ -806,18 +850,17 @@ class _RequestCreationState extends State<RequestCreation> {
                       print(selectedRequestSubtypeSeverity);
                       if (selectedRequestSubtypeSeverity.contains('HIGH')) {
                         setState(() {
-                          _severity.text='HIGH';
+                          _severity.text = 'HIGH';
                         });
-                      }
-                      else if(selectedRequestSubtypeSeverity.contains('MEDIUM')){
+                      } else if (selectedRequestSubtypeSeverity
+                          .contains('MEDIUM')) {
                         setState(() {
-                          _severity.text='MEDIUM';
+                          _severity.text = 'MEDIUM';
                         });
-                      }
-                      else{
+                      } else {
                         setState(() {
-                        _severity.text='LOW';
-                      });
+                          _severity.text = 'LOW';
+                        });
                       }
                       // dataToBeSentBack.isEmpty
                       //     ? widget.customFunction(dataToBeSentBack)
@@ -840,8 +883,6 @@ class _RequestCreationState extends State<RequestCreation> {
   }
 
   getBottomSheet() {
-
-
     Get.bottomSheet(
       requestSubTypeBottomSheetWidget(),
       // SRRequestSubTypeBottomSheet(
@@ -851,7 +892,7 @@ class _RequestCreationState extends State<RequestCreation> {
       //   isComplaint: isComplaint,
       // ),
       isScrollControlled: true,
-    ).then((value) => setState((){}));
+    ).then((value) => setState(() {}));
   }
 
   int serviceRequestComplaintTypeId;
