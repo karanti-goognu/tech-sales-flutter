@@ -253,6 +253,7 @@ class AddEventController extends GetxController {
           debugPrint('Save Visit Response is null');
         } else {
           this.saveVisitResponse = data;
+          this.visitDateTime = "Visit Date";
           if (saveVisitResponse.respCode == "MWP2022") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));

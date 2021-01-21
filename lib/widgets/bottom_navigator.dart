@@ -107,3 +107,53 @@ class BottomNavigator extends StatelessWidget {
     );
   }
 }
+
+class BottomNavigatorWithoutDraftsAndSearch extends StatelessWidget {
+  const BottomNavigatorWithoutDraftsAndSearch({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      color: ColorConstants.appBarColor,
+      shape: CircularNotchedRectangle(),
+      notchMargin: 10,
+      child: Container(
+        height: 60,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                MaterialButton(
+                  onPressed: () => Get.toNamed(Routes.HOME_SCREEN),
+                  minWidth: 40,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.home,
+                        color: Colors.white60,
+                      ),
+                      Text(
+                        'Home',
+                        style: TextStyle(
+                          color: Colors.white60,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            // Right Tab bar icons
+
+          ],
+        ),
+      ),
+    );
+  }
+}
