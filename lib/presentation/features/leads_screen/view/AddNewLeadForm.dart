@@ -1036,7 +1036,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         : Container(),
 
                     SizedBox(height: 16),
-               Divider(
+                    Divider(
                       color: Colors.black26,
                       thickness: 1,
                     ),
@@ -1443,10 +1443,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                         accessKeyModel
                                                             .accessKey)
                                                     .then((data) {
+                                                      // print(data.inflName.text);
                                                   InfluencerDetail inflDetail =
                                                       data;
-                                                  print(
-                                                      inflDetail.inflName.text);
+                                                  // print(inflDetail.inflName.text);
 
                                                   setState(() {
                                                     if (inflDetail
@@ -1576,11 +1576,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                               .inflName);
                                                       // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
 
-                                                      for (int i = 0;
-                                                          i <
-                                                              influencerCategoryEntity
-                                                                  .length;
-                                                          i++) {
+                                                      for (int i = 0;i <influencerCategoryEntity.length;i++) {
                                                         if (influencerCategoryEntity[
                                                                     i]
                                                                 .inflCatId
@@ -1637,7 +1633,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   Get.back();
                                                 });
                                               });
-
                                             }
                                           }
                                           // setState(() {
@@ -2447,7 +2442,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 .inflName ==
                                             null ||
                                         _listInfluencerDetail[
-                                                    _listInfluencerDetail.length -1].inflName == "null" ||
+                                                    _listInfluencerDetail
+                                                            .length -
+                                                        1]
+                                                .inflName ==
+                                            "null" ||
                                         _listInfluencerDetail[
                                                 _listInfluencerDetail.length -
                                                     1]

@@ -113,7 +113,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                             .map<DropdownMenuItem<dynamic>>((val) {
                           return DropdownMenuItem(
                             value: val,
-                            child: Text(val.dealerName.toString()),
+                            child: Text('${val.dealerName} (${val.dealerId})'),
                           );
                         }).toList(),
                         onChanged: (val) {
