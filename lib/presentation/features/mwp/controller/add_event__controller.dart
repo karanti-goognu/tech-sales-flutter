@@ -54,6 +54,9 @@ class AddEventController extends GetxController {
   final _visitType = 'PHYSICAL'.obs;
   final _visitSiteId = StringConstants.empty.obs;
   final _visitDateTime = "Visit Date".obs;
+  //test
+  final _visitViewDateTime = "Visit Date".obs;
+  //
   final _visitStartTime = StringConstants.empty.obs;
   final _nextVisitDate = "Next Visit Date".obs;
   final _visitRemarks = StringConstants.empty.obs;
@@ -121,7 +124,9 @@ class AddEventController extends GetxController {
   get visitSiteId => this._visitSiteId.value;
 
   get visitDateTime => this._visitDateTime.value;
-
+  //
+  get visitViewDateTime => this._visitViewDateTime.value;
+//
   get visitStartTime => this._visitStartTime.value;
 
   get visitRemarks => this._visitRemarks.value;
@@ -188,6 +193,9 @@ class AddEventController extends GetxController {
   set visitSubType(value) => this._visitSubType.value = value;
 
   set visitDateTime(value) => this._visitDateTime.value = value;
+  //
+  set visitViewDateTime(value) => this._visitViewDateTime.value = value;
+  //
 
   set visitSiteId(value) => this._visitSiteId.value = value;
 
@@ -365,8 +373,8 @@ class AddEventController extends GetxController {
           this.visitResponseModel = data;
           this.visitSiteId =
               this.visitResponseModel.mwpVisitModel.docId.toString();
-          this.visitDateTime =
-              this.visitResponseModel.mwpVisitModel.visitDate.toString();
+          // this.visitDateTime = this.visitResponseModel.mwpVisitModel.visitDate.toString();
+          this.visitViewDateTime = this.visitResponseModel.mwpVisitModel.visitDate.toString();
 
           if (this.visitResponseModel.mwpVisitModel.visitStartTime != null) {
             this.visitStartTime =
