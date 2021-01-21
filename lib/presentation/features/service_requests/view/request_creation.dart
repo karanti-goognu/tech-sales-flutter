@@ -1,12 +1,12 @@
 import 'dart:io';
-// import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/get_sr_complaint_data_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/save_service_request_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/RequestorDetailsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SaveServiceRequestModel.dart';
-import 'package:flutter_tech_sales/presentation/features/service_requests/widgets/subrequestBottomSheet.dart';
+import 'package:flutter_tech_sales/widgets/backFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -115,6 +115,9 @@ class _RequestCreationState extends State<RequestCreation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: BackFloatingButton(),
+      bottomNavigationBar: BottomNavigatorWithoutDraftsAndSearch(),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -1029,3 +1032,5 @@ class _RequestCreationState extends State<RequestCreation> {
     );
   }
 }
+
+
