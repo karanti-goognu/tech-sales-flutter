@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+import 'dart:io';
 
 class MyApiClient {
   final http.Client httpClient;
@@ -54,14 +55,25 @@ class MyApiClient {
           decryptString(encryptedMobileNumber, StringConstants.encryptedKey)
               .toString();
 
-      AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
+      var deviceId, deviceType;
+
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
+        deviceId = build.androidId;
+        deviceType = build.manufacturer;
+      }else{
+        IosDeviceInfo buildIos = await deviceInfoPlugin.iosInfo;
+        deviceId = buildIos.identifierForVendor;
+        deviceType = buildIos.model;
+      }
       var bodyEncrypted = {
         "reference-id": encryptedEmpId,
         "mobile-number": encryptedMobileNumber,
-        "device-id": build.androidId,
-        "device-type": build.manufacturer,
         "app-name": StringConstants.appName,
         "app-version": StringConstants.appVersion,
+        "device-id": deviceId,
+        "device-type": deviceType,
+
       };
 
       print('request with encryption: $bodyEncrypted');
@@ -101,12 +113,23 @@ class MyApiClient {
       String encryptedMobile =
           encryptString(mobileNumber, StringConstants.encryptedKey).toString();
 
-      AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
+      var deviceId, deviceType;
+
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
+        deviceId = build.androidId;
+        deviceType = build.manufacturer;
+      }else{
+        IosDeviceInfo buildIos = await deviceInfoPlugin.iosInfo;
+        deviceId = buildIos.identifierForVendor;
+        deviceType = buildIos.model;
+      }
+
       var body = {
         "reference-id": encryptedEmpId,
         "mobile-number": encryptedMobile,
-        "device-id": build.androidId,
-        "device-type": build.manufacturer,
+        "device-id": deviceId,
+        "device-type": deviceType,
         "app-name": StringConstants.appName,
         "app-version": StringConstants.appVersion,
         "otp-token-id": otpTokenId,
@@ -150,12 +173,22 @@ class MyApiClient {
 
     print('$encryptedOtp  -----Decrypt String :: $decryptedOtp');
     try {
-      AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
+      var deviceId, deviceType;
+
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
+        deviceId = build.androidId;
+        deviceType = build.manufacturer;
+      }else{
+        IosDeviceInfo buildIos = await deviceInfoPlugin.iosInfo;
+        deviceId = buildIos.identifierForVendor;
+        deviceType = buildIos.model;
+      }
       var body = {
         "reference-id": encryptedEmpId,
         "mobile-number": encryptedMobile,
-        "device-id": build.androidId,
-        "device-type": build.manufacturer,
+        "device-id": deviceId,
+        "device-type": deviceType,
         "app-name": StringConstants.appName,
         "app-version": StringConstants.appVersion,
         "otp-code": encryptedOtp,
