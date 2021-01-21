@@ -310,15 +310,9 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                                       .meetingType ==
                                                   'COMPLAINT'
                                               ? HexColor('#9E3A0D')
-                                              : (_calendarEventController
-                                                              .listOfEvents[
-                                                                  index]
-                                                              .meetingType ==
+                                              : (_calendarEventController.listOfEvents[index].meetingType ==
                                                           'MASSON MEET' ||
-                                                      _calendarEventController
-                                                              .listOfEvents[
-                                                                  index]
-                                                              .meetingType ==
+                                                      _calendarEventController.listOfEvents[index].meetingType ==
                                                           'CONTRACTOR MEET' ||
                                                       _calendarEventController
                                                               .listOfEvents[
@@ -332,12 +326,13 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                                           'MINI CONTRACTOR')
                                                   ? HexColor('#FD4066')
                                                   : _calendarEventController
-                                                              .listOfEvents[
-                                                                  index]
+                                                              .listOfEvents[index]
                                                               .meetingType ==
                                                           'CONSUMER MEET'
                                                       ? HexColor('#F6A902')
-                                                      : Colors.red,
+                                                      : _calendarEventController.listOfEvents[index].meetingType == 'COUNTER'
+                                                          ? HexColor('#F6A902')
+                                                          : Colors.red,
                               shape: BoxShape.circle,
                             ),
                           ),

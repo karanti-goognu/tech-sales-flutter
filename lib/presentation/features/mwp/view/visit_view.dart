@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_even
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +26,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
 
   @override
   void initState() {
+    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
     super.initState();
   }
 
@@ -67,24 +69,25 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                               fontWeight: FontWeight.normal,
                               fontSize: 16.0),
                         ),
-                        onTap: (){
+                        onTap: () {
                           print(value);
                           setState(() {
-                            switch(value){
+                            switch (value) {
                               case "RETENTION SITE":
-                                _addEventController.siteIdText="Site ID";
+                                _addEventController.siteIdText = "Site ID";
                                 break;
                               case "LEADS":
-                                _addEventController.siteIdText="Lead ID";
+                                _addEventController.siteIdText = "Lead ID";
                                 break;
                               case "CONVERSION OPPORTUNITY":
-                                _addEventController.siteIdText="Site ID";
+                                _addEventController.siteIdText = "Site ID";
                                 break;
                               case "COUNTER":
-                                _addEventController.siteIdText="Counter Code";
+                                _addEventController.siteIdText = "Counter Code";
                                 break;
                               case "TECHNOCRAT":
-                                _addEventController.siteIdText="Technocrat ID";
+                                _addEventController.siteIdText =
+                                    "Technocrat ID";
                                 break;
                             }
                           });
@@ -103,23 +106,38 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return "${_addEventController.siteIdText} can't be empty";
-                    }
-                    return null;
-                  },
-                  onChanged: (_) {
-                    _addEventController.visitSiteId = _.toString();
-                  },
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                  keyboardType: TextInputType.text,
-                  decoration: _inputDecoration("${_addEventController.siteIdText}", false),
-                ),
+                _addEventController.siteIdText == "Counter Code"
+                    ? DropdownButtonFormField(
+                  decoration: FormFieldStyle.buildInputDecoration(labelText: "Counter Code"),
+                        items: _addEventController.dealerList
+                            .map<DropdownMenuItem<dynamic>>((val) {
+                          return DropdownMenuItem(
+                            value: val,
+                            child: Text(val.dealerName.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          print(val.dealerName);
+                          _addEventController.visitSiteId = val.dealerId;
+                        })
+                    : TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "${_addEventController.siteIdText} can't be empty";
+                          }
+                          return null;
+                        },
+                        onChanged: (_) {
+                          _addEventController.visitSiteId = _.toString();
+                        },
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.text,
+                        decoration: _inputDecoration(
+                            "${_addEventController.siteIdText}", false),
+                      ),
                 SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.all(16),
