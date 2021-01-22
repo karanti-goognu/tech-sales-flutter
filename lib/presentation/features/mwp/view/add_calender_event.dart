@@ -121,8 +121,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                 });
                                 _calendarEventController.selectedDate =
                                     "${date.year}-${date.month}-${date.day}";
-                                print(
-                                    '${_calendarEventController.selectedDate}');
+                                // print('${_calendarEventController.selectedDate}');
                                 _appController.getAccessKey(
                                     RequestIds.GET_CALENDER_EVENTS_OF_DAY);
                                 _calendarEventController.isDayEventLoading =
@@ -169,7 +168,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                               onCalendarChanged: (DateTime date) {
                                 final DateFormat formatter =
                                     DateFormat('MMMM-yyyy');
-                                print('$date');
+                                // print('$date');
                                 final String formatted = formatter.format(date);
                                 _calendarEventController.selectedMonth =
                                     formatted;
@@ -263,8 +262,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      print(
-                          '${_calendarEventController.listOfEvents[index].eventType}');
+                      // print('${_calendarEventController.listOfEvents[index].eventType}');
 
                       if (_calendarEventController
                               .listOfEvents[index].eventType ==

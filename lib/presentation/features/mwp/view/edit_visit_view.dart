@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -29,148 +31,34 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
   String siteIdText = "Site Id";
 
-
   @override
   void initState() {
+    print(_addEventController.visitActionType);
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
     super.initState();
-
-
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          Get.toNamed(Routes.ADD_CALENDER_SCREEN);
-          return true;
-        },
-        child: Scaffold(
-          extendBody: true,
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: Container(
-            height: 68.0,
-            width: 68.0,
-            child: FittedBox(
-              child: FloatingActionButton(
-                backgroundColor: ColorConstants.checkinColor,
-                child: Icon(
-                  Icons.keyboard_backspace_outlined,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-            ),
-          ),
-          bottomNavigationBar: BottomAppBar(
-            color: ColorConstants.appBarColor,
-            shape: CircularNotchedRectangle(),
-            notchMargin: 10,
-            child: Container(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      MaterialButton(
-                        minWidth: 40,
-                        onPressed: () {
-                          setState(() {
-                            // currentScreen =
-                            //     Dashboard(); // if user taps on this dashboard tab will be active
-                            // currentTab = 0;
-                            Get.toNamed(Routes.HOME_SCREEN);
-                          });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.home,
-                              color: Colors.white60,
-                            ),
-                            Text(
-                              'Home',
-                              style: TextStyle(
-                                color: Colors.white60,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  // Right Tab bar icons
-
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      MaterialButton(
-                        minWidth: 40,
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              new CupertinoPageRoute(
-                                  builder: (BuildContext context) =>
-                                      DraftLeadListScreen()));
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.drafts,
-                              color: Colors.white60,
-                            ),
-                            Text(
-                              'Drafts',
-                              style: TextStyle(
-                                color: Colors.white60,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      MaterialButton(
-                        minWidth: 40,
-                        onPressed: () {
-                          Get.toNamed(Routes.SEARCH_SCREEN);
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.search,
-                              color: Colors.white60,
-                            ),
-                            Text(
-                              'Search',
-                              style: TextStyle(
-                                color: Colors.white60,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-          backgroundColor: ColorConstants.backgroundColor,
-          body: SingleChildScrollView(
-            child: _buildAddEventInterface(context),
-          ),
-        ));
+      onWillPop: () async {
+        Get.toNamed(Routes.ADD_CALENDER_SCREEN);
+        return true;
+      },
+      child: Scaffold(
+        extendBody: true,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: BackFloatingButton(),
+        bottomNavigationBar: BottomNavigator(),
+        backgroundColor: ColorConstants.backgroundColor,
+        body: SingleChildScrollView(
+          child: _buildAddEventInterface(context),
+        ),
+      ),
+    );
   }
 
   Widget _buildAddEventInterface(BuildContext context) {
-
     SizeConfig().init(context);
 
     return SafeArea(
@@ -215,18 +103,22 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                             () => DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 value: _addEventController.visitSubType,
-
                                 onChanged: (String newValue) {
-                                  if (_addEventController.visitSubType == "RETENTION SITE"){
-                                    siteIdText="Site ID";
-                                  } else if (_addEventController.visitSubType == "LEADS"){
-                                    siteIdText="Lead ID";
-                                  }  else if (_addEventController.visitSubType == "CONVERSION OPPORTUNITY"){
-                                    siteIdText="Site ID";
-                                  } else if (_addEventController.visitSubType == "COUNTER"){
-                                    siteIdText="COUNTER Code";
-                                  } else if (_addEventController.visitSubType == "TECHNOCRAT"){
-                                    siteIdText="Technocrat ID";
+                                  if (_addEventController.visitSubType ==
+                                      "RETENTION SITE") {
+                                    siteIdText = "Site ID";
+                                  } else if (_addEventController.visitSubType ==
+                                      "LEADS") {
+                                    siteIdText = "Lead ID";
+                                  } else if (_addEventController.visitSubType ==
+                                      "CONVERSION OPPORTUNITY") {
+                                    siteIdText = "Site ID";
+                                  } else if (_addEventController.visitSubType ==
+                                      "COUNTER") {
+                                    siteIdText = "COUNTER Code";
+                                  } else if (_addEventController.visitSubType ==
+                                      "TECHNOCRAT") {
+                                    siteIdText = "Technocrat ID";
                                   }
                                 },
                                 items: <String>[
@@ -238,8 +130,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                 ].map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
-
-
                                     child: Text(
                                       value,
                                       style: GoogleFonts.roboto(
@@ -273,15 +163,15 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                               },
                               onChanged: (_) {
                                 _addEventController.visitSiteId = _.toString();
-
                               },
                               style: TextStyle(
                                   fontSize: 18,
                                   color: ColorConstants.inputBoxHintColor,
                                   fontFamily: "Muli"),
                               keyboardType: TextInputType.text,
-
-                              decoration: _inputDecoration("${_visitSubType(_addEventController.visitSubType)}", false),
+                              decoration: _inputDecoration(
+                                  "${_visitSubType(_addEventController.visitSubType)}",
+                                  false),
                             ),
                             SizedBox(height: 16),
                             Container(
@@ -338,16 +228,17 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Obx(() => Text(
-                                            // "${this._addEventController.visitDateTime}",
-                                            "${this._addEventController.visitViewDateTime}",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color:
-                                                    ColorConstants.blackColor,
-                                                fontFamily: "Muli"),
-                                          ),),
+                                      Obx(
+                                        () => Text(
+                                          // "${this._addEventController.visitDateTime}",
+                                          "${this._addEventController.visitViewDateTime}",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: ColorConstants.blackColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                      ),
                                       GestureDetector(
                                         onTap: () {
                                           _selectDate(context);
@@ -368,23 +259,27 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                             Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(2),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      width: 1, color: ColorConstants.lineColorFilter),),
+                                borderRadius: BorderRadius.circular(2),
+                                color: Colors.white,
+                                border: Border.all(
+                                    width: 1,
+                                    color: ColorConstants.lineColorFilter),
+                              ),
                               child: Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Obx(() => Text(
-                                        "${this._addEventController.nextVisitDate}",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: ColorConstants.blackColor,
-                                            fontFamily: "Muli"),
-                                      )),
+                                            "${this._addEventController.nextVisitDate}",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color:
+                                                    ColorConstants.blackColor,
+                                                fontFamily: "Muli"),
+                                          )),
                                       GestureDetector(
                                         onTap: () {
                                           _selectDateNextVisit(context);
@@ -397,6 +292,63 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                     ],
                                   ),
                                 ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            (_addEventController.visitSubType == "COUNTER" &&
+                                    _addEventController.visitResponseModel
+                                            .mwpVisitModel.visitStartTime ==
+                                        null &&
+                                    _addEventController.visitResponseModel
+                                            .mwpVisitModel.visitEndTime ==
+                                        null)
+                                ?
+                            Container()
+                                : (_addEventController.visitSubType ==
+                                            "COUNTER" &&
+                                        _addEventController.visitResponseModel
+                                                .mwpVisitModel.visitStartTime !=
+                                            null &&
+                                        _addEventController.visitResponseModel
+                                                .mwpVisitModel.visitEndTime ==
+                                            null)
+                                    ?  DropdownButtonFormField(
+                              validator: (value) => value == null
+                                  ? 'Please select Visit Outcome Type'
+                                  : null,
+
+                              onChanged: (value) {
+                                print(value);
+                                _addEventController.visitOutcomes = value;
+                              },
+                              items: [
+                                'RAPPORT BUILDING',
+                                'DEMAND GENERATION',
+                                'EVENT PLANNING',
+                                'EVENT EXECUTION',
+                                'OTHERS'
+                              ]
+                                  .map((e) => DropdownMenuItem(
+                                child: Text(
+                                  e.toUpperCase(),
+                                ),
+                                value: e,
+                              ))
+                                  .toList(),
+                              style: FormFieldStyle.formFieldTextStyle,
+                              decoration:
+                              FormFieldStyle.buildInputDecoration(
+                                  labelText: "Visit Outcome"),
+                              // ),
+                            ):
+                            TextFormField(
+                              readOnly: true,
+                              decoration:
+                              FormFieldStyle.buildInputDecoration(
+                                hintText:
+                                _addEventController.visitOutcomes,
                               ),
                             ),
                             SizedBox(
@@ -573,20 +525,18 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     );
   }
 
-
-
-  String _visitSubType (String visitSubType){
-    String visitSubTypeText="";
-    if (_addEventController.visitSubType == "RETENTION SITE"){
-      visitSubTypeText="Site ID";
-    } else if (_addEventController.visitSubType == "LEADS"){
-      visitSubTypeText="Lead ID";
-    }  else if (_addEventController.visitSubType == "CONVERSION OPPORTUNITY"){
-      visitSubTypeText="Site ID";
-    } else if (_addEventController.visitSubType == "COUNTER"){
-      visitSubTypeText="COUNTER Code";
-    } else if (_addEventController.visitSubType == "TECHNOCRAT"){
-      visitSubTypeText="Technocrat ID";
+  String _visitSubType(String visitSubType) {
+    String visitSubTypeText = "";
+    if (_addEventController.visitSubType == "RETENTION SITE") {
+      visitSubTypeText = "Site ID";
+    } else if (_addEventController.visitSubType == "LEADS") {
+      visitSubTypeText = "Lead ID";
+    } else if (_addEventController.visitSubType == "CONVERSION OPPORTUNITY") {
+      visitSubTypeText = "Site ID";
+    } else if (_addEventController.visitSubType == "COUNTER") {
+      visitSubTypeText = "COUNTER Code";
+    } else if (_addEventController.visitSubType == "TECHNOCRAT") {
+      visitSubTypeText = "Technocrat ID";
     }
     return visitSubTypeText;
   }

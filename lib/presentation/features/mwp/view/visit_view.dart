@@ -108,7 +108,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
               children: <Widget>[
                 _addEventController.siteIdText == "Counter Code"
                     ? DropdownButtonFormField(
-                  decoration: FormFieldStyle.buildInputDecoration(labelText: "Counter Code"),
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Counter Code"),
                         items: _addEventController.dealerList
                             .map<DropdownMenuItem<dynamic>>((val) {
                           return DropdownMenuItem(
@@ -139,40 +140,57 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                             "${_addEventController.siteIdText}", false),
                       ),
                 SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
-                      color: Colors.white,
-                      border: Border.all(
-                          width: 1, color: ColorConstants.lineColorFilter)),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Obx(() => Text(
-                                "${this._addEventController.visitDateTime}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: ColorConstants.blackColor,
-                                    fontFamily: "Muli"),
-                              )),
-                          GestureDetector(
-                            onTap: () {
-                              _selectDate(context);
-                            },
-                            child: Icon(
-                              Icons.calendar_today_sharp,
-                              color: Colors.orange,
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
+               Obx(()=> TextFormField(
+                  decoration: FormFieldStyle.buildInputDecoration(
+                    hintText: "${this._addEventController.visitDateTime}",
+                    suffixIcon: Icon(
+                      Icons.calendar_today_sharp,
+                      color: Colors.orange,
+                    ),
                   ),
-                ),
+                  readOnly: true,
+                 validator: (value) {
+                    print(this._addEventController.visitDateTime);
+                   if (this._addEventController.visitDateTime=="Visit Date") {
+                     print(value);
+                     return "Visit Date can't be empty";
+                   }
+                   return null;
+                 },
+                  onTap: () {
+                    _selectDate(context);
+                  },
+                ),),
+                // Container(
+                //   padding: const EdgeInsets.all(16),
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(2),
+                //       color: Colors.white,
+                //       border: Border.all(
+                //           width: 1, color: ColorConstants.lineColorFilter)),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Obx(() => Text(
+                //             "${this._addEventController.visitDateTime}",
+                //             textAlign: TextAlign.center,
+                //             style: TextStyle(
+                //                 fontSize: 14,
+                //                 color: ColorConstants.blackColor,
+                //                 fontFamily: "Muli"),
+                //           )),
+                //       // GestureDetector(
+                //       //   onTap: () {
+                //       //     _selectDate(context);
+                //       //   },
+                //       //   child: Icon(
+                //       //     Icons.calendar_today_sharp,
+                //       //     color: Colors.orange,
+                //       //   ),
+                //       // )
+                //     ],
+                //   ),
+                // ),
                 SizedBox(
                   height: 16,
                 ),
@@ -198,6 +216,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     // otherwise.
                     if (_formKey.currentState.validate()) {
                       //afterRequestLayout(empId, mobileNumber);
+                      print("hi");
                       _appController.getAccessKey(RequestIds.SAVE_VISIT);
                       _addEventController.isLoading = true;
                     }

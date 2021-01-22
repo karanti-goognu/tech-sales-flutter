@@ -132,13 +132,7 @@ class CalendarEventController extends GetxController {
                 i < this.calendarPlanResponse.listOfEventDates.length;
                 i++) {
               String date = this.calendarPlanResponse.listOfEventDates[i];
-              print(date);
-              //2020-12-22
               DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(date);
-              print('hi'+DateTime(tempDate.year, tempDate.month, tempDate.day).toString());
-              // markedDateMap.add(
-              //
-              // );
               var key=DateTime(tempDate.year, tempDate.month, tempDate.day);
               testMap[key]=[
                 new Event(
@@ -159,8 +153,6 @@ class CalendarEventController extends GetxController {
                       width: 5.0,
                     ),*/
                   ));
-              print(markedDateMap);
-              print(testMap);
             }
             markedDateMap=temp;
           }

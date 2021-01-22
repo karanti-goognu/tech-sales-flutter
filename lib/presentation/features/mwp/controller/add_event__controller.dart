@@ -39,6 +39,7 @@ class AddEventController extends GetxController {
   final _dealerList = List<DealerModel>().obs;
   final _dealerListSelected = List<DealerModelSelected>().obs;
   final _selectedView = "Visit".obs;
+  final _visitOutcomes = ''.obs;
   final _selectedEventTypeMeet = "MASOON MEET".obs;
   final _selectedVenueTypeMeet = "BOOKED".obs;
   final _selectedMonth = "January".obs;
@@ -76,6 +77,7 @@ class AddEventController extends GetxController {
   get isLoading => this._isLoading.value;
 
   get siteIdText => this._siteIdText.value;
+  get visitOutcomes => this._visitOutcomes.value;
 
   get visitActionType => this._visitActionType.value;
 
@@ -150,6 +152,7 @@ class AddEventController extends GetxController {
   set isLoading(value) => this._isLoading.value = value;
 
   set siteIdText(value) => this._siteIdText.value = value;
+  set visitOutcomes(value) => this._visitOutcomes.value = value;
 
 
   set visitActionType(value) => this._visitActionType.value = value;
@@ -233,13 +236,13 @@ class AddEventController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('User Security key is :: $userSecurityKey');
-
+      print(this.visitDateTime);
       SaveVisitRequest saveVisitRequest = new SaveVisitRequest(
         empId,
         "VISIT",
         this.visitSubType,
         this.visitSiteId,
-        this.visitDateTime,
+        this.visitDateTime=="Visit Date"?null:this.visitDateTime,
         this.visitRemarks,
       );
 
@@ -376,7 +379,7 @@ class AddEventController extends GetxController {
               this.visitResponseModel.mwpVisitModel.docId.toString();
           // this.visitDateTime = this.visitResponseModel.mwpVisitModel.visitDate.toString();
           this.visitViewDateTime = this.visitResponseModel.mwpVisitModel.visitDate.toString();
-
+          this.visitOutcomes = this.visitResponseModel.mwpVisitModel.visitOutcomes.toString();
           if (this.visitResponseModel.mwpVisitModel.visitStartTime != null) {
             this.visitStartTime =
                 this.visitResponseModel.mwpVisitModel.visitStartTime.toString();
@@ -401,6 +404,7 @@ class AddEventController extends GetxController {
       });
     });
   }
+
 
   viewMeetData(String accessKey) async {
     this.isLoadingVisitView = true;
@@ -471,7 +475,7 @@ class AddEventController extends GetxController {
         print('update');
         mwpVisitModelUpdate = new MwpVisitModelUpdate(
             this.visitId,
-            this.visitDateTime,
+            this.visitViewDateTime,
             visitType,
             "",
             0.0,
@@ -479,7 +483,9 @@ class AddEventController extends GetxController {
             "",
             0.0,
             0.0,
-            this.nextVisitDate);
+            this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
+          this.visitOutcomes
+        );
         mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
         repository
             .updateVisitPlan(accessKey, userSecurityKey, url,
@@ -504,7 +510,6 @@ class AddEventController extends GetxController {
           }
         });
       } else if (this.visitActionType == "START") {
-        print('start');
         geolocator
             .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
             .then((Position position) {
@@ -513,9 +518,10 @@ class AddEventController extends GetxController {
           var journeyStartLong = position.longitude;
           print('$journeyStartLong   $journeyStartLat');
           DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+          print(this.visitViewDateTime);
           mwpVisitModelUpdate = new MwpVisitModelUpdate(
               this.visitId,
-              this.visitDateTime,
+              this.visitViewDateTime,
               visitType,
               dateFormat.format(DateTime.now()),
               journeyStartLat,
@@ -523,7 +529,8 @@ class AddEventController extends GetxController {
               "",
               0.0,
               0.0,
-              this.nextVisitDate);
+              this.nextVisitDate,
+              this.visitOutcomes);
           mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
@@ -558,7 +565,7 @@ class AddEventController extends GetxController {
           DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
           mwpVisitModelUpdate = new MwpVisitModelUpdate(
               this.visitId,
-              this.visitDateTime,
+              this.visitViewDateTime,
               visitType,
               this.visitResponseModel.mwpVisitModel.visitStartTime,
               double.parse(this.visitResponseModel.mwpVisitModel.visitStartLat),
@@ -567,7 +574,8 @@ class AddEventController extends GetxController {
               dateFormat.format(DateTime.now()),
               journeyEndLat,
               journeyEndLong,
-              this.nextVisitDate);
+              this.nextVisitDate,
+              this.visitOutcomes);
           mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
@@ -595,7 +603,7 @@ class AddEventController extends GetxController {
       } else {
         mwpVisitModelUpdate = new MwpVisitModelUpdate(
             this.visitId,
-            this.visitDateTime,
+            this.visitViewDateTime,
             visitType,
             "",
             0.0,
@@ -603,7 +611,8 @@ class AddEventController extends GetxController {
             "",
             0.0,
             0.0,
-            this.nextVisitDate);
+            this.nextVisitDate,
+            this.visitOutcomes);
       }
     });
   }
@@ -653,8 +662,7 @@ class AddEventController extends GetxController {
           debugPrint('Save Visit Response is not null');
           this.saveVisitResponse = data;
 
-          Get.dialog(
-              CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+          Get.dialog( CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
           print('${saveVisitResponse.respMsg}');
           //SitesDetailWidget();
         }

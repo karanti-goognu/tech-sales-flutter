@@ -189,7 +189,6 @@ class LoginScreenPageState extends State<LoginScreen> {
                         FirebaseAnalytics().logEvent(
                             name: FirebaseEventsConstants.loginButtonClick,
                             parameters: null);
-
                         afterRequestLayout(empId, mobileNumber);
                       }
                     },
@@ -210,7 +209,6 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   void afterRequestLayout(String empId, String mobileNumber) {
     print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
-
     try {
       _loginController.empId = empId;
       _loginController.phoneNumber = mobileNumber;
