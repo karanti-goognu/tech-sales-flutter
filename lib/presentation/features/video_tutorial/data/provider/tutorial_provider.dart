@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';

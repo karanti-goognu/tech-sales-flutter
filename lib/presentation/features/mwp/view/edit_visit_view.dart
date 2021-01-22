@@ -339,14 +339,15 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Obx(() => Text(
-                                            "${this._addEventController.visitDateTime}",
+                                            // "${this._addEventController.visitDateTime}",
+                                            "${this._addEventController.visitViewDateTime}",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color:
                                                     ColorConstants.blackColor,
                                                 fontFamily: "Muli"),
-                                          )),
+                                          ),),
                                       GestureDetector(
                                         onTap: () {
                                           _selectDate(context);
@@ -355,7 +356,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                           Icons.calendar_today_sharp,
                                           color: Colors.orange,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -370,7 +371,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                   borderRadius: BorderRadius.circular(2),
                                   color: Colors.white,
                                   border: Border.all(
-                                      width: 1, color: ColorConstants.lineColorFilter)),
+                                      width: 1, color: ColorConstants.lineColorFilter),),
                               child: Column(
                                 children: [
                                   Row(

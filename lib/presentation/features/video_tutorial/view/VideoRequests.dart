@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/controller/tutorial_list_controller.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -69,27 +70,8 @@ class _VideoRequestsState extends State<VideoRequests> {
         automaticallyImplyLeading: false,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton:
-        Container(
-          height: 68.0,
-          width: 68.0,
-          child: FittedBox(
-            child: FloatingActionButton(
-              backgroundColor: ColorConstants.checkinColor,
-              child: Icon(
-                Icons.keyboard_backspace,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                // gv.fromLead = false;
-                Get.toNamed(
-                  Routes.HOME_SCREEN,
-                );
-              },
-            ),
-          ),
-        ),
-        bottomNavigationBar: BottomNavigator(),
+        floatingActionButton: SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+    bottomNavigationBar: BottomNavigator(),
         body: data == null
             ? Center(
           child: CircularProgressIndicator(),

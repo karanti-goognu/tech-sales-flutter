@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:device_info/device_info.dart';
-import 'package:flutter/services.dart';
 
 Map<String, dynamic> readAndroidBuildData(AndroidDeviceInfo build) {
   return <String, dynamic>{

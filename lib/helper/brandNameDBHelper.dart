@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class BrandNameDBHelper extends ChangeNotifier{
   static final BrandNameDBHelper _instance = BrandNameDBHelper._();
   static Database _database;
-
-
 
   BrandNameDBHelper._();
 

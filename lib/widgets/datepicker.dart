@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
  class PickDate{
   static Future<DateTime> selectDate({BuildContext context, DateTime firstDate, DateTime lastDate}) async {

@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -32,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("SR &\nComplaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png")
   ];
+
 
   String employeeName = "empty";
 
@@ -199,15 +202,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 15,
                 ),
                 Obx(() {
-                  if(_homeController.disableSlider!=true){
-                    return (_homeController.checkInStatus == StringConstants.checkIn)
+                  if (_homeController.disableSlider != true) {
+                    return (_homeController.checkInStatus ==
+                            StringConstants.checkIn)
                         ? checkInSliderButton()
                         : (_homeController.checkInStatus ==
-                        StringConstants.checkOut)
-                        ? checkOutSliderButton()
-                        : journeyEnded();
-                  }
-                  else {
+                                StringConstants.checkOut)
+                            ? checkOutSliderButton()
+                            : journeyEnded();
+                  } else {
                     return disabledSliderButton();
                   }
                 }),
@@ -221,125 +224,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ))
               ],
             ),
-            floatingActionButton: Container(
-              height: 68.0,
-              width: 68.0,
-              child: FittedBox(
-                child: FloatingActionButton(
-                  backgroundColor: Colors.amber,
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    gv.fromLead = false;
-                    Get.toNamed(Routes.ADD_LEADS_SCREEN);
-
-                  },
-                ),
-              ),
-            ),
+            floatingActionButton: SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomAppBar(
-              color: ColorConstants.appBarColor,
-              shape: CircularNotchedRectangle(),
-              notchMargin: 10,
-              child: Container(
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        MaterialButton(
-                          minWidth: 40,
-                          onPressed: () {
-                            setState(() {
-                              // currentScreen =
-                              //     Dashboard(); // if user taps on this dashboard tab will be active
-                              // currentTab = 0;
-                              Get.toNamed(Routes.HOME_SCREEN);
-                            });
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.home,
-                                color: Colors.white60,
-                              ),
-                              Text(
-                                'Home',
-                                style: TextStyle(
-                                  color: Colors.white60,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    // Right Tab bar icons
-
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        MaterialButton(
-                          minWidth: 40,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                new CupertinoPageRoute(
-                                    builder: (BuildContext context) =>
-                                        DraftLeadListScreen()));
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.drafts,
-                                color: Colors.white60,
-                              ),
-                              Text(
-                                'Drafts',
-                                style: TextStyle(
-                                  color: Colors.white60,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        MaterialButton(
-                          minWidth: 40,
-                          onPressed: () {
-                            Get.toNamed(Routes.SEARCH_SCREEN);
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.search,
-                                color: Colors.white60,
-                              ),
-                              Text(
-                                'Search',
-                                style: TextStyle(
-                                  color: Colors.white60,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            )
-        ));
+            bottomNavigationBar: BottomNavigator()
+        ),
+    );
   }
 
   Widget disabledSliderButton() {
@@ -354,11 +244,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       icon: Center(
           child: Icon(
-            Icons.play_disabled,
-            color: Colors.white,
-            size: 40.0,
-            //  semanticLabel: 'Text to announce in accessibility modes',
-          )),
+        Icons.play_disabled,
+        color: Colors.white,
+        size: 40.0,
+        //  semanticLabel: 'Text to announce in accessibility modes',
+      )),
+
       ///Change All the color and size from here.
       alignLabel: Alignment.center,
       width: MediaQuery.of(context).size.width,
@@ -509,10 +400,13 @@ class _HomeScreenState extends State<HomeScreen> {
               //shadowColor: colornew,
               elevation: 20,
               margin: EdgeInsets.all(10.0),
-              color:
-                  ((index == 0) || (index == 1) ||(index == 3) || (index == 4) || (index == 5))
-                      ? Colors.white
-                      : Colors.white60,
+              color: ((index == 0) ||
+                      (index == 1) ||
+                      (index == 3) ||
+                      (index == 4) ||
+                      (index == 5))
+                  ? Colors.white
+                  : Colors.white60,
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -557,7 +451,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //fontWeight: FontWeight.normal
                                   ),
                             ),
-                            (index == 2 )
+                            (index == 2)
                                 ? Text(
                                     "Coming Soon",
                                     overflow: TextOverflow.clip,
@@ -583,9 +477,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+
+
 class MenuDetailsModel {
   String value;
   String imgURL;
 
   MenuDetailsModel(this.value, this.imgURL);
 }
+

@@ -157,3 +157,28 @@ class BottomNavigatorWithoutDraftsAndSearch extends StatelessWidget {
     );
   }
 }
+
+
+class BottomNavigatorWithoutTabs extends StatelessWidget {
+  const BottomNavigatorWithoutTabs({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      color: ColorConstants.appBarColor,
+      shape: CircularNotchedRectangle(),
+      notchMargin: 10,
+      child: Container(
+        height: 60,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+
+          ],
+        ),
+      ),
+    );
+  }
+}

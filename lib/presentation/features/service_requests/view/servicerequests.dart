@@ -11,6 +11,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 
 class ServiceRequests extends StatefulWidget {
@@ -246,28 +247,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         automaticallyImplyLeading: false,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton:
-          // isVisible ? _buildFloatingActionButton() : null,
-          // isVisible ?  : null,
-          Container(
-        height: 68.0,
-        width: 68.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: Colors.amber,
-            child: Icon(
-              Icons.add,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              // gv.fromLead = false;
-              Get.toNamed(
-                Routes.SERVICE_REQUEST_CREATION,
-              );
-            },
-          ),
-        ),
-      ),
+      floatingActionButton: SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
       bottomNavigationBar: BottomNavigator(),
       body: data == null
           ? Center(

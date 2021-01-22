@@ -11,6 +11,7 @@ import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -267,26 +268,7 @@ class _LeadScreenState extends State<LeadScreen> {
             ),
             automaticallyImplyLeading: false,
           ),
-          floatingActionButton: Container(
-            height: 68.0,
-            width: 68.0,
-            child: FittedBox(
-              child: FloatingActionButton(
-                backgroundColor: Colors.amber,
-                child: Icon(
-                  Icons.add,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Get.toNamed(Routes.ADD_LEADS_SCREEN);
-                  /*Navigator.push(
-                  context,
-                  new CupertinoPageRoute(
-                      builder: (BuildContext context) => AddNewLeadForm()));*/
-                },
-              ),
-            ),
-          ),
+          floatingActionButton: SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomAppBar(

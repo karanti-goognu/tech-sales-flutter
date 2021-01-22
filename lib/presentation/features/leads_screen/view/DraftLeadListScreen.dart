@@ -7,10 +7,8 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
-import 'package:provider/provider.dart';
 
 class DraftLeadListScreen extends StatefulWidget {
   @override
