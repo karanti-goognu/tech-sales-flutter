@@ -306,23 +306,30 @@ class _RequestCreationState extends State<RequestCreation> {
                                 ),
                                 SizedBox(height: 16),
                                 TextFormField(
-                                  onChanged: (val) async{
-                                    if (val.length==6){
-                                      SiteAreaModel siteDetails= await eventController
-                                          .getSiteAreaDetails(_siteID.text);
-                                      siteDetails.siteAreaDetailsModel!=null?
-                                      setState(() {
-                                        _pin.text=siteDetails.siteAreaDetailsModel.sitePincode;
-                                        _state.text=siteDetails.siteAreaDetailsModel.siteState;
-                                        _taluk.text=siteDetails.siteAreaDetailsModel.siteTaluk;
-                                        _district.text=siteDetails.siteAreaDetailsModel.siteDistrict;
-                                      }):
-                                      Get.rawSnackbar(
-                                          title: "Message",
-                                          message: siteDetails.respMsg
-                                      );
+                                  onChanged: (val) async {
+                                    if (val.length == 6) {
+                                      SiteAreaModel siteDetails =
+                                          await eventController
+                                              .getSiteAreaDetails(_siteID.text);
+                                      siteDetails.siteAreaDetailsModel != null
+                                          ? setState(() {
+                                              _pin.text = siteDetails
+                                                  .siteAreaDetailsModel
+                                                  .sitePincode;
+                                              _state.text = siteDetails
+                                                  .siteAreaDetailsModel
+                                                  .siteState;
+                                              _taluk.text = siteDetails
+                                                  .siteAreaDetailsModel
+                                                  .siteTaluk;
+                                              _district.text = siteDetails
+                                                  .siteAreaDetailsModel
+                                                  .siteDistrict;
+                                            })
+                                          : Get.rawSnackbar(
+                                              title: "Message",
+                                              message: siteDetails.respMsg);
                                     }
-
                                   },
                                   controller: _siteID,
                                   maxLength: 6,
@@ -622,6 +629,11 @@ class _RequestCreationState extends State<RequestCreation> {
                                       print("Error");
                                       Get.dialog(CustomDialogs().errorDialog(
                                           'Please enter the mandatory details'));
+                                    } else if (_severity.text == "") {
+                                      Get.defaultDialog(
+                                          title: "Message",
+                                          middleText:
+                                              "Request Sub-type and Severity cannot be empty");
                                     } else {
                                       String empId = await getEmpId();
                                       List imageDetails = List();
@@ -860,10 +872,13 @@ class _RequestCreationState extends State<RequestCreation> {
                         setState(() {
                           _severity.text = 'MEDIUM';
                         });
-                      } else {
+                      } else if (selectedRequestSubtypeSeverity
+                          .contains('LOW')) {
                         setState(() {
                           _severity.text = 'LOW';
                         });
+                      } else {
+                        print('No request sub type selected');
                       }
                       // dataToBeSentBack.isEmpty
                       //     ? widget.customFunction(dataToBeSentBack)
@@ -1032,5 +1047,3 @@ class _RequestCreationState extends State<RequestCreation> {
     );
   }
 }
-
-
