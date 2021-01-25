@@ -343,6 +343,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                   labelText: "Visit Outcome"),
                               // ),
                             ):
+                            _addEventController.visitSubType ==
+                                "COUNTER"?
                             TextFormField(
                               readOnly: true,
                               decoration:
@@ -350,7 +352,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                 hintText:
                                 _addEventController.visitOutcomes,
                               ),
-                            ),
+                            ): Container(),
                             SizedBox(
                               height: 16,
                             ),
