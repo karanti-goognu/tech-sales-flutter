@@ -28,7 +28,7 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String accessKey , S
     'access-key': accessKey,
     'user-security-key' : userSecurityKey
   };
-  print(requestHeaders.toString());
+  // print(requestHeaders.toString());
   return requestHeaders;
 }
 Map<String, String> requestHeadersWithAccessKeyAndSecretKeywithoutContentType(String accessKey , String userSecurityKey) {

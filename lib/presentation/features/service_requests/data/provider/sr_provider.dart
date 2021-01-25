@@ -81,7 +81,7 @@ class MyApiClient {
       var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
-      print(response.body);
+      // print(response.body);
     }
     catch(e){
       print("Exception at SR Repo - SR List View $e");
@@ -166,8 +166,8 @@ class MyApiClient {
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateServiceRequest));
       request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey));
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
-      print("Request Body/Fields :: " + request.fields.toString());
-      print("Headers"+ request.headers.toString());
+      // print("Request Body/Fields :: " + request.fields.toString());
+      // print("Headers"+ request.headers.toString());
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
@@ -182,7 +182,7 @@ class MyApiClient {
 
       await request.send().then((value) async {
         response = await http.Response.fromStream(value);
-        print(response.body);
+        // print(response.body);
         return json.decode(response.body);
       });
     }
@@ -198,11 +198,11 @@ class MyApiClient {
     ComplaintViewModel complaintViewModel;
     try{
       var url=UrlConstants.srComplaintView+empID+'&id='+id;
-      print(userSecretKey);
+      // print(userSecretKey);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       var data = json.decode(response.body);
-      print(data);
+      // print(data);
       complaintViewModel =  ComplaintViewModel.fromJson(data);
     }
     catch(e){
@@ -246,7 +246,7 @@ class MyApiClient {
     SiteAreaModel siteAreaDetailsModel;
     try {
       var url=UrlConstants.getSiteAreaDetails+empID+'&siteId='+siteID;
-      print(url);
+      // print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       print(response.body);

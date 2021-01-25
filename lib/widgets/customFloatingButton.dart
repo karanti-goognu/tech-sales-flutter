@@ -117,6 +117,8 @@ class SpeedDialFAB extends StatelessWidget {
                                       const EdgeInsets.symmetric(vertical: 8.0),
                                   child: GestureDetector(
                                     onTap: () {
+                                      print(speedDial[index].navigateTo);
+                                      Get.back();
                                       Get.toNamed(speedDial[index].navigateTo);
                                     },
                                     child: Row(

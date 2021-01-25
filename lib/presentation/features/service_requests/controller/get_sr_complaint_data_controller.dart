@@ -35,7 +35,7 @@ class SrFormDataController extends GetxController {
   }
 
   Future<AccessKeyModel> getAccessKey() {
-    print(repository.getAccessKey().then((value) => value.accessKey));
+    // print(repository.getAccessKey().then((value) => value.accessKey));
     return repository.getAccessKey();
   }
 
@@ -46,7 +46,7 @@ class SrFormDataController extends GetxController {
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      print(userSecurityKey);
+      // print(userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       srFormDaa = await repository.getSrFormData(accessKey, userSecurityKey);
     });
