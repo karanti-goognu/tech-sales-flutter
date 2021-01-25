@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/get_sr_complaint_data_controller.dart';
@@ -429,6 +430,9 @@ class _RequestCreationState extends State<RequestCreation> {
                                   enableInteractiveSelection: false,
                                   style: FormFieldStyle.formFieldTextStyle,
                                   keyboardType: TextInputType.phone,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   maxLength: 10,
                                   validator: (value) => value.isEmpty ||
                                           value.length != 10
