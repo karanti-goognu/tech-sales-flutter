@@ -152,7 +152,7 @@ class SpeedDialFAB extends StatelessWidget {
                         ),
                         SizedBox(
                           height: 50,
-                        )
+                        ),
                       ],
                     ),
                   ),

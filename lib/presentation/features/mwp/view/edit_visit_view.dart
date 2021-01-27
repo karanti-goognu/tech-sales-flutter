@@ -399,22 +399,25 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                     ],
                   ))
               : Container()
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    "Please wait, Loading Data..",
-                    style: TextStyle(
-                        color: ColorConstants.greenText,
-                        fontFamily: "Muli-Semibold.ttf",
-                        fontSize: 20,
-                        letterSpacing: .15),
-                  ),
-                ),
-              ],
-            ),
+          : Container(
+        height: MediaQuery.of(context).size.height,
+          child: Center(child: CircularProgressIndicator(),)),
+    //      Row(
+          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //               children: [
+          //                 Expanded(
+          //                   flex: 1,
+          //                   child: Text(
+          //                     "Please wait, Loading Data..",
+          //                     style: TextStyle(
+          //                         color: ColorConstants.greenText,
+          //                         fontFamily: "Muli-Semibold.ttf",
+          //                         fontSize: 20,
+          //                         letterSpacing: .15),
+          //                   ),
+          //                 ),
+          //               ],
+          //             )
     ));
   }
 

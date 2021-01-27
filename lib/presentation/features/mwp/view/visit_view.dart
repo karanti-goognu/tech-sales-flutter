@@ -216,7 +216,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     // otherwise.
                     if (_formKey.currentState.validate()) {
                       //afterRequestLayout(empId, mobileNumber);
-                      print("hi");
                       _appController.getAccessKey(RequestIds.SAVE_VISIT);
                       _addEventController.isLoading = true;
                     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoScreen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/controller/tutorial_list_controller.dart';
@@ -93,17 +93,11 @@ class _VideoRequestsState extends State<VideoRequests> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          activityVideo(context, index);
-                          // _updateServiceRequestController.siteId = serviceRequestComplaintListModel
-                          //     .srComplaintListModal[index]
-                          //     .srComplaintId;
-                          // Get.to(
-                          //   RequestUpdation(
-                          //       id: tsoAppTutorialListModel
-                          //           .tsoAppTutorial[index]
-                          //           .id),
-                          //   transition: Transition.rightToLeft,
-                          // );
+                          print("hi");
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context)=>Video(videoData: tsoAppTutorialListModel.tsoAppTutorial[index].description,)
+                          ));
+                          // activityVideo(context, index);
                         },
                         child: Card(
                           clipBehavior: Clip.antiAlias,
