@@ -14,7 +14,7 @@ class Video extends StatefulWidget {
 class _VideoState extends State<Video> {
   VideoPlayerController videoPlayerController;
   initState(){
-    videoPlayerController= VideoPlayerController.network('https://mobileqacloud.dalmiabharat.com//tso/tutorial/lead_creation_module.mp4');
+    videoPlayerController= VideoPlayerController.network(widget.videoData.url);
     chewieController=ChewieController(
       videoPlayerController: videoPlayerController,
       aspectRatio: 16/9,
@@ -36,7 +36,7 @@ class _VideoState extends State<Video> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(title: Text(widget.videoData),backgroundColor: ColorConstants.backgroundColorBlue),
+      appBar: AppBar(title: Text(widget.videoData.description),backgroundColor: ColorConstants.backgroundColorBlue),
       body: Container(
         child: Chewie(
           controller: chewieController,

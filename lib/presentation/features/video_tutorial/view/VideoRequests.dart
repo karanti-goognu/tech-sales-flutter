@@ -95,7 +95,7 @@ class _VideoRequestsState extends State<VideoRequests> {
                         onTap: () {
                           print("hi");
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context)=>Video(videoData: tsoAppTutorialListModel.tsoAppTutorial[index].description,)
+                            builder: (context)=>Video(videoData: tsoAppTutorialListModel.tsoAppTutorial[index],)
                           ));
                           // activityVideo(context, index);
                         },
