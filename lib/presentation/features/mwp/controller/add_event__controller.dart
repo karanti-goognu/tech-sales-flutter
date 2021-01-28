@@ -679,6 +679,7 @@ class AddEventController extends GetxController {
     });
   }
 
+
   showNoInternetSnack() {
     Get.snackbar(
         "No internet connection.", "Please check your internet connection.",
