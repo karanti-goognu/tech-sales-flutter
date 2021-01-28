@@ -401,6 +401,8 @@ class AddEventController extends GetxController {
           }
           this.visitSubType =
               this.visitResponseModel.mwpVisitModel.visitSubType.toString();
+          this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
+          print(this.visitResponseModel.mwpVisitModel.remark.toString());
         }
       });
     });
@@ -485,8 +487,11 @@ class AddEventController extends GetxController {
             0.0,
             0.0,
             this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
-          this.visitOutcomes
+          this.visitOutcomes,
+          this.visitRemarks
         );
+        print('&&&&&&');
+        print(json.encode(mwpVisitModelUpdate));
         mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
         repository
             .updateVisitPlan(accessKey, userSecurityKey, url,
@@ -531,7 +536,8 @@ class AddEventController extends GetxController {
               0.0,
               0.0,
               this.nextVisitDate,
-              this.visitOutcomes);
+              this.visitOutcomes,
+              this.visitRemarks);
           mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
@@ -576,7 +582,8 @@ class AddEventController extends GetxController {
               journeyEndLat,
               journeyEndLong,
               this.nextVisitDate,
-              this.visitOutcomes);
+              this.visitOutcomes,
+              this.visitRemarks);
           mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
@@ -613,7 +620,8 @@ class AddEventController extends GetxController {
             0.0,
             0.0,
             this.nextVisitDate,
-            this.visitOutcomes);
+            this.visitOutcomes,
+            this.visitRemarks);
       }
     });
   }

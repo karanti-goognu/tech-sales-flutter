@@ -42,6 +42,7 @@ class MwpVisitModel {
   String visitEndLong;
   String visitOutcomes;
   int nextVisitDate;
+  String remark;
 
   MwpVisitModel(
       {this.id,
@@ -55,7 +56,8 @@ class MwpVisitModel {
       this.visitEndTime,
       this.visitEndLat,
       this.visitOutcomes,
-      this.visitEndLong});
+      this.visitEndLong,
+      this.remark});
 
   MwpVisitModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -71,6 +73,7 @@ class MwpVisitModel {
     visitEndLong = json['visitEndLong'];
     visitOutcomes = json['visitOutcomes'];
     nextVisitDate = json['nextVisitDate'];
+    remark = json['remark'];
   }
 
   Map<String, dynamic> toJson() {
@@ -88,6 +91,7 @@ class MwpVisitModel {
     data['visitEndLat'] = this.visitEndLat;
     data['visitEndLong'] = this.visitEndLong;
     data['nextVisitDate'] = this.nextVisitDate;
+    data['remark'] = this.remark;
     return data;
   }
 }

@@ -304,8 +304,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                     _addEventController.visitResponseModel
                                             .mwpVisitModel.visitEndTime ==
                                         null)
-                                ?
-                            Container()
+                                ? Container()
                                 : (_addEventController.visitSubType ==
                                             "COUNTER" &&
                                         _addEventController.visitResponseModel
@@ -314,67 +313,103 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                         _addEventController.visitResponseModel
                                                 .mwpVisitModel.visitEndTime ==
                                             null)
-                                    ?  DropdownButtonFormField(
-                              validator: (value) => value == null
-                                  ? 'Please select Visit Outcome Type'
-                                  : null,
+                                    ? DropdownButtonFormField(
+                                        validator: (value) => value == null
+                                            ? 'Please select Visit Outcome Type'
+                                            : null,
 
-                              onChanged: (value) {
-                                print(value);
-                                _addEventController.visitOutcomes = value;
-                              },
-                              items: [
-                                'RAPPORT BUILDING',
-                                'DEMAND GENERATION',
-                                'EVENT PLANNING',
-                                'EVENT EXECUTION',
-                                'OTHERS'
-                              ]
-                                  .map((e) => DropdownMenuItem(
-                                child: Text(
-                                  e.toUpperCase(),
-                                ),
-                                value: e,
-                              ))
-                                  .toList(),
-                              style: FormFieldStyle.formFieldTextStyle,
-                              decoration:
-                              FormFieldStyle.buildInputDecoration(
-                                  labelText: "Visit Outcome"),
-                              // ),
-                            ):
-                            _addEventController.visitSubType ==
-                                "COUNTER"?
-                            TextFormField(
-                              readOnly: true,
-                              decoration:
-                              FormFieldStyle.buildInputDecoration(
-                                hintText:
-                                _addEventController.visitOutcomes,
-                              ),
-                            ): Container(),
+                                        onChanged: (value) {
+                                          print(value);
+                                          _addEventController.visitOutcomes =
+                                              value;
+                                        },
+                                        items: [
+                                          'RAPPORT BUILDING',
+                                          'DEMAND GENERATION',
+                                          'EVENT PLANNING',
+                                          'EVENT EXECUTION',
+                                          'OTHERS'
+                                        ]
+                                            .map((e) => DropdownMenuItem(
+                                                  child: Text(
+                                                    e.toUpperCase(),
+                                                  ),
+                                                  value: e,
+                                                ))
+                                            .toList(),
+                                        style:
+                                            FormFieldStyle.formFieldTextStyle,
+                                        decoration:
+                                            FormFieldStyle.buildInputDecoration(
+                                                labelText: "Visit Outcome"),
+                                        // ),
+                                      )
+                                    : _addEventController.visitSubType ==
+                                            "COUNTER"
+                                        ? TextFormField(
+                                            readOnly: true,
+                                            decoration: FormFieldStyle
+                                                .buildInputDecoration(
+                                              hintText: _addEventController
+                                                  .visitOutcomes,
+                                            ),
+                                          )
+                                        : Container(),
                             SizedBox(
                               height: 16,
                             ),
-                            TextFormField(
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Please enter remarks ';
-                                  }
-                                  return null;
-                                },
-                                initialValue: _addEventController.visitRemarks,
-                                onChanged: (_) {
-                                  _addEventController.visitRemarks =
-                                      _.toString();
-                                },
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: ColorConstants.inputBoxHintColor,
-                                    fontFamily: "Muli"),
-                                keyboardType: TextInputType.text,
-                                maxLines: 3,
-                                decoration: _inputDecoration("Remarks", false)),
+                            Obx(() => (_addEventController.visitResponseModel
+                                            .mwpVisitModel.visitStartTime ==
+                                        null &&
+                                    _addEventController.visitResponseModel
+                                            .mwpVisitModel.visitEndTime ==
+                                        null)
+                                ? TextFormField(
+                                    initialValue:
+                                        _addEventController.visitRemarks,
+                                    onChanged: (_) {
+                                      _addEventController.visitRemarks =
+                                          _.toString();
+                                    },
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontFamily: "Muli"),
+                                    maxLines: 3,
+                                    decoration:
+                                        _inputDecoration("Remarks", false))
+                                : (_addEventController.visitResponseModel
+                                                .mwpVisitModel.visitStartTime !=
+                                            null &&
+                                        _addEventController.visitResponseModel
+                                                .mwpVisitModel.visitEndTime ==
+                                            null)
+                                    ? TextFormField(
+                                        initialValue: _addEventController.visitRemarks,
+                                        onChanged: (_) {
+                                          _addEventController.visitRemarks =
+                                              _.toString();
+                                        },
+                                        style: TextStyle(fontSize: 18, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
+                                        maxLines: 3,
+                                        decoration: _inputDecoration("Remarks", false))
+                                    : TextFormField(
+                                        readOnly: true,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'Please enter remarks ';
+                                          }
+                                          return null;
+                                        },
+                                        initialValue: _addEventController.visitRemarks,
+                                        onChanged: (_) {
+                                          _addEventController.visitRemarks =
+                                              _.toString();
+                                        },
+                                        style: TextStyle(fontSize: 18, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
+                                        keyboardType: TextInputType.text,
+                                        maxLines: 3,
+                                        decoration: _inputDecoration("Remarks", false))),
                             SizedBox(
                               height: 16,
                             ),
@@ -400,24 +435,26 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                   ))
               : Container()
           : Container(
-        height: MediaQuery.of(context).size.height,
-          child: Center(child: CircularProgressIndicator(),)),
-    //      Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Expanded(
-          //                   flex: 1,
-          //                   child: Text(
-          //                     "Please wait, Loading Data..",
-          //                     style: TextStyle(
-          //                         color: ColorConstants.greenText,
-          //                         fontFamily: "Muli-Semibold.ttf",
-          //                         fontSize: 20,
-          //                         letterSpacing: .15),
-          //                   ),
-          //                 ),
-          //               ],
-          //             )
+              height: MediaQuery.of(context).size.height,
+              child: Center(
+                child: CircularProgressIndicator(),
+              )),
+      //      Row(
+      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //               children: [
+      //                 Expanded(
+      //                   flex: 1,
+      //                   child: Text(
+      //                     "Please wait, Loading Data..",
+      //                     style: TextStyle(
+      //                         color: ColorConstants.greenText,
+      //                         fontFamily: "Muli-Semibold.ttf",
+      //                         fontSize: 20,
+      //                         letterSpacing: .15),
+      //                   ),
+      //                 ),
+      //               ],
+      //             )
     ));
   }
 
