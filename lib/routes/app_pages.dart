@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/bindings/tutorial_binding.dart';
 import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencerView.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewOldLeadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
@@ -116,7 +117,6 @@ class AppPages {
       page: () => ServiceRequests(),
       binding: SRBinding(),
     ),
-
     GetPage(
       name: Routes.SERVICE_REQUEST_CREATION,
       page: () => RequestCreation(),
@@ -125,6 +125,11 @@ class AppPages {
     GetPage(
       name: Routes.VIDEO_TUTORIAL,
       page: () => VideoRequests(),
+      binding: TutorialBinding(),
+    ),
+    GetPage(
+      name: Routes.ADD_INFLUENCER,
+      page: () => AddInfluencerView(),
       binding: TutorialBinding(),
     ),
     // GetPage(

@@ -7,6 +7,8 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
@@ -81,27 +83,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
             ),
             automaticallyImplyLeading: false,
           ),
-          floatingActionButton: Container(
-            height: 68.0,
-            width: 68.0,
-            child: FittedBox(
-              child: FloatingActionButton(
-                backgroundColor: Colors.amber,
-                child: Icon(
-                  Icons.add,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  gv.fromLead = false;
-                  Get.toNamed(Routes.ADD_LEADS_SCREEN);
-                  /*Navigator.push(
-                  context,
-                  new CupertinoPageRoute(
-                      builder: (BuildContext context) => AddNewLeadForm()));*/
-                },
-              ),
-            ),
-          ),
+          floatingActionButton: SpeedDialFAB(customStyle: customStyle,speedDial: speedDial,),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomAppBar(

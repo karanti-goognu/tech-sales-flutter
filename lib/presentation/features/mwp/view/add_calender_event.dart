@@ -88,112 +88,120 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                 ),
               ],
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Obx(() => CalendarCarousel<Event>(
-                              todayButtonColor: Colors.green,
-                              height: 380.0,
-                              selectedDateTime: _currentDate2,
-                              headerMargin: EdgeInsets.zero,
-                              selectedDayButtonColor:
-                                  Colors.grey.withOpacity(0.1),
-                              selectedDayTextStyle:
-                                  TextStyle(color: Colors.black),
-                              weekdayTextStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w400),
-                              dayPadding: 4,
-                              weekendTextStyle: TextStyle(color: Colors.black),
-                              onDayLongPressed: (DateTime date) {
-                                print('long pressed date $date');
-                              },
-                              onDayPressed:
-                                  (DateTime date, List<Event> events) {
-                                this.setState(() {
-                                  _currentDate2 = date;
-                                });
-                                _calendarEventController.selectedDate =
-                                    "${date.year}-${date.month}-${date.day}";
-                                // print('${_calendarEventController.selectedDate}');
-                                _appController.getAccessKey(
-                                    RequestIds.GET_CALENDER_EVENTS_OF_DAY);
-                                _calendarEventController.isDayEventLoading =
-                                    true;
-                                /*this.setState(() => _currentDate2 = date);*/
-                              },
-                              markedDateMoreCustomDecoration: new BoxDecoration(
-                                borderRadius: new BorderRadius.circular(10.0),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Obx(() => CalendarCarousel<Event>(
+                            todayButtonColor: Colors.green,
+                            height: 380.0,
+                            selectedDateTime: _currentDate2,
+                            headerMargin: EdgeInsets.zero,
+                            selectedDayButtonColor:
+                                Colors.grey.withOpacity(0.1),
+                            selectedDayTextStyle:
+                                TextStyle(color: Colors.black),
+                            weekdayTextStyle: TextStyle(
                                 color: Colors.grey,
-                              ),
-                              markedDatesMap:
-                                  _calendarEventController.markedDateMap,
+                                fontWeight: FontWeight.w400),
+                            dayPadding: 4,
+                            weekendTextStyle: TextStyle(color: Colors.black),
+                            onDayLongPressed: (DateTime date) {
+                              print('long pressed date $date');
+                            },
+                            onDayPressed:
+                                (DateTime date, List<Event> events) {
+                              this.setState(() {
+                                _currentDate2 = date;
+                              });
+                              _calendarEventController.selectedDate =
+                                  "${date.year}-${date.month}-${date.day}";
+                              // print('${_calendarEventController.selectedDate}');
+                              _appController.getAccessKey(
+                                  RequestIds.GET_CALENDER_EVENTS_OF_DAY);
+                              _calendarEventController.isDayEventLoading =
+                                  true;
+                              /*this.setState(() => _currentDate2 = date);*/
+                            },
+                            markedDateMoreCustomDecoration: new BoxDecoration(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              color: Colors.grey,
+                            ),
+                            markedDatesMap:
+                                _calendarEventController.markedDateMap,
 
-                              // new EventList(
-                              //   events:
-                              //   {
-                              //     new DateTime(2021,1,15):[
-                              //       new Event(
-                              //         date: new DateTime(2021, 1, 4),
-                              //         title: 'Event 1',
-                              //         icon: Icon(Icons.eco),
-                              //         dot: Container(
-                              //           margin: EdgeInsets.symmetric(horizontal: 1.0),
-                              //           color: Colors.red,
-                              //           height: 5.0,
-                              //           width: 5.0,
-                              //         ),
-                              //       ),
-                              //     ]
-                              //   }
-                              // ),
-                              // _calendarEventController.markedDateMap,
-                              targetDateTime: _targetDateTime,
-                              customGridViewPhysics:
-                                  NeverScrollableScrollPhysics(),
-                              minSelectedDate:
-                                  _currentDate.subtract(Duration(days: 360)),
-                              maxSelectedDate:
-                                  _currentDate.add(Duration(days: 360)),
-                              inactiveDaysTextStyle: TextStyle(
-                                color: Colors.tealAccent,
-                                fontSize: 16,
-                              ),
-                              onCalendarChanged: (DateTime date) {
-                                final DateFormat formatter =
-                                    DateFormat('MMMM-yyyy');
-                                // print('$date');
-                                final String formatted = formatter.format(date);
-                                _calendarEventController.selectedMonth =
-                                    formatted;
-                                _appController.getAccessKey(
-                                    RequestIds.GET_CALENDER_EVENTS);
-                                //_calendarEventController.isLoading = true;
+                            // new EventList(
+                            //   events:
+                            //   {
+                            //     new DateTime(2021,1,15):[
+                            //       new Event(
+                            //         date: new DateTime(2021, 1, 4),
+                            //         title: 'Event 1',
+                            //         icon: Icon(Icons.eco),
+                            //         dot: Container(
+                            //           margin: EdgeInsets.symmetric(horizontal: 1.0),
+                            //           color: Colors.red,
+                            //           height: 5.0,
+                            //           width: 5.0,
+                            //         ),
+                            //       ),
+                            //     ]
+                            //   }
+                            // ),
+                            // _calendarEventController.markedDateMap,
+                            targetDateTime: _targetDateTime,
+                            customGridViewPhysics:
+                                NeverScrollableScrollPhysics(),
+                            minSelectedDate:
+                                _currentDate.subtract(Duration(days: 360)),
+                            maxSelectedDate:
+                                _currentDate.add(Duration(days: 360)),
+                            inactiveDaysTextStyle: TextStyle(
+                              color: Colors.tealAccent,
+                              fontSize: 16,
+                            ),
+                            onCalendarChanged: (DateTime date) {
+                              final DateFormat formatter =
+                                  DateFormat('MMMM-yyyy');
+                              // print('$date');
+                              final String formatted = formatter.format(date);
+                              _calendarEventController.selectedMonth =
+                                  formatted;
+                              _appController.getAccessKey(
+                                  RequestIds.GET_CALENDER_EVENTS);
+                              //_calendarEventController.isLoading = true;
 
-                                this.setState(() {
-                                  _targetDateTime = date;
-                                  _currentMonth =
-                                      DateFormat.yMMM().format(_targetDateTime);
-                                });
-                              },
-                            )),
-                      )),
-                  SizedBox(
-                    height: 12,
+                              this.setState(() {
+                                _targetDateTime = date;
+                                _currentMonth =
+                                    DateFormat.yMMM().format(_targetDateTime);
+                              });
+                            },
+                          )),
+                    )),
+                SizedBox(
+                  height: 12,
+                ),
+                returnRow(),
+                Expanded(
+                  child: Container(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 12,
+                          ),
+                          returnEventsList(),
+                        ],
+                      ),
+                    ),
                   ),
-                  returnRow(),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  returnEventsList(),
-                ],
-              ),
+                ),
+              ],
             )));
   }
 

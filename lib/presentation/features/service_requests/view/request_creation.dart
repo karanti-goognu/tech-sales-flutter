@@ -702,6 +702,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                         fontSize: 17),
                                   ),
                                 ),
+                                SizedBox(height: 50),
                               ],
                             )),
                       )
@@ -947,58 +948,6 @@ class _RequestCreationState extends State<RequestCreation> {
     }
   }
 
-  _imgFromGallery() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
-    // print(image.path);
-    // setState(() {
-    if (image != null) {
-      print(basename(image.path));
-      setState(() {
-        _imageList.add(image);
-      });
-
-      // saveServiceRequest.srComplaintPhotosEntity.add(image);
-
-    }
-    //     // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-    //     _imageList.add(image);
-    //
-    //     _imgDetails.add(new ImageDetails("asset", image));
-    //   }
-    //   // _imageList.insert(0,image);
-    // });
-  }
-
-  void _showPicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Photo Library'),
-                      onTap: () {
-                        _imgFromGallery();
-                        Navigator.of(context).pop();
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
-                    onTap: () {
-                      _imgFromCamera();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
 
   var customer;
   requestorDetails() {

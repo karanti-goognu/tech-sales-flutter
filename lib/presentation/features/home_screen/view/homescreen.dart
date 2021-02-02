@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("Influencers", "assets/images/img4.png"),
     new MenuDetailsModel("MWP", "assets/images/mwp.png"),
     new MenuDetailsModel("SR &\nComplaint", "assets/images/sr.png"),
-    new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png")
+    new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png"),
   ];
 
 

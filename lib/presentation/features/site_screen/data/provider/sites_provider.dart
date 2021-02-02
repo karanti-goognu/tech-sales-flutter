@@ -106,9 +106,9 @@ class MyApiClientSites {
           headers:
               requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
       //var response = await httpClient.post(UrlConstants.loginCheck);
-      print('response is :  ${response.body}');
+      // print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-        print('success');
+        // print('success');
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
@@ -141,38 +141,27 @@ class MyApiClientSites {
     }
   }
 
-  getSiteDetailsData(
-      String accessKey, String userSecurityKey, int siteId) async {
+  getSiteDetailsData(String accessKey, String userSecurityKey, int siteId, String empID) async {
     try {
       //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var bodyEncrypted = {"SiteId": siteId};
       // print('Request body is  : ${json.encode(bodyEncrypted)}');
       // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
-
-      print("URL is :: " + UrlConstants.getSiteData + "$siteId");
-      print("Request Header :: " +
-          json.encode(requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey)));
-      final response = await get(
-        Uri.parse(UrlConstants.getSiteData + "$siteId"),
-        headers:
-            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+      String url= UrlConstants.getSiteData + "$siteId&referenceID=$empID";
+      print(url);
+      final response = await get(Uri.parse(UrlConstants.getSiteData + "$siteId&referenceID=$empID"),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
-      print('Response body is  : ${json.decode(response.body)}');
-      // print('Response body is  : ${json.decode(response.body)}');
-
+      print('Response body is  ---: ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         Get.back();
-
         var data = json.decode(response.body);
-        print(data);
-        //print("herssssssse");
-
+        // print('@@@@');
+        // print(data);
         ViewSiteDataResponse viewSiteDataResponse =
             ViewSiteDataResponse.fromJson(data);
-
-        // print(response.);
-
+        // print('@@@@');
+        // print(viewSiteDataResponse.counterListModel[0].soldToParty);
         if (viewSiteDataResponse.respCode == "ST2010") {
           return viewSiteDataResponse;
         } else if (viewSiteDataResponse.respCode == "ST2011") {

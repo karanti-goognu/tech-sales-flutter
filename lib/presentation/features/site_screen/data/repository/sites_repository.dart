@@ -30,8 +30,8 @@ class MyRepositorySites {
     return apiClient.getSecretKey(empId, mobileNumber);
   }
 
-  getSitedetailsData(String accessKey, String userSecurityKey, int siteId) {
-    return apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId);
+  getSitedetailsData(String accessKey, String userSecurityKey, int siteId, String empID) {
+    return apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId, empID);
   }
 
   updateSiteData(accessKey, String userSecurityKey, updateDataRequest, List<File> list, BuildContext context, int siteId) {

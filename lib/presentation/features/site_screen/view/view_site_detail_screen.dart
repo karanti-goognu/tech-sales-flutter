@@ -1,4 +1,9 @@
 import 'dart:io';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/InfluencerView.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/PastStageHistoryView.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/SiteDataView.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/VisitDataView.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -102,9 +107,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   var _comments = new TextEditingController();
   var _inactiveReasonText = new TextEditingController();
   var closureReasonText = new TextEditingController();
-
   //var _commentsRejectionController = new TextEditingController();
-
   var _siteTotalBags = new TextEditingController();
   var _siteTotalPt = new TextEditingController();
   var _siteTotalBalanceBags = new TextEditingController();
@@ -140,8 +143,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<ConstructionStageEntity> constructionStageEntityNew = new List();
-  List<ConstructionStageEntity> constructionStageEntityNewNextStage =
-      new List();
+  List<ConstructionStageEntity> constructionStageEntityNewNextStage = new List();
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
@@ -152,18 +154,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteInfluencerEntity> siteInfluencerEntity = new List();
   List<InfluencerTypeEntity> influencerTypeEntity = new List();
   List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
-
   List<SiteStageEntity> siteStageEntity = new List();
   List<InfluencerEntity> influencerEntity = new List();
   List<InfluencerDetail> _listInfluencerDetail = new List();
-
   // List<Influencer>
-
   List<SiteNextStageEntity> siteNextStageEntity = new List();
   List<SiteCommentsEntity> siteCommentsEntity = new List();
-
   List<ImageDetails> _imgDetails = new List();
-
   SiteController _siteController = Get.find();
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
   TabController _tabController;
@@ -174,7 +171,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     super.initState();
     _tabController = TabController(vsync: this, length: 4);
     //_controller.addListener(_handleTabSelection);
-    print(widget.siteId);
+    // print(widget.siteId);
     getSiteData();
   }
 
@@ -189,15 +186,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _siteController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
-      print("AccessKey :: " + accessKeyModel.accessKey);
+      // print("AccessKey :: " + accessKeyModel.accessKey);
       await _siteController
           .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
           .then((data) async {
-        print("here");
-        print(data);
+        // print("here");
+        // print(data);
         viewSiteDataResponse = data;
 
-        print(viewSiteDataResponse);
+        // print(viewSiteDataResponse);
         await db.clearTable();
         siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
 
@@ -205,7 +202,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
               siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
         }
-        print("list Size");
+        // print("list Size");
         siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
 
         setState(() {
@@ -265,35 +262,23 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   id: new TextEditingController(
                       text: viewSiteDataResponse.influencerEntity[i].id
                           .toString()),
-                  inflContact: new TextEditingController(
-                      text:
-                          viewSiteDataResponse.influencerEntity[i].inflContact),
+                  inflContact: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflContact),
                   //createdBy: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflContact),
-                  inflTypeId: new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].inflTypeId
-                          .toString()),
-                  inflTypeValue: inflTypeValue(new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].inflTypeId
-                          .toString())),
-                  inflCatId: new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].inflCatId
-                          .toString()),
-                  inflCatValue: inflCatValue(new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].inflCatId
-                          .toString())),
-                  inflName:
-                      new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflName),
+                  inflTypeId: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflTypeId.toString()),
+                  inflTypeValue: inflTypeValue(new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflTypeId.toString())),
+                  inflCatId: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflCatId.toString()),
+                  inflCatValue: inflCatValue(new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflCatId.toString())),
+                  inflName:  new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflName),
                   ilpIntrested: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].ilpIntrested),
                   createdOn: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].createdOn.toString()),
                   isExpanded: false));
             }
-            initialInfluencerLength =
-                viewSiteDataResponse.influencerEntity.length;
+            initialInfluencerLength = viewSiteDataResponse.influencerEntity.length;
           }
 
           // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
           siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
-          print(viewSiteDataResponse.siteVisitHistoryEntity.length);
+          // print(viewSiteDataResponse.siteVisitHistoryEntity.length);
           sitesModal = viewSiteDataResponse.sitesModal;
           _siteProductDemo.text = sitesModal.siteProductDemo;
           if (_siteProductDemo.text == 'N') {
@@ -317,8 +302,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _siteTotalBags.text =
               (double.parse(_siteTotalPt.text) * 20).round().toString();
 
-          print("Dhawan");
-          print(sitesModal.siteStageId);
+          // print("Dhawan");
+          // print(sitesModal.siteStageId);
           //  print(sitesModal.);
           //  print(sit);
           // print(sitesModal.)
@@ -435,6 +420,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   @override
   Widget build(BuildContext context) {
+    print(viewSiteDataResponse.counterListModel.map((e) => e.shipToPartyName).toSet().toList());
+    // print(viewSiteDataResponse.counterListModel.forEach((element) {print(element);}));
     //gv.selectedClass = widget.classroomId;
     return DefaultTabController(
         initialIndex: _initialIndex,
@@ -681,36 +668,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                           maxLines:
                                                                               4,
                                                                           decoration:
-                                                                              InputDecoration(
-                                                                            focusedBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(
-                                                                                  color: ColorConstants.backgroundColorBlue,
-                                                                                  //color: HexColor("#0000001F"),
-                                                                                  width: 1.0),
-                                                                            ),
-                                                                            enabledBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
-                                                                            ),
-                                                                            errorBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(color: Colors.red, width: 1.0),
-                                                                            ),
-                                                                            labelText:
-                                                                                "Comments",
-                                                                            filled:
-                                                                                false,
-                                                                            focusColor:
-                                                                                Colors.black,
-                                                                            labelStyle: TextStyle(
-                                                                                fontFamily: "Muli",
-                                                                                color: ColorConstants.inputBoxHintColorDark,
-                                                                                fontWeight: FontWeight.normal,
-                                                                                fontSize: 16.0),
-                                                                            fillColor:
-                                                                                ColorConstants.backgroundColor,
-                                                                          ),
+                                                                              FormFieldStyle.buildInputDecoration(labelText: "Comments"),
                                                                         ),
                                                                       ),
                                                                       Center(
@@ -973,36 +931,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                           maxLines:
                                                                               4,
                                                                           decoration:
-                                                                              InputDecoration(
-                                                                            focusedBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(
-                                                                                  color: ColorConstants.backgroundColorBlue,
-                                                                                  //color: HexColor("#0000001F"),
-                                                                                  width: 1.0),
-                                                                            ),
-                                                                            enabledBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
-                                                                            ),
-                                                                            errorBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(color: Colors.red, width: 1.0),
-                                                                            ),
-                                                                            labelText:
-                                                                                "Comments",
-                                                                            filled:
-                                                                                false,
-                                                                            focusColor:
-                                                                                Colors.black,
-                                                                            labelStyle: TextStyle(
-                                                                                fontFamily: "Muli",
-                                                                                color: ColorConstants.inputBoxHintColorDark,
-                                                                                fontWeight: FontWeight.normal,
-                                                                                fontSize: 16.0),
-                                                                            fillColor:
-                                                                                ColorConstants.backgroundColor,
-                                                                          ),
+                                                                              FormFieldStyle.buildInputDecoration(labelText: "Comments",),
                                                                         ),
                                                                       ),
                                                                       Center(
@@ -1097,9 +1026,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               controller: _tabController,
               children: <Widget>[
                 siteDataView(),
+                // SiteDataView(siteId: widget.siteId,),
                 visitDataView(),
-                influencerView(),
+                // VisitDataView(siteId: widget.siteId,),
+                // influencerView(),
+                InfluencerView(),
                 pastStageHistoryview(),
+                // PastStageHistoryView()
               ],
             ),
             floatingActionButton: BackFloatingButton(),
@@ -1155,32 +1088,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               _selectedConstructionType = value;
                             });
                           },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black26, width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Type of Construction",
-                            filled: false,
-                            focusColor: Colors.black,
-                            isDense: false,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration:
+                          FormFieldStyle.buildInputDecoration(labelText: "Type of Construction"),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -1207,33 +1116,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Site Built-up area",
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Site Built-up area")
+
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -1270,7 +1154,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       color: ColorConstants.inputBoxHintColor,
                                       fontFamily: "Muli"),
                                   // keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
+                                  // decoration: FormFieldStyle.buildInputDecoration(labelText:"Ground"),
+                                  decoration:InputDecoration(
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: ColorConstants
@@ -1334,34 +1219,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       _selectedSiteFloor = value;
                                     });
                                   },
-                                  decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorConstants
-                                              .backgroundColorBlue,
-                                          //color: HexColor("#0000001F"),
-                                          width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.black26, width: 1.0),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 1.0),
-                                    ),
-                                    labelText: "+ Floors",
-                                    filled: false,
-                                    focusColor: Colors.black,
-                                    isDense: false,
-                                    labelStyle: TextStyle(
-                                        fontFamily: "Muli",
-                                        color: ColorConstants
-                                            .inputBoxHintColorDark,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 16.0),
-                                    fillColor: ColorConstants.backgroundColor,
-                                  ),
+                                  decoration:FormFieldStyle.buildInputDecoration(labelText:"+ Floors"),
                                 ),
                               ),
                             )
@@ -1529,35 +1387,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       color: ColorConstants.inputBoxHintColor,
                                       fontFamily: "Muli"),
                                   // keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorConstants
-                                              .backgroundColorBlue,
-                                          //color: HexColor("#0000001F"),
-                                          width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: const Color(0xFF000000)
-                                              .withOpacity(0.4),
-                                          width: 1.0),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 1.0),
-                                    ),
-                                    labelText: "Bags",
-                                    filled: false,
-                                    focusColor: Colors.black,
-                                    labelStyle: TextStyle(
-                                        fontFamily: "Muli",
-                                        color: ColorConstants
-                                            .inputBoxHintColorDark,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 16.0),
-                                    fillColor: ColorConstants.backgroundColor,
-                                  ),
+                                  decoration: FormFieldStyle.buildInputDecoration(labelText: "Bags"),
                                 ),
                               ),
                             ),
@@ -1592,42 +1422,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       fontFamily: "Muli"),
                                   keyboardType: TextInputType.numberWithOptions(
                                       decimal: true),
-                                  decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorConstants
-                                              .backgroundColorBlue,
-                                          //color: HexColor("#0000001F"),
-                                          width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: const Color(0xFF000000)
-                                              .withOpacity(0.4),
-                                          width: 1.0),
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: const Color(0xFF000000)
-                                              .withOpacity(0.4),
-                                          width: 1.0),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 1.0),
-                                    ),
-                                    labelText: "MT",
-                                    filled: false,
-                                    //enabled: false,
-                                    focusColor: Colors.black,
-                                    labelStyle: TextStyle(
-                                        fontFamily: "Muli",
-                                        color: ColorConstants
-                                            .inputBoxHintColorDark,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 16.0),
-                                    fillColor: ColorConstants.backgroundColor,
-                                  ),
+                                  decoration: FormFieldStyle.buildInputDecoration(labelText: "MT"),
                                 ),
                               ),
                             ),
@@ -1653,32 +1448,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black26, width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Owner Name",
-                            filled: false,
-                            focusColor: Colors.black,
-                            isDense: false,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Owner Name"),
                         ),
                         SizedBox(height: 16),
                         TextFormField(
@@ -1706,31 +1476,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           maxLength: 10,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black26, width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Contact Number",
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Contact Number",),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -1866,33 +1612,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Plot No.",
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Plot No.",),
                         ),
                         SizedBox(height: 16),
                         TextFormField(
@@ -1909,33 +1629,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Address",
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Address",)
                         ),
                         SizedBox(height: 16),
                         TextFormField(
@@ -1960,34 +1654,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           //  maxLength: 6,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Pincode",
-                            enabled: false,
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Pincode",),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -2015,34 +1682,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "State",
-                            enabled: false,
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration( labelText: "State",),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -2070,34 +1710,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "District",
-                            enabled: false,
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "District",),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -2126,34 +1739,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            enabled: false,
-                            labelText: "Taluk",
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Taluk",),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -2300,33 +1886,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "RERA",
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "RERA",),
                         ),
 
                         SizedBox(height: 16),
@@ -2345,33 +1905,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Dealer",
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Dealer",),
                         ),
 
                         SizedBox(height: 16),
@@ -2390,33 +1924,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "SO",
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
+                          decoration: FormFieldStyle.buildInputDecoration( labelText: "SO",),
                         ),
 
                         SizedBox(height: 16),
@@ -2544,31 +2052,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       // keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
-                              width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0xFF000000).withOpacity(0.4),
-                              width: 1.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1.0),
-                        ),
-                        labelText: "Bags",
-                        filled: false,
-                        focusColor: Colors.black,
-                        labelStyle: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                        fillColor: ColorConstants.backgroundColor,
-                      ),
+                      decoration: FormFieldStyle.buildInputDecoration(labelText: "Bags",),
                     ),
                   ),
                 ),
@@ -2603,37 +2087,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           fontFamily: "Muli"),
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
-                              width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0xFF000000).withOpacity(0.4),
-                              width: 1.0),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0xFF000000).withOpacity(0.4),
-                              width: 1.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1.0),
-                        ),
-                        labelText: "MT",
-                        filled: false,
-                        //enabled: false,
-                        focusColor: Colors.black,
-                        labelStyle: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                        fillColor: ColorConstants.backgroundColor,
-                      ),
+                      decoration: FormFieldStyle.buildInputDecoration(labelText: "MT",),
                     ),
                   ),
                 ),
@@ -2684,30 +2138,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   }
                 });
               },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Type of Construction",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Type of Construction",),
             ),
 
             Padding(
@@ -2764,30 +2195,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   // }
                 });
               },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Floor",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Floor",),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -2815,31 +2223,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   color: ColorConstants.inputBoxHintColor,
                   fontFamily: "Muli"),
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: const Color(0xFF000000).withOpacity(0.4),
-                      width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Stage Potential",
-                filled: false,
-                focusColor: Colors.black,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Stage Potential",),
             ),
 
             Padding(
@@ -2888,30 +2272,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   }
                 });
               },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Brand In Use",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Brand In Use",),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -2947,30 +2308,31 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   print(_siteProductFromLocalDB.id);
                 });
               },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Product Sold",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Product Sold")
+              // InputDecoration(
+              //   focusedBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(
+              //         color: ColorConstants.backgroundColorBlue,
+              //         //color: HexColor("#0000001F"),
+              //         width: 1.0),
+              //   ),
+              //   enabledBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
+              //   ),
+              //   errorBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(color: Colors.red, width: 1.0),
+              //   ),
+              //   labelText: "Product Sold",
+              //   filled: false,
+              //   focusColor: Colors.black,
+              //   isDense: false,
+              //   labelStyle: TextStyle(
+              //       fontFamily: "Muli",
+              //       color: ColorConstants.inputBoxHintColorDark,
+              //       fontWeight: FontWeight.normal,
+              //       fontSize: 16.0),
+              //   fillColor: ColorConstants.backgroundColor,
+              // ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -2998,31 +2360,33 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   color: ColorConstants.inputBoxHintColor,
                   fontFamily: "Muli"),
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: const Color(0xFF000000).withOpacity(0.4),
-                      width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Brand Price",
-                filled: false,
-                focusColor: Colors.black,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration:  FormFieldStyle.buildInputDecoration(
+                  labelText: "Brand Price"),
+              // InputDecoration(
+              //   focusedBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(
+              //         color: ColorConstants.backgroundColorBlue,
+              //         //color: HexColor("#0000001F"),
+              //         width: 1.0),
+              //   ),
+              //   enabledBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(
+              //         color: const Color(0xFF000000).withOpacity(0.4),
+              //         width: 1.0),
+              //   ),
+              //   errorBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(color: Colors.red, width: 1.0),
+              //   ),
+              //   labelText: "Brand Price",
+              //   filled: false,
+              //   focusColor: Colors.black,
+              //   labelStyle: TextStyle(
+              //       fontFamily: "Muli",
+              //       color: ColorConstants.inputBoxHintColorDark,
+              //       fontWeight: FontWeight.normal,
+              //       fontSize: 16.0),
+              //   fillColor: ColorConstants.backgroundColor,
+              // ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -3036,6 +2400,58 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               ),
             ),
             SizedBox(height: 16),
+            // DropdownButtonFormField(
+            //   validator: (value) => value == null
+            //       ? 'Please select Dealer'
+            //       : null,
+            //   // icon: Icon(Icons.arrow_drop_down, size: 2,),
+            //   onChanged: (value) {
+            //   print(value);
+            //   // print();
+            //   },
+            //   value: _siteBrandFromLocalDBNextStage,
+            //
+            //
+            //   items:
+            //   viewSiteDataResponse.counterListModel.map((e) => e.soldToPartyName).toSet().toList()
+            //   // siteBrandEntityfromLoaclDB
+            //
+            //       .map((e) =>
+            //   DropdownMenuItem(
+            //     child: Text(e),
+            //     value: e,
+            //   )).toList(),
+            //   style: FormFieldStyle.formFieldTextStyle,
+            //   decoration:
+            //   FormFieldStyle.buildInputDecoration(
+            //       labelText: "Dealer"),
+            // ),
+            SizedBox(height: 16),
+            DropdownButtonFormField(
+              validator: (value) => value == null
+                  ? 'Please select Sub-Dealer'
+                  : null,
+              onChanged: (value) {
+
+              },
+              items: [
+                'IHB',
+                'Dealer',
+                'SUBDEALER',
+                'SALESOFFICER'
+              ]
+                  .map((e) => DropdownMenuItem(
+                child: Text(
+                  e.toUpperCase(),
+                ),
+                value: e,
+              ))
+                  .toList(),
+              style: FormFieldStyle.formFieldTextStyle,
+              decoration:
+              FormFieldStyle.buildInputDecoration(
+                  labelText: "Sub-Dealer"),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
               child: Text(
@@ -3147,37 +2563,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           fontFamily: "Muli"),
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
-                              width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0xFF000000).withOpacity(0.4),
-                              width: 1.0),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0xFF000000).withOpacity(0.4),
-                              width: 1.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1.0),
-                        ),
-                        labelText: "No. Of Bags",
-                        filled: false,
-                        //enabled: false,
-                        focusColor: Colors.black,
-                        labelStyle: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                        fillColor: ColorConstants.backgroundColor,
-                      ),
+                      decoration: FormFieldStyle.buildInputDecoration(labelText: "No. Of Bags",),
                     ),
                   ),
                 ),
@@ -3210,36 +2596,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   fontFamily: "Muli"),
               keyboardType: TextInputType.text,
               enabled: false,
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: const Color(0xFF000000).withOpacity(0.4),
-                      width: 1.0),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: const Color(0xFF000000).withOpacity(0.4),
-                      width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Stage Status",
-                filled: false,
-                focusColor: Colors.black,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Stage Status",),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -3412,30 +2769,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   _siteProbabilityWinningEntity = value;
                 });
               },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Probability of winning",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Probability of winning",),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -3470,30 +2804,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   _siteCompetitionStatusEntity = value;
                 });
               },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Competition Status",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Competition Status",),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -3528,30 +2839,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   _siteOpportunitStatusEnity = value;
                 });
               },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Opportunity Status",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Opportunity Status",),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -4818,42 +4106,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     color: ColorConstants.inputBoxHintColor,
                                     fontFamily: "Muli"),
                                 keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            ColorConstants.backgroundColorBlue,
-                                        //color: HexColor("#0000001F"),
-                                        width: 1.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.0),
-                                  ),
-                                  enabled: false,
-                                  labelText: "Floor",
-                                  filled: false,
-                                  focusColor: Colors.black,
-                                  labelStyle: TextStyle(
-                                      fontFamily: "Muli",
-                                      color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
-                                  fillColor: ColorConstants.backgroundColor,
-                                ),
+                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Floor",),
                               ),
                               SizedBox(height: 16),
                               TextFormField(
@@ -4865,42 +4118,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     color: ColorConstants.inputBoxHintColor,
                                     fontFamily: "Muli"),
                                 keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            ColorConstants.backgroundColorBlue,
-                                        //color: HexColor("#0000001F"),
-                                        width: 1.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.0),
-                                  ),
-                                  enabled: false,
-                                  labelText: "Stage of construction",
-                                  filled: false,
-                                  focusColor: Colors.black,
-                                  labelStyle: TextStyle(
-                                      fontFamily: "Muli",
-                                      color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
-                                  fillColor: ColorConstants.backgroundColor,
-                                ),
+                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Stage of construction",),
                               ),
                               SizedBox(height: 16),
                               TextFormField(
@@ -4911,42 +4129,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     color: ColorConstants.inputBoxHintColor,
                                     fontFamily: "Muli"),
                                 keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            ColorConstants.backgroundColorBlue,
-                                        //color: HexColor("#0000001F"),
-                                        width: 1.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.0),
-                                  ),
-                                  enabled: false,
-                                  labelText: "Stage Potential",
-                                  filled: false,
-                                  focusColor: Colors.black,
-                                  labelStyle: TextStyle(
-                                      fontFamily: "Muli",
-                                      color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
-                                  fillColor: ColorConstants.backgroundColor,
-                                ),
+                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Stage Potential",),
                               ),
                               SizedBox(height: 16),
                               TextFormField(
@@ -4957,42 +4140,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     color: ColorConstants.inputBoxHintColor,
                                     fontFamily: "Muli"),
                                 keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            ColorConstants.backgroundColorBlue,
-                                        //color: HexColor("#0000001F"),
-                                        width: 1.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.0),
-                                  ),
-                                  enabled: false,
-                                  labelText: "Brand in use",
-                                  filled: false,
-                                  focusColor: Colors.black,
-                                  labelStyle: TextStyle(
-                                      fontFamily: "Muli",
-                                      color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
-                                  fillColor: ColorConstants.backgroundColor,
-                                ),
+                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Brand in use"),
                               ),
                               SizedBox(height: 16),
                               TextFormField(
@@ -5003,42 +4151,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     color: ColorConstants.inputBoxHintColor,
                                     fontFamily: "Muli"),
                                 keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            ColorConstants.backgroundColorBlue,
-                                        //color: HexColor("#0000001F"),
-                                        width: 1.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.0),
-                                  ),
-                                  enabled: false,
-                                  labelText: "Brand Price",
-                                  filled: false,
-                                  focusColor: Colors.black,
-                                  labelStyle: TextStyle(
-                                      fontFamily: "Muli",
-                                      color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
-                                  fillColor: ColorConstants.backgroundColor,
-                                ),
+                                decoration: FormFieldStyle.buildInputDecoration(labelText:"Brand Price"),
                               ),
                               SizedBox(height: 16),
                               TextFormField(
@@ -5049,42 +4162,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     color: ColorConstants.inputBoxHintColor,
                                     fontFamily: "Muli"),
                                 keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            ColorConstants.backgroundColorBlue,
-                                        //color: HexColor("#0000001F"),
-                                        width: 1.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.0),
-                                  ),
-                                  enabled: false,
-                                  labelText: "Product Sold",
-                                  filled: false,
-                                  focusColor: Colors.black,
-                                  labelStyle: TextStyle(
-                                      fontFamily: "Muli",
-                                      color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
-                                  fillColor: ColorConstants.backgroundColor,
-                                ),
+                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Product Sold",),
                               ),
                               SizedBox(height: 16),
                               TextFormField(
@@ -5095,42 +4173,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     color: ColorConstants.inputBoxHintColor,
                                     fontFamily: "Muli"),
                                 keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            ColorConstants.backgroundColorBlue,
-                                        //color: HexColor("#0000001F"),
-                                        width: 1.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.0),
-                                  ),
-                                  enabled: false,
-                                  labelText: "Stage Status",
-                                  filled: false,
-                                  focusColor: Colors.black,
-                                  labelStyle: TextStyle(
-                                      fontFamily: "Muli",
-                                      color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
-                                  fillColor: ColorConstants.backgroundColor,
-                                ),
+                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Stage Status",),
                               ),
                               SizedBox(height: 16),
                               TextFormField(
@@ -5140,42 +4183,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     color: ColorConstants.inputBoxHintColor,
                                     fontFamily: "Muli"),
                                 keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            ColorConstants.backgroundColorBlue,
-                                        //color: HexColor("#0000001F"),
-                                        width: 1.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.0),
-                                  ),
-                                  enabled: false,
-                                  labelText: "Date of construction",
-                                  filled: false,
-                                  focusColor: Colors.black,
-                                  labelStyle: TextStyle(
-                                      fontFamily: "Muli",
-                                      color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
-                                  fillColor: ColorConstants.backgroundColor,
-                                ),
+                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Date of construction",),
                               ),
                             ],
                           );
@@ -5271,30 +4279,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               }
             });
           },
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: ColorConstants.backgroundColorBlue,
-                  //color: HexColor("#0000001F"),
-                  width: 1.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black26, width: 1.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1.0),
-            ),
-            labelText: "Type of Construction",
-            filled: false,
-            focusColor: Colors.black,
-            isDense: false,
-            labelStyle: TextStyle(
-                fontFamily: "Muli",
-                color: ColorConstants.inputBoxHintColorDark,
-                fontWeight: FontWeight.normal,
-                fontSize: 16.0),
-            fillColor: ColorConstants.backgroundColor,
-          ),
+          decoration: FormFieldStyle.buildInputDecoration(labelText: "Type of Construction"),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15),
@@ -5472,30 +4457,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               }
             });
           },
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: ColorConstants.backgroundColorBlue,
-                  //color: HexColor("#0000001F"),
-                  width: 1.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black26, width: 1.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1.0),
-            ),
-            labelText: "Brand In Use",
-            filled: false,
-            focusColor: Colors.black,
-            isDense: false,
-            labelStyle: TextStyle(
-                fontFamily: "Muli",
-                color: ColorConstants.inputBoxHintColorDark,
-                fontWeight: FontWeight.normal,
-                fontSize: 16.0),
-            fillColor: ColorConstants.backgroundColor,
-          ),
+          decoration: FormFieldStyle.buildInputDecoration(labelText: "Brand in use"),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15),
@@ -5523,30 +4485,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               color: ColorConstants.inputBoxHintColor,
               fontFamily: "Muli"),
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: ColorConstants.backgroundColorBlue,
-                  //color: HexColor("#0000001F"),
-                  width: 1.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1.0),
-            ),
-            labelText: "Brand Price",
-            filled: false,
-            focusColor: Colors.black,
-            labelStyle: TextStyle(
-                fontFamily: "Muli",
-                color: ColorConstants.inputBoxHintColorDark,
-                fontWeight: FontWeight.normal,
-                fontSize: 16.0),
-            fillColor: ColorConstants.backgroundColor,
-          ),
+          decoration: FormFieldStyle.buildInputDecoration(labelText: "Brand Price",),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15),
@@ -5582,30 +4521,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               print(_siteProductFromLocalDBNextStage.id);
             });
           },
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: ColorConstants.backgroundColorBlue,
-                  //color: HexColor("#0000001F"),
-                  width: 1.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black26, width: 1.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1.0),
-            ),
-            labelText: "Product Sold",
-            filled: false,
-            focusColor: Colors.black,
-            isDense: false,
-            labelStyle: TextStyle(
-                fontFamily: "Muli",
-                color: ColorConstants.inputBoxHintColorDark,
-                fontWeight: FontWeight.normal,
-                fontSize: 16.0),
-            fillColor: ColorConstants.backgroundColor,
-          ),
+          decoration: FormFieldStyle.buildInputDecoration(labelText: "Product Sold",),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15),
@@ -5725,37 +4641,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       color: ColorConstants.inputBoxHintColor,
                       fontFamily: "Muli"),
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: ColorConstants.backgroundColorBlue,
-                          //color: HexColor("#0000001F"),
-                          width: 1.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: const Color(0xFF000000).withOpacity(0.4),
-                          width: 1.0),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: const Color(0xFF000000).withOpacity(0.4),
-                          width: 1.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red, width: 1.0),
-                    ),
-                    labelText: "No. Of Bags",
-                    filled: false,
-                    //enabled: false,
-                    focusColor: Colors.black,
-                    labelStyle: TextStyle(
-                        fontFamily: "Muli",
-                        color: ColorConstants.inputBoxHintColorDark,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16.0),
-                    fillColor: ColorConstants.backgroundColor,
-                  ),
+                  decoration: FormFieldStyle.buildInputDecoration(labelText: "No. Of Bags"),
                 ),
               ),
             ),
@@ -5788,34 +4674,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               fontFamily: "Muli"),
           keyboardType: TextInputType.text,
           enabled: false,
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: ColorConstants.backgroundColorBlue,
-                  //color: HexColor("#0000001F"),
-                  width: 1.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1.0),
-            ),
-            labelText: "Stage Status",
-            filled: false,
-            focusColor: Colors.black,
-            labelStyle: TextStyle(
-                fontFamily: "Muli",
-                color: ColorConstants.inputBoxHintColorDark,
-                fontWeight: FontWeight.normal,
-                fontSize: 16.0),
-            fillColor: ColorConstants.backgroundColor,
-          ),
+          decoration: FormFieldStyle.buildInputDecoration(labelText: "Stage Status"),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15),
@@ -6157,12 +5016,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
             totalBalancePotential: _siteTotalBalancePt.text,
             constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
-            floorId: _selectedSiteVisitFloor.id,
+            floorId: _selectedSiteVisitFloor.id.toString(),
             stagePotential: _stagePotentialVisit.text,
             brandId: _siteProductFromLocalDB.id,
             brandPrice: _brandPriceVisit.text,
             constructionDate: _dateofConstruction.text,
-            siteId: widget.siteId,
+            siteId: widget.siteId.toString(),
             supplyDate: _dateOfBagSupplied.text,
             supplyQty: _stagePotentialVisit.text,
             stageStatus: _stageStatus.text,
@@ -6200,16 +5059,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         //print(sitephotosEntity.)
 
         if (_listInfluencerDetail.length != 0) {
-          if (_listInfluencerDetail[_listInfluencerDetail.length - 1]
-                      .inflName ==
-                  null ||
-              _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                      .inflName ==
-                  "null" ||
-              _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                  .inflName
-                  .text
-                  .isNullOrBlank) {
+          if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName == null ||
+              _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==null ||
+              _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName.text.isNullOrBlank) {
             print("here1234");
             _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
           }
@@ -6294,6 +5146,5 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 class ImageDetails {
   String from;
   File file;
-
   ImageDetails(this.from, this.file);
 }

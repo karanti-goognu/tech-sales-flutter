@@ -7,6 +7,8 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -43,6 +45,9 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
         child: Scaffold(
           extendBody: true,
           backgroundColor: ColorConstants.backgroundColor,
+          bottomNavigationBar: BottomNavigatorWithoutDraftsAndSearch(),
+          floatingActionButton: BackFloatingButton(),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           body: SingleChildScrollView(
             child: _buildAddEventInterface(context),
           ),
@@ -175,6 +180,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                   onChanged: (_) {
                                     _addEventController.dalmiaInflCount =
                                         int.parse(_);
+                                    print('aaa');
                                   },
                                   style: _myFormFont(),
                                   keyboardType: TextInputType.number,
@@ -373,7 +379,8 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                             _spaceBetweenFields(),
                             Obx(()=>(_addEventController.isSaveDraft == "D")
                                 ? returnSaveDraft()
-                                : returnSubmit())
+                                : returnSubmit()),
+                            SizedBox(height: 50),
                           ],
                         ),
                       ),

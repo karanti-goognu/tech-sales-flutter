@@ -798,16 +798,16 @@ class _LeadScreenState extends State<LeadScreen> {
                                                 //       //fontWeight: FontWeight.normal
                                                 //       ),
                                                 // ),
-                                                Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.call,
-                                                      color:
+                                                Obx(
+                                                  () => GestureDetector(
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.call,
+                                                          color:
                                                           HexColor("#8DC63F"),
-                                                    ),
-                                                    Obx(
-                                                      () => GestureDetector(
-                                                        child: Text(
+                                                        ),
+                                                        Text(
                                                           "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
                                                           //" Call Contractor",
                                                           style: TextStyle(
@@ -825,18 +825,18 @@ class _LeadScreenState extends State<LeadScreen> {
                                                               //fontWeight: FontWeight.normal
                                                               ),
                                                         ),
-                                                        onTap: () {
-                                                          String num =
-                                                              _leadsFilterController
-                                                                  .leadsListResponse
-                                                                  .leadsEntity[
-                                                                      index]
-                                                                  .contactNumber;
-                                                          launch('tel:$num');
-                                                        },
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
+                                                    onTap: () {
+                                                      String num =
+                                                          _leadsFilterController
+                                                              .leadsListResponse
+                                                              .leadsEntity[
+                                                                  index]
+                                                              .contactNumber;
+                                                      launch('tel:$num');
+                                                    },
+                                                  ),
                                                 ),
                                               ],
                                             ),

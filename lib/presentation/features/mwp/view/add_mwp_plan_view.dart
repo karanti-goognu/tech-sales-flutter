@@ -188,7 +188,8 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                 ? returnSubmitRow()
                 : (_mwpPlanController.getMWPResponse.mwpplanModel.status == "APPROVE")
                     ? returnApprovedRow()
-                    : returnSaveRow())
+                    : returnSaveRow()),
+        SizedBox(height: 30),
       ],
     );
   }

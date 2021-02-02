@@ -40,6 +40,9 @@ class UpdateDataRequest {
   List<SitePhotosEntity> sitePhotosEntity;
   List<SiteInfluencerEntity> siteInfluencerEntity;
 
+  String soldToParty;
+  String shipToParty;
+
   UpdateDataRequest(
       {this.siteId,
       this.siteSegment,
@@ -78,7 +81,9 @@ class UpdateDataRequest {
       this.siteConstructionId,
       this.siteCompetitionId,
       this.siteOppertunityId,
-      this.siteProbabilityWinningId});
+      this.siteProbabilityWinningId,
+      this.soldToParty,
+      this.shipToParty});
 
   UpdateDataRequest.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -114,6 +119,8 @@ class UpdateDataRequest {
     siteCompetitionId = json['siteCompetitionId'];
     siteOppertunityId = json['siteOppertunityId'];
     siteProbabilityWinningId = json['siteProbabilityWinningId'];
+    soldToParty = json['soldToParty'];
+    shipToParty = json['shipToParty'];
 
     if (json['siteCommentsEntity'] != null) {
       siteCommentsEntity = new List<SiteCommentsEntity>();
@@ -182,6 +189,8 @@ class UpdateDataRequest {
     data['siteCompetitionId'] = this.siteCompetitionId;
     data['siteOppertunityId'] = this.siteOppertunityId;
     data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
+    data['soldToParty'] = this.soldToParty;
+    data['shipToParty'] = this.shipToParty;
 
     if (this.siteCommentsEntity != null) {
       data['siteCommentsEntity'] =

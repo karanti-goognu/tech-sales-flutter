@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -121,10 +120,10 @@ class SiteController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
+      // print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
+      // print('User Security key is :: $userSecurityKey');
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
 
@@ -160,7 +159,7 @@ class SiteController extends GetxController {
       String url =
           "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=500&offset=0";
       var encodedUrl = Uri.encodeFull(url);
-      debugPrint('Url is : $encodedUrl');
+      // debugPrint('Url is : $encodedUrl');
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
@@ -224,16 +223,16 @@ class SiteController extends GetxController {
 
   getSitedetailsData(String accessKey, int siteId) async {
     String userSecurityKey = "";
+    String empID = "";
     ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID =  prefs.getString(StringConstants.employeeId);
       print('User Security Key :: $userSecurityKey');
-      // viewSiteDataResponse =  await repository.getSitedetailsDataNew(accessKey, userSecurityKey,siteId);
-      viewSiteDataResponse = await repository.getSitedetailsData(
-          accessKey, userSecurityKey, siteId);
+      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
     });
-    print(viewSiteDataResponse);
+    // print(viewSiteDataResponse);
 
     return viewSiteDataResponse;
   }

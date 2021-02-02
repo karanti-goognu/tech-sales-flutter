@@ -17,6 +17,7 @@ class ViewSiteDataResponse {
   List<InfluencerCategoryEntity> influencerCategoryEntity;
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity;
   List<SiteInfluencerEntity> siteInfluencerEntity;
+  List<CounterListModel> counterListModel;
 
   ViewSiteDataResponse(
       {this.respCode,
@@ -36,7 +37,8 @@ class ViewSiteDataResponse {
       this.influencerTypeEntity,
       this.influencerCategoryEntity,
       this.siteOpportunityStatusEntity,
-      this.siteInfluencerEntity});
+      this.siteInfluencerEntity,
+      this.counterListModel});
 
   ViewSiteDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -135,6 +137,13 @@ class ViewSiteDataResponse {
       siteInfluencerEntity = new List<SiteInfluencerEntity>();
       json['siteInfluencerEntity'].forEach((v) {
         siteInfluencerEntity.add(new SiteInfluencerEntity.fromJson(v));
+      });
+    }
+
+    if (json['counterListModel'] != null) {
+      counterListModel = new List<CounterListModel>();
+      json['counterListModel'].forEach((v) {
+        counterListModel.add(new CounterListModel.fromJson(v));
       });
     }
   }
@@ -407,19 +416,27 @@ class SitephotosEntity {
 class SiteVisitHistoryEntity {
   int id;
   String totalBalancePotential;
-  int constructionStageId;
-  int floorId;
+  // String constructionStageId;
+  String floorId;
   String stagePotential;
-  int brandId;
+  // String brandId;
   String brandPrice;
   String constructionDate;
-  int siteId;
+  String siteId;
   String supplyDate;
   String supplyQty;
   String stageStatus;
-  int createdOn;
   String createdBy;
+  String soldToParty;
+  String shipToParty;
+
+  //Check about the presence of below two variables
+  int constructionStageId;
+  int brandId;
+  int createdOn;
   bool isExpanded;
+
+
 
   SiteVisitHistoryEntity(
       {this.id,
@@ -435,7 +452,9 @@ class SiteVisitHistoryEntity {
       this.supplyQty,
       this.stageStatus,
       this.createdOn,
-      this.createdBy});
+      this.createdBy,
+      this.soldToParty,
+      this.shipToParty});
 
   SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -453,6 +472,9 @@ class SiteVisitHistoryEntity {
     createdOn = json['createdOn'];
     createdBy = json['createdBy'];
     isExpanded = false;
+
+    soldToParty = json['soldToParty'];
+    shipToParty = json['shipToParty'];
   }
 
   Map<String, dynamic> toJson() {
@@ -471,6 +493,9 @@ class SiteVisitHistoryEntity {
     data['stageStatus'] = this.stageStatus;
     data['createdOn'] = this.createdOn;
     data['createdBy'] = this.createdBy;
+
+    data['soldToParty'] = this.soldToParty;
+    data['shipToParty'] = this.shipToParty;
     return data;
   }
 }
@@ -827,6 +852,36 @@ class SiteInfluencerEntity {
     data['updatedOn'] = this.updatedOn;
     data['isPrimary'] = this.isPrimary;
 
+    return data;
+  }
+
+}
+
+class CounterListModel {
+  String soldToParty;
+  String soldToPartyName;
+  String shipToParty;
+  String shipToPartyName;
+
+  CounterListModel(
+      {this.soldToParty,
+        this.soldToPartyName,
+        this.shipToParty,
+        this.shipToPartyName});
+
+  CounterListModel.fromJson(Map<String, dynamic> json) {
+    soldToParty = json['soldToParty'];
+    soldToPartyName = json['soldToPartyName'];
+    shipToParty = json['shipToParty'];
+    shipToPartyName = json['shipToPartyName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['soldToParty'] = this.soldToParty;
+    data['soldToPartyName'] = this.soldToPartyName;
+    data['shipToParty'] = this.shipToParty;
+    data['shipToPartyName'] = this.shipToPartyName;
     return data;
   }
 }

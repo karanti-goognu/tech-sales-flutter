@@ -428,6 +428,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                             null)
                                     ? returnEndRow()
                                     : Container()),
+                            SizedBox(height: 50),
                           ],
                         ),
                       )

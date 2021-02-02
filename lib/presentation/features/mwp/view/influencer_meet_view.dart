@@ -364,7 +364,8 @@ class AddEventInfluencerMeetScreenPageState
                             ),
                           ),
                         ],
-                      )
+                      ),
+                      SizedBox(height: 50),
                     ],
                   ),
                 ),
