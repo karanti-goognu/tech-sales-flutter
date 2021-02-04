@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       title: 'TSO App',
       theme: appThemeData,
+
     );
   }
 }

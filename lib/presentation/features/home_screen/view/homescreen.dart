@@ -376,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.LEADS_SCREEN);
                   break;
                 case 1:
-                  Get.toNamed(Routes.SITES_SCREEN);
+                  Get.toNamed(Routes.SITES_SCREEN,);
                   break;
                 case 2:
                   Get.dialog(

@@ -2553,8 +2553,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               },
               items: dealerEntityForDb
                   .map((e) => DropdownMenuItem(
-                        child: Text(e.dealerName.toString(),
-                            style: TextStyle(fontSize: 14)),
+                        child: SizedBox(
+                            width:MediaQuery.of(context).size.width-100,
+                          child: Text('${e.dealerName} (${e.id})',
+                              style: TextStyle(fontSize: 14)),
+                        ),
                         value: e.id,
                       ))
                   .toList(),
@@ -2571,16 +2574,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ? 'Please select Sub-Dealer'
                         : null,
                     onChanged: (value) {
-                      visitDataSubDealer = value.shipToPartyName;
+                      visitDataSubDealer = value.shipToParty;
                       print(visitDataSubDealer);
                     },
                     items: subDealerList.isNotEmpty
                         ? subDealerList
                             .map((e) => DropdownMenuItem(
                                   value: e,
-                                  child: Text(
-                                    e.shipToPartyName.toString().toUpperCase(),
-                                    style: TextStyle(fontSize: 14),
+                                  child: SizedBox(
+                                    width:MediaQuery.of(context).size.width-100,
+                                    child: Text(
+                                      '${e.shipToPartyName} (${e.shipToParty})',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
                                   ),
                                 ))
                             .toList()
@@ -4118,8 +4124,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: siteVisitHistoryEntity.length,
                       itemBuilder: (BuildContext context, int index) {
-                        print(siteVisitHistoryEntity.length.toString() +
-                            "00000000");
+                        print("00000000" +
+                            json.encode(siteVisitHistoryEntity[0]));
                         final DateFormat formatter = DateFormat('dd-MMM-yyyy');
                         String selectedDateString = formatter.format(
                             DateTime.fromMillisecondsSinceEpoch(
@@ -4280,6 +4286,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               SizedBox(height: 16),
                               TextFormField(
+                                readOnly: true,
                                 initialValue: siteVisitHistoryEntity[index]
                                     .floorId
                                     .toString(),
@@ -4294,6 +4301,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               SizedBox(height: 16),
                               TextFormField(
+                                readOnly: true,
                                 initialValue: constructionStageDesc(
                                     siteVisitHistoryEntity[index]
                                         .constructionStageId),
@@ -4308,6 +4316,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               SizedBox(height: 16),
                               TextFormField(
+                                readOnly: true,
                                 initialValue: siteVisitHistoryEntity[index]
                                     .stagePotential,
                                 style: TextStyle(
@@ -4321,6 +4330,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               SizedBox(height: 16),
                               TextFormField(
+                                readOnly: true,
                                 initialValue: brandValue(
                                     siteVisitHistoryEntity[index].brandId),
                                 style: TextStyle(
@@ -4333,6 +4343,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               SizedBox(height: 16),
                               TextFormField(
+                                readOnly: true,
                                 initialValue:
                                     siteVisitHistoryEntity[index].brandPrice,
                                 style: TextStyle(
@@ -4345,6 +4356,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               SizedBox(height: 16),
                               TextFormField(
+                                readOnly: true,
                                 initialValue: brandProductValue(
                                     siteVisitHistoryEntity[index].brandId),
                                 style: TextStyle(
@@ -4358,6 +4370,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               SizedBox(height: 16),
                               TextFormField(
+                                readOnly: true,
                                 initialValue:
                                     siteVisitHistoryEntity[index].stageStatus,
                                 style: TextStyle(
@@ -4371,6 +4384,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               SizedBox(height: 16),
                               TextFormField(
+                                readOnly: true,
                                 initialValue: constructionDateString,
                                 style: TextStyle(
                                     fontSize: 18,
@@ -4379,6 +4393,66 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 keyboardType: TextInputType.text,
                                 decoration: FormFieldStyle.buildInputDecoration(
                                   labelText: "Date of construction",
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextFormField(
+                                readOnly: true,
+                                initialValue:
+                                    siteVisitHistoryEntity[index].receiptNumber,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: FormFieldStyle.buildInputDecoration(
+                                  labelText: "Receipt Number",
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextFormField(
+                                readOnly: true,
+                                initialValue: siteVisitHistoryEntity[index]
+                                            .isAuthorised
+                                            .toLowerCase() ==
+                                        'y'
+                                    ? "Yes"
+                                    : "No",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: FormFieldStyle.buildInputDecoration(
+                                  labelText: "Is Authorized",
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextFormField(
+                                readOnly: true,
+                                initialValue:
+                                    siteVisitHistoryEntity[index].soldToParty,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: FormFieldStyle.buildInputDecoration(
+                                  labelText: "Dealer",
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextFormField(
+                                readOnly: true,
+                                initialValue:
+                                    siteVisitHistoryEntity[index].shipToParty,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: FormFieldStyle.buildInputDecoration(
+                                  labelText: "Sub-Dealer",
                                 ),
                               ),
                             ],

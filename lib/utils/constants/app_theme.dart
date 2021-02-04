@@ -9,4 +9,8 @@ final ThemeData appThemeData = ThemeData(
   textTheme: TextTheme(
     headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
   ),
+  // pageTransitionsTheme: PageTransitionsTheme(builders: {
+  //   TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+  //   TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+  // })
 );
