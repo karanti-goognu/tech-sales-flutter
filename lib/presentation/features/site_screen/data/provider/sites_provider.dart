@@ -152,6 +152,7 @@ class MyApiClientSites {
       final response = await get(Uri.parse(UrlConstants.getSiteData + "$siteId&referenceID=$empID"),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
+
       print('Response body is  ---: ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         Get.back();
@@ -182,15 +183,15 @@ class MyApiClientSites {
       List<File> list, BuildContext context, int siteId) async {
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateSiteData));
-    request.headers.addAll(
-        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+    print(UrlConstants.updateSiteData);
+    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey));
+    print(updateDataRequest['siteCommentsEntity'][0].id);
 
     for (var file in list) {
       String fileName = file.path.split("/").last;
       var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
 
       // get file length
-
       var length = await file.length(); //imageFile is your image file
 
       // multipart that takes file
@@ -211,8 +212,7 @@ class MyApiClientSites {
 
       gv.currentId = empId;
 
-      request.fields['uploadImageWithUpdateSiteModel'] =
-          json.encode(updateDataRequest);
+      request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
       print("Request headers :: " + request.headers.toString());

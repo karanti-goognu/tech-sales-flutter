@@ -593,7 +593,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                             .siteOppertunityId),
                                                 style: TextStyle(
                                                     color: Colors.blue,
-                                                    fontSize: 12,
+                                                    fontSize: 10,
                                                     fontFamily: "Muli",
                                                     fontWeight: FontWeight.bold
                                                     //fontWeight: FontWeight.normal

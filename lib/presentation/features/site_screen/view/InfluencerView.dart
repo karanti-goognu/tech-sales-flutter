@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -574,35 +575,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            ColorConstants.backgroundColorBlue,
-                                        //color: HexColor("#0000001F"),
-                                        width: 1.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: const Color(0xFF000000)
-                                            .withOpacity(0.4),
-                                        width: 1.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.0),
-                                  ),
-                                  labelText: "Mobile Number",
-                                  filled: false,
-                                  focusColor: Colors.black,
-                                  labelStyle: TextStyle(
-                                      fontFamily: "Muli",
-                                      color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
-                                  fillColor: ColorConstants.backgroundColor,
-                                ),
+                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Mobile Number",),
                               ),
                               SizedBox(height: 16),
                               TextFormField(

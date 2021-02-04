@@ -1122,12 +1122,12 @@ class _SiteDataViewState extends State<SiteDataView> {
           siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
             totalBalancePotential: _siteTotalBalancePt.text,
             constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
-            floorId: _selectedSiteVisitFloor.id.toString(),
+            floorId: _selectedSiteVisitFloor.id,
             stagePotential: _stagePotentialVisit.text,
             brandId: _siteProductFromLocalDB.id,
             brandPrice: _brandPriceVisit.text,
             constructionDate: _dateofConstruction.text,
-            siteId: widget.siteId.toString(),
+            siteId: widget.siteId,
             supplyDate: _dateOfBagSupplied.text,
             supplyQty: _stagePotentialVisit.text,
             stageStatus: _stageStatus.text,
@@ -1240,6 +1240,7 @@ class _SiteDataViewState extends State<SiteDataView> {
               ? _siteProbabilityWinningEntity.id
               : null
         };
+        print(updateDataRequest);
         _siteController.updateLeadData(
             updateDataRequest, _imageList, context, widget.siteId);
 

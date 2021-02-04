@@ -35,6 +35,8 @@ class BrandNameDBHelper extends ChangeNotifier{
               'CREATE TABLE draftLead (id INTEGER PRIMARY KEY AUTOINCREMENT, leadModel TEXT)');
           await db.execute(
               'CREATE TABLE brandName (id INTEGER , brandName TEXT , productName TEXT)');
+          await db.execute(
+              'CREATE TABLE counterListDealers (id TEXT, dealerName TEXT)');
         });
     return database;
   }
@@ -47,11 +49,20 @@ class BrandNameDBHelper extends ChangeNotifier{
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  Future<int> addDealer(DealerForDb dealerForDb) async {
+    print("ADDING: "+ dealerForDb.toMapForDb().toString());
+    var client = await db;
+    return client.insert('counterListDealers', dealerForDb.toMapForDb(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
 
   Future<void> clearTable() async{
     var client = await db;
     client.delete("brandName");
+    client.delete('counterListDealers');
   }
+
+
   // Future<DraftLeadModelforDB> fetchLeadInDraft(int id) async {
   //   var client = await db;
   //   final Future<List<Map<String, dynamic>>> futureMaps =
@@ -85,6 +96,18 @@ class BrandNameDBHelper extends ChangeNotifier{
       var brandNames = res.map((leadMap) => BrandModelforDB.fromDb(leadMap)).toList();
       print(brandNames.length);
       return brandNames;
+    }
+    return [];
+  }
+
+  Future<List<DealerForDb>> fetchAllDistinctDealers() async {
+    var client = await db;
+    var res = await client.rawQuery('SELECT DISTINCT id,dealerName FROM counterListDealers');
+
+    if (res.isNotEmpty) {
+      var dealerNames = res.map((dealerMap) => DealerForDb.fromDb(dealerMap)).toList();
+      print("res FROM DB   $res");
+      return dealerNames;
     }
     return [];
   }
@@ -127,4 +150,25 @@ class BrandModelforDB {
       : id = map['id'],
         brandName = map['brandName'],
         productName = map['productName'];
+}
+
+
+class DealerForDb{
+   String id;
+   String dealerName;
+    DealerForDb(this.id, this.dealerName);
+
+
+  Map<String, dynamic> toMapForDb() {
+    var map = Map<String, dynamic>();
+    map['id'] = id;
+    map['dealerName'] = dealerName;
+    return map;
+  }
+
+  DealerForDb.fromDb(Map<String, dynamic> map){
+    this.id = map['id'];
+    this.dealerName = map['dealerName'];
+  }
+
 }

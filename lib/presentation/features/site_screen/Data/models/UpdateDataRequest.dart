@@ -40,8 +40,6 @@ class UpdateDataRequest {
   List<SitePhotosEntity> sitePhotosEntity;
   List<SiteInfluencerEntity> siteInfluencerEntity;
 
-  String soldToParty;
-  String shipToParty;
 
   UpdateDataRequest(
       {this.siteId,
@@ -82,8 +80,8 @@ class UpdateDataRequest {
       this.siteCompetitionId,
       this.siteOppertunityId,
       this.siteProbabilityWinningId,
-      this.soldToParty,
-      this.shipToParty});
+
+      });
 
   UpdateDataRequest.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -119,8 +117,8 @@ class UpdateDataRequest {
     siteCompetitionId = json['siteCompetitionId'];
     siteOppertunityId = json['siteOppertunityId'];
     siteProbabilityWinningId = json['siteProbabilityWinningId'];
-    soldToParty = json['soldToParty'];
-    shipToParty = json['shipToParty'];
+    // soldToParty = json['soldToParty'];
+    // shipToParty = json['shipToParty'];
 
     if (json['siteCommentsEntity'] != null) {
       siteCommentsEntity = new List<SiteCommentsEntity>();
@@ -152,6 +150,7 @@ class UpdateDataRequest {
         siteInfluencerEntity.add(new SiteInfluencerEntity.fromJson(v));
       });
     }
+
   }
 
   Map<String, dynamic> toJson() {
@@ -189,8 +188,8 @@ class UpdateDataRequest {
     data['siteCompetitionId'] = this.siteCompetitionId;
     data['siteOppertunityId'] = this.siteOppertunityId;
     data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
-    data['soldToParty'] = this.soldToParty;
-    data['shipToParty'] = this.shipToParty;
+    // data['soldToParty'] = this.soldToParty;
+    // data['shipToParty'] = this.shipToParty;
 
     if (this.siteCommentsEntity != null) {
       data['siteCommentsEntity'] =
@@ -212,6 +211,7 @@ class UpdateDataRequest {
       data['siteInfluencerEntity'] =
           this.siteInfluencerEntity.map((v) => v.toJson()).toList();
     }
+
     return data;
   }
 }
