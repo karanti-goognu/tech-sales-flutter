@@ -749,12 +749,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             () async {
                                                                           if (closureReasonText.text != null &&
                                                                               closureReasonText.text != "") {
-                                                                            _siteStage =
-                                                                                value;
-                                                                            labelId =
-                                                                                _siteStage.id;
-                                                                            labelText =
-                                                                                _siteStage.siteStageDesc;
+                                                                            _siteStage = value;
+                                                                            labelId = _siteStage.id;
+                                                                            labelText = _siteStage.siteStageDesc;
                                                                             UpdateRequest();
                                                                           } else {
                                                                             Get.dialog(CustomDialogs().errorDialog("Please fill all details !!!"));
