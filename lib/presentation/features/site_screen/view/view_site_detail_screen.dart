@@ -174,8 +174,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   CounterListModel selectedSubDealer = CounterListModel();
 
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -749,9 +747,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             () async {
                                                                           if (closureReasonText.text != null &&
                                                                               closureReasonText.text != "") {
-                                                                            _siteStage = value;
-                                                                            labelId = _siteStage.id;
-                                                                            labelText = _siteStage.siteStageDesc;
+                                                                            _siteStage =
+                                                                                value;
+                                                                            labelId =
+                                                                                _siteStage.id;
+                                                                            labelText =
+                                                                                _siteStage.siteStageDesc;
                                                                             UpdateRequest();
                                                                           } else {
                                                                             Get.dialog(CustomDialogs().errorDialog("Please fill all details !!!"));
@@ -2535,13 +2536,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   value == null ? 'Please select Dealer' : null,
               // icon: Icon(Icons.arrow_drop_down, size: 2,),
               onChanged: (value) {
-
                 selectedSubDealer = null;
                 setState(() {
                   subDealerList = new List();
                   visitDataDealer = value.toString();
                   subDealerList = counterListModel
-                      .where((e) => e.soldToParty == visitDataDealer).toList();
+                      .where((e) => e.soldToParty == visitDataDealer)
+                      .toList();
                   selectedSubDealer = subDealerList[0];
                   print(visitDataDealer);
                 });
@@ -2562,33 +2563,35 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
             ),
             SizedBox(height: 16),
-            subDealerList.isEmpty?Container(): DropdownButtonFormField(
-             value: selectedSubDealer,
-              validator: (value) =>
-                  value == null  || value.isEmpty ? 'Please select Sub-Dealer' : null,
-              onChanged: (value) {
-                print(value);
-                visitDataSubDealer = value;
-              },
-              items:
-              subDealerList.isNotEmpty
-                  ? subDealerList
-                      .map((e) => DropdownMenuItem(
-                            value:e,
-                            child: Text(
-                              e.shipToPartyName.toString().toUpperCase(),
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ))
-                      .toList()
-                  :
-              [
-                      DropdownMenuItem(child: Text("No Sub Dealer"), value: "0")
-                    ],
-              style: FormFieldStyle.formFieldTextStyle,
-              decoration:
-                  FormFieldStyle.buildInputDecoration(labelText: "Sub-Dealer"),
-            ),
+            subDealerList.isEmpty
+                ? Container()
+                : DropdownButtonFormField(
+                    value: selectedSubDealer,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please select Sub-Dealer'
+                        : null,
+                    onChanged: (value) {
+                      visitDataSubDealer = value.shipToPartyName;
+                      print(visitDataSubDealer);
+                    },
+                    items: subDealerList.isNotEmpty
+                        ? subDealerList
+                            .map((e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(
+                                    e.shipToPartyName.toString().toUpperCase(),
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ))
+                            .toList()
+                        : [
+                            DropdownMenuItem(
+                                child: Text("No Sub Dealer"), value: "0")
+                          ],
+                    style: FormFieldStyle.formFieldTextStyle,
+                    decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Sub-Dealer"),
+                  ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
               child: Text(
@@ -4064,6 +4067,36 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 },
               ),
             ),
+            SizedBox(height: 16),
+            Divider(
+              color: Colors.black26,
+              thickness: 1,
+            ),
+            SizedBox(height: 16),
+            Center(
+              child: RaisedButton(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                color: HexColor("#1C99D4"),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                  child: Text(
+                    "UPDATE",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                        fontSize: 17),
+                  ),
+                ),
+                onPressed: () async {
+                  UpdateRequest();
+                },
+              ),
+            ),
+            SizedBox(height: 40),
           ],
         )),
       ),
@@ -4079,10 +4112,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           children: [
             Row(
               children: [
-                Container(
-                  height: 200,
-                  child: Text(siteVisitHistoryEntity.length.toString()),
-                ),
                 Expanded(
                   child: ListView.builder(
                       shrinkWrap: true,
@@ -5184,7 +5213,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         List<SiteCommentsEntity> newSiteCommentsEntity = new List();
         newSiteCommentsEntity.add(new SiteCommentsEntity(
             siteId: widget.siteId,
-            id: widget.siteId,
+            // id: widget.siteId,
             siteCommentText: _comments.text,
             creatorName: name,
             createdBy: empId));
@@ -5200,7 +5229,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               brandPrice: _brandPriceVisit.text,
               constructionDate: _dateofConstruction.text,
               siteId: widget.siteId,
-              id: null,
+              // id: widget.siteId,
               supplyDate: _dateOfBagSupplied.text,
               supplyQty: _stagePotentialVisit.text,
               stageStatus: _stageStatus.text,
@@ -5208,7 +5237,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               soldToParty: visitDataDealer,
               shipToParty: visitDataSubDealer,
               receiptNumber: "",
-          isAuthorised: ""));
+              isAuthorised: ""));
         }
 
         if (_selectedConstructionTypeVisitNextStage != null) {

@@ -555,7 +555,7 @@ class _LeadScreenState extends State<LeadScreen> {
                           itemCount: _leadsFilterController
                               .leadsListResponse.leadsEntity.length,
                           padding: const EdgeInsets.only(
-                              left: 10.0, right: 10, bottom: 10),
+                              left: 6.0, right: 6, bottom: 10),
                           // itemExtent: 125.0,
                           itemBuilder: (context, index) {
                             print(
@@ -586,7 +586,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                 borderOnForeground: true,
                                 //shadowColor: colornew,
                                 elevation: 6,
-                                margin: EdgeInsets.all(5.0),
+                                margin: EdgeInsets.all(4.0),
                                 color: Colors.white,
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -630,7 +630,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 5.0),
+                                                left: 3.0),
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
@@ -665,8 +665,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                                 Colors.black38,
                                                             fontSize: 14,
                                                             fontFamily: "Muli",
-                                                            fontWeight:
-                                                                FontWeight.bold
+                                                            fontWeight: FontWeight.bold
                                                             //fontWeight: FontWeight.normal
                                                             ),
                                                       ),
@@ -760,7 +759,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.black38,
-                                                            fontSize: 15,
+                                                            fontSize: 14,
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold
@@ -772,7 +771,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                           "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
                                                           style: TextStyle(
                                                               // color: Colors.black38,
-                                                              fontSize: 15,
+                                                              fontSize: 14,
                                                               fontFamily:
                                                                   "Muli",
                                                               fontWeight:
@@ -813,7 +812,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.black,
-                                                              fontSize: 15,
+                                                              fontSize: 14,
                                                               fontFamily:
                                                                   "Muli",
                                                               fontWeight:
