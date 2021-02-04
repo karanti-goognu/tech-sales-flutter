@@ -1177,6 +1177,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             setState(() {
                               _selectedConstructionType = value;
                             });
+                            print(_selectedConstructionType.id);
                           },
                           decoration: FormFieldStyle.buildInputDecoration(
                               labelText: "Type of Construction"),
@@ -2567,6 +2568,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   value == null  || value.isEmpty ? 'Please select Sub-Dealer' : null,
               onChanged: (value) {
                 print(value);
+                visitDataSubDealer = value;
               },
               items:
               subDealerList.isNotEmpty
