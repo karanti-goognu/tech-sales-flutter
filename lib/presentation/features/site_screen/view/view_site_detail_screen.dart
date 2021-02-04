@@ -5200,7 +5200,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               brandPrice: _brandPriceVisit.text,
               constructionDate: _dateofConstruction.text,
               siteId: widget.siteId,
-              id: widget.siteId,
+              id: null,
               supplyDate: _dateOfBagSupplied.text,
               supplyQty: _stagePotentialVisit.text,
               stageStatus: _stageStatus.text,
