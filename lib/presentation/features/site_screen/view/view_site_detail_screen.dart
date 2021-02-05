@@ -5292,7 +5292,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               soldToParty: visitDataDealer,
               shipToParty: visitDataSubDealer,
               receiptNumber: "",
-              isAuthorised: ""));
+              isAuthorised: "N"));
         }
 
         if (_selectedConstructionTypeVisitNextStage != null) {
