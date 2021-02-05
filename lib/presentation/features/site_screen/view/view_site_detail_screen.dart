@@ -5286,7 +5286,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               siteId: widget.siteId,
               // id: widget.siteId,
               supplyDate: _dateOfBagSupplied.text,
-              supplyQty: _stagePotentialVisit.text,
+              supplyQty: _siteCurrentTotalBagsNextStage.text,
               stageStatus: _stageStatus.text,
               createdBy: empId,
               soldToParty: visitDataDealer,
