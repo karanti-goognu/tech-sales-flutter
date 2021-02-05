@@ -185,7 +185,8 @@ class MyApiClientSites {
         'POST', Uri.parse(UrlConstants.updateSiteData));
     print(UrlConstants.updateSiteData);
     request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey));
-    print(updateDataRequest['siteCommentsEntity'][0].id);
+    print(json.encode(updateDataRequest['siteVisitHistoryEntity']));
+    updateDataRequest['siteVisitHistoryEntity'].forEach((e)=>print(e));
 
     for (var file in list) {
       String fileName = file.path.split("/").last;
