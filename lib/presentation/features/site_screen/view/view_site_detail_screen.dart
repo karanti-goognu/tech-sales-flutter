@@ -2383,6 +2383,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
               // hint: Text('Rating'),
               onChanged: (value) async {
+                print("Brand Value");
+                print(value);
                 siteProductEntityfromLoaclDB = new List();
                 _siteProductFromLocalDB = null;
                 List<BrandModelforDB> _siteProductEntityfromLoaclDB =
@@ -2433,6 +2435,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                 // hint: Text('Rating'),
                 onChanged: (value) {
+                  print("Product Value");
+                  print(value);
                   setState(() {
                     _siteProductFromLocalDB = value;
                     print(_siteProductFromLocalDB.id);
@@ -2464,6 +2468,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ))
                   .toList(),
               onChanged: (value) {
+                print(" Dealer Value");
+                print(value);
                 selectedSubDealer = null;
                 setState(() {
                   subDealerList = new List();
@@ -2472,12 +2478,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       .where((e) => e.soldToParty == visitDataDealer)
                       .toList();
                   selectedSubDealer = subDealerList[0];
-                  print(visitDataDealer);
+                  visitDataSubDealer= subDealerList[0].shipToParty;
                 });
-                print(counterListModel[0].soldToParty);
-
-                // print(value);
-                // print();
               },
               style: FormFieldStyle.formFieldTextStyle,
               decoration:
@@ -2512,7 +2514,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ? 'Please select Sub-Dealer'
                         : null,
                     onChanged: (value) {
-                      visitDataSubDealer = value.shipToParty;
+                      // print("Sub Dealer Value");
+                      // print(value.shipToParty.toString());
+                      setState(() {
+                        visitDataSubDealer = value.shipToParty.toString();
+                      });
                       print(visitDataSubDealer);
                     },
                     style: FormFieldStyle.formFieldTextStyle,
@@ -4683,8 +4689,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     value: label,
                   ))
               .toList(),
-
-          // hint: Text('Rating'),
           onChanged: (value) async {
             siteProductEntityfromLoaclDBNextStage = new List();
             _siteProductFromLocalDBNextStage = null;
@@ -5200,6 +5204,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   Future<void> UpdateRequest() async {
+    print('$visitDataDealer $visitDataSubDealer');
     if (_siteBuiltupArea.text == "" ||
         _siteBuiltupArea.text == null ||
         _siteBuiltupArea.text == "null") {
