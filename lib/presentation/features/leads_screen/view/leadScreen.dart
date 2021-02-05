@@ -724,7 +724,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                         ))}",
                                                         //  textAlign: TextAlign.start,
                                                         style: TextStyle(
-                                                          fontSize: 13,
+                                                          fontSize: 12,
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold,

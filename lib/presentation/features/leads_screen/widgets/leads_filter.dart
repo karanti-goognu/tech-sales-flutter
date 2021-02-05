@@ -207,7 +207,7 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   Widget returnSelectedWidget(String text, int position) {
     return Obx(() => Container(
-          height: 50,
+          // height: 50,
           color: (_leadsFilterController.selectedPosition == position)
               ? Colors.white
               : Colors.transparent,
@@ -221,14 +221,15 @@ class _FilterWidgetState extends State<FilterWidget> {
                       color: ColorConstants.clearAllTextColor,
                     )
                   : Container(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 8, 8, 8),
-                child: Center(
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16,8.0,8,8),
                   child: Text(
                     text,
                     style: (_leadsFilterController.selectedPosition == position)
                         ? TextStyles.mulliBold14
-                        : TextStyle(color: Colors.black),
+                        : TextStyle(color: Colors.black
+                    ),
                   ),
                 ),
               ),

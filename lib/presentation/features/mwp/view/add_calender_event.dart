@@ -45,9 +45,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
 
   @override
   Widget build(BuildContext context) {
-    // print(_calendarEventController.testMap);
-    // print(_calendarEventController.markedDateMap);
-    // _calendarEventController.testMap.forEach((k,v)=>print('$k:$v'));
     return WillPopScope(
         onWillPop: () async {
           // You can do some work here.
@@ -98,7 +95,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
                       child: Obx(() => CalendarCarousel<Event>(
                             todayButtonColor: Colors.green,
-                            height: 380.0,
+                            height: 360.0,
                             selectedDateTime: _currentDate2,
                             headerMargin: EdgeInsets.zero,
                             selectedDayButtonColor:
@@ -133,26 +130,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                             ),
                             markedDatesMap:
                                 _calendarEventController.markedDateMap,
-
-                            // new EventList(
-                            //   events:
-                            //   {
-                            //     new DateTime(2021,1,15):[
-                            //       new Event(
-                            //         date: new DateTime(2021, 1, 4),
-                            //         title: 'Event 1',
-                            //         icon: Icon(Icons.eco),
-                            //         dot: Container(
-                            //           margin: EdgeInsets.symmetric(horizontal: 1.0),
-                            //           color: Colors.red,
-                            //           height: 5.0,
-                            //           width: 5.0,
-                            //         ),
-                            //       ),
-                            //     ]
-                            //   }
-                            // ),
-                            // _calendarEventController.markedDateMap,
                             targetDateTime: _targetDateTime,
                             customGridViewPhysics:
                                 NeverScrollableScrollPhysics(),
@@ -164,10 +141,10 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                               color: Colors.tealAccent,
                               fontSize: 16,
                             ),
+                        childAspectRatio: 1,
                             onCalendarChanged: (DateTime date) {
                               final DateFormat formatter =
                                   DateFormat('MMMM-yyyy');
-                              // print('$date');
                               final String formatted = formatter.format(date);
                               _calendarEventController.selectedMonth =
                                   formatted;

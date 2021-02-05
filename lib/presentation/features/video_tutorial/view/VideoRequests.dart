@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoRequests extends StatefulWidget{
@@ -64,7 +65,7 @@ class _VideoRequestsState extends State<VideoRequests> {
                       fontFamily: "Muli"),
                 ),
               ],
-            )
+            ),
           ],
         ),
         automaticallyImplyLeading: false,

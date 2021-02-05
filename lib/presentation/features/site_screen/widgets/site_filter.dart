@@ -211,7 +211,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
 
   Widget returnSelectedWidget(String text, int position) {
     return Obx(() => Container(
-          height: 50,
+          // height: 50,
           color: (_siteController.selectedPosition == position)
               ? Colors.white
               : Colors.transparent,
@@ -225,9 +225,9 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                       color: ColorConstants.clearAllTextColor,
                     )
                   : Container(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 8, 8, 8),
-                child: Center(
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 8, 8, 8),
                   child: Text(
                     text,
                     style: (_siteController.selectedPosition == position)
