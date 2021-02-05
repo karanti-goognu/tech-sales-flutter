@@ -208,6 +208,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                 SizedBox(
                   height: 16,
                 ),
+                SizedBox(
+                  height: 16,
+                ),
                 RaisedButton(
                   color: ColorConstants.buttonNormalColor,
                   highlightColor: ColorConstants.buttonPressedColor,
@@ -228,6 +231,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     ),
                   ),
                 ),
+
               ],
             ),
           ),

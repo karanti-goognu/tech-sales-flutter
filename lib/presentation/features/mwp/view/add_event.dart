@@ -5,6 +5,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dar
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:get/get.dart';
 
 class AddEvent extends StatefulWidget {
@@ -54,45 +55,7 @@ class AddEventScreenPageState extends State<AddEvent> {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: BottomAppBar(
-            color: ColorConstants.appBarColor,
-            shape: CircularNotchedRectangle(),
-            notchMargin: 10,
-            child: Container(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      MaterialButton(
-                        minWidth: 40,
-                        onPressed: () {
-                          Get.toNamed(Routes.HOME_SCREEN);
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.home,
-                              color: Colors.white60,
-                            ),
-                            Text(
-                              'Home',
-                              style: TextStyle(
-                                color: Colors.white60,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          bottomNavigationBar: BottomNavigatorWithoutDraftsAndSearch(),
         ));
   }
 
@@ -114,7 +77,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 1,
+                    flex: 4,
                     child: Text(
                       "Add Event",
                       style: TextStyle(
@@ -125,6 +88,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                     ),
                   ),
                   Expanded(
+                    flex:5,
                     child: Container(
                       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                       decoration: BoxDecoration(
@@ -159,7 +123,10 @@ class AddEventScreenPageState extends State<AddEvent> {
               ),
               Obx(() => (_addEventController.selectedView == "Visit")
                   ? AddEventVisit()
-                  : AddEventInfluencerMeet())
+                  : AddEventInfluencerMeet()),
+              SizedBox(
+                height: 30,
+              ),
             ],
           )),
     );

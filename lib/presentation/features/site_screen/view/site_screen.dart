@@ -523,7 +523,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
                                                       //  textAlign: TextAlign.start,
                                                       style: TextStyle(
-                                                        fontSize: 13,
+                                                        fontSize: 10,
                                                         fontFamily: "Muli",
                                                         fontWeight:
                                                             FontWeight.bold,

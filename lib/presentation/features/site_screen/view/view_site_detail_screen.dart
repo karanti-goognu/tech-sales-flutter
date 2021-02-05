@@ -13,8 +13,7 @@ import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart'
-    as updateResponse;
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart' as updateResponse;
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -2478,7 +2477,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       .where((e) => e.soldToParty == visitDataDealer)
                       .toList();
                   selectedSubDealer = subDealerList[0];
-                  visitDataSubDealer= subDealerList[0].shipToParty;
+                  visitDataSubDealer = subDealerList[0].shipToParty;
                 });
               },
               style: FormFieldStyle.formFieldTextStyle,
@@ -2762,22 +2761,57 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   color: ColorConstants.inputBoxHintColor,
                   fontFamily: "Muli"),
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
+              // decoration: InputDecoration(
+              //   focusedBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(
+              //         color: ColorConstants.backgroundColorBlue,
+              //         //color: HexColor("#0000001F"),
+              //         width: 1.0),
+              //   ),
+              //   disabledBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
+              //   ),
+              //   enabledBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
+              //   ),
+              //   errorBorder: OutlineInputBorder(
+              //     borderSide: BorderSide(color: Colors.red, width: 1.0),
+              //   ),
+              //   labelText: "Date of construction",
+              //   suffixIcon: IconButton(
+              //     icon: Icon(
+              //       Icons.date_range_rounded,
+              //       size: 22,
+              //       color: ColorConstants.clearAllTextColor,
+              //     ),
+              //     onPressed: () async {
+              //       print("here");
+              //       final DateTime picked = await showDatePicker(
+              //         context: context,
+              //         initialDate: DateTime.now(),
+              //         firstDate: DateTime(2001),
+              //         lastDate: DateTime.now(),
+              //       );
+              //
+              //       setState(() {
+              //         final DateFormat formatter = DateFormat("yyyy-MM-dd");
+              //         final String formattedDate = formatter.format(picked);
+              //
+              //         _dateofConstruction.text = formattedDate;
+              //       });
+              //     },
+              //   ),
+              //   filled: false,
+              //   focusColor: Colors.black,
+              //   isDense: false,
+              //   labelStyle: TextStyle(
+              //       fontFamily: "Muli",
+              //       color: ColorConstants.inputBoxHintColorDark,
+              //       fontWeight: FontWeight.normal,
+              //       fontSize: 16.0),
+              //   fillColor: ColorConstants.backgroundColor,
+              // ),
+              decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Date of construction",
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -2802,15 +2836,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     });
                   },
                 ),
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
               ),
             ),
             Center(
@@ -4639,29 +4664,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               color: ColorConstants.inputBoxHintColor,
               fontFamily: "Muli"),
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: ColorConstants.backgroundColorBlue,
-                  //color: HexColor("#0000001F"),
-                  width: 1.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1.0),
-            ),
+          decoration: FormFieldStyle.buildInputDecoration(
             labelText: "Stage Potential",
-            filled: false,
-            focusColor: Colors.black,
-            labelStyle: TextStyle(
-                fontFamily: "Muli",
-                color: ColorConstants.inputBoxHintColorDark,
-                fontWeight: FontWeight.normal,
-                fontSize: 16.0),
-            fillColor: ColorConstants.backgroundColor,
           ),
         ),
         Padding(
@@ -4966,22 +4970,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               color: ColorConstants.inputBoxHintColor,
               fontFamily: "Muli"),
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: ColorConstants.backgroundColorBlue,
-                  //color: HexColor("#0000001F"),
-                  width: 1.0),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black26, width: 1.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black26, width: 1.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1.0),
-            ),
+          decoration: FormFieldStyle.buildInputDecoration(
             labelText: "Planned Start Date of construction",
             suffixIcon: IconButton(
               icon: Icon(
@@ -5005,16 +4994,56 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 });
               },
             ),
-            filled: false,
-            focusColor: Colors.black,
-            isDense: false,
-            labelStyle: TextStyle(
-                fontFamily: "Muli",
-                color: ColorConstants.inputBoxHintColorDark,
-                fontWeight: FontWeight.normal,
-                fontSize: 16.0),
-            fillColor: ColorConstants.backgroundColor,
           ),
+          // decoration: InputDecoration(
+          //   focusedBorder: OutlineInputBorder(
+          //     borderSide: BorderSide(
+          //         color: ColorConstants.backgroundColorBlue,
+          //         //color: HexColor("#0000001F"),
+          //         width: 1.0),
+          //   ),
+          //   disabledBorder: OutlineInputBorder(
+          //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
+          //   ),
+          //   enabledBorder: OutlineInputBorder(
+          //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
+          //   ),
+          //   errorBorder: OutlineInputBorder(
+          //     borderSide: BorderSide(color: Colors.red, width: 1.0),
+          //   ),
+          //   labelText: "Planned Start Date of construction",
+          //   suffixIcon: IconButton(
+          //     icon: Icon(
+          //       Icons.date_range_rounded,
+          //       size: 22,
+          //       color: ColorConstants.clearAllTextColor,
+          //     ),
+          //     onPressed: () async {
+          //       print("here");
+          //       final DateTime picked = await showDatePicker(
+          //           context: context,
+          //           initialDate: DateTime.now(),
+          //           firstDate: DateTime.now(),
+          //           lastDate: DateTime(2101));
+          //
+          //       setState(() {
+          //         final DateFormat formatter = DateFormat("yyyy-MM-dd");
+          //         final String formattedDate = formatter.format(picked);
+          //
+          //         _dateofConstructionNextStage.text = formattedDate;
+          //       });
+          //     },
+          //   ),
+          //   filled: false,
+          //   focusColor: Colors.black,
+          //   isDense: false,
+          //   labelStyle: TextStyle(
+          //       fontFamily: "Muli",
+          //       color: ColorConstants.inputBoxHintColorDark,
+          //       fontWeight: FontWeight.normal,
+          //       fontSize: 16.0),
+          //   fillColor: ColorConstants.backgroundColor,
+          // ),
         ),
       ],
     ));

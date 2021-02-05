@@ -388,24 +388,28 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            serviceRequestComplaintListModel.totalCount != null
-                ? "Total Count : ${serviceRequestComplaintListModel.totalCount}"
-                : "Total Count : 0",
-            style: TextStyle(
-              fontFamily: "Muli",
-              fontSize: 12,
-              // color: HexColor("#FFFFFF99"),
+          Flexible(
+            child: Text(
+              serviceRequestComplaintListModel.totalCount != null
+                  ? "Total Count : ${serviceRequestComplaintListModel.totalCount}"
+                  : "Total Count : 0",
+              style: TextStyle(
+                fontFamily: "Muli",
+                fontSize: 12,
+                // color: HexColor("#FFFFFF99"),
+              ),
             ),
           ),
-          Text(
-            serviceRequestComplaintListModel.totalPotential != null
-                ? "Total Potential : ${serviceRequestComplaintListModel.totalPotential} MT"
-                : "Total Potential : 0 MT",
-            style: TextStyle(
-              fontFamily: "Muli",
-              fontSize: 12,
-              // color: HexColor("#FFFFFF99"),
+          Flexible(
+            child: Text(
+              serviceRequestComplaintListModel.totalPotential != null
+                  ? "Total Potential : ${serviceRequestComplaintListModel.totalPotential} MT"
+                  : "Total Potential : 0 MT",
+              style: TextStyle(
+                fontFamily: "Muli",
+                fontSize: 12,
+                // color: HexColor("#FFFFFF99"),
+              ),
             ),
           ),
         ],
