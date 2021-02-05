@@ -2672,11 +2672,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     ),
                   ),
                 ),
+                Text(
+                    _siteCurrentTotalBags.text
+                ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: TextFormField(
                       controller: _siteCurrentTotalBags,
+                      onChanged: (v){
+                        print(v);
+                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter Bags ';
@@ -4893,8 +4899,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     if (value.isEmpty) {
                       return 'Please enter Bags ';
                     }
-
                     return null;
+                  },
+                  onChanged: (v){
+                    print(v);
+                    print('hi');
                   },
                   style: TextStyle(
                       fontSize: 18,
@@ -5315,7 +5324,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               siteId: widget.siteId,
               // id: widget.siteId,
               supplyDate: _dateOfBagSupplied.text,
-              supplyQty: _stagePotentialVisit.text,
+              supplyQty: _siteCurrentTotalBags.text,
               stageStatus: _stageStatus.text,
               createdBy: empId,
               soldToParty: visitDataDealer,
@@ -5335,7 +5344,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             stageStatus: _stageStatusNextStage.text,
             constructionStartDt: _dateofConstructionNextStage.text,
             nextStageSupplyDate: _dateOfBagSuppliedNextStage.text,
-            nextStageSupplyQty: _siteCurrentTotalBagsNextStage.text,
+            nextStageSupplyQty: _siteCurrentTotalBags.text,
             createdBy: empId,
           ));
         }

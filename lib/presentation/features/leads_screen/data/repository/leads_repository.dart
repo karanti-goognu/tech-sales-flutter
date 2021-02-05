@@ -40,12 +40,7 @@ class MyRepositoryLeads {
         accessKey, userSecurityKey, phoneNumber);
   }
 
-  saveLeadsData(
-      accessKey,
-      String userSecurityKey,
-      SaveLeadRequestModel saveLeadRequestModel,
-      List<File> imageList,
-      BuildContext context) {
+  saveLeadsData( accessKey,  String userSecurityKey, SaveLeadRequestModel saveLeadRequestModel, List<File> imageList,   BuildContext context) {
     return apiClient.saveLeadsData(
         accessKey, userSecurityKey, saveLeadRequestModel, imageList, context);
   }

@@ -43,7 +43,6 @@ class _SiteScreenState extends State<SiteScreen> {
   @override
   void initState() {
     super.initState();
-
     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
   }
 
