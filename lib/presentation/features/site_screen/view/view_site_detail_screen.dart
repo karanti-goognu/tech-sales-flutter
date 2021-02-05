@@ -61,8 +61,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   String labelOpportunityText;
   int labelOpportunityId;
   double siteScore = 0.0;
-  String visitDataDealer = '';
-  String visitDataSubDealer = '';
+  String visitDataDealer;
+  String visitDataSubDealer;
 
   ConstructionStageEntity _selectedConstructionType;
   ConstructionStageEntity _selectedConstructionTypeVisit;
@@ -2439,32 +2439,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   });
                 },
                 decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Product Sold")
-                // InputDecoration(
-                //   focusedBorder: OutlineInputBorder(
-                //     borderSide: BorderSide(
-                //         color: ColorConstants.backgroundColorBlue,
-                //         //color: HexColor("#0000001F"),
-                //         width: 1.0),
-                //   ),
-                //   enabledBorder: OutlineInputBorder(
-                //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                //   ),
-                //   errorBorder: OutlineInputBorder(
-                //     borderSide: BorderSide(color: Colors.red, width: 1.0),
-                //   ),
-                //   labelText: "Product Sold",
-                //   filled: false,
-                //   focusColor: Colors.black,
-                //   isDense: false,
-                //   labelStyle: TextStyle(
-                //       fontFamily: "Muli",
-                //       color: ColorConstants.inputBoxHintColorDark,
-                //       fontWeight: FontWeight.normal,
-                //       fontSize: 16.0),
-                //   fillColor: ColorConstants.backgroundColor,
-                // ),
-                ),
+                    labelText: "Product Sold")),
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -2476,6 +2451,74 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
               ),
             ),
+            SizedBox(height: 16),
+            DropdownButtonFormField(
+              items: dealerEntityForDb
+                  .map((e) => DropdownMenuItem(
+                        value: e.id,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width - 100,
+                          child: Text('${e.dealerName} (${e.id})',
+                              style: TextStyle(fontSize: 14)),
+                        ),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                selectedSubDealer = null;
+                setState(() {
+                  subDealerList = new List();
+                  visitDataDealer = value.toString();
+                  subDealerList = counterListModel
+                      .where((e) => e.soldToParty == visitDataDealer)
+                      .toList();
+                  selectedSubDealer = subDealerList[0];
+                  print(visitDataDealer);
+                });
+                print(counterListModel[0].soldToParty);
+
+                // print(value);
+                // print();
+              },
+              style: FormFieldStyle.formFieldTextStyle,
+              decoration:
+                  FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
+              validator: (value) =>
+                  value == null ? 'Please select Dealer' : null,
+            ),
+            SizedBox(height: 16),
+            subDealerList.isEmpty
+                ? Container()
+                : DropdownButtonFormField(
+                    items: subDealerList.isNotEmpty
+                        ? subDealerList
+                            .map((e) => DropdownMenuItem(
+                                  value: e,
+                                  child: SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width - 100,
+                                    child: Text(
+                                      '${e.shipToPartyName} (${e.shipToParty})',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                ))
+                            .toList()
+                        : [
+                            DropdownMenuItem(
+                                child: Text("No Sub Dealer"), value: "0")
+                          ],
+                    value: selectedSubDealer,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please select Sub-Dealer'
+                        : null,
+                    onChanged: (value) {
+                      visitDataSubDealer = value.shipToParty;
+                      print(visitDataSubDealer);
+                    },
+                    style: FormFieldStyle.formFieldTextStyle,
+                    decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Sub-Dealer"),
+                  ),
             SizedBox(height: 16),
             TextFormField(
               controller: _brandPriceVisit,
@@ -2530,74 +2573,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
               ),
             ),
-            SizedBox(height: 16),
-            DropdownButtonFormField(
-              validator: (value) =>
-                  value == null ? 'Please select Dealer' : null,
-              // icon: Icon(Icons.arrow_drop_down, size: 2,),
-              onChanged: (value) {
-                selectedSubDealer = null;
-                setState(() {
-                  subDealerList = new List();
-                  visitDataDealer = value.toString();
-                  subDealerList = counterListModel
-                      .where((e) => e.soldToParty == visitDataDealer)
-                      .toList();
-                  selectedSubDealer = subDealerList[0];
-                  print(visitDataDealer);
-                });
-                print(counterListModel[0].soldToParty);
 
-                // print(value);
-                // print();
-              },
-              items: dealerEntityForDb
-                  .map((e) => DropdownMenuItem(
-                        child: SizedBox(
-                            width:MediaQuery.of(context).size.width-100,
-                          child: Text('${e.dealerName} (${e.id})',
-                              style: TextStyle(fontSize: 14)),
-                        ),
-                        value: e.id,
-                      ))
-                  .toList(),
-              style: FormFieldStyle.formFieldTextStyle,
-              decoration:
-                  FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
-            ),
-            SizedBox(height: 16),
-            subDealerList.isEmpty
-                ? Container()
-                : DropdownButtonFormField(
-                    value: selectedSubDealer,
-                    validator: (value) => value == null || value.isEmpty
-                        ? 'Please select Sub-Dealer'
-                        : null,
-                    onChanged: (value) {
-                      visitDataSubDealer = value.shipToParty;
-                      print(visitDataSubDealer);
-                    },
-                    items: subDealerList.isNotEmpty
-                        ? subDealerList
-                            .map((e) => DropdownMenuItem(
-                                  value: e,
-                                  child: SizedBox(
-                                    width:MediaQuery.of(context).size.width-100,
-                                    child: Text(
-                                      '${e.shipToPartyName} (${e.shipToParty})',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                ))
-                            .toList()
-                        : [
-                            DropdownMenuItem(
-                                child: Text("No Sub Dealer"), value: "0")
-                          ],
-                    style: FormFieldStyle.formFieldTextStyle,
-                    decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: "Sub-Dealer"),
-                  ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
               child: Text(
