@@ -20,6 +20,9 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -135,7 +138,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
     super.initState();
     print("sumitdhawan");
     _addLeadsController = Get.find();
-    myFocusNode = FocusNode();
+    // myFocusNode = FocusNode();
     getLeadData();
   }
 
@@ -143,7 +146,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   void dispose() {
     super.dispose();
     // _addLeadsController.dispose();
-    myFocusNode.dispose();
+    // myFocusNode.dispose();
   }
 
   getLeadData() async {
@@ -161,7 +164,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
         viewLeadDataResponse = data;
 
         print(viewLeadDataResponse);
-        myFocusNode.requestFocus();
+        // myFocusNode.requestFocus();
         setState(() {
           leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
           LeadStatusEntity list;
@@ -382,118 +385,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       );
     } else {
       return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.white,
-        floatingActionButton: Container(
-          height: 68.0,
-          width: 68.0,
-          child: FittedBox(
-            child: FloatingActionButton(
-              backgroundColor: ColorConstants.checkinColor,
-              child: Icon(
-                Icons.keyboard_backspace,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ),
+        floatingActionButton: BackFloatingButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-          color: ColorConstants.appBarColor,
-          shape: CircularNotchedRectangle(),
-          notchMargin: 10,
-          child: Container(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {
-                        Get.toNamed(Routes.HOME_SCREEN);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.home,
-                            color: Colors.white60,
-                          ),
-                          Text(
-                            'Home',
-                            style: TextStyle(
-                              color: Colors.white60,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-
-                // Right Tab bar icons
-
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            new CupertinoPageRoute(
-                                builder: (BuildContext context) =>
-                                    DraftLeadListScreen()));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.drafts,
-                            color: Colors.white60,
-                          ),
-                          Text(
-                            'Drafts',
-                            style: TextStyle(
-                              color: Colors.white60,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {
-                        Get.toNamed(Routes.SEARCH_SCREEN);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.search,
-                            color: Colors.white60,
-                          ),
-                          Text(
-                            'Search',
-                            style: TextStyle(
-                              color: Colors.white60,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
+        bottomNavigationBar: BottomNavigator(),
         body: SingleChildScrollView(
           child: Stack(
             children: [
@@ -580,13 +476,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
                                                     left: 2.0),
-                                                child: Text(
-                                                  label.leadStatusDesc,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: ColorConstants
-                                                          .inputBoxHintColor,
-                                                      fontFamily: "Muli"),
+                                                child: SizedBox(
+                                                  width: 135,
+                                                  child: Text(
+                                                    label.leadStatusDesc,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: ColorConstants
+                                                            .inputBoxHintColor,
+                                                        fontFamily: "Muli"),
+                                                  ),
                                                 ),
                                               ),
                                               value: label,
@@ -665,66 +564,15 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                       value;
                                                                 });
                                                               },
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                focusedBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                          color: ColorConstants
-                                                                              .backgroundColorBlue,
-                                                                          //color: HexColor("#0000001F"),
-                                                                          width:
-                                                                              1.0),
-                                                                ),
-                                                                enabledBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide: BorderSide(
-                                                                      color: Colors
-                                                                          .black26,
-                                                                      width:
-                                                                          1.0),
-                                                                ),
-                                                                errorBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide: BorderSide(
-                                                                      color: Colors
-                                                                          .red,
-                                                                      width:
-                                                                          1.0),
-                                                                ),
-                                                                labelText:
-                                                                    "Next Stage of Construction",
-                                                                filled: false,
-                                                                focusColor:
-                                                                    Colors
-                                                                        .black,
-                                                                isDense: false,
-                                                                labelStyle: TextStyle(
-                                                                    fontFamily:
-                                                                        "Muli",
-                                                                    color: ColorConstants
-                                                                        .inputBoxHintColorDark,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    fontSize:
-                                                                        16.0),
-                                                                fillColor:
-                                                                    ColorConstants
-                                                                        .backgroundColor,
-                                                              ),
+                                                              decoration: FormFieldStyle
+                                                                  .buildInputDecoration(
+                                                                      labelText:
+                                                                          "Next Stage of Construction"),
                                                             ),
                                                             SizedBox(
-                                                              height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  0.02,
-                                                            ),
+                                                                height: MediaQuery.of(context).size.height * 0.02),
                                                             TextFormField(
-                                                              controller:
-                                                                  _nextDateofConstruction,
+                                                              controller:_nextDateofConstruction,
                                                               // validator: (value) {
                                                               //   if (value.isEmpty) {
                                                               //     return "Contact Name can't be empty";
@@ -1112,19 +960,19 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                     1]
                                                             .inflName ==
                                                         null ||
-                                                    _listInfluencerDetail[
+                                                    (_listInfluencerDetail[
                                                                 _listInfluencerDetail
                                                                         .length -
                                                                     1]
                                                             .inflName ==
-                                                        "null" ||
-                                                    _listInfluencerDetail[
+                                                        null) ||
+                                                    (_listInfluencerDetail[
                                                             _listInfluencerDetail
                                                                     .length -
                                                                 1]
                                                         .inflName
                                                         .text
-                                                        .isNullOrBlank) {
+                                                        .isNullOrBlank)) {
                                                   print("here1234");
                                                   _listInfluencerDetail
                                                       .removeAt(
@@ -1193,7 +1041,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                       //   _contactName.text = data;
                                                                       // });
                                                                     },
-                                                                    maxLength: 6,
+                                                                    maxLength:
+                                                                        6,
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             18,
@@ -1712,7 +1561,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
                       TextFormField(
                         controller: _contactName,
-                        enabled: false,
+                        readOnly: true,
                         //autofocus: true,
                         focusNode: myFocusNode,
                         // validator: (value) {
@@ -1728,94 +1577,43 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                           // });
                         },
                         style: TextStyle(
-                            fontSize: 18,
+                            // fontSize: 18,
                             color: ColorConstants.inputBoxHintColor,
                             fontFamily: "Muli"),
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorConstants.backgroundColorBlue,
-                                //color: HexColor("#0000001F"),
-                                width: 1.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black26, width: 1.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.red, width: 1.0),
-                          ),
-                          labelText: "Name",
-                          filled: false,
-                          focusColor: Colors.black,
-                          isDense: false,
-                          labelStyle: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16.0),
-                          fillColor: ColorConstants.backgroundColor,
-                        ),
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Name"),
                       ),
                       SizedBox(height: 16),
                       TextFormField(
-                        controller: _contactNumber,
-                        enabled: false,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter mobile number ';
-                          }
-                          if (value.length <= 9) {
-                            return 'Mobile number is incorrect';
-                          }
-                          return null;
-                        },
-                        onChanged: (data) {
-                          // setState(() {
-                          //   _contactNumber.text = data;
-                          // });
-                        },
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: ColorConstants.inputBoxHintColor,
-                            fontFamily: "Muli"),
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        maxLength: 10,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorConstants.backgroundColorBlue,
-                                //color: HexColor("#0000001F"),
-                                width: 1.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black26, width: 1.0),
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.red, width: 1.0),
-                          ),
-                          labelText: "Mobile Number",
-                          filled: false,
-                          focusColor: Colors.black,
-                          labelStyle: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16.0),
-                          fillColor: ColorConstants.backgroundColor,
-                        ),
-                      ),
+                          controller: _contactNumber,
+                          readOnly: true,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter mobile number ';
+                            }
+                            if (value.length <= 9) {
+                              return 'Mobile number is incorrect';
+                            }
+                            return null;
+                          },
+                          onChanged: (data) {
+                            // setState(() {
+                            //   _contactNumber.text = data;
+                            // });
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          maxLength: 10,
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Mobile Number",
+                          )),
                       // SizedBox(height: 16),
                       Divider(
                         color: Colors.black26,
@@ -1937,7 +1735,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                           if (value.isEmpty) {
                             return 'Please enter Address ';
                           }
-
                           return null;
                         },
                         style: TextStyle(
@@ -1945,32 +1742,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             color: ColorConstants.inputBoxHintColor,
                             fontFamily: "Muli"),
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorConstants.backgroundColorBlue,
-                                //color: HexColor("#0000001F"),
-                                width: 1.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: const Color(0xFF000000).withOpacity(0.4),
-                                width: 1.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.red, width: 1.0),
-                          ),
-                          labelText: "Address",
-                          filled: false,
-                          focusColor: Colors.black,
-                          labelStyle: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16.0),
-                          fillColor: ColorConstants.backgroundColor,
-                        ),
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Address"),
                       ),
                       SizedBox(height: 16),
                       TextFormField(
@@ -1995,32 +1768,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         //  maxLength: 6,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorConstants.backgroundColorBlue,
-                                //color: HexColor("#0000001F"),
-                                width: 1.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: const Color(0xFF000000).withOpacity(0.4),
-                                width: 1.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.red, width: 1.0),
-                          ),
+                        decoration: FormFieldStyle.buildInputDecoration(
                           labelText: "Pincode",
-                          enabled: false,
-                          filled: false,
-                          focusColor: Colors.black,
-                          labelStyle: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16.0),
-                          fillColor: ColorConstants.backgroundColor,
                         ),
                       ),
                       Padding(
@@ -2049,32 +1798,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             color: ColorConstants.inputBoxHintColor,
                             fontFamily: "Muli"),
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorConstants.backgroundColorBlue,
-                                //color: HexColor("#0000001F"),
-                                width: 1.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: const Color(0xFF000000).withOpacity(0.4),
-                                width: 1.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.red, width: 1.0),
-                          ),
+                        decoration: FormFieldStyle.buildInputDecoration(
                           labelText: "State",
-                          enabled: false,
-                          filled: false,
-                          focusColor: Colors.black,
-                          labelStyle: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16.0),
-                          fillColor: ColorConstants.backgroundColor,
                         ),
                       ),
                       Padding(
@@ -2103,32 +1828,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             color: ColorConstants.inputBoxHintColor,
                             fontFamily: "Muli"),
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorConstants.backgroundColorBlue,
-                                //color: HexColor("#0000001F"),
-                                width: 1.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: const Color(0xFF000000).withOpacity(0.4),
-                                width: 1.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.red, width: 1.0),
-                          ),
+                        decoration: FormFieldStyle.buildInputDecoration(
                           labelText: "District",
-                          enabled: false,
-                          filled: false,
-                          focusColor: Colors.black,
-                          labelStyle: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16.0),
-                          fillColor: ColorConstants.backgroundColor,
                         ),
                       ),
                       Padding(
@@ -2158,33 +1859,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                             color: ColorConstants.inputBoxHintColor,
                             fontFamily: "Muli"),
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorConstants.backgroundColorBlue,
-                                //color: HexColor("#0000001F"),
-                                width: 1.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: const Color(0xFF000000).withOpacity(0.4),
-                                width: 1.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.red, width: 1.0),
-                          ),
-                          labelText: "Taluk",
-                          enabled: false,
-                          filled: false,
-                          focusColor: Colors.black,
-                          labelStyle: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16.0),
-                          fillColor: ColorConstants.backgroundColor,
-                        ),
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Taluk"),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15),
@@ -2285,7 +1961,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                   ),
                                                 ],
                                               ),
-                                             /* GestureDetector(
+                                              /* GestureDetector(
                                                 child: Icon(
                                                   Icons.delete,
                                                   color: HexColor("#FFCD00"),
@@ -3810,7 +3486,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
 
       setState(() {
         _siteAddress.text =
-            place.name + "," + place.thoroughfare + "," + place.subLocality;
+            place.name + "," + place.thoroughfare + place.subLocality;
         _district.text = place.subAdministrativeArea;
         _state.text = place.administrativeArea;
         _pincode.text = place.postalCode;

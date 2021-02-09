@@ -39,7 +39,8 @@ class _AddInfluencerViewState extends State<AddInfluencerView> {
      body: AnimatedContainer(
        height: MediaQuery.of(context).size.height,
        width:MediaQuery.of(context).size.width,
-       color: _color,
+       color: Colors.white,
+       // color: _color,
        child: Center(child: Text("Page coming soon",),),
      duration: Duration(seconds: 4),curve: Curves.fastOutSlowIn,),
     );

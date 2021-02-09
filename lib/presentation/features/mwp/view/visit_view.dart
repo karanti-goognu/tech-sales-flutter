@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:get/get.dart';
@@ -114,7 +115,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                             .map<DropdownMenuItem<dynamic>>((val) {
                           return DropdownMenuItem(
                             value: val,
-                            child: Text('${val.dealerName} (${val.dealerId})'),
+                            child: SizedBox(
+                              width: SizeConfig.screenWidth-100,
+                                child: Text('${val.dealerName} (${val.dealerId})')),
                           );
                         }).toList(),
                         onChanged: (val) {

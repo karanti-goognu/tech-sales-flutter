@@ -22,14 +22,11 @@ class ServiceRequests extends StatefulWidget {
 class _ServiceRequestsState extends State<ServiceRequests> {
   bool isVisible = true;
   List<Text> tabs = [
-    Text(
-      'Resolution Status',
-    ),
+    Text('Resolution Status'),
     Text('Severity'),
     Text('Type of Request'),
   ];
   TabController tabController;
-  SpeedDialController _controller = SpeedDialController();
 
   ServiceRequestComplaintListModel serviceRequestComplaintListModel;
   SRListController eventController = Get.find();
@@ -50,105 +47,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       });
     });
     super.initState();
-  }
-
-  Widget _buildFloatingActionButton({bool isVisible}) {
-    final TextStyle customStyle =
-        TextStyle(inherit: false, color: Colors.black, fontSize: 12);
-    final icons = [
-      SpeedDialAction(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            'assets/images/img2.png',
-            height: 23,
-          ),
-        ),
-        label: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text('Add Lead', style: customStyle),
-        ),
-      ),
-      SpeedDialAction(
-        child: Icon(Icons.mode_edit),
-        label: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text('Add MWP', style: customStyle),
-        ),
-      ),
-      SpeedDialAction(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            'assets/images/img4.png',
-            height: 23,
-          ),
-        ),
-        label: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text('Add Influencer', style: customStyle),
-        ),
-      ),
-      SpeedDialAction(
-        child: Icon(Icons.list),
-        label: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text('Add SR / Complaint', style: customStyle),
-        ),
-      ),
-    ];
-
-    return SpeedDialFloatingActionButton(
-      actions: icons,
-      childOnFold: Icon(
-        Icons.add,
-        color: Colors.black,
-        key: UniqueKey(),
-      ),
-      screenColor: Colors.black.withOpacity(0.3),
-      childOnUnfold: Icon(
-        Icons.clear,
-        color: Colors.black,
-      ),
-      useRotateAnimation: true,
-      onAction: _onSpeedDialAction,
-      controller: _controller,
-      isDismissible: true,
-      backgroundColor: Colors.amber,
-    );
-  }
-
-  _onSpeedDialAction(int selectedActionIndex) {
-    print('$selectedActionIndex Selected');
-    setState(() {
-      isVisible = false;
-    });
-    switch (selectedActionIndex) {
-      case 0:
-        Get.toNamed(Routes.ADD_CALENDER_SCREEN);
-        break;
-
-      case 1:
-        Get.toNamed(Routes.SERVICE_REQUESTS);
-        break;
-
-      case 2:
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
-        break;
-
-      case 3:
-        Get.toNamed(Routes.SERVICE_REQUEST_CREATION).whenComplete(
-          () => setState(() {
-            isVisible = true;
-          }),
-        );
-
-        break;
-
-      default:
-        print("Invalid choice");
-        break;
-    }
   }
 
   @override

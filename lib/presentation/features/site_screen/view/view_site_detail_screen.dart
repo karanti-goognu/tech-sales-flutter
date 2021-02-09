@@ -471,7 +471,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               children: [
                 Positioned(
                     top: 0,
-                    left: 210,
+                    left: 200,
                     right: 0,
                     child: Container(
                         color: Colors.white,
@@ -5358,7 +5358,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               createdBy: empId));
         }
 
-        print("Sumit Length :: " + newSitePhotoEntity.length.toString());
+        // print("Sumit Length :: " + newSitePhotoEntity.length.toString());
 
         //print(sitephotosEntity.)
 
@@ -5374,7 +5374,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   .inflName
                   .text
                   .isNullOrBlank) {
-            print("here1234");
             _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
           }
         }
