@@ -18,6 +18,7 @@ import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -740,32 +741,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         FilteringTextInputFormatter.digitsOnly
                       ],
                       //  maxLength: 6,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
-                              width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0xFF000000).withOpacity(0.4),
-                              width: 1.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1.0),
-                        ),
-                        labelText: "Pincode",
-                        enabled: false,
-                        filled: false,
-                        focusColor: Colors.black,
-                        labelStyle: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                        fillColor: ColorConstants.backgroundColor,
-                      ),
+                      decoration: FormFieldStyle.buildInputDecoration(labelText: "Pincode",),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
@@ -793,32 +769,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
-                              width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0xFF000000).withOpacity(0.4),
-                              width: 1.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1.0),
-                        ),
-                        labelText: "State",
-                        enabled: false,
-                        filled: false,
-                        focusColor: Colors.black,
-                        labelStyle: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                        fillColor: ColorConstants.backgroundColor,
-                      ),
+                      decoration:FormFieldStyle.buildInputDecoration(labelText: "State")
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
@@ -846,32 +797,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
-                              width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0xFF000000).withOpacity(0.4),
-                              width: 1.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1.0),
-                        ),
-                        labelText: "District",
-                        enabled: false,
-                        filled: false,
-                        focusColor: Colors.black,
-                        labelStyle: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                        fillColor: ColorConstants.backgroundColor,
-                      ),
+                        decoration:FormFieldStyle.buildInputDecoration(labelText: "District"),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
@@ -900,32 +826,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
-                              width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0xFF000000).withOpacity(0.4),
-                              width: 1.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1.0),
-                        ),
-                        labelText: "Taluk",
-                        filled: false,
-                        enabled: false,
-                        focusColor: Colors.black,
-                        labelStyle: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                        fillColor: ColorConstants.backgroundColor,
-                      ),
+                      decoration:FormFieldStyle.buildInputDecoration(labelText: "Taluk"),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
@@ -1072,16 +973,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          (index == 0)
-                                              ? Text(
-                                                  "Influencer Details",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                )
-                                              : Text(
-                                                  "Influencer Details ${(index)} ",
+                                          // (index == 0)
+                                          //     ? Text(
+                                          //         "Influencer Details",
+                                          //         style: TextStyle(
+                                          //             fontWeight:
+                                          //                 FontWeight.bold,
+                                          //             fontSize: 18),
+                                          //       )
+                                          //     :
+                                          Text(
+                                                  "Influencer Details ${(index+1)} ",
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,

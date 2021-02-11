@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -292,71 +293,79 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                     : Container(),
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8),
+                      const EdgeInsets.only(left: 0.0, right: 0.0, bottom: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ((leadCreatedBy == gv.currentId))
-                          ? FlatButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    new CupertinoPageRoute(
-                                        builder: (BuildContext context) =>
-                                            ViewLeadScreen(
-                                                int.parse(gv.selectedLeadID))));
-                              },
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(1.0),
-                                  side: BorderSide(color: Colors.white10)),
-                              color: Colors.transparent,
-                              child: Text(
-                                'EDIT OLD LEAD',
-                                style: TextStyle(
-                                    color: Colors.white60, fontSize: 18),
+                          ? Expanded(
+                              child: FlatButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      new CupertinoPageRoute(
+                                          builder: (BuildContext context) =>
+                                              ViewLeadScreen(int.parse(
+                                                  gv.selectedLeadID))));
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(1.0),
+                                    side: BorderSide(color: Colors.white10)),
+                                color: Colors.transparent,
+                                child: Text(
+                                  'EDIT OLD LEAD',
+                                  style: TextStyle(
+                                      color: Colors.white60, fontSize: 18),
+                                ),
                               ),
                             )
-                          : FlatButton(
-                              onPressed: () {
-                                Get.back();
-                                Get.back();
-                                // Get.dialog(
-                                //     CustomDialogs().errorDialog("Coming Soon !!"));
-                              },
-                              color: Colors.transparent,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.clear,
-                                    color: HexColor("#F9A61A"),
-                                    size: 20,
-                                  ),
-                                  Text(
-                                    'Drop This Lead',
-                                    style: TextStyle(
-                                        color: HexColor("#F9A61A"),
-                                        fontSize: 18),
-                                  ),
-                                ],
+                          : Expanded(
+                              child: FlatButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () {
+                                  Get.back();
+                                  Get.back();
+                                  // Get.dialog(
+                                  //     CustomDialogs().errorDialog("Coming Soon !!"));
+                                },
+                                color: Colors.transparent,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.clear,
+                                      color: HexColor("#F9A61A"),
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      'Drop This Lead',
+                                      style: TextStyle(
+                                          color: HexColor("#F9A61A"),
+                                          fontSize: 18),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                      FlatButton(
-                        onPressed: () {
-                          SaveLeadRequestModel saveLeadRequestModelNew =
-                              gv.saveLeadRequestModelNew;
-                          saveLeadRequestModelNew.isStatus = "true";
-                          _addLeadsController.getAccessKeyAndSaveLead(
-                              gv.saveLeadRequestModelNew,
-                              gv.imageList,
-                              context);
-                        },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            side: BorderSide(color: HexColor("#1C99D4"))),
-                        color: HexColor("#1C99D4"),
-                        child: Text(
-                          'CREATE NEW LEAD',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                      Expanded(
+                        child: FlatButton(
+                          onPressed: () {
+                            SaveLeadRequestModel saveLeadRequestModelNew =
+                                gv.saveLeadRequestModelNew;
+                            saveLeadRequestModelNew.isStatus = "true";
+                            _addLeadsController.getAccessKeyAndSaveLead(
+                                gv.saveLeadRequestModelNew,
+                                gv.imageList,
+                                context);
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              side: BorderSide(color: HexColor("#1C99D4"))),
+                          color: HexColor("#1C99D4"),
+                          child: Text(
+                            'CREATE NEW LEAD',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       )
                     ],
@@ -603,14 +612,14 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                                     ]),
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton(
+                                    isDense: true,
                                     // elevation: 100,
 
                                     value: _selectedValue,
                                     items: leadStatusEntity
                                         .map((label) => DropdownMenuItem(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0),
+                                              child: SizedBox(
+                                                width: 150,
                                                 child: Text(
                                                   label.leadStatusDesc,
                                                   style: TextStyle(
@@ -2073,10 +2082,16 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                             ),
                           ),
                           onPressed: () async {
-                            // //  print(_listInfluencerDetail[
-                            //   _listInfluencerDetail.length - 1]
-                            //       .inflName);
-                            if (_listInfluencerDetail[
+                            if (_listInfluencerDetail.length == 0) {
+                              print("yoyo");
+                              InfluencerDetail inf0 =
+                                  new InfluencerDetail(isExpanded: true);
+                              setState(() {
+                                // _listInfluencerDetail[0]
+                                //     .isExpanded = false;
+                                _listInfluencerDetail.add(inf0);
+                              });
+                            } else if (_listInfluencerDetail[
                                             _listInfluencerDetail.length - 1]
                                         .inflName !=
                                     null &&
@@ -2448,6 +2463,10 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                                                               .withOpacity(0.5),
                                                           fontSize: 25),
                                                     ),
+                                                    _commentsList[_commentsList.length - 1]
+                                                        .commentedAt !=
+                                                        null
+                                                        ?
                                                     Text(
                                                       _commentsList[index]
                                                           .commentedAt
@@ -2456,7 +2475,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                                                           color: Colors.black
                                                               .withOpacity(0.5),
                                                           fontSize: 15),
-                                                    ),
+                                                    ):Container(),
                                                   ],
                                                 ),
                                                 SizedBox(
@@ -2497,16 +2516,21 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                                                   Colors.black.withOpacity(0.5),
                                               fontSize: 25),
                                         ),
-                                        Text(
-                                          _commentsList[
-                                                  _commentsList.length - 1]
-                                              .commentedAt
-                                              .toString(),
-                                          style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.5),
-                                              fontSize: 15),
-                                        ),
+                                        _commentsList[_commentsList.length - 1]
+                                                    .commentedAt !=
+                                                null
+                                            ? Text(
+                                                _commentsList[
+                                                        _commentsList.length -
+                                                            1]
+                                                    .commentedAt
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontSize: 15),
+                                              )
+                                            : Container(),
                                       ],
                                     ),
                                     SizedBox(

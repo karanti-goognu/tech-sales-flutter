@@ -199,7 +199,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
           .then((data) async {
         print("here");
-        print(data.siteVisitHistoryEntity);
+        print(json.encode(data.siteVisitHistoryEntity));
         viewSiteDataResponse = data;
 
         // print(viewSiteDataResponse);
@@ -1306,6 +1306,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   // hint: Text('Rating'),
                                   onChanged: (value) {
                                     setState(() {
+                                      FocusScope.of(context).requestFocus(new FocusNode());
                                       _selectedSiteFloor = value;
                                     });
                                   },
@@ -2239,6 +2240,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               // hint: Text('Rating'),
               onChanged: (value) {
                 setState(() {
+                  FocusScope.of(context).requestFocus(new FocusNode());
                   _selectedConstructionTypeVisit = value;
                   print(_selectedConstructionTypeVisit.id);
                   siteFloorsEntityNew = new List();
@@ -2382,6 +2384,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
               // hint: Text('Rating'),
               onChanged: (value) async {
+                FocusScope.of(context).requestFocus(new FocusNode());
                 print("Brand Value");
                 print(value);
                 siteProductEntityfromLoaclDB = new List();
@@ -4468,6 +4471,48 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   labelText: "Sub-Dealer",
                                 ),
                               ),
+                              SizedBox(height: 16),
+                              TextFormField(
+                                readOnly: true,
+                                initialValue:
+                                siteVisitHistoryEntity[index].supplyQty,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: FormFieldStyle.buildInputDecoration(
+                                  labelText: "Supplied Quantity",
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextFormField(
+                                readOnly: true,
+                                initialValue:
+                                siteVisitHistoryEntity[index].supplyDate,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: FormFieldStyle.buildInputDecoration(
+                                  labelText: "Supplied Date",
+                                ),
+                              ),
+                              // SizedBox(height: 16),
+                              // TextFormField(
+                              //   readOnly: true,
+                              //   initialValue:
+                              //   siteVisitHistoryEntity[index].shipToParty,
+                              //   style: TextStyle(
+                              //       fontSize: 18,
+                              //       color: ColorConstants.inputBoxHintColor,
+                              //       fontFamily: "Muli"),
+                              //   keyboardType: TextInputType.text,
+                              //   decoration: FormFieldStyle.buildInputDecoration(
+                              //     labelText: "Next Visit Date",
+                              //   ),
+                              // ),
                             ],
                           );
                         }

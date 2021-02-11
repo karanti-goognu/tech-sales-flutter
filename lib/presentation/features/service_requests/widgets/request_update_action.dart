@@ -54,6 +54,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
           DropdownButtonFormField(
             onChanged: (value) {
               setState(() {
+                FocusScope.of(context).requestFocus(new FocusNode());
                 _requestNature = value;
               });
             },
@@ -210,6 +211,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                 .toList(),
             onChanged: (val) {
               setState(() {
+                FocusScope.of(context).requestFocus(new FocusNode());
                 _productComplaint = val;
               });
             },

@@ -272,7 +272,7 @@ class MyApiClientApp {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey));
-      print('Response body for calendar plan is : ${json.decode(response.body)}');
+      // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return CalendarPlanModel.fromJson(data);
@@ -290,7 +290,7 @@ class MyApiClientApp {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey));
-      print('Response body is : ${json.decode(response.body)}');
+      // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return CalendarDataByDay.fromJson(data);
@@ -308,7 +308,7 @@ class MyApiClientApp {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey));
-      print('Response body is : ${json.decode(response.body)}');
+      // print('Response body for Target Vs Actual is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return TargetVsActualModel.fromJson(data);

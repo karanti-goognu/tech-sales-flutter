@@ -97,6 +97,9 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
     startTimer();
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     switch (_source.keys.toList()[0]) {
@@ -259,6 +262,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
                                   afterValidateRequest(otpCode);
+                                  _loginController.attempts++;
                                 }
                               },
                               child: Padding(

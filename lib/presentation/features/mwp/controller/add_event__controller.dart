@@ -392,6 +392,9 @@ class AddEventController extends GetxController {
             final String formattedDate = formatter.format(date);
             this.nextVisitDate = formattedDate;
           }
+          if(this.visitResponseModel.mwpVisitModel.nextVisitDate == null){
+            this.nextVisitDate = "Next Visit Date";
+          }
 
           if (this.visitResponseModel.mwpVisitModel.visitType == null) {
             this.visitType = "PHYSICAL";
@@ -473,7 +476,8 @@ class AddEventController extends GetxController {
       final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
       MwpVisitModelUpdate mwpVisitModelUpdate;
       String url = "${UrlConstants.updateVisit}";
-      debugPrint('Url is : $url');
+      print('=============================');
+      // debugPrint('Url is : $url');
       if (this.visitActionType == "UPDATE") {
         print('update');
         mwpVisitModelUpdate = new MwpVisitModelUpdate(
@@ -564,6 +568,7 @@ class AddEventController extends GetxController {
         });
       } else if (this.visitActionType == "END") {
         print('end');
+        print(this.nextVisitDate);
         geolocator
             .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
             .then((Position position) {

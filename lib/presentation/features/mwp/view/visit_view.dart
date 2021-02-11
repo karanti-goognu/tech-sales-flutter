@@ -18,7 +18,7 @@ class AddEventVisit extends StatefulWidget {
 }
 
 class AddEventVisitScreenPageState extends State<AddEventVisit> {
-  String dropdownValue = 'RETENTION SITE';
+  // String dropdownValue;
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
@@ -28,6 +28,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   @override
   void initState() {
     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
+    // setState(() {
+    //   dropdownValue = 'RETENTION SITE';
+    // });
     super.initState();
   }
 

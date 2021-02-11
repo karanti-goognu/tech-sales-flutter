@@ -182,6 +182,7 @@ class AddEventInfluencerMeetScreenPageState
                               value: _addEventController.selectedVenueTypeMeet,
                               onChanged: (String newValue) {
                                 setState(() {
+                                  FocusScope.of(context).requestFocus(new FocusNode());
                                   dropdownValue = newValue;
                                   _addEventController.selectedVenueTypeMeet =
                                       newValue;

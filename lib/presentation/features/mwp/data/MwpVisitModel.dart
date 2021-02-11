@@ -40,6 +40,7 @@ class MwpVisitModelUpdate {
     visitEndTime = json['visitEndTime'];
     visitEndLat = json['visitEndLat'];
     visitEndLong = json['visitEndLong'];
+    nextVisitDate= json['nextVisitDate'];
     visitOutcomes = json['visitOutcomes'];
     remark = json['remark'];
   }
@@ -55,6 +56,7 @@ class MwpVisitModelUpdate {
     data['visitEndTime'] = this.visitEndTime;
     data['visitEndLat'] = this.visitEndLat;
     data['visitEndLong'] = this.visitEndLong;
+    data['nextVisitDate'] = this.nextVisitDate;
     data['visitOutcomes'] = this.visitOutcomes;
     data['remark'] = this.remark;
     return data;

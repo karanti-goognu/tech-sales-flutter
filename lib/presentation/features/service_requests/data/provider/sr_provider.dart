@@ -78,10 +78,10 @@ class MyApiClient {
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
       //+'&offset=30'
-      var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID),
+      var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=1'),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
-      serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
-      // print(response.body);
+        serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
+      print(response.body);
     }
     catch(e){
       print("Exception at SR Repo - SR List View $e");

@@ -121,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         itemCount: _leadsFilterController
                             .leadsListResponse.leadsEntity.length,
                         padding: const EdgeInsets.only(
-                            left: 10.0, right: 10, bottom: 10),
+                            left: 6.0, right: 6, bottom: 8),
                         // itemExtent: 125.0,
                         itemBuilder: (context, index) {
                           String selectedDateString = "empty";
@@ -246,7 +246,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                           style: TextStyle(
                                                               color: HexColor(
                                                                   "#6200EE"),
-                                                              fontSize: 10,
+                                                              fontSize: 8,
                                                               fontFamily:
                                                                   "Muli",
                                                               fontWeight:
@@ -310,7 +310,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
                                                         style: TextStyle(
                                                             // color: Colors.black38,
-                                                            fontSize: 15,
+                                                            // fontSize: 15,
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold
@@ -371,6 +371,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 children: [
                                                   Icon(
                                                     Icons.call,
+                                                    size: 14,
                                                     color: HexColor("#8DC63F"),
                                                   ),
                                                   Obx(
@@ -379,7 +380,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                       style: TextStyle(
                                                           color: HexColor(
                                                               "#1C99D4"),
-                                                          fontSize: 18,
+                                                          fontSize: 14,
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold,

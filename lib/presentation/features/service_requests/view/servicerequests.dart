@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial_material_design/flutter_speed_dial_material_design.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/sr_list_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/sitedetails.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/widgets/sr_filter.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -20,6 +18,7 @@ class ServiceRequests extends StatefulWidget {
 }
 
 class _ServiceRequestsState extends State<ServiceRequests> {
+  ScrollController _scrollController;
   bool isVisible = true;
   List<Text> tabs = [
     Text('Resolution Status'),
@@ -39,6 +38,13 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     });
   }
 
+  _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      print('hello');
+    }
+  }
+
   @override
   void initState() {
     getSRListData().whenComplete(() {
@@ -46,6 +52,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         serviceRequestComplaintListModel = data;
       });
     });
+    _scrollController = ScrollController();
+    _scrollController..addListener(_scrollListener);
+
     super.initState();
   }
 
@@ -80,7 +89,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                     print(value);
                     setState(() {
                       // totalFilters = value.isEmpty ? value[3] : 0;
-                      totalFilters = value[3] ;
+                      totalFilters = value[3];
                     });
                     print("------+$totalFilters");
                     eventController.getAccessKey().then((accessKeyModel) {
@@ -145,7 +154,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         automaticallyImplyLeading: false,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+      floatingActionButton:
+          SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
       bottomNavigationBar: BottomNavigator(),
       body: data == null
           ? Center(
@@ -197,9 +207,11 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   serviceRequestComplaintListModel.srComplaintListModal != null
                       ? Expanded(
                           child: ListView.builder(
+                              controller: _scrollController,
                               itemCount: serviceRequestComplaintListModel
                                   .srComplaintListModal.length,
                               itemBuilder: (context, index) {
+                                // print(serviceRequestComplaintListModel.srComplaintListModal.length);
                                 return GestureDetector(
                                   onTap: () {
                                     // _updateServiceRequestController.siteId = serviceRequestComplaintListModel
@@ -507,7 +519,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   Padding bottomRowWithRequestId(int index) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(6.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

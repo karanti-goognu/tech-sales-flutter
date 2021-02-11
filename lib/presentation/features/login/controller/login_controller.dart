@@ -7,10 +7,12 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryO
 import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/repository/login_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +34,9 @@ class LoginController extends GetxController {
   final _empId = "_empty".obs;
   final _otpCode = "_empty".obs;
   final _retryOtpActive = false.obs;
+  final _attempts = 0.obs;
+
+  get attempts => this._attempts;
 
   get loginResponse => this._loginResponse.value;
 
@@ -48,6 +53,11 @@ class LoginController extends GetxController {
   get otpCode => this._otpCode.value;
 
   get retryOtpActive => this._retryOtpActive.value;
+
+  set attempts(value){
+    print(value);
+    this._attempts.value = value;
+  }
 
   set loginResponse(value) => this._loginResponse.value = value;
 
@@ -172,7 +182,48 @@ class LoginController extends GetxController {
 
           openSplashScreen();
         } else {
-          Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
+          print("incorrect otp");
+          print(this.attempts);
+          if(this.attempts>2){
+            Get.dialog(
+                AlertDialog(
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text(
+                          validateOtpResponse.respMsg,
+                          style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              height: 1.4,
+                              letterSpacing: .25,
+                              fontStyle: FontStyle.normal,
+                              color: ColorConstants.inputBoxHintColorDark),
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text(
+                        'OK',
+                        style: GoogleFonts.roboto(
+                            fontSize: 20,
+                            letterSpacing: 1.25,
+                            fontStyle: FontStyle.normal,
+                            color: ColorConstants.buttonNormalColor),
+                      ),
+                      onPressed: () {
+                        this.attempts=0;
+                        Get.toNamed(Routes.LOGIN);
+                      },
+                    ),
+                  ],
+                )
+            );
+          }
+          else{
+            Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
+          }
         }
       }
     });

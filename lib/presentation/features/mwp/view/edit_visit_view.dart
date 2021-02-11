@@ -33,7 +33,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
   @override
   void initState() {
-    print(_addEventController.visitActionType);
+    print(_addEventController.visitRemarks.runtimeType);
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
     super.initState();
   }
@@ -366,7 +366,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                         null)
                                 ? TextFormField(
                                     initialValue:
-                                        _addEventController.visitRemarks,
+                                        _addEventController.visitRemarks=='null'?'':_addEventController.visitRemarks,
                                     onChanged: (_) {
                                       _addEventController.visitRemarks =
                                           _.toString();
@@ -611,6 +611,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         final String formattedDate = formatter.format(picked);
         selectedDateString = formattedDate;
         this._addEventController.nextVisitDate = selectedDateString;
+        print(this._addEventController.nextVisitDate);
       });
   }
 }

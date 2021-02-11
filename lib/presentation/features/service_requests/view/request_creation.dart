@@ -350,6 +350,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                       : null,
                                   onChanged: (value) {
                                     setState(() {
+                                      FocusScope.of(context).requestFocus(new FocusNode());
                                       creatorType = value;
                                     });
                                     getRequestorData(value);
