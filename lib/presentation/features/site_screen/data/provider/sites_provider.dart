@@ -153,7 +153,7 @@ class MyApiClientSites {
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
 
-      print('Response body is  ---: ${json.decode(response.body)}');
+      print('Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
       if (response.statusCode == 200) {
         Get.back();
         var data = json.decode(response.body);

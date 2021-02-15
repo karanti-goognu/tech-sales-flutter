@@ -227,6 +227,7 @@ class AddEventController extends GetxController {
   set selectedVenueTypeMeet(value) => this._selectedVenueTypeMeet.value = value;
 
   saveVisit(String accessKey) {
+    Future.delayed(Duration.zero,()=>Get.dialog(CircularProgressIndicator()));
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -255,6 +256,7 @@ class AddEventController extends GetxController {
         if (data == null) {
           debugPrint('Save Visit Response is null');
         } else {
+          Get.back();
           this.saveVisitResponse = data;
           this.visitDateTime = "Visit Date";
           this.visitRemarks = "";
@@ -323,7 +325,11 @@ class AddEventController extends GetxController {
   }
 
   getDealersList(String accessKey) async {
-    this.isLoading = true;
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    // this.isLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -331,7 +337,7 @@ class AddEventController extends GetxController {
       String url = UrlConstants.getDealersList + "$empId";
       print('$url');
       repository.getDealerList(accessKey, userSecurityKey, url).then((data) {
-        this.isLoading = false;
+        // this.isLoading = false;
         if (data == null) {
           debugPrint('Dealer List Response is null');
         } else {
@@ -348,6 +354,7 @@ class AddEventController extends GetxController {
                   false));
             }
           }
+          Get.back();
           if (dealerListResponse.respCode == "MWP2013") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('${dealerListResponse.respMsg}');
@@ -462,7 +469,11 @@ class AddEventController extends GetxController {
   }
 
   updateVisit(String accessKey) {
-    this.isLoadingVisitView = true;
+    // this.isLoadingVisitView = true;
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -496,12 +507,13 @@ class AddEventController extends GetxController {
         );
         print('&&&&&&');
         print(json.encode(mwpVisitModelUpdate));
-        mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
+        // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
         repository
             .updateVisitPlan(accessKey, userSecurityKey, url,
                 new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
             .then((data) {
-          this.isLoadingVisitView = false;
+          // this.isLoadingVisitView = false;
+          Get.back();
           if (data == null) {
             debugPrint('Update Visit Response is null');
           } else {
@@ -539,10 +551,10 @@ class AddEventController extends GetxController {
               "",
               0.0,
               0.0,
-              this.nextVisitDate,
+              this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
               this.visitOutcomes,
               this.visitRemarks);
-          mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
+          // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
                   new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
@@ -586,10 +598,10 @@ class AddEventController extends GetxController {
               dateFormat.format(DateTime.now()),
               journeyEndLat,
               journeyEndLong,
-              this.nextVisitDate,
+              this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
               this.visitOutcomes,
               this.visitRemarks);
-          mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
+          // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
                   new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
@@ -624,7 +636,7 @@ class AddEventController extends GetxController {
             "",
             0.0,
             0.0,
-            this.nextVisitDate,
+            this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
             this.visitOutcomes,
             this.visitRemarks);
       }

@@ -8,7 +8,6 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoRequests extends StatefulWidget{
@@ -101,12 +100,13 @@ class _VideoRequestsState extends State<VideoRequests> {
                           // activityVideo(context, index);
                         },
                         child: Card(
+                          margin: EdgeInsets.symmetric(vertical: 8),
                           clipBehavior: Clip.antiAlias,
                           borderOnForeground: true,
                           elevation: 6,
                           color: Colors.white,
                           child: Container(
-                            height: 120,
+                            // height: 120,
                             child: bottomRowWithRequestId(index),
                           ),
                         ),
@@ -153,39 +153,45 @@ class _VideoRequestsState extends State<VideoRequests> {
 
   Widget bottomRowWithRequestId(int index) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16,24.0,24.0,27),
+      // padding: const EdgeInsets.fromLTRB(16,24.0,24.0,27),
+      padding: const EdgeInsets.fromLTRB(0,0,0,0),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 80,
-              width: 100,
+              width: 120,
               color: Colors.grey,
               child: Image.network('${tsoAppTutorialListModel.tsoAppTutorial[index].thumbnailUrl}', fit: BoxFit.fill,),
             ),
-            SizedBox(width: 10,),
+            // SizedBox(width: 10,),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}",
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}",
+                        style: TextStyle(
+                            color: HexColor('#002A64'),
+                            fontSize: 14,
+                            fontFamily: "Muli",
+
+                        ),
+                      textAlign: TextAlign.left,
+                      ),
+                    Text("${tsoAppTutorialListModel.tsoAppTutorial[index].category}",
                       style: TextStyle(
                           color: HexColor('#002A64'),
-                          fontSize: 14,
+                          fontSize: 10,
                           fontFamily: "Muli",
+                          fontWeight: FontWeight.bold
+                        //fontWeight: FontWeight.normal
                       ),
-                    textAlign: TextAlign.left,
-                    ),
-                  Text("${tsoAppTutorialListModel.tsoAppTutorial[index].category}",
-                    style: TextStyle(
-                        color: HexColor('#002A64'),
-                        fontSize: 14,
-                        fontFamily: "Muli",
-                        fontWeight: FontWeight.bold
-                      //fontWeight: FontWeight.normal
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ],

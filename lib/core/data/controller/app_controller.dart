@@ -81,6 +81,7 @@ class AppController extends GetxController {
   }
 
    getAccessKey(int requestId) {
+    print("Here we go");
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),

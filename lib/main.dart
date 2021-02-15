@@ -18,6 +18,8 @@ void main() async {
     FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
+
 }
 
 class MyApp extends StatelessWidget {

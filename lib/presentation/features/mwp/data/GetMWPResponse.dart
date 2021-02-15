@@ -63,7 +63,7 @@ class MwpplanModel {
   String createdBy;
   int createdOn;
   int submittedOn;
-  Null approvedOn;
+  int approvedOn;
   Null rejectedOn;
   String actionedBy;
 

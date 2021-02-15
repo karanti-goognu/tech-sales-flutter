@@ -467,6 +467,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             automaticallyImplyLeading: false,
             backgroundColor: Colors.white,
             toolbarHeight: 180,
+            titleSpacing: 0,
             title: Stack(
               children: [
                 Positioned(

@@ -23,6 +23,8 @@ class AddEventInfluencerMeetScreenPageState
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
   int _value = 0;
+  TextEditingController dalmiaInfluencers = TextEditingController();
+  TextEditingController nonDalmiaInfluencers = TextEditingController();
 
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
@@ -34,6 +36,11 @@ class AddEventInfluencerMeetScreenPageState
     _addEventController.isLoading = true;
     super.initState();
   }
+
+  // void dispose() {
+  //   dalmiaInfluencers.clear();
+  //   nonDalmiaInfluencers.clear();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +129,7 @@ class AddEventInfluencerMeetScreenPageState
                       ),
                       _spaceBetweenFields(),
                       TextFormField(
+                        controller: dalmiaInfluencers,
                         validator: (value) {
                           if (value.isEmpty) {
                             return "Dalmia Influencers can't be empty";
@@ -138,8 +146,10 @@ class AddEventInfluencerMeetScreenPageState
                       ),
                       _spaceBetweenFields(),
                       TextFormField(
+                        controller: nonDalmiaInfluencers,
                           validator: (value) {
                             if (value.isEmpty) {
+                              print('called validator');
                               return "Non-Dalmia Influencers can't be empty ";
                             }
                             return null;
@@ -148,13 +158,18 @@ class AddEventInfluencerMeetScreenPageState
                             _addEventController.nonDalmiaInflCount =
                                 int.parse(_);
                           },
+                          onEditingComplete: (){
+                            print("Edit");
+                          },
+
                           style: _myFormFont(),
                           keyboardType: TextInputType.number,
                           decoration: _inputDecoration(
                               "Non-Dalmia Influencers", false)),
                       _spaceBetweenFields(),
                       Text('Total Participants'),
-                      Obx(() => Container(
+                      Obx(() =>
+                          Container(
                           margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
                           width: double.infinity,
                           padding: const EdgeInsets.all(16),
@@ -165,7 +180,16 @@ class AddEventInfluencerMeetScreenPageState
                                   color:
                                       ColorConstants.inputBoxBorderSideColor)),
                           child: Text(
-                              "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}"))),
+                            // "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}  ,${dalmiaInfluencers.text.length} " +
+                              // dalmiaInfluencers.text.length.toString()
+                            // (int.parse(dalmiaInfluencers.text.length!=0?dalmiaInfluencers.text:"0")+int.parse(nonDalmiaInfluencers.text.length!=0?nonDalmiaInfluencers.text:"0")).toString()
+                            // "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}"
+                            "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}  ,${(int.parse(dalmiaInfluencers.text.length!=0?dalmiaInfluencers.text:"0")+int.parse(nonDalmiaInfluencers.text.length!=0?nonDalmiaInfluencers.text:"0"))}".substring("${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}  ,${(int.parse(dalmiaInfluencers.text.length!=0?dalmiaInfluencers.text:"0")+int.parse(nonDalmiaInfluencers.text.length!=0?nonDalmiaInfluencers.text:"0"))}".lastIndexOf(',')+1)
+                          ),
+                      ),
+                      ),
+                      // Text("${dalmiaInfluencers.text.length} dalmia"),
+                      // Text("${nonDalmiaInfluencers.text.length} nondalmia"),
                       _spaceBetweenFields(),
                       Container(
                           width: double.infinity,

@@ -248,7 +248,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                   return GestureDetector(
                     onTap: () {
                       // print('${_calendarEventController.listOfEvents[index].eventType}');
-
                       if (_calendarEventController
                               .listOfEvents[index].eventType ==
                           'VISIT') {

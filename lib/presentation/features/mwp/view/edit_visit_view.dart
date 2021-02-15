@@ -62,400 +62,463 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     SizeConfig().init(context);
 
     return SafeArea(
-        child: Obx(
-      () => (_addEventController.isLoadingVisitView == false)
-          ? (_addEventController.visitResponseModel.mwpVisitModel != null)
-              ? Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "View Event",
-                              style: TextStyle(
-                                  color: ColorConstants.greenText,
-                                  fontFamily: "Muli-Semibold.ttf",
-                                  fontSize: 20,
-                                  letterSpacing: .15),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.white,
-                              border: Border.all(
-                                  color:
-                                      ColorConstants.inputBoxBorderSideColor)),
-                          child: Obx(
-                            () => DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: _addEventController.visitSubType,
-                                onChanged: (String newValue) {
-                                  if (_addEventController.visitSubType ==
-                                      "RETENTION SITE") {
-                                    siteIdText = "Site ID";
-                                  } else if (_addEventController.visitSubType ==
-                                      "LEADS") {
-                                    siteIdText = "Lead ID";
-                                  } else if (_addEventController.visitSubType ==
-                                      "CONVERSION OPPORTUNITY") {
-                                    siteIdText = "Site ID";
-                                  } else if (_addEventController.visitSubType ==
-                                      "COUNTER") {
-                                    siteIdText = "COUNTER Code";
-                                  } else if (_addEventController.visitSubType ==
-                                      "TECHNOCRAT") {
-                                    siteIdText = "Technocrat ID";
-                                  }
-                                },
-                                items: <String>[
-                                  'RETENTION SITE',
-                                  'LEADS',
-                                  'CONVERSION OPPORTUNITY',
-                                  'COUNTER',
-                                  'TECHNOCRAT'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(
-                                      value,
-                                      style: GoogleFonts.roboto(
-                                          color: ColorConstants
-                                              .inputBoxHintColorDark,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 16.0),
-                                    ),
-                                  );
-                                }).toList(),
+        child: Obx(() =>
+        // (_addEventController.isLoadingVisitView == false) ?
+        (_addEventController.visitResponseModel.mwpVisitModel != null)
+                ? Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                "View Event",
+                                style: TextStyle(
+                                    color: ColorConstants.greenText,
+                                    fontFamily: "Muli-Semibold.ttf",
+                                    fontSize: 20,
+                                    letterSpacing: .15),
                               ),
                             ),
-                          )),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            TextFormField(
-                              initialValue: _addEventController.visitSiteId,
-                              enabled: false,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return "Site ID can't be empty";
-                                }
-                                return null;
-                              },
-                              onChanged: (_) {
-                                _addEventController.visitSiteId = _.toString();
-                              },
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                              keyboardType: TextInputType.text,
-                              decoration: _inputDecoration(
-                                  "${_visitSubType(_addEventController.visitSubType)}",
-                                  false),
-                            ),
-                            SizedBox(height: 16),
-                            Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: ColorConstants
-                                            .inputBoxBorderSideColor)),
-                                child: Obx(
-                                  () => DropdownButtonHideUnderline(
-                                    child: DropdownButton<String>(
-                                      value: _addEventController.visitType,
-                                      onChanged: (String newValue) {
-                                        setState(() {
-                                          _addEventController.visitType =
-                                              newValue;
-                                        });
-                                      },
-                                      items: <String>[
-                                        'PHYSICAL',
-                                        'VIRTUAL',
-                                      ].map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: GoogleFonts.roboto(
-                                                color: ColorConstants
-                                                    .inputBoxHintColorDark,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 16.0),
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                )),
-                            SizedBox(height: 16),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(2),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      width: 1,
-                                      color: ColorConstants.lineColorFilter)),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Obx(
-                                        () => Text(
-                                          // "${this._addEventController.visitDateTime}",
-                                          "${this._addEventController.visitViewDateTime}",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: ColorConstants.blackColor,
-                                              fontFamily: "Muli"),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          _selectDate(context);
-                                        },
-                                        child: Icon(
-                                          Icons.calendar_today_sharp,
-                                          color: Colors.orange,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
                                 color: Colors.white,
                                 border: Border.all(
-                                    width: 1,
-                                    color: ColorConstants.lineColorFilter),
+                                    color: ColorConstants
+                                        .inputBoxBorderSideColor)),
+                            child: Obx(
+                              () =>
+
+                              (_addEventController.visitResponseModel
+                                  .mwpVisitModel.visitStartTime ==
+                                  null &&
+                                  _addEventController.visitResponseModel
+                                      .mwpVisitModel.visitEndTime ==
+                                      null)
+                                  || (_addEventController
+                                  .visitResponseModel
+                                  .mwpVisitModel
+                                  .visitStartTime !=
+                                  null &&
+                                  _addEventController.visitResponseModel
+                                      .mwpVisitModel.visitEndTime ==
+                                      null)
+                                  ?
+                                  DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: _addEventController.visitSubType,
+                                  onChanged: (String newValue) {
+                                    if (_addEventController.visitSubType ==
+                                        "RETENTION SITE") {
+                                      siteIdText = "Site ID";
+                                    } else if (_addEventController
+                                            .visitSubType ==
+                                        "LEADS") {
+                                      siteIdText = "Lead ID";
+                                    } else if (_addEventController
+                                            .visitSubType ==
+                                        "CONVERSION OPPORTUNITY") {
+                                      siteIdText = "Site ID";
+                                    } else if (_addEventController
+                                            .visitSubType ==
+                                        "COUNTER") {
+                                      siteIdText = "COUNTER Code";
+                                    } else if (_addEventController
+                                            .visitSubType ==
+                                        "TECHNOCRAT") {
+                                      siteIdText = "Technocrat ID";
+                                    }
+                                  },
+                                  items: <String>[
+                                    'RETENTION SITE',
+                                    'LEADS',
+                                    'CONVERSION OPPORTUNITY',
+                                    'COUNTER',
+                                    'TECHNOCRAT'
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: GoogleFonts.roboto(
+                                            color: ColorConstants
+                                                .inputBoxHintColorDark,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 16.0),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ):
+
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(_addEventController.visitSubType,style: GoogleFonts.roboto(
+                                    color: ColorConstants
+                                        .inputBoxHintColorDark,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 16.0),),
                               ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Obx(() => Text(
-                                            "${this._addEventController.nextVisitDate}",
+                            )),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              TextFormField(
+                                initialValue: _addEventController.visitSiteId,
+                                enabled: false,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Site ID can't be empty";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (_) {
+                                  _addEventController.visitSiteId =
+                                      _.toString();
+                                },
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: _inputDecoration(
+                                    "${_visitSubType(_addEventController.visitSubType)}",
+                                    false),
+                              ),
+                              SizedBox(height: 16),
+                              Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: ColorConstants
+                                              .inputBoxBorderSideColor)),
+                                  child: Obx(
+                                    () =>
+
+                                    (_addEventController.visitResponseModel
+                                        .mwpVisitModel.visitStartTime ==
+                                        null &&
+                                        _addEventController.visitResponseModel
+                                            .mwpVisitModel.visitEndTime ==
+                                            null)
+                                        || (_addEventController
+                                        .visitResponseModel
+                                        .mwpVisitModel
+                                        .visitStartTime !=
+                                        null &&
+                                        _addEventController.visitResponseModel
+                                            .mwpVisitModel.visitEndTime ==
+                                            null)
+                                        ?
+
+
+                                        DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        value: _addEventController.visitType,
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            _addEventController.visitType =
+                                                newValue;
+                                          });
+                                        },
+                                        items: <String>[
+                                          'PHYSICAL',
+                                          'VIRTUAL',
+                                        ].map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: GoogleFonts.roboto(
+                                                  color: ColorConstants
+                                                      .inputBoxHintColorDark,
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 16.0),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ):
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(_addEventController.visitType,
+                                        style: GoogleFonts.roboto(
+                                            color: ColorConstants
+                                                .inputBoxHintColorDark,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 16.0),),
+                                    ),
+                                  )),
+                              SizedBox(height: 16),
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(2),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        width: 1,
+                                        color: ColorConstants.lineColorFilter)),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Obx(
+                                          () => Text(
+                                            // "${this._addEventController.visitDateTime}",
+                                            "${this._addEventController.visitViewDateTime}",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color:
                                                     ColorConstants.blackColor,
                                                 fontFamily: "Muli"),
-                                          )),
-                                      GestureDetector(
-                                        onTap: () {
-                                          _selectDateNextVisit(context);
-                                        },
-                                        child: Icon(
-                                          Icons.calendar_today_sharp,
-                                          color: Colors.orange,
+                                          ),
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                        GestureDetector(
+                                          onTap: () {
+                                            _selectDate(context);
+                                          },
+                                          child: Icon(
+                                            Icons.calendar_today_sharp,
+                                            color: Colors.orange,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            (_addEventController.visitSubType == "COUNTER" &&
-                                    _addEventController.visitResponseModel
-                                            .mwpVisitModel.visitStartTime ==
-                                        null &&
-                                    _addEventController.visitResponseModel
-                                            .mwpVisitModel.visitEndTime ==
-                                        null)
-                                ? Container()
-                                : (_addEventController.visitSubType ==
-                                            "COUNTER" &&
-                                        _addEventController.visitResponseModel
-                                                .mwpVisitModel.visitStartTime !=
-                                            null &&
-                                        _addEventController.visitResponseModel
-                                                .mwpVisitModel.visitEndTime ==
-                                            null)
-                                    ? DropdownButtonFormField(
-                                        validator: (value) => value == null
-                                            ? 'Please select Visit Outcome Type'
-                                            : null,
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      width: 1,
+                                      color: ColorConstants.lineColorFilter),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Obx(() => Text(
+                                              "${this._addEventController.nextVisitDate}",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:
+                                                      ColorConstants.blackColor,
+                                                  fontFamily: "Muli"),
+                                            )),
+                                        GestureDetector(
+                                          onTap: () {
+                                            _selectDateNextVisit(context);
+                                          },
+                                          child: Icon(
+                                            Icons.calendar_today_sharp,
+                                            color: Colors.orange,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              (_addEventController.visitSubType == "COUNTER" &&
+                                      _addEventController.visitResponseModel
+                                              .mwpVisitModel.visitStartTime ==
+                                          null &&
+                                      _addEventController.visitResponseModel
+                                              .mwpVisitModel.visitEndTime ==
+                                          null)
+                                  ? Container()
+                                  : (_addEventController.visitSubType ==
+                                              "COUNTER" &&
+                                          _addEventController
+                                                  .visitResponseModel
+                                                  .mwpVisitModel
+                                                  .visitStartTime !=
+                                              null &&
+                                          _addEventController.visitResponseModel
+                                                  .mwpVisitModel.visitEndTime ==
+                                              null)
+                                      ? DropdownButtonFormField(
+                                          validator: (value) => value == null
+                                              ? 'Please select Visit Outcome Type'
+                                              : null,
 
-                                        onChanged: (value) {
-                                          print(value);
-                                          _addEventController.visitOutcomes =
-                                              value;
-                                        },
-                                        items: [
-                                          'RAPPORT BUILDING',
-                                          'DEMAND GENERATION',
-                                          'EVENT PLANNING',
-                                          'EVENT EXECUTION',
-                                          'OTHERS'
-                                        ]
-                                            .map((e) => DropdownMenuItem(
-                                                  child: Text(
-                                                    e.toUpperCase(),
-                                                  ),
-                                                  value: e,
-                                                ))
-                                            .toList(),
-                                        style:
-                                            FormFieldStyle.formFieldTextStyle,
-                                        decoration:
-                                            FormFieldStyle.buildInputDecoration(
-                                                labelText: "Visit Outcome"),
-                                        // ),
-                                      )
-                                    : _addEventController.visitSubType ==
-                                            "COUNTER"
-                                        ? TextFormField(
-                                            readOnly: true,
-                                            decoration: FormFieldStyle
-                                                .buildInputDecoration(
-                                              hintText: _addEventController
-                                                  .visitOutcomes,
-                                            ),
-                                          )
-                                        : Container(),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Obx(() => (_addEventController.visitResponseModel
-                                            .mwpVisitModel.visitStartTime ==
-                                        null &&
-                                    _addEventController.visitResponseModel
-                                            .mwpVisitModel.visitEndTime ==
-                                        null)
-                                ? TextFormField(
-                                    initialValue:
-                                        _addEventController.visitRemarks=='null'?'':_addEventController.visitRemarks,
-                                    onChanged: (_) {
-                                      _addEventController.visitRemarks =
-                                          _.toString();
-                                    },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    maxLines: 3,
-                                    decoration:
-                                        _inputDecoration("Remarks", false))
-                                : (_addEventController.visitResponseModel
-                                                .mwpVisitModel.visitStartTime !=
-                                            null &&
-                                        _addEventController.visitResponseModel
-                                                .mwpVisitModel.visitEndTime ==
-                                            null)
-                                    ? TextFormField(
-                                        initialValue: _addEventController.visitRemarks,
-                                        onChanged: (_) {
-                                          _addEventController.visitRemarks =
-                                              _.toString();
-                                        },
-                                        style: TextStyle(fontSize: 18, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
-                                        maxLines: 3,
-                                        decoration: _inputDecoration("Remarks", false))
-                                    : TextFormField(
-                                        readOnly: true,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return 'Please enter remarks ';
-                                          }
-                                          return null;
-                                        },
-                                        initialValue: _addEventController.visitRemarks,
-                                        onChanged: (_) {
-                                          _addEventController.visitRemarks =
-                                              _.toString();
-                                        },
-                                        style: TextStyle(fontSize: 18, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
-                                        keyboardType: TextInputType.text,
-                                        maxLines: 3,
-                                        decoration: _inputDecoration("Remarks", false))),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Obx(() => (_addEventController.visitResponseModel
-                                            .mwpVisitModel.visitStartTime ==
-                                        null &&
-                                    _addEventController.visitResponseModel
-                                            .mwpVisitModel.visitEndTime ==
-                                        null)
-                                ? returnUpdateRow()
-                                : (_addEventController.visitResponseModel
-                                                .mwpVisitModel.visitStartTime !=
-                                            null &&
-                                        _addEventController.visitResponseModel
-                                                .mwpVisitModel.visitEndTime ==
-                                            null)
-                                    ? returnEndRow()
-                                    : Container()),
-                            SizedBox(height: 50),
-                          ],
-                        ),
-                      )
-                    ],
-                  ))
-              : Container()
-          : Container(
-              height: MediaQuery.of(context).size.height,
-              child: Center(
-                child: CircularProgressIndicator(),
-              )),
-      //      Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               children: [
-      //                 Expanded(
-      //                   flex: 1,
-      //                   child: Text(
-      //                     "Please wait, Loading Data..",
-      //                     style: TextStyle(
-      //                         color: ColorConstants.greenText,
-      //                         fontFamily: "Muli-Semibold.ttf",
-      //                         fontSize: 20,
-      //                         letterSpacing: .15),
-      //                   ),
-      //                 ),
-      //               ],
-      //             )
+                                          onChanged: (value) {
+                                            print(value);
+                                            _addEventController.visitOutcomes =
+                                                value;
+                                          },
+                                          items: [
+                                            'RAPPORT BUILDING',
+                                            'DEMAND GENERATION',
+                                            'EVENT PLANNING',
+                                            'EVENT EXECUTION',
+                                            'OTHERS'
+                                          ]
+                                              .map((e) => DropdownMenuItem(
+                                                    child: Text(
+                                                      e.toUpperCase(),
+                                                    ),
+                                                    value: e,
+                                                  ))
+                                              .toList(),
+                                          style:
+                                              FormFieldStyle.formFieldTextStyle,
+                                          decoration: FormFieldStyle
+                                              .buildInputDecoration(
+                                                  labelText: "Visit Outcome"),
+                                          // ),
+                                        )
+                                      : _addEventController.visitSubType ==
+                                              "COUNTER"
+                                          ? TextFormField(
+                                              readOnly: true,
+                                              decoration: FormFieldStyle
+                                                  .buildInputDecoration(
+                                                hintText: _addEventController
+                                                    .visitOutcomes,
+                                              ),
+                                            )
+                                          : Container(),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Obx(() => (_addEventController.visitResponseModel
+                                              .mwpVisitModel.visitStartTime ==
+                                          null &&
+                                      _addEventController.visitResponseModel.mwpVisitModel.visitEndTime ==
+                                          null)
+                                  ? TextFormField(
+                                      initialValue: _addEventController.visitRemarks == 'null'
+                                          ? ''
+                                          : _addEventController.visitRemarks,
+                                      onChanged: (_) {
+                                        _addEventController.visitRemarks =
+                                            _.toString();
+                                      },
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color:
+                                              ColorConstants.inputBoxHintColor,
+                                          fontFamily: "Muli"),
+                                      maxLines: 3,
+                                      decoration:
+                                          _inputDecoration("Remarks", false))
+                                  : (_addEventController
+                                                  .visitResponseModel
+                                                  .mwpVisitModel
+                                                  .visitStartTime !=
+                                              null &&
+                                          _addEventController.visitResponseModel
+                                                  .mwpVisitModel.visitEndTime ==
+                                              null)
+                                      ? TextFormField(
+                                          initialValue: _addEventController.visitRemarks,
+                                          onChanged: (_) {
+                                            _addEventController.visitRemarks =
+                                                _.toString();
+                                          },
+                                          style: TextStyle(fontSize: 18, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
+                                          maxLines: 3,
+                                          decoration: _inputDecoration("Remarks", false))
+                                      : TextFormField(
+                                          readOnly: true,
+                                          validator: (value) {
+                                            if (value.isEmpty) {
+                                              return 'Please enter remarks ';
+                                            }
+                                            return null;
+                                          },
+                                          initialValue: _addEventController.visitRemarks,
+                                          onChanged: (_) {
+                                            _addEventController.visitRemarks =
+                                                _.toString();
+                                          },
+                                          style: TextStyle(fontSize: 18, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
+                                          keyboardType: TextInputType.text,
+                                          maxLines: 3,
+                                          decoration: _inputDecoration("Remarks", false))),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Obx(() => (_addEventController.visitResponseModel
+                                              .mwpVisitModel.visitStartTime ==
+                                          null &&
+                                      _addEventController.visitResponseModel
+                                              .mwpVisitModel.visitEndTime ==
+                                          null)
+                                  ? returnUpdateRow()
+                                  : (_addEventController
+                                                  .visitResponseModel
+                                                  .mwpVisitModel
+                                                  .visitStartTime !=
+                                              null &&
+                                          _addEventController.visitResponseModel
+                                                  .mwpVisitModel.visitEndTime ==
+                                              null)
+                                      ? returnEndRow()
+                                      : Container()),
+                              SizedBox(height: 50),
+                            ],
+                          ),
+                        )
+                      ],
+                    ))
+                : Container()
+            // : Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Expanded(
+            //         flex: 1,
+            //         child: Text(
+            //           "Please wait, Loading Data..",
+            //           style: TextStyle(
+            //               color: ColorConstants.greenText,
+            //               fontFamily: "Muli-Semibold.ttf",
+            //               fontSize: 20,
+            //               letterSpacing: .15),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
     ));
   }
 

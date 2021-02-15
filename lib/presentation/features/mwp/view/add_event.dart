@@ -53,8 +53,7 @@ class AddEventScreenPageState extends State<AddEvent> {
               ),
             ),
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigatorWithoutDraftsAndSearch(),
         ));
   }

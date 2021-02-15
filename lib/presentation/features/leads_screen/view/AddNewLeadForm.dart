@@ -37,7 +37,7 @@ class AddNewLeadForm extends StatefulWidget {
 class _AddNewLeadFormState extends State<AddNewLeadForm> {
   final db = DraftLeadDBHelper();
 
-  final _formKey = GlobalKey<FormState>();
+  final _formKeyForNewLeadForm = GlobalKey<FormState>();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
   LocationResult _pickedLocation;
@@ -115,6 +115,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   @override
   void dispose() {
     super.dispose();
+    _formKeyForNewLeadForm.currentState.dispose();
     //_addLeadsController.dispose();
     // _formKey.currentState.dispose();
   }
@@ -381,7 +382,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       ],
                     ))),
             Form(
-              key: _formKey,
+              key: _formKeyForNewLeadForm,
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(

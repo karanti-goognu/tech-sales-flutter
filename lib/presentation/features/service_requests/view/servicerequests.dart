@@ -33,9 +33,11 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   int totalFilters;
   var data;
   getSRListData() async {
+    // Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     await eventController.getAccessKey().then((value) async {
       data = await eventController.getSrListData(value.accessKey);
     });
+    // Get.back();
   }
 
   _scrollListener() {
@@ -247,7 +249,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                                                       'SERVICE REQUEST'
                                                   ? HexColor('#9E3A0D')
                                                   : HexColor('#F9A61A'),
-                                              height: 165,
+                                              height: 175,
                                             ),
                                           ),
                                           Expanded(
@@ -523,37 +525,42 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            "Request Id (${serviceRequestComplaintListModel.srComplaintListModal[index].srComplaintId}) "
-                .toUpperCase(),
-            style: TextStyle(
-                color: HexColor('#002A64'),
-                fontSize: 12,
-                fontFamily: "Muli",
-                fontWeight: FontWeight.bold
-                //fontWeight: FontWeight.normal
-                ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Get.to(
-                  SiteDetails(
-                    siteId: serviceRequestComplaintListModel
-                        .srComplaintListModal[index].siteId
-                        .toString(),
-                  ),
-                  transition: Transition.rightToLeft);
-            },
+          Expanded(
             child: Text(
-              "${serviceRequestComplaintListModel.srComplaintListModal[index].summarySrOfSite}",
+              "Request Id (${serviceRequestComplaintListModel.srComplaintListModal[index].srComplaintId}) "
+                  .toUpperCase(),
               style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: HexColor('#007CBF'),
-                  fontSize: 10,
+                  color: HexColor('#002A64'),
+                  fontSize: 12,
                   fontFamily: "Muli",
                   fontWeight: FontWeight.bold
                   //fontWeight: FontWeight.normal
                   ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                Get.to(
+                    SiteDetails(
+                      siteId: serviceRequestComplaintListModel
+                          .srComplaintListModal[index].siteId
+                          .toString(),
+                    ),
+                    transition: Transition.rightToLeft);
+              },
+              child: Text(
+                "${serviceRequestComplaintListModel.srComplaintListModal[index].summarySrOfSite}",
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: HexColor('#007CBF'),
+                    fontSize: 10,
+                    fontFamily: "Muli",
+                    fontWeight: FontWeight.bold
+                    //fontWeight: FontWeight.normal
+                    ),
+              ),
             ),
           ),
         ],

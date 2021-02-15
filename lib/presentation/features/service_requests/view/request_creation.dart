@@ -87,7 +87,7 @@ class _RequestCreationState extends State<RequestCreation> {
   }
 
   List<String> suggestions = [];
-  final _formKey = GlobalKey<FormState>();
+  final _srCreationFormKey = GlobalKey<FormState>();
   TextEditingController _requestSubType = TextEditingController();
   TextEditingController _severity = TextEditingController();
   TextEditingController _siteID = TextEditingController();
@@ -139,8 +139,8 @@ class _RequestCreationState extends State<RequestCreation> {
             ),
           ),
           Positioned.fill(
-            child: srComplaintModel != null
-                ? ListView(
+            child: srComplaintModel != null ?
+            ListView(
                     children: [
                       Container(
                         padding: EdgeInsets.all(12),
@@ -159,7 +159,7 @@ class _RequestCreationState extends State<RequestCreation> {
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Form(
-                            key: _formKey,
+                            key: _srCreationFormKey,
                             child: Column(
                               children: [
                                 DropdownButtonFormField(
@@ -630,7 +630,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 RaisedButton(
                                   onPressed: () async {
-                                    if (!_formKey.currentState.validate()) {
+                                    if (!_srCreationFormKey.currentState.validate()) {
                                       print("Error");
                                       Get.dialog(CustomDialogs().errorDialog(
                                           'Please enter the mandatory details'));

@@ -35,7 +35,7 @@ class ViewOldLeadScree extends StatefulWidget {
 }
 
 class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
-  final _formKey = GlobalKey<FormState>();
+  final _viewOldLeadFormKey = GlobalKey<FormState>();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
   LocationResult _pickedLocation;
@@ -555,7 +555,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
             //         ))),
             Container(
               child: Form(
-                key: _formKey,
+                key: _viewOldLeadFormKey,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(

@@ -29,7 +29,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   UpdateServiceRequestController updateRequest = Get.find();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition = new Position();
-  final _formKey = GlobalKey<FormState>();
+  final _updateActionFormKey = GlobalKey<FormState>();
   TextEditingController _location = TextEditingController();
   TextEditingController _noOfBags = TextEditingController();
   TextEditingController _comment = TextEditingController();
@@ -48,7 +48,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: _updateActionFormKey,
       child: Column(
         children: [
           DropdownButtonFormField(
@@ -373,7 +373,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
           SizedBox(height: 16),
           RaisedButton(
             onPressed: () async {
-              if (!_formKey.currentState.validate()) {
+              if (!_updateActionFormKey.currentState.validate()) {
                 Get.rawSnackbar(message: 'All fields are mandatory', title: 'Warning:', backgroundColor: Colors.red);
               } else {
                 String empId = await getEmpId();

@@ -1,11 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
-
-//import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
@@ -14,7 +11,6 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -34,8 +30,6 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'DraftLeadListScreen.dart';
-
 class ViewLeadScreen extends StatefulWidget {
   int leadId;
 
@@ -46,7 +40,7 @@ class ViewLeadScreen extends StatefulWidget {
 }
 
 class _ViewLeadScreenState extends State<ViewLeadScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKeyForViewLeadScreen = GlobalKey<FormState>();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
   LocationResult _pickedLocation;
@@ -408,7 +402,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                         ],
                       ))),
               Form(
-                key: _formKey,
+                key: _formKeyForViewLeadScreen,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(

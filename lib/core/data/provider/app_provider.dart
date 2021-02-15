@@ -152,15 +152,15 @@ class MyApiClientApp {
     try {
       var body = jsonEncode(updateVisitRequest);
       print('body is  :: $body');
-      var response = await httpClient.post(url,
-          headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey),
-          body: body,
+      print(url);
+      var response = await httpClient.post(url, headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey),          body: body,
           encoding: Encoding.getByName("utf-8"));
+      print(response.body);
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
+        print(saveVisitResponse);
         //print('Access key Object is :: $accessKeyModel');
         return saveVisitResponse;
       } else {
@@ -203,10 +203,8 @@ class MyApiClientApp {
       // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print('ho');
-        print(data['listOfMonthYear']);
-        // print(data);
-        // print(GetMWPResponse.fromJson(data).listOfMonthYear);
+        // print('ho');
+        // print(data['listOfMonthYear']);
         return GetMWPResponse.fromJson(data);
       } else {
         print('Error in else');

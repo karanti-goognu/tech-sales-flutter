@@ -226,7 +226,6 @@ class LeadsFilterController extends GetxController {
       print('User Security key is :: $userSecurityKey');
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
-
       String assignTo = "";
       if (this.assignToDate != StringConstants.empty) {
         assignTo = "&assignDateTo=${this.assignToDate}";
