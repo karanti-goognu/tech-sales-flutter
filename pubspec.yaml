@@ -67,6 +67,8 @@ dependencies:
   video_player: ^1.0.1
   chewie: ^0.12.2
   moengage_flutter: ^2.0.2
+  firebase_messaging: ^6.0.9
+
 #  autocomplete_textfield: ^1.7.3
 
 
@@ -76,6 +78,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+#  moengage_flutter: ^2.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
