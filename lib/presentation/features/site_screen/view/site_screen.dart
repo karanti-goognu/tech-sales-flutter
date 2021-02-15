@@ -1,22 +1,23 @@
 import 'dart:convert';
-import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
+import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -35,16 +36,36 @@ class _SiteScreenState extends State<SiteScreen> {
   SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
-
   int selectedPosition = 0;
-
   int currentTab = 0;
+
+  final db = SiteListDBHelper();
+  List<SitesEntity> siteList = new List();
+
+
 
   @override
   void initState() {
     super.initState();
     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+    fetchSiteList();
+
   }
+
+  fetchSiteList() async {
+    db.fetchAll().then((value) {
+      for (int i = 0; i < value.length; i++) {
+        setState(() {
+          print(json.decode(value[i].siteListModel));
+          siteList.add(SitesEntity.fromJson(
+              json.decode(value[i].siteListModel)));
+          print("SiteList-->"+siteList.length.toString());
+        });
+      }
+    });
+    //await db.removeLeadInDraft(2);
+  }
+
 
   @override
   void dispose() {
@@ -273,13 +294,14 @@ class _SiteScreenState extends State<SiteScreen> {
             ),
             automaticallyImplyLeading: false,
           ),
-          floatingActionButton: SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+          floatingActionButton:
+              SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
           // floatingActionButton: Container(
           //   height: 68.0,
           //   width: 68.0,
           //   child: FittedBox(
           //     child: FloatingActionButton(
-          //       backgroundColor: Colors.amber,
+          //       backgroundColor: Colors.amber,_siteController
           //       child: Icon(
           //         Icons.add,
           //         color: Colors.black,
@@ -294,7 +316,9 @@ class _SiteScreenState extends State<SiteScreen> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator(),
-          body: Container(
+          body:
+
+          Container(
             child: Column(
               children: [
                 Padding(
@@ -305,7 +329,7 @@ class _SiteScreenState extends State<SiteScreen> {
                     children: [
                       Obx(
                         () => Text(
-                          "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                          "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : siteList.length}",
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: 15,
@@ -379,8 +403,7 @@ class _SiteScreenState extends State<SiteScreen> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: _siteController
-                            .sitesListResponse.sitesEntity.length,
+                        itemCount: siteList.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),
                         // itemExtent: 125.0,
@@ -450,9 +473,8 @@ class _SiteScreenState extends State<SiteScreen> {
                                               Padding(
                                                   padding:
                                                       const EdgeInsets.all(2.0),
-                                                  child: Obx(
-                                                    () => Text(
-                                                      "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
+                                                  child: Text(
+                                                      "Site ID (${siteList[index].siteId})",
                                                       style: TextStyle(
                                                           fontSize: 18,
                                                           fontFamily: "Muli",
@@ -461,13 +483,12 @@ class _SiteScreenState extends State<SiteScreen> {
                                                           //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
-                                                  )),
+                                                  ),
                                               Padding(
                                                   padding:
                                                       const EdgeInsets.all(2.0),
-                                                  child: Obx(
-                                                    () => Text(
-                                                      "District: ${_siteController.sitesListResponse.sitesEntity[index].siteDistrict}",
+                                                  child:  Text(
+                                                      "District: ${siteList[index].siteDistrict} ",
                                                       style: TextStyle(
                                                           color: Colors.black38,
                                                           fontSize: 12,
@@ -477,7 +498,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                           //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
-                                                  )),
+                                                  ),
                                               Row(
                                                 children: [
                                                   Padding(

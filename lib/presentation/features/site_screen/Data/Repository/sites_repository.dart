@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/provider/sites_provider.dart';
 import 'package:meta/meta.dart';
 
@@ -30,8 +29,12 @@ class MyRepositorySites {
     return apiClient.getSecretKey(empId, mobileNumber);
   }
 
-  getSitedetailsData(String accessKey, String userSecurityKey, int siteId) {
-    return apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId);
+  // getSitedetailsData(String accessKey, String userSecurityKey, int siteId) {
+  //   return apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId);
+  // }
+
+  getSitedetailsData(String accessKey, String userSecurityKey, int siteId, String empID) {
+    return apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId, empID);
   }
 
   updateSiteData(accessKey, String userSecurityKey, updateDataRequest, List<File> list, BuildContext context, int siteId) {

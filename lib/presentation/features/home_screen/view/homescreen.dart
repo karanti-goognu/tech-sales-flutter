@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -12,6 +17,7 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
@@ -22,8 +28,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  AppController _appController = Get.find();
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
+  SiteController _siteController = Get.find();
 
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
@@ -33,14 +41,51 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("SR &\nComplaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png"),
   ];
-
-
+  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
+
+  storeOfflineSiteData() async {
+    final db = SiteListDBHelper();
+    await db.clearTable();
+    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+    for (int i = 0;
+        i < _siteController.sitesListResponse.sitesEntity.length;
+        i++) {
+      SitesEntity siteEntity = new SitesEntity(
+          siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
+          leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
+          siteDistrict:
+              _siteController.sitesListResponse.sitesEntity[i].siteDistrict,
+          siteStageId:
+              _siteController.sitesListResponse.sitesEntity[i].siteStageId,
+          siteCreationDate:
+              _siteController.sitesListResponse.sitesEntity[i].siteCreationDate,
+          sitePotentialMt:
+              _siteController.sitesListResponse.sitesEntity[i].sitePotentialMt,
+          siteOppertunityId: _siteController
+              .sitesListResponse.sitesEntity[i].siteOppertunityId,
+          siteScore: _siteController.sitesListResponse.sitesEntity[i].siteScore,
+          contactNumber:
+              _siteController.sitesListResponse.sitesEntity[i].contactNumber,
+          siteProbabilityWinningId: _siteController
+              .sitesListResponse.sitesEntity[i].siteProbabilityWinningId);
+      SiteListModelForDB siteListModelForDb =
+          new SiteListModelForDB(null, json.encode(siteEntity));
+      await db.addSiteEntityInDraftList(siteListModelForDb);
+    }
+  }
+  Future<void> initPlatformState() async {
+    if (!mounted) return;
+    //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    initPlatformState();
+    _moengagePlugin.initialise();
+    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
       print('Check In');
       _homeController.checkInStatus = StringConstants.checkIn;
@@ -58,6 +103,11 @@ class _HomeScreenState extends State<HomeScreen> {
     _prefs.then((SharedPreferences prefs) {
       _homeController.employeeName =
           prefs.getString(StringConstants.employeeName);
+
+      // MoEngage implementation done here ....
+      _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
+      _moengagePlugin.setUserName(prefs.getString(StringConstants.employeeName));
+      _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
     });
   }
 
@@ -71,163 +121,235 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          // You can do some work here.
-          // Returning true allows the pop to happen, returning false prevents it.
-          Get.dialog(CustomDialogs().appExitDialog("Do you want to exit?"));
-          return true;
-        },
-        child: Scaffold(
-            backgroundColor: ColorConstants.backgroundColorGrey,
-            appBar: AppBar(
-              // titleSpacing: 50,
-              backgroundColor: ColorConstants.appBarColor,
-              toolbarHeight: 100,
-              title: Image.asset(
-                "assets/images/Logo(Bluebg).png",
-                height: 48,
+      onWillPop: () async {
+        // You can do some work here.
+        // Returning true allows the pop to happen, returning false prevents it.
+        Get.dialog(CustomDialogs().appExitDialog("Do you want to exit?"));
+        return true;
+      },
+      child: Scaffold(
+          backgroundColor: ColorConstants.backgroundColorGrey,
+          appBar: AppBar(
+            // titleSpacing: 50,
+            backgroundColor: ColorConstants.appBarColor,
+            toolbarHeight: 100,
+            title: Image.asset(
+              "assets/images/Logo(Bluebg).png",
+              height: 48,
+            ),
+            automaticallyImplyLeading: false,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 25.0, top: 20),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.ADD_CALENDER_SCREEN);
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        padding: EdgeInsets.all(4),
+                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.0),
+                          borderRadius:
+                              new BorderRadius.all(Radius.circular(70)),
+                        ),
+                        child: Icon(
+                          Icons.calendar_today_sharp,
+                          color: HexColor("#FFCD00"),
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      "My Calendar",
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    )
+                  ],
+                ),
               ),
-              automaticallyImplyLeading: false,
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 25.0, top: 20),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(Routes.ADD_CALENDER_SCREEN);
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          padding: EdgeInsets.all(4),
-                          // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black, width: 0.0),
-                            borderRadius:
-                                new BorderRadius.all(Radius.circular(70)),
-                          ),
-                          child: Icon(
-                            Icons.calendar_today_sharp,
-                            color: HexColor("#FFCD00"),
-                            size: 18,
-                          ),
+              Padding(
+                padding: const EdgeInsets.only(right: 25.0, top: 20),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.dialog(CustomDialogs()
+                            .errorDialog("Page Coming Soon .... "));
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.0),
+                          borderRadius:
+                              new BorderRadius.all(Radius.circular(70)),
+                        ),
+                        child: Icon(
+                          Icons.notifications_none_outlined,
+                          color: HexColor("#FFCD00"),
+                          size: 30,
                         ),
                       ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        "My Calendar",
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      )
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      "Notifications",
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 25.0, top: 20),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Get.dialog(CustomDialogs()
-                              .errorDialog("Page Coming Soon .... "));
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black, width: 0.0),
-                            borderRadius:
-                                new BorderRadius.all(Radius.circular(70)),
-                          ),
-                          child: Icon(
-                            Icons.notifications_none_outlined,
-                            color: HexColor("#FFCD00"),
-                            size: 30,
-                          ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 25.0, top: 20),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        final db = SiteListDBHelper();
+                        await db.clearTable();
+                        _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                        for (int i = 0; i < _siteController
+                                    .sitesListResponse.sitesEntity.length;
+                            i++) {
+                          SitesEntity siteEntity = new SitesEntity(
+                              siteId: _siteController
+                                  .sitesListResponse.sitesEntity[i].siteId,
+                              leadId: _siteController
+                                  .sitesListResponse.sitesEntity[i].leadId,
+                              siteDistrict: _siteController.sitesListResponse
+                                  .sitesEntity[i].siteDistrict,
+                              siteStageId: _siteController
+                                  .sitesListResponse.sitesEntity[i].siteStageId,
+                              siteCreationDate: _siteController
+                                  .sitesListResponse
+                                  .sitesEntity[i]
+                                  .siteCreationDate,
+                              sitePotentialMt: _siteController.sitesListResponse
+                                  .sitesEntity[i].sitePotentialMt,
+                              siteOppertunityId: _siteController
+                                  .sitesListResponse
+                                  .sitesEntity[i]
+                                  .siteOppertunityId,
+                              siteScore: _siteController
+                                  .sitesListResponse.sitesEntity[i].siteScore,
+                              contactNumber: _siteController.sitesListResponse
+                                  .sitesEntity[i].contactNumber,
+                              siteProbabilityWinningId: _siteController
+                                  .sitesListResponse
+                                  .sitesEntity[i]
+                                  .siteProbabilityWinningId);
+                          SiteListModelForDB siteListModelForDb =
+                              new SiteListModelForDB(
+                                  null, json.encode(siteEntity));
+                          await db.addSiteEntityInDraftList(siteListModelForDb);
+                        }
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.0),
+                          borderRadius:
+                              new BorderRadius.all(Radius.circular(70)),
+                        ),
+                        child: Icon(
+                          Icons.sync,
+                          color: HexColor("#FFCD00"),
+                          size: 30,
                         ),
                       ),
-                      SizedBox(
-                        height: 8,
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      "Syn Data",
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 10.0, top: 20, bottom: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Obx(
+                      () => Text(
+                        "Hello , ${_homeController.employeeName}",
+                        style: TextStyle(
+                            // color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: "Muli"),
                       ),
-                      Text(
-                        "Notifications",
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      )
-                    ],
-                  ),
+                    ),
+                    Text("Here are today's",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            //  color: Colors.white.withOpacity(0.7),
+                            fontSize: 15,
+                            fontFamily: "Muli")),
+                    Text("recommended actions for you",
+                        style: TextStyle(
+                            // color: Colors.white.withOpacity(0.7),
+                            fontSize: 15,
+                            fontFamily: "Muli")),
+                  ],
                 ),
-              ],
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0, top: 20, bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Obx(
-                        () => Text(
-                          "Hello , ${_homeController.employeeName}",
-                          style: TextStyle(
-                              // color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: "Muli"),
-                        ),
-                      ),
-                      Text("Here are today's",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              //  color: Colors.white.withOpacity(0.7),
-                              fontSize: 15,
-                              fontFamily: "Muli")),
-                      Text("recommended actions for you",
-                          style: TextStyle(
-                              // color: Colors.white.withOpacity(0.7),
-                              fontSize: 15,
-                              fontFamily: "Muli")),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Obx(() {
-                  if (_homeController.disableSlider != true) {
-                    return (_homeController.checkInStatus ==
-                            StringConstants.checkIn)
-                        ? checkInSliderButton()
-                        : (_homeController.checkInStatus ==
-                                StringConstants.checkOut)
-                            ? checkOutSliderButton()
-                            : journeyEnded();
-                  } else {
-                    return disabledSliderButton();
-                  }
-                }),
-                SizedBox(
-                  height: 15,
-                ),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: userMenuWidget(),
-                ))
-              ],
-            ),
-            floatingActionButton: SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomNavigator()
-        ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Obx(() {
+                if (_homeController.disableSlider != true) {
+                  return (_homeController.checkInStatus ==
+                          StringConstants.checkIn)
+                      ? checkInSliderButton()
+                      : (_homeController.checkInStatus ==
+                              StringConstants.checkOut)
+                          ? checkOutSliderButton()
+                          : journeyEnded();
+                } else {
+                  return disabledSliderButton();
+                }
+              }),
+              SizedBox(
+                height: 15,
+              ),
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: userMenuWidget(),
+              ))
+            ],
+          ),
+          floatingActionButton:
+              SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomNavigator()),
     );
   }
 
@@ -376,7 +498,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.LEADS_SCREEN);
                   break;
                 case 1:
-                  Get.toNamed(Routes.SITES_SCREEN,);
+                  // storeOfflineSiteData();
+                  Get.toNamed(
+                    Routes.SITES_SCREEN,
+                  );
                   break;
                 case 2:
                   Get.dialog(
@@ -476,12 +601,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
-
 class MenuDetailsModel {
   String value;
   String imgURL;
 
   MenuDetailsModel(this.value, this.imgURL);
 }
-

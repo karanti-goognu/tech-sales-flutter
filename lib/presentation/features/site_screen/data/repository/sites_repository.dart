@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/provider/sites_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/provider/sites_provider.dart';
 import 'package:meta/meta.dart';
 
 class MyRepositorySites {

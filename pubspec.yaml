@@ -66,6 +66,7 @@ dependencies:
   flutter_speed_dial_material_design: ^2.0.0
   video_player: ^1.0.1
   chewie: ^0.12.2
+  moengage_flutter: ^2.0.2
 #  autocomplete_textfield: ^1.7.3
 
 

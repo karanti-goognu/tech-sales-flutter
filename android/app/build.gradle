@@ -73,4 +73,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation "com.moengage:moe-android-sdk:11.0.03"
+    implementation("com.moengage:moe-android-sdk:10.5.00")
+    implementation("androidx.lifecycle:lifecycle-process:2.2.0")
 }

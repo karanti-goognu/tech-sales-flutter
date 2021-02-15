@@ -5,7 +5,7 @@ import 'package:flutter_tech_sales/bindings/splash_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:get/get.dart';
-
+import 'package:moengage_flutter/moengage_flutter.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
@@ -18,7 +18,28 @@ void main() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+
+  Future<void> initPlatformState() async {
+    if (!mounted) return;
+    //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+    _moengagePlugin.initialise();
+    _moengagePlugin.enableSDKLogs();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new GetMaterialApp(
