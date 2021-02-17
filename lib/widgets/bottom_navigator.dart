@@ -25,7 +25,10 @@ class BottomNavigator extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 MaterialButton(
-                  onPressed: () => Get.toNamed(Routes.HOME_SCREEN),
+                  onPressed: () {
+                    Get.back();
+                    Get.toNamed(Routes.HOME_SCREEN);
+                  },
                   minWidth: 40,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -54,6 +57,7 @@ class BottomNavigator extends StatelessWidget {
                 MaterialButton(
                   minWidth: 40,
                   onPressed: () {
+                    Get.back();
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
@@ -81,6 +85,7 @@ class BottomNavigator extends StatelessWidget {
                 MaterialButton(
                   minWidth: 40,
                   onPressed: () {
+                    Get.back();
                     Get.toNamed(Routes.SEARCH_SCREEN);
                   },
                   child: Column(
@@ -150,14 +155,12 @@ class BottomNavigatorWithoutDraftsAndSearch extends StatelessWidget {
             ),
 
             // Right Tab bar icons
-
           ],
         ),
       ),
     );
   }
 }
-
 
 class BottomNavigatorWithoutTabs extends StatelessWidget {
   const BottomNavigatorWithoutTabs({
@@ -174,9 +177,7 @@ class BottomNavigatorWithoutTabs extends StatelessWidget {
         height: 60,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-
-          ],
+          children: <Widget>[],
         ),
       ),
     );

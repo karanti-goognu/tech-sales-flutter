@@ -24,7 +24,7 @@ class LeadScreen extends StatefulWidget {
   _LeadScreenState createState() => _LeadScreenState();
 }
 
-// final GlobalKey<ScaffoldState> _leadScreenFormKey = new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> _leadScreenFormKey = new GlobalKey<ScaffoldState>();
 PersistentBottomSheetController controller;
 
 class _LeadScreenState extends State<LeadScreen> {
@@ -101,7 +101,7 @@ class _LeadScreenState extends State<LeadScreen> {
           resizeToAvoidBottomPadding: false,
           //resizeToAvoidBottomInset: true,
           extendBody: true,
-          // key: _leadScreenFormKey,
+          key: _leadScreenFormKey,
           backgroundColor: ColorConstants.backgroundColorGrey,
           appBar: AppBar(
             // titleSpacing: 50,
@@ -874,31 +874,31 @@ class _LeadScreenState extends State<LeadScreen> {
   }
 
 
-  void _settingModalBottomSheet(context) {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext bc) {
-          return FilterWidget();
-        });
-  }
-
   // void _settingModalBottomSheet(context) {
-  //   _leadScreenFormKey.currentState
-  //       .showBottomSheet<Null>((BuildContext context) {
-  //         /*return  showModalBottomSheet(
+  //   showModalBottomSheet(
   //       backgroundColor: Colors.transparent,
   //       context: context,
   //       isScrollControlled: true,
-  //       builder: (BuildContext bc) {*/
+  //       builder: (BuildContext bc) {
   //         return FilterWidget();
-  //       })
-  //       .closed
-  //       .then((value) => () {
-  //             print('Closed');
-  //           });
+  //       });
   // }
+
+  void _settingModalBottomSheet(context) {
+    _leadScreenFormKey.currentState
+        .showBottomSheet<Null>((BuildContext context) {
+          /*return  showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext bc) {*/
+          return FilterWidget();
+        })
+        .closed
+        .then((value) => () {
+              print('Closed');
+            });
+  }
 
   void _closeModalBottomSheet() {
     if (controller != null) {

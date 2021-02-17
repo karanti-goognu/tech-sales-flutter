@@ -59,8 +59,10 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         serviceRequestComplaintListModel = data;
       });
     });
+    print("scroll controller init");
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
+    print("scroll listener added");
 
     super.initState();
   }
