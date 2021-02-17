@@ -2,6 +2,8 @@ import UIKit
 import Flutter
 import Firebase
 import GoogleMaps
+import moengage_flutter
+import MoEngage
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
