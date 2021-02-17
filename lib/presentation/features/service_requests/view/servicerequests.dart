@@ -35,7 +35,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   getSRListData() async {
     // Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     await eventController.getAccessKey().then((value) async {
-      data = await eventController.getSrListData(value.accessKey);
+      data = await eventController.getSrListData(value.accessKey, 0);
     });
     // Get.back();
   }
@@ -43,11 +43,11 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   _scrollListener() async{
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      print('hello');
+      print('offset old value ${eventController.offset}');
       eventController.offset+=10;
-      print(eventController.offset);
+      print('offset new value ${eventController.offset}');
       await eventController.getAccessKey().then((value) async {
-        data = await eventController.getSrListData(value.accessKey);
+        data = await eventController.getSrListData(value.accessKey, eventController.offset );
       });
     }
   }
