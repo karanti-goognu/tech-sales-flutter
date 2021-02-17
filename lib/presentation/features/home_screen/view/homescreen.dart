@@ -245,9 +245,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
+
                     SizedBox(
                       height: 8,
                     ),
+
                     Text(
                       "Syn Data",
                       style: TextStyle(color: Colors.white, fontSize: 12),
