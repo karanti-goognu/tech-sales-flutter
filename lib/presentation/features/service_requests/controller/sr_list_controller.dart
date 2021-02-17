@@ -15,6 +15,11 @@ class SRListController extends GetxController{
   final SrRepository repository;
   SRListController({@required this.repository}) : assert(repository != null);
 
+  final _offset = 0.obs;
+  get offset => this._offset.value;
+
+  set offset(value) => this._offset.value = value;
+
   final _srListData = ServiceRequestComplaintListModel().obs;
   get srListData => _srListData.value;
   set srListData(value) =>
@@ -53,7 +58,7 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      srListData = await repository.getSrListData(accessKey,userSecurityKey, empID);
+      srListData = await repository.getSrListData(accessKey,userSecurityKey, empID, this.offset);
     });
     return srListData;
   }

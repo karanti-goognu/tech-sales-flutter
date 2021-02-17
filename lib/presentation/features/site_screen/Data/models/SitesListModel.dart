@@ -150,8 +150,7 @@ class SitesEntity {
     updatedOn = json['updatedOn'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<String, dynamic> toJson() {final Map<String, dynamic> data = new Map<String, dynamic>();
     data['siteId'] = this.siteId;
     data['leadId'] = this.leadId;
     data['siteSegment'] = this.siteSegment;

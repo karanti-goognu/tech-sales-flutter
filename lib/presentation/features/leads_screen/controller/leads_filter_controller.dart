@@ -44,6 +44,11 @@ class LeadsFilterController extends GetxController {
   final _leadsListResponse = LeadsListModel().obs;
 
   final _phoneNumber = "8860080067".obs;
+  final _offset = 0.obs;
+  get offset => this._offset.value;
+
+  set offset(value) => this._offset.value = value;
+
 
   final _selectedPosition = 0.obs;
   final _selectedFilterCount = 0.obs;
@@ -272,7 +277,7 @@ class LeadsFilterController extends GetxController {
       }
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=500&offset=0";
+          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=500&offset=${this.offset}";
       var encodedUrl = Uri.encodeFull(url);
       debugPrint('Url is : $encodedUrl');
       repository

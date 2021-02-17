@@ -40,10 +40,15 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     // Get.back();
   }
 
-  _scrollListener() {
+  _scrollListener() async{
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       print('hello');
+      eventController.offset+=10;
+      print(eventController.offset);
+      await eventController.getAccessKey().then((value) async {
+        data = await eventController.getSrListData(value.accessKey);
+      });
     }
   }
 
@@ -58,6 +63,14 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     _scrollController..addListener(_scrollListener);
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    eventController.dispose();
+    eventController.offset=0;
+    print(eventController.offset);
+    super.dispose();
   }
 
   @override

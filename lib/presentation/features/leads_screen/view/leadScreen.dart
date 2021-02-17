@@ -42,6 +42,8 @@ class _LeadScreenState extends State<LeadScreen> {
   int currentTab = 0;
 
   var bottomSheetController;
+  ScrollController _scrollController;
+
 
   @override
   void initState() {
@@ -56,8 +58,21 @@ class _LeadScreenState extends State<LeadScreen> {
     } catch (_) {
       print('${_.toString()}');
     }*/
-
+    print("------------------------------");
+    print(_leadsFilterController.offset);
     _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+    _scrollController = ScrollController();
+    _scrollController..addListener(_scrollListener);
+  }
+
+  _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      print('hello');
+      _leadsFilterController.offset+=10;
+      print(_leadsFilterController.offset);
+      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+    }
   }
 
   @override
@@ -65,6 +80,8 @@ class _LeadScreenState extends State<LeadScreen> {
     //_connectivity.disposeStream();
     super.dispose();
     _leadsFilterController.dispose();
+    _leadsFilterController.offset=0;
+    print(_leadsFilterController.offset);
     // Route.dispose();
 
   }
@@ -74,7 +91,7 @@ class _LeadScreenState extends State<LeadScreen> {
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
-    print(selectedDateString); // something like 20-04-2020
+    // print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
           Get.offNamed(Routes.HOME_SCREEN);
@@ -557,14 +574,14 @@ class _LeadScreenState extends State<LeadScreen> {
                           ),
                         )
                       : ListView.builder(
+                            controller: _scrollController,
                           itemCount: _leadsFilterController
                               .leadsListResponse.leadsEntity.length,
                           padding: const EdgeInsets.only(
                               left: 6.0, right: 6, bottom: 10),
                           // itemExtent: 125.0,
                           itemBuilder: (context, index) {
-                            print(
-                                '${_splashController.splashDataModel.leadStatusEntity[(_leadsFilterController.leadsListResponse.leadsEntity[index].leadStatusId) - 1].leadStatusDesc}');
+                            // print(${_splashController.splashDataModel.leadStatusEntity[(_leadsFilterController.leadsListResponse.leadsEntity[index].leadStatusId) - 1].leadStatusDesc}');
                             return GestureDetector(
                               onTap: () {
                                 Get.to(

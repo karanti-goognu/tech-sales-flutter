@@ -74,11 +74,11 @@ class MyApiClient {
   }
 
 
-  Future<ServiceRequestComplaintListModel> getSrListData(String accessKey, String userSecretKey,String empID) async{
+  Future<ServiceRequestComplaintListModel> getSrListData(String accessKey, String userSecretKey,String empID, int offset) async{
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
       //+'&offset=30'
-      var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=1'),
+      var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=$offset'),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
         serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
       print(response.body);
