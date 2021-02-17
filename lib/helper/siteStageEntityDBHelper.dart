@@ -21,7 +21,6 @@ class SiteStageEntityDBHelper extends ChangeNotifier{
     }
     print("mko 2");
     _database = await init();
-
     return _database;
   }
 
@@ -33,8 +32,7 @@ class SiteStageEntityDBHelper extends ChangeNotifier{
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
-          await db.execute(
-              'CREATE TABLE siteStage (id INTEGER PRIMARY KEY AUTOINCREMENT, siteStageEntity TEXT)');
+          await db.execute('CREATE TABLE siteStage (id INTEGER PRIMARY KEY AUTOINCREMENT, siteStageEntity TEXT)');
         });
     return database;
   }

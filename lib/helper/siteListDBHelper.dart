@@ -21,7 +21,6 @@ class SiteListDBHelper extends ChangeNotifier{
     }
     print("mko 2");
     _database = await init();
-
     return _database;
   }
 
