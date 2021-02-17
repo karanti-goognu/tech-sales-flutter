@@ -33,8 +33,7 @@ class SiteCompetitionStatusEntityDBHelper extends ChangeNotifier{
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
-          await db.execute(
-              'CREATE TABLE siteCompetitionStatus (id INTEGER PRIMARY KEY AUTOINCREMENT, siteCompetitionStatusEntity TEXT)');
+          await db.execute('CREATE TABLE siteCompetitionStatus (id INTEGER PRIMARY KEY AUTOINCREMENT, siteCompetitionStatusEntity TEXT)');
         });
     return database;
   }

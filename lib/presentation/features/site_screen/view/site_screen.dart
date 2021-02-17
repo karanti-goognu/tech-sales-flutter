@@ -329,7 +329,7 @@ class _SiteScreenState extends State<SiteScreen> {
                     children: [
                       Obx(
                         () => Text(
-                          "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : siteList.length}",
+                          "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 :_siteController.sitesListResponse.sitesEntity.length}",
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: 15,
@@ -403,7 +403,7 @@ class _SiteScreenState extends State<SiteScreen> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: siteList.length,
+                        itemCount:_siteController.sitesListResponse.sitesEntity.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),
                         // itemExtent: 125.0,
@@ -474,7 +474,9 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   padding:
                                                       const EdgeInsets.all(2.0),
                                                   child: Text(
-                                                      "Site ID (${siteList[index].siteId})",
+                                                      "Site ID (${_siteController
+                                                          .sitesListResponse
+                                                          .sitesEntity[index].siteId})",
                                                       style: TextStyle(
                                                           fontSize: 18,
                                                           fontFamily: "Muli",
@@ -488,7 +490,9 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   padding:
                                                       const EdgeInsets.all(2.0),
                                                   child:  Text(
-                                                      "District: ${siteList[index].siteDistrict} ",
+                                                      "District: ${_siteController
+                                                          .sitesListResponse
+                                                          .sitesEntity[index].siteDistrict} ",
                                                       style: TextStyle(
                                                           color: Colors.black38,
                                                           fontSize: 12,

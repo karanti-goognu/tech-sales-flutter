@@ -21,7 +21,6 @@ class DraftLeadDBHelper extends ChangeNotifier{
     }
     print("mko 2");
     _database = await init();
-
     return _database;
   }
 
@@ -33,10 +32,8 @@ class DraftLeadDBHelper extends ChangeNotifier{
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
-          await db.execute(
-              'CREATE TABLE brandName (id INTEGER , brandName TEXT , productName TEXT)');
-          await db.execute(
-              'CREATE TABLE draftLead (id INTEGER PRIMARY KEY AUTOINCREMENT, leadModel TEXT)');
+          await db.execute('CREATE TABLE brandName (id INTEGER , brandName TEXT , productName TEXT)');
+          await db.execute('CREATE TABLE draftLead (id INTEGER PRIMARY KEY AUTOINCREMENT, leadModel TEXT)');
         });
     return database;
   }

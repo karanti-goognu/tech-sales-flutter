@@ -225,44 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        final db = SiteListDBHelper();
-                        await db.clearTable();
                         _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-                        for (int i = 0; i < _siteController
-                                    .sitesListResponse.sitesEntity.length;
-                            i++) {
-                          SitesEntity siteEntity = new SitesEntity(
-                              siteId: _siteController
-                                  .sitesListResponse.sitesEntity[i].siteId,
-                              leadId: _siteController
-                                  .sitesListResponse.sitesEntity[i].leadId,
-                              siteDistrict: _siteController.sitesListResponse
-                                  .sitesEntity[i].siteDistrict,
-                              siteStageId: _siteController
-                                  .sitesListResponse.sitesEntity[i].siteStageId,
-                              siteCreationDate: _siteController
-                                  .sitesListResponse
-                                  .sitesEntity[i]
-                                  .siteCreationDate,
-                              sitePotentialMt: _siteController.sitesListResponse
-                                  .sitesEntity[i].sitePotentialMt,
-                              siteOppertunityId: _siteController
-                                  .sitesListResponse
-                                  .sitesEntity[i]
-                                  .siteOppertunityId,
-                              siteScore: _siteController
-                                  .sitesListResponse.sitesEntity[i].siteScore,
-                              contactNumber: _siteController.sitesListResponse
-                                  .sitesEntity[i].contactNumber,
-                              siteProbabilityWinningId: _siteController
-                                  .sitesListResponse
-                                  .sitesEntity[i]
-                                  .siteProbabilityWinningId);
-                          SiteListModelForDB siteListModelForDb =
-                              new SiteListModelForDB(
-                                  null, json.encode(siteEntity));
-                          await db.addSiteEntityInDraftList(siteListModelForDb);
-                        }
+                        storeOfflineSiteData();
                       },
                       child: Container(
                         height: 40,
@@ -506,7 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.LEADS_SCREEN);
                   break;
                 case 1:
-                  // storeOfflineSiteData();
+                  storeOfflineSiteData();
                   Get.toNamed(
                     Routes.SITES_SCREEN,
                   );

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/helper/createDatabaseDB.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -10,7 +11,9 @@ import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -71,6 +74,7 @@ class SplashScreenPageState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       String isUserLoggedIn = prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
@@ -82,6 +86,8 @@ class SplashScreenPageState extends State<SplashScreen> {
       }
     });
     _initializeFlutterFireFuture = _initializeFlutterFire();
+
+    initDatabase();
   }
 
   @override
@@ -99,5 +105,26 @@ class SplashScreenPageState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  Future<Database> initDatabase() async {
+    var databasesPath = await getDatabasesPath();
+    String dbPath = join(databasesPath, 'database.db');
+
+
+    Database database = await openDatabase(dbPath, version: 1,
+        onCreate: (Database db, int version) async {
+          // When creating the db, create the table
+          await db.execute('CREATE TABLE draftLead (id INTEGER PRIMARY KEY AUTOINCREMENT, leadModel TEXT)');
+          await db.execute('CREATE TABLE brandName (id INTEGER , brandName TEXT , productName TEXT)');
+          await db.execute('CREATE TABLE counterListDealers (id TEXT, dealerName TEXT)');
+          await db.execute('CREATE TABLE constructStage (id INTEGER PRIMARY KEY AUTOINCREMENT, constructStageEntity TEXT)');
+          await db.execute('CREATE TABLE siteCompetitionStatus (id INTEGER PRIMARY KEY AUTOINCREMENT, siteCompetitionStatusEntity TEXT)');
+          await db.execute('CREATE TABLE siteFloor (id INTEGER PRIMARY KEY AUTOINCREMENT, siteFloorEntity TEXT)');
+          await db.execute('CREATE TABLE siteList (id INTEGER PRIMARY KEY AUTOINCREMENT, siteListModel TEXT)');
+          await db.execute('CREATE TABLE siteStage (id INTEGER PRIMARY KEY AUTOINCREMENT, siteStageEntity TEXT)');
+          await db.execute('CREATE TABLE siteVisitHistory (id INTEGER PRIMARY KEY AUTOINCREMENT, siteVisitHistoryEntity TEXT)');
+        });
+    return database;
   }
 }

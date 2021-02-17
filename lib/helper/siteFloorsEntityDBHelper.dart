@@ -33,8 +33,7 @@ class SiteFloorsEntityDBHelper extends ChangeNotifier{
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
-          await db.execute(
-              'CREATE TABLE siteFloor (id INTEGER PRIMARY KEY AUTOINCREMENT, siteFloorEntity TEXT)');
+          await db.execute('CREATE TABLE siteFloor (id INTEGER PRIMARY KEY AUTOINCREMENT, siteFloorEntity TEXT)');
         });
     return database;
   }

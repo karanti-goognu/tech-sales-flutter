@@ -145,8 +145,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<ConstructionStageEntity> constructionStageEntityNew = new List();
-  List<ConstructionStageEntity> constructionStageEntityNewNextStage =
-      new List();
+  List<ConstructionStageEntity> constructionStageEntityNewNextStage = new List();
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
