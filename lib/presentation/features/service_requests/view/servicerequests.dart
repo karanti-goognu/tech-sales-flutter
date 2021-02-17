@@ -49,6 +49,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       await eventController.getAccessKey().then((value) async {
         data = await eventController.getSrListData(value.accessKey, eventController.offset );
       });
+      setState(() {
+        serviceRequestComplaintListModel=data;
+      });
     }
   }
 
