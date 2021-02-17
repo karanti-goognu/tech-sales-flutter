@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
@@ -67,7 +69,7 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
           new Container(
             color: Colors.transparent,
             child: new Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(0.0),
               child: new Card(
                 elevation: 8,
                 child: new ListTile(
@@ -128,7 +130,16 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                         // itemExtent: 125.0,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  new CupertinoPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ViewSiteScreen(_siteController
+                                              .sitesListResponse
+                                              .sitesEntity[index]
+                                              .siteId)));
+                            },
                             child: Card(
                               clipBehavior: Clip.antiAlias,
                               borderOnForeground: true,
