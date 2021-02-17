@@ -68,25 +68,26 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
         children: <Widget>[
           new Container(
             color: Colors.transparent,
-            child: new Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: new Card(
-                elevation: 8,
-                child: new ListTile(
-                  leading: new Icon(Icons.search),
-                  title: new TextField(
-                    controller: controller,
-                    decoration: new InputDecoration(
-                        hintText: 'Search', border: InputBorder.none),
-                    onChanged: onSearchTextChanged,
+            child: new Card(
+              elevation: 8,
+              margin: const EdgeInsets.all(8.0),
+              child: new ListTile(
+                leading: new Icon(Icons.search),
+                dense: true,
+                title: new TextField(
+                  controller: controller,
+                  decoration: new InputDecoration(
+                      hintText: 'Search', border: InputBorder.none,
+                      // prefixIcon: Icon(Icons.search)
                   ),
-                  trailing: new IconButton(
-                    icon: new Icon(Icons.cancel),
-                    onPressed: () {
-                      controller.clear();
-                      onSearchTextChanged('');
-                    },
-                  ),
+                  onChanged: onSearchTextChanged,
+                ),
+                trailing: new IconButton(
+                  icon: new Icon(Icons.cancel),
+                  onPressed: () {
+                    controller.clear();
+                    onSearchTextChanged('');
+                  },
                 ),
               ),
             ),
