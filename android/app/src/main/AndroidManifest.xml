@@ -59,7 +59,7 @@
             android:name="flutterEmbedding"
             android:value="2" />
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBMMbdXDz2Vt9O8hF8l4xNGRQAwHdMegZ4"/>
+            android:value="AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E"/>
 
         <service android:name="com.moengage.firebase.MoEFireBaseMessagingService">
             <intent-filter>

@@ -12,9 +12,9 @@ import MoEngage
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
   MoEngage.setAppGroupID("group.com.alphadevs.MoEngage.NotificationServices")
-  MOFlutterInitializer.sharedInstance.initializeWithAppID("6XHHUKUOKFE6Q5MLTT8UH5RW", withLaunchOptions: launchOptions)
+  MOFlutterInitializer.sharedInstance.initializeWithAppID("USWINCHCY9D2ZRV2XSAZBC0M", withLaunchOptions: launchOptions)
   FirebaseApp.configure()
-  GMSServices.provideAPIKey("AIzaSyBMMbdXDz2Vt9O8hF8l4xNGRQAwHdMegZ4")
+  GMSServices.provideAPIKey("AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E")
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
