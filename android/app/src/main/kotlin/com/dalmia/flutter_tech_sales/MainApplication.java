@@ -13,7 +13,7 @@ public class MainApplication extends FlutterApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        MoEngage.Builder builder = new Builder(this, "6XHHUKUOKFE6Q5MLTT8UH5RW")
+        MoEngage.Builder builder = new Builder(this, "USWINCHCY9D2ZRV2XSAZBC0M")
                 .setNotificationSmallIcon(R.mipmap.ic_launcher)
                 .setNotificationLargeIcon(R.mipmap.ic_launcher)
                 .optOutDefaultInAppDisplay()
