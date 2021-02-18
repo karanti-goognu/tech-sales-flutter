@@ -39,12 +39,6 @@ class LoginController extends GetxController {
 
   get attempts => this._attempts;
 
-  // set attempts(value){
-  //   print(value);
-  //   this._attempts.value = value;
-  // }
-  set attempts(value) => this._attempts.value = value;
-
   get loginResponse => this._loginResponse.value;
 
   get retryOtpResponse => this._retryOtpResponse.value;
@@ -61,8 +55,9 @@ class LoginController extends GetxController {
 
   get retryOtpActive => this._retryOtpActive.value;
 
-
-
+  set attempts(value){
+    this._attempts.value = value.value;
+  }
   set loginResponse(value) => this._loginResponse.value = value;
 
   set retryOtpResponse(value) => this._retryOtpResponse.value = value;

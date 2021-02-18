@@ -1,11 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/InfluencerView.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/PastStageHistoryView.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/SiteDataView.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/VisitDataView.dart';
-import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,18 +8,20 @@ import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart' as updateResponse;
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart'
+    as updateResponse;
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -110,6 +107,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   var _comments = new TextEditingController();
   var _inactiveReasonText = new TextEditingController();
   var closureReasonText = new TextEditingController();
+
   //var _commentsRejectionController = new TextEditingController();
   var _siteTotalBags = new TextEditingController();
   var _siteTotalPt = new TextEditingController();
@@ -146,7 +144,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<ConstructionStageEntity> constructionStageEntityNew = new List();
-  List<ConstructionStageEntity> constructionStageEntityNewNextStage = new List();
+  List<ConstructionStageEntity> constructionStageEntityNewNextStage =
+      new List();
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
@@ -160,6 +159,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteStageEntity> siteStageEntity = new List();
   List<InfluencerEntity> influencerEntity = new List();
   List<InfluencerDetail> _listInfluencerDetail = new List();
+
   // List<Influencer>
   List<SiteNextStageEntity> siteNextStageEntity = new List();
   List<SiteCommentsEntity> siteCommentsEntity = new List();
@@ -199,7 +199,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
           .then((data) async {
         print("here");
-        print(json.encode(data.siteVisitHistoryEntity));
         viewSiteDataResponse = data;
 
         // print(viewSiteDataResponse);
@@ -1313,7 +1312,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   // hint: Text('Rating'),
                                   onChanged: (value) {
                                     setState(() {
-                                      FocusScope.of(context).requestFocus(new FocusNode());
+                                      FocusScope.of(context)
+                                          .requestFocus(new FocusNode());
                                       _selectedSiteFloor = value;
                                     });
                                   },
@@ -2682,15 +2682,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     ),
                   ),
                 ),
-                Text(
-                    _siteCurrentTotalBags.text
-                ),
+                Text(_siteCurrentTotalBags.text),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: TextFormField(
                       controller: _siteCurrentTotalBags,
-                      onChanged: (v){
+                      onChanged: (v) {
                         print(v);
                       },
                       validator: (value) {
@@ -4482,7 +4480,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               TextFormField(
                                 readOnly: true,
                                 initialValue:
-                                siteVisitHistoryEntity[index].supplyQty,
+                                    siteVisitHistoryEntity[index].supplyQty,
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: ColorConstants.inputBoxHintColor,
@@ -4496,7 +4494,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               TextFormField(
                                 readOnly: true,
                                 initialValue:
-                                siteVisitHistoryEntity[index].supplyDate,
+                                    siteVisitHistoryEntity[index].supplyDate,
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: ColorConstants.inputBoxHintColor,
@@ -4953,7 +4951,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     }
                     return null;
                   },
-                  onChanged: (v){
+                  onChanged: (v) {
                     print(v);
                     print('hi');
                   },
@@ -5552,5 +5550,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 class ImageDetails {
   String from;
   File file;
+
   ImageDetails(this.from, this.file);
 }
