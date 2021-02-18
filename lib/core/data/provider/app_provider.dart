@@ -42,9 +42,9 @@ class MyApiClientApp {
         //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
-        print('error');
+       // print('error');
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -60,17 +60,17 @@ class MyApiClientApp {
 
       var response = await httpClient.get(UrlConstants.getSecretKey,
           headers: requestHeadersEmpIdAndNo);
-      print('Response body is : ${json.decode(response.body)}');
+     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return secretKeyModel;
       } else {
-        print('Error in else');
+      //  print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+     // print('exception ${_.toString()}');
     }
   }
 
@@ -78,24 +78,24 @@ class MyApiClientApp {
       SaveMWPModel saveMWPModel) async {
     try {
       var body = jsonEncode(saveMWPModel);
-      print('body is  :: $body');
+    //  print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveMWPData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey),
           body: body,
           // encoding: Encoding.getByName("utf-8")
       );
-      print('Response body is : ${json.decode(response.body)}');
+     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SaveMWPResponse saveMWPResponse = SaveMWPResponse.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return saveMWPResponse;
       } else {
-        print('Error in else');
+      //  print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -103,23 +103,23 @@ class MyApiClientApp {
       SaveVisitRequest saveVisitRequest) async {
     try {
       var body = jsonEncode(saveVisitRequest);
-      print('body is  :: $body');
+     // print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-      print('Response body is : ${json.decode(response.body)}');
+     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return saveVisitResponse;
       } else {
-        print('Error in else');
+      //  print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+     // print('exception ${_.toString()}');
     }
   }
 
@@ -127,23 +127,23 @@ class MyApiClientApp {
       SaveMeetRequest saveMeetRequest) async {
     try {
       var body = jsonEncode(saveMeetRequest);
-      print('body is  :: $body');
+     // print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-      print('Response body is : ${json.decode(response.body)}');
+     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return saveVisitResponse;
       } else {
-        print('Error in else');
+      //  print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -151,23 +151,23 @@ class MyApiClientApp {
       UpdateVisitRequest updateVisitRequest) async {
     try {
       var body = jsonEncode(updateVisitRequest);
-      print('body is  :: $body');
-      print(url);
+     // print('body is  :: $body');
+    //  print(url);
       var response = await httpClient.post(url, headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey),          body: body,
           encoding: Encoding.getByName("utf-8"));
-      print(response.body);
-      print('Response body is : ${json.decode(response.body)}');
+    //  print(response.body);
+     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
-        print(saveVisitResponse);
+     //   print(saveVisitResponse);
         //print('Access key Object is :: $accessKeyModel');
         return saveVisitResponse;
       } else {
-        print('Error in else');
+      //  print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -175,23 +175,23 @@ class MyApiClientApp {
       UpdateMeetRequest saveMeetRequest) async {
     try {
       var body = jsonEncode(saveMeetRequest);
-      print('body is  :: $body');
+    //  print('body is  :: $body');
       var response = await httpClient.post(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-      print('Response body is : ${json.decode(response.body)}');
+     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return saveVisitResponse;
       } else {
-        print('Error in else');
+      //  print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -207,10 +207,10 @@ class MyApiClientApp {
         // print(data['listOfMonthYear']);
         return GetMWPResponse.fromJson(data);
       } else {
-        print('Error in else');
+      //  print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -219,15 +219,15 @@ class MyApiClientApp {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey));
-      print('Response body is : ${json.decode(response.body)}');
+    //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return DealerListResponse.fromJson(data);
       } else {
-        print('Error in else');
+      //  print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -236,15 +236,15 @@ class MyApiClientApp {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey));
-      print('Response body is : ${json.decode(response.body)}');
+    //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return VisitResponseModel.fromJson(data);
       } else {
-        print('Error in else');
+       // print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+     // print('exception ${_.toString()}');
     }
   }
 
@@ -253,15 +253,15 @@ class MyApiClientApp {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey));
-      print('Response body is : ${json.decode(response.body)}');
+     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return MeetResponseModelView.fromJson(data);
       } else {
-        print('Error in else');
+       // print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -275,10 +275,10 @@ class MyApiClientApp {
         var data = json.decode(response.body);
         return CalendarPlanModel.fromJson(data);
       } else {
-        print('Error in else');
+       // print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -293,10 +293,10 @@ class MyApiClientApp {
         var data = json.decode(response.body);
         return CalendarDataByDay.fromJson(data);
       } else {
-        print('Error in else');
+      //  print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 
@@ -311,10 +311,10 @@ class MyApiClientApp {
         var data = json.decode(response.body);
         return TargetVsActualModel.fromJson(data);
       } else {
-        print('Error in else');
+        // print('Error in else');
       }
     } catch (_) {
-      print('exception ${_.toString()}');
+    //  print('exception ${_.toString()}');
     }
   }
 }

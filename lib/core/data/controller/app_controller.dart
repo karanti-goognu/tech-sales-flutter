@@ -74,14 +74,14 @@ class AppController extends GetxController {
               this.secretKeyResponse.secretKey);
           getAccessKey(requestId);
         } else {
-          print('Secret key response is null');
+         // print('Secret key response is null');
         }
       });
     });
   }
 
    getAccessKey(int requestId) {
-    print("Here we go");
+    //print("Here we go");
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -98,7 +98,7 @@ class AppController extends GetxController {
           //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
-            print('Has expired');
+          //  print('Has expired');
             getSecretKey(requestId);
           } else {
             // print('Not expired');

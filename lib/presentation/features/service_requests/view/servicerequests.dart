@@ -43,9 +43,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   _scrollListener() async{
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      print('offset old value ${eventController.offset}');
+     // print('offset old value ${eventController.offset}');
       eventController.offset+=10;
-      print('offset new value ${eventController.offset}');
+     // print('offset new value ${eventController.offset}');
       await eventController.getAccessKey().then((value) async {
         data = await eventController.getSrListData(value.accessKey, eventController.offset );
       });
@@ -62,10 +62,10 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         serviceRequestComplaintListModel = data;
       });
     });
-    print("scroll controller init");
+  //  print("scroll controller init");
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
-    print("scroll listener added");
+  //  print("scroll listener added");
 
     super.initState();
   }

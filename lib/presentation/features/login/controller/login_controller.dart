@@ -56,8 +56,15 @@ class LoginController extends GetxController {
   get retryOtpActive => this._retryOtpActive.value;
 
   set attempts(value){
-    this._attempts.value = value.value;
+    try{
+      this._attempts.value = value;
+      // print("No Exception");
+    }catch(e){
+      // print("Exception: $e");
+      this._attempts.value = value.value;
+    }
   }
+
   set loginResponse(value) => this._loginResponse.value = value;
 
   set retryOtpResponse(value) => this._retryOtpResponse.value = value;
@@ -213,8 +220,8 @@ class LoginController extends GetxController {
                       ),
                       onPressed: () {
                         this.attempts=0;
-                        print(this.attempts);
-                        Get.toNamed(Routes.LOGIN);
+                        //print(this.attempts);
+                        Get.offAllNamed(Routes.LOGIN);
                       },
                     ),
                   ],
