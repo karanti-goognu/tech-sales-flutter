@@ -115,7 +115,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   @override
   void dispose() {
     super.dispose();
-    _formKeyForNewLeadForm.currentState.dispose();
+    _formKeyForNewLeadForm.currentState?.dispose();
     //_addLeadsController.dispose();
     // _formKey.currentState.dispose();
   }

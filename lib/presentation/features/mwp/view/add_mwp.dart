@@ -25,14 +25,18 @@ class AddMWPScreenPageState extends State<AddMWP> {
 
   @override
   void initState() {
-    print(json.encode(_mwpPlanController.getMWPResponse));
-    print(1);
-    final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('MMMM-yyyy');
-    final String formatted = formatter.format(now);
-    _mwpPlanController.selectedMonth = formatted;
-    _appController.getAccessKey(RequestIds.GET_MWP_PLAN);
-    _mwpPlanController.isLoading = true;
+
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      print(json.encode(_mwpPlanController.getMWPResponse));
+      print(1);
+      final DateTime now = DateTime.now();
+      final DateFormat formatter = DateFormat('MMMM-yyyy');
+      final String formatted = formatter.format(now);
+      _mwpPlanController.selectedMonth = formatted;
+      _appController.getAccessKey(RequestIds.GET_MWP_PLAN);
+      _mwpPlanController.isLoading = true;
+    });
+
     super.initState();
   }
 
