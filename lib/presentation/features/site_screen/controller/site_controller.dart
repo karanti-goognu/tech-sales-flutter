@@ -162,7 +162,7 @@ class SiteController extends GetxController {
       }
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=500&offset=0";
+          "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=200&offset=0";
       //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
       // debugPrint('Url is : $encodedUrl');

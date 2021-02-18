@@ -277,7 +277,7 @@ class LeadsFilterController extends GetxController {
       }
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=500&offset=${this.offset}";
+          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=2000&offset=${this.offset}";
       var encodedUrl = Uri.encodeFull(url);
       debugPrint('Url is : $encodedUrl');
       repository
