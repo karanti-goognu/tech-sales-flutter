@@ -574,9 +574,9 @@ class _LeadScreenState extends State<LeadScreen> {
                           ),
                         )
                       : ListView.builder(
-                            controller: _scrollController,
-                          itemCount: _leadsFilterController
-                              .leadsListResponse.leadsEntity.length,
+                            // controller: _scrollController,
+                          itemCount:
+                          _leadsFilterController.leadsListResponse.leadsEntity.length,
                           padding: const EdgeInsets.only(
                               left: 6.0, right: 6, bottom: 10),
                           // itemExtent: 125.0,

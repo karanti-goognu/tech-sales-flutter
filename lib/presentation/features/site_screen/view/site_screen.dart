@@ -43,12 +43,25 @@ class _SiteScreenState extends State<SiteScreen> {
   List<SitesEntity> siteList = new List();
 
 
+  ScrollController _scrollController;
+
+  _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      print('hello');
+      _siteController.offset+=10;
+      print(_siteController.offset);
+      // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     fetchSiteList();
+    _scrollController = ScrollController();
+    _scrollController..addListener(_scrollListener);
 
   }
 

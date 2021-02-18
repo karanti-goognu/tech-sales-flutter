@@ -29,6 +29,11 @@ class SiteController extends GetxController {
 
   final _phoneNumber = "8860080067".obs;
 
+  final _offset = 0.obs;
+  get offset => this._offset.value;
+
+  set offset(value) => this._offset.value = value;
+
   final _selectedPosition = 0.obs;
   final _selectedFilterCount = 0.obs;
   final _assignToDate = StringConstants.empty.obs;
@@ -158,6 +163,7 @@ class SiteController extends GetxController {
       //debugPrint('request without encryption: $body');
       String url =
           "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=500&offset=0";
+      //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
       // debugPrint('Url is : $encodedUrl');
       repository

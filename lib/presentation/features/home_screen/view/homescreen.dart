@@ -219,44 +219,44 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 25.0, top: 20),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-                        storeOfflineSiteData();
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 0.0),
-                          borderRadius:
-                              new BorderRadius.all(Radius.circular(70)),
-                        ),
-                        child: Icon(
-                          Icons.sync,
-                          color: HexColor("#FFCD00"),
-                          size: 30,
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(
-                      height: 8,
-                    ),
-
-                    Text(
-                      "Syn Data",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    )
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 25.0, top: 20),
+              //   child: Column(
+              //     children: [
+              //       GestureDetector(
+              //         onTap: () async {
+              //           _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+              //           storeOfflineSiteData();
+              //         },
+              //         child: Container(
+              //           height: 40,
+              //           width: 40,
+              //           // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+              //           decoration: new BoxDecoration(
+              //             color: Colors.white,
+              //             border: Border.all(color: Colors.black, width: 0.0),
+              //             borderRadius:
+              //                 new BorderRadius.all(Radius.circular(70)),
+              //           ),
+              //           child: Icon(
+              //             Icons.sync,
+              //             color: HexColor("#FFCD00"),
+              //             size: 30,
+              //           ),
+              //         ),
+              //       ),
+              //
+              //       SizedBox(
+              //         height: 8,
+              //       ),
+              //
+              //       Text(
+              //         "Sync Data",
+              //         style: TextStyle(color: Colors.white, fontSize: 12),
+              //       )
+              //     ],
+              //   ),
+              // ),
             ],
           ),
           body: Column(

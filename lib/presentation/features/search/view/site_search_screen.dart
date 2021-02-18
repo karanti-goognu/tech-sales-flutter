@@ -8,6 +8,8 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/controller/
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -63,6 +65,9 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: BackFloatingButton(),
+        bottomNavigationBar: BottomNavigator(),
         body: new SafeArea(
       child: Column(
         children: <Widget>[

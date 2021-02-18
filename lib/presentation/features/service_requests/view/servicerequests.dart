@@ -227,7 +227,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   serviceRequestComplaintListModel.srComplaintListModal != null
                       ? Expanded(
                           child: ListView.builder(
-                              controller: _scrollController,
+                              // controller: _scrollController,
                               itemCount: serviceRequestComplaintListModel
                                   .srComplaintListModal.length,
                               itemBuilder: (context, index) {
