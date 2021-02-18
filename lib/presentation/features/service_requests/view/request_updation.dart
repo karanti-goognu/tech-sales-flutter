@@ -380,7 +380,8 @@ class _RequestUpdationState extends State<RequestUpdation> {
                                               srComplaintActionList:
                                                   complaintViewModel
                                                       .srComplaintActionList,
-                                              // srComplaintActionList: complaintViewModel.srComplaintActionList,
+                                              updatedOn: complaintViewModel.updatedOn,
+                                    requestStatus: complaintViewModel.requestText,
                                             ),
                               ),
                               SizedBox(

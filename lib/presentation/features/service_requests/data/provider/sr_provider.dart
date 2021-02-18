@@ -202,7 +202,7 @@ class MyApiClient {
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       var data = json.decode(response.body);
-      // print(data);
+      print(data);
       complaintViewModel =  ComplaintViewModel.fromJson(data);
     }
     catch(e){

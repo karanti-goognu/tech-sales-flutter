@@ -58,7 +58,7 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   @override
   void initState() {
     super.initState();
-
+    print(_siteController.sitesListResponse.sitesEntity[0]);
     // getUserDetails();
   }
 
@@ -182,20 +182,20 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(2.0),
-                                                child: Text(
-                                                  "Follow-up Date XXXX",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontFamily: "Muli",
-                                                      fontWeight:
-                                                          FontWeight.normal
-                                                      //fontWeight: FontWeight.normal
-                                                      ),
-                                                ),
-                                              ),
+                                              // Padding(
+                                              //   padding:
+                                              //       const EdgeInsets.all(2.0),
+                                              //   child: Text(
+                                              //     "Follow-up Date XXXX",
+                                              //     style: TextStyle(
+                                              //         fontSize: 12,
+                                              //         fontFamily: "Muli",
+                                              //         fontWeight:
+                                              //             FontWeight.normal
+                                              //         //fontWeight: FontWeight.normal
+                                              //         ),
+                                              //   ),
+                                              // ),
                                               Padding(
                                                   padding:
                                                       const EdgeInsets.all(2.0),
@@ -434,7 +434,7 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   }
 
   onSearchTextChanged(String text) async {
-    if (controller.text.length >= 1) {
+    if (controller.text.length >= 3) {
       print('Hello');
       _siteController.searchKey = text;
       _appController.getAccessKey(RequestIds.SEARCH_SITES);

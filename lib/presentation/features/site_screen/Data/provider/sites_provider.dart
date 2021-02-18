@@ -185,7 +185,7 @@ class MyApiClientSites {
         'POST', Uri.parse(UrlConstants.updateSiteData));
     print(UrlConstants.updateSiteData);
     request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey));
-    print(json.encode(updateDataRequest['siteVisitHistoryEntity']));
+    print(json.encode(updateDataRequest));
     updateDataRequest['siteVisitHistoryEntity'].forEach((e)=>print(e));
 
     for (var file in list) {
@@ -217,14 +217,14 @@ class MyApiClientSites {
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
       print("Request headers :: " + request.headers.toString());
-      print("Request Body/Fields :: " + request.fields.toString());
+      print("Request Body/Fields :: " + request.fields['siteInfluencerEntity'].toString());
       print("Files:: " + request.files.toString());
       try {
         request
             .send()
             .then((result) async {
               http.Response.fromStream(result).then((response) {
-                print(response.statusCode);
+                print("---@@---");
                 print(response.body);
 
                 var data = json.decode(response.body);

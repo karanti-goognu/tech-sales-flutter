@@ -6,7 +6,8 @@ import 'package:intl/intl.dart';
 
 class RequestUpdateHistory extends StatefulWidget {
   final List<SrComplaintActionList> srComplaintActionList;
-  RequestUpdateHistory({this.srComplaintActionList});
+  final updatedOn, requestStatus;
+  RequestUpdateHistory({this.srComplaintActionList, this.updatedOn, this.requestStatus});
   @override
   _RequestUpdateHistoryState createState() => _RequestUpdateHistoryState();
 }
@@ -43,6 +44,11 @@ class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
                     DateTime.fromMillisecondsSinceEpoch(_nextVisitDate[index]));
                 TextEditingController _visitDate =
                     TextEditingController(text: visitDate);
+                // String updateDate = formatter.format(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.updatedOn)));
+                // print(widget.updatedOn);
+                // print(widget.srComplaintActionList[index].nextVisitDate);
+                String updateDate='';
+                print(widget.requestStatus);
 
                 return Theme(
                   data: ThemeData(
@@ -77,6 +83,23 @@ class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
                       ),
                     ),
                     children: <Widget>[
+                      // TextFormField(
+                      //   controller: TextEditingController(text: updateDate),
+                      //   readOnly: true,
+                      //   decoration: FormFieldStyle.buildInputDecoration(
+                      //     labelText: 'Update Date',
+                      //   ),
+                      // ),
+                      // SizedBox(height: 16,),
+                      // TextFormField(
+                      //   controller: TextEditingController(text: widget.requestStatus),
+                      //   readOnly: true,
+                      //   decoration: FormFieldStyle.buildInputDecoration(
+                      //     labelText: 'Request Status',
+                      //   ),
+                      // ),
+                      //
+                      // SizedBox(height: 16,),
                       TextFormField(
                         maxLines: 4,
                         controller: _commentList[index],

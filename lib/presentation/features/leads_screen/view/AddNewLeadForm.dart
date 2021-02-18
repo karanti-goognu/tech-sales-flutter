@@ -115,7 +115,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   @override
   void dispose() {
     super.dispose();
-    _formKeyForNewLeadForm.currentState.dispose();
+    _formKeyForNewLeadForm.currentState!=null?_formKeyForNewLeadForm.currentState.dispose():print("nothing happened");
     //_addLeadsController.dispose();
     // _formKey.currentState.dispose();
   }
@@ -1114,7 +1114,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       fontSize: 18),
                                                 )
                                               : Text(
-                                                  "Influencer Details ${(index)} ",
+                                                  "Influencer Details ${(index+1)} ",
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,

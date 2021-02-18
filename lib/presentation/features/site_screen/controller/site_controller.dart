@@ -204,6 +204,8 @@ class SiteController extends GetxController {
         if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
+          print('@@@@');
+          print(data);
           this.sitesListResponse = data;
           if (sitesListResponse.respCode == "ST2004") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));

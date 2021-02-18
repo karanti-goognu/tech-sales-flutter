@@ -1185,6 +1185,7 @@ class _SiteDataViewState extends State<SiteDataView> {
               isPrimary: _listInfluencerDetail[i].isPrimarybool ? "Y" : "N",
               createdBy: empId));
         }
+        // print(newInfluencerEntity);
 
         if (_selectedSiteFloor == null) {
           _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
@@ -1240,7 +1241,7 @@ class _SiteDataViewState extends State<SiteDataView> {
               ? _siteProbabilityWinningEntity.id
               : null
         };
-        print(updateDataRequest);
+        print('updateDataRequest $updateDataRequest');
         _siteController.updateLeadData(
             updateDataRequest, _imageList, context, widget.siteId);
 

@@ -227,7 +227,7 @@ class AddEventController extends GetxController {
   set selectedVenueTypeMeet(value) => this._selectedVenueTypeMeet.value = value;
 
   saveVisit(String accessKey) {
-    Future.delayed(Duration.zero,()=>Get.dialog(CircularProgressIndicator()));
+    Future.delayed(Duration.zero,()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
