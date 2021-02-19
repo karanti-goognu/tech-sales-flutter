@@ -14,7 +14,7 @@ void main() async {
     runApp(MyApp());
     WidgetsFlutterBinding.ensureInitialized();
   }, (error, stackTrace) {
-    print('runZonedGuarded: Caught error in my root zone.');
+  //  print('runZonedGuarded: Caught error in my root zone.');
     FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

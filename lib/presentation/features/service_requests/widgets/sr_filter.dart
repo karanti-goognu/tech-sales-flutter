@@ -21,17 +21,17 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   @override
   void initState() {
-    print("Filter Widget");
+  //  print("Filter Widget");
     setState(() {
       splashDataModel = _splashController.splashDataModel;
     });
     splashDataModel.srctRequestEntity.forEach((element) {
-      print(element.toJson());
+    //  print(element.toJson());
     });
     splashDataModel.srComplainResolutionEntity.forEach((element) {
-      print(element.toJson());
+    //  print(element.toJson());
     });
-    print(splashDataModel.severity);
+  //  print(splashDataModel.severity);
 
     super.initState();
   }
@@ -185,7 +185,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 Spacer(),
                 RaisedButton(
                   onPressed: () {
-                    print(requestGroup);
+                 //   print(requestGroup);
                     Get.back(result: [resolutionStatus,severityGroup,requestGroup, totalFilters]);
                   },
                   color: ColorConstants.buttonNormalColor,
@@ -361,7 +361,7 @@ class _FilterWidgetState extends State<FilterWidget> {
               requestGroup = value;
               totalFilters++;
             });
-            print(totalFilters);
+          //  print(totalFilters);
           },
         ),
       ),

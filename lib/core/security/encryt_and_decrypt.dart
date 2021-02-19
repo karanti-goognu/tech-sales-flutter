@@ -65,7 +65,7 @@ String  encryptString(String plainishText, String encryptionKey) {
 
   var plainBytes = (utf8.encode(plainText));
   var cipherText = cipher.process(plainBytes);
-print(" Dhawan "+base64.encode(cipherText) + "~" + base64.encode(params));
+// print(" Dhawan "+base64.encode(cipherText) + "~" + base64.encode(params));
   return (base64.encode(cipherText) + "~" + base64.encode(params));
 }
 
@@ -79,11 +79,11 @@ String encryptAESCryptoJS(String plainText, String passphrase) {
     final encrypter = encrypt.Encrypter(
         encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: "PKCS7"));
     final encrypted = encrypter.encrypt(plainText, iv: iv);
-    print(encrypted);
+   // print(encrypted);
     Uint8List encryptedBytesWithSalt = Uint8List.fromList(
         createUint8ListFromString("Salted__") + salt + encrypted.bytes);
-    print(encryptedBytesWithSalt);
-    print(base64.encode(encryptedBytesWithSalt));
+    //print(encryptedBytesWithSalt);
+    //print(base64.encode(encryptedBytesWithSalt));
     return base64.encode(encryptedBytesWithSalt);
   } catch (error) {
     throw error;
@@ -105,7 +105,7 @@ String decryptAESCryptoJS(String encrypted, String passphrase) {
         encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: "PKCS7"));
     final decrypted =
         encrypter.decrypt64(base64.encode(encryptedBytes), iv: iv);
-    print(decrypted);
+   // print(decrypted);
     return decrypted;
   } catch (error) {
     throw error;

@@ -60,8 +60,8 @@ class LoginController extends GetxController {
       this._attempts.value = value;
       print("No Exception");
     }catch(e){
-      print("Exception: $e");
       this._attempts.value = value.value;
+      print("Exception: $e");
     }
   }
 

@@ -51,7 +51,7 @@ class _RequestCreationState extends State<RequestCreation> {
         setState(() {
           srComplaintModel = data;
         });
-        print(data.toJson());
+     //   print(data.toJson());
       });
     });
   }
@@ -631,7 +631,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 RaisedButton(
                                   onPressed: () async {
                                     if (!_srCreationFormKey.currentState.validate()) {
-                                      print("Error");
+                                    //  print("Error");
                                       Get.dialog(CustomDialogs().errorDialog(
                                           'Please enter the mandatory details'));
                                     } else if (_severity.text == "") {
@@ -819,7 +819,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                       .add(element.complaintSeverity);
                                 });
                               });
-                              print(selectedRequestSubtypeSeverity);
+                           //   print(selectedRequestSubtypeSeverity);
 
                               checkedValues[index] = newValue;
                               // dataToBeSentBack = requestSubtype[index];
@@ -867,8 +867,8 @@ class _RequestCreationState extends State<RequestCreation> {
                   MaterialButton(
                     color: HexColor('#1C99D4'),
                     onPressed: () {
-                      print(selectedRequestSubtype);
-                      print(selectedRequestSubtypeSeverity);
+                    //  print(selectedRequestSubtype);
+                   //   print(selectedRequestSubtypeSeverity);
                       if (selectedRequestSubtypeSeverity.contains('HIGH')) {
                         setState(() {
                           _severity.text = 'HIGH';
@@ -884,7 +884,7 @@ class _RequestCreationState extends State<RequestCreation> {
                           _severity.text = 'LOW';
                         });
                       } else {
-                        print('No request sub type selected');
+                      //  print('No request sub type selected');
                       }
                       // dataToBeSentBack.isEmpty
                       //     ? widget.customFunction(dataToBeSentBack)
@@ -932,7 +932,7 @@ class _RequestCreationState extends State<RequestCreation> {
     // serviceRequestComplaintType.map((e) {
     //   print('hi');
     // }).toList();
-    print(serviceRequestComplaintTypeId);
+  //  print(serviceRequestComplaintTypeId);
     // print(serviceRequestComplaintType.serviceRequestTypeText);
   }
 

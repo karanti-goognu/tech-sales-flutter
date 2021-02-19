@@ -13,31 +13,42 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = '2'
 }
 
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
+def flutterVersionName =    localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '2.0.0'
 }
+
+
+//test
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+//
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-// Add the following line:
-apply plugin: 'com.google.gms.google-services'  // Google Services plugin
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    signingConfigs {
-        release {
-            //storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
-            storeFile file('/Users/admin/Documents/Development/jks/dalmiadigitaltso.jks')
-            storePassword 'dalmiadigitaltso'
-            keyAlias 'dalmiadigitaltso'
-            keyPassword 'dalmiadigitaltso'
-        }
-    }
+
+    //remove the below section of code
+//    signingConfigs {
+//        release {
+//            //storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
+//            storeFile file('/Users/admin/Documents/Development/jks/dalmiadigitaltso.jks')
+//            storePassword 'dalmiadigitaltso'
+//            keyAlias 'dalmiadigitaltso'
+//            keyPassword 'dalmiadigitaltso'
+//        }
+//    }
+    //
     compileSdkVersion 30
 
     sourceSets {
@@ -55,14 +66,24 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        signingConfig signingConfigs.release
+//        signingConfig signingConfigs.release
     }
+//Added code below
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+//
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
