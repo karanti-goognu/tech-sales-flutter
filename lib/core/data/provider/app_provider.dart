@@ -42,9 +42,9 @@ class MyApiClientApp {
         //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
-       // print('error');
+        print('error');
     } catch (_) {
-    //  print('exception ${_.toString()}');
+      print('exception ${_.toString()}');
     }
   }
 
@@ -275,10 +275,10 @@ class MyApiClientApp {
         var data = json.decode(response.body);
         return CalendarPlanModel.fromJson(data);
       } else {
-       // print('Error in else');
+        print('Error in else');
       }
     } catch (_) {
-    //  print('exception ${_.toString()}');
+      print('exception ${_.toString()}');
     }
   }
 
