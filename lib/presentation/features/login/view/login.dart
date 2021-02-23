@@ -1,7 +1,9 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
@@ -22,11 +24,17 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenPageState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  Map _source = {ConnectivityResult.none: false};
+  MyConnectivity _connectivity = MyConnectivity.instance;
   String connectivityString;
   LoginController _loginController = Get.find();
 
   @override
   void initState() {
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+    });
     super.initState();
   }
 
@@ -43,6 +51,7 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    _connectivity.disposeStream();
     super.dispose();
   }
 
@@ -209,12 +218,29 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   void afterRequestLayout(String empId, String mobileNumber) {
     print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
-    try {
-      _loginController.empId = empId;
-      _loginController.phoneNumber = mobileNumber;
-      _loginController.getAccessKey(RequestIds.LOGIN_REQUEST);
-    } catch (_) {
-      print('Exception');
+
+    // switch (_source.keys.toList()[0]) {
+    //   case ConnectivityResult.none:
+    //     connectivityString = "Offline";
+    //     break;
+    //   case ConnectivityResult.mobile:
+    //     connectivityString = "Mobile: Online";
+    //     break;
+    //   case ConnectivityResult.wifi:
+    //     connectivityString = "WiFi: Online";
+    // }
+
+    if(_source.keys.toList()[0]==ConnectivityResult.none){
+      _loginController.showNoInternetSnack();
+    }else{
+      try {
+        _loginController.empId = empId;
+        _loginController.phoneNumber = mobileNumber;
+        _loginController.getAccessKey(RequestIds.LOGIN_REQUEST);
+      } catch (_) {
+        print('Exception');
+      }
+
     }
   }
 }

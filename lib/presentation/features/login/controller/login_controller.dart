@@ -58,10 +58,10 @@ class LoginController extends GetxController {
   set attempts(value){
     try{
       this._attempts.value = value;
-      // print("No Exception");
+      print("No Exception");
     }catch(e){
-      // print("Exception: $e");
       this._attempts.value = value.value;
+      print("Exception: $e");
     }
   }
 
@@ -99,17 +99,24 @@ class LoginController extends GetxController {
     repository.getAccessKey().then((data) {
       Get.back();
 
-      this.accessKeyResponse = data;
-      switch (requestId) {
-        case RequestIds.LOGIN_REQUEST:
-          checkLoginStatus();
-          break;
-        case RequestIds.RETRY_OTP_REQUEST:
-          retryOtp();
-          break;
-        case RequestIds.VALIDATE_OTP_REQUEST:
-          validateOTP();
-          break;
+      if(data=="null"){
+        print("OK");
+        showNoInternetSnack();
+      }
+      else{
+        print(data);
+        this.accessKeyResponse = data;
+        switch (requestId) {
+          case RequestIds.LOGIN_REQUEST:
+            checkLoginStatus();
+            break;
+          case RequestIds.RETRY_OTP_REQUEST:
+            retryOtp();
+            break;
+          case RequestIds.VALIDATE_OTP_REQUEST:
+            validateOTP();
+            break;
+        }
       }
     });
   }
@@ -220,16 +227,17 @@ class LoginController extends GetxController {
                       ),
                       onPressed: () {
                         this.attempts=0;
-                        //print(this.attempts);
+                        print(this.attempts);
                         Get.offAllNamed(Routes.LOGIN);
                       },
                     ),
                   ],
-                )
+                ),
+                barrierDismissible: false
             );
           }
           else{
-            Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
+            Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg),barrierDismissible: false);
           }
         }
       }
