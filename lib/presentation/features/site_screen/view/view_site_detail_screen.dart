@@ -332,9 +332,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _contactNumber.text = sitesModal.siteOwnerContactNumber;
 
           _siteTotalPt.text = sitesModal.siteTotalSitePotential;
-          _siteTotalBags.text =
-              (double.parse(_siteTotalPt.text) * 20).round().toString();
 
+          if (_siteTotalPt.text == null ||
+              _siteTotalPt.text == "") {
+            _siteTotalBags.clear();
+          } else {
+            _siteTotalBags.text = (double.parse(_siteTotalPt.text) * 20).round().toString();
+          }
           // print("Dhawan");
           // print(sitesModal.siteStageId);
           //  print(sitesModal.);
