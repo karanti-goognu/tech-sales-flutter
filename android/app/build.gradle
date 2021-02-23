@@ -38,6 +38,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
 
+<<<<<<< HEAD
     signingConfigs {
         release {
             //storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
@@ -48,6 +49,19 @@ android {
         }
     }
 
+=======
+    //remove the below section of code
+//    signingConfigs {
+//        release {
+//            //storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
+//            storeFile file('/Users/admin/Documents/Development/jks/dalmiadigitaltso.jks')
+//            storePassword 'dalmiadigitaltso'
+//            keyAlias 'dalmiadigitaltso'
+//            keyPassword 'dalmiadigitaltso'
+//        }
+//    }
+    //
+>>>>>>> 749f9da5787b19f3e0aff98ea4397b7ec11c8959
     compileSdkVersion 30
 
     sourceSets {
@@ -66,6 +80,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 //        signingConfig signingConfigs.release
+<<<<<<< HEAD
     }
 //Added code below
     signingConfigs {
@@ -76,6 +91,18 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
+=======
+    }
+//Added code below
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+>>>>>>> 749f9da5787b19f3e0aff98ea4397b7ec11c8959
 //
 
     buildTypes {
