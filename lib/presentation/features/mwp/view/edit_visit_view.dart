@@ -33,8 +33,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
   @override
   void initState() {
-    print(_addEventController.visitRemarks.runtimeType);
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
+    print("Reamrks-->"+_addEventController.visitRemarks);
     super.initState();
   }
 
@@ -476,9 +476,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                           keyboardType: TextInputType.text,
                                           maxLines: 3,
                                           decoration: _inputDecoration("Remarks", false))),
-                              SizedBox(
-                                height: 16,
-                              ),
+                              SizedBox(height: 16,),
                               Obx(() => (_addEventController.visitResponseModel
                                               .mwpVisitModel.visitStartTime ==
                                           null &&

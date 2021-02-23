@@ -202,7 +202,7 @@ class AddEventController extends GetxController {
 
   set visitSiteId(value) => this._visitSiteId.value = value;
 
-  set visitRemarks(value) => this._visitRemarks.value = value;
+  set visitRemarks(value) => this._visitRemarks.value = value ;
 
   set dalmiaInflCount(value) => this._dalmiaInflCount.value = value;
 
@@ -412,7 +412,7 @@ class AddEventController extends GetxController {
           this.visitSubType =
               this.visitResponseModel.mwpVisitModel.visitSubType.toString();
           this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
-          print(this.visitResponseModel.mwpVisitModel.remark.toString());
+          print("ComingRemarks"+this.visitRemarks);
         }
       });
     });

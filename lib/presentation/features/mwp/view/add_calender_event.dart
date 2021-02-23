@@ -251,8 +251,8 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                       if (_calendarEventController
                               .listOfEvents[index].eventType ==
                           'VISIT') {
-                        _addEventController.visitId =
-                            _calendarEventController.listOfEvents[index].id;
+                        _addEventController.visitId = _calendarEventController.listOfEvents[index].id;
+                        print("ComingRemarks4"+this._addEventController.visitRemarks);
                         Get.toNamed(Routes.VISIT_VIEW_SCREEN);
                       } else {
                         _addEventController.visitId =

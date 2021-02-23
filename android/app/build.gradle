@@ -32,9 +32,9 @@ android {
     signingConfigs {
         release {
             //storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
-            storeFile file('/Users/admin/Documents/Development/jks/dalmiadigitaltso.jks')
+            storeFile file('/home/innobins/Desktop/DalmiyaProjects/tech-sales-flutter/keystore/android/dalmiadigitaltso.jks')
             storePassword 'dalmiadigitaltso'
-            keyAlias 'dalmiadigitaltso'
+            keyAlias 'key'
             keyPassword 'dalmiadigitaltso'
         }
     }
@@ -59,6 +59,7 @@ android {
     }
 
     buildTypes {
+
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
