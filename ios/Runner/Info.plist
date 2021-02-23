@@ -22,12 +22,24 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>App needs access to play tutorial videos</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>App needs access to Calender to view visits</string>
 	<key>NSCameraUsageDescription</key>
 	<string>To capture profile photo please grant camera access</string>
+	<key>NSContactsUsageDescription</key>
+	<string>App needs access to Contacts for user mobile number</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>App needs access to capture location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Please allow to access GPS location</string>
+	<key>NSMotionUsageDescription</key>
+	<string>App needs access to capture location</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>App needs access to photo lib for profile images</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>App needs access to save records</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
