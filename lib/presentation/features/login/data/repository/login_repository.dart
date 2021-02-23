@@ -21,6 +21,12 @@ class MyRepository {
   }
 
   getAccessKey() {
-    return apiClient.getAccessKey();
+    print("repo");
+    try{
+      return apiClient.getAccessKey();
+    }
+    catch(e){
+      return "null";
+    }
   }
 }

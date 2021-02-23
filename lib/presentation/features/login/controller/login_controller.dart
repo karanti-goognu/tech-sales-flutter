@@ -99,17 +99,24 @@ class LoginController extends GetxController {
     repository.getAccessKey().then((data) {
       Get.back();
 
-      this.accessKeyResponse = data;
-      switch (requestId) {
-        case RequestIds.LOGIN_REQUEST:
-          checkLoginStatus();
-          break;
-        case RequestIds.RETRY_OTP_REQUEST:
-          retryOtp();
-          break;
-        case RequestIds.VALIDATE_OTP_REQUEST:
-          validateOTP();
-          break;
+      if(data=="null"){
+        print("OK");
+        showNoInternetSnack();
+      }
+      else{
+        print(data);
+        // this.accessKeyResponse = data;
+        // switch (requestId) {
+        //   case RequestIds.LOGIN_REQUEST:
+        //     checkLoginStatus();
+        //     break;
+        //   case RequestIds.RETRY_OTP_REQUEST:
+        //     retryOtp();
+        //     break;
+        //   case RequestIds.VALIDATE_OTP_REQUEST:
+        //     validateOTP();
+        //     break;
+        // }
       }
     });
   }
