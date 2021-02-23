@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/get_sr_complaint_data_controller.dart';
@@ -32,6 +34,9 @@ class _RequestCreationState extends State<RequestCreation> {
   SaveServiceRequestController saveRequest = Get.find();
   List<File> _imageList = List<File>();
   SaveServiceRequest saveServiceRequest;
+  Map _source = {ConnectivityResult.none: false};
+  MyConnectivity _connectivity = MyConnectivity.instance;
+  String connectivityString;
 
   Future getEmpId() async {
     String empID = "";
@@ -109,8 +114,18 @@ class _RequestCreationState extends State<RequestCreation> {
 
   @override
   void initState() {
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+    });
     getDropdownData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _connectivity.disposeStream();
+    super.dispose();
   }
 
   @override
@@ -640,57 +655,64 @@ class _RequestCreationState extends State<RequestCreation> {
                                           middleText:
                                               "Request Sub-type and Severity cannot be empty");
                                     } else {
-                                      String empId = await getEmpId();
-                                      List imageDetails = List();
-                                      List subTypeDetails = List();
-                                      selectedRequestSubtypeObjectList
-                                          .forEach((element) {
-                                        setState(() {
-                                          subTypeDetails.add({
-                                            "createdBy": empId,
-                                            "serviceRequestComplaintId": null,
-                                            "serviceRequestComplaintTypeId":
-                                                element.id
+                                      if (_source.keys.toList()[0] ==
+                                          ConnectivityResult.none) {
+                                        eventController.showNoInternetSnack();
+                                      } else {
+                                        String empId = await getEmpId();
+                                        List imageDetails = List();
+                                        List subTypeDetails = List();
+                                        selectedRequestSubtypeObjectList
+                                            .forEach((element) {
+                                          setState(() {
+                                            subTypeDetails.add({
+                                              "createdBy": empId,
+                                              "serviceRequestComplaintId": null,
+                                              "serviceRequestComplaintTypeId":
+                                              element.id
+                                            });
                                           });
                                         });
-                                      });
 
-                                      _imageList.forEach((element) {
-                                        setState(() {
-                                          imageDetails.add({
-                                            //ToDo: Change srComplaint Id to some dynamic value
-                                            'srComplaintId': null,
-                                            'photoName':
-                                                element.path.split('/').last,
-                                            'createdBy': empId
+                                        _imageList.forEach((element) {
+                                          setState(() {
+                                            imageDetails.add({
+                                              //ToDo: Change srComplaint Id to some dynamic value
+                                              'srComplaintId': null,
+                                              'photoName':
+                                              element.path
+                                                  .split('/')
+                                                  .last,
+                                              'createdBy': empId
+                                            });
                                           });
                                         });
-                                      });
-                                      SaveServiceRequest _saveServiceRequest =
-                                          SaveServiceRequest.fromJson({
-                                        "createdBy": empId,
-                                        "creatorContactNumber":
-                                            _requestorContact.text,
-                                        "creatorId": _customerID.text,
-                                        "creatorType": creatorType,
-                                        "description": _description.text,
-                                        "district": _district.text,
-                                        "pincode": _pin.text,
-                                        "requestDepartmentId":
-                                            requestDepartmentId,
-                                        "requestId": requestId,
-                                        "resolutionStatusId": 1,
-                                        "siteId": int.parse(_siteID.text),
-                                        "severity": _severity.text,
-                                        "srComplaintPhotosEntity": imageDetails,
-                                        "srComplaintSubtypeMappingEntity":
-                                            subTypeDetails,
-                                        "state": _state.text,
-                                        "taluk": _taluk.text
-                                      });
-                                      saveRequest.getAccessKeyAndSaveRequest(
-                                          _imageList, _saveServiceRequest);
-                                      // print(_saveServiceRequest);
+                                        SaveServiceRequest _saveServiceRequest =
+                                        SaveServiceRequest.fromJson({
+                                          "createdBy": empId,
+                                          "creatorContactNumber":
+                                          _requestorContact.text,
+                                          "creatorId": _customerID.text,
+                                          "creatorType": creatorType,
+                                          "description": _description.text,
+                                          "district": _district.text,
+                                          "pincode": _pin.text,
+                                          "requestDepartmentId":
+                                          requestDepartmentId,
+                                          "requestId": requestId,
+                                          "resolutionStatusId": 1,
+                                          "siteId": int.parse(_siteID.text),
+                                          "severity": _severity.text,
+                                          "srComplaintPhotosEntity": imageDetails,
+                                          "srComplaintSubtypeMappingEntity":
+                                          subTypeDetails,
+                                          "state": _state.text,
+                                          "taluk": _taluk.text
+                                        });
+                                        saveRequest.getAccessKeyAndSaveRequest(
+                                            _imageList, _saveServiceRequest);
+                                        // print(_saveServiceRequest);
+                                      }
                                     }
                                   },
                                   color: HexColor("#1C99D4"),

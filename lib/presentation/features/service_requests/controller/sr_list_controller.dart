@@ -44,6 +44,13 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
   }
 //*****
 
+  showNoInternetSnack() {
+    Get.snackbar(
+        "No internet connection.", "Please check your internet connection.",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM);
+  }
 
 
   Future<AccessKeyModel> getAccessKey(){

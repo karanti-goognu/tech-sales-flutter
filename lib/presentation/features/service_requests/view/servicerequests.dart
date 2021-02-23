@@ -1,4 +1,6 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/sr_list_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
@@ -26,7 +28,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     Text('Type of Request'),
   ];
   TabController tabController;
-
   ServiceRequestComplaintListModel serviceRequestComplaintListModel;
   SRListController eventController = Get.find();
   UpdateServiceRequestController _updateServiceRequestController = Get.find();
@@ -48,15 +49,16 @@ class _ServiceRequestsState extends State<ServiceRequests> {
      // print('offset new value ${eventController.offset}');
       await eventController.getAccessKey().then((value) async {
         data = await eventController.getSrListData(value.accessKey, eventController.offset );
+        print("Data-->"+data);
       });
       setState(() {
         serviceRequestComplaintListModel=data;
       });
     }
   }
-
   @override
   void initState() {
+
     getSRListData().whenComplete(() {
       setState(() {
         serviceRequestComplaintListModel = data;
@@ -80,8 +82,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
 
+    SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,

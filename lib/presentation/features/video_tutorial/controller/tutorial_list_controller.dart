@@ -27,6 +27,15 @@ class TutorialListController extends GetxController{
 
   }
 
+  showNoInternetSnack() {
+    Get.snackbar(
+        "No internet connection.", "Please check your internet connection.",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM);
+  }
+
+
   Future<TsoAppTutorialListModel> getAppTutorialListData(String accessKey) async {
     String userSecurityKey = "";
     String empID = "";

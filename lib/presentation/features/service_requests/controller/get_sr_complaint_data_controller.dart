@@ -34,6 +34,14 @@ class SrFormDataController extends GetxController {
     _siteLocationData.value = value;
   }
 
+  showNoInternetSnack() {
+    Get.snackbar(
+        "No internet connection.", "Please check your internet connection.",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM);
+  }
+
   Future<AccessKeyModel> getAccessKey() {
     // print(repository.getAccessKey().then((value) => value.accessKey));
     return repository.getAccessKey();

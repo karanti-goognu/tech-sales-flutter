@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp_plan_view.dart';
@@ -22,10 +24,8 @@ class AddMWP extends StatefulWidget {
 class AddMWPScreenPageState extends State<AddMWP> {
   MWPPlanController _mwpPlanController = Get.find();
   AppController _appController = Get.find();
-
   @override
   void initState() {
-
     WidgetsBinding.instance.addPostFrameCallback((_){
       print(json.encode(_mwpPlanController.getMWPResponse));
       print(1);
@@ -38,6 +38,12 @@ class AddMWPScreenPageState extends State<AddMWP> {
     });
 
     super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -159,11 +165,6 @@ class AddMWPScreenPageState extends State<AddMWP> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   Widget _buildAddEventInterface(BuildContext context) {
