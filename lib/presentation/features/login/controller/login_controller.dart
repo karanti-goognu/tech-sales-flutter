@@ -249,6 +249,6 @@ class LoginController extends GetxController {
   }
 
   openSplashScreen() {
-    Get.toNamed(Routes.INITIAL);
+    Get.offAndToNamed(Routes.INITIAL);
   }
 }

@@ -964,9 +964,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                                                                               setState(() {
                                                                                 final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                                                                                final String formattedDate = formatter.format(picked);
-
-                                                                                _nextVisitDate.text = formattedDate;
+                                                                                if(picked!=null) {
+                                                                                  final String formattedDate = formatter
+                                                                                      .format(
+                                                                                      picked);
+                                                                                  _nextVisitDate
+                                                                                      .text =
+                                                                                      formattedDate;
+                                                                                }
                                                                               });
                                                                             },
                                                                           ),
@@ -2664,12 +2669,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             );
 
                             setState(() {
-                              final DateFormat formatter =
-                                  DateFormat("yyyy-MM-dd");
-                              final String formattedDate =
-                                  formatter.format(picked);
-
-                              _dateOfBagSupplied.text = formattedDate;
+                              final DateFormat formatter = DateFormat("yyyy-MM-dd");
+                              if(picked!=null) {
+                                final String formattedDate = formatter.format(
+                                    picked);
+                                _dateOfBagSupplied.text = formattedDate;
+                              }
                             });
                           },
                         ),
@@ -2848,9 +2853,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                     setState(() {
                       final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                      final String formattedDate = formatter.format(picked);
-
-                      _dateofConstruction.text = formattedDate;
+                      if(picked!=null) {
+                        final String formattedDate = formatter.format(picked);
+                        _dateofConstruction.text = formattedDate;
+                      }
                     });
                   },
                 ),
@@ -3088,9 +3094,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                     setState(() {
                       final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                      final String formattedDate = formatter.format(picked);
-
-                      _nextVisitDate.text = formattedDate;
+                      if(picked!=null) {
+                        final String formattedDate = formatter.format(picked);
+                        _nextVisitDate.text = formattedDate;
+                      }
                     });
                   },
                 ),
@@ -4925,9 +4932,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                         setState(() {
                           final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                          final String formattedDate = formatter.format(picked);
-
-                          _dateOfBagSuppliedNextStage.text = formattedDate;
+                          if(picked!=null) {
+                            final String formattedDate = formatter.format(
+                                picked);
+                            _dateOfBagSuppliedNextStage.text = formattedDate;
+                          }
                         });
                       },
                     ),
@@ -5051,9 +5060,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                 setState(() {
                   final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                  final String formattedDate = formatter.format(picked);
-
-                  _dateofConstructionNextStage.text = formattedDate;
+                  if(picked!=null) {
+                    final String formattedDate = formatter.format(picked);
+                    _dateofConstructionNextStage.text = formattedDate;
+                  }
                 });
               },
             ),
