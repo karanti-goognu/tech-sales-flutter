@@ -203,7 +203,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
         // print(viewSiteDataResponse);
         await db.clearTable();
-        siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
+        siteBrandEntity = viewSiteDataResponse!=null?viewSiteDataResponse.siteBrandEntity:"";
         counterListModel = viewSiteDataResponse.counterListModel;
         // print(counterListModel);
         // print("aaaaaaaaaaaaaaa");
@@ -1703,9 +1703,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 setState(() {
                                   _pickedLocation = result;
                                   _currentPosition = new Position(
-                                      latitude: _pickedLocation.latLng.latitude,
-                                      longitude:
-                                          _pickedLocation.latLng.longitude);
+                                      latitude: _pickedLocation!=null?_pickedLocation.latLng.latitude:0.0,
+                                      longitude: _pickedLocation!=null?_pickedLocation.latLng.longitude:0.0);
                                   _getAddressFromLatLng();
                                   //print(_pickedLocation.latLng.latitude);
                                 });

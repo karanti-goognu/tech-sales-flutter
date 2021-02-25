@@ -31,9 +31,12 @@ class _SiteDetailsState extends State<SiteDetails> {
   @override
   void initState() {
     getData().whenComplete(() {
-      setState(() {
-        siteListModel = data;
-      });
+      if (mounted) {
+        // Update data.
+        setState(() {
+          siteListModel = data;
+        });
+      }
     });
     super.initState();
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_creation.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -96,23 +97,26 @@ class AddEventScreenPageState extends State<AddEvent> {
                           border: Border.all()),
                       child: DropdownButtonHideUnderline(
                           child: Obx(
-                        () => DropdownButton<String>(
-                          value: _addEventController.selectedView,
-                          onChanged: (String newValue) {
-                            _addEventController.selectedView = newValue;
-                          },
-                          items: <String>[
-                            'Visit',
-                            'Influencers meet',
-                            'Service Requests'
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      )),
+                                () => DropdownButton<String>(
+                              value: _addEventController.selectedView,
+                              onChanged: (String newValue) {
+                                _addEventController.selectedView = newValue;
+                                if(_addEventController.selectedView=='Service Requests'){
+                                  Get.offNamed(Routes.SERVICE_REQUEST_CREATION);
+                                }
+                              },
+                              items: <String>[
+                                'Visit',
+                                'Influencers meet',
+                                'Service Requests'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          )),
                     ),
                   ),
                 ],
@@ -122,7 +126,10 @@ class AddEventScreenPageState extends State<AddEvent> {
               ),
               Obx(() => (_addEventController.selectedView == "Visit")
                   ? AddEventVisit()
-                  : AddEventInfluencerMeet()),
+                  :
+              (_addEventController.selectedView == "Influencers meet")
+                  ? AddEventInfluencerMeet():
+              AddEventInfluencerMeet()),
               SizedBox(
                 height: 30,
               ),

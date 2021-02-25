@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
@@ -173,6 +174,19 @@ class LeadsFilterController extends GetxController {
     repository.getAccessKey().then((data) {
       Get.back();
       this.accessKeyResponse = data;
+
+      if (this.accessKeyResponse.respMsg != 'SUCCESS') {
+        print(this.accessKeyResponse.respMsg);
+        Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+        _prefs.then((SharedPreferences prefs) {
+          prefs.setString(StringConstants.userSecurityKey, '');
+          prefs.setString(StringConstants.isUserLoggedIn, "false");
+          prefs.setString(StringConstants.employeeName, '');
+          prefs.setString(StringConstants.employeeId, '');
+          prefs.setString(StringConstants.mobileNumber, '');
+        });
+        SystemNavigator.pop();
+      }
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
         String userSecurityKey =
