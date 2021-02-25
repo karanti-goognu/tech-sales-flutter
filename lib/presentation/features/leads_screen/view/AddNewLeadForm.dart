@@ -384,7 +384,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
             Form(
               key: _formKeyForNewLeadForm,
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(13.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
