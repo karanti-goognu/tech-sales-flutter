@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:connectivity/connectivity.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -55,11 +58,81 @@ class _SiteScreenState extends State<SiteScreen> {
     }
   }
 
+  Future<bool> internetChecking() async {
+    // do something here
+    bool result = await DataConnectionChecker().hasConnection;
+    return result;
+  }
+
+  storeOfflineSiteData() async {
+    final db = SiteListDBHelper();
+    await db.clearTable();
+    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+    if(_siteController.sitesListResponse.sitesEntity!=null) {
+      for (int i = 0; i <
+          _siteController.sitesListResponse.sitesEntity.length; i++) {
+        SitesEntity siteEntity = new SitesEntity(
+            siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
+            leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
+            siteDistrict:
+            _siteController.sitesListResponse.sitesEntity[i].siteDistrict,
+            siteStageId:
+            _siteController.sitesListResponse.sitesEntity[i].siteStageId,
+            siteCreationDate:
+            _siteController.sitesListResponse.sitesEntity[i].siteCreationDate,
+            sitePotentialMt:
+            _siteController.sitesListResponse.sitesEntity[i].sitePotentialMt,
+            siteOppertunityId: _siteController
+                .sitesListResponse.sitesEntity[i].siteOppertunityId,
+            siteScore: _siteController.sitesListResponse.sitesEntity[i]
+                .siteScore,
+            contactNumber:
+            _siteController.sitesListResponse.sitesEntity[i].contactNumber,
+            siteProbabilityWinningId: _siteController
+                .sitesListResponse.sitesEntity[i].siteProbabilityWinningId);
+        SiteListModelForDB siteListModelForDb =
+        new SiteListModelForDB(null, json.encode(siteEntity));
+        await db.addSiteEntityInDraftList(siteListModelForDb);
+
+        db.fetchAll().then((value) {
+            setState(() {
+              print(json.decode(value[i].siteListModel));
+              siteList.add(SitesEntity.fromJson(
+                  json.decode(value[i].siteListModel)));
+              print("SiteList-->"+siteList.length.toString());
+            });
+        });
+
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-    fetchSiteList();
+
+    // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+    // fetchSiteList();
+
+    internetChecking().then((result) => {
+      if(result == true) {
+        print('YAY! Free cute dog pics!'),
+    Get.snackbar(
+    "Internet connection Available.", "Fetching from API.",
+    colorText: Colors.white,
+    backgroundColor: Colors.green,
+    snackPosition: SnackPosition.BOTTOM),
+        storeOfflineSiteData()
+      } else {
+        Get.snackbar(
+        "No internet connection.", "Fetching data from Database.",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM),
+        fetchSiteList()
+      }
+    }
+    );
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
 
@@ -72,7 +145,8 @@ class _SiteScreenState extends State<SiteScreen> {
           print(json.decode(value[i].siteListModel));
           siteList.add(SitesEntity.fromJson(
               json.decode(value[i].siteListModel)));
-          print("SiteList-->"+siteList.length.toString());
+          print("SiteList-->"+SitesEntity.fromJson(
+              json.decode(value[i].siteListModel)).contactNumber);
         });
       }
     });
@@ -82,12 +156,13 @@ class _SiteScreenState extends State<SiteScreen> {
 
   @override
   void dispose() {
-    //_connectivity.disposeStream();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
@@ -418,7 +493,7 @@ class _SiteScreenState extends State<SiteScreen> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount:_siteController.sitesListResponse.sitesEntity.length,
+                        itemCount:siteList.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),
                         // itemExtent: 125.0,
@@ -429,9 +504,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                   context,
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
-                                          ViewSiteScreen(_siteController
-                                              .sitesListResponse
-                                              .sitesEntity[index]
+                                          ViewSiteScreen(siteList[index]
                                               .siteId)));
                             },
                             child: Card(
@@ -489,9 +562,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   padding:
                                                       const EdgeInsets.all(2.0),
                                                   child: Text(
-                                                      "Site ID (${_siteController
-                                                          .sitesListResponse
-                                                          .sitesEntity[index].siteId})",
+                                                      "Site ID (${siteList[index].siteId})",
                                                       style: TextStyle(
                                                           fontSize: 18,
                                                           fontFamily: "Muli",
@@ -505,9 +576,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   padding:
                                                       const EdgeInsets.all(2.0),
                                                   child:  Text(
-                                                      "District: ${_siteController
-                                                          .sitesListResponse
-                                                          .sitesEntity[index].siteDistrict} ",
+                                                      "District: ${siteList[index].siteDistrict} ",
                                                       style: TextStyle(
                                                           color: Colors.black38,
                                                           fontSize: 12,
@@ -535,9 +604,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       label: Obx(
                                                         () => Text(
                                                           (printSiteStage(
-                                                              _siteController
-                                                                  .sitesListResponse
-                                                                  .sitesEntity[
+                                                              siteList[
                                                                       index]
                                                                   .siteStageId)),
                                                           style: TextStyle(
@@ -559,7 +626,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     padding: EdgeInsets.only(
                                                         left: 10.0),
                                                     child: Text(
-                                                      " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
+                                                      " ${siteList[index].siteCreationDate}",
                                                       //  textAlign: TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 10,
@@ -602,9 +669,8 @@ class _SiteScreenState extends State<SiteScreen> {
                                                           //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
-                                                    Obx(
-                                                      () => Text(
-                                                        "${_siteController.sitesListResponse.sitesEntity[index].sitePotentialMt}MT",
+                                                    Text(
+                                                        "${siteList[index].sitePotentialMt}MT",
                                                         style: TextStyle(
                                                             // color: Colors.black38,
                                                             fontSize: 15,
@@ -614,21 +680,16 @@ class _SiteScreenState extends State<SiteScreen> {
                                                             //fontWeight: FontWeight.normal
                                                             ),
                                                       ),
-                                                    )
                                                   ],
                                                 ),
                                               ),
                                               Text(
-                                                (_siteController
-                                                            .sitesListResponse
-                                                            .sitesEntity[index]
+                                                (siteList[index]
                                                             .siteOppertunityId ==
                                                         null)
                                                     ? ""
                                                     : printOpportuityStatus(
-                                                        _siteController
-                                                            .sitesListResponse
-                                                            .sitesEntity[index]
+                                                    siteList[index]
                                                             .siteOppertunityId),
                                                 style: TextStyle(
                                                     color: Colors.blue,
@@ -642,7 +703,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                 height: 8,
                                               ),
                                               Text(
-                                                "Site Score - ${_siteController.sitesListResponse.sitesEntity[index].siteScore}",
+                                                "Site Score - ${siteList[index].siteScore}",
                                                 style:
                                                     TextStyles.robotoRegular14,
                                               ),
@@ -655,10 +716,9 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     Icons.call,
                                                     color: HexColor("#8DC63F"),
                                                   ),
-                                                  Obx(
-                                                    () => GestureDetector(
+                                                  GestureDetector(
                                                       child: Text(
-                                                        "${_siteController.sitesListResponse.sitesEntity[index].contactNumber}",
+                                                        "${siteList[index].contactNumber}",
                                                         /*" Call Contractor",*/
                                                         style: TextStyle(
                                                             color: Colors.black,
@@ -673,15 +733,12 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       ),
                                                       onTap: () {
                                                         String num =
-                                                            _siteController
-                                                                .sitesListResponse
-                                                                .sitesEntity[
+                                                            siteList[
                                                                     index]
                                                                 .contactNumber;
                                                         launch('tel:$num');
                                                       },
                                                     ),
-                                                  ),
                                                 ],
                                               ),
                                             ],
@@ -715,16 +772,12 @@ class _SiteScreenState extends State<SiteScreen> {
                                                 ),
                                           ),*/
                                           Text(
-                                            (_siteController
-                                                        .sitesListResponse
-                                                        .sitesEntity[index]
+                                            (siteList[index]
                                                         .siteProbabilityWinningId ==
                                                     null)
                                                 ? ""
                                                 : printProbabilityOfWinning(
-                                                    _siteController
-                                                        .sitesListResponse
-                                                        .sitesEntity[index]
+                                                siteList[index]
                                                         .siteProbabilityWinningId),
                                             style: TextStyle(
                                                 color: Colors.blue,

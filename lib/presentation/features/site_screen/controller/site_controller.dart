@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/Repository/sites_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
@@ -286,4 +288,18 @@ class SiteController extends GetxController {
           userSecurityKey, updateDataRequest, list, context, siteId);
     });
   }
+
+  // Future<List<SitesEntity>> fetchSiteList(SiteListDBHelper db,int stageId) async {
+  //   List<SitesEntity> siteList = new List();
+  //   db.fetchAll().then((value) {
+  //     for (int i = 0; i < value.length; i++) {
+  //       if(SitesEntity.fromJson(json.decode(value[i].siteListModel)).siteStageId==stageId){
+  //         siteList.add(SitesEntity.fromJson(
+  //             json.decode(value[i].siteListModel)));
+  //       }
+  //     }
+  //   });
+  //   //await db.removeLeadInDraft(2);
+  // }
+
 }

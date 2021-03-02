@@ -24,6 +24,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   AppController _appController = Get.find();
   Map _source = {ConnectivityResult.none: false};
   MyConnectivity _connectivity = MyConnectivity.instance;
+  String connectivityString;
 
   @override
   void initState() {
@@ -43,6 +44,17 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
 
   @override
   Widget build(BuildContext context) {
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.none:
+        connectivityString = "Offline";
+        break;
+      case ConnectivityResult.mobile:
+        connectivityString = "Mobile: Online";
+        break;
+      case ConnectivityResult.wifi:
+        connectivityString = "WiFi: Online";
+    }
+
     List<String> mwpNames = [
       "Total Conversion Vol. (MT)",
       "New ILP members",
@@ -227,6 +239,16 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   }
 
   Widget returnSaveRow() {
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.none:
+        connectivityString = "Offline";
+        break;
+      case ConnectivityResult.mobile:
+        connectivityString = "Mobile: Online";
+        break;
+      case ConnectivityResult.wifi:
+        connectivityString = "WiFi: Online";
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -270,7 +292,8 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
             onPressed: () {
               // Validate returns true if the form is valid, or false
               // otherwise.
-              if (_source.keys.toList()[0] == ConnectivityResult.none) {
+              print("Connection-->"+connectivityString);
+              if (connectivityString == 'Offline') {
               _mwpPlanController.showNoInternetSnack();
               } else {
                 _mwpPlanController.action = "SUBMIT";

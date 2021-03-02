@@ -98,8 +98,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   }
 
 
-
-
   @override
   Widget build(BuildContext context) {
     switch (_source.keys.toList()[0]) {

@@ -127,7 +127,7 @@ class MyApiClientApp {
       SaveMeetRequest saveMeetRequest) async {
     try {
       var body = jsonEncode(saveMeetRequest);
-     // print('body is  :: $body');
+     print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey),

@@ -474,7 +474,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.LEADS_SCREEN);
                   break;
                 case 1:
-                  storeOfflineSiteData();
+                  // storeOfflineSiteData();
                   Get.toNamed(
                     Routes.SITES_SCREEN,
                   );

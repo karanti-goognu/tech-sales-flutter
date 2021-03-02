@@ -67,6 +67,8 @@ dependencies:
   chewie: ^0.12.2
   moengage_flutter: ^2.0.2
   firebase_messaging: ^6.0.9
+  data_connection_checker: ^0.3.4
+
 
 #  autocomplete_textfield: ^1.7.3
 

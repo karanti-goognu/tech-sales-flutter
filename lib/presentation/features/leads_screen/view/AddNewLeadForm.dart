@@ -2663,7 +2663,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
     setState(() {
       // print(image.path);
-
       if (image != null) {
         listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
         _imageList.add(image);

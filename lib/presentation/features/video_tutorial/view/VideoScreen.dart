@@ -16,7 +16,6 @@ class Video extends StatefulWidget {
 class _VideoState extends State<Video> {
   VideoPlayerController videoPlayerController;
 
-
   initState(){
     print("videoUrl---"+widget.videoData.url);
     videoPlayerController= VideoPlayerController.network(widget.videoData.url);
