@@ -75,6 +75,8 @@ class _LeadScreenState extends State<LeadScreen> {
     }
   }
 
+
+
   @override
   void dispose() {
     //_connectivity.disposeStream();
@@ -574,7 +576,7 @@ class _LeadScreenState extends State<LeadScreen> {
         ),
       )
           : ListView.builder(
-        // controller: _scrollController,
+        controller: _scrollController,
           itemCount: _leadsFilterController
               .leadsListResponse.leadsEntity.length,
           padding: const EdgeInsets.only(
