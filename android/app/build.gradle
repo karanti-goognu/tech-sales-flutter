@@ -64,6 +64,8 @@ android {
         applicationId "com.dalmia.techsales"
         minSdkVersion 23
         targetSdkVersion 30
+        multiDexEnabled true
+
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 //        signingConfig signingConfigs.release
@@ -102,4 +104,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:2.2.0")
     implementation("com.moengage:hms-pushkit:1.2.01")
     implementation("com.moengage:rich-notification:1.2.02")
+      compile 'com.android.support:multidex:1.0.0'
+      implementation 'com.huawei.hms:ads-identifier:3.4.34.301'
+
 }

@@ -19,7 +19,9 @@ allprojects {
         // Check that you have following line (if not, add it):
         google()  // Google's Maven repository
         jcenter()
+        maven { url 'https://developer.huawei.com/repo/' }
     }
+    
 }
 
 rootProject.buildDir = '../build'

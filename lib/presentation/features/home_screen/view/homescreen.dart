@@ -17,8 +17,8 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:moengage_flutter/moengage_flutter.dart';
-import 'package:moengage_flutter/push_campaign.dart';
+// import 'package:moengage_flutter/moengage_flutter.dart';
+// import 'package:moengage_flutter/push_campaign.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("SR &\nComplaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png"),
   ];
-  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+//  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
 
   storeOfflineSiteData() async {
@@ -79,19 +79,19 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!mounted) return;
     //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
   }
-  void _onPushClick(PushCampaign message) {
-    print("This is a push click callback from native to flutter. Payload " +
-        message.toString());
-  }
+  // void _onPushClick(PushCampaign message) {
+  //   print("This is a push click callback from native to flutter. Payload " +
+  //       message.toString());
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initPlatformState();
-    _moengagePlugin.initialise();
-    _moengagePlugin.enableSDKLogs();
-    _moengagePlugin.setUpPushCallbacks(_onPushClick);
+    // _moengagePlugin.initialise();
+    // _moengagePlugin.enableSDKLogs();
+    // _moengagePlugin.setUpPushCallbacks(_onPushClick);
     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
       print('Check In');
@@ -112,9 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
           prefs.getString(StringConstants.employeeName);
 
       // MoEngage implementation done here ....
-      _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
-      _moengagePlugin.setFirstName(prefs.getString(StringConstants.employeeName));
-      _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
+      // _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
+      // _moengagePlugin.setFirstName(prefs.getString(StringConstants.employeeName));
+      // _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
 
     });
   }
