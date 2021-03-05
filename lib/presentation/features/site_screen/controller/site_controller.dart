@@ -29,6 +29,11 @@ class SiteController extends GetxController {
   final _sitesListResponse = SitesListModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
 
+  var _sitesListOffline = List<SitesEntity>().obs;
+
+  List<SitesEntity> _siteList = new List();
+
+
   final _phoneNumber = "8860080067".obs;
 
   final _offset = 0.obs;
@@ -113,6 +118,14 @@ class SiteController extends GetxController {
   set selectedSiteStatusValue(value) =>
       this._selectedSiteStatusValue.value = value;
 
+  get sitesListOffline => _sitesListOffline;
+
+  List<SitesEntity> get cartListing => _siteList;
+
+  set sitesListOffline(value) {
+    this._sitesListOffline.assignAll(value);
+  }
+
   set selectedSiteInfluencerCat(value) =>
       this._selectedSiteInfluencerCat.value = value;
 
@@ -120,6 +133,8 @@ class SiteController extends GetxController {
       this._selectedSiteInfluencerCatValue.value = value;
 
   set sitesListResponse(value) => this._sitesListResponse.value = value;
+
+  // set sitesListOffline(value) => this._sitesListOffline.assignAll(value);
 
   getSitesData(String accessKey) {
     String empId = "empty";
@@ -289,17 +304,35 @@ class SiteController extends GetxController {
     });
   }
 
-  // Future<List<SitesEntity>> fetchSiteList(SiteListDBHelper db,int stageId) async {
-  //   List<SitesEntity> siteList = new List();
-  //   db.fetchAll().then((value) {
-  //     for (int i = 0; i < value.length; i++) {
-  //       if(SitesEntity.fromJson(json.decode(value[i].siteListModel)).siteStageId==stageId){
-  //         siteList.add(SitesEntity.fromJson(
-  //             json.decode(value[i].siteListModel)));
-  //       }
-  //     }
-  //   });
-  //   //await db.removeLeadInDraft(2);
-  // }
+   fetchSiteList() async {
+
+     final db = SiteListDBHelper();
+     db.fetchAllSites().then((value) => {
+       this.sitesListOffline = value,
+       _siteList = value
+     });
+     return _siteList;
+    //await db.removeLeadInDraft(2);
+  }
+
+  fetchFliterSiteList(String appendQuery,String whereArgs) async {
+    final db = SiteListDBHelper();
+    db.filterSiteEntityList(appendQuery, whereArgs).then((value) => {
+    this.sitesListOffline = value,
+      _siteList = value
+    });
+    return _siteList;
+    //await db.removeLeadInDraft(2);
+  }
+
+  fetchFliterSiteList1(List<SitesEntity> value) async {
+
+      _siteList = value;
+
+    return _siteList;
+    //await db.removeLeadInDraft(2);
+  }
+
+
 
 }

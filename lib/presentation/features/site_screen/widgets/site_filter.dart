@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -19,7 +23,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
   SiteController _siteController = Get.find();
   AppController _appController = Get.find();
   SplashController _splashController = Get.find();
-
+  List<SitesEntity> siteList = new List();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
 
@@ -192,7 +196,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 Spacer(),
                 RaisedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context,siteList);
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                   },
                   color: ColorConstants.buttonNormalColor,
@@ -385,7 +389,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 }
                 _siteController.selectedSiteStage = value;
                 _siteController.selectedSiteStageValue = leadStageValue;
-
+                fetchFilterData("","",leadStageValue,"","","");
                 print("dssd->>"+value+"..."+leadStageValue);
                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
@@ -565,5 +569,51 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
         }
         selectedDateString = formattedDate;
       });
+  }
+
+  List<SitesEntity> fetchFilterData(String  assignDateFromReq,String assignDateToReq,String siteStageReq,String siteStatusReq,String sitePincodeReq,String siteInflCatReq){
+    String appendQuery = "";
+    String whereArgs="";
+    final db = SiteListDBHelper();
+    if (assignDateFromReq != null && assignDateFromReq!="") {
+      appendQuery==""?appendQuery="siteCreationDate>=?": appendQuery = appendQuery + "and siteCreationDate>=?";
+      whereArgs==""?whereArgs="'" + assignDateFromReq + "'":whereArgs=whereArgs+"'" + assignDateFromReq + "'"+",";
+    }
+
+    if (assignDateToReq != null && assignDateToReq!="") {
+      appendQuery==""?appendQuery= "siteCreationDate<=?":
+      appendQuery = appendQuery + " and siteCreationDate<=?";
+      whereArgs==""?whereArgs="'" + assignDateToReq + "'":whereArgs=whereArgs+"'" + assignDateToReq + "'"+",";
+    }
+
+    if (siteStageReq != null  && siteStageReq!="") {
+      appendQuery==""?appendQuery= "siteStageId=?":
+      appendQuery = appendQuery + " and siteStageId=?";
+      whereArgs==""?whereArgs= siteStageReq:whereArgs=whereArgs + siteStageReq+",";
+    }
+
+    if (siteStatusReq != null &&  siteStatusReq!="") {
+      appendQuery==""?appendQuery= "siteStatusId=?":
+      appendQuery = appendQuery + " and siteStatusId=?";
+      whereArgs==""?whereArgs=siteStatusReq:whereArgs=whereArgs+ siteStatusReq+",";
+    }
+
+    if (sitePincodeReq != null && sitePincodeReq !="") {
+      appendQuery==""?appendQuery= "sitePincode=?":
+      appendQuery = appendQuery + " and sitePincode=?";
+      whereArgs==""?whereArgs="'" + sitePincodeReq + "'":whereArgs=whereArgs+"'" + sitePincodeReq + "'"+",";
+    }
+
+    print(whereArgs.runtimeType);
+    db.filterSiteEntityList(appendQuery, whereArgs).then((value) {
+      _siteController.fetchFliterSiteList1(value);
+      setState(() {
+        siteList = value;
+        print("Filter-->"+appendQuery+".."+whereArgs+"..."+siteList.length.toString());
+      });
+    });
+
+    return  siteList;
+
   }
 }

@@ -45,38 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
 
-  storeOfflineSiteData() async {
-    final db = SiteListDBHelper();
-    await db.clearTable();
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-    if(_siteController.sitesListResponse.sitesEntity!=null) {
-      for (int i = 0; i <
-          _siteController.sitesListResponse.sitesEntity.length; i++) {
-        SitesEntity siteEntity = new SitesEntity(
-            siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
-            leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
-            siteDistrict:
-            _siteController.sitesListResponse.sitesEntity[i].siteDistrict,
-            siteStageId:
-            _siteController.sitesListResponse.sitesEntity[i].siteStageId,
-            siteCreationDate:
-            _siteController.sitesListResponse.sitesEntity[i].siteCreationDate,
-            sitePotentialMt:
-            _siteController.sitesListResponse.sitesEntity[i].sitePotentialMt,
-            siteOppertunityId: _siteController
-                .sitesListResponse.sitesEntity[i].siteOppertunityId,
-            siteScore: _siteController.sitesListResponse.sitesEntity[i]
-                .siteScore,
-            contactNumber:
-            _siteController.sitesListResponse.sitesEntity[i].contactNumber,
-            siteProbabilityWinningId: _siteController
-                .sitesListResponse.sitesEntity[i].siteProbabilityWinningId);
-        SiteListModelForDB siteListModelForDb =
-        new SiteListModelForDB(null, json.encode(siteEntity));
-        await db.addSiteEntityInDraftList(siteListModelForDb);
-      }
-    }
-  }
   Future<void> initPlatformState() async {
     if (!mounted) return;
     //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);

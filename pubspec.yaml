@@ -68,6 +68,7 @@ dependencies:
   moengage_flutter: ^2.0.2
   firebase_messaging: ^6.0.9
   data_connection_checker: ^0.3.4
+  scoped_model:
 
 
 #  autocomplete_textfield: ^1.7.3
