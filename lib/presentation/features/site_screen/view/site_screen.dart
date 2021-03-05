@@ -1139,7 +1139,6 @@ class _SiteScreenState extends State<SiteScreen> {
           return SiteFilterWidget();
         }).whenComplete(() {
           siteList = _siteController.cartListing;
-      print('Hey there, I\'m calling after hide bottomSheet'+siteList.length.toString());
     });
   }
 
