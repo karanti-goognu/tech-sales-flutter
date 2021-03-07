@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class SiteFilterWidget extends StatefulWidget {
   @override
@@ -26,6 +28,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
   List<SitesEntity> siteList = new List();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
+  SitesDBProvider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -33,34 +36,38 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
     // TODO: implement build
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.70,
-      decoration: new BoxDecoration(
-        color: Colors.white,
-        borderRadius: new BorderRadius.only(
-          topLeft: const Radius.circular(0),
-          topRight: const Radius.circular(0),
-        ),
-      ),
-      child: Stack(children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              bottomSheetTop(),
-              Container(
-                height: 1.0,
-                width: SizeConfig.screenWidth,
-                color: ColorConstants.lineColorFilter,
-              ),
-              bodyOfBottomSheet(),
-            ],
+    return ScopedModelDescendant<SitesDBProvider>(builder: (context, child, model) {
+      provider = model;
+      return Stack(children: <Widget>[
+        Container(
+          height: MediaQuery.of(context).size.height * 0.70,
+          decoration: new BoxDecoration(
+            color: Colors.white,
+            borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(0),
+              topRight: const Radius.circular(0),
+            ),
           ),
-        ),
-        bottomOfBottomSheet(),
-      ]),
-    );
+          child: Stack(children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  bottomSheetTop(),
+                  Container(
+                    height: 1.0,
+                    width: SizeConfig.screenWidth,
+                    color: ColorConstants.lineColorFilter,
+                  ),
+                  bodyOfBottomSheet(model),
+                ],
+              ),
+            ),
+            bottomOfBottomSheet(),
+          ]),
+        )]);
+    });
   }
 
   Widget bottomSheetTop() {
@@ -93,7 +100,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
     );
   }
 
-  Widget bodyOfBottomSheet() {
+  Widget bodyOfBottomSheet(SitesDBProvider provider) {
     return Container(
       height: MediaQuery.of(context).size.height,
       color: ColorConstants.lightGeyColor,
@@ -148,7 +155,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
           new Expanded(
               flex: 2,
               child:
-                  returnSelectedWidgetBody(_siteController.selectedPosition)),
+                  returnSelectedWidgetBody(_siteController.selectedPosition,provider)),
         ],
       ),
     );
@@ -185,8 +192,10 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                         StringConstants.empty;
                     _siteController.assignToDate = StringConstants.empty;
                     _siteController.assignFromDate = StringConstants.empty;
+                    _siteController.selectedSitePincode = StringConstants.empty;
                     _siteController.selectedFilterCount = 0;
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                    provider.fetchAllSites();
                   },
                   child: Text(
                     "Clear All",
@@ -197,7 +206,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 RaisedButton(
                   onPressed: () {
                     Navigator.pop(context,siteList);
-                    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                    fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
+                    // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                   },
                   color: ColorConstants.buttonNormalColor,
                   child: Text(
@@ -245,7 +255,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
         ));
   }
 
-  Widget returnSelectedWidgetBody(int position) {
+  Widget returnSelectedWidgetBody(int position,SitesDBProvider provider) {
     return Obx(
       () => Container(
         height: double.maxFinite,
@@ -253,7 +263,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
         child: (_siteController.selectedPosition == 0)
             ? returnAssignDateBody()
             : (_siteController.selectedPosition == 1)
-                ? returnLeadStageBody()
+                ? returnLeadStageBody(provider)
                 : (_siteController.selectedPosition == 2)
                     ? returnLeadStatusBody()
                     : (_siteController.selectedPosition == 3)
@@ -353,7 +363,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
         ));
   }
 
-  Widget returnLeadStageBody() {
+  Widget returnLeadStageBody(SitesDBProvider provider) {
     return Container(
         height: MediaQuery.of(context).size.height,
         color: Colors.white,
@@ -368,11 +378,11 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                   _splashController
                       .splashDataModel.siteStageEntity[index].siteStageDesc,
                   _splashController.splashDataModel.siteStageEntity[index].id
-                      .toString());
+                      .toString(),provider);
             }));
   }
 
-  Widget leadStageListTile(String stageValue, String leadStageValue) {
+  Widget leadStageListTile(String stageValue, String leadStageValue,SitesDBProvider provider) {
     return Container(
       height: 40,
       child: ListTile(
@@ -389,9 +399,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 }
                 _siteController.selectedSiteStage = value;
                 _siteController.selectedSiteStageValue = leadStageValue;
-                fetchFilterData("","",leadStageValue,"","","");
-                print("dssd->>"+value+"..."+leadStageValue);
-                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
+                // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
@@ -434,7 +443,9 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 }
                 _siteController.selectedSiteStatus = value;
                 _siteController.selectedSiteStatusValue = leadStatusValue;
-                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
+                // fetchFilterData("","",leadStageValue,"","","",provider);
+                // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
@@ -538,7 +549,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 _siteController.selectedSiteInfluencerCat = value;
                 _siteController.selectedSiteInfluencerCatValue =
                     siteStatusValue;
-                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
+                // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
@@ -568,22 +580,22 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
           _siteController.assignFromDate = formattedDate;
         }
         selectedDateString = formattedDate;
+
       });
   }
 
-  List<SitesEntity> fetchFilterData(String  assignDateFromReq,String assignDateToReq,String siteStageReq,String siteStatusReq,String sitePincodeReq,String siteInflCatReq){
+  fetchFilterData(String  assignDateFromReq,String assignDateToReq,String siteStageReq,String siteStatusReq,String sitePincodeReq,String siteInflCatReq,SitesDBProvider provider){
     String appendQuery = "";
     String whereArgs="";
-    final db = SiteListDBHelper();
     if (assignDateFromReq != null && assignDateFromReq!="") {
       appendQuery==""?appendQuery="siteCreationDate>=?": appendQuery = appendQuery + "and siteCreationDate>=?";
-      whereArgs==""?whereArgs="'" + assignDateFromReq + "'":whereArgs=whereArgs+"'" + assignDateFromReq + "'"+",";
+      whereArgs==""?whereArgs=assignDateFromReq :whereArgs=whereArgs+"'" + assignDateFromReq + "'"+",";
     }
 
     if (assignDateToReq != null && assignDateToReq!="") {
       appendQuery==""?appendQuery= "siteCreationDate<=?":
       appendQuery = appendQuery + " and siteCreationDate<=?";
-      whereArgs==""?whereArgs="'" + assignDateToReq + "'":whereArgs=whereArgs+"'" + assignDateToReq + "'"+",";
+      whereArgs==""?whereArgs=assignDateToReq :whereArgs=whereArgs+"'" + assignDateToReq + "'"+",";
     }
 
     if (siteStageReq != null  && siteStageReq!="") {
@@ -601,19 +613,11 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
     if (sitePincodeReq != null && sitePincodeReq !="") {
       appendQuery==""?appendQuery= "sitePincode=?":
       appendQuery = appendQuery + " and sitePincode=?";
-      whereArgs==""?whereArgs="'" + sitePincodeReq + "'":whereArgs=whereArgs+"'" + sitePincodeReq + "'"+",";
+      whereArgs==""?whereArgs= sitePincodeReq :whereArgs=whereArgs+ sitePincodeReq +",";
     }
 
-    print(whereArgs.runtimeType);
-    db.filterSiteEntityList(appendQuery, whereArgs).then((value) {
-      _siteController.fetchFliterSiteList1(value);
-      setState(() {
-        siteList = value;
-        print("Filter-->"+appendQuery+".."+whereArgs+"..."+siteList.length.toString());
-      });
-    });
-
-    return  siteList;
+    print("Filter-->"+appendQuery+".."+whereArgs+"..."+provider.siteListing.length.toString());
+    provider.filterSiteEntityList(appendQuery, whereArgs);
 
   }
 }

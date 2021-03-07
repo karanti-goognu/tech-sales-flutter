@@ -72,6 +72,8 @@ class DataBaseProvider extends Model {
     notifyListeners();
   }
 
+
+
   Future<void> insertSiteEntityInTable(SitesEntity sitesEntity) async {
     var result = await _db.rawInsert("INSERT Into siteList (siteId, leadId, siteSegment, assignedTo, siteStatusId, siteOppertunityId, siteStageId, contactName, contactNumber, siteCreationDate, siteGeotag, siteGeotagLat, siteGeotagLong, sitePincode, siteState, siteDistrict, siteTaluk, siteScore, sitePotentialMt, reraNumber, dealerId, siteBuiltArea, noOfFloors, productDemo, productOralBriefing, soCode, plotNumber, inactiveReasonText, nextVisitDate, closureReasonText, createdBy,  createdOn, updatedBy, updatedOn)"
         " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",

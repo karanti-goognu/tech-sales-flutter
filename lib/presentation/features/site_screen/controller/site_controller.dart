@@ -304,26 +304,7 @@ class SiteController extends GetxController {
     });
   }
 
-   fetchSiteList() async {
 
-     final db = SiteListDBHelper();
-     db.fetchAllSites().then((value) => {
-       this.sitesListOffline = value,
-       _siteList = value
-     });
-     return _siteList;
-    //await db.removeLeadInDraft(2);
-  }
-
-  fetchFliterSiteList(String appendQuery,String whereArgs) async {
-    final db = SiteListDBHelper();
-    db.filterSiteEntityList(appendQuery, whereArgs).then((value) => {
-    this.sitesListOffline = value,
-      _siteList = value
-    });
-    return _siteList;
-    //await db.removeLeadInDraft(2);
-  }
 
   fetchFliterSiteList1(List<SitesEntity> value) async {
 

@@ -87,7 +87,6 @@ class SplashScreenPageState extends State<SplashScreen> {
     });
     _initializeFlutterFireFuture = _initializeFlutterFire();
 
-    initDatabase();
   }
 
   @override
