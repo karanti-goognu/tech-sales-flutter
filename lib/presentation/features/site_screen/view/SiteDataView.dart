@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+import 'package:flutter_tech_sales/helper/brand_name_db_config.dart';
+import 'package:flutter_tech_sales/helper/database_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -30,7 +32,7 @@ class SiteDataView extends StatefulWidget {
 }
 
 class _SiteDataViewState extends State<SiteDataView> {
-  final db = BrandNameDBHelper();
+ // final db = DatabaseHelper();
   FocusNode myFocusNode;
   String _currentAddress;
   bool isSwitchedsiteProductDemo = false;

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_tech_sales/utils/constants/db_constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
@@ -104,4 +105,66 @@ class DatabaseHelper{
 
 
 
+
+
+  /*..........................................................................*/
+
+/*Insert  Operation: Insert a Game object to db*/
+  Future<int> insertDataInTable(
+      String tableName, Map<String, dynamic> mapData, ConflictAlgorithm conflictAlgorithm ) async {
+    Database db = await this.database;
+    var result = await db.insert(tableName, mapData, conflictAlgorithm: conflictAlgorithm);
+
+    return result;
   }
+
+
+
+  /*..........................................................................*/
+/*Update Operation: Update a Game Object and save it to db*/
+  Future<int> updateTableRow(
+      String tableName, Map<String, dynamic> mapData, where, whereArg) async {
+    var db = await this.database;
+    var result =
+    await db.update(tableName, mapData, where: where, whereArgs: whereArg);
+    return result;
+  }
+
+/*............................................................................*/
+/*Get number of Note object in db*/
+  Future<int> getCount(String table) async {
+    Database db = await this.database;
+    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from '
+        '$table');
+    int result = Sqflite.firstIntValue(x);
+    return result;
+  }
+
+
+/*............................................................................*/
+/*Clear all data to table*/
+  Future<int> clearDBTable(String tableName) async {
+    var db = await this.database;
+    int rowId = await db.delete(tableName);
+    return rowId;
+
+  }
+
+  /*Clear all data to table*/
+  Future<int> deleteRowTable(
+      String tableName, String where, List<dynamic> whereArgs) async {
+    var db = await this.database;
+    int rowId = await db.delete(tableName, where: where, whereArgs: whereArgs);
+
+    return rowId;
+  }
+
+
+
+
+
+}
+
+
+
+

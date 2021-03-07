@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+import 'package:flutter_tech_sales/helper/brand_name_db_config.dart';
+import 'package:flutter_tech_sales/helper/database_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -40,7 +42,7 @@ class ViewSiteScreen extends StatefulWidget {
 
 class _ViewSiteScreenState extends State<ViewSiteScreen>
     with SingleTickerProviderStateMixin {
-  final db = BrandNameDBHelper();
+  //final db = DatabaseHelper();
   bool fromDropDown=false;
   FocusNode myFocusNode;
   bool isSwitchedsiteProductDemo = false;
@@ -202,27 +204,27 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         viewSiteDataResponse = data;
 
         // print(viewSiteDataResponse);
-        await db.clearTable();
+        await BrandNameDbConfig.clearTable();
         siteBrandEntity = viewSiteDataResponse!=null?viewSiteDataResponse.siteBrandEntity:"";
         counterListModel = viewSiteDataResponse.counterListModel;
         // print(counterListModel);
         // print("aaaaaaaaaaaaaaa");
 
         for (int i = 0; i < siteBrandEntity.length; i++) {
-          await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
+          await BrandNameDbConfig.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
               siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
         }
 
         for (int i = 0; i < counterListModel.length; i++) {
-          int id = await db.addDealer(DealerForDb(
+          int id = await BrandNameDbConfig.addDealer(DealerForDb(
               counterListModel[i].soldToParty,
               counterListModel[i].soldToPartyName));
           print("ADDED :  $id");
         }
 
         // print("list Size");
-        siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
-        dealerEntityForDb = await db.fetchAllDistinctDealers();
+        siteBrandEntityfromLoaclDB = await BrandNameDbConfig.fetchAllDistinctBrand();
+        dealerEntityForDb = await BrandNameDbConfig.fetchAllDistinctDealers();
         dealerEntityForDb.forEach((e) => print(e.toMapForDb().toString()));
 
         setState(() {
@@ -2405,7 +2407,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 siteProductEntityfromLoaclDB = new List();
                 _siteProductFromLocalDB = null;
                 List<BrandModelforDB> _siteProductEntityfromLoaclDB =
-                    await db.fetchAllDistinctProduct(value.brandName);
+                    await BrandNameDbConfig.fetchAllDistinctProduct(value.brandName);
                 setState(() {
                   _siteBrandFromLocalDB = value;
 
@@ -4763,7 +4765,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             siteProductEntityfromLoaclDBNextStage = new List();
             _siteProductFromLocalDBNextStage = null;
             List<BrandModelforDB> _siteProductEntityfromLoaclDB =
-                await db.fetchAllDistinctProduct(value.brandName);
+                await BrandNameDbConfig.fetchAllDistinctProduct(value.brandName);
             setState(() {
               _siteBrandFromLocalDBNextStage = value;
 

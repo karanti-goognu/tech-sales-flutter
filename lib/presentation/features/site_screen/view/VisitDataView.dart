@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+import 'package:flutter_tech_sales/helper/brand_name_db_config.dart';
+import 'package:flutter_tech_sales/helper/database_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -25,7 +27,7 @@ class VisitDataView extends StatefulWidget {
 }
 
 class _VisitDataViewState extends State<VisitDataView> {
-  final db = BrandNameDBHelper();
+ // final db = DatabaseHelper();
   FocusNode myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
@@ -439,7 +441,7 @@ class _VisitDataViewState extends State<VisitDataView> {
                 siteProductEntityfromLoaclDB = new List();
                 _siteProductFromLocalDB = null;
                 List<BrandModelforDB> _siteProductEntityfromLoaclDB =
-                    await db.fetchAllDistinctProduct(value.brandName);
+                    await BrandNameDbConfig.fetchAllDistinctProduct(value.brandName);
                 setState(() {
                   _siteBrandFromLocalDB = value;
 
@@ -1619,7 +1621,7 @@ class _VisitDataViewState extends State<VisitDataView> {
             siteProductEntityfromLoaclDBNextStage = new List();
             _siteProductFromLocalDBNextStage = null;
             List<BrandModelforDB> _siteProductEntityfromLoaclDB =
-                await db.fetchAllDistinctProduct(value.brandName);
+                await BrandNameDbConfig.fetchAllDistinctProduct(value.brandName);
             setState(() {
               _siteBrandFromLocalDBNextStage = value;
 

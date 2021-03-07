@@ -5,6 +5,7 @@ import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
+import 'package:flutter_tech_sales/helper/draft_lead_db_config.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
@@ -29,7 +30,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MyApiClientLeads {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  final db = DraftLeadDBHelper();
+  //final db = DraftLeadDBHelper();
 
   MyApiClientLeads({@required this.httpClient});
 
@@ -300,7 +301,7 @@ class MyApiClientLeads {
                 } else if (saveLeadResponse.respCode == "LD2007") {
                   if (gv.fromLead) {
                     print('Draft id :: ${gv.draftID}');
-                    db.removeLeadInDraft(gv.draftID);
+                    DraftLeadDbConfig.removeLeadInDraft(gv.draftID);
                     gv.fromLead = false;
                   }
                   gv.fromLead = false;

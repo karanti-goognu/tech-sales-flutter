@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
+import 'package:flutter_tech_sales/helper/draft_lead_db_config.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/DraftLeadModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -18,7 +19,7 @@ class DraftLeadListScreen extends StatefulWidget {
 }
 
 class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
-  final db = DraftLeadDBHelper();
+  //final db = DraftLeadDBHelper();
   List<SaveLeadRequestDraftModel> draftList = new List();
   List<int> draftIdList = new List();
 
@@ -32,7 +33,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   }
 
   fetchDraftList() async {
-    db.fetchAll().then((value) {
+    DraftLeadDbConfig.fetchAll().then((value) {
       for (int i = 0; i < value.length; i++) {
         setState(() {
           print(json.decode(value[i].leadModel));

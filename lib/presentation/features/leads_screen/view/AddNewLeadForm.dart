@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
+import 'package:flutter_tech_sales/helper/draft_lead_db_config.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
@@ -35,7 +36,7 @@ class AddNewLeadForm extends StatefulWidget {
 }
 
 class _AddNewLeadFormState extends State<AddNewLeadForm> {
-  final db = DraftLeadDBHelper();
+ // final db = DraftLeadDBHelper();
 
   final _formKeyForNewLeadForm = GlobalKey<FormState>();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
@@ -2466,8 +2467,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             json.encode(
                                                 saveLeadRequestDraftModel));
                                     print(draftLeadModelforDB.leadModel);
-                                    await db
-                                        .addLeadInDraft(draftLeadModelforDB);
+                                    await DraftLeadDbConfig.addLeadInDraft(draftLeadModelforDB);
                                   } else {
                                     print(
                                         json.encode(saveLeadRequestDraftModel));
@@ -2477,7 +2477,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             json.encode(
                                                 saveLeadRequestDraftModel));
 
-                                    await db
+                                    await DraftLeadDbConfig
                                         .updateLeadInDraft(draftLeadModelforDB);
                                   }
 
