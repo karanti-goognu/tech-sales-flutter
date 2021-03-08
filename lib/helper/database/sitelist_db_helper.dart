@@ -1,5 +1,7 @@
 import 'package:flutter_tech_sales/helper/database_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/db_constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -13,6 +15,14 @@ class SitesDBProvider extends Model {
   List<SitesEntity> get siteListing => _list;
   Future<Database> _database = DatabaseHelper().database;
 
+
+  List<SitePhotosEntity> _listPhoto = [];
+  List<SitePhotosEntity> get siteListPhotos => _listPhoto;
+
+  List<SiteCommentsEntity> _listComment = [];
+  List<SiteCommentsEntity> get siteListComment => _listComment;
+
+  // SiteList DML
   createSiteEntity(SitesEntity sitesEntity) async {
    var db = await _database;
    var result = db.insert("${DbConstants.TABLE_SITE_LIST}", sitesEntity.toJson());
@@ -58,6 +68,92 @@ class SitesDBProvider extends Model {
     var db = await _database;
     db.delete("${DbConstants.TABLE_SITE_LIST}");
   }
+
+
+  // SitePhoto DML
+
+  createSitePhotoEntity(SitePhotosEntity sitePhotosEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}", sitePhotosEntity.toJson());
+    notifyListeners();
+  }
+
+  fetchSiteAllPhotos() async {
+    _listPhoto= [];
+    var db = await _database;
+    var res = await db.query("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
+    _listPhoto = res.isNotEmpty ? res.map((c) => SitePhotosEntity.fromJson(c)).toList() : [];
+    notifyListeners();
+  }
+
+  filterSiteAPhoto(String appendQuery,String whereArgs) async {
+    _listPhoto = [];
+    var db = await _database;
+    var res = await db.rawQuery('SELECT * FROM ${DbConstants.TABLE_SITE_PHOTOS_ENTITY} WHERE ${appendQuery}', [whereArgs]);
+    _listPhoto = res.isNotEmpty ? res.map((c) => SitePhotosEntity.fromJson(c)).toList() : [];
+    notifyListeners();
+    fetchAllSites();
+  }
+
+  Future<int> updateSitesPhoto(SitePhotosEntity sitePhotosEntity) async {
+    var db = await _database;
+    return await db.update("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}", sitePhotosEntity.toJson(), where: "${DbConstants.COL_SITE_ID}= ?", whereArgs: [sitePhotosEntity.siteId]);
+  }
+
+  Future<int> deleteSitesPhoto(SitePhotosEntity sitesEntity) async {
+    var db = await _database;
+    return await db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}", where: "${DbConstants.COL_SITE_ID}= ?", whereArgs: [sitesEntity.siteId]);
+  }
+
+  Future<void> clearPhotoTable() async{
+    var db = await _database;
+    db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
+  }
+
+  // end here
+
+
+// SiteComment DML
+  createSiteCommentEntity(SiteCommentsEntity sitePhotosEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_COMMENT_ENTITY}", sitePhotosEntity.toJson());
+    notifyListeners();
+  }
+
+  fetchSiteAllComment() async {
+    _listComment= [];
+    var db = await _database;
+    var res = await db.query("${DbConstants.TABLE_SITE_COMMENT_ENTITY}");
+    _listComment = res.isNotEmpty ? res.map((c) => SiteCommentsEntity.fromJson(c)).toList() : [];
+    notifyListeners();
+  }
+
+  filterSiteComment(String appendQuery,String whereArgs) async {
+    _listComment = [];
+    var db = await _database;
+    var res = await db.rawQuery('SELECT * FROM ${DbConstants.TABLE_SITE_COMMENT_ENTITY} WHERE ${appendQuery}', [whereArgs]);
+    _listComment = res.isNotEmpty ? res.map((c) => SiteCommentsEntity.fromJson(c)).toList() : [];
+    notifyListeners();
+  }
+
+  Future<int> updateSitesComment(SiteCommentsEntity sitePhotosEntity) async {
+    var db = await _database;
+    return await db.update("${DbConstants.TABLE_SITE_COMMENT_ENTITY}", sitePhotosEntity.toJson(), where: "${DbConstants.COL_SITE_ID}= ?", whereArgs: [sitePhotosEntity.siteId]);
+  }
+
+  Future<int> deleteSitesComment(SiteCommentsEntity sitesEntity) async {
+    var db = await _database;
+    return await db.delete("${DbConstants.TABLE_SITE_COMMENT_ENTITY}", where: "${DbConstants.COL_SITE_ID}= ?", whereArgs: [sitesEntity.siteId]);
+  }
+
+  Future<void> clearCommentTable() async{
+    var db = await _database;
+    db.delete("${DbConstants.TABLE_SITE_COMMENT_ENTITY}");
+  }
+
+// end here
+
+
 
 }
 
