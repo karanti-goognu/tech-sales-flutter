@@ -58,20 +58,9 @@ class DatabaseHelper{
         '${DbConstants.COL_ID} TEXT,'
         ' ${DbConstants.COL_DEALER_NAME} TEXT)');
 
-   await db.execute('CREATE TABLE ${DbConstants.TABLE_CONSTRUCT_STAGE} ('
-        '${DbConstants.COL_ID} TEXT,'
-        ' ${DbConstants.COL_CONSTRUCT_STAGE_ENTITY} TEXT)');
 
-   await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_COMPETITION_STATUS} ('
-        '${DbConstants.COL_ID} TEXT,'
-        ' ${DbConstants.COL_SITE_COMPETITION_STATUS_ENTITY} TEXT)');
-
-  await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_FLOOR} ('
-        '${DbConstants.COL_ID} TEXT,'
-        ' ${DbConstants.COL_SITE_FLOOR_ENTITY} TEXT)');
-
- await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_LIST} ('
-        '${DbConstants.COL_ID} TEXT,'
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_LIST} ('
+        '${DbConstants.COL_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
         '${DbConstants.COL_SITE_ID} INTEGER,'
         '${DbConstants.COL_LEAD_ID} INTEGER,'
         '${DbConstants.COL_SITE_SEGMENT} TEXT,'
@@ -103,35 +92,40 @@ class DatabaseHelper{
         '${DbConstants.COL_INACTIVE_REASON_TEXT} TEXT,'
         '${DbConstants.COL_NEXT_VISIT_DATE} TEXT,'
         '${DbConstants.COL_CLOSURE_REASON_TEXT} TEXT,'
-         '${DbConstants.COL_CREATED_BY} TEXT,'
+        '${DbConstants.COL_CREATED_BY} TEXT,'
         '${DbConstants.COL_CREATED_ON} INTEGER,'
         '${DbConstants.COL_UPDATED_BY} TEXT,'
-        '${DbConstants.COL_UPDATED_ON} INTEGER)'
-       );
+        '${DbConstants.COL_UPDATED_ON} INTEGER,'
+        '${DbConstants.COL_SYNC_STATUS} INTEGER)'
+    );
 
- await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_STAGE} ('
-        '${DbConstants.COL_ID} TEXT,'
-        ' ${DbConstants.COL_SITE_STAGE_ENTITY} TEXT)');
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_PHOTOS_ENTITY} ('
+        '${DbConstants.COL_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
+        '${DbConstants.COL_SITE_ID} INTEGER,'
+        '${DbConstants.COL_SITE_PHOTO_NAME} TEXT,'
+        '${DbConstants.COL_SITE_CREATED_BY} TEXT)'
+    );
 
- await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_VISIT_HISTORY} ('
-        '${DbConstants.COL_ID} TEXT,'
-        ' ${DbConstants.COL_SITE_VISIT_HISTORY_ENTITY} TEXT)');
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_COMMENT_ENTITY} ('
+        '${DbConstants.COL_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
+        '${DbConstants.COL_SITE_ID} INTEGER,'
+        '${DbConstants.COL_SITE_COMMENT_TEXT} TEXT,'
+        '${DbConstants.COL_SITE_COMMENT_CREATOR_NAME} TEXT,'
+        '${DbConstants.COL_SITE_COMMENT_CREATED_BY} TEXT,'
+        '${DbConstants.COL_SITE_COMMENT_CREATED_ON} TEXT)'
+    );
 
   }
 
 
 //function for upgrade database tables if database version change
   void _onUpgrade(Database db,int oldVersion,  int newVersion) async {
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_LIST}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_COMMENT_ENTITY}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_DRAFT_LEAD}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_BRAND_NAME}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_COUNTER_LIST_DEALERS}");
-    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_CONSTRUCT_STAGE}");
-    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_COMPETITION_STATUS}");
-    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_FLOOR}");
-    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_LIST}");
-    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_STAGE}");
-    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_VISIT_HISTORY}");
-
     _createDb(db,newVersion);
   }
 
