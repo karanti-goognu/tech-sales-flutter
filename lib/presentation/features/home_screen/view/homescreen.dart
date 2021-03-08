@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -16,8 +17,8 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:moengage_flutter/moengage_flutter.dart';
-import 'package:moengage_flutter/push_campaign.dart';
+//import 'package:moengage_flutter/moengage_flutter.dart';
+//import 'package:moengage_flutter/push_campaign.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
@@ -41,26 +42,26 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("SR &\nComplaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png"),
   ];
-  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+ // final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
 
   Future<void> initPlatformState() async {
     if (!mounted) return;
     //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
   }
-  void _onPushClick(PushCampaign message) {
-    print("This is a push click callback from native to flutter. Payload " +
-        message.toString());
-  }
+  // void _onPushClick(PushCampaign message) {
+  //   print("This is a push click callback from native to flutter. Payload " +
+  //       message.toString());
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initPlatformState();
-    _moengagePlugin.initialise();
-    _moengagePlugin.enableSDKLogs();
-    _moengagePlugin.setUpPushCallbacks(_onPushClick);
+    // _moengagePlugin.initialise();
+    // _moengagePlugin.enableSDKLogs();
+    // _moengagePlugin.setUpPushCallbacks(_onPushClick);
     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
       print('Check In');
@@ -81,9 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
           prefs.getString(StringConstants.employeeName);
 
       // MoEngage implementation done here ....
-      _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
-      _moengagePlugin.setFirstName(prefs.getString(StringConstants.employeeName));
-      _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
+      // _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
+      // _moengagePlugin.setFirstName(prefs.getString(StringConstants.employeeName));
+      // _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
 
     });
   }
@@ -466,7 +467,7 @@ class _HomeScreenState extends State<HomeScreen> {
               borderOnForeground: true,
               //shadowColor: colornew,
               elevation: 20,
-              margin: EdgeInsets.all(10.0),
+              margin: EdgeInsets.all(8.0),
               color: ((index == 0) ||
                       (index == 1) ||
                       (index == 3) ||
@@ -474,69 +475,62 @@ class _HomeScreenState extends State<HomeScreen> {
                       (index == 5))
                   ? Colors.white
                   : Colors.white60,
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          // height: 60,
-                          //                         // width: 60,
-                          margin: EdgeInsets.only(left: 10),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                            // border: Border.all(color: Colors.black, width: 0.0),
-                            // borderRadius: new BorderRadius.all(Radius.circular(70)),
-                          ),
-                          child: Image.asset(
-                            list[index].imgURL,
-                            width: 30,
-                            height: 30,
-                          ),
-                        ),
-                        // Icon(
-                        //   Icons.no_photography_outlined,
-                        //   size: 90,
-                        //   color: Colors.black12,
-                        // ),
-                        SizedBox(
-                          width: 6,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              list[index].value,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Muli",
-                                  fontWeight: FontWeight.bold
-                                  //fontWeight: FontWeight.normal
-                                  ),
-                            ),
-                            (index == 2)
-                                ? Text(
-                                    "Coming Soon",
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontSize: 12,
-                                        fontFamily: "Muli",
-                                        fontWeight: FontWeight.bold
-                                        //fontWeight: FontWeight.normal
-                                        ),
-                                  )
-                                : Container(),
-                          ],
-                        )
-                      ],
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 8),
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        // border: Border.all(color: Colors.black, width: 0.0),
+                        // borderRadius: new BorderRadius.all(Radius.circular(70)),
+                      ),
+                      child: Image.asset(
+                        list[index].imgURL,
+                        width: 30,
+                        height: 30,
+                      ),
                     ),
-                  ),
-                ],
+                    // Icon(
+                    //   Icons.no_photography_outlined,
+                    //   size: 90,
+                    //   color: Colors.black12,
+                    // ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          list[index].value,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: SizeConfig.safeBlockHorizontal*3.5,
+                              fontFamily: "Muli",
+                              fontWeight: FontWeight.bold
+                              //fontWeight: FontWeight.normal
+                              ),
+                        ),
+                        (index == 2)
+                            ? Text(
+                                "Coming Soon",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontSize: SizeConfig.safeBlockHorizontal*3.3,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.bold
+                                    //fontWeight: FontWeight.normal
+                                    ),
+                              )
+                            : Container(),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           );

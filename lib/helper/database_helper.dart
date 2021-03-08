@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_tech_sales/utils/constants/db_constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
@@ -19,7 +18,6 @@ class DatabaseHelper{
 
 
   factory DatabaseHelper() {
-
     _databaseHelper = DatabaseHelper._createInstance();
     return _databaseHelper;
   }
@@ -124,7 +122,6 @@ class DatabaseHelper{
 
 //function for upgrade database tables if database version change
   void _onUpgrade(Database db,int oldVersion,  int newVersion) async {
-
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_DRAFT_LEAD}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_BRAND_NAME}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_COUNTER_LIST_DEALERS}");
@@ -190,7 +187,6 @@ class DatabaseHelper{
       String tableName, String where, List<dynamic> whereArgs) async {
     var db = await this.database;
     int rowId = await db.delete(tableName, where: where, whereArgs: whereArgs);
-
     return rowId;
   }
 

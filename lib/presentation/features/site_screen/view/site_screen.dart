@@ -420,7 +420,7 @@ class _SiteScreenState extends State<SiteScreen> {
                               "Total Count : ${(model.siteListing == null) ? 0 : model.siteListing.length}",
                               style: TextStyle(
                                 fontFamily: "Muli",
-                                fontSize: 15,
+                                fontSize: SizeConfig.safeBlockHorizontal*3.5,
                                 // color: HexColor("#FFFFFF99"),
                               ),
                           ),
@@ -428,7 +428,7 @@ class _SiteScreenState extends State<SiteScreen> {
                             "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : double.parse(_siteController.sitesListResponse.totalSitePotential).toStringAsFixed(2)}",
                             style: TextStyle(
                               fontFamily: "Muli",
-                              fontSize: 15,
+                              fontSize: SizeConfig.safeBlockHorizontal*3.5,
                               // color: HexColor("#FFFFFF99"),
                           )),
                         ],

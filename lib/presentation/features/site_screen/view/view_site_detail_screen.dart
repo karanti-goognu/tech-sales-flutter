@@ -467,6 +467,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           resizeToAvoidBottomPadding: false,
+
           backgroundColor: Colors.white,
           appBar: AppBar(
             automaticallyImplyLeading: false,
