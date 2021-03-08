@@ -9,12 +9,20 @@ class DbConstants{
   static const String TABLE_SITE_LIST = "siteList";
   static const String TABLE_SITE_PHOTOS_ENTITY= "sitePhotosEntity";
   static const String TABLE_SITE_COMMENT_ENTITY= "siteCommentsEntity";
+  static const String TABLE_SITE_FLOOR_ENTITY= "siteFloorsEntity";
+  static const String TABLE_SITE_VISIT_HISTORY_ENTITY= "siteVisitHistoryEntity";
+  static const String TABLE_SITE_CONSTRUCTION_STAGE_ENTITY= "constructionStageEntity";
+  static const String TABLE_SITE_PROBABILITY_WINNING_ENTITY= "siteProbabilityWinningEntity";
+  static const String TABLE_SITE_COMPETITION_STATUS_ENTITY= "siteCompetitionStatusEntity";
+  static const String TABLE_SITE_STAGE_ENTITY= "siteStageEntity";
+  static const String TABLE_SITE_INFLUENCER_ENTITY= "siteInfluencerEntity";
+  static const String TABLE_SITE_NEXT_STAGE_ENTITY= "siteNextStageEntity";
+  static const String TABLE_Site_OPPORTUNITY_STATUS_ENTITY= "siteOpportunityStatusEntity";
+  static const String TABLE_SITE_ENTITY= "sitesModal";
 
   /*Tables column name*/
   static const String COL_ID = "id";
   static const String COL_LEAD_MODEL = "leadModel";
-  static const String COL_BRAND_NAME = "brandName";
-  static const String COL_PRODUCT_NAME = "productName";
   static const String COL_DEALER_NAME = "dealerName";
   static const String COL_CONSTRUCT_STAGE_ENTITY = "constructStageEntity";
 
@@ -70,9 +78,79 @@ class DbConstants{
   static const String COL_SITE_CREATED_BY = "createdBy";
 
 
+/* Tables SiteFloorsEntity column name*/
+  static const String COL_SITE_FLOOR_ID = "id";
+  static const String COL_SITE_FLOOR_TXT = "siteFloorTxt";
+
+  /* Tables SiteStageEntity column name*/
+  static const String COL_SITESTAGE_ID = "id";
+  static const String COL_SITE_STAGE_DESC = "siteStageDesc";
+
+  /* Tables constructionStageText column name*/
+  static const String COL_SITE_CONSTRUCTION_STAGE_ID = "id";
+  static const String COL_SITE_CONSTRUCTION_STAGE_TEXT = "constructionStageText";
+
+  /* Tables siteProbabilityStatus column name*/
+  static const String COL_SITE_PROBABILITY_ID = "id";
+  static const String COL_SITE_PROBABILITY_STATUS = "siteProbabilityStatus";
+
+  /* Tables SiteCompetitionStatusEntity column name*/
+  static const String COL_SITE_COMPETITION_ID = "id";
+  static const String COL_SITE_COMPETITION_STATUS = "competitionStatus";
+
+  /* Tables SiteOpportunityStatusEntity column name*/
+  static const String COL_SITE_OPPORTUNITY_ID = "id";
+  static const String COL_SITE_OPPORTUNITY_STATUS = "opportunityStatus";
+
+  /* Tables SiteBrandEntity column name*/
+  static const String COL_BRAND_ID = "id";
+  static const String COL_BRAND_NAME = "brandName";
+  static const String COL_PRODUCT_NAME = "productName";
 
 
 
+/* Tables SiteVisitHistoryEntity column name*/
+  static const String COL_SITE_VISIT_HISTORY_ID = "id";
+  static const String COL_SITE_VISIT_HISTORY_totalBalancePotential="totalBalancePotential";
+  static const String COL_SITE_VISIT_HISTORY_constructionStageId="constructionStageId";
+  static const String COL_SITE_VISIT_HISTORY_floorId="floorId";
+  static const String COL_SITE_VISIT_HISTORY_stagePotential="stagePotential";
+  static const String COL_SITE_VISIT_HISTORY_brandId="brandId";
+  static const String COL_SITE_VISIT_HISTORY_brandPrice="brandPrice";
+  static const String COL_SITE_VISIT_HISTORY_constructionDate="constructionDate";
+  static const String COL_SITE_VISIT_HISTORY_siteId="siteId";
+  static const String COL_SITE_VISIT_HISTORY_supplyDate="supplyDate";
+  static const String COL_SITE_VISIT_HISTORY_supplyQty="supplyQty";
+  static const String COL_SITE_VISIT_HISTORY_stageStatus="stageStatus";
+  static const String COL_SITE_VISIT_HISTORY_CREATED_ON="createdOn";
+  static const String COL_SITE_VISIT_HISTORY_CREATED_BY="createdBy";
+  static const String COL_SITE_VISIT_HISTORY_soldToParty="soldToParty";
+  static const String COL_SITE_VISIT_HISTORY_shipToParty="shipToParty";
+  static const String COL_SITE_VISIT_HISTORY_soCode="soCode";
+  static const String COL_SITE_VISIT_HISTORY_isAuthorised="isAuthorised";
+  static const String COL_SITE_VISIT_HISTORY_receiptNumber="receiptNumber";
+  static const String COL_SITE_VISIT_HISTORY_isExpanded="isExpanded";
+
+  /* Tables SiteNextStageEntity column name*/
+  static const String COL_SITE_NEXT_STAGE_ID = "id";
+  static const String COL_SITE_NEXT_STAGE_SITE_ID = "siteId";
+  static const String COL_SITE_NEXT_STAGE_construction_Id = "constructionStageId";
+  static const String COL_SITE_NEXT_STAGE_Potential = "stagePotential";
+  static const String COL_SITE_NEXT_STAGE_brandId = "brandId";
+  static const String COL_SITE_NEXT_STAGE_brandPrice = "brandPrice";
+  static const String COL_SITE_NEXT_STAGE_stageStatus = "stageStatus";
+  static const String COL_SITE_NEXT_STAGE_constructionStartDt = "constructionStartDt";
+  static const String COL_SITE_NEXT_STAGE_SupplyDate = "nextStageSupplyDate";
+  static const String COL_SITE_NEXT_STAGE_SupplyQty = "nextStageSupplyQty";
+  static const String COL_SITE_NEXT_STAGE_createdBy = "createdBy";
+  static const String COL_SITE_NEXT_STAGE_createdOn = "createdOn";
+
+
+  /* Tables CounterListModel column name*/
+  static const String COL_COUNTER_LIST_soldToParty= "soldToParty";
+  static const String COL_COUNTER_LIST_soldToPartyName = "soldToPartyName";
+  static const String COL_COUNTER_LIST_shipToParty = "shipToParty";
+  static const String COL_COUNTER_LIST_shipToPartyName = "shipToPartyName";
 
 
 }

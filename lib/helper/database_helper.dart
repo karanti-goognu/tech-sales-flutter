@@ -57,10 +57,6 @@ class DatabaseHelper{
         '${DbConstants.COL_BRAND_NAME} TEXT ,'
         ' ${DbConstants.COL_PRODUCT_NAME} TEXT)');
 
-    await db.execute('CREATE TABLE ${DbConstants.TABLE_COUNTER_LIST_DEALERS} ('
-        '${DbConstants.COL_ID} TEXT,'
-        ' ${DbConstants.COL_DEALER_NAME} TEXT)');
-
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_LIST} ('
         '${DbConstants.COL_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -110,7 +106,7 @@ class DatabaseHelper{
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_COMMENT_ENTITY} ('
-        '${DbConstants.COL_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
+        '${DbConstants.COL_ID} INTEGER,'
         '${DbConstants.COL_SITE_ID} INTEGER,'
         '${DbConstants.COL_SITE_COMMENT_TEXT} TEXT,'
         '${DbConstants.COL_SITE_COMMENT_CREATOR_NAME} TEXT,'
@@ -118,18 +114,101 @@ class DatabaseHelper{
         '${DbConstants.COL_SITE_COMMENT_CREATED_ON} TEXT)'
     );
 
-  }
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_FLOOR_ENTITY} ('
+        '${DbConstants.COL_SITE_FLOOR_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
+        '${DbConstants.COL_SITE_FLOOR_TXT} TEXT)'
+    );
 
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_STAGE_ENTITY} ('
+        '${DbConstants.COL_ID} INTEGER ,'
+        '${DbConstants.COL_SITE_STAGE_DESC} TEXT)'
+    );
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_CONSTRUCTION_STAGE_ENTITY} ('
+        '${DbConstants.COL_ID} INTEGER,'
+        '${DbConstants.COL_SITE_CONSTRUCTION_STAGE_TEXT} TEXT)'
+    );
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_PROBABILITY_WINNING_ENTITY} ('
+        '${DbConstants.COL_ID} INTEGER,'
+        '${DbConstants.COL_SITE_PROBABILITY_STATUS} TEXT)'
+    );
+
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_COMPETITION_STATUS_ENTITY} ('
+        '${DbConstants.COL_ID} INTEGER,'
+        '${DbConstants.COL_SITE_COMPETITION_STATUS} TEXT)'
+    );
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_Site_OPPORTUNITY_STATUS_ENTITY} ('
+        '${DbConstants.COL_ID} INTEGER,'
+        '${DbConstants.COL_SITE_OPPORTUNITY_STATUS} TEXT)'
+    );
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY} ('
+        '${DbConstants.COL_ID} INTEGER,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_totalBalancePotential} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_floorId} INTEGER,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_stagePotential} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_brandId} INTEGER,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_brandPrice} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_constructionDate} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_siteId} INTEGER,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_supplyDate} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_supplyQty} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_stageStatus} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_CREATED_ON} INTEGER,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_CREATED_BY} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_soldToParty} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_shipToParty} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_soCode} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_isAuthorised} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_receiptNumber} TEXT,'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_isExpanded} BOOL)'
+    );
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY} ('
+        '${DbConstants.COL_ID} INTEGER,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_SITE_ID} INTEGER,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_construction_Id} INTEGER,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_Potential} TEXT,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_brandId} INTEGER,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_brandPrice} TEXT,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_stageStatus} TEXT,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_constructionStartDt} TEXT,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_SupplyDate} TEXT,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_SupplyQty} TEXT,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_createdBy} TEXT,'
+        '${DbConstants.COL_SITE_NEXT_STAGE_createdOn} INTEGER)'
+    );
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_COUNTER_LIST_DEALERS} ('
+        '${DbConstants.COL_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
+        '${DbConstants.COL_COUNTER_LIST_soldToParty} TEXT,'
+        '${DbConstants.COL_COUNTER_LIST_soldToPartyName} TEXT,'
+        '${DbConstants.COL_COUNTER_LIST_shipToParty} TEXT,'
+        '${DbConstants.COL_COUNTER_LIST_shipToPartyName} TEXT)'
+    );
+
+  }
 
 //function for upgrade database tables if database version change
   void _onUpgrade(Database db,int oldVersion,  int newVersion) async {
-
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_LIST}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_COMMENT_ENTITY}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_DRAFT_LEAD}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_BRAND_NAME}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_COUNTER_LIST_DEALERS}");
+
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_FLOOR_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_STAGE_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_CONSTRUCTION_STAGE_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_PROBABILITY_WINNING_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_COMPETITION_STATUS_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_Site_OPPORTUNITY_STATUS_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY}");
     _createDb(db,newVersion);
   }
 
