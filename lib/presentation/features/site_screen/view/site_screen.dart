@@ -90,7 +90,8 @@ class _SiteScreenState extends State<SiteScreen> {
                 _siteController.sitesListResponse.sitesEntity[i].siteScore,
             contactNumber: _siteController.sitesListResponse.sitesEntity[i].contactNumber,
             sitePincode: _siteController.sitesListResponse.sitesEntity[i].sitePincode,
-            siteProbabilityWinningId: _siteController.sitesListResponse.sitesEntity[i].siteProbabilityWinningId);
+            siteProbabilityWinningId: _siteController.sitesListResponse.sitesEntity[i].siteProbabilityWinningId,
+            syncStatus:1);
         // SiteListModelForDB siteListModelForDb = new SiteListModelForDB(null, json.encode(siteEntity));
         // await db.addSiteEntityInDraftList(siteListModelForDb);
         // await db.insertSiteEntityInTable(siteEntity);

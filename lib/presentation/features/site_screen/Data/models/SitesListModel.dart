@@ -74,6 +74,7 @@ class SitesEntity {
   int createdOn;
   String updatedBy;
   int updatedOn;
+  int syncStatus;
 
   SitesEntity(
       {this.siteId,
@@ -110,7 +111,8 @@ class SitesEntity {
       this.createdBy,
       this.createdOn,
       this.updatedBy,
-      this.updatedOn});
+      this.updatedOn,
+      this.syncStatus});
 
   SitesEntity.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
