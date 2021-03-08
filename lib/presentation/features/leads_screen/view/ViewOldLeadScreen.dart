@@ -2834,7 +2834,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
           _currentPosition.latitude, _currentPosition.longitude);
 
       Placemark place = p[0];
-
+      Get.back();
       setState(() {
         _siteAddress.text =
             place.name + "," + place.thoroughfare + "," + place.subLocality;

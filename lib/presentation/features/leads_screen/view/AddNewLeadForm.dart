@@ -554,6 +554,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             setState(() {
                               geoTagType = "A";
                             });
+                            Get.dialog(Center(child: CircularProgressIndicator(),));
                             _getCurrentLocation();
                           },
                         ),
@@ -2727,7 +2728,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           _currentPosition.latitude, _currentPosition.longitude);
 
       Placemark place = p[0];
-
+      Get.back();
       setState(() {
         _siteAddress.text =
             place.name + "," + place.thoroughfare + "," + place.subLocality;

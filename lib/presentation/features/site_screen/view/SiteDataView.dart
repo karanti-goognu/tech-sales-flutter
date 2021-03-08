@@ -18,8 +18,8 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart' as updateResponse;
-
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart'
+    as updateResponse;
 
 class SiteDataView extends StatefulWidget {
   final siteId;
@@ -71,15 +71,19 @@ class _SiteDataViewState extends State<SiteDataView> {
   TextEditingController _siteProductDemo = new TextEditingController();
   TextEditingController _siteProductOralBriefing = new TextEditingController();
   TextEditingController _stagePotentialVisit = new TextEditingController();
-  TextEditingController _stagePotentialVisitNextStage = new TextEditingController();
+  TextEditingController _stagePotentialVisitNextStage =
+      new TextEditingController();
   TextEditingController _brandPriceVisit = new TextEditingController();
   TextEditingController _brandPriceVisitNextStage = new TextEditingController();
   TextEditingController _dateofConstruction = new TextEditingController();
-  TextEditingController _dateofConstructionNextStage = new TextEditingController();
+  TextEditingController _dateofConstructionNextStage =
+      new TextEditingController();
   TextEditingController _nextVisitDate = new TextEditingController();
   TextEditingController _dateOfBagSupplied = new TextEditingController();
-  TextEditingController _dateOfBagSuppliedNextStage = new TextEditingController();
-  TextEditingController _siteCurrentTotalBagsNextStage = new TextEditingController();
+  TextEditingController _dateOfBagSuppliedNextStage =
+      new TextEditingController();
+  TextEditingController _siteCurrentTotalBagsNextStage =
+      new TextEditingController();
   TextEditingController _comments = new TextEditingController();
   TextEditingController _inactiveReasonText = new TextEditingController();
   TextEditingController closureReasonText = new TextEditingController();
@@ -100,7 +104,6 @@ class _SiteDataViewState extends State<SiteDataView> {
   TextEditingController _district = TextEditingController();
   TextEditingController _taluk = TextEditingController();
 
-
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   LocationResult _pickedLocation;
   Position _currentPosition = new Position();
@@ -114,7 +117,8 @@ class _SiteDataViewState extends State<SiteDataView> {
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<ConstructionStageEntity> constructionStageEntityNew = new List();
-  List<ConstructionStageEntity> constructionStageEntityNewNextStage = new List();
+  List<ConstructionStageEntity> constructionStageEntityNewNextStage =
+      new List();
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
@@ -160,16 +164,16 @@ class _SiteDataViewState extends State<SiteDataView> {
                           value: _selectedConstructionType,
                           items: constructionStageEntity
                               .map((label) => DropdownMenuItem(
-                            child: Text(
-                              label.constructionStageText,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                  ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
+                                    child: Text(
+                                      label.constructionStageText,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color:
+                                              ColorConstants.inputBoxHintColor,
+                                          fontFamily: "Muli"),
+                                    ),
+                                    value: label,
+                                  ))
                               .toList(),
 
                           // hint: Text('Rating'),
@@ -179,8 +183,8 @@ class _SiteDataViewState extends State<SiteDataView> {
                               _selectedConstructionType = value;
                             });
                           },
-                          decoration:
-                          FormFieldStyle.buildInputDecoration(labelText: "Type of Construction"),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                              labelText: "Type of Construction"),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -207,9 +211,8 @@ class _SiteDataViewState extends State<SiteDataView> {
                                 color: ColorConstants.inputBoxHintColor,
                                 fontFamily: "Muli"),
                             keyboardType: TextInputType.number,
-                            decoration: FormFieldStyle.buildInputDecoration(labelText: "Site Built-up area")
-
-                        ),
+                            decoration: FormFieldStyle.buildInputDecoration(
+                                labelText: "Site Built-up area")),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: Text(
@@ -246,7 +249,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                       fontFamily: "Muli"),
                                   // keyboardType: TextInputType.text,
                                   // decoration: FormFieldStyle.buildInputDecoration(labelText:"Ground"),
-                                  decoration:InputDecoration(
+                                  decoration: InputDecoration(
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: ColorConstants
@@ -288,20 +291,20 @@ class _SiteDataViewState extends State<SiteDataView> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child:
-                                DropdownButtonFormField<SiteFloorsEntity>(
+                                    DropdownButtonFormField<SiteFloorsEntity>(
                                   value: _selectedSiteFloor,
                                   items: siteFloorsEntity
                                       .map((label) => DropdownMenuItem(
-                                    child: Text(
-                                      label.siteFloorTxt,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: ColorConstants
-                                              .inputBoxHintColor,
-                                          fontFamily: "Muli"),
-                                    ),
-                                    value: label,
-                                  ))
+                                            child: Text(
+                                              label.siteFloorTxt,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: ColorConstants
+                                                      .inputBoxHintColor,
+                                                  fontFamily: "Muli"),
+                                            ),
+                                            value: label,
+                                          ))
                                       .toList(),
 
                                   // hint: Text('Rating'),
@@ -310,7 +313,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                                       _selectedSiteFloor = value;
                                     });
                                   },
-                                  decoration:FormFieldStyle.buildInputDecoration(labelText:"+ Floors"),
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "+ Floors"),
                                 ),
                               ),
                             )
@@ -337,7 +342,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                               Text(
                                 "Product demo",
                                 style: TextStyle(
-                                  //fontWeight: FontWeight.bold,
+                                    //fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                     // color: HexColor("#000000DE"),
                                     fontFamily: "Muli"),
@@ -357,7 +362,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                     value: isSwitchedsiteProductDemo,
                                     activeColor: HexColor("#009688"),
                                     activeTrackColor:
-                                    HexColor("#009688").withOpacity(0.5),
+                                        HexColor("#009688").withOpacity(0.5),
                                     inactiveThumbColor: HexColor("#F1F1F1"),
                                     inactiveTrackColor: Colors.black26,
                                   ),
@@ -386,7 +391,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                               Text(
                                 "Product oral briefing",
                                 style: TextStyle(
-                                  //fontWeight: FontWeight.bold,
+                                    //fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                     // color: HexColor("#000000DE"),
                                     fontFamily: "Muli"),
@@ -406,7 +411,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                     value: isSwitchedsiteProductOralBriefing,
                                     activeColor: HexColor("#009688"),
                                     activeTrackColor:
-                                    HexColor("#009688").withOpacity(0.5),
+                                        HexColor("#009688").withOpacity(0.5),
                                     inactiveThumbColor: HexColor("#F1F1F1"),
                                     inactiveTrackColor: Colors.black26,
                                   ),
@@ -456,7 +461,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                       } else {
                                         _siteTotalPt.text =
                                             (int.parse(_siteTotalBags.text) /
-                                                20)
+                                                    20)
                                                 .toString();
                                       }
                                     });
@@ -478,7 +483,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                                       color: ColorConstants.inputBoxHintColor,
                                       fontFamily: "Muli"),
                                   // keyboardType: TextInputType.text,
-                                  decoration: FormFieldStyle.buildInputDecoration(labelText: "Bags"),
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Bags"),
                                 ),
                               ),
                             ),
@@ -513,7 +520,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                                       fontFamily: "Muli"),
                                   keyboardType: TextInputType.numberWithOptions(
                                       decimal: true),
-                                  decoration: FormFieldStyle.buildInputDecoration(labelText: "MT"),
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "MT"),
                                 ),
                               ),
                             ),
@@ -539,7 +548,8 @@ class _SiteDataViewState extends State<SiteDataView> {
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Owner Name"),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                              labelText: "Owner Name"),
                         ),
                         SizedBox(height: 16),
                         TextFormField(
@@ -567,7 +577,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           maxLength: 10,
-                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Contact Number",),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Contact Number",
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -626,6 +638,10 @@ class _SiteDataViewState extends State<SiteDataView> {
                                 setState(() {
                                   geoTagType = "A";
                                 });
+                                Get.dialog(Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+
                                 _getCurrentLocation();
                               },
                             ),
@@ -660,7 +676,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                   geoTagType = "M";
                                 });
                                 LocationResult result =
-                                await showLocationPicker(
+                                    await showLocationPicker(
                                   context,
                                   StringConstants.API_Key,
                                   initialCenter: LatLng(31.1975844, 29.9598339),
@@ -680,7 +696,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                   _currentPosition = new Position(
                                       latitude: _pickedLocation.latLng.latitude,
                                       longitude:
-                                      _pickedLocation.latLng.longitude);
+                                          _pickedLocation.latLng.longitude);
                                   _getAddressFromLatLng();
                                   //print(_pickedLocation.latLng.latitude);
                                 });
@@ -703,7 +719,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Plot No.",),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Plot No.",
+                          ),
                         ),
                         SizedBox(height: 16),
                         TextFormField(
@@ -720,8 +738,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                                 color: ColorConstants.inputBoxHintColor,
                                 fontFamily: "Muli"),
                             keyboardType: TextInputType.text,
-                            decoration: FormFieldStyle.buildInputDecoration(labelText: "Address",)
-                        ),
+                            decoration: FormFieldStyle.buildInputDecoration(
+                              labelText: "Address",
+                            )),
                         SizedBox(height: 16),
                         TextFormField(
                           //initialValue: _pincode.toString(),
@@ -745,7 +764,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           //  maxLength: 6,
-                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Pincode",),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Pincode",
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -773,7 +794,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: FormFieldStyle.buildInputDecoration( labelText: "State",),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "State",
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -801,7 +824,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: FormFieldStyle.buildInputDecoration(labelText: "District",),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "District",
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -830,7 +855,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Taluk",),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Taluk",
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -850,7 +877,8 @@ class _SiteDataViewState extends State<SiteDataView> {
                           child: FlatButton(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
-                              side: BorderSide(color: Colors.black26),),
+                              side: BorderSide(color: Colors.black26),
+                            ),
                             color: Colors.transparent,
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -877,87 +905,87 @@ class _SiteDataViewState extends State<SiteDataView> {
 
                         _imgDetails != null
                             ? Row(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: _imgDetails.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    print(_imgDetails[index]
-                                        .from
-                                        .toLowerCase());
-                                    return GestureDetector(
-                                      onTap: () {
-                                        return showDialog(
-                                            context: context,
-                                            builder:
-                                                (BuildContext context) {
-                                              return AlertDialog(
-                                                content: new Container(
-                                                  // width: 500,
-                                                  // height: 500,
-                                                  child: _imgDetails[
-                                                  index]
-                                                      .from
-                                                      .toLowerCase() ==
-                                                      "network"
-                                                      ? Image.network(
-                                                      _imgDetails[
-                                                      index]
-                                                          .file
-                                                          .path)
-                                                      : Image.file(
-                                                      _imgDetails[
-                                                      index]
-                                                          .file),
-                                                ),
-                                              );
-                                            });
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Picture ${(index + 1)}. ",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    fontSize: 15),
-                                              ),
-                                              Text(
-                                                "Image_${(index + 1)}.jpg",
-                                                style: TextStyle(
-                                                    color: HexColor(
-                                                        "#007CBF"),
-                                                    fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          GestureDetector(
-                                            child: Icon(
-                                              Icons.delete,
-                                              color: HexColor("#FFCD00"),
-                                            ),
+                                children: [
+                                  Expanded(
+                                    child: ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: _imgDetails.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          print(_imgDetails[index]
+                                              .from
+                                              .toLowerCase());
+                                          return GestureDetector(
                                             onTap: () {
-                                              setState(() {
-                                                _imgDetails
-                                                    .removeAt(index);
-                                              });
+                                              return showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      content: new Container(
+                                                        // width: 500,
+                                                        // height: 500,
+                                                        child: _imgDetails[
+                                                                        index]
+                                                                    .from
+                                                                    .toLowerCase() ==
+                                                                "network"
+                                                            ? Image.network(
+                                                                _imgDetails[
+                                                                        index]
+                                                                    .file
+                                                                    .path)
+                                                            : Image.file(
+                                                                _imgDetails[
+                                                                        index]
+                                                                    .file),
+                                                      ),
+                                                    );
+                                                  });
                                             },
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                            ),
-                          ],
-                        )
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "Picture ${(index + 1)}. ",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                    ),
+                                                    Text(
+                                                      "Image_${(index + 1)}.jpg",
+                                                      style: TextStyle(
+                                                          color: HexColor(
+                                                              "#007CBF"),
+                                                          fontSize: 15),
+                                                    ),
+                                                  ],
+                                                ),
+                                                GestureDetector(
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    color: HexColor("#FFCD00"),
+                                                  ),
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _imgDetails
+                                                          .removeAt(index);
+                                                    });
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ],
+                              )
                             : Container(),
                         //
 
@@ -977,7 +1005,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: FormFieldStyle.buildInputDecoration(labelText: "RERA",),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "RERA",
+                          ),
                         ),
 
                         SizedBox(height: 16),
@@ -996,7 +1026,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: FormFieldStyle.buildInputDecoration(labelText: "Dealer",),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Dealer",
+                          ),
                         ),
 
                         SizedBox(height: 16),
@@ -1015,7 +1047,9 @@ class _SiteDataViewState extends State<SiteDataView> {
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType: TextInputType.text,
-                          decoration: FormFieldStyle.buildInputDecoration( labelText: "SO",),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "SO",
+                          ),
                         ),
 
                         SizedBox(height: 16),
@@ -1139,7 +1173,7 @@ class _SiteDataViewState extends State<SiteDataView> {
           siteNextStageEntity.add(new SiteNextStageEntity(
             siteId: widget.siteId,
             constructionStageId:
-            _selectedConstructionTypeVisitNextStage.id ?? 1,
+                _selectedConstructionTypeVisitNextStage.id ?? 1,
             stagePotential: _stagePotentialVisitNextStage.text,
             brandId: _siteProductFromLocalDBNextStage.id,
             brandPrice: _brandPriceVisitNextStage.text,
@@ -1165,16 +1199,24 @@ class _SiteDataViewState extends State<SiteDataView> {
         //print(sitephotosEntity.)
 
         if (_listInfluencerDetail.length != 0) {
-          if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName == null ||
-              _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==null ||
-              _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName.text.isNullOrBlank) {
+          if (_listInfluencerDetail[
+                          _listInfluencerDetail.length - 1]
+                      .inflName ==
+                  null ||
+              _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                      .inflName ==
+                  null ||
+              _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                  .inflName
+                  .text
+                  .isNullOrBlank) {
             print("here1234");
             _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
           }
         }
 
         List<updateResponse.SiteInfluencerEntityNew> newInfluencerEntity =
-        new List();
+            new List();
 
         for (int i = 0; i < _listInfluencerDetail.length; i++) {
           newInfluencerEntity.add(new updateResponse.SiteInfluencerEntityNew(
@@ -1221,9 +1263,9 @@ class _SiteDataViewState extends State<SiteDataView> {
               ? _inactiveReasonText.text
               : null,
           "nextVisitDate":
-          (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
+              (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
           "closureReasonText":
-          (closureReasonText.text != "") ? closureReasonText.text : null,
+              (closureReasonText.text != "") ? closureReasonText.text : null,
           "createdBy": "",
           "siteCommentsEntity": newSiteCommentsEntity,
           "siteVisitHistoryEntity": siteVisitHistoryEntity,
@@ -1249,6 +1291,7 @@ class _SiteDataViewState extends State<SiteDataView> {
       });
     }
   }
+
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -1278,13 +1321,14 @@ class _SiteDataViewState extends State<SiteDataView> {
           );
         });
   }
+
   _getAddressFromLatLng() async {
     try {
       List<Placemark> p = await geolocator.placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
 
       Placemark place = p[0];
-
+      Get.back();
       setState(() {
         _siteAddress.text =
             place.name + "," + place.thoroughfare + "," + place.subLocality;
@@ -1294,7 +1338,7 @@ class _SiteDataViewState extends State<SiteDataView> {
         _taluk.text = place.locality;
         //txt.text = place.postalCode;
         _currentAddress =
-        "${place.locality}, ${place.postalCode}, ${place.country}";
+            "${place.locality}, ${place.postalCode}, ${place.country}";
 
         print(
             "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
@@ -1336,10 +1380,7 @@ class _SiteDataViewState extends State<SiteDataView> {
       }
       // _imageList.insert(0,image);
     });
-
-
   }
-
 
   _getCurrentLocation() async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
@@ -1392,6 +1433,7 @@ class _SiteDataViewState extends State<SiteDataView> {
     }
   }
 }
+
 class ImageDetails {
   String from;
   File file;

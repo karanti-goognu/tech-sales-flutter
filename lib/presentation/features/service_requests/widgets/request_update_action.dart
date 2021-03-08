@@ -106,6 +106,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               ),
             ),
             onPressed: () {
+              Get.dialog(Center(child: CircularProgressIndicator(),));
               _getCurrentLocation();
             },
           ),
@@ -526,7 +527,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
       Placemark place = p[0];
 
       setState(() {
-
+        Get.back();
         _location.text =
         "${place.subAdministrativeArea}, ${place.locality}, ${place.postalCode}";
 

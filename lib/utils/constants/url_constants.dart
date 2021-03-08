@@ -7,16 +7,16 @@ final client = Client();
 abstract class UrlConstants {
 
   //PROD
-  static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
-  static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
-  static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
+  // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
+  // static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
+  // static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
   //Base Url
   // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
 
   // QA
-  // static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
-  // static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
-  // static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
+  static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+  static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
+  static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
 
   // //Development
@@ -61,8 +61,5 @@ abstract class UrlConstants {
   static const String updateServiceRequest = '$baseUrl/srcomplaint/sr_complaint_update';
   static const String AppTutorialList = '$baseUrl/tsoAppTuorial/view';
   static const String getSiteAreaDetails = '$baseUrl/sites/site-areaDetails?referenceID=';
-
-
-
 
 }
