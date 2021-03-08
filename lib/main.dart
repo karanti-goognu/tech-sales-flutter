@@ -7,6 +7,8 @@ import 'package:flutter_tech_sales/presentation/features/splash/view/splash_scre
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'helper/database/sitelist_db_helper.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
@@ -29,6 +31,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  SitesDBProvider appModel = SitesDBProvider();
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
 
   Future<void> initPlatformState() async {
@@ -46,7 +49,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new GetMaterialApp(
+
+    return ScopedModel<SitesDBProvider>(
+        model: appModel,
+        child:GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialBinding: SplashBinding(),
       initialRoute: Routes.INITIAL,
@@ -55,7 +61,7 @@ class _MyAppState extends State<MyApp> {
       home: SplashScreen(),
       title: 'TSO App',
       theme: appThemeData,
-
+        )
     );
   }
 }

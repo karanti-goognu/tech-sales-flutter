@@ -7,10 +7,9 @@ import 'package:path/path.dart' as p;
 
 class DatabaseHelper{
   static DatabaseHelper _databaseHelper;
-   DatabaseHelper._createInstance();
+  DatabaseHelper._createInstance();
   static Database _database;
   static Future close() async => _database.close();
-
   Future<Database> get database async {
     if (_database == null) {
       _database = await open();
@@ -42,9 +41,10 @@ class DatabaseHelper{
   Future<Database> open() async {
     String path = await initDb(DbConstants.DATA_BASE);
     var database =
-    await openDatabase(path, version: 2, onCreate: _createDb, onUpgrade: _onUpgrade);
+    await openDatabase(path, version: 1, onCreate: _createDb, onUpgrade: _onUpgrade);
     return database;
   }
+
 //create database all tables
   void _createDb(Database db, int newVersion) async {
     await db.execute('CREATE TABLE ${DbConstants.TABLE_DRAFT_LEAD} ('
@@ -74,7 +74,42 @@ class DatabaseHelper{
 
  await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_LIST} ('
         '${DbConstants.COL_ID} TEXT,'
-        ' ${DbConstants.COL_SITE_LIST_MODEL} TEXT)');
+        '${DbConstants.COL_SITE_ID} INTEGER,'
+        '${DbConstants.COL_LEAD_ID} INTEGER,'
+        '${DbConstants.COL_SITE_SEGMENT} TEXT,'
+        '${DbConstants.COL_ASSIGNED_TO} TEXT,'
+        '${DbConstants.COL_SITE_STATUS_ID} INTEGER,'
+        '${DbConstants.COL_SITE_OPPERTUNITY_ID} INTEGER,'
+        '${DbConstants.COL_SITE_PROBABILITY_WINNING_ID} INTEGER,'
+        '${DbConstants.COL_SITE_STAGE_ID} INTEGER,'
+        '${DbConstants.COL_CONTACT_NAME} TEXT,'
+        '${DbConstants.COL_CONTACT_NUMBER} TEXT,'
+        '${DbConstants.COL_SITE_CREATION_DATE} TEXT,'
+        '${DbConstants.COL_SITE_GEO_TAG} TEXT,'
+        '${DbConstants.COL_SITE_GEO_TAG_LAT} TEXT,'
+        '${DbConstants.COL_SITE_GEO_TAG_LONG} TEXT,'
+        '${DbConstants.COL_SITE_PIN_CODE} TEXT,'
+        '${DbConstants.COL_SITE_STATE} TEXT,'
+        '${DbConstants.COL_SITE_DISTRICT} TEXT,'
+        '${DbConstants.COL_SITE_TALUK} TEXT,'
+        '${DbConstants.COL_SITE_SCORE} DOUBLE,'
+        '${DbConstants.COL_SITE_POTENTIAL_MT} TEXT,'
+        '${DbConstants.COL_RERA_NUMBER} TEXT,'
+        '${DbConstants.COL_DEALER_ID} TEXT,'
+        '${DbConstants.COL_SITE_BUILT_AREA} TEXT,'
+        '${DbConstants.COL_NO_OF_FLOORS} INTEGER,'
+        '${DbConstants.COL_PRODUCT_DEMO} TEXT,'
+        '${DbConstants.COL_PRODUCT_ORAL_BRIEFING} TEXT,'
+        '${DbConstants.COL_SO_CODE} TEXT,'
+        '${DbConstants.COL_PLOT_NUMBER} TEXT,'
+        '${DbConstants.COL_INACTIVE_REASON_TEXT} TEXT,'
+        '${DbConstants.COL_NEXT_VISIT_DATE} TEXT,'
+        '${DbConstants.COL_CLOSURE_REASON_TEXT} TEXT,'
+         '${DbConstants.COL_CREATED_BY} TEXT,'
+        '${DbConstants.COL_CREATED_ON} INTEGER,'
+        '${DbConstants.COL_UPDATED_BY} TEXT,'
+        '${DbConstants.COL_UPDATED_ON} INTEGER)'
+       );
 
  await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_STAGE} ('
         '${DbConstants.COL_ID} TEXT,'
@@ -109,7 +144,7 @@ class DatabaseHelper{
 
   /*..........................................................................*/
 
-/*Insert  Operation: Insert a Game object to db*/
+/*Insert  Operation: Insert object to db*/
   Future<int> insertDataInTable(
       String tableName, Map<String, dynamic> mapData, ConflictAlgorithm conflictAlgorithm ) async {
     Database db = await this.database;
@@ -121,7 +156,7 @@ class DatabaseHelper{
 
 
   /*..........................................................................*/
-/*Update Operation: Update a Game Object and save it to db*/
+/*Update Operation: Update Object and save it to db*/
   Future<int> updateTableRow(
       String tableName, Map<String, dynamic> mapData, where, whereArg) async {
     var db = await this.database;
@@ -164,7 +199,6 @@ class DatabaseHelper{
 
 
 }
-
 
 
 
