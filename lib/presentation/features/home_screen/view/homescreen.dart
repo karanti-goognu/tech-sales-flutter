@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
 
+<<<<<<< HEAD
   storeOfflineSiteData() async {
     final db = SiteListDBHelper();
     await db.clearTable();
@@ -83,6 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+=======
+>>>>>>> 07992142bc868ccd882f548e8970755d308f41b4
   Future<void> initPlatformState() async {
     if (!mounted) return;
     //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);

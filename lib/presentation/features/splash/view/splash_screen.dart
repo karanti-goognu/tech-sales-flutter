@@ -121,9 +121,10 @@ class SplashScreenPageState extends State<SplashScreen> {
           await db.execute('CREATE TABLE constructStage (id INTEGER PRIMARY KEY AUTOINCREMENT, constructStageEntity TEXT)');
           await db.execute('CREATE TABLE siteCompetitionStatus (id INTEGER PRIMARY KEY AUTOINCREMENT, siteCompetitionStatusEntity TEXT)');
           await db.execute('CREATE TABLE siteFloor (id INTEGER PRIMARY KEY AUTOINCREMENT, siteFloorEntity TEXT)');
-          await db.execute('CREATE TABLE siteList (id INTEGER PRIMARY KEY AUTOINCREMENT, siteListModel TEXT)');
           await db.execute('CREATE TABLE siteStage (id INTEGER PRIMARY KEY AUTOINCREMENT, siteStageEntity TEXT)');
           await db.execute('CREATE TABLE siteVisitHistory (id INTEGER PRIMARY KEY AUTOINCREMENT, siteVisitHistoryEntity TEXT)');
+          await db.execute('CREATE TABLE siteList (id INTEGER PRIMARY KEY AUTOINCREMENT, siteId INTEGER, leadId INTEGER, siteSegment TEXT, assignedTo TEXT, siteStatusId INTEGER, siteOppertunityId INTEGER, siteStageId INTEGER, contactName TEXT, contactNumber TEXT, siteCreationDate TEXT, siteGeotag TEXT, siteGeotagLat TEXT, siteGeotagLong TEXT, sitePincode TEXT, siteState TEXT, siteDistrict TEXT, siteTaluk TEXT, siteScore DOUBLE, sitePotentialMt TEXT, reraNumber TEXT, dealerId TEXT, siteBuiltArea TEXT, noOfFloors INTEGER, productDemo TEXT, productOralBriefing TEXT, soCode TEXT, plotNumber TEXT, inactiveReasonText TEXT, nextVisitDate TEXT, closureReasonText TEXT, createdBy TEXT,  createdOn INTEGER, updatedBy TEXT, updatedOn INTEGER)');
+
         });
     return database;
   }

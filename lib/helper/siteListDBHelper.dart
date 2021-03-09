@@ -1,12 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SiteListDBHelper extends ChangeNotifier{
   static final SiteListDBHelper _instance = SiteListDBHelper._();
   static Database _database;
+
+  List<SitesEntity> _list = [];
+
+  List<SitesEntity> get siteListing => _list;
 
   SiteListDBHelper._();
 
@@ -24,7 +29,7 @@ class SiteListDBHelper extends ChangeNotifier{
     return _database;
   }
 
-  Future<Database> init() async {
+  Future<Database> init1() async {
     var databasesPath = await getDatabasesPath();
     String dbPath = join(databasesPath, 'database.db');
 
@@ -37,40 +42,51 @@ class SiteListDBHelper extends ChangeNotifier{
     return database;
   }
 
+  Future<Database> init() async {
+    var databasesPath = await getDatabasesPath();
+    String dbPath = join(databasesPath, 'database.db');
 
-  Future<int> addSiteEntityInDraftList(SiteListModelForDB siteListModelforDB) async {
-    var client = await db;
-    print(siteListModelforDB.siteListModel);
-    return client.insert('siteList', siteListModelforDB.toMapForDb(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    Database database = await openDatabase(dbPath, version: 1,
+        onCreate: (Database db, int version) async {
+          // When creating the db, create the table
+          await db.execute('CREATE TABLE siteList (id INTEGER PRIMARY KEY AUTOINCREMENT, siteId INTEGER, leadId INTEGER, siteSegment TEXT, assignedTo TEXT, siteStatusId INTEGER, siteOppertunityId INTEGER, siteStageId INTEGER, contactName TEXT, contactNumber TEXT, siteCreationDate TEXT, siteGeotag TEXT, siteGeotagLat TEXT, siteGeotagLong TEXT, sitePincode TEXT, siteState TEXT, siteDistrict TEXT, siteTaluk TEXT, siteScore DOUBLE, sitePotentialMt TEXT, reraNumber TEXT, dealerId TEXT, siteBuiltArea TEXT, noOfFloors INTEGER, productDemo TEXT, productOralBriefing TEXT, soCode TEXT, plotNumber TEXT, inactiveReasonText TEXT, nextVisitDate TEXT, closureReasonText TEXT, createdBy TEXT,  createdOn INTEGER, updatedBy TEXT, updatedOn INTEGER)');
+        });
+    return database;
   }
 
-  Future<SiteListModelForDB> fetchSiteEntityInDraftList(int id) async {
+
+
+  Future<List<SitesEntity>> filterSiteEntityList(String appendQuery,String whereArgs) async {
     var client = await db;
-    final Future<List<Map<String, dynamic>>> futureMaps =
-    client.query('siteList', where: 'id = ?', whereArgs: [id]);
-    var maps = await futureMaps;
-    if (maps.length != 0) {
-      print("Here:: ");
-      print(maps.first);
-      return SiteListModelForDB.fromDb(maps.first);
-    }
-    return null;
+    var res = await client.rawQuery('SELECT * FROM siteList WHERE ${appendQuery}', [whereArgs]);
+    print("sadsad  "+res.toString());
+    _list = res.isNotEmpty ? res.map((c) => SitesEntity.fromJson(c)).toList() : [];
+    return _list;
   }
 
-  Future<int> updateSiteEntityInDraftList(SiteListModelForDB siteListModelforDB) async {
-    print(siteListModelforDB.id);
+  Future<void> insertSiteEntityInTable(SitesEntity sitesEntity) async {
     var client = await db;
-    return client.update('siteList', siteListModelforDB.toMapForDb(),
-        where: 'id = ?',
-        whereArgs: [siteListModelforDB.id],
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    var result = await client.rawInsert("INSERT Into siteList (siteId, leadId, siteSegment, assignedTo, siteStatusId, siteOppertunityId, siteStageId, contactName, contactNumber, siteCreationDate, siteGeotag, siteGeotagLat, siteGeotagLong, sitePincode, siteState, siteDistrict, siteTaluk, siteScore, sitePotentialMt, reraNumber, dealerId, siteBuiltArea, noOfFloors, productDemo, productOralBriefing, soCode, plotNumber, inactiveReasonText, nextVisitDate, closureReasonText, createdBy,  createdOn, updatedBy, updatedOn)"
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [sitesEntity.siteId, sitesEntity.leadId, sitesEntity.siteSegment, sitesEntity.assignedTo, sitesEntity.siteStatusId, sitesEntity.siteOppertunityId, sitesEntity.siteStageId, sitesEntity.contactName, sitesEntity.contactNumber, sitesEntity.siteCreationDate, sitesEntity.siteGeotag, sitesEntity.siteGeotagLat, sitesEntity.siteGeotagLong, sitesEntity.sitePincode, sitesEntity.siteState, sitesEntity.siteDistrict, sitesEntity.siteTaluk, sitesEntity.siteScore, sitesEntity.sitePotentialMt, sitesEntity.reraNumber, sitesEntity.dealerId, sitesEntity.siteBuiltArea, sitesEntity.noOfFloors, sitesEntity.productDemo, sitesEntity.productOralBriefing, sitesEntity.soCode, sitesEntity.plotNumber, sitesEntity.inactiveReasonText, sitesEntity.nextVisitDate, sitesEntity.closureReasonText, sitesEntity.createdBy,  sitesEntity.createdOn, sitesEntity.updatedBy, sitesEntity.updatedOn]
+    );
+    return result;
   }
 
-  Future<void> removeSiteEntityInDraftList(int id) async {
-    var client = await db;
-    return client.delete('siteList', where: 'id = ?', whereArgs: [id]);
+  Future<List<SitesEntity>> fetchAllSites() async {
+    final db1 = await db;
+    var res = await db1.query("siteList");
+    _list = res.isNotEmpty ? res.map((c) => SitesEntity.fromJson(c)).toList() : [];
+    return _list;
   }
+
+  Future<List<SitesEntity>> fetchAllSites1() async {
+    return _list;
+  }
+
+
+
+
 
   Future<void> clearTable() async{
     var client = await db;
@@ -78,38 +94,8 @@ class SiteListDBHelper extends ChangeNotifier{
   }
 
 
-  Future<List<SiteListModelForDB>> fetchAll() async {
-    var client = await db;
-    var res = await client.query('siteList');
-
-    if (res.isNotEmpty) {
-      var draftLeads = res.map((leadMap) => SiteListModelForDB.fromDb(leadMap)).toList();
-      return draftLeads;
-    }
-    return [];
-  }
 
 
 }
 
-class SiteListModelForDB {
-  // @required
-  final int id;
-  @required
-  final String siteListModel;
-
-  SiteListModelForDB(this.id, this.siteListModel);
-
-  Map<String, dynamic> toMapForDb() {
-    var map = Map<String, dynamic>();
-
-    map['id'] = id;
-    map['siteListModel'] = siteListModel;
-    return map;
-  }
-
-  SiteListModelForDB.fromDb(Map<String, dynamic> map)
-      : id = map['id'],
-        siteListModel = map['siteListModel'];
-}
 

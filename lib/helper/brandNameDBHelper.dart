@@ -85,6 +85,7 @@ class BrandNameDBHelper extends ChangeNotifier{
   //   return client.delete('draftLead', where: 'id = ?', whereArgs: [id]);
   // }
   //
+
   Future<List<BrandModelforDB>> fetchAllDistinctBrand() async {
     var client = await db;
     var res = await client.rawQuery('SELECT DISTINCT brandName FROM brandName');
