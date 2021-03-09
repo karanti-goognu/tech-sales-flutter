@@ -1,14 +1,12 @@
 
-class ViewSiteDataResponse {
- // List<SiteStageEntity> leadStatusEntity;
+class SiteRefreshDataResponse {
+  // List<SiteStageEntity> leadStatusEntity;
   List<SiteStageEntity> siteStageEntity;
-
-
   String respCode;
   String respMsg;
-  SitesModal sitesModal;
+  List<SitesModal> sitesModal;
   List<SiteFloorsEntity> siteFloorsEntity;
-  List<SitephotosEntity> sitephotosEntity;
+  List<SitephotosEntity> sitePhotosEntity;
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
   List<ConstructionStageEntity> constructionStageEntity;
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity;
@@ -23,46 +21,50 @@ class ViewSiteDataResponse {
   List<SiteInfluencerEntity> siteInfluencerEntity;
   List<CounterListModel> counterListModel;
 
-  ViewSiteDataResponse(
+  SiteRefreshDataResponse(
       {this.respCode,
-      this.respMsg,
-      this.sitesModal,
-      this.siteFloorsEntity,
-      this.sitephotosEntity,
-      this.siteVisitHistoryEntity,
-      this.siteStageEntity,
-      this.constructionStageEntity,
-      this.siteProbabilityWinningEntity,
-      this.siteCompetitionStatusEntity,
-      this.siteBrandEntity,
-      this.influencerEntity,
-      this.siteNextStageEntity,
-      this.siteCommentsEntity,
-      this.influencerTypeEntity,
-      this.influencerCategoryEntity,
-      this.siteOpportunityStatusEntity,
-      this.siteInfluencerEntity,
-      this.counterListModel});
+        this.respMsg,
+        this.sitesModal,
+        this.siteFloorsEntity,
+        this.sitePhotosEntity,
+        this.siteVisitHistoryEntity,
+        this.siteStageEntity,
+        this.constructionStageEntity,
+        this.siteProbabilityWinningEntity,
+        this.siteCompetitionStatusEntity,
+        this.siteBrandEntity,
+        this.influencerEntity,
+        this.siteNextStageEntity,
+        this.siteCommentsEntity,
+        this.influencerTypeEntity,
+        this.influencerCategoryEntity,
+        this.siteOpportunityStatusEntity,
+        this.siteInfluencerEntity,
+        this.counterListModel});
 
   //ViewSiteDataResponse.mapJson(Map<String, dynamic> json):
 
 
-  ViewSiteDataResponse.fromJson(Map<String, dynamic> json) {
-    // respCode = json['respCode'];
-    // respMsg = json['respMsg'];
-    sitesModal = json['sitesModal'] != null
-        ? new SitesModal.fromJson(json['sitesModal'])
-        : null;
+  SiteRefreshDataResponse.fromJson(Map<String, dynamic> json) {
+    respCode = json['respCode'];
+    respMsg = json['respMsg'];
+
+    if (json['sitesModal'] != null) {
+      sitesModal = new List<SitesModal>();
+      json['sitesModal'].forEach((v) {
+        sitesModal.add(new SitesModal.fromJson(v));
+      });
+    }
     if (json['siteFloorsEntity'] != null) {
       siteFloorsEntity = new List<SiteFloorsEntity>();
       json['siteFloorsEntity'].forEach((v) {
         siteFloorsEntity.add(new SiteFloorsEntity.fromJson(v));
       });
     }
-    if (json['sitephotosEntity'] != null) {
-      sitephotosEntity = new List<SitephotosEntity>();
-      json['sitephotosEntity'].forEach((v) {
-        sitephotosEntity.add(new SitephotosEntity.fromJson(v));
+    if (json['sitePhotosEntity'] != null) {
+      sitePhotosEntity = new List<SitephotosEntity>();
+      json['sitePhotosEntity'].forEach((v) {
+        sitePhotosEntity.add(new SitephotosEntity.fromJson(v));
       });
     }
     if (json['siteVisitHistoryEntity'] != null) {
@@ -159,16 +161,19 @@ class ViewSiteDataResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
+
     if (this.sitesModal != null) {
-      data['sitesModal'] = this.sitesModal.toJson();
+      data['sitesModal'] =
+          this.sitesModal.map((v) => v.toJson()).toList();
     }
+
     if (this.siteFloorsEntity != null) {
       data['siteFloorsEntity'] =
           this.siteFloorsEntity.map((v) => v.toJson()).toList();
     }
-    if (this.sitephotosEntity != null) {
-      data['sitephotosEntity'] =
-          this.sitephotosEntity.map((v) => v.toJson()).toList();
+    if (this.sitePhotosEntity != null) {
+      data['sitePhotosEntity'] =
+          this.sitePhotosEntity.map((v) => v.toJson()).toList();
     }
     if (this.siteVisitHistoryEntity != null) {
       data['siteVisitHistoryEntity'] =
@@ -263,38 +268,38 @@ class SitesModal {
 
   SitesModal(
       {this.siteBuiltArea,
-      this.siteProductDemo,
-      this.siteProductOralBriefing,
-      this.sitePlotNumber,
-      this.siteTotalSitePotential,
-      this.siteOwnerName,
-      this.siteOwnerContactNumber,
-      this.siteAddress,
-      this.siteState,
-      this.siteDistrict,
-      this.siteTaluk,
-      this.sitePincode,
-      this.siteGeotagLatitude,
-      this.siteGeotagLongitude,
-      this.siteGeotagType,
-      this.siteReraNumber,
-      this.siteDealerId,
-      this.siteDealerName,
-      this.siteSoId,
-      this.siteSoname,
-      this.siteStageId,
-      this.inactiveReasonText,
-      this.siteNextVisitDate,
-      this.siteClosureReasonText,
-      this.siteProbabilityWinningId,
-      this.siteCompetitionId,
-      this.siteOppertunityId,
-      this.assignedTo,
-      this.siteStatusId,
-      this.siteCreationDate,
-      this.siteConstructionId,
-      this.noOfFloors,
-      this.siteScore});
+        this.siteProductDemo,
+        this.siteProductOralBriefing,
+        this.sitePlotNumber,
+        this.siteTotalSitePotential,
+        this.siteOwnerName,
+        this.siteOwnerContactNumber,
+        this.siteAddress,
+        this.siteState,
+        this.siteDistrict,
+        this.siteTaluk,
+        this.sitePincode,
+        this.siteGeotagLatitude,
+        this.siteGeotagLongitude,
+        this.siteGeotagType,
+        this.siteReraNumber,
+        this.siteDealerId,
+        this.siteDealerName,
+        this.siteSoId,
+        this.siteSoname,
+        this.siteStageId,
+        this.inactiveReasonText,
+        this.siteNextVisitDate,
+        this.siteClosureReasonText,
+        this.siteProbabilityWinningId,
+        this.siteCompetitionId,
+        this.siteOppertunityId,
+        this.assignedTo,
+        this.siteStatusId,
+        this.siteCreationDate,
+        this.siteConstructionId,
+        this.noOfFloors,
+        this.siteScore});
 
   SitesModal.fromJson(Map<String, dynamic> json) {
     siteBuiltArea = json['siteBuiltArea'];
@@ -550,7 +555,8 @@ class SiteVisitHistoryEntity {
         this.shipToParty,
         this.soCode,
         this.isAuthorised,
-        this.receiptNumber});
+        this.receiptNumber,
+        this.isExpanded});
 
   SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -712,15 +718,15 @@ class InfluencerEntity {
 
   InfluencerEntity(
       {this.isPrimarybool,
-      this.isPrimary,
-      this.originalId,
-      this.id,
-      this.inflName,
-      this.inflContact,
-      this.inflTypeId,
-      this.inflCatId,
-      this.ilpIntrested,
-      this.createdOn});
+        this.isPrimary,
+        this.originalId,
+        this.id,
+        this.inflName,
+        this.inflContact,
+        this.inflTypeId,
+        this.inflCatId,
+        this.ilpIntrested,
+        this.createdOn});
 
   InfluencerEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -767,17 +773,17 @@ class SiteNextStageEntity {
 
   SiteNextStageEntity(
       {this.id,
-      this.siteId,
-      this.constructionStageId,
-      this.stagePotential,
-      this.brandId,
-      this.brandPrice,
-      this.stageStatus,
-      this.constructionStartDt,
-      this.nextStageSupplyDate,
-      this.nextStageSupplyQty,
-      this.createdBy,
-      this.createdOn});
+        this.siteId,
+        this.constructionStageId,
+        this.stagePotential,
+        this.brandId,
+        this.brandPrice,
+        this.stageStatus,
+        this.constructionStartDt,
+        this.nextStageSupplyDate,
+        this.nextStageSupplyQty,
+        this.createdBy,
+        this.createdOn});
 
   SiteNextStageEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -822,11 +828,11 @@ class SiteCommentsEntity {
 
   SiteCommentsEntity(
       {this.id,
-      this.siteId,
-      this.siteCommentText,
-      this.creatorName,
-      this.createdBy,
-      this.createdOn});
+        this.siteId,
+        this.siteCommentText,
+        this.creatorName,
+        this.createdBy,
+        this.createdOn});
 
   SiteCommentsEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -919,14 +925,14 @@ class SiteInfluencerEntity {
 
   SiteInfluencerEntity(
       {this.isPrimary,
-      this.id,
-      this.siteId,
-      this.inflId,
-      this.isDelete,
-      this.createdBy,
-      this.createdOn,
-      this.updatedBy,
-      this.updatedOn});
+        this.id,
+        this.siteId,
+        this.inflId,
+        this.isDelete,
+        this.createdBy,
+        this.createdOn,
+        this.updatedBy,
+        this.updatedOn});
 
   SiteInfluencerEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1009,7 +1015,7 @@ class ViewSiteRefreshDataResponse{
   List<EmployeeDetails> employeeDetails;
 
   ViewSiteRefreshDataResponse({this.respCode, this.respMsg, this.leadStageEntity, this.leadStatusEntity, this.siteStageEntity, this.siteStatusEntity,
-  this.siteSubTypeEntity, this.influencerCategoryEntity, this. srComplainResolutionEntity, this.srComplaintTypeEntity, this.siteOpportunityStatusEntity, this.siteProbabilityWinningEntity,
+    this.siteSubTypeEntity, this.influencerCategoryEntity, this. srComplainResolutionEntity, this.srComplaintTypeEntity, this.siteOpportunityStatusEntity, this.siteProbabilityWinningEntity,
     this.srctRequestEntity, this.employeeDetails
   });
 
@@ -1035,8 +1041,8 @@ class ViewSiteRefreshDataResponse{
         siteStatusEntity.add(new SiteStatusEntity.fromJson(v));
       });
     }
- if (json['siteStageEntity'] != null) {
-   siteStageEntity = new List<SiteStageEntity>();
+    if (json['siteStageEntity'] != null) {
+      siteStageEntity = new List<SiteStageEntity>();
       json['siteStageEntity'].forEach((v) {
         siteStageEntity.add(new SiteStageEntity.fromJson(v));
       });

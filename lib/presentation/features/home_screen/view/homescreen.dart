@@ -1,10 +1,12 @@
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
-import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -17,6 +19,8 @@ import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:moengage_flutter/moengage_flutter.dart';
+import 'package:moengage_flutter/push_campaign.dart';
 //import 'package:moengage_flutter/moengage_flutter.dart';
 //import 'package:moengage_flutter/push_campaign.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -43,27 +47,140 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("SR &\nComplaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png"),
   ];
- // final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+ final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
 
   Future<void> initPlatformState() async {
     if (!mounted) return;
     //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
   }
-  // void _onPushClick(PushCampaign message) {
-  //   print("This is a push click callback from native to flutter. Payload " +
-  //       message.toString());
-  // }
+  void _onPushClick(PushCampaign message) {
+    print("This is a push click callback from native to flutter. Payload " +
+        message.toString());
+  }
 
-  Future<void> getSiteRefreshData() async {
+  Future<bool> internetChecking() async {
+    // do something here
+    bool result = await DataConnectionChecker().hasConnection;
+    return result;
+  }
+
+  Future<void> getSiteRefreshData(SitesDBProvider provider) async {
+
+
+    provider.clearRefreshTable();
+    SiteRefreshDataResponse viewSiteDataResponse = new SiteRefreshDataResponse();
+    List<SitephotosEntity> sitephotosList = new List();
+    List<SitesModal> sitesModal = new List();
+    List<SiteFloorsEntity> siteFloorsEntity = new List();
+    List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
+    List<ConstructionStageEntity> constructionStageEntity = new List();
+    List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
+    List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
+    List<SiteBrandEntity> siteBrandEntity = new List();
+    List<SiteNextStageEntity> siteNextStageEntity = new List();
+    List<SiteCommentsEntity> siteCommentsEntity = new List();
+    List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
+    List<CounterListModel> counterListModel = new List();
+
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _siteController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
       // print("AccessKey :: " + accessKeyModel.accessKey);
-      await _siteController
-          .getSiteRefreshData(accessKeyModel.accessKey)
+      await _siteController.getSiteRefreshData(accessKeyModel.accessKey)
           .then((data) async {
-        print("SiteRefresh--->"+data);
+        viewSiteDataResponse = data;
+
+        sitephotosList = viewSiteDataResponse.sitePhotosEntity;
+        if (sitephotosList != null) {
+          for (int i = 0; i < sitephotosList.length; i++) {
+            print("SiteRefresh--->"+sitephotosList[0].photoName);
+            provider.createSitePhotoEntity(new SitephotosEntity(id: sitephotosList[i].id, siteId: sitephotosList[i].siteId, photoName: sitephotosList[i].photoName, createdBy: sitephotosList[i].createdBy, createdOn: sitephotosList[i].createdOn));
+          }
+        }
+
+        siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
+        if (siteFloorsEntity != null) {
+          for (int i = 0; i < siteFloorsEntity.length; i++) {
+            provider.createSiteFloorsEntity(new SiteFloorsEntity(id: siteFloorsEntity[i].id,siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
+          }
+        }
+
+        siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
+        if (siteVisitHistoryEntity != null) {
+          for (int i = 0; i < siteVisitHistoryEntity.length; i++) {
+            provider.createSiteVisitHistoryEntity(new SiteVisitHistoryEntity(id: siteVisitHistoryEntity[i].id,totalBalancePotential: siteVisitHistoryEntity[i].totalBalancePotential,
+            constructionStageId:siteVisitHistoryEntity[i].constructionStageId,floorId: siteVisitHistoryEntity[i].floorId,stagePotential: siteVisitHistoryEntity[i].stagePotential,brandId: siteVisitHistoryEntity[i].brandId,brandPrice: siteVisitHistoryEntity[i].brandPrice,
+            constructionDate: siteVisitHistoryEntity[i].constructionDate,siteId: siteVisitHistoryEntity[i].siteId,supplyDate: siteVisitHistoryEntity[i].supplyDate,supplyQty: siteVisitHistoryEntity[i].supplyQty,
+            stageStatus: siteVisitHistoryEntity[i].stageStatus,createdOn: siteVisitHistoryEntity[i].createdOn,createdBy: siteVisitHistoryEntity[i].createdBy,soldToParty: siteVisitHistoryEntity[i].soldToParty,
+              soCode: siteVisitHistoryEntity[i].soCode,isAuthorised: siteVisitHistoryEntity[i].isAuthorised,receiptNumber: siteVisitHistoryEntity[i].receiptNumber,isExpanded:siteVisitHistoryEntity[i].isExpanded
+            ));
+          }
+        }
+
+        constructionStageEntity = viewSiteDataResponse.constructionStageEntity;
+        if (constructionStageEntity != null) {
+          for (int i = 0; i < constructionStageEntity.length; i++) {
+            provider.createConstructionStageEntity(new ConstructionStageEntity(id: constructionStageEntity[i].id,constructionStageText: constructionStageEntity[i].constructionStageText));
+          }
+        }
+
+        siteProbabilityWinningEntity = viewSiteDataResponse.siteProbabilityWinningEntity;
+        if (siteProbabilityWinningEntity != null) {
+          for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
+            provider.createSiteProbabilityWinningEntity(new SiteProbabilityWinningEntity(id: siteProbabilityWinningEntity[i].id,siteProbabilityStatus: siteProbabilityWinningEntity[i].siteProbabilityStatus));
+          }
+        }
+
+        siteCompetitionStatusEntity = viewSiteDataResponse.siteCompetitionStatusEntity;
+        if (siteCompetitionStatusEntity != null) {
+          for (int i = 0; i < siteCompetitionStatusEntity.length; i++) {
+            provider.createSiteCompetitionStatusEntity(new SiteCompetitionStatusEntity(id: siteCompetitionStatusEntity[i].id,competitionStatus: siteCompetitionStatusEntity[i].competitionStatus));
+          }
+        }
+
+        siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
+        if (siteBrandEntity != null) {
+          for (int i = 0; i < siteBrandEntity.length; i++) {
+            provider.createSiteBrandEntity(new SiteBrandEntity(id: siteBrandEntity[i].id,brandName: siteBrandEntity[i].brandName,productName: siteBrandEntity[i].productName));
+          }
+        }
+
+        siteNextStageEntity = viewSiteDataResponse.siteNextStageEntity;
+        if (siteNextStageEntity != null) {
+
+          for (int i = 0; i < siteNextStageEntity.length; i++) {
+            provider.createSiteNextStageEntity(new SiteNextStageEntity(id: siteNextStageEntity[i].id,siteId: siteNextStageEntity[i].siteId,constructionStageId: siteNextStageEntity[i].constructionStageId,stagePotential: siteNextStageEntity[i].stagePotential,
+            brandId: siteNextStageEntity[i].brandId,brandPrice: siteNextStageEntity[i].brandPrice,stageStatus: siteNextStageEntity[i].stageStatus,
+            constructionStartDt: siteNextStageEntity[i].constructionStartDt,nextStageSupplyDate: siteNextStageEntity[i].nextStageSupplyDate,
+            nextStageSupplyQty: siteNextStageEntity[i].nextStageSupplyQty,createdBy: siteNextStageEntity[i].createdBy,createdOn: siteNextStageEntity[i].createdOn));
+          }
+
+        }
+
+        siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
+        if (siteCommentsEntity != null) {
+          for (int i = 0; i < siteCommentsEntity.length; i++) {
+            provider.createSiteCommentEntity(new SiteCommentsEntity(id: siteCommentsEntity[i].id,siteId: siteCommentsEntity[i].siteId,siteCommentText: siteCommentsEntity[i].siteCommentText,
+            creatorName: siteCommentsEntity[i].creatorName,createdBy: siteCommentsEntity[i].createdBy,createdOn:siteCommentsEntity[i].createdOn));
+          }
+        }
+
+        siteOpportunityStatusEntity = viewSiteDataResponse.siteOpportunityStatusEntity;
+        if (siteOpportunityStatusEntity != null) {
+          for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
+            provider.createSiteOpportunityStatusEntity(new SiteOpportunityStatusEntity(id: siteOpportunityStatusEntity[i].id,opportunityStatus: siteOpportunityStatusEntity[i].opportunityStatus));
+          }
+        }
+
+        counterListModel = viewSiteDataResponse.counterListModel;
+        if (counterListModel != null) {
+          for (int i = 0; i < counterListModel.length; i++) {
+            provider.createCounterListModel(new CounterListModel(soldToParty: counterListModel[i].soldToParty,soldToPartyName: counterListModel[i].soldToPartyName,shipToParty: counterListModel[i].shipToParty,
+              shipToPartyName: counterListModel[i].shipToPartyName
+            ));
+          }
+        }
       });
     });
   }
@@ -73,9 +190,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     initPlatformState();
-    // _moengagePlugin.initialise();
-    // _moengagePlugin.enableSDKLogs();
-    // _moengagePlugin.setUpPushCallbacks(_onPushClick);
+    _moengagePlugin.initialise();
+    _moengagePlugin.enableSDKLogs();
+    _moengagePlugin.setUpPushCallbacks(_onPushClick);
     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
       print('Check In');
@@ -96,9 +213,9 @@ class _HomeScreenState extends State<HomeScreen> {
           prefs.getString(StringConstants.employeeName);
 
       // MoEngage implementation done here ....
-      // _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
-      // _moengagePlugin.setFirstName(prefs.getString(StringConstants.employeeName));
-      // _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
+      _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
+      _moengagePlugin.setFirstName(prefs.getString(StringConstants.employeeName));
+      _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
 
     });
   }
@@ -216,6 +333,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
+                            // SitesDBProvider model = ScopedModel.of(this.context);
+                            // model.fetchAllComm().then((value) => {
+                            //   print("SiteRefresh--->"+value.toString())
+                            // });
                             Get.dialog(CustomDialogs()
                                 .errorDialog("Page Coming Soon .... "));
                           },
@@ -252,7 +373,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            getSiteRefreshData();
+                            internetChecking().then((result) => {
+                              if (result == true)
+                                {
+                                  Get.snackbar(
+                                      "Internet connection Available.", "Fetching from API.",
+                                      colorText: Colors.white,
+                                      backgroundColor: Colors.green,
+                                      snackPosition: SnackPosition.BOTTOM),
+                                      getSiteRefreshData(model)
+                                }
+                              else
+                                {
+                                  Get.snackbar(
+                                      "No internet connection.", "Fetching data from Database.",
+                                      colorText: Colors.white,
+                                      backgroundColor: Colors.red,
+                                      snackPosition: SnackPosition.BOTTOM),
+                                  // fetchSiteList()
+                                }
+                            });
                           },
                           child: Container(
                             height: 40,

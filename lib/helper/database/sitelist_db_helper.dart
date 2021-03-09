@@ -1,7 +1,6 @@
 import 'package:flutter_tech_sales/helper/database_helper.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/db_constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -16,8 +15,8 @@ class SitesDBProvider extends Model {
   Future<Database> _database = DatabaseHelper().database;
 
 
-  List<SitePhotosEntity> _listPhoto = [];
-  List<SitePhotosEntity> get siteListPhotos => _listPhoto;
+  List<SitephotosEntity> _listPhoto = [];
+  List<SitephotosEntity> get siteListPhotos => _listPhoto;
 
   List<SiteCommentsEntity> _listComment = [];
   List<SiteCommentsEntity> get siteListComment => _listComment;
@@ -57,7 +56,6 @@ class SitesDBProvider extends Model {
   }
 
 
-
   filterSiteEntityList(String appendQuery,String whereArgs) async {
     _list = [];
     var db = await _database;
@@ -85,35 +83,40 @@ class SitesDBProvider extends Model {
 
   // SitePhoto DML
 
-  createSitePhotoEntity(SitePhotosEntity sitePhotosEntity) async {
+  createSitePhotoEntity(SitephotosEntity sitePhotosEntity) async {
     var db = await _database;
     var result = db.insert("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}", sitePhotosEntity.toJson());
+    print("SiteRefresh--->"+result.toString());
     notifyListeners();
+    this.fetchSiteAllPhotos();
   }
 
   fetchSiteAllPhotos() async {
     _listPhoto= [];
     var db = await _database;
     var res = await db.query("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
-    _listPhoto = res.isNotEmpty ? res.map((c) => SitePhotosEntity.fromJson(c)).toList() : [];
+    _listPhoto = res.isNotEmpty ? res.map((c) => SitephotosEntity.fromJson(c)).toList() : [];
     notifyListeners();
+  }
+
+  Future<List<SitephotosEntity>> fetchAllPhotos() async {
+    return siteListPhotos;
   }
 
   filterSiteAPhoto(String appendQuery,String whereArgs) async {
     _listPhoto = [];
     var db = await _database;
     var res = await db.rawQuery('SELECT * FROM ${DbConstants.TABLE_SITE_PHOTOS_ENTITY} WHERE ${appendQuery}', [whereArgs]);
-    _listPhoto = res.isNotEmpty ? res.map((c) => SitePhotosEntity.fromJson(c)).toList() : [];
+    _listPhoto = res.isNotEmpty ? res.map((c) => SitephotosEntity.fromJson(c)).toList() : [];
     notifyListeners();
-    fetchAllSites();
   }
 
-  Future<int> updateSitesPhoto(SitePhotosEntity sitePhotosEntity) async {
+  Future<int> updateSitesPhoto(SitephotosEntity sitePhotosEntity) async {
     var db = await _database;
     return await db.update("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}", sitePhotosEntity.toJson(), where: "${DbConstants.COL_SITE_ID}= ?", whereArgs: [sitePhotosEntity.siteId]);
   }
 
-  Future<int> deleteSitesPhoto(SitePhotosEntity sitesEntity) async {
+  Future<int> deleteSitesPhoto(SitephotosEntity sitesEntity) async {
     var db = await _database;
     return await db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}", where: "${DbConstants.COL_SITE_ID}= ?", whereArgs: [sitesEntity.siteId]);
   }
@@ -131,6 +134,8 @@ class SitesDBProvider extends Model {
     var db = await _database;
     var result = db.insert("${DbConstants.TABLE_SITE_COMMENT_ENTITY}", sitePhotosEntity.toJson());
     notifyListeners();
+    this.fetchSiteAllComment();
+
   }
 
   fetchSiteAllComment() async {
@@ -140,7 +145,9 @@ class SitesDBProvider extends Model {
     _listComment = res.isNotEmpty ? res.map((c) => SiteCommentsEntity.fromJson(c)).toList() : [];
     notifyListeners();
   }
-
+  Future<List<SiteCommentsEntity>> fetchAllComm() async {
+    return siteListComment;
+  }
   filterSiteComment(String appendQuery,String whereArgs) async {
     _listComment = [];
     var db = await _database;
@@ -199,7 +206,6 @@ class SitesDBProvider extends Model {
     var db = await _database;
     var result = db.insert("${DbConstants.TABLE_SITE_PROBABILITY_WINNING_ENTITY}", sitesEntity.toJson());
     notifyListeners();
-
   }
 
   createSiteCompetitionStatusEntity(SiteCompetitionStatusEntity sitesEntity) async {
@@ -233,6 +239,26 @@ class SitesDBProvider extends Model {
     var result = db.insert("${DbConstants.TABLE_COUNTER_LIST_DEALERS}", sitesEntity.toJson());
     notifyListeners();
 
+  }
+
+  Future<void> clearRefreshTable() async{
+    var db = await _database;
+    db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
+
+    db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
+    db.delete("${DbConstants.TABLE_SITE_COMMENT_ENTITY}");
+    db.delete("${DbConstants.TABLE_DRAFT_LEAD}");
+    db.delete("${DbConstants.TABLE_BRAND_NAME}");
+    db.delete("${DbConstants.TABLE_COUNTER_LIST_DEALERS}");
+
+    db.delete("${DbConstants.TABLE_SITE_FLOOR_ENTITY}");
+    db.delete("${DbConstants.TABLE_SITE_STAGE_ENTITY}");
+    db.delete("${DbConstants.TABLE_SITE_CONSTRUCTION_STAGE_ENTITY}");
+    db.delete("${DbConstants.TABLE_SITE_PROBABILITY_WINNING_ENTITY}");
+    db.delete("${DbConstants.TABLE_SITE_COMPETITION_STATUS_ENTITY}");
+    db.delete("${DbConstants.TABLE_Site_OPPORTUNITY_STATUS_ENTITY}");
+    db.delete("${DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY}");
+    db.delete("${DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY}");
   }
 
 

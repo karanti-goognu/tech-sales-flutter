@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
@@ -262,20 +263,17 @@ class MyApiClientSites {
       final response = await get(Uri.parse(url),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
-
-      print('Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
       if (response.statusCode == 200) {
         Get.back();
         var data = json.decode(response.body);
-        // print('@@@@');
-        // print(data);
-        ViewSiteDataResponse viewSiteDataResponse =
-        ViewSiteDataResponse.fromJson(data);
-        // print('@@@@');
-        // print(viewSiteDataResponse.counterListModel[0].soldToParty);
-        if (viewSiteDataResponse.respCode == "ST2010") {
+        print('@@@@');
+        print(data);
+        SiteRefreshDataResponse viewSiteDataResponse = SiteRefreshDataResponse.fromJson(data);
+
+        if (viewSiteDataResponse.respCode == "ST2040") {
+          print(viewSiteDataResponse.toString());
           return viewSiteDataResponse;
-        } else if (viewSiteDataResponse.respCode == "ST2011") {
+        } else if (viewSiteDataResponse.respCode == "ST2041") {
           Get.back();
           Get.dialog(CustomDialogs().showDialog(viewSiteDataResponse.respMsg));
         } else {

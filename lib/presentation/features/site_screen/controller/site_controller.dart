@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/Repository/sites_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -306,7 +307,7 @@ class SiteController extends GetxController {
   getSiteRefreshData(String accessKey) async {
     String userSecurityKey = "";
     String empID = "";
-    ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
+    SiteRefreshDataResponse viewSiteDataResponse = new SiteRefreshDataResponse();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -314,8 +315,6 @@ class SiteController extends GetxController {
       print('User Security Key :: $userSecurityKey');
       viewSiteDataResponse = await repository.getSiteRefreshData(accessKey, userSecurityKey, empID);
     });
-//      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
-    // print(viewSiteDataResponse);
 
     return viewSiteDataResponse;
   }
