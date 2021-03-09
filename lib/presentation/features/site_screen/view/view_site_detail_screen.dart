@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/helper/database_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart'
     as updateResponse;
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
@@ -30,6 +31,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/utils/constants/db_constants.dart';
 
 class ViewSiteScreen extends StatefulWidget {
   int siteId;
@@ -139,6 +141,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   String geoTagType;
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
   SitesModal sitesModal;
+  SitesEntity _sitesEntity;
+
   List<SiteFloorsEntity> siteFloorsEntity = new List();
   List<SiteFloorsEntity> siteFloorsEntityNew = new List();
   List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List();
@@ -182,7 +186,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     _tabController = TabController(vsync: this, length: 4);
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
-    getSiteData();
+    //getSiteData();
+    getSiteDetailsDataFromDb(widget.siteId);
   }
 
   @override
@@ -229,7 +234,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
         setState(() {
           addNextButtonDisable = false;
-          siteScore = viewSiteDataResponse.sitesModal.siteScore;
+         // siteScore = viewSiteDataResponse.sitesModal.siteScore;
+          siteScore = _sitesEntity.siteScore;
 
           siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
           siteFloorsEntityNew = viewSiteDataResponse.siteFloorsEntity;
@@ -315,14 +321,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
           // print(viewSiteDataResponse.siteVisitHistoryEntity.length);
           sitesModal = viewSiteDataResponse.sitesModal;
-          _siteProductDemo.text = sitesModal.siteProductDemo;
+         // _siteProductDemo.text = sitesModal.siteProductDemo;
+          _siteProductDemo.text = _sitesEntity.productDemo;
           if (_siteProductDemo.text == 'N') {
             isSwitchedsiteProductDemo = false;
           } else {
             isSwitchedsiteProductDemo = true;
           }
 
-          _siteProductOralBriefing.text = sitesModal.siteProductOralBriefing;
+        //  _siteProductOralBriefing.text = sitesModal.siteProductOralBriefing;
+          _siteProductOralBriefing.text = _sitesEntity.productOralBriefing;
 
           if (_siteProductOralBriefing.text == 'N') {
             isSwitchedsiteProductOralBriefing = false;
@@ -334,6 +342,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _contactNumber.text = sitesModal.siteOwnerContactNumber;
 
           _siteTotalPt.text = sitesModal.siteTotalSitePotential;
+  // _ownerName.text = sitesModal.siteOwnerName;
+  //         _contactNumber.text = sitesModal.siteOwnerContactNumber;
+  //
+  //         _siteTotalPt.text = sitesModal.siteTotalSitePotential;
 
           if (_siteTotalPt.text == null ||
               _siteTotalPt.text == "") {
@@ -347,38 +359,53 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           //  print(sit);
           // print(sitesModal.)
 
-          _plotNumber.text = sitesModal.sitePlotNumber;
-          _siteAddress.text = sitesModal.siteAddress;
-          _pincode.text = sitesModal.sitePincode;
-          _state.text = sitesModal.siteState;
-          _district.text = sitesModal.siteDistrict;
-          _taluk.text = sitesModal.siteTaluk;
-          _rera.text = sitesModal.siteReraNumber;
-          _dealerName.text = sitesModal.siteDealerName;
-          _so.text = sitesModal.siteSoname;
-          geoTagType = sitesModal.siteGeotagType;
+          _plotNumber.text = _sitesEntity.plotNumber;
 
-          //   print(sitesModal.);
+         // _siteAddress.text = _sitesEntity.ad;
+          _pincode.text = _sitesEntity.sitePincode;
+          _state.text = _sitesEntity.siteState;
+          _district.text = _sitesEntity.siteDistrict;
+          _taluk.text = _sitesEntity.siteTaluk;
+          _rera.text = _sitesEntity.reraNumber;
+         // _dealerName.text = _sitesEntity.siteDealerName;
+          _so.text = _sitesEntity.soCode;
+          geoTagType = _sitesEntity.siteGeotag;
+ // _plotNumber.text = sitesModal.sitePlotNumber;
+ //          _siteAddress.text = sitesModal.siteAddress;
+ //          _pincode.text = sitesModal.sitePincode;
+ //          _state.text = sitesModal.siteState;
+ //          _district.text = sitesModal.siteDistrict;
+ //          _taluk.text = sitesModal.siteTaluk;
+ //          _rera.text = sitesModal.siteReraNumber;
+ //          _dealerName.text = sitesModal.siteDealerName;
+ //          _so.text = sitesModal.siteSoname;
+ //          geoTagType = sitesModal.siteGeotagType;
 
-          //   print(sitesModal.siteGeotagLatitude);
-          if (sitesModal.siteGeotagLatitude != null &&
-              sitesModal.siteGeotagLongitude != null &&
-              sitesModal.siteGeotagLatitude != "null" &&
-              sitesModal.siteGeotagLongitude != "null" &&
-              sitesModal.siteGeotagLatitude != "" &&
-              sitesModal.siteGeotagLongitude != "") {
+
+          if (_sitesEntity.siteGeotagLat != null &&
+              _sitesEntity.siteGeotagLong != null &&
+              _sitesEntity.siteGeotagLat != "null" &&
+              _sitesEntity.siteGeotagLong != "null" &&
+              _sitesEntity.siteGeotagLat != "" &&
+              _sitesEntity.siteGeotagLong != "") {
             _currentPosition = new Position(
-                latitude: double.parse(sitesModal.siteGeotagLatitude),
-                longitude: double.parse(sitesModal.siteGeotagLongitude));
+                latitude: double.parse(_sitesEntity.siteGeotagLat),
+                longitude: double.parse(_sitesEntity.siteGeotagLong));
           }
 
           siteStageEntity = viewSiteDataResponse.siteStageEntity;
           for (int i = 0; i < siteStageEntity.length; i++) {
-            if (viewSiteDataResponse.sitesModal.siteStageId.toString() ==
+            if (_sitesEntity.siteStageId.toString() ==
                 siteStageEntity[i].id.toString()) {
               labelText = siteStageEntity[i].siteStageDesc;
               labelId = siteStageEntity[i].id;
             }
+
+            // if (viewSiteDataResponse.sitesModal.siteStageId.toString() ==
+            //     siteStageEntity[i].id.toString()) {
+            //   labelText = siteStageEntity[i].siteStageDesc;
+            //   labelId = siteStageEntity[i].id;
+            // }
           }
 
           constructionStageEntityNew =
@@ -398,10 +425,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
           siteProbabilityWinningEntity =
               viewSiteDataResponse.siteProbabilityWinningEntity;
-          if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId !=
+
+          if (_sitesEntity.siteProbabilityWinningId !=
               null) {
             for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
-              if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId
+              if (_sitesEntity.siteProbabilityWinningId
                       .toString() ==
                   siteProbabilityWinningEntity[i].id.toString()) {
                 labelProbabilityId = siteProbabilityWinningEntity[i].id;
@@ -409,10 +437,22 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               }
             }
           }
+ // if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId !=
+ //              null) {
+ //            for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
+ //              if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId
+ //                      .toString() ==
+ //                  siteProbabilityWinningEntity[i].id.toString()) {
+ //                labelProbabilityId = siteProbabilityWinningEntity[i].id;
+ //                _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
+ //              }
+ //            }
+ //          }
 
           siteCompetitionStatusEntity =
               viewSiteDataResponse.siteCompetitionStatusEntity;
           if (viewSiteDataResponse.sitesModal.siteCompetitionId != null) {
+
             for (int i = 0; i < siteCompetitionStatusEntity.length; i++) {
               if (viewSiteDataResponse.sitesModal.siteCompetitionId
                       .toString() ==
@@ -424,18 +464,30 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
           siteOpportunityStatusEntity =
               viewSiteDataResponse.siteOpportunityStatusEntity;
-          if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
+          if ( _sitesEntity.siteOppertunityId != null) {
+
             for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
-              if (viewSiteDataResponse.sitesModal.siteOppertunityId
+              if ( _sitesEntity.siteOppertunityId
                       .toString() ==
                   siteOpportunityStatusEntity[i].id.toString()) {
                 _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
               }
             }
           }
+ // if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
+ //
+ //            for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
+ //              if (viewSiteDataResponse.sitesModal.siteOppertunityId
+ //                      .toString() ==
+ //                  siteOpportunityStatusEntity[i].id.toString()) {
+ //                _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
+ //              }
+ //            }
+ //          }
 
           if (viewSiteDataResponse.sitesModal.noOfFloors != null ||
               viewSiteDataResponse.sitesModal.noOfFloors != 0) {
+
             for (int i = 0; i < siteFloorsEntity.length; i++) {
               if (viewSiteDataResponse.sitesModal.noOfFloors.toString() ==
                   siteFloorsEntity[i].id.toString()) {
@@ -456,6 +508,36 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       //  Get.back();
     });
   }
+
+  static final db= DatabaseHelper();
+
+  /*Get side details from db*/
+  getSiteDetailsDataFromDb(int siteId){
+    print("data>>>> ,,,  $siteId");
+
+    db.fetchMapList(DbConstants.TABLE_SITE_LIST, null, "${DbConstants.COL_SITE_ID} =?",[siteId] , null, null, null, null, null).then((value){
+
+     value.forEach((element) {
+       print("data>>>>   $mounted");
+
+       if(mounted)
+         setState(() {
+           _sitesEntity= SitesEntity.fromMapObject(element);
+           print("data>>>>   ${{_sitesEntity.siteId}}");
+           print("data>>>>   ${{_sitesEntity.contactName}}");
+           print("data>>>>   ${{_sitesEntity.contactNumber}}");
+           print("data>>>>   ${{_sitesEntity.inactiveReasonText}}");
+
+         });
+
+     });
+
+
+    });
+
+
+  }
+
 
   @override
   Widget build(BuildContext context) {

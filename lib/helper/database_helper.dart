@@ -187,7 +187,32 @@ class DatabaseHelper{
 
 
 
+/*............................................................................*/
 
+
+  /*Fetch Operation: Get all game objects from database*/
+  Future<List<Map<String, dynamic>>> fetchMapList(
+      String tableName,
+      List<String> columns,
+      String where,
+      List<dynamic> whereArgs,
+      String groupBy,
+      String having,
+      String orderBy,
+      int limit,
+      int offset) async {
+    Database db = await this.database;
+    var result = await db.query(tableName,
+        columns: columns,
+        where: where,
+        whereArgs: whereArgs,
+        groupBy: groupBy,
+        having: having,
+        orderBy: orderBy,
+        limit: limit,
+        offset: offset);
+    return result;
+  }
 }
 
 
