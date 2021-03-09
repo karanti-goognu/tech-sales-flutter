@@ -672,15 +672,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
-<<<<<<< HEAD
-  screenshot:
-    dependency: "direct main"
-    description:
-      name: screenshot
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
-=======
   scoped_model:
     dependency: "direct main"
     description:
@@ -688,7 +679,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
->>>>>>> 07992142bc868ccd882f548e8970755d308f41b4
+  screenshot:
+    dependency: "direct main"
+    description:
+      name: screenshot
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   shared_preferences:
     dependency: "direct main"
     description:
