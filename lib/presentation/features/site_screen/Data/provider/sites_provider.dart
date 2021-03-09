@@ -251,4 +251,41 @@ class MyApiClientSites {
       }
     });
   }
+
+  getSiteRefreshData(String accessKey, String userSecurityKey ,String empID) async {
+    try {
+      //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+      // print('Request body is  : ${json.encode(bodyEncrypted)}');
+      // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
+      String url= UrlConstants.getSiteRefreshDetails + "$empID";
+      print(url);
+      final response = await get(Uri.parse(url),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+      );
+
+      print('Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
+      if (response.statusCode == 200) {
+        Get.back();
+        var data = json.decode(response.body);
+        // print('@@@@');
+        // print(data);
+        ViewSiteDataResponse viewSiteDataResponse =
+        ViewSiteDataResponse.fromJson(data);
+        // print('@@@@');
+        // print(viewSiteDataResponse.counterListModel[0].soldToParty);
+        if (viewSiteDataResponse.respCode == "ST2010") {
+          return viewSiteDataResponse;
+        } else if (viewSiteDataResponse.respCode == "ST2011") {
+          Get.back();
+          Get.dialog(CustomDialogs().showDialog(viewSiteDataResponse.respMsg));
+        } else {
+          Get.back();
+          Get.dialog(CustomDialogs().showDialog("Some Error Occured !!! "));
+        }
+      } else
+        print('error');
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+  }
 }

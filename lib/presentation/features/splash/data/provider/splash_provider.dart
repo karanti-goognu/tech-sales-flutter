@@ -90,33 +90,6 @@ class MyApiClientSplash {
   }
 
 
-  getRefreshDataIntoDb(String url, String accessKey, String securityKey) async {
-    try {
-      Map<String, String> requestHeadersEmpIdAndNo = {
-        'Content-type': 'application/json',
-        'app-name': StringConstants.appName,
-        'app-version': StringConstants.appVersion,
-        'access-key': accessKey,
-        'user-security-key': securityKey,
-      };
-      print(requestHeadersEmpIdAndNo);
-
-      var response =
-      await httpClient.get(url, headers: requestHeadersEmpIdAndNo);
-      print('Response body is getRefreshDataIntoDb : ${(response.body)}');
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        ViewSiteRefreshDataResponse splashDataModel = ViewSiteRefreshDataResponse.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
-        return splashDataModel;
-        print(2);
-      } else {
-        print('Error in else');
-      }
-    } catch (_) {
-      print('exception ${_.toString()}');
-    }
-  }
 
 
 

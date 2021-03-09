@@ -303,14 +303,21 @@ class SiteController extends GetxController {
     });
   }
 
+  getSiteRefreshData(String accessKey) async {
+    String userSecurityKey = "";
+    String empID = "";
+    ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID =  prefs.getString(StringConstants.employeeId);
+      print('User Security Key :: $userSecurityKey');
+      viewSiteDataResponse = await repository.getSiteRefreshData(accessKey, userSecurityKey, empID);
+    });
+//      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
+    // print(viewSiteDataResponse);
 
-
-  fetchFliterSiteList1(List<SitesEntity> value) async {
-
-      _siteList = value;
-
-    return _siteList;
-    //await db.removeLeadInDraft(2);
+    return viewSiteDataResponse;
   }
 
 

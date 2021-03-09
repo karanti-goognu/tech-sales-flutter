@@ -60,7 +60,7 @@ abstract class UrlConstants {
   static const String updateServiceRequest = '$baseUrl/srcomplaint/sr_complaint_update';
   static const String AppTutorialList = '$baseUrl/tsoAppTuorial/view';
   static const String getSiteAreaDetails = '$baseUrl/sites/site-areaDetails?referenceID=';
-  static const String getSiteRefreshDetails = '$baseUrl/tech_sales_server/sites/siteRefresh';
+  static const String getSiteRefreshDetails = '$baseUrl/tech_sales_server/sites/siteRefresh?referenceID=';
 
 
 

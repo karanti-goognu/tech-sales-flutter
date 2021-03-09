@@ -1,19 +1,19 @@
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
-import 'package:flutter_tech_sales/utils/size/size_config.dart';
-import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
@@ -55,6 +55,18 @@ class _HomeScreenState extends State<HomeScreen> {
   //       message.toString());
   // }
 
+  Future<void> getSiteRefreshData() async {
+    AccessKeyModel accessKeyModel = new AccessKeyModel();
+    await _siteController.getAccessKeyOnly().then((data) async {
+      accessKeyModel = data;
+      // print("AccessKey :: " + accessKeyModel.accessKey);
+      await _siteController
+          .getSiteRefreshData(accessKeyModel.accessKey)
+          .then((data) async {
+        print("SiteRefresh--->"+data);
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -240,8 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            _splashController.getSecretKey(RequestIds.REFRESH_DATA);
-                            _splashController.getRefreshDataIntoDB(model);
+                            getSiteRefreshData();
                           },
                           child: Container(
                             height: 40,
