@@ -67,6 +67,7 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       ServiceRequestComplaintListModel srDataToBeAdded;
+      print("offset is ${this.offset}");
       srDataToBeAdded = await repository.getSrListData(
           accessKey, userSecurityKey, empID, this.offset);
       if (srListData.srComplaintListModal == null ||

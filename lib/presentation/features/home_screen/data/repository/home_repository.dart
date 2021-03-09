@@ -35,4 +35,7 @@ class MyRepositoryHome {
         journeyEndLat,
         journeyEndLong);
   }
+    getHomeDashboardDetails(String empId) {
+    return apiClient.getHomePageDashboardDetails(empId);
+  }
 }

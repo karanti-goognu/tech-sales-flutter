@@ -177,7 +177,7 @@ class LeadsFilterController extends GetxController {
       Get.back();
       this.accessKeyResponse = data;
 
-      if (this.accessKeyResponse.respMsg != 'SUCCESS') {
+      if (this.accessKeyResponse.respCode == 'DM1005') {
         print(this.accessKeyResponse.respMsg);
         Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
         _prefs.then((SharedPreferences prefs) {
@@ -187,7 +187,7 @@ class LeadsFilterController extends GetxController {
           prefs.setString(StringConstants.employeeId, '');
           prefs.setString(StringConstants.mobileNumber, '');
         });
-        SystemNavigator.pop();
+        SystemNavigator.pop(); 
       }
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {

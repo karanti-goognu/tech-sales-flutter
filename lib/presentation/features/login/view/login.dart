@@ -8,9 +8,11 @@ import 'package:flutter_tech_sales/presentation/features/login/controller/login_
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -43,8 +45,27 @@ class LoginScreenPageState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true, //
       backgroundColor: ColorConstants.backgroundColor,
-      body: SingleChildScrollView(
-        child: _buildLoginInterface(context),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: _buildLoginInterface(context),
+          ),
+          Positioned(
+            right: 15,
+            top: 30,
+            child: 
+            UrlConstants.baseUrl.contains('mobileqacloud')?
+            Chip(
+              backgroundColor: ColorConstants.appBarColor,
+              label: Text('QA', style: TextStyle(color: Colors.white),),
+            ):
+            UrlConstants.baseUrl.contains('mobiledevcloud')?
+            Chip(
+              backgroundColor: ColorConstants.appBarColor,
+              label: Text('Dev', style: TextStyle(color: Colors.white),),
+            ):Container(),
+          ),
+        ],
       ),
     );
   }
@@ -230,9 +251,9 @@ class LoginScreenPageState extends State<LoginScreen> {
     //     connectivityString = "WiFi: Online";
     // }
 
-    if(_source.keys.toList()[0]==ConnectivityResult.none){
+    if (_source.keys.toList()[0] == ConnectivityResult.none) {
       _loginController.showNoInternetSnack();
-    }else{
+    } else {
       try {
         _loginController.empId = empId;
         _loginController.phoneNumber = mobileNumber;
@@ -240,7 +261,6 @@ class LoginScreenPageState extends State<LoginScreen> {
       } catch (_) {
         print('Exception');
       }
-
     }
   }
 }
