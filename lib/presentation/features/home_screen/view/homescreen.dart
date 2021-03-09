@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -19,6 +20,7 @@ import 'package:get/get.dart';
 //import 'package:moengage_flutter/moengage_flutter.dart';
 //import 'package:moengage_flutter/push_campaign.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
 
@@ -52,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //   print("This is a push click callback from native to flutter. Payload " +
   //       message.toString());
   // }
+
 
   @override
   void initState() {
@@ -97,204 +100,249 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     SizeConfig().init(context);
-    return WillPopScope(
-      onWillPop: () async {
-        // You can do some work here.
-        // Returning true allows the pop to happen, returning false prevents it.
-        Get.dialog(CustomDialogs().appExitDialog("Do you want to exit?"));
-        return true;
-      },
-      child: Scaffold(
-          backgroundColor: ColorConstants.backgroundColorGrey,
-          appBar: AppBar(
-            // titleSpacing: 50,
-            backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: 100,
-            title: Image.asset(
-              "assets/images/Logo(Bluebg).png",
-              height: 48,
-            ),
-            automaticallyImplyLeading: false,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 25.0, top: 20),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.ADD_CALENDER_SCREEN);
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        padding: EdgeInsets.all(4),
-                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 0.0),
-                          borderRadius:
-                              new BorderRadius.all(Radius.circular(70)),
-                        ),
-                        child: Icon(
-                          Icons.calendar_today_sharp,
-                          color: HexColor("#FFCD00"),
-                          size: 18,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      "My Calendar",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 25.0, top: 20),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.dialog(CustomDialogs()
-                            .errorDialog("Page Coming Soon .... "));
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 0.0),
-                          borderRadius:
-                              new BorderRadius.all(Radius.circular(70)),
-                        ),
-                        child: Icon(
-                          Icons.notifications_none_outlined,
-                          color: HexColor("#FFCD00"),
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      "Notifications",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 25.0, top: 20),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        Get.dialog(CustomDialogs()
-                            .errorDialog("Page Coming Soon .... "));
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 0.0),
-                          borderRadius:
-                              new BorderRadius.all(Radius.circular(70)),
-                        ),
-                        child: Icon(
-                          Icons.sync,
-                          color: HexColor("#FFCD00"),
-                          size: 30,
-                        ),
-                      ),
-                    ),
+    // return
+    //   WillPopScope(
+    //   onWillPop: () async {
+    //     // You can do some work here.
+    //     // Returning true allows the pop to happen, returning false prevents it.
+    //     Get.dialog(CustomDialogs().appExitDialog("Do you want to exit?"));
+    //     return true;
+    //   },
+    //   child: Scaffold(
+    //       backgroundColor: ColorConstants.backgroundColorGrey,
+    //       appBar: AppBar(
+    //         // titleSpacing: 50,
+    //         backgroundColor: ColorConstants.appBarColor,
+    //         toolbarHeight: 100,
+    //         title: Image.asset(
+    //           "assets/images/Logo(Bluebg).png",
+    //           height: 48,
+    //         ),
+    //         automaticallyImplyLeading: false,
+    //         actions: [
+    //           Padding(
+    //             padding: const EdgeInsets.only(right: 25.0, top: 20),
+    //             child: Column(
+    //               children: [
+    //                 GestureDetector(
+    //                   onTap: () {
+    //                     Get.toNamed(Routes.ADD_CALENDER_SCREEN);
+    //                   },
+    //                   child: Container(
+    //                     height: 40,
+    //                     width: 40,
+    //                     padding: EdgeInsets.all(4),
+    //                     // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+    //                     decoration: new BoxDecoration(
+    //                       color: Colors.white,
+    //                       border: Border.all(color: Colors.black, width: 0.0),
+    //                       borderRadius:
 
-                    SizedBox(
-                      height: 8,
-                    ),
+                          return ScopedModelDescendant<SitesDBProvider>(builder: (context, child, model) {
+            return Stack(children: <Widget>[
+        WillPopScope(
+          onWillPop: () async {
+            // You can do some work here.
+            // Returning true allows the pop to happen, returning false prevents it.
+            Get.dialog(CustomDialogs().appExitDialog("Do you want to exit?"));
+            return true;
+          },
+          child: Scaffold(
+              backgroundColor: ColorConstants.backgroundColorGrey,
+              appBar: AppBar(
+                // titleSpacing: 50,
+                backgroundColor: ColorConstants.appBarColor,
+                toolbarHeight: 100,
+                title: Image.asset(
+                  "assets/images/Logo(Bluebg).png",
+                  height: 48,
+                ),
+                automaticallyImplyLeading: false,
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 25.0, top: 20),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.ADD_CALENDER_SCREEN);
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            padding: EdgeInsets.all(4),
+                            // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.black, width: 0.0),
+                              borderRadius:
 
-                    Text(
-                      "Sync Data",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.0, top: 20, bottom: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Obx(
-                      () => Text(
-                        "Hello , ${_homeController.employeeName}",
-                        style: TextStyle(
-                            // color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: "Muli"),
-                      ),
+                              new BorderRadius.all(Radius.circular(70)),
+                            ),
+                            child: Icon(
+                              Icons.calendar_today_sharp,
+                              color: HexColor("#FFCD00"),
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "My Calendar",
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        )
+                      ],
                     ),
-                    Text("Here are today's",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            //  color: Colors.white.withOpacity(0.7),
-                            fontSize: 15,
-                            fontFamily: "Muli")),
-                    Text("recommended actions for you",
-                        style: TextStyle(
-                            // color: Colors.white.withOpacity(0.7),
-                            fontSize: 15,
-                            fontFamily: "Muli")),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 25.0, top: 20),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.dialog(CustomDialogs()
+                                .errorDialog("Page Coming Soon .... "));
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.black, width: 0.0),
+                              borderRadius:
+                              new BorderRadius.all(Radius.circular(70)),
+                            ),
+                            child: Icon(
+                              Icons.notifications_none_outlined,
+                              color: HexColor("#FFCD00"),
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "Notifications",
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 25.0, top: 20),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            _splashController.getSecretKey(RequestIds.REFRESH_DATA);
+                            _splashController.getRefreshDataIntoDB(model);
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.black, width: 0.0),
+                              borderRadius:
+                              new BorderRadius.all(Radius.circular(70)),
+                            ),
+                            child: Icon(
+                              Icons.sync,
+                              color: HexColor("#FFCD00"),
+                              size: 30,
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 8,
+                        ),
+
+                        Text(
+                          "Sync Data",
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 15,
-              ),
-              Obx(() {
-                if (_homeController.disableSlider != true) {
-                  return (_homeController.checkInStatus ==
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0, top: 20, bottom: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Obx(
+                              () => Text(
+                            "Hello , ${_homeController.employeeName}",
+                            style: TextStyle(
+                              // color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: "Muli"),
+                          ),
+                        ),
+                        Text("Here are today's",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              //  color: Colors.white.withOpacity(0.7),
+                                fontSize: 15,
+                                fontFamily: "Muli")),
+                        Text("recommended actions for you",
+                            style: TextStyle(
+                              // color: Colors.white.withOpacity(0.7),
+                                fontSize: 15,
+                                fontFamily: "Muli")),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Obx(() {
+                    if (_homeController.disableSlider != true) {
+                      return (_homeController.checkInStatus ==
                           StringConstants.checkIn)
-                      ? checkInSliderButton()
-                      : (_homeController.checkInStatus ==
-                              StringConstants.checkOut)
+                          ? checkInSliderButton()
+                          : (_homeController.checkInStatus ==
+                          StringConstants.checkOut)
                           ? checkOutSliderButton()
                           : journeyEnded();
-                } else {
-                  return disabledSliderButton();
-                }
-              }),
-              SizedBox(
-                height: 15,
+                    } else {
+                      return disabledSliderButton();
+                    }
+                  }),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: userMenuWidget(),
+                      ))
+                ],
               ),
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: userMenuWidget(),
-              ))
-            ],
-          ),
-          floatingActionButton:
+              floatingActionButton:
               SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
-          floatingActionButtonLocation:
+              floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: BottomNavigator()),
-    );
+              bottomNavigationBar: BottomNavigator()),
+        )
+      ]);
+
+                          });
   }
 
   Widget disabledSliderButton() {
@@ -536,6 +584,8 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         });
   }
+
+
 }
 
 class MenuDetailsModel {

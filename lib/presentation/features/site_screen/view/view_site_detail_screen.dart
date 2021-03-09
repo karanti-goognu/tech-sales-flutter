@@ -1558,8 +1558,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                         _siteTotalPt.clear();
                                       } else {
                                         _siteTotalPt.text =
-                                            (int.parse(_siteTotalBags.text) /
-                                                    20)
+                                            (int.parse(_siteTotalBags.text) / 20)
                                                 .toString();
                                       }
                                     });
@@ -1572,7 +1571,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     if (value.isEmpty) {
                                       return 'Please enter Bags ';
                                     }
-
                                     return null;
                                   },
 
@@ -1609,7 +1607,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     if (value.isEmpty) {
                                       return 'Please enter MT ';
                                     }
-
                                     return null;
                                   },
                                   style: TextStyle(

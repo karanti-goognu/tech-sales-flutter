@@ -22,6 +22,19 @@ class SitesDBProvider extends Model {
   List<SiteCommentsEntity> _listComment = [];
   List<SiteCommentsEntity> get siteListComment => _listComment;
 
+
+  List<SiteFloorsEntity> siteFloorsEntity = new List();
+
+  List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
+  List<ConstructionStageEntity> constructionStageEntity = new List();
+  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
+  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
+  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
+  List<SiteBrandEntity> siteBrandEntity = new List();
+  List<SiteStageEntity> siteStageEntity = new List();
+  List<SiteNextStageEntity> siteNextStageEntity = new List();
+  List<CounterListModel> counterListModel = new List();
+
   // SiteList DML
   createSiteEntity(SitesEntity sitesEntity) async {
    var db = await _database;
@@ -152,6 +165,77 @@ class SitesDBProvider extends Model {
   }
 
 // end here
+
+
+  createSiteFloorsEntity(SiteFloorsEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_FLOOR_ENTITY}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+  createSiteVisitHistoryEntity(SiteVisitHistoryEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+  createSiteStageEntity(SiteStageEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_STAGE_ENTITY}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+  createConstructionStageEntity(ConstructionStageEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_CONSTRUCTION_STAGE_ENTITY}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+  createSiteProbabilityWinningEntity(SiteProbabilityWinningEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_PROBABILITY_WINNING_ENTITY}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+  createSiteCompetitionStatusEntity(SiteCompetitionStatusEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_COMPETITION_STATUS_ENTITY}", sitesEntity.toJson());
+    notifyListeners();
+  }
+
+
+  createSiteBrandEntity(SiteBrandEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_BRAND_NAME}", sitesEntity.toJson());
+    notifyListeners();
+  }
+
+  createSiteNextStageEntity(SiteNextStageEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY}", sitesEntity.toJson());
+    notifyListeners();
+  }
+
+  createSiteOpportunityStatusEntity(SiteOpportunityStatusEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_Site_OPPORTUNITY_STATUS_ENTITY}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+  createCounterListModel(CounterListModel sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_COUNTER_LIST_DEALERS}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+
 
 
 

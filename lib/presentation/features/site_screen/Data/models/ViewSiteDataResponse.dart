@@ -1,13 +1,16 @@
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 
 class ViewSiteDataResponse {
+ // List<SiteStageEntity> leadStatusEntity;
+  List<SiteStageEntity> siteStageEntity;
+
+
   String respCode;
   String respMsg;
   SitesModal sitesModal;
   List<SiteFloorsEntity> siteFloorsEntity;
   List<SitephotosEntity> sitephotosEntity;
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
-  List<SiteStageEntity> siteStageEntity;
   List<ConstructionStageEntity> constructionStageEntity;
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity;
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity;
@@ -42,9 +45,12 @@ class ViewSiteDataResponse {
       this.siteInfluencerEntity,
       this.counterListModel});
 
+  //ViewSiteDataResponse.mapJson(Map<String, dynamic> json):
+
+
   ViewSiteDataResponse.fromJson(Map<String, dynamic> json) {
-    respCode = json['respCode'];
-    respMsg = json['respMsg'];
+    // respCode = json['respCode'];
+    // respMsg = json['respMsg'];
     sitesModal = json['sitesModal'] != null
         ? new SitesModal.fromJson(json['sitesModal'])
         : null;
@@ -978,3 +984,305 @@ class CounterListModel {
     return data;
   }
 }
+
+
+
+
+
+
+/*Create new response model for fetch master table data from site refresh api*/
+class ViewSiteRefreshDataResponse{
+  String respCode;
+  String respMsg;
+  List<LeadStatusEntity> leadStatusEntity;
+  List<LeadStageEntity> leadStageEntity;
+  List<SiteStatusEntity> siteStatusEntity;
+  List<SiteStageEntity> siteStageEntity;
+  List<SiteSubTypeEntity> siteSubTypeEntity;
+  List<InfluencerCategoryEntity> influencerCategoryEntity;
+  List<SrComplainResolutionEntity> srComplainResolutionEntity;
+  List<SrComplaintTypeEntity> srComplaintTypeEntity;
+  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity;
+  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity;
+  List<SrctRequestEntity> srctRequestEntity;
+  List<EmployeeDetails> employeeDetails;
+
+  ViewSiteRefreshDataResponse({this.respCode, this.respMsg, this.leadStageEntity, this.leadStatusEntity, this.siteStageEntity, this.siteStatusEntity,
+  this.siteSubTypeEntity, this.influencerCategoryEntity, this. srComplainResolutionEntity, this.srComplaintTypeEntity, this.siteOpportunityStatusEntity, this.siteProbabilityWinningEntity,
+    this.srctRequestEntity, this.employeeDetails
+  });
+
+
+  ViewSiteRefreshDataResponse.fromJson(Map<String, dynamic> json) {
+    if (json['leadStatusEntity'] != null) {
+      leadStatusEntity = new List<LeadStatusEntity>();
+      json['leadStatusEntity'].forEach((v) {
+        leadStatusEntity.add(new LeadStatusEntity.fromJson(v));
+      });
+    }
+
+    if (json['leadStageEntity'] != null) {
+      leadStageEntity = new List<LeadStageEntity>();
+      json['leadStageEntity'].forEach((v) {
+        leadStageEntity.add(new LeadStageEntity.fromJson(v));
+      });
+    }
+
+    if (json['siteStatusEntity'] != null) {
+      siteStatusEntity = new List<SiteStatusEntity>();
+      json['siteStatusEntity'].forEach((v) {
+        siteStatusEntity.add(new SiteStatusEntity.fromJson(v));
+      });
+    }
+ if (json['siteStageEntity'] != null) {
+   siteStageEntity = new List<SiteStageEntity>();
+      json['siteStageEntity'].forEach((v) {
+        siteStageEntity.add(new SiteStageEntity.fromJson(v));
+      });
+    }
+
+    if (json['siteSubTypeEntity'] != null) {
+      siteSubTypeEntity = new List<SiteSubTypeEntity>();
+      json['siteSubTypeEntity'].forEach((v) {
+        siteSubTypeEntity.add(new SiteSubTypeEntity.fromJson(v));
+      });
+    }
+
+
+    if (json['influencerCategoryEntity'] != null) {
+      influencerCategoryEntity = new List<InfluencerCategoryEntity>();
+      json['influencerCategoryEntity'].forEach((v) {
+        influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
+      });
+    }
+
+
+    if (json['srComplainResolutionEntity'] != null) {
+      srComplainResolutionEntity = new List<SrComplainResolutionEntity>();
+      json['srComplainResolutionEntity'].forEach((v) {
+        srComplainResolutionEntity.add(new SrComplainResolutionEntity.fromJson(v));
+      });
+    }
+
+
+    if (json['srComplaintTypeEntity'] != null) {
+      srComplaintTypeEntity = new List<SrComplaintTypeEntity>();
+      json['srComplaintTypeEntity'].forEach((v) {
+        srComplaintTypeEntity.add(new SrComplaintTypeEntity.fromJson(v));
+      });
+    }
+
+
+    if (json['siteOpportunityStatusEntity'] != null) {
+      siteOpportunityStatusEntity = new List<SiteOpportunityStatusEntity>();
+      json['siteOpportunityStatusEntity'].forEach((v) {
+        siteOpportunityStatusEntity.add(new SiteOpportunityStatusEntity.fromJson(v));
+      });
+    }
+
+
+    if (json['siteProbabilityWinningEntity'] != null) {
+      siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>();
+      json['siteProbabilityWinningEntity'].forEach((v) {
+        siteProbabilityWinningEntity.add(new SiteProbabilityWinningEntity.fromJson(v));
+      });
+    }
+
+    if (json['srctRequestEntity'] != null) {
+      srctRequestEntity = new List<SrctRequestEntity>();
+      json['srctRequestEntity'].forEach((v) {
+        srctRequestEntity.add(new SrctRequestEntity.fromJson(v));
+      });
+    }
+
+    if (json['employeeDetails'] != null) {
+      employeeDetails = new List<EmployeeDetails>();
+      json['employeeDetails'].forEach((v) {
+        employeeDetails.add(new EmployeeDetails.fromJson(v));
+      });
+    }
+
+
+
+  }
+
+
+}
+
+class LeadStatusEntity{
+  int id;
+  String leadStatusDesc;
+  LeadStatusEntity({this.id, this.leadStatusDesc});
+  LeadStatusEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    leadStatusDesc = json["leadStatusDesc"];
+  }
+
+}
+
+class LeadStageEntity{
+  int id;
+  String leadStageDesc;
+
+  LeadStageEntity({this.id, this.leadStageDesc});
+
+  LeadStageEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    leadStageDesc = json["leadStageDesc"];
+  }
+
+}
+
+
+class SiteStatusEntity{
+  int id;
+  String siteStatusDesc;
+
+  SiteStatusEntity({this.id, this.siteStatusDesc});
+
+  SiteStatusEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    siteStatusDesc = json["siteStatusDesc"];
+  }
+
+}
+
+class SiteSubTypeEntity{
+  int siteSubId;
+  String siteSubTypeDesc;
+
+  SiteSubTypeEntity({this.siteSubId, this.siteSubTypeDesc});
+
+  SiteSubTypeEntity.fromJson(Map<String, dynamic> json) {
+    siteSubId = json['siteSubId'];
+    siteSubTypeDesc = json["siteSubTypeDesc"];
+  }
+
+}
+
+class SrComplainResolutionEntity{
+  int id;
+  String resolutionText;
+
+  SrComplainResolutionEntity({this.id, this.resolutionText});
+
+  SrComplainResolutionEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    resolutionText = json["resolutionText"];
+  }
+
+
+}
+
+class SrComplaintTypeEntity{
+  int id;
+  String requestId;
+  String serviceRequestTypeText;
+  String complaintSeverity;
+
+  SrComplaintTypeEntity({this.id, this.requestId, this.serviceRequestTypeText, this.complaintSeverity});
+
+  SrComplaintTypeEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    requestId = json["requestId"];
+    serviceRequestTypeText = json["serviceRequestTypeText"];
+    complaintSeverity = json["complaintSeverity"];
+  }
+
+
+}
+
+
+class SrctRequestEntity{
+  int id;
+  String requestText;
+
+
+  SrctRequestEntity({this.id, this.requestText});
+
+  SrctRequestEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    requestText = json["requestText"];
+
+  }
+
+
+}
+
+class Severity{
+  int id;
+  String severity;
+
+
+  Severity({this.id, this.severity});
+
+  Severity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    severity = json["severity"];
+
+  }
+
+
+}
+
+class EmployeeDetails{
+  String referenceId;
+  String mobileNumber;
+  String employeeFirstName;
+  String employeeName;
+
+
+  EmployeeDetails({this.referenceId, this.mobileNumber, this.employeeFirstName, this.employeeName});
+
+  EmployeeDetails.fromJson(Map<String, dynamic> json) {
+    referenceId = json['reference-id'];
+    mobileNumber = json["mobile-number"];
+    employeeFirstName = json["employee-first-name"];
+    employeeName = json["employee-name"];
+
+  }
+
+
+}
+
+
+class UserMenu{
+  String menuId;
+  String menuText;
+
+  UserMenu({this.menuId, this.menuText});
+  UserMenu.fromJson(Map<String, dynamic> json) {
+    menuId = json['menu-id'];
+    menuText = json["menu-text"];
+  }
+
+}
+
+class JourneyDetails{
+  String journeyDate;
+  String journeyStartTime;
+  String journeyStartLat;
+  String journeyStartLong;
+  String journeyEndTime;
+  String journeyEndLat;
+  String journeyEndLong;
+  String employeeId;
+
+  JourneyDetails({this.journeyDate, this.journeyStartTime, this.journeyStartLat,
+    this.journeyStartLong, this.journeyEndTime, this.journeyEndLat, this.journeyEndLong, this.employeeId});
+  JourneyDetails.fromJson(Map<String, dynamic> json) {
+    journeyDate = json['journey-date'];
+    journeyStartTime = json['journey-start-time'];
+    journeyStartLat = json["journey-start-lat"];
+    journeyStartLong = json["journey-start-long"];
+    journeyEndTime = json["journey-end-time"];
+    journeyEndLat = json["journey-end-lat"];
+    journeyEndLong = json["journey-end-long"];
+    employeeId = json["employee-id"];
+  }
+
+}
+//user-security-key
+
+
+
