@@ -53,7 +53,7 @@ class _DashboardState extends State<Dashboard> {
     imgFile = new File('$directory/screenshot$num.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
-    _dashboardController.shareReport(imgFile);
+    _dashboardController.getDetailsForSharingReport(imgFile);
     // print(pngBytes);
     // print(bs64);
   }

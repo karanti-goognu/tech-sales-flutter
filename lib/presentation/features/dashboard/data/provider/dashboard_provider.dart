@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -29,6 +30,18 @@ class MyApiClientDashboard{
       print('exception ${_.toString()}');
     }
   }
+
+   Future shareReport(File image, String userSecurityKey, String accessKey, String empID){
+     try{
+
+
+     }catch(_){
+       print('exception at Dashboard Repo : ShareReport method ${_.toString()}');
+     }
+    
+   
+ }
+  
 
 
 

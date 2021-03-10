@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/provider/dashboard_provider.dart';
 
@@ -9,6 +11,11 @@ class DashboardRepository {
   Future getAccessKey() {
     return apiClient.getAccessKey();
   }
+
+ Future shareReport(File image, String userSecurityKey, String accessKey, String empID){
+   return apiClient.shareReport(image, userSecurityKey, accessKey, empID);
+ }
+  
 
 
 }
