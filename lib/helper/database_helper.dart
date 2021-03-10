@@ -92,14 +92,16 @@ class DatabaseHelper{
         '${DbConstants.COL_CREATED_ON} INTEGER,'
         '${DbConstants.COL_UPDATED_BY} TEXT,'
         '${DbConstants.COL_UPDATED_ON} INTEGER,'
-        '${DbConstants.COL_SYNC_STATUS} INTEGER)'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_PHOTOS_ENTITY} ('
-        '${DbConstants.COL_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
+        '${DbConstants.COL_ID} INTEGER ,'
         '${DbConstants.COL_SITE_ID} INTEGER,'
         '${DbConstants.COL_SITE_PHOTO_NAME} TEXT,'
-        '${DbConstants.COL_SITE_CREATED_BY} TEXT)'
+        '${DbConstants.COL_SITE_CREATED_BY} TEXT,'
+        '${DbConstants.COL_SITE_COMMENT_CREATED_ON} INTEGER,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_COMMENT_ENTITY} ('
@@ -108,44 +110,52 @@ class DatabaseHelper{
         '${DbConstants.COL_SITE_COMMENT_TEXT} TEXT,'
         '${DbConstants.COL_SITE_COMMENT_CREATOR_NAME} TEXT,'
         '${DbConstants.COL_SITE_COMMENT_CREATED_BY} TEXT,'
-        '${DbConstants.COL_SITE_COMMENT_CREATED_ON} TEXT)'
+        '${DbConstants.COL_SITE_COMMENT_CREATED_ON} INTEGER,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_FLOOR_ENTITY} ('
-        '${DbConstants.COL_SITE_FLOOR_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
-        '${DbConstants.COL_SITE_FLOOR_TXT} TEXT)'
+        '${DbConstants.COL_ID} INTEGER,'
+        '${DbConstants.COL_SITE_FLOOR_TXT} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_STAGE_ENTITY} ('
         '${DbConstants.COL_ID} INTEGER ,'
-        '${DbConstants.COL_SITE_STAGE_DESC} TEXT)'
+        '${DbConstants.COL_SITE_STAGE_DESC} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
 
   await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_STATUS_ENTITY} ('
         '${DbConstants.COL_ID} INTEGER ,'
-        '${DbConstants.COL_SITE_STATUS_DESC} TEXT)'
+        '${DbConstants.COL_SITE_STATUS_DESC} TEXT,'
+      '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_CONSTRUCTION_STAGE_ENTITY} ('
         '${DbConstants.COL_ID} INTEGER,'
-        '${DbConstants.COL_SITE_CONSTRUCTION_STAGE_TEXT} TEXT)'
+        '${DbConstants.COL_SITE_CONSTRUCTION_STAGE_TEXT} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_PROBABILITY_WINNING_ENTITY} ('
         '${DbConstants.COL_ID} INTEGER,'
-        '${DbConstants.COL_SITE_PROBABILITY_STATUS} TEXT)'
+        '${DbConstants.COL_SITE_PROBABILITY_STATUS} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_COMPETITION_STATUS_ENTITY} ('
         '${DbConstants.COL_ID} INTEGER,'
-        '${DbConstants.COL_SITE_COMPETITION_STATUS} TEXT)'
+        '${DbConstants.COL_SITE_COMPETITION_STATUS} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_Site_OPPORTUNITY_STATUS_ENTITY} ('
         '${DbConstants.COL_ID} INTEGER,'
-        '${DbConstants.COL_SITE_OPPORTUNITY_STATUS} TEXT)'
+        '${DbConstants.COL_SITE_OPPORTUNITY_STATUS} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY} ('
@@ -167,7 +177,8 @@ class DatabaseHelper{
         '${DbConstants.COL_SITE_VISIT_HISTORY_soCode} TEXT,'
         '${DbConstants.COL_SITE_VISIT_HISTORY_isAuthorised} TEXT,'
         '${DbConstants.COL_SITE_VISIT_HISTORY_receiptNumber} TEXT,'
-        '${DbConstants.COL_SITE_VISIT_HISTORY_isExpanded} BOOL)'
+        '${DbConstants.COL_SITE_VISIT_HISTORY_isExpanded} BOOL,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY} ('
@@ -182,15 +193,17 @@ class DatabaseHelper{
         '${DbConstants.COL_SITE_NEXT_STAGE_SupplyDate} TEXT,'
         '${DbConstants.COL_SITE_NEXT_STAGE_SupplyQty} TEXT,'
         '${DbConstants.COL_SITE_NEXT_STAGE_createdBy} TEXT,'
-        '${DbConstants.COL_SITE_NEXT_STAGE_createdOn} INTEGER)'
+        '${DbConstants.COL_SITE_NEXT_STAGE_createdOn} INTEGER,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_COUNTER_LIST_DEALERS} ('
-        '${DbConstants.COL_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
+        '${DbConstants.COL_ID} INTEGER ,'
         '${DbConstants.COL_COUNTER_LIST_soldToParty} TEXT,'
         '${DbConstants.COL_COUNTER_LIST_soldToPartyName} TEXT,'
         '${DbConstants.COL_COUNTER_LIST_shipToParty} TEXT,'
-        '${DbConstants.COL_COUNTER_LIST_shipToPartyName} TEXT)'
+        '${DbConstants.COL_COUNTER_LIST_shipToPartyName} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
   }

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/helper/brand_name_db_config.dart';
 import 'package:flutter_tech_sales/helper/database_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
@@ -186,8 +185,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     _tabController = TabController(vsync: this, length: 4);
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
-    //getSiteData();
-    getSiteDetailsDataFromDb(widget.siteId);
+    getSiteData();
+    // getSiteDetailsDataFromDb(widget.siteId);
   }
 
   @override
@@ -512,32 +511,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   static final db= DatabaseHelper();
 
   /*Get side details from db*/
-  getSiteDetailsDataFromDb(int siteId){
-    print("data>>>> ,,,  $siteId");
-
-    db.fetchMapList(DbConstants.TABLE_SITE_LIST, null, "${DbConstants.COL_SITE_ID} =?",[siteId] , null, null, null, null, null).then((value){
-
-     value.forEach((element) {
-       print("data>>>>   $mounted");
-
-       if(mounted)
-         setState(() {
-           _sitesEntity= SitesEntity.fromMapObject(element);
-           print("data>>>>   ${{_sitesEntity.siteId}}");
-           print("data>>>>   ${{_sitesEntity.contactName}}");
-           print("data>>>>   ${{_sitesEntity.contactNumber}}");
-           print("data>>>>   ${{_sitesEntity.inactiveReasonText}}");
-
-         });
-
-     });
-
-
-    });
-
-
-  }
-
 
   @override
   Widget build(BuildContext context) {

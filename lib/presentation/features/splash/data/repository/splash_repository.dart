@@ -14,10 +14,6 @@ class MyRepositorySplash {
     return apiClient.getRefreshData(url, accessKey, securityKey);
   }
 
-  getRefreshDataIntoDb(String url, String accessKey, String securityKey) {
-    return apiClient.getRefreshDataIntoDb(url, accessKey, securityKey);
-  }
-
   getSecretKey(String empId, String mobileNumber) {
     return apiClient.getSecretKey(empId, mobileNumber);
   }

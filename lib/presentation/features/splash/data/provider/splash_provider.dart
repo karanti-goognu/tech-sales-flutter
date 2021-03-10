@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -88,37 +87,4 @@ class MyApiClientSplash {
       print('exception ${_.toString()}');
     }
   }
-
-
-  getRefreshDataIntoDb(String url, String accessKey, String securityKey) async {
-    try {
-      Map<String, String> requestHeadersEmpIdAndNo = {
-        'Content-type': 'application/json',
-        'app-name': StringConstants.appName,
-        'app-version': StringConstants.appVersion,
-        'access-key': accessKey,
-        'user-security-key': securityKey,
-      };
-      print(requestHeadersEmpIdAndNo);
-
-      var response =
-      await httpClient.get(url, headers: requestHeadersEmpIdAndNo);
-      print('Response body is getRefreshDataIntoDb : ${(response.body)}');
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        ViewSiteRefreshDataResponse splashDataModel = ViewSiteRefreshDataResponse.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
-        return splashDataModel;
-        print(2);
-      } else {
-        print('Error in else');
-      }
-    } catch (_) {
-      print('exception ${_.toString()}');
-    }
-  }
-
-
-
-
 }

@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
-import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/repository/splash_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -141,53 +139,6 @@ class SplashController extends GetxController {
 
   openNextPage() {
     Get.offNamed(Routes.HOME_SCREEN);
-  }
-
-  getRefreshDataIntoDB(SitesDBProvider sitesDBProvider) {
-    ViewSiteRefreshDataResponse splashDataModel = new ViewSiteRefreshDataResponse();
-    String empId = "empty";
-    String userSecurityKey = "empty";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
-      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      userSecurityKey =
-          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId =
-      encryptString(empId, StringConstants.encryptedKey).toString();
-
-      //debugPrint('request without encryption: $body');
-      String url = "${UrlConstants.refreshSplashData}$empId";
-      print("url>>>> $url");
-      debugPrint('Url is : $url');
-      repository.getRefreshDataIntoDb(url, this.accessKeyResponse.accessKey, userSecurityKey).then((data) {
-        if (data == null) {
-          debugPrint('Leads Data Response is null');
-        } else {
-          splashDataModel = data;
-
-          if (splashDataModel.siteStageEntity != null) {
-            for(int i=0 ;i<splashDataModel.siteStageEntity.length;i++) {
-              sitesDBProvider.createSiteStageEntity(splashDataModel.siteStageEntity[i]);
-            }
-          }
-
-          if (splashDataModel.siteOpportunityStatusEntity != null) {
-            for(int i=0 ;i<splashDataModel.siteStageEntity.length;i++) {
-              sitesDBProvider.createSiteOpportunityStatusEntity(splashDataModel.siteOpportunityStatusEntity[i]);
-            }
-          }
-
-          if (splashDataModel.siteProbabilityWinningEntity != null) {
-            for(int i=0 ;i<splashDataModel.siteStageEntity.length;i++) {
-              sitesDBProvider.createSiteProbabilityWinningEntity(splashDataModel.siteProbabilityWinningEntity[i]);
-            }
-          }
-
-          print("Opportunity Model ${this.splashDataModel.siteOpportunityStatusRepository}");
-
-        }
-      });
-    });
   }
 
 }

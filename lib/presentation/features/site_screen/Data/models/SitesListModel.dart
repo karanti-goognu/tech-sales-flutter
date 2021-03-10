@@ -74,7 +74,7 @@ class SitesEntity {
   int createdOn;
   String updatedBy;
   int updatedOn;
-  int syncStatus;
+  bool syncStatus;
 
   SitesEntity(
       {this.siteId,

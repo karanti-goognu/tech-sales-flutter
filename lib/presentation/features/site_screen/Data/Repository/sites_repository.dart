@@ -46,6 +46,11 @@ class MyRepositorySites {
 
   }
 
+  getSiteRefreshData(String accessKey, String userSecurityKey, String empID) {
+    return apiClient.getSiteRefreshData(accessKey, userSecurityKey, empID);
+  }
+
+
 
 
 //getSiteData(String accessKey, String userSecurityKey, int leadId) {}
