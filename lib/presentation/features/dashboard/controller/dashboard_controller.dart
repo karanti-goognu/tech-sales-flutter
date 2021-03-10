@@ -1,45 +1,93 @@
-// import 'package:flutter/material.dart';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/repository/dashboard_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/home_screen/data/repository/home_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:get/get.dart';
+import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class DashboardController extends GetxController{
-
-final _sitesConverted = ''.obs;
-final _volumeConverted = ''.obs;
-final _newInfl = ''.obs;
-final _dspSlabsConverted = ''.obs;
-
-  get sitesConverted => this._sitesConverted.value;
-  set sitesConverted(value) => this._sitesConverted.value = value;
-
-  get volumeConverted => this._volumeConverted.value;
-  set volumeConverted(value) => this._volumeConverted.value = value;
-
-  get newInfl => this._newInfl.value;
-  set newInfl(value) => this._newInfl.value = value;
-
-  get dspSlabsConverted => this._dspSlabsConverted.value;
-  set dspSlabsConverted(value) => this._dspSlabsConverted.value = value;
-
-  // getAccessKey(int requestId) {
-  //   // print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
-  //   Future.delayed(
-  //       Duration.zero,
-  //       () => Get.dialog(Center(child: CircularProgressIndicator()),
-  //           barrierDismissible: false));
-  //   repository.getAccessKey().then((data) {
-  //     Get.back();
-  //     this.accessKeyResponse = data;
-  //     switch (requestId) {
-  //       case RequestIds.CHECK_IN:
-  //         getCheckInDetails(this.accessKeyResponse.accessKey);
-  //         break;
-  //       case RequestIds.CHECK_OUT:
-  //         getCheckOutDetails(this.accessKeyResponse.accessKey);
-  //         break;
-  //     }
-  //   });
+class DashboardController extends GetxController {
+  // @override
+  // void onInit() {
+  //   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  //   super.onInit();
   // }
 
+  final DashboardRepository repository;
 
-  
+  DashboardController({@required this.repository}) : assert(repository != null);
+
+  final _accessKeyResponse = AccessKeyModel().obs;
+  final _validateOtpResponse = ValidateOtpModel().obs;
+  final _checkInResponse = JourneyModel().obs;
+  final _phoneNumber = "8860080067".obs;
+  final _empId = "_empty".obs;
+  final _employeeName = "_empty".obs;
+
+  get accessKeyResponse => this._accessKeyResponse.value;
+
+
+  get validateOtpResponse => this._validateOtpResponse.value;
+
+  get checkInResponse => this._checkInResponse.value;
+
+  get phoneNumber => this._phoneNumber.value;
+
+  get empId => this._empId.value;
+
+  get employeeName => this._employeeName.value;
+
+  set accessKeyResponse(value) => this._accessKeyResponse.value = value;
+
+  set validateOtpResponse(value) => this._validateOtpResponse.value = value;
+
+  set phoneNumber(value) => this._phoneNumber.value = value;
+
+  set empId(value) => this._empId.value = value;
+
+  set employeeName(value) => this._employeeName.value = value;
+
+  set checkInResponse(value) => this._checkInResponse.value = value;
+
+
+
+
+  getAccessKey(int requestId) {
+    print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    repository.getAccessKey().then((data) {
+      Get.back();
+      this.accessKeyResponse = data;
+      switch (requestId) {
+        case RequestIds.SHARE_REPORT:
+          break;
+    
+      }
+    });
+  }
+
+  shareReport( File image){
+    print(image.path);
+    repository.getAccessKey().then((value){
+     print(value.accessKey);
+           this.accessKeyResponse = value;
+
+    }     
+     );
+
+
+  }
+
+
 }

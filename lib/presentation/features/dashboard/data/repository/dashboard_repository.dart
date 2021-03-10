@@ -6,11 +6,9 @@ class DashboardRepository {
 
   DashboardRepository({@required this.apiClient}) : assert(apiClient != null);
 
-  getAccessKey() {
+  Future getAccessKey() {
     return apiClient.getAccessKey();
   }
 
-  getHomeDashboardDetails() {
-    return apiClient.getHomePageDashboardDetails();
-  }
+
 }

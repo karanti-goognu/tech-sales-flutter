@@ -9,7 +9,7 @@ class MyApiClientDashboard{
 
     final http.Client httpClient;
 
-  MyApiClientDashboard(this.httpClient);
+  MyApiClientDashboard({this.httpClient});
 
   getAccessKey() async {
     try {
@@ -30,24 +30,6 @@ class MyApiClientDashboard{
     }
   }
 
-  getHomePageDashboardDetails() async{
-    try{
 
- var response = await httpClient.get(UrlConstants.homepageDashboardData,
-          headers: requestHeaders);
-      print('Response body is : ${json.decode(response.body)}');
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel;
-        accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
-        return accessKeyModel;
-      } else
-        print('error');
-    } catch(_){
-      print('Exception at Dashboard Repo (Homepage Dashboard Details) ${_.toString()}');
-    }
-
-  }
 
 }

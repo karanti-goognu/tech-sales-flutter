@@ -645,7 +645,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.SITES_SCREEN);
                   break;
                 case 2:
-                  Get.to(Dashboard());
+                  Get.toNamed(Routes.DASHBOARD);
                   break;
                 case 3:
                   Get.to(Routes.ADD_MWP_SCREEN);

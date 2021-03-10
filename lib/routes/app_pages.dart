@@ -1,5 +1,6 @@
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/app_binding.dart';
+import 'package:flutter_tech_sales/bindings/dashboard_binding.dart';
 import 'package:flutter_tech_sales/bindings/home_binding.dart';
 import 'package:flutter_tech_sales/bindings/leads__filter_binding.dart';
 import 'package:flutter_tech_sales/bindings/login_binding.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_tech_sales/bindings/splash_binding.dart';
 import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/bindings/tutorial_binding.dart';
 import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencerView.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
@@ -131,6 +133,11 @@ class AppPages {
       name: Routes.ADD_INFLUENCER,
       page: () => AddInfluencerView(),
       binding: TutorialBinding(),
+    ),
+     GetPage(
+      name: Routes.DASHBOARD,
+      page: () => Dashboard(),
+      binding: DashboardBinding(),
     ),
     // GetPage(
     //   name: Routes.SERVICE_REQUEST_UPDATESCREEN,
