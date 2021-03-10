@@ -10,8 +10,8 @@ import 'package:sqflite/sqflite.dart';
 
 class SitesDBProvider extends Model {
 
-  List<SitesEntity> _list = [];
-  List<SitesEntity> get siteListing => _list;
+  List<SitesModal> _list = [];
+  List<SitesModal> get siteListing => _list;
   Future<Database> _database = DatabaseHelper().database;
 
 
@@ -22,36 +22,41 @@ class SitesDBProvider extends Model {
   List<SiteCommentsEntity> get siteListComment => _listComment;
 
 
-  List<SiteFloorsEntity> siteFloorsEntity = new List();
+
+
+  List<SiteFloorsEntity> siteFloorsEntity = [];
+  List<SiteFloorsEntity> get siteFloorList => siteFloorsEntity;
+
+  List<SiteBrandEntity> siteBrandEntity = [];
+  List<SiteBrandEntity> get siteBrandList => siteBrandEntity;
 
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
-  List<SiteBrandEntity> siteBrandEntity = new List();
   List<SiteStageEntity> siteStageEntity = new List();
   List<SiteNextStageEntity> siteNextStageEntity = new List();
   List<CounterListModel> counterListModel = new List();
 
   // SiteList DML
-  createSiteEntity(SitesEntity sitesEntity) async {
+  createSiteEntity(SitesModal sitesEntity) async {
    var db = await _database;
    var result = db.insert("${DbConstants.TABLE_SITE_LIST}", sitesEntity.toJson());
    notifyListeners();
-   fetchAllSites1();
+   this.fetchAllSites();
   }
 
   fetchAllSites() async {
    _list = [];
    var db = await _database;
    var res = await db.query("${DbConstants.TABLE_SITE_LIST}");
-   _list = res.isNotEmpty ? res.map((c) => SitesEntity.fromJson(c)).toList() : [];
+   _list = res.isNotEmpty ? res.map((c) => SitesModal.fromJson(c)).toList() : [];
    notifyListeners();
    fetchAllSites1();
  }
 
-  Future<List<SitesEntity>> fetchAllSites1() async {
+  Future<List<SitesModal>> fetchAllSites1() async {
     return siteListing;
   }
 
@@ -64,6 +69,16 @@ class SitesDBProvider extends Model {
     notifyListeners();
     fetchAllSites1();
   }
+
+  searchSiteList(String appendQuery) async{
+     _list = [];
+     var db = await _database;
+     var res = await db.rawQuery("SELECT * FROM ${DbConstants.TABLE_SITE_LIST} WHERE ${DbConstants.COL_SITE_ID} LIKE '%${appendQuery}%' OR  ${DbConstants.COL_OWNER_CONTACT_NUMBER} LIKE '%${appendQuery}%' OR  ${DbConstants.COL_SITE_PIN_CODE} LIKE '%${appendQuery}'");
+     _list = res.isNotEmpty ? res.map((c) => SitesEntity.fromJson(c)).toList() : [];
+     notifyListeners();
+     fetchAllSites1();
+  }
+
 
   Future<int> updateSitesEntity(SitesEntity sitesEntity) async {
     var db = await _database;
@@ -178,6 +193,7 @@ class SitesDBProvider extends Model {
     var db = await _database;
     var result = db.insert("${DbConstants.TABLE_SITE_FLOOR_ENTITY}", sitesEntity.toJson());
     notifyListeners();
+    this.fetchSiteFloor();
 
   }
 
@@ -194,6 +210,33 @@ class SitesDBProvider extends Model {
     notifyListeners();
 
   }
+
+
+  Future<List<SiteStageEntity>> querySiteStateValue(int keyId) async {
+    siteStageEntity=[];
+    var db = await _database;
+    var res = await db.rawQuery('SELECT * FROM ${DbConstants.TABLE_SITE_STAGE_ENTITY} WHERE ${DbConstants.COL_ID}=?', [keyId]);
+    siteStageEntity = res.isNotEmpty ? res.map((c) => SiteStageEntity.fromJson(c)).toList() : [];
+    return siteStageEntity;
+  }
+
+  Future<List<SiteOpportunityStatusEntity>> fetchSiteOpportunityById(int keyId) async {
+    siteOpportunityStatusEntity=[];
+    var db = await _database;
+    var res = await db.rawQuery('SELECT * FROM ${DbConstants.TABLE_Site_OPPORTUNITY_STATUS_ENTITY} WHERE ${DbConstants.COL_ID}=?', [keyId]);
+    siteOpportunityStatusEntity = res.isNotEmpty ? res.map((c) => SiteOpportunityStatusEntity.fromJson(c)).toList() : [];
+    return siteOpportunityStatusEntity;
+  }
+
+  Future<List<SiteProbabilityWinningEntity>> fetchSiteProbabilityWinningEntity(int keyId) async {
+    siteProbabilityWinningEntity=[];
+    var db = await _database;
+    var res = await db.rawQuery('SELECT * FROM ${DbConstants.TABLE_SITE_PROBABILITY_WINNING_ENTITY} WHERE ${DbConstants.COL_ID}=?', [keyId]);
+    siteProbabilityWinningEntity = res.isNotEmpty ? res.map((c) => SiteProbabilityWinningEntity.fromJson(c)).toList() : [];
+    return siteProbabilityWinningEntity;
+  }
+
+
 
   createConstructionStageEntity(ConstructionStageEntity sitesEntity) async {
     var db = await _database;
@@ -244,7 +287,7 @@ class SitesDBProvider extends Model {
   Future<void> clearRefreshTable() async{
     var db = await _database;
     db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
-
+    db.delete("${DbConstants.TABLE_SITE_LIST}");
     db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
     db.delete("${DbConstants.TABLE_SITE_COMMENT_ENTITY}");
     db.delete("${DbConstants.TABLE_DRAFT_LEAD}");
@@ -260,6 +303,19 @@ class SitesDBProvider extends Model {
     db.delete("${DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY}");
     db.delete("${DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY}");
   }
+
+  fetchSiteFloor() async {
+    siteFloorsEntity= [];
+    var db = await _database;
+    var res = await db.query("${DbConstants.TABLE_SITE_FLOOR_ENTITY}");
+    siteFloorsEntity = res.isNotEmpty ? res.map((c) => SiteFloorsEntity.fromJson(c)).toList() : [];
+    notifyListeners();
+  }
+
+  Future<List<SiteFloorsEntity>> fetchAllSiteFloor() async {
+    return siteFloorList;
+  }
+
 
 
 

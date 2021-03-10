@@ -6,7 +6,7 @@ class DbConstants{
   static const String TABLE_DRAFT_LEAD = "draftLead";
   static const String TABLE_BRAND_NAME = "brandName";
   static const String TABLE_COUNTER_LIST_DEALERS = "counterListDealers";
-  static const String TABLE_SITE_LIST = "siteList";
+  static const String TABLE_SITE_LIST = "sites";
   static const String TABLE_SITE_PHOTOS_ENTITY= "sitePhotosEntity";
   static const String TABLE_SITE_COMMENT_ENTITY= "siteCommentsEntity";
   static const String TABLE_SITE_FLOOR_ENTITY= "siteFloorsEntity";
@@ -41,45 +41,50 @@ class DbConstants{
   static const String COL_CONSTRUCT_STAGE_ENTITY = "constructStageEntity";
 
 
-
-
   /* Tables SiteListTable column name*/
-  static const String COL_SITE_ID = "siteId";
-  static const String COL_LEAD_ID = "leadId";
-  static const String COL_SITE_SEGMENT = "siteSegment";
-  static const String COL_ASSIGNED_TO = "assignedTo";
-  static const String COL_SITE_STATUS_ID = "siteStatusId";
-  static const String COL_SITE_OPPERTUNITY_ID = "siteOppertunityId";
-  static const String COL_SITE_PROBABILITY_WINNING_ID="siteProbabilityWinningId";
-  static const String COL_SITE_STAGE_ID="siteStageId";
-  static const String COL_CONTACT_NAME="contactName";
-  static const String COL_CONTACT_NUMBER="contactNumber";
-  static const String COL_SITE_CREATION_DATE="siteCreationDate";
-  static const String COL_SITE_GEO_TAG="siteGeotag";
-  static const String COL_SITE_GEO_TAG_LAT="siteGeotagLat";
-  static const String COL_SITE_GEO_TAG_LONG="siteGeotagLong";
-  static const String COL_SITE_PIN_CODE="sitePincode";
+  static const String COL_SITE_BUILT_AREA="siteBuiltArea";
+  static const String COL_PRODUCT_DEMO="siteProductDemo";
+  static const String COL_PRODUCT_ORAL_BRIEFING="siteProductOralBriefing";
+  static const String COL_PLOT_NUMBER="sitePlotNumber";
+  static const String COL_SITE_POTENTIAL_MT="siteTotalSitePotential";
+  static const String COL_OWNER_CONTACT_NAME="siteOwnerName";
+  static const String COL_OWNER_CONTACT_NUMBER="siteOwnerContactNumber";
+  static const String COL_SITE_ADDRESS="siteAddress";
   static const String COL_SITE_STATE="siteState";
   static const String COL_SITE_DISTRICT="siteDistrict";
   static const String COL_SITE_TALUK="siteTaluk";
-  static const String COL_SITE_SCORE="siteScore";
-  static const String COL_SITE_POTENTIAL_MT="sitePotentialMt";
-  static const String COL_RERA_NUMBER="reraNumber";
-  static const String COL_DEALER_ID="dealerId";
-  static const String COL_SITE_BUILT_AREA="siteBuiltArea";
-  static const String COL_NO_OF_FLOORS="noOfFloors";
-  static const String COL_PRODUCT_DEMO="productDemo";
-  static const String COL_PRODUCT_ORAL_BRIEFING="productOralBriefing";
-  static const String COL_SO_CODE="soCode";
-  static const String COL_PLOT_NUMBER="plotNumber";
+  static const String COL_SITE_PIN_CODE="sitePincode";
+  static const String COL_SITE_GEO_TAG_LAT="siteGeotag_latitude";
+  static const String COL_SITE_GEO_TAG_LONG="siteGeotag_longitude";
+  static const String COL_SITE_GEO_TAG_TYPE="siteGeotag_type";
+  static const String COL_RERA_NUMBER="siteRera_number";
+  static const String COL_DEALER_ID="siteDealerId";
+  static const String COL_SITE_DEALER_NAME="siteDealerName";
+  static const String COL_SO_ID="siteSoId";
+  static const String COL_SITE_SO_NAME="siteSoname";
+  static const String COL_SITE_STAGE_ID="siteStageId";
   static const String COL_INACTIVE_REASON_TEXT="inactiveReasonText";
-  static const String COL_NEXT_VISIT_DATE="nextVisitDate";
-  static const String COL_CLOSURE_REASON_TEXT="closureReasonText";
+  static const String COL_NEXT_VISIT_DATE="siteNextVisitDate";
+  static const String COL_CLOSURE_REASON_TEXT="siteClosureReasonText";
+  static const String COL_SITE_PROBABILITY_WINNING_ID="siteProbabilityWinningId";
+  static const String COL_SITE_COMPETITION_ID="siteCompetitionId";
+  static const String COL_SITE_OPPERTUNITY_ID = "siteOppertunityId";
+  static const String COL_ASSIGNED_TO = "assignedTo";
+  static const String COL_SITE_STATUS_ID = "siteStatusId";
+  static const String COL_SITE_CREATION_DATE="siteCreationDate";
+  static const String COL_SITE_CONSTRUCTION_ID="siteConstructionId";
+  static const String COL_NO_OF_FLOORS="noOfFloors";
+  static const String COL_SITE_SCORE="siteScore";
+  static const String COL_SYNC_STATUS="syncStatus";
+
+/* extra key other than SiteModel*/
+  static const String COL_SITE_ID = "siteId";
+  static const String COL_LEAD_ID = "leadId";
+  static const String COL_SITE_SEGMENT = "siteSegment";
   static const String COL_CREATED_BY="createdBy";
   static const String COL_CREATED_ON="createdOn";
   static const String COL_UPDATED_BY="updatedBy";
   static const String COL_UPDATED_ON="updatedOn";
-  static const String COL_SYNC_STATUS="syncStatus";
 
 
 /* Tables SiteCommentsEntity column name*/
@@ -110,7 +115,6 @@ class DbConstants{
   static const String COL_SITE_PROBABILITY_STATUS = "siteProbabilityStatus";
 
   /* Tables SiteCompetitionStatusEntity column name*/
-  static const String COL_SITE_COMPETITION_ID = "id";
   static const String COL_SITE_COMPETITION_STATUS = "competitionStatus";
 
   /* Tables SiteOpportunityStatusEntity column name*/

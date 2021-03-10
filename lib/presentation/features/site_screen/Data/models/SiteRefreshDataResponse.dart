@@ -232,6 +232,7 @@ class SiteRefreshDataResponse {
 }
 
 class SitesModal {
+  int siteId;
   String siteBuiltArea;
   String siteProductDemo;
   String siteProductOralBriefing;
@@ -265,9 +266,11 @@ class SitesModal {
   int siteConstructionId;
   int noOfFloors;
   double siteScore;
+  bool syncStatus;
 
   SitesModal(
-      {this.siteBuiltArea,
+      {  this.siteId,
+        this.siteBuiltArea,
         this.siteProductDemo,
         this.siteProductOralBriefing,
         this.sitePlotNumber,
@@ -299,9 +302,11 @@ class SitesModal {
         this.siteCreationDate,
         this.siteConstructionId,
         this.noOfFloors,
-        this.siteScore});
+        this.siteScore,
+        this.syncStatus});
 
   SitesModal.fromJson(Map<String, dynamic> json) {
+    siteId = json['siteId'];
     siteBuiltArea = json['siteBuiltArea'];
     siteProductDemo = json['siteProductDemo'];
     siteProductOralBriefing = json['siteProductOralBriefing'];
@@ -341,6 +346,7 @@ class SitesModal {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['siteId'] = this.siteId;
     data['siteBuiltArea'] = this.siteBuiltArea;
     data['siteProductDemo'] = this.siteProductDemo;
     data['siteProductOralBriefing'] = this.siteProductOralBriefing;
@@ -374,7 +380,6 @@ class SitesModal {
     data['siteConstructionId'] = this.siteConstructionId;
     data['noOfFloors'] = this.noOfFloors;
     data['siteScore'] = this.siteScore;
-
     return data;
   }
 }
