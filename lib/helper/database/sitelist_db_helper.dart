@@ -145,9 +145,11 @@ class SitesDBProvider extends Model {
     _listComment = res.isNotEmpty ? res.map((c) => SiteCommentsEntity.fromJson(c)).toList() : [];
     notifyListeners();
   }
+
   Future<List<SiteCommentsEntity>> fetchAllComm() async {
     return siteListComment;
   }
+
   filterSiteComment(String appendQuery,String whereArgs) async {
     _listComment = [];
     var db = await _database;
@@ -177,6 +179,8 @@ class SitesDBProvider extends Model {
   createSiteFloorsEntity(SiteFloorsEntity sitesEntity) async {
     var db = await _database;
     var result = db.insert("${DbConstants.TABLE_SITE_FLOOR_ENTITY}", sitesEntity.toJson());
+    print("siteFloorsEntity .....   ${result.toString()}");
+
     notifyListeners();
 
   }
@@ -244,13 +248,11 @@ class SitesDBProvider extends Model {
   Future<void> clearRefreshTable() async{
     var db = await _database;
     db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
-
     db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
     db.delete("${DbConstants.TABLE_SITE_COMMENT_ENTITY}");
     db.delete("${DbConstants.TABLE_DRAFT_LEAD}");
     db.delete("${DbConstants.TABLE_BRAND_NAME}");
     db.delete("${DbConstants.TABLE_COUNTER_LIST_DEALERS}");
-
     db.delete("${DbConstants.TABLE_SITE_FLOOR_ENTITY}");
     db.delete("${DbConstants.TABLE_SITE_STAGE_ENTITY}");
     db.delete("${DbConstants.TABLE_SITE_CONSTRUCTION_STAGE_ENTITY}");
@@ -261,9 +263,138 @@ class SitesDBProvider extends Model {
     db.delete("${DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY}");
   }
 
+  DatabaseHelper _databaseHelper=new DatabaseHelper();
+
+  /*get Construction table data*/
+  Future<List<ConstructionStageEntity>> fetchConstructionStageEntityData() async {
+    var db = await _database;
+    List<ConstructionStageEntity> constructionStageEntity=new List<ConstructionStageEntity>();
+    await db.query(DbConstants.TABLE_SITE_CONSTRUCTION_STAGE_ENTITY).then((value) {
+      value.forEach((element) {
+        constructionStageEntity.add(ConstructionStageEntity.fromJson(element));
+      });
+    }
+    );
+
+ return constructionStageEntity;
+  }
+
+
+  /*get floors table data*/
+  Future<List<SiteFloorsEntity>> fetchFloorsData() async {
+    List<SiteFloorsEntity> siteFloorsEntity=new List<SiteFloorsEntity>();
+    var db = await _database;
+
+
+   await db.query(DbConstants.TABLE_SITE_FLOOR_ENTITY).then((value) {
+     print("siteFloorsEntity,,, ${value.length}");
+     value.forEach((element) {
+        siteFloorsEntity.add(SiteFloorsEntity.fromJson(element));
+        print("siteFloorsEntity ${siteFloorsEntity.length}");
+
+      });
+    });
+
+
+    return siteFloorsEntity;
+  }
+
+  /*get brand table data*/
+  Future<List<SiteBrandEntity>> fetchBrandData() async {
+    List<SiteBrandEntity> brandEntity=new List<SiteBrandEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_BRAND_NAME).then((value) {
+      value.forEach((element) {
+        brandEntity.add(SiteBrandEntity.fromJson(element));
+      });
+    }
+    );
+
+    return brandEntity;
+  }
+
+
+  /*get floors table data*/
+  Future<List<SiteVisitHistoryEntity>> fetchVisitHistoryData() async {
+    List<SiteVisitHistoryEntity> dataEntity=new List<SiteVisitHistoryEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY).then((value) {
+      value.forEach((element) {
+        dataEntity.add(SiteVisitHistoryEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
+
+  /*get winn table data*/
+  Future<List<SiteProbabilityWinningEntity>> fetchProWinningData() async {
+    List<SiteProbabilityWinningEntity> dataEntity=new List<SiteProbabilityWinningEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_PROBABILITY_WINNING_ENTITY).then((value) {
+      value.forEach((element) {
+        dataEntity.add(SiteProbabilityWinningEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
 
 
 
+  Future<List<SiteCompetitionStatusEntity>> fetchCompetitionStatusData() async {
+    List<SiteCompetitionStatusEntity> dataEntity=new List<SiteCompetitionStatusEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_COMPETITION_STATUS_ENTITY).then((value) {
+      value.forEach((element) {
+        dataEntity.add(SiteCompetitionStatusEntity.fromJson(element));
+      });
+    }
+    );
 
+    return dataEntity;
+  }
+
+  Future<List<SiteOpportunityStatusEntity>> fetchOpportunityStatusData() async {
+    List<SiteOpportunityStatusEntity> dataEntity=new List<SiteOpportunityStatusEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_Site_OPPORTUNITY_STATUS_ENTITY).then((value) {
+      value.forEach((element) {
+        dataEntity.add(SiteOpportunityStatusEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
+
+  Future<List<SiteCommentsEntity>> fetchCommentEntityData() async {
+    List<SiteCommentsEntity> dataEntity=new List<SiteCommentsEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_COMMENT_ENTITY).then((value) {
+      value.forEach((element) {
+        dataEntity.add(SiteCommentsEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
+
+
+  Future<List<SitephotosEntity>> fetchPhotoData() async {
+    List<SitephotosEntity> dataEntity=new List<SitephotosEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_PHOTOS_ENTITY).then((value) {
+      value.forEach((element) {
+        dataEntity.add(SitephotosEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
 }
 

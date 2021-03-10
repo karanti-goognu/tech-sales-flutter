@@ -5,19 +5,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/helper/brand_name_db_config.dart';
+import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
 import 'package:flutter_tech_sales/helper/database_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/UpdateDataRequest.dart'
     as updateResponse;
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
@@ -29,8 +31,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
+import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/utils/constants/db_constants.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 
 class ViewSiteScreen extends StatefulWidget {
   int siteId;
@@ -143,15 +147,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   SitesEntity _sitesEntity;
 
   List<SiteFloorsEntity> siteFloorsEntity = new List();
+
   List<SiteFloorsEntity> siteFloorsEntityNew = new List();
   List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List();
   List<SitephotosEntity> sitephotosEntity = new List();
+
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
+
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<ConstructionStageEntity> constructionStageEntityNew = new List();
-  List<ConstructionStageEntity> constructionStageEntityNewNextStage =
-      new List();
+  List<ConstructionStageEntity> constructionStageEntityNewNextStage = new List();
+
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
+
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
   List<SiteBrandEntity> siteBrandEntity = new List();
@@ -185,9 +193,112 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     _tabController = TabController(vsync: this, length: 4);
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
-    getSiteData();
-    // getSiteDetailsDataFromDb(widget.siteId);
+ // getSiteData();
+    getConstructionData();
+
+     getSiteDetailsDataFromDb(widget.siteId);
+
+
   }
+
+
+  /*Get side details from db*/
+  getSiteDetailsDataFromDb(int siteId){
+    db.fetchMapList(DbConstants.TABLE_SITE_LIST, null, "${DbConstants.COL_SITE_ID} =?",[siteId] , null, null, null, null, null).then((value){
+      value.forEach((element) {
+        if(mounted)
+          setState(() {
+          _sitesEntity= SitesEntity.fromJson(element);
+          _updateWidgets();
+          });
+
+      });
+
+    });
+  }
+
+
+  /*get construction data from tables*/
+  getConstructionData() async {
+    SitesDBProvider model = ScopedModel.of(this.context);
+    model.fetchConstructionStageEntityData().then((value)  {
+      print("fetchConstructionStageEntityData   ${value.length.toString()}");
+      setState(() {
+        constructionStageEntity.addAll(value);
+        constructionStageEntityNew.addAll(value);
+        constructionStageEntityNewNextStage.addAll(value);
+
+      });
+
+    });
+
+    model.fetchBrandData().then((value)  {
+      setState(() {
+        siteBrandEntity.addAll(value);
+      });
+
+
+    });
+
+
+/*set floor data in list*/
+    await model.fetchFloorsData().then((value){
+      setState(() {
+        siteFloorsEntity.addAll(value);
+        siteFloorsEntityNew.addAll(value);
+        siteFloorsEntityNewNextStage.addAll(value);
+      });
+
+
+    });
+
+
+/*set floor data in list*/
+    await model.fetchVisitHistoryData().then((value){
+      setState(() {
+        siteVisitHistoryEntity.addAll(value);
+      });
+    });
+
+    await model.fetchProWinningData().then((value){
+      setState(() {
+        siteProbabilityWinningEntity.addAll(value);
+      });
+    });
+
+ await model.fetchCompetitionStatusData().then((value){
+      setState(() {
+        siteCompetitionStatusEntity.addAll(value);
+      });
+    });
+
+ await model.fetchOpportunityStatusData().then((value){
+      setState(() {
+        siteOpportunityStatusEntity.addAll(value);
+      });
+    });
+
+
+ await model.fetchCommentEntityData().then((value){
+      setState(() {
+        siteCommentsEntity.addAll(value);
+      });
+    });
+
+
+ await model.fetchPhotoData().then((value){
+      setState(() {
+        sitephotosEntity.addAll(value);
+      });
+    });
+
+
+
+
+
+
+  }
+
 
   @override
   void dispose() {
@@ -195,6 +306,69 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     // myFocusNode.dispose();
     super.dispose();
   }
+
+  /*Update the values in widgets*/
+  _updateWidgets(){
+
+    _siteProductDemo.text = _sitesEntity.productDemo;
+    _plotNumber.text = _sitesEntity.plotNumber;
+    _pincode.text = _sitesEntity.sitePincode;
+    _state.text = _sitesEntity.siteState;
+    _district.text = _sitesEntity.siteDistrict;
+    _taluk.text = _sitesEntity.siteTaluk;
+    _rera.text = _sitesEntity.reraNumber;
+    _so.text = _sitesEntity.soCode;
+    geoTagType = _sitesEntity.siteGeotag;
+    _siteBuiltupArea.text = _sitesEntity.siteBuiltArea;
+
+  //  _ownerName.text = _sitesEntity.nam;
+
+
+
+     if (_sitesEntity.noOfFloors != null ||
+         _sitesEntity.noOfFloors != 0) {
+       for (int i = 0; i < siteFloorsEntity.length; i++) {
+         if (_sitesEntity.noOfFloors.toString() ==
+             siteFloorsEntity[i].id.toString()) {
+           _selectedSiteFloor = siteFloorsEntity[i];
+         }
+       }
+     }
+
+
+
+     for (int i = 0; i < constructionStageEntity.length; i++) {
+       if (_sitesEntity.siteConstructionId.toString() ==
+           constructionStageEntity[i].id.toString()) {
+         _selectedConstructionType = constructionStageEntity[i];
+       }
+     }
+
+
+    if (sitephotosEntity != null) {
+      for (int i = 0; i < sitephotosEntity.length; i++) {
+        File file = new File(UrlConstants.baseUrlforImagesSites +
+            "/" +
+            sitephotosEntity[i].photoName);
+        _imgDetails.add(new ImageDetails("Network", file));
+      }
+    }
+
+
+
+    if (viewSiteDataResponse.sitesModal.siteCompetitionId != null) {
+
+      for (int i = 0; i < siteCompetitionStatusEntity.length; i++) {
+        if (viewSiteDataResponse.sitesModal.siteCompetitionId
+            .toString() ==
+            siteCompetitionStatusEntity[i].id.toString()) {
+          _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
+        }
+      }
+    }
+   }
+
+
 
   Future<void> getSiteData() async {
     AccessKeyModel accessKeyModel = new AccessKeyModel();
@@ -209,7 +383,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
         // print(viewSiteDataResponse);
         await BrandNameDbConfig.clearTable();
-        siteBrandEntity = viewSiteDataResponse!=null?viewSiteDataResponse.siteBrandEntity:"";
+        siteBrandEntity = viewSiteDataResponse!=null?viewSiteDataResponse.siteBrandEntity: List<SiteBrandEntity>();
         counterListModel = viewSiteDataResponse.counterListModel;
         // print(counterListModel);
         // print("aaaaaaaaaaaaaaa");
@@ -239,6 +413,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
           siteFloorsEntityNew = viewSiteDataResponse.siteFloorsEntity;
           siteFloorsEntityNewNextStage = viewSiteDataResponse.siteFloorsEntity;
+
           siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
 
           siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
@@ -338,7 +513,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           }
 
           _ownerName.text = sitesModal.siteOwnerName;
-          _contactNumber.text = sitesModal.siteOwnerContactNumber;
+          print("_contactNumber     ${_sitesEntity.contactNumber}");
+        //  _contactNumber.text = _sitesEntity.contactNumber;
 
           _siteTotalPt.text = sitesModal.siteTotalSitePotential;
   // _ownerName.text = sitesModal.siteOwnerName;
@@ -559,7 +735,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             "Trade site details",
                             style: TextStyle(
                                 fontWeight: FontWeight.normal,
-                                fontSize: 25,
+                                fontSize: SizeConfig.safeBlockHorizontal*5.3,
                                 color: HexColor("#006838"),
                                 fontFamily: "Muli"),
                           ),
@@ -579,7 +755,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 "ID: " + widget.siteId.toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                                  fontSize: SizeConfig.safeBlockHorizontal*5.2,
                                   color: Colors.black,
                                   fontFamily: "Muli",
                                 ),
@@ -1300,7 +1476,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             "No. of Floors",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: SizeConfig.safeBlockHorizontal*5.2,
                                 // color: HexColor("#000000DE"),
                                 fontFamily: "Muli"),
                           ),
@@ -1399,7 +1575,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             "Site Demo conducted",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: SizeConfig.safeBlockHorizontal*5.2,
                                 // color: HexColor("#000000DE"),
                                 fontFamily: "Muli"),
                           ),
@@ -1414,7 +1590,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 "Product demo",
                                 style: TextStyle(
                                     //fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: SizeConfig.safeBlockHorizontal*4.5,
                                     // color: HexColor("#000000DE"),
                                     fontFamily: "Muli"),
                               ),
@@ -1424,7 +1600,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     "No",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                        fontSize: SizeConfig.safeBlockHorizontal*4.5,
                                         // color: HexColor("#000000DE"),
                                         fontFamily: "Muli"),
                                   ),
@@ -1441,7 +1617,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     "Yes",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                        fontSize: SizeConfig.safeBlockHorizontal*4.5,
                                         color: isSwitchedsiteProductDemo
                                             ? HexColor("#009688")
                                             : Colors.black,
@@ -1463,7 +1639,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 "Product oral briefing",
                                 style: TextStyle(
                                     //fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: SizeConfig.safeBlockHorizontal*4.5,
                                     // color: HexColor("#000000DE"),
                                     fontFamily: "Muli"),
                               ),
@@ -1473,7 +1649,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     "No",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                        fontSize: SizeConfig.safeBlockHorizontal*4.5,
                                         // color: HexColor("#000000DE"),
                                         fontFamily: "Muli"),
                                   ),
@@ -1490,7 +1666,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     "Yes",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                        fontSize: SizeConfig.safeBlockHorizontal*4.5,
                                         color: isSwitchedsiteProductOralBriefing
                                             ? HexColor("#009688")
                                             : Colors.black,
@@ -1510,7 +1686,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             "Total Site Potential",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 25,
+                                fontSize: SizeConfig.safeBlockHorizontal*5.3,
                                 // color: HexColor("#000000DE"),
                                 fontFamily: "Muli"),
                           ),
@@ -1667,7 +1843,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             "Geo Tag",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 25,
+                                fontSize: SizeConfig.safeBlockHorizontal*5.3,
                                 // color: HexColor("#000000DE"),
                                 fontFamily: "Muli"),
                           ),
@@ -2161,14 +2337,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Current Stage",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: SizeConfig.safeBlockHorizontal*5,
                         // color: HexColor("#000000DE"),
                         fontFamily: "Muli"),
                   ),
@@ -2183,7 +2359,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       "View previous detail",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: SizeConfig.safeBlockHorizontal*4,
                           color: HexColor("#F9A61A"),
                           fontFamily: "Muli"),
                     ),
@@ -2197,7 +2373,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 "Total Balance Potential",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 22,
+                    fontSize: SizeConfig.safeBlockHorizontal*5.3,
                     // color: HexColor("#000000DE"),
                     fontFamily: "Muli"),
               ),
@@ -2658,7 +2834,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 "No. of Bags Supplied",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: SizeConfig.safeBlockHorizontal*5.1,
                     // color: HexColor("#000000DE"),
                     fontFamily: "Muli"),
               ),

@@ -533,7 +533,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                                 style: TextStyle(
                                                                     color: HexColor(
                                                                         "#39B54A"),
-                                                                    fontSize: 12,
+                                                                    fontSize: SizeConfig.safeBlockHorizontal*3,
                                                                     fontFamily:
                                                                     "Muli",
                                                                     fontWeight:
@@ -549,9 +549,10 @@ class _SiteScreenState extends State<SiteScreen> {
                                                                 left: 10.0),
                                                             child: Text(
                                                               " ${siteList.siteCreationDate}",
+                                                              overflow: TextOverflow.ellipsis,
                                                               //  textAlign: TextAlign.start,
                                                               style: TextStyle(
-                                                                fontSize: 10,
+                                                                fontSize:  SizeConfig.safeBlockHorizontal*2.5,
                                                                 fontFamily: "Muli",
                                                                 fontWeight:
                                                                 FontWeight.bold,

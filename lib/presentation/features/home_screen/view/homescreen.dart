@@ -19,8 +19,8 @@ import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:moengage_flutter/moengage_flutter.dart';
-import 'package:moengage_flutter/push_campaign.dart';
+// import 'package:moengage_flutter/moengage_flutter.dart';
+// import 'package:moengage_flutter/push_campaign.dart';
 //import 'package:moengage_flutter/moengage_flutter.dart';
 //import 'package:moengage_flutter/push_campaign.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -47,17 +47,17 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("SR &\nComplaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png"),
   ];
- final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+// final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
 
   Future<void> initPlatformState() async {
     if (!mounted) return;
     //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
   }
-  void _onPushClick(PushCampaign message) {
-    print("This is a push click callback from native to flutter. Payload " +
-        message.toString());
-  }
+  // void _onPushClick(PushCampaign message) {
+  //   print("This is a push click callback from native to flutter. Payload " +
+  //       message.toString());
+  // }
 
   Future<bool> internetChecking() async {
     // do something here
@@ -66,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getSiteRefreshData(SitesDBProvider provider) async {
-
 
     provider.clearRefreshTable();
     SiteRefreshDataResponse viewSiteDataResponse = new SiteRefreshDataResponse();
@@ -89,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // print("AccessKey :: " + accessKeyModel.accessKey);
       await _siteController.getSiteRefreshData(accessKeyModel.accessKey)
           .then((data) async {
+            print("data   $data");
         viewSiteDataResponse = data;
 
         sitephotosList = viewSiteDataResponse.sitePhotosEntity;
@@ -102,6 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
         siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
         if (siteFloorsEntity != null) {
           for (int i = 0; i < siteFloorsEntity.length; i++) {
+            print("siteFloorsEntity    ${siteFloorsEntity[i].id}    ${siteFloorsEntity[i].siteFloorTxt}");
+
             provider.createSiteFloorsEntity(new SiteFloorsEntity(id: siteFloorsEntity[i].id,siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
           }
         }
@@ -148,7 +150,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
         siteNextStageEntity = viewSiteDataResponse.siteNextStageEntity;
         if (siteNextStageEntity != null) {
-
           for (int i = 0; i < siteNextStageEntity.length; i++) {
             provider.createSiteNextStageEntity(new SiteNextStageEntity(id: siteNextStageEntity[i].id,siteId: siteNextStageEntity[i].siteId,constructionStageId: siteNextStageEntity[i].constructionStageId,stagePotential: siteNextStageEntity[i].stagePotential,
             brandId: siteNextStageEntity[i].brandId,brandPrice: siteNextStageEntity[i].brandPrice,stageStatus: siteNextStageEntity[i].stageStatus,
@@ -190,9 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     initPlatformState();
-    _moengagePlugin.initialise();
-    _moengagePlugin.enableSDKLogs();
-    _moengagePlugin.setUpPushCallbacks(_onPushClick);
+    // _moengagePlugin.initialise();
+    // _moengagePlugin.enableSDKLogs();
+    // _moengagePlugin.setUpPushCallbacks(_onPushClick);
     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
       print('Check In');
@@ -213,9 +214,9 @@ class _HomeScreenState extends State<HomeScreen> {
           prefs.getString(StringConstants.employeeName);
 
       // MoEngage implementation done here ....
-      _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
-      _moengagePlugin.setFirstName(prefs.getString(StringConstants.employeeName));
-      _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
+      // _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
+      // _moengagePlugin.setFirstName(prefs.getString(StringConstants.employeeName));
+      // _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
 
     });
   }
@@ -327,16 +328,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.only(right: 25.0, top: 20),
                     child: Column(
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // SitesDBProvider model = ScopedModel.of(this.context);
-                            // model.fetchAllComm().then((value) => {
-                            //   print("SiteRefresh--->"+value.toString())
-                            // });
+                            SitesDBProvider model = ScopedModel.of(this.context);
+                            model.fetchAllComm().then((value) => {
+                              print("SiteRefresh--->"+value.toString())
+                            });
+
                             Get.dialog(CustomDialogs()
                                 .errorDialog("Page Coming Soon .... "));
                           },
@@ -742,6 +745,5 @@ class _HomeScreenState extends State<HomeScreen> {
 class MenuDetailsModel {
   String value;
   String imgURL;
-
   MenuDetailsModel(this.value, this.imgURL);
 }

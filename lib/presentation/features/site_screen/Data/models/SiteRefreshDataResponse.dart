@@ -900,8 +900,8 @@ class SiteOpportunityStatusEntity {
   SiteOpportunityStatusEntity({this.id, this.opportunityStatus});
 
   SiteOpportunityStatusEntity.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    opportunityStatus = json['opportunityStatus'];
+    id = json['id'] ?? 0;
+    opportunityStatus = json['opportunityStatus']?? "";
   }
 
   Map<String, dynamic> toJson() {

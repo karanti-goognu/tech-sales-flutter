@@ -1,3 +1,5 @@
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
+
 import 'ViewSiteDataResponse.dart';
 
 class UpdateDataRequest {
