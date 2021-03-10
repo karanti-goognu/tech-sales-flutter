@@ -5221,6 +5221,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         });
 
         _getAddressFromLatLng();
+              Get.back();
+
       }).catchError((e) {
         print(e);
       });
@@ -5232,7 +5234,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       List<Placemark> p = await geolocator.placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
       Placemark place = p[0];
-      Get.back();
       setState(() {
         _siteAddress.text =
             place.name + "," + place.thoroughfare + "," + place.subLocality;
