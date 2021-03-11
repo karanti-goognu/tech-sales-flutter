@@ -84,6 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
     List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
     List<CounterListModel> counterListModel = new List();
 
+    List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
+    List<SiteInfluencerEntity> siteInfluencerEntity = new List();
+    List<InfluencerTypeEntity> influencerTypeEntity = new List();
+
+    List<SiteStageEntity> siteStageEntity = new List();
+
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _siteController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
@@ -229,6 +235,41 @@ class _HomeScreenState extends State<HomeScreen> {
             ));
           }
         }
+
+        siteInfluencerEntity = viewSiteDataResponse.siteInfluencerEntity;
+        if (siteInfluencerEntity != null) {
+          for (int i = 0; i < siteInfluencerEntity.length; i++) {
+            provider.createSiteInfluencerEntity(new SiteInfluencerEntity(isPrimary: siteInfluencerEntity[i].isPrimary,id: siteInfluencerEntity[i].id,siteId: siteInfluencerEntity[i].siteId,
+                inflId: siteInfluencerEntity[i].inflId,isDelete: siteInfluencerEntity[i].isDelete,createdBy: siteInfluencerEntity[i].createdBy,createdOn: siteInfluencerEntity[i].createdOn,updatedBy: siteInfluencerEntity[i].updatedBy,
+              updatedOn: siteInfluencerEntity[i].updatedOn
+            ));
+          }
+        }
+
+        influencerTypeEntity = viewSiteDataResponse.influencerTypeEntity;
+        if (influencerTypeEntity != null) {
+          for (int i = 0; i < influencerTypeEntity.length; i++) {
+            provider.createInfluencerTypeEntity(new InfluencerTypeEntity(inflTypeId: influencerTypeEntity[i].inflTypeId,inflTypeDesc: influencerTypeEntity[i].inflTypeDesc
+            ));
+          }
+        }
+
+        influencerCategoryEntity = viewSiteDataResponse.influencerCategoryEntity;
+        if (influencerCategoryEntity != null) {
+          for (int i = 0; i < influencerCategoryEntity.length; i++) {
+            provider.createInfluencerCategoryEntity(new InfluencerCategoryEntity(inflCatId: influencerCategoryEntity[i].inflCatId,inflCatDesc: influencerCategoryEntity[i].inflCatDesc
+            ));
+          }
+        }
+
+        siteStageEntity = viewSiteDataResponse.siteStageEntity;
+        if (siteStageEntity != null) {
+          for (int i = 0; i < siteStageEntity.length; i++) {
+            provider.createSiteStageEntity(new SiteStageEntity(id: siteStageEntity[i].id,siteStageDesc: siteStageEntity[i].siteStageDesc
+            ));
+          }
+        }
+
       });
     });
   }

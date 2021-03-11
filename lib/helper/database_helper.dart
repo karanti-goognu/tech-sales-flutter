@@ -131,6 +131,12 @@ class DatabaseHelper{
         '${DbConstants.COL_SITE_CONSTRUCTION_ID} INTEGER,'
         '${DbConstants.COL_NO_OF_FLOORS} INTEGER,'
         '${DbConstants.COL_SITE_SCORE} DOUBLE,'
+        '${DbConstants.COL_SITE_SEGMENT} TEXT,'
+        '${DbConstants.COL_LEAD_ID} INTEGER,'
+        '${DbConstants.COL_CREATED_BY} TEXT,'
+        '${DbConstants.COL_CREATED_ON} INTEGER,'
+        '${DbConstants.COL_UPDATED_BY} TEXT,'
+        '${DbConstants.COL_UPDATED_ON} INTEGER,'
         '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
 
@@ -245,6 +251,32 @@ class DatabaseHelper{
         '${DbConstants.COL_COUNTER_LIST_shipToPartyName} TEXT,'
         '${DbConstants.COL_SYNC_STATUS} BOOL)'
     );
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_INFLUENCER} ('
+        '${DbConstants.COL_ID} INTEGER,'
+        '${DbConstants.COL_SITE_ID} INTEGER,'
+        '${DbConstants.COL_SITE_INFLUENCER_ID} INTEGER,'
+        '${DbConstants.COL_SITE_INFLUENCER_IS_DELETE} TEXT,'
+        '${DbConstants.COL_SITE_INFLUENCER_CREATED_BY} TEXT,'
+        '${DbConstants.COL_SITE_INFLUENCER_CREATED_ON} INTEGER,'
+        '${DbConstants.COL_SITE_INFLUENCER_UPDATED_BY} TEXT,'
+        '${DbConstants.COL_SITE_INFLUENCER_UPDATED_ON} INTEGER,'
+        '${DbConstants.COL_SITE_INFLUENCER_UPDATED_IS_PRIMARY} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
+    );
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_INFLUENCER_TYPE} ('
+        '${DbConstants.COL_SITE_INFLUENCER_TYPE_ID} INTEGER,'
+        '${DbConstants.COL_SITE_INFLUENCER_TYPE_DESC} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
+    );
+
+    await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_INFLUENCER_CATEGORY} ('
+        '${DbConstants.COL_SITE_INFLUENCER_CATE_ID} INTEGER,'
+        '${DbConstants.COL_SITE_INFLUENCER_CATE_DESC} TEXT,'
+        '${DbConstants.COL_SYNC_STATUS} BOOL)'
+    );
+
 
   }
 

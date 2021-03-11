@@ -432,93 +432,6 @@ class SitephotosEntity {
   }
 }
 
-// class SiteVisitHistoryEntity {
-//   int id;
-//   String totalBalancePotential;
-//   // String constructionStageId;
-//   String floorId;
-//   String stagePotential;
-//   // String brandId;
-//   String brandPrice;
-//   String constructionDate;
-//   String siteId;
-//   String supplyDate;
-//   String supplyQty;
-//   String stageStatus;
-//   String createdBy;
-//   String soldToParty;
-//   String shipToParty;
-//
-//   //Check about the presence of below two variables
-//   int constructionStageId;
-//   int brandId;
-//   int createdOn;
-//   bool isExpanded;
-//
-//
-//
-//   SiteVisitHistoryEntity(
-//       {this.id,
-//       this.totalBalancePotential,
-//       this.constructionStageId,
-//       this.floorId,
-//       this.stagePotential,
-//       this.brandId,
-//       this.brandPrice,
-//       this.constructionDate,
-//       this.siteId,
-//       this.supplyDate,
-//       this.supplyQty,
-//       this.stageStatus,
-//       this.createdOn,
-//       this.createdBy,
-//       this.soldToParty,
-//       this.shipToParty});
-//
-//   SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     totalBalancePotential = json['totalBalancePotential'];
-//     constructionStageId = json['constructionStageId'];
-//     floorId = json['floorId'];
-//     stagePotential = json['stagePotential'];
-//     brandId = json['brandId'];
-//     brandPrice = json['brandPrice'];
-//     constructionDate = json['constructionDate'];
-//     siteId = json['siteId'];
-//     supplyDate = json['supplyDate'];
-//     supplyQty = json['supplyQty'];
-//     stageStatus = json['stageStatus'];
-//     createdOn = json['createdOn'];
-//     createdBy = json['createdBy'];
-//     isExpanded = false;
-//
-//     soldToParty = json['soldToParty'];
-//     shipToParty = json['shipToParty'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
-//     data['totalBalancePotential'] = this.totalBalancePotential;
-//     data['constructionStageId'] = this.constructionStageId;
-//     data['floorId'] = this.floorId;
-//     data['stagePotential'] = this.stagePotential;
-//     data['brandId'] = this.brandId;
-//     data['brandPrice'] = this.brandPrice;
-//     data['constructionDate'] = this.constructionDate;
-//     data['siteId'] = this.siteId;
-//     data['supplyDate'] = this.supplyDate;
-//     data['supplyQty'] = this.supplyQty;
-//     data['stageStatus'] = this.stageStatus;
-//     data['createdOn'] = this.createdOn;
-//     data['createdBy'] = this.createdBy;
-//
-//     data['soldToParty'] = this.soldToParty;
-//     data['shipToParty'] = this.shipToParty;
-//     return data;
-//   }
-// }
-
 class SiteVisitHistoryEntity {
   int id;
   String totalBalancePotential;
@@ -924,8 +837,8 @@ class SiteInfluencerEntity {
   String isDelete;
   String createdBy;
   int createdOn;
-  Null updatedBy;
-  Null updatedOn;
+  String updatedBy;
+  int updatedOn;
   String isPrimary;
 
   SiteInfluencerEntity(

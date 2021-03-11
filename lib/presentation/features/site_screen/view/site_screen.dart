@@ -1154,14 +1154,13 @@ class _SiteScreenState extends State<SiteScreen> {
       return "";
     }
   }
-
+  List<SiteStageEntity> data = new List();
   String printSiteStage(int value,SitesDBProvider provider) {
-    List<SiteStageEntity> data = new List();
     provider.querySiteStateValue(value).then((value) => {
       data = value
 
     });
-       if (data.length >= 1) {
+       if (data.length >0) {
       print("size greater than 0 \n ${data[0].siteStageDesc}");
       return "${data[0].siteStageDesc}";
     } else {

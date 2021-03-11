@@ -284,6 +284,28 @@ class SitesDBProvider extends Model {
 
   }
 
+  createSiteInfluencerEntity(SiteInfluencerEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_INFLUENCER}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+  createInfluencerTypeEntity(InfluencerTypeEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_INFLUENCER_TYPE}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+  createInfluencerCategoryEntity(InfluencerCategoryEntity sitesEntity) async {
+    var db = await _database;
+    var result = db.insert("${DbConstants.TABLE_SITE_INFLUENCER_CATEGORY}", sitesEntity.toJson());
+    notifyListeners();
+
+  }
+
+
   Future<void> clearRefreshTable() async{
     var db = await _database;
     db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");

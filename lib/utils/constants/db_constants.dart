@@ -20,6 +20,9 @@ class DbConstants{
   static const String TABLE_SITE_NEXT_STAGE_ENTITY= "siteNextStageEntity";
   static const String TABLE_Site_OPPORTUNITY_STATUS_ENTITY= "siteOpportunityStatusEntity";
   static const String TABLE_SITE_ENTITY= "sitesModal";
+  static const String TABLE_SITE_INFLUENCER= "siteInfluencerEntity";
+  static const String TABLE_SITE_INFLUENCER_TYPE= "influencerTypeEntity";
+  static const String TABLE_SITE_INFLUENCER_CATEGORY= "influencerCategoryEntity";
 
 
   static const String TABLE_LEAD_STATUS_ENTITY= "leadStatusEntity";
@@ -207,9 +210,24 @@ class DbConstants{
   static const String COL_EMPLOYEE_FIRST_NAME = "employee-first-name";
   static const String COL_EMPLOYEE_NAME = "employee-name";
 
-  // /*severity TABLE COL*/
-  // static const String COL_REQUEST_TEXT = "requestText";
-  //
+  /* SiteInfluencerEntity TABLE COL*/
+   static const String COL_SITE_INFLUENCER_ID = "inflId";
+   static const String COL_SITE_INFLUENCER_IS_DELETE = "isDelete";
+   static const String COL_SITE_INFLUENCER_CREATED_BY = "createdBy";
+   static const String COL_SITE_INFLUENCER_CREATED_ON = "createdOn";
+   static const String COL_SITE_INFLUENCER_UPDATED_BY = "updatedBy";
+   static const String COL_SITE_INFLUENCER_UPDATED_ON = "updatedOn";
+   static const String COL_SITE_INFLUENCER_UPDATED_IS_PRIMARY = "isPrimary";
+
+  /* InfluencerTypeEntity TABLE COL*/
+  static const String COL_SITE_INFLUENCER_TYPE_ID = "inflTypeId";
+  static const String COL_SITE_INFLUENCER_TYPE_DESC = "inflTypeDesc";
+
+
+  /* InfluencerCategoryEntity TABLE COL*/
+  static const String COL_SITE_INFLUENCER_CATE_ID = "inflCatId";
+  static const String COL_SITE_INFLUENCER_CATE_DESC = "inflCatDesc";
+
 
 
 
