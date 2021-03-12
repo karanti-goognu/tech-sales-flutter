@@ -338,10 +338,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
      for (int i = 0; i < constructionStageEntity.length; i++) {
-       if (_sitesEntity.siteConstructionId.toString() ==
-           constructionStageEntity[i].id.toString()) {
-         _selectedConstructionType = constructionStageEntity[i];
-       }
+       // if (_sitesEntity.siteConstructionId.toString() ==
+       //     constructionStageEntity[i].id.toString()) {
+       //   _selectedConstructionType = constructionStageEntity[i];
+       // }
      }
 
 
