@@ -1,3 +1,4 @@
+import 'package:flutter_tech_sales/helper/brand_name_db_config.dart';
 import 'package:flutter_tech_sales/helper/database_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
@@ -370,12 +371,13 @@ class SitesDBProvider extends Model {
   }
 
   /*get brand table data*/
-  Future<List<SiteBrandEntity>> fetchBrandData() async {
-    List<SiteBrandEntity> brandEntity=new List<SiteBrandEntity>();
+  Future<List<BrandModelforDB>> fetchBrandData() async {
+    List<BrandModelforDB> brandEntity=new List<BrandModelforDB>();
     var db = await _database;
-    await db.query(DbConstants.TABLE_BRAND_NAME).then((value) {
+   // var res = await db.rawQuery('SELECT DISTINCT brandName FROM brandName');
+    await db.rawQuery("SELECT DISTINCT "+DbConstants.COL_BRAND_NAME+" FROM " +DbConstants.TABLE_BRAND_NAME).then((value) {
       value.forEach((element) {
-        brandEntity.add(SiteBrandEntity.fromJson(element));
+        brandEntity.add(BrandModelforDB.fromDb(element));
       });
     }
     );
@@ -480,5 +482,110 @@ class SitesDBProvider extends Model {
 
     return dataEntity;
   }
+
+
+
+  Future<List<InfluencerTypeEntity>> fetchInfluencerTypeData() async {
+    List<InfluencerTypeEntity> dataEntity=new List<InfluencerTypeEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_INFLUENCER_TYPE).then((value) {
+      value.forEach((element) {
+        dataEntity.add(InfluencerTypeEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
+
+
+  Future<List<InfluencerCategoryEntity>> fetchInfluencerCategoryData() async {
+    List<InfluencerCategoryEntity> dataEntity=new List<InfluencerCategoryEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_INFLUENCER_CATEGORY).then((value) {
+      value.forEach((element) {
+        dataEntity.add(InfluencerCategoryEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
+
+  Future<List<InfluencerEntity>> fetchInfluencerData() async {
+    List<InfluencerEntity> dataEntity=new List<InfluencerEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_INFLUENCER).then((value) {
+      value.forEach((element) {
+        dataEntity.add(InfluencerEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
+
+
+  Future<List<SiteInfluencerEntity>> fetchSiteInfluencerEntityData() async {
+    List<SiteInfluencerEntity> dataEntity=new List<SiteInfluencerEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_INFLUENCER_ENTITY).then((value) {
+      value.forEach((element) {
+        dataEntity.add(SiteInfluencerEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
+
+
+  Future<List<SiteStageEntity>> fetchSiteStageEntityData() async {
+    List<SiteStageEntity> dataEntity=new List<SiteStageEntity>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_SITE_STAGE_ENTITY).then((value) {
+      value.forEach((element) {
+        dataEntity.add(SiteStageEntity.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
+
+  Future<List<CounterListModel>> fetchCounterDealersData() async {
+    List<CounterListModel> dataEntity=new List<CounterListModel>();
+    var db = await _database;
+    await db.query(DbConstants.TABLE_COUNTER_LIST_DEALERS).then((value) {
+      value.forEach((element) {
+        dataEntity.add(CounterListModel.fromJson(element));
+      });
+    }
+    );
+
+    return dataEntity;
+  }
+
+
+  Future<List<DealerForDb>> fetchDealerData() async {
+    List<DealerForDb> dataEntity=new List<DealerForDb>();
+    var db = await _database;
+    var res = await db.rawQuery('SELECT DISTINCT soldToParty, soldToPartyName FROM counterListDealers');
+
+
+    // await db.query(DbConstants.TABLE_COUNTER_LIST_DEALERS).then((value){
+    //   print("dealerEntityForDb>>    ${value.length}");
+    //
+    //   dataEntity = value.map((dealerMap) => DealerForDb.fromDb(dealerMap)).toList();
+    //
+    // });
+    if (res.isNotEmpty) {
+      dataEntity = res.map((dealerMap) => DealerForDb.fromDb(dealerMap)).toList();
+      print("res FROM DB   $res");
+     }
+
+    return dataEntity;
+  }
+
 }
 

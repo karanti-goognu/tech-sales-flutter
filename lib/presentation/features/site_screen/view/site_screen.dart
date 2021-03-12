@@ -796,6 +796,7 @@ class _SiteScreenState extends State<SiteScreen> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
+
                               Navigator.push(
                                   context,
                                   new CupertinoPageRoute(
@@ -1157,12 +1158,13 @@ class _SiteScreenState extends State<SiteScreen> {
   }
   List<SiteStageEntity> data = new List();
   String printSiteStage(int value,SitesDBProvider provider) {
-    provider.querySiteStateValue(value).then((value) => {
-      data = value
+     provider.querySiteStateValue(value).then((value)  {
+
+        data = value;
 
     });
        if (data.length >0) {
-      print("size greater than 0 \n ${data[0].siteStageDesc}");
+
       return "${data[0].siteStageDesc}";
     } else {
       print("size is 0");

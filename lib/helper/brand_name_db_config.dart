@@ -42,7 +42,7 @@ class BrandNameDbConfig{
 
   static Future<List<DealerForDb>> fetchAllDistinctDealers() async {
     Database client = await db.database;
-    var res = await client.rawQuery('SELECT DISTINCT id,dealerName FROM counterListDealers');
+    var res = await client.rawQuery('SELECT DISTINCT id, soldToPartyName FROM counterListDealers');
 
     if (res.isNotEmpty) {
       var dealerNames = res.map((dealerMap) => DealerForDb.fromDb(dealerMap)).toList();
@@ -98,14 +98,14 @@ class DealerForDb{
 
   Map<String, dynamic> toMapForDb() {
     var map = Map<String, dynamic>();
-    map['id'] = id;
-    map['dealerName'] = dealerName;
+    map['soldToParty'] = id;
+    map['soldToPartyName'] = dealerName;
     return map;
   }
 
   DealerForDb.fromDb(Map<String, dynamic> map){
-    this.id = map['id'];
-    this.dealerName = map['dealerName'];
+    this.id = map['soldToParty'];
+    this.dealerName = map['soldToPartyName'];
   }
 
 }

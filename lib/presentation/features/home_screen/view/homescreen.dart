@@ -229,8 +229,11 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         counterListModel = viewSiteDataResponse.counterListModel;
-        if (counterListModel != null) {
+            print("CounterListModel>   ${counterListModel.length}");
+
+            if (counterListModel != null) {
           for (int i = 0; i < counterListModel.length; i++) {
+            print("CounterListModel   ${counterListModel[i].soldToParty}     ${counterListModel[i].soldToPartyName}");
             provider.createCounterListModel(new CounterListModel(soldToParty: counterListModel[i].soldToParty,soldToPartyName: counterListModel[i].soldToPartyName,shipToParty: counterListModel[i].shipToParty,
               shipToPartyName: counterListModel[i].shipToPartyName
             ));

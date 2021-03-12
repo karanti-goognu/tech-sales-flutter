@@ -144,7 +144,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   String geoTagType;
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
   SitesModal sitesModal;
-  SitesEntity _sitesEntity;
+  SitesModal _sitesModel;
 
   List<SiteFloorsEntity> siteFloorsEntity = new List();
 
@@ -163,9 +163,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
   List<SiteBrandEntity> siteBrandEntity = new List();
+
   List<BrandModelforDB> siteBrandEntityfromLoaclDB = new List();
   List<BrandModelforDB> siteProductEntityfromLoaclDB = new List();
   List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage = new List();
+
   List<SiteInfluencerEntity> siteInfluencerEntity = new List();
   List<InfluencerTypeEntity> influencerTypeEntity = new List();
   List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
@@ -196,7 +198,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
  // getSiteData();
     getConstructionData();
 
-     getSiteDetailsDataFromDb(widget.siteId);
+
 
 
   }
@@ -208,7 +210,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       value.forEach((element) {
         if(mounted)
           setState(() {
-          _sitesEntity= SitesEntity.fromJson(element);
+          _sitesModel= SitesModal.fromJson(element);
           _updateWidgets();
           });
 
@@ -222,7 +224,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   getConstructionData() async {
     SitesDBProvider model = ScopedModel.of(this.context);
     model.fetchConstructionStageEntityData().then((value)  {
-      print("fetchConstructionStageEntityData   ${value.length.toString()}");
       setState(() {
         constructionStageEntity.addAll(value);
         constructionStageEntityNew.addAll(value);
@@ -234,7 +235,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
     model.fetchBrandData().then((value)  {
       setState(() {
-        siteBrandEntity.addAll(value);
+        siteBrandEntityfromLoaclDB.addAll(value);
       });
 
 
@@ -292,9 +293,54 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       });
     });
 
+ await model.fetchInfluencerTypeData().then((value){
+      setState(() {
+        influencerTypeEntity.addAll(value);
+      });
+    });
 
 
 
+ await model.fetchInfluencerCategoryData().then((value){
+      setState(() {
+        influencerCategoryEntity.addAll(value);
+      });
+    });
+
+
+ await model.fetchInfluencerData().then((value){
+      setState(() {
+        influencerEntity.addAll(value);
+      });
+    });
+
+ await model.fetchSiteInfluencerEntityData().then((value){
+      setState(() {
+        siteInfluencerEntity.addAll(value);
+      });
+    });
+
+
+ await model.fetchSiteStageEntityData().then((value){
+   print("fetchSiteStageEntityData   ${value.length}");
+      setState(() {
+        siteStageEntity.addAll(value);
+      });
+    });
+
+   await model.fetchCounterDealersData().then((value){
+      setState(() {
+        counterListModel.addAll(value);
+      });
+    });
+ await model.fetchDealerData().then((value){
+      setState(() {
+        dealerEntityForDb.addAll(value);
+       });
+    });
+
+
+    getSiteDetailsDataFromDb(widget.siteId);
 
 
   }
@@ -308,27 +354,50 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   /*Update the values in widgets*/
-  _updateWidgets(){
+  _updateWidgets() async {
 
-    _siteProductDemo.text = _sitesEntity.productDemo;
-    _plotNumber.text = _sitesEntity.plotNumber;
-    _pincode.text = _sitesEntity.sitePincode;
-    _state.text = _sitesEntity.siteState;
-    _district.text = _sitesEntity.siteDistrict;
-    _taluk.text = _sitesEntity.siteTaluk;
-    _rera.text = _sitesEntity.reraNumber;
-    _so.text = _sitesEntity.soCode;
-    geoTagType = _sitesEntity.siteGeotag;
-    _siteBuiltupArea.text = _sitesEntity.siteBuiltArea;
+    _siteProductDemo.text = _sitesModel.siteProductDemo;
+    _plotNumber.text = _sitesModel.sitePlotNumber;
+    _pincode.text = _sitesModel.sitePincode;
+    _state.text = _sitesModel.siteState;
+    _district.text = _sitesModel.siteDistrict;
+    _taluk.text = _sitesModel.siteTaluk;
+    _rera.text = _sitesModel.siteReraNumber;
+    _so.text = _sitesModel.siteSoname;
+    geoTagType = _sitesModel.siteGeotagType;
+    _siteBuiltupArea.text = _sitesModel.siteBuiltArea;
+    _ownerName.text = _sitesModel.siteOwnerName;
+    _contactNumber.text = _sitesModel.siteOwnerContactNumber;
+    _siteTotalPt.text = _sitesModel.siteTotalSitePotential;
+   // _sitesEntity.siteStageId;
 
-  //  _ownerName.text = _sitesEntity.nam;
+    _siteProductDemo.text = _sitesModel.siteProductDemo;
+    if (_siteProductDemo.text == 'N') {
+      isSwitchedsiteProductDemo = false;
+    } else {
+      isSwitchedsiteProductDemo = true;
+    }
+    _siteProductOralBriefing.text = _sitesModel.siteProductOralBriefing;
+
+    if (_siteProductOralBriefing.text == 'N') {
+      isSwitchedsiteProductOralBriefing = false;
+    } else {
+      isSwitchedsiteProductOralBriefing = true;
+    }
+    _siteTotalPt.text = _sitesModel.siteTotalSitePotential;
+
+    if (_siteTotalPt.text == null ||
+        _siteTotalPt.text == "") {
+      _siteTotalBags.clear();
+    } else {
+      _siteTotalBags.text = (double.parse(_siteTotalPt.text) * 20).round().toString();
+    }
 
 
-
-     if (_sitesEntity.noOfFloors != null ||
-         _sitesEntity.noOfFloors != 0) {
+    if (_sitesModel.noOfFloors != null ||
+         _sitesModel.noOfFloors != 0) {
        for (int i = 0; i < siteFloorsEntity.length; i++) {
-         if (_sitesEntity.noOfFloors.toString() ==
+         if (_sitesModel.noOfFloors.toString() ==
              siteFloorsEntity[i].id.toString()) {
            _selectedSiteFloor = siteFloorsEntity[i];
          }
@@ -338,10 +407,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
      for (int i = 0; i < constructionStageEntity.length; i++) {
-       // if (_sitesEntity.siteConstructionId.toString() ==
-       //     constructionStageEntity[i].id.toString()) {
-       //   _selectedConstructionType = constructionStageEntity[i];
-       // }
+       if (_sitesModel.siteConstructionId.toString() ==
+           constructionStageEntity[i].id.toString()) {
+         _selectedConstructionType = constructionStageEntity[i];
+       }
      }
 
 
@@ -356,8 +425,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
 
-    if (viewSiteDataResponse.sitesModal.siteCompetitionId != null) {
-
+    if (_sitesModel.siteCompetitionId != null) {
       for (int i = 0; i < siteCompetitionStatusEntity.length; i++) {
         if (viewSiteDataResponse.sitesModal.siteCompetitionId
             .toString() ==
@@ -366,6 +434,135 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         }
       }
     }
+
+    addNextButtonDisable = false;
+    siteScore = _sitesModel.siteScore;
+
+
+    if (influencerEntity != null &&
+        influencerEntity.length > 0) {
+      for (int i = 0;
+      i < influencerEntity.length;
+      i++) {
+        int originalId;
+        for (int j = 0; j < siteInfluencerEntity.length; j++) {
+          if (influencerEntity[i].id ==
+              siteInfluencerEntity[j].inflId) {
+            influencerEntity[i].isPrimary =
+                siteInfluencerEntity[j].isPrimary;
+            originalId = siteInfluencerEntity[j].id;
+            break;
+          }
+        }
+
+        _listInfluencerDetail.add(new InfluencerDetail(
+            originalId: originalId,
+            isPrimary: influencerEntity[i].isPrimary,
+            isPrimarybool:
+            influencerEntity[i].isPrimary == "Y"
+                ? true
+                : false,
+            id: new TextEditingController(
+                text: influencerEntity[i].id
+                    .toString()),
+            inflContact: new TextEditingController(
+                text:
+                influencerEntity[i].inflContact),
+            inflTypeId: new TextEditingController(
+                text: influencerEntity[i].inflTypeId
+                    .toString()),
+            inflTypeValue: inflTypeValue(new TextEditingController(
+                text: influencerEntity[i].inflTypeId
+                    .toString())),
+            inflCatId: new TextEditingController(
+                text:influencerEntity[i].inflCatId
+                    .toString()),
+            inflCatValue: inflCatValue(new TextEditingController(
+                text: influencerEntity[i].inflCatId
+                    .toString())),
+            inflName:
+            new TextEditingController(text: influencerEntity[i].inflName),
+            ilpIntrested: new TextEditingController(text: influencerEntity[i].ilpIntrested),
+            createdOn: new TextEditingController(text:influencerEntity[i].createdOn.toString()),
+            isExpanded: false));
+      }
+      initialInfluencerLength =
+          influencerEntity.length;
+    }
+
+    if (_sitesModel.siteGeotagLatitude != null &&
+        _sitesModel.siteGeotagLongitude != null &&
+        _sitesModel.siteGeotagLatitude != "null" &&
+        _sitesModel.siteGeotagLongitude != "null" &&
+        _sitesModel.siteGeotagLatitude != "" &&
+        _sitesModel.siteGeotagLongitude != "") {
+      _currentPosition = new Position(
+          latitude: double.parse(_sitesModel.siteGeotagLatitude),
+          longitude: double.parse(_sitesModel.siteGeotagLongitude));
+    }
+
+    print("siteStageEntity ???  ${siteStageEntity.length}");
+
+    for (int i = 0; i < siteStageEntity.length; i++) {
+      if (_sitesModel.siteStageId.toString() ==
+          siteStageEntity[i].id.toString()) {
+        labelText = siteStageEntity[i].siteStageDesc;
+        labelId = siteStageEntity[i].id;
+      }
+
+
+    }
+
+    if (_sitesModel.siteProbabilityWinningId !=
+        null) {
+      for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
+        if (_sitesModel.siteProbabilityWinningId
+            .toString() ==
+            siteProbabilityWinningEntity[i].id.toString()) {
+          labelProbabilityId = siteProbabilityWinningEntity[i].id;
+          _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
+        }
+      }
+    }
+
+    if (_sitesModel.siteProbabilityWinningId !=
+        null) {
+      for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
+        if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId
+            .toString() ==
+            siteProbabilityWinningEntity[i].id.toString()) {
+          labelProbabilityId = siteProbabilityWinningEntity[i].id;
+          _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
+        }
+      }
+    }
+    if ( _sitesModel.siteOppertunityId != null) {
+      for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
+        if ( _sitesModel.siteOppertunityId
+            .toString() ==
+            siteOpportunityStatusEntity[i].id.toString()) {
+          _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
+        }
+      }
+    }
+
+
+    // for (int i = 0; i < counterListModel.length; i++) {
+    //   int id = await BrandNameDbConfig.addDealer(DealerForDb(
+    //       counterListModel[i].soldToParty,
+    //       counterListModel[i].soldToPartyName));
+    //   print("ADDED :  $id");
+    // }
+
+
+    myFocusNode = FocusNode();
+    myFocusNode.requestFocus();
+
+
+
+
+
+
    }
 
 
@@ -384,20 +581,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         // print(viewSiteDataResponse);
         await BrandNameDbConfig.clearTable();
         siteBrandEntity = viewSiteDataResponse!=null?viewSiteDataResponse.siteBrandEntity: List<SiteBrandEntity>();
-        counterListModel = viewSiteDataResponse.counterListModel;
-        // print(counterListModel);
-        // print("aaaaaaaaaaaaaaa");
+
 
         for (int i = 0; i < siteBrandEntity.length; i++) {
           await BrandNameDbConfig.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
               siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
-        }
-
-        for (int i = 0; i < counterListModel.length; i++) {
-          int id = await BrandNameDbConfig.addDealer(DealerForDb(
-              counterListModel[i].soldToParty,
-              counterListModel[i].soldToPartyName));
-          print("ADDED :  $id");
         }
 
         // print("list Size");
@@ -405,276 +593,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         dealerEntityForDb = await BrandNameDbConfig.fetchAllDistinctDealers();
         dealerEntityForDb.forEach((e) => print(e.toMapForDb().toString()));
 
-        setState(() {
-          addNextButtonDisable = false;
-         // siteScore = viewSiteDataResponse.sitesModal.siteScore;
-          siteScore = _sitesEntity.siteScore;
-
-          siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
-          siteFloorsEntityNew = viewSiteDataResponse.siteFloorsEntity;
-          siteFloorsEntityNewNextStage = viewSiteDataResponse.siteFloorsEntity;
-
-          siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
-
-          siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
-
-          sitephotosEntity = viewSiteDataResponse.sitephotosEntity;
-          influencerTypeEntity = viewSiteDataResponse.influencerTypeEntity;
-
-          //  print(influencerTypeEntity.length);
-          influencerCategoryEntity =
-              viewSiteDataResponse.influencerCategoryEntity;
-
-          if (sitephotosEntity != null) {
-            for (int i = 0; i < sitephotosEntity.length; i++) {
-              File file = new File(UrlConstants.baseUrlforImagesSites +
-                  "/" +
-                  sitephotosEntity[i].photoName);
-              _imgDetails.add(new ImageDetails("Network", file));
-            }
-          }
-
-          influencerEntity = viewSiteDataResponse.influencerEntity;
-          siteInfluencerEntity = viewSiteDataResponse.siteInfluencerEntity;
-
-          // print(viewSiteDataResponse.influencerEntity.length);
-          if (viewSiteDataResponse.influencerEntity != null &&
-              viewSiteDataResponse.influencerEntity.length > 0) {
-            for (int i = 0;
-                i < viewSiteDataResponse.influencerEntity.length;
-                i++) {
-              int originalId;
-              for (int j = 0; j < siteInfluencerEntity.length; j++) {
-                if (viewSiteDataResponse.influencerEntity[i].id ==
-                    siteInfluencerEntity[j].inflId) {
-                  viewSiteDataResponse.influencerEntity[i].isPrimary =
-                      siteInfluencerEntity[j].isPrimary;
-                  originalId = siteInfluencerEntity[j].id;
-                  break;
-                }
-              }
-
-              _listInfluencerDetail.add(new InfluencerDetail(
-                  originalId: originalId,
-                  isPrimary: viewSiteDataResponse.influencerEntity[i].isPrimary,
-                  isPrimarybool:
-                      viewSiteDataResponse.influencerEntity[i].isPrimary == "Y"
-                          ? true
-                          : false,
-                  id: new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].id
-                          .toString()),
-                  inflContact: new TextEditingController(
-                      text:
-                          viewSiteDataResponse.influencerEntity[i].inflContact),
-                  //createdBy: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflContact),
-                  inflTypeId: new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].inflTypeId
-                          .toString()),
-                  inflTypeValue: inflTypeValue(new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].inflTypeId
-                          .toString())),
-                  inflCatId: new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].inflCatId
-                          .toString()),
-                  inflCatValue: inflCatValue(new TextEditingController(
-                      text: viewSiteDataResponse.influencerEntity[i].inflCatId
-                          .toString())),
-                  inflName:
-                      new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflName),
-                  ilpIntrested: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].ilpIntrested),
-                  createdOn: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].createdOn.toString()),
-                  isExpanded: false));
-            }
-            initialInfluencerLength =
-                viewSiteDataResponse.influencerEntity.length;
-          }
-          // print('pppppppppppppppppppppppp');
-          print(viewSiteDataResponse.siteVisitHistoryEntity);
-          // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
-          siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
-          // print(viewSiteDataResponse.siteVisitHistoryEntity.length);
-          sitesModal = viewSiteDataResponse.sitesModal;
-         // _siteProductDemo.text = sitesModal.siteProductDemo;
-          _siteProductDemo.text = _sitesEntity.productDemo;
-          if (_siteProductDemo.text == 'N') {
-            isSwitchedsiteProductDemo = false;
-          } else {
-            isSwitchedsiteProductDemo = true;
-          }
-
-        //  _siteProductOralBriefing.text = sitesModal.siteProductOralBriefing;
-          _siteProductOralBriefing.text = _sitesEntity.productOralBriefing;
-
-          if (_siteProductOralBriefing.text == 'N') {
-            isSwitchedsiteProductOralBriefing = false;
-          } else {
-            isSwitchedsiteProductOralBriefing = true;
-          }
-
-          _ownerName.text = sitesModal.siteOwnerName;
-          print("_contactNumber     ${_sitesEntity.contactNumber}");
-        //  _contactNumber.text = _sitesEntity.contactNumber;
-
-          _siteTotalPt.text = sitesModal.siteTotalSitePotential;
-  // _ownerName.text = sitesModal.siteOwnerName;
-  //         _contactNumber.text = sitesModal.siteOwnerContactNumber;
-  //
-  //         _siteTotalPt.text = sitesModal.siteTotalSitePotential;
-
-          if (_siteTotalPt.text == null ||
-              _siteTotalPt.text == "") {
-            _siteTotalBags.clear();
-          } else {
-            _siteTotalBags.text = (double.parse(_siteTotalPt.text) * 20).round().toString();
-          }
-          // print("Dhawan");
-          // print(sitesModal.siteStageId);
-          //  print(sitesModal.);
-          //  print(sit);
-          // print(sitesModal.)
-
-          _plotNumber.text = _sitesEntity.plotNumber;
-
-         // _siteAddress.text = _sitesEntity.ad;
-          _pincode.text = _sitesEntity.sitePincode;
-          _state.text = _sitesEntity.siteState;
-          _district.text = _sitesEntity.siteDistrict;
-          _taluk.text = _sitesEntity.siteTaluk;
-          _rera.text = _sitesEntity.reraNumber;
-         // _dealerName.text = _sitesEntity.siteDealerName;
-          _so.text = _sitesEntity.soCode;
-          geoTagType = _sitesEntity.siteGeotag;
- // _plotNumber.text = sitesModal.sitePlotNumber;
- //          _siteAddress.text = sitesModal.siteAddress;
- //          _pincode.text = sitesModal.sitePincode;
- //          _state.text = sitesModal.siteState;
- //          _district.text = sitesModal.siteDistrict;
- //          _taluk.text = sitesModal.siteTaluk;
- //          _rera.text = sitesModal.siteReraNumber;
- //          _dealerName.text = sitesModal.siteDealerName;
- //          _so.text = sitesModal.siteSoname;
- //          geoTagType = sitesModal.siteGeotagType;
-
-
-          if (_sitesEntity.siteGeotagLat != null &&
-              _sitesEntity.siteGeotagLong != null &&
-              _sitesEntity.siteGeotagLat != "null" &&
-              _sitesEntity.siteGeotagLong != "null" &&
-              _sitesEntity.siteGeotagLat != "" &&
-              _sitesEntity.siteGeotagLong != "") {
-            _currentPosition = new Position(
-                latitude: double.parse(_sitesEntity.siteGeotagLat),
-                longitude: double.parse(_sitesEntity.siteGeotagLong));
-          }
-
-          siteStageEntity = viewSiteDataResponse.siteStageEntity;
-          for (int i = 0; i < siteStageEntity.length; i++) {
-            if (_sitesEntity.siteStageId.toString() ==
-                siteStageEntity[i].id.toString()) {
-              labelText = siteStageEntity[i].siteStageDesc;
-              labelId = siteStageEntity[i].id;
-            }
-
-            // if (viewSiteDataResponse.sitesModal.siteStageId.toString() ==
-            //     siteStageEntity[i].id.toString()) {
-            //   labelText = siteStageEntity[i].siteStageDesc;
-            //   labelId = siteStageEntity[i].id;
-            // }
-          }
-
-          constructionStageEntityNew =
-              viewSiteDataResponse.constructionStageEntity;
-          constructionStageEntityNewNextStage =
-              viewSiteDataResponse.constructionStageEntity;
-
-          constructionStageEntity =
-              viewSiteDataResponse.constructionStageEntity;
-
-          for (int i = 0; i < constructionStageEntity.length; i++) {
-            if (viewSiteDataResponse.sitesModal.siteConstructionId.toString() ==
-                constructionStageEntity[i].id.toString()) {
-              _selectedConstructionType = constructionStageEntity[i];
-            }
-          }
-
-          siteProbabilityWinningEntity =
-              viewSiteDataResponse.siteProbabilityWinningEntity;
-
-          if (_sitesEntity.siteProbabilityWinningId !=
-              null) {
-            for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
-              if (_sitesEntity.siteProbabilityWinningId
-                      .toString() ==
-                  siteProbabilityWinningEntity[i].id.toString()) {
-                labelProbabilityId = siteProbabilityWinningEntity[i].id;
-                _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
-              }
-            }
-          }
- // if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId !=
- //              null) {
- //            for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
- //              if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId
- //                      .toString() ==
- //                  siteProbabilityWinningEntity[i].id.toString()) {
- //                labelProbabilityId = siteProbabilityWinningEntity[i].id;
- //                _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
- //              }
- //            }
- //          }
-
-          siteCompetitionStatusEntity =
-              viewSiteDataResponse.siteCompetitionStatusEntity;
-          if (viewSiteDataResponse.sitesModal.siteCompetitionId != null) {
-
-            for (int i = 0; i < siteCompetitionStatusEntity.length; i++) {
-              if (viewSiteDataResponse.sitesModal.siteCompetitionId
-                      .toString() ==
-                  siteCompetitionStatusEntity[i].id.toString()) {
-                _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
-              }
-            }
-          }
-
-          siteOpportunityStatusEntity =
-              viewSiteDataResponse.siteOpportunityStatusEntity;
-          if ( _sitesEntity.siteOppertunityId != null) {
-
-            for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
-              if ( _sitesEntity.siteOppertunityId
-                      .toString() ==
-                  siteOpportunityStatusEntity[i].id.toString()) {
-                _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
-              }
-            }
-          }
- // if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
- //
- //            for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
- //              if (viewSiteDataResponse.sitesModal.siteOppertunityId
- //                      .toString() ==
- //                  siteOpportunityStatusEntity[i].id.toString()) {
- //                _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
- //              }
- //            }
- //          }
-
-          if (viewSiteDataResponse.sitesModal.noOfFloors != null ||
-              viewSiteDataResponse.sitesModal.noOfFloors != 0) {
-
-            for (int i = 0; i < siteFloorsEntity.length; i++) {
-              if (viewSiteDataResponse.sitesModal.noOfFloors.toString() ==
-                  siteFloorsEntity[i].id.toString()) {
-                _selectedSiteFloor = siteFloorsEntity[i];
-              }
-            }
-          }
-
-          _siteBuiltupArea.text = sitesModal.siteBuiltArea;
-          myFocusNode = FocusNode();
-          myFocusNode.requestFocus();
-        });
       });
       // Future.delayed(
       //     Duration.zero,
@@ -772,7 +690,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   : Container(),
                             ],
                           ),
-                          SizedBox(width: 100),
+                          SizedBox(width: 70),
                           Expanded(
                             child: Container(
                               padding:
@@ -3242,7 +3160,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         child: Text(
                           label.opportunityStatus,
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                         ),
@@ -4351,7 +4269,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 child: Padding(
                   padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
                   child: Text(
-                    "UPDATE",
+                    "UPDATE",  //iNFluncer
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
