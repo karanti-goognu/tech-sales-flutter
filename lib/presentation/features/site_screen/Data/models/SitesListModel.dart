@@ -77,7 +77,9 @@ class SitesEntity {
   bool syncStatus;
 
   SitesEntity(
-      {this.siteId,
+      {
+
+        this.siteId,
       this.leadId,
       this.siteSegment,
       this.assignedTo,

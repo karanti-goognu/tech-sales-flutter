@@ -5,12 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
-import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -35,7 +34,6 @@ class _SiteScreenState extends State<SiteScreen> {
   // Instantiate your class using Get.put() to make it available for all "child" routes there.
   SiteController _siteController = Get.find();
   AppController _appController = Get.find();
-  SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
   int selectedPosition = 0;
@@ -63,51 +61,51 @@ class _SiteScreenState extends State<SiteScreen> {
     return result;
   }
 
-  storeOfflineSiteData() async {
-    SitesDBProvider model = ScopedModel.of(this.context);
-    model.clearTable();
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-    if (_siteController.sitesListResponse.sitesEntity != null) {
-      for (int i = 0;
-          i < _siteController.sitesListResponse.sitesEntity.length;
-          i++) {
-        SitesEntity siteEntity = new SitesEntity(
-            siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
-            leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
-            siteDistrict:
-                _siteController.sitesListResponse.sitesEntity[i].siteDistrict,
-            siteStageId:
-                _siteController.sitesListResponse.sitesEntity[i].siteStageId,
-            siteStatusId:
-            _siteController.sitesListResponse.sitesEntity[i].siteStatusId,
-            siteCreationDate: _siteController
-                .sitesListResponse.sitesEntity[i].siteCreationDate,
-            sitePotentialMt: _siteController
-                .sitesListResponse.sitesEntity[i].sitePotentialMt,
-            siteOppertunityId: _siteController
-                .sitesListResponse.sitesEntity[i].siteOppertunityId,
-            siteScore:
-                _siteController.sitesListResponse.sitesEntity[i].siteScore,
-            contactNumber: _siteController.sitesListResponse.sitesEntity[i].contactNumber,
-            sitePincode: _siteController.sitesListResponse.sitesEntity[i].sitePincode,
-            siteProbabilityWinningId: _siteController.sitesListResponse.sitesEntity[i].siteProbabilityWinningId,
-            syncStatus:true);
-        // SiteListModelForDB siteListModelForDb = new SiteListModelForDB(null, json.encode(siteEntity));
-        // await db.addSiteEntityInDraftList(siteListModelForDb);
-        // await db.insertSiteEntityInTable(siteEntity);
-        model.createSiteEntity(siteEntity);
-        model.fetchAllSites().then((value) => {
-
-        });
-        // db.fetchAllSites().then((value) {
-        //    setState(() {
-        //      _siteController.fetchSiteList();
-        //    });
-        // });
-
-      }
-    }
-  }
+  // storeOfflineSiteData() async {
+  //   SitesDBProvider model = ScopedModel.of(this.context);
+  //   model.clearTable();
+  //   _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+  //   if (_siteController.sitesListResponse.sitesEntity != null) {
+  //     for (int i = 0;
+  //         i < _siteController.sitesListResponse.sitesEntity.length;
+  //         i++) {
+  //       SitesEntity siteEntity = new SitesEntity(
+  //           siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
+  //           leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
+  //           siteDistrict:
+  //               _siteController.sitesListResponse.sitesEntity[i].siteDistrict,
+  //           siteStageId:
+  //               _siteController.sitesListResponse.sitesEntity[i].siteStageId,
+  //           siteStatusId:
+  //           _siteController.sitesListResponse.sitesEntity[i].siteStatusId,
+  //           siteCreationDate: _siteController
+  //               .sitesListResponse.sitesEntity[i].siteCreationDate,
+  //           sitePotentialMt: _siteController
+  //               .sitesListResponse.sitesEntity[i].sitePotentialMt,
+  //           siteOppertunityId: _siteController
+  //               .sitesListResponse.sitesEntity[i].siteOppertunityId,
+  //           siteScore:
+  //               _siteController.sitesListResponse.sitesEntity[i].siteScore,
+  //           contactNumber: _siteController.sitesListResponse.sitesEntity[i].contactNumber,
+  //           sitePincode: _siteController.sitesListResponse.sitesEntity[i].sitePincode,
+  //           siteProbabilityWinningId: _siteController.sitesListResponse.sitesEntity[i].siteProbabilityWinningId,
+  //           syncStatus:true);
+  //       // SiteListModelForDB siteListModelForDb = new SiteListModelForDB(null, json.encode(siteEntity));
+  //       // await db.addSiteEntityInDraftList(siteListModelForDb);
+  //       // await db.insertSiteEntityInTable(siteEntity);
+  //       model.createSiteEntity(siteEntity);
+  //       model.fetchAllSites().then((value) => {
+  //
+  //       });
+  //       // db.fetchAllSites().then((value) {
+  //       //    setState(() {
+  //       //      _siteController.fetchSiteList();
+  //       //    });
+  //       // });
+  //
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
@@ -116,28 +114,34 @@ class _SiteScreenState extends State<SiteScreen> {
     // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     // fetchSiteList();
 
-    internetChecking().then((result) => {
-          if (result == true)
-            {
-              internetCheck = true,
-              Get.snackbar(
-                  "Internet connection Available.", "Fetching from API.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.green,
-                  snackPosition: SnackPosition.BOTTOM),
-              storeOfflineSiteData()
-            }
-          else
-            {
-              Get.snackbar(
-                  "No internet connection.", "Fetching data from Database.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-              internetCheck = false,
-              // fetchSiteList()
-            }
-        });
+    SitesDBProvider model = ScopedModel.of(this.context);
+    model.fetchAllSites().then((value) => {
+
+    });
+
+
+    // internetChecking().then((result) => {
+    //       if (result == true)
+    //         {
+    //           internetCheck = true,
+    //           Get.snackbar(
+    //               "Internet connection Available.", "Fetching from API.",
+    //               colorText: Colors.white,
+    //               backgroundColor: Colors.green,
+    //               snackPosition: SnackPosition.BOTTOM),
+    //           // storeOfflineSiteData()
+    //         }
+    //       else
+    //         {
+    //           Get.snackbar(
+    //               "No internet connection.", "Fetching data from Database.",
+    //               colorText: Colors.white,
+    //               backgroundColor: Colors.red,
+    //               snackPosition: SnackPosition.BOTTOM),
+    //           internetCheck = false,
+    //           // fetchSiteList()
+    //         }
+    //     });
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
   }
@@ -436,10 +440,10 @@ class _SiteScreenState extends State<SiteScreen> {
                       ),
                     ),
                     // Expanded(child: leadsDetailWidget(model)),
-                    Expanded(child:FutureBuilder<List<SitesEntity>>(
+                    Expanded(child:FutureBuilder<List<SitesModal>>(
                       future: model.fetchAllSites1(),
                       // future: model.fetchAllSites(),
-                      builder: (BuildContext context, AsyncSnapshot<List<SitesEntity>> snapshot) {
+                      builder: (BuildContext context, AsyncSnapshot<List<SitesModal>> snapshot) {
                         if (snapshot.hasData) {
                           return ListView.builder(
                               itemCount:snapshot.data.length,
@@ -447,7 +451,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                   left: 10.0, right: 10, bottom: 10),
                               // itemExtent: 125.0,
                               itemBuilder: (context, index) {
-                                SitesEntity siteList = snapshot.data[index];
+                                SitesModal siteList = snapshot.data[index];
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.push(
@@ -529,7 +533,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                               label: Text(
                                                                 (printSiteStage(
                                                                     siteList
-                                                                        .siteStageId)),
+                                                                        .siteStageId,model)),
                                                                 style: TextStyle(
                                                                     color: HexColor(
                                                                         "#39B54A"),
@@ -600,7 +604,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                               ),
                                                             ),
                                                             Text(
-                                                              "${siteList.sitePotentialMt}MT",
+                                                              "${siteList.siteTotalSitePotential}MT",
                                                               style: TextStyle(
                                                                 // color: Colors.black38,
                                                                   fontSize: 15,
@@ -622,7 +626,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                             ? ""
                                                             : printOpportuityStatus(
                                                             siteList
-                                                                .siteOppertunityId),
+                                                                .siteOppertunityId,model),
                                                         style: TextStyle(
                                                             color: Colors.blue,
                                                             fontSize: 10,
@@ -657,7 +661,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                           ),
                                                           GestureDetector(
                                                             child: Text(
-                                                              "${siteList.contactNumber}",
+                                                              "${siteList.siteOwnerContactNumber}",
                                                               style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontSize: 15,
@@ -672,7 +676,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                             onTap: () {
                                                               String num =
                                                                   siteList
-                                                                      .contactNumber;
+                                                                      .siteOwnerContactNumber;
                                                               launch('tel:$num');
                                                             },
                                                           ),
@@ -706,7 +710,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       ? ""
                                                       : printProbabilityOfWinning(
                                                       siteList
-                                                          .siteProbabilityWinningId),
+                                                          .siteProbabilityWinningId,model),
                                                   style: TextStyle(
                                                       color: Colors.blue,
                                                       fontSize: 12,
@@ -898,7 +902,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                         label: Text(
                                                             (printSiteStage(
                                                                 siteList[index]
-                                                                    .siteStageId)),
+                                                                    .siteStageId,model)),
                                                             style: TextStyle(
                                                                 color: HexColor(
                                                                     "#39B54A"),
@@ -990,7 +994,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       ? ""
                                                       : printOpportuityStatus(
                                                           siteList[index]
-                                                              .siteOppertunityId),
+                                                              .siteOppertunityId,model),
                                                   style: TextStyle(
                                                       color: Colors.blue,
                                                       fontSize: 10,
@@ -1084,7 +1088,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                 ? ""
                                                 : printProbabilityOfWinning(
                                                     siteList[index]
-                                                        .siteProbabilityWinningId),
+                                                        .siteProbabilityWinningId,model),
                                             style: TextStyle(
                                                 color: Colors.blue,
                                                 fontSize: 12,
@@ -1123,12 +1127,13 @@ class _SiteScreenState extends State<SiteScreen> {
         color: Colors.white);
   }
 
-  String printOpportuityStatus(int value) {
-    List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
-        _splashController.splashDataModel.siteOpportunityStatusRepository
-            .where((i) => i.id == value));
+  String printOpportuityStatus(int value,SitesDBProvider provider) {
+    List<SiteOpportunityStatusEntity> data = new List();
+    provider.fetchSiteOpportunityById(value).then((value) => {
+      data = value
+    });
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
+      print("size greater than 0 \n ${data[0].opportunityStatus}");
       return "${data[0].opportunityStatus}";
     } else {
       print("size is 0");
@@ -1136,11 +1141,11 @@ class _SiteScreenState extends State<SiteScreen> {
     }
   }
 
-  String printProbabilityOfWinning(int value) {
-    List<SiteProbabilityWinningEntity> data =
-        List<SiteProbabilityWinningEntity>.from(_splashController
-            .splashDataModel.siteProbabilityWinningEntity
-            .where((i) => i.id == value));
+  String printProbabilityOfWinning(int value,SitesDBProvider provider) {
+    List<SiteProbabilityWinningEntity> data = new List();
+    provider.fetchSiteProbabilityWinningEntity(value).then((value) => {
+      data = value
+    });
     if (data.length >= 1) {
       print(
           "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
@@ -1150,13 +1155,14 @@ class _SiteScreenState extends State<SiteScreen> {
       return "";
     }
   }
+  List<SiteStageEntity> data = new List();
+  String printSiteStage(int value,SitesDBProvider provider) {
+    provider.querySiteStateValue(value).then((value) => {
+      data = value
 
-  String printSiteStage(int value) {
-    List<SiteStageEntity> data = List<SiteStageEntity>.from(_splashController
-        .splashDataModel.siteStageEntity
-        .where((i) => i.id == value));
-    if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
+    });
+       if (data.length >0) {
+      print("size greater than 0 \n ${data[0].siteStageDesc}");
       return "${data[0].siteStageDesc}";
     } else {
       print("size is 0");

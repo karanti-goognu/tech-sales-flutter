@@ -76,6 +76,7 @@ class SitesEntity {
   int updatedOn;
   bool syncStatus;
 
+
   SitesEntity(
       {this.siteId,
       this.leadId,
@@ -190,4 +191,5 @@ class SitesEntity {
     data['updatedOn'] = this.updatedOn;
     return data;
   }
+
 }

@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -70,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
     provider.clearRefreshTable();
     SiteRefreshDataResponse viewSiteDataResponse = new SiteRefreshDataResponse();
     List<SitephotosEntity> sitephotosList = new List();
-    List<SitesModal> sitesModal = new List();
+    List<SitesModal> sitesEntity = new List();
     List<SiteFloorsEntity> siteFloorsEntity = new List();
     List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
     List<ConstructionStageEntity> constructionStageEntity = new List();
@@ -82,6 +83,12 @@ class _HomeScreenState extends State<HomeScreen> {
     List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
     List<CounterListModel> counterListModel = new List();
 
+    List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
+    List<SiteInfluencerEntity> siteInfluencerEntity = new List();
+    List<InfluencerTypeEntity> influencerTypeEntity = new List();
+
+    List<SiteStageEntity> siteStageEntity = new List();
+
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _siteController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
@@ -90,6 +97,53 @@ class _HomeScreenState extends State<HomeScreen> {
           .then((data) async {
             print("data   $data");
         viewSiteDataResponse = data;
+
+        sitesEntity = viewSiteDataResponse.sitesModal;
+        if (sitesEntity != null) {
+          for (int i = 0; i < sitesEntity.length; i++) {
+            print("SiteRefresh--->"+sitesEntity[0].siteSoname);
+
+            SitesModal siteEntity = new SitesModal(
+                        siteId: sitesEntity[i].siteId,
+                siteBuiltArea: sitesEntity[i].siteBuiltArea,
+                siteProductDemo: sitesEntity[i].siteProductDemo,
+                siteProductOralBriefing: sitesEntity[i].siteProductOralBriefing,
+                sitePlotNumber: sitesEntity[i].sitePlotNumber,
+                siteTotalSitePotential: sitesEntity[i].siteTotalSitePotential,
+                siteOwnerName: sitesEntity[i].siteOwnerName,
+                siteOwnerContactNumber: sitesEntity[i].siteOwnerContactNumber,
+                siteAddress: sitesEntity[i].siteAddress,
+                siteState: sitesEntity[i].siteState,
+                siteDistrict: sitesEntity[i].siteDistrict,
+                siteTaluk: sitesEntity[i].siteTaluk,
+                sitePincode: sitesEntity[i].sitePincode,
+                siteGeotagLatitude: sitesEntity[i].siteGeotagLatitude,
+                siteGeotagLongitude: sitesEntity[i].siteGeotagLongitude,
+                siteGeotagType: sitesEntity[i].siteGeotagType,
+                siteReraNumber: sitesEntity[i].siteReraNumber,
+                siteDealerId: sitesEntity[i].siteDealerId,
+                siteDealerName: sitesEntity[i].siteDealerName,
+                siteSoId: sitesEntity[i].siteSoId,
+                siteSoname: sitesEntity[i].siteSoname,
+                siteStageId: sitesEntity[i].siteStageId,
+                inactiveReasonText: sitesEntity[i].inactiveReasonText,
+                siteNextVisitDate: sitesEntity[i].siteNextVisitDate,
+                siteClosureReasonText: sitesEntity[i].siteClosureReasonText,
+                siteProbabilityWinningId: sitesEntity[i].siteProbabilityWinningId,
+                siteCompetitionId: sitesEntity[i].siteCompetitionId,
+                siteOppertunityId: sitesEntity[i].siteOppertunityId,
+                assignedTo: sitesEntity[i].assignedTo,
+                siteStatusId: sitesEntity[i].siteStatusId,
+                siteCreationDate: sitesEntity[i].siteCreationDate,
+                siteConstructionId: sitesEntity[i].siteConstructionId,
+                noOfFloors: sitesEntity[i].noOfFloors,
+                siteScore: sitesEntity[i].siteScore,
+                syncStatus:true);
+
+            provider.createSiteEntity(siteEntity);
+
+          }
+        }
 
         sitephotosList = viewSiteDataResponse.sitePhotosEntity;
         if (sitephotosList != null) {
@@ -182,6 +236,41 @@ class _HomeScreenState extends State<HomeScreen> {
             ));
           }
         }
+
+        siteInfluencerEntity = viewSiteDataResponse.siteInfluencerEntity;
+        if (siteInfluencerEntity != null) {
+          for (int i = 0; i < siteInfluencerEntity.length; i++) {
+            provider.createSiteInfluencerEntity(new SiteInfluencerEntity(isPrimary: siteInfluencerEntity[i].isPrimary,id: siteInfluencerEntity[i].id,siteId: siteInfluencerEntity[i].siteId,
+                inflId: siteInfluencerEntity[i].inflId,isDelete: siteInfluencerEntity[i].isDelete,createdBy: siteInfluencerEntity[i].createdBy,createdOn: siteInfluencerEntity[i].createdOn,updatedBy: siteInfluencerEntity[i].updatedBy,
+              updatedOn: siteInfluencerEntity[i].updatedOn
+            ));
+          }
+        }
+
+        influencerTypeEntity = viewSiteDataResponse.influencerTypeEntity;
+        if (influencerTypeEntity != null) {
+          for (int i = 0; i < influencerTypeEntity.length; i++) {
+            provider.createInfluencerTypeEntity(new InfluencerTypeEntity(inflTypeId: influencerTypeEntity[i].inflTypeId,inflTypeDesc: influencerTypeEntity[i].inflTypeDesc
+            ));
+          }
+        }
+
+        influencerCategoryEntity = viewSiteDataResponse.influencerCategoryEntity;
+        if (influencerCategoryEntity != null) {
+          for (int i = 0; i < influencerCategoryEntity.length; i++) {
+            provider.createInfluencerCategoryEntity(new InfluencerCategoryEntity(inflCatId: influencerCategoryEntity[i].inflCatId,inflCatDesc: influencerCategoryEntity[i].inflCatDesc
+            ));
+          }
+        }
+
+        siteStageEntity = viewSiteDataResponse.siteStageEntity;
+        if (siteStageEntity != null) {
+          for (int i = 0; i < siteStageEntity.length; i++) {
+            provider.createSiteStageEntity(new SiteStageEntity(id: siteStageEntity[i].id,siteStageDesc: siteStageEntity[i].siteStageDesc
+            ));
+          }
+        }
+
       });
     });
   }
@@ -336,12 +425,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         GestureDetector(
                           onTap: () {
                             SitesDBProvider model = ScopedModel.of(this.context);
+
                             model.fetchAllComm().then((value) => {
                               print("SiteRefresh--->"+value.toString())
                             });
 
                             Get.dialog(CustomDialogs()
                                 .errorDialog("Page Coming Soon .... "));
+
+                            model.fetchAllSiteFloor().then((value) => {
+                              print("SiteRefresh--->"+value.toString())
+                            });
+                            // Get.dialog(CustomDialogs()
+                            //     .errorDialog("Page Coming Soon .... "));
+
                           },
                           child: Container(
                             height: 40,
