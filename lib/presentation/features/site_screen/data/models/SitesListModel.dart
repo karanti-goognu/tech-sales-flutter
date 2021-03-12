@@ -73,9 +73,6 @@ class SitesEntity {
   String createdBy;
   int createdOn;
   String updatedBy;
-  String siteAddress;
-  String siteCompetitionId;
-  int siteConstructionId;
   int updatedOn;
   bool syncStatus;
 
@@ -115,10 +112,7 @@ class SitesEntity {
       this.createdOn,
       this.updatedBy,
       this.updatedOn,
-      this.syncStatus,
-      this.siteAddress,
-        this.siteCompetitionId,this.siteConstructionId
-      });
+      this.syncStatus});
 
   SitesEntity.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -129,6 +123,8 @@ class SitesEntity {
     siteStageId = json['siteStageId'];
     contactName = json['contactName'];
     contactNumber = json['contactNumber'];
+    siteOppertunityId = json['siteOppertunityId'];
+    siteProbabilityWinningId = json['siteProbabilityWinningId'];
     siteCreationDate = json['siteCreationDate'];
     siteGeotag = json['siteGeotag'];
     siteGeotagLat = json['siteGeotagLat'];
@@ -137,12 +133,9 @@ class SitesEntity {
     siteState = json['siteState'];
     siteDistrict = json['siteDistrict'];
     siteTaluk = json['siteTaluk'];
+    siteScore = json['siteScore'];
     sitePotentialMt = json['sitePotentialMt'];
     reraNumber = json['reraNumber'];
-    createdBy = json['createdBy'];
-    createdOn = json['createdOn'];
-    updatedBy = json['updatedBy'];
-    updatedOn = json['updatedOn'];
     dealerId = json['dealerId'];
     siteBuiltArea = json['siteBuiltArea'];
     noOfFloors = json['noOfFloors'];
@@ -153,15 +146,10 @@ class SitesEntity {
     inactiveReasonText = json['inactiveReasonText'];
     nextVisitDate = json['nextVisitDate'];
     closureReasonText = json['closureReasonText'];
-    siteAddress = json['siteAddress'];
-    siteProbabilityWinningId = json['siteProbabilityWinningId'];
-    siteConstructionId = json['siteConstructionId'];
-    siteCompetitionId = json['siteCompetitionId'];
-    siteOppertunityId = json['siteOppertunityId'];
-    siteScore = json['siteScore'];
-
-
-
+    createdBy = json['createdBy'];
+    createdOn = json['createdOn'];
+    updatedBy = json['updatedBy'];
+    updatedOn = json['updatedOn'];
   }
 
   Map<String, dynamic> toJson() {final Map<String, dynamic> data = new Map<String, dynamic>();
