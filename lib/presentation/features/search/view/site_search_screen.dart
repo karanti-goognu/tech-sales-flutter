@@ -88,7 +88,7 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                       ),
                     ),
                   ),
-                  new Expanded(child: leadsDetailWidget1(model)),
+                  new Expanded(child: leadsDetailWidget()),
                 ],
               ),
             ))
@@ -723,15 +723,20 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   }
 
   onSearchTextChanged(String text) async {
-    if (controller.text.length ==0) {
-      print('Hello');
-      // _siteController.searchKey = text;
-      // _appController.getAccessKey(RequestIds.SEARCH_SITES);
-      model.fetchAllSites();
 
-    }else{
-      fetchFilterData(text);
+    if(controller.text.length>=3){
+      _siteController.searchKey = text;
+      _appController.getAccessKey(RequestIds.SEARCH_SITES);
     }
+    // if (controller.text.length ==0) {
+    //   print('Hello');
+    //   // _siteController.searchKey = text;
+    //   // _appController.getAccessKey(RequestIds.SEARCH_SITES);
+    //   model.fetchAllSites();
+    //
+    // }else{
+    //   fetchFilterData(text);
+    // }
   }
 }
 

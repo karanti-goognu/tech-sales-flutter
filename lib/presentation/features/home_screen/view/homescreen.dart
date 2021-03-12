@@ -727,26 +727,94 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               switch (index) {
                 case 0:
-                  Get.toNamed(Routes.LEADS_SCREEN);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                      Get.toNamed(Routes.LEADS_SCREEN)
+                      }
+                    else
+                      {
+                        Get.snackbar(
+                            "No internet connection.", "",
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM),
+                        // fetchSiteList()
+                      }
+                  });
                   break;
                 case 1:
-                  // storeOfflineSiteData();
-                  Get.toNamed(
-                    Routes.SITES_SCREEN,
-                  );
+                  // storeOfflineSiteData();internetChecking
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                    Get.toNamed(Routes.SITES_SCREEN,)
+                      }
+                    else
+                      {
+                        Get.snackbar(
+                            "No internet connection.", "",
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM),
+                        // fetchSiteList()
+                      }
+                  });
                   break;
                 case 2:
                   Get.dialog(
                       CustomDialogs().errorDialog(" Page Coming Soon .... "));
                   break;
                 case 3:
-                  Get.toNamed(Routes.ADD_MWP_SCREEN);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                      Get.toNamed(Routes.ADD_MWP_SCREEN)
+                      }
+                    else
+                      {
+                        Get.snackbar(
+                            "No internet connection.", "",
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM),
+                        // fetchSiteList()
+                      }
+                  });
                   break;
                 case 4:
-                  Get.toNamed(Routes.SERVICE_REQUESTS);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                      Get.toNamed(Routes.SERVICE_REQUESTS)
+                      }
+                    else
+                      {
+                        Get.snackbar(
+                            "No internet connection.", "",
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM),
+                        // fetchSiteList()
+                      }
+                  });
                   break;
                 case 5:
-                  Get.toNamed(Routes.VIDEO_TUTORIAL);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                      Get.toNamed(Routes.VIDEO_TUTORIAL)
+                      }
+                    else
+                      {
+                        Get.snackbar(
+                            "No internet connection.", "",
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM),
+                        // fetchSiteList()
+                      }
+                  });
                   break;
               }
             },

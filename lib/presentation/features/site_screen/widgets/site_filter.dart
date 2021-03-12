@@ -205,8 +205,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 RaisedButton(
                   onPressed: () {
                     Navigator.pop(context,siteList);
-                    fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
-                    // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                    // fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
+                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                   },
                   color: ColorConstants.buttonNormalColor,
                   child: Text(
@@ -398,8 +398,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 }
                 _siteController.selectedSiteStage = value;
                 _siteController.selectedSiteStageValue = leadStageValue;
-                fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
-                // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                // fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
+                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
@@ -442,9 +442,9 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 }
                 _siteController.selectedSiteStatus = value;
                 _siteController.selectedSiteStatusValue = leadStatusValue;
-                fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
+                // fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
                 // fetchFilterData("","",leadStageValue,"","","",provider);
-                // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
@@ -548,8 +548,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 _siteController.selectedSiteInfluencerCat = value;
                 _siteController.selectedSiteInfluencerCatValue =
                     siteStatusValue;
-                fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
-                // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                // fetchFilterData(_siteController.assignFromDate,_siteController.assignToDate, _siteController.selectedSiteStageValue, _siteController.selectedSiteStatusValue,_siteController.selectedSitePincode,_siteController.selectedSiteInfluencerCatValue,provider);
+                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
