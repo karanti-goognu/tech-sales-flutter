@@ -85,6 +85,7 @@ class DashboardController extends GetxController {
    print('waheguru secretkey $userSecurityKey');
    print(empID);
    repository.shareReport(image, userSecurityKey, accessKey, empID);
+  //  .then((value) => print(value));
 
  }
 
