@@ -587,5 +587,10 @@ class SitesDBProvider extends Model {
     return dataEntity;
   }
 
+
+  /*update site list table data*/
+
+
+
 }
 

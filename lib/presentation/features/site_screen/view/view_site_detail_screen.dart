@@ -187,11 +187,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   TabController _tabController;
 
   CounterListModel selectedSubDealer = CounterListModel();
+  DatabaseHelper _helper;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _helper=new DatabaseHelper();
     _tabController = TabController(vsync: this, length: 4);
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
@@ -369,6 +371,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     _ownerName.text = _sitesModel.siteOwnerName;
     _contactNumber.text = _sitesModel.siteOwnerContactNumber;
     _siteTotalPt.text = _sitesModel.siteTotalSitePotential;
+    _inactiveReasonText.text=_sitesModel.inactiveReasonText;
    // _sitesEntity.siteStageId;
 
     _siteProductDemo.text = _sitesModel.siteProductDemo;
@@ -427,7 +430,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
     if (_sitesModel.siteCompetitionId != null) {
       for (int i = 0; i < siteCompetitionStatusEntity.length; i++) {
-        if (viewSiteDataResponse.sitesModal.siteCompetitionId
+        if (_sitesModel.siteCompetitionId
             .toString() ==
             siteCompetitionStatusEntity[i].id.toString()) {
           _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
@@ -528,7 +531,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     if (_sitesModel.siteProbabilityWinningId !=
         null) {
       for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
-        if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId
+        if (_sitesModel.siteProbabilityWinningId
             .toString() ==
             siteProbabilityWinningEntity[i].id.toString()) {
           labelProbabilityId = siteProbabilityWinningEntity[i].id;
@@ -1343,8 +1346,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           onChanged: (value) {
                             setState(() {
                               _selectedConstructionType = value;
+
                             });
-                            print(_selectedConstructionType.id);
+                            print("construction ${_selectedConstructionType.id}");
                           },
                           decoration: FormFieldStyle.buildInputDecoration(
                               labelText: "Type of Construction"),
@@ -1363,6 +1367,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         SizedBox(height: 16),
                         TextFormField(
                             controller: _siteBuiltupArea,
+
                             validator: (value) {
                               if (value.isEmpty) {
                                 return 'Please enter Site Built-Up Area ';
@@ -1476,6 +1481,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       FocusScope.of(context)
                                           .requestFocus(new FocusNode());
                                       _selectedSiteFloor = value;
+                                      print("_selectedSiteFloor    ${_selectedSiteFloor.id}");
                                     });
                                   },
                                   decoration:
@@ -5632,23 +5638,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
 
       var updateDataRequest = {
-//
-//           "siteVisitHistoryEntity": siteVisitHistoryEntity,
-//           "siteNextStageEntity": siteNextStageEntity,
-//           "sitePhotosEntity": newSitePhotoEntity,
-//           "siteInfluencerEntity": newInfluencerEntity,
-//           "siteConstructionId": _selectedConstructionType.id,
-//           "siteCompetitionId": _siteCompetitionStatusEntity != null
-//               ? _siteCompetitionStatusEntity.id
-//               : null,
-//           "siteOppertunityId": _siteOpportunitStatusEnity != null
-//               ? _siteOpportunitStatusEnity.id
-//               : null,
-//           "siteProbabilityWinningId": _siteProbabilityWinningEntity != null
-//               ? _siteProbabilityWinningEntity.id
-//               : null,
-
-        //
         "siteId": widget.siteId,
         "siteSegment": "TRADE",
         "assignedTo": viewSiteDataResponse.sitesModal.assignedTo,
@@ -5707,6 +5696,51 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       // Get.back();
     });
   }
+
+
+/*update site data from database*/
+  _updateSiteDataFromDb(){
+    int _constructionId=_selectedConstructionType.id;//m
+    String _siteBuiltUpAreaValue=_siteBuiltupArea.text; //m
+    int _selectedSiteFloorId=_selectedSiteFloor.id; 
+    int _siteOpportunitStatusEnityId=_siteOpportunitStatusEnity.id;
+    int _siteCompetitionStatusEntityId=_siteCompetitionStatusEntity.id;
+    int _siteProbabilityWinningEntityId=_siteProbabilityWinningEntity.id;
+    String  _isSwitchedSiteProductDemoValue = isSwitchedsiteProductDemo? "F": "N";
+    String  _isSwitchedSiteProductOralBriefingValue = isSwitchedsiteProductOralBriefing? "F": "N";
+    String _siteTotalBagsValue=_siteTotalBags.text;
+    String _siteTotalPtValue=_siteTotalPt.text;
+    String _ownerNameValue=_ownerName.text;
+    String _contactNumberValue=_contactNumber.text;//m
+    String _plotNumberValue=_plotNumber.text;
+    String _siteAddressValue=_siteAddress.text;
+    String _pincodeValue=_pincode.text; //m
+    String _stateValue=_state.text; //m
+    String _districtValue=_district.text; //m
+    String _talukValue=_taluk.text; //m
+    String _reraValue=_rera.text;
+    String _dealerNameValue=_dealerName.text;
+    String _soValue=_so.text;
+    String _inactiveReasonTextValue=_inactiveReasonText.text;
+    
+    SitesModal _dataModel=new SitesModal(siteId:widget.siteId,siteBuiltArea:_siteBuiltUpAreaValue,siteProductDemo:_isSwitchedSiteProductDemoValue,
+        siteProductOralBriefing:_isSwitchedSiteProductOralBriefingValue,sitePlotNumber:_plotNumberValue,siteTotalSitePotential:_siteTotalPtValue,siteOwnerName:_ownerNameValue,
+        siteOwnerContactNumber:_contactNumberValue,siteAddress:_siteAddressValue,siteState:_stateValue,siteDistrict:_districtValue,siteTaluk:_talukValue,sitePincode:_pincodeValue,
+        siteGeotagLatitude:_currentPosition.altitude.toString(),
+        siteGeotagLongitude:_currentPosition.longitude.toString(),siteGeotagType:geoTagType,siteReraNumber:_reraValue,siteDealerId:_sitesModel.siteDealerId,siteDealerName:_dealerNameValue,siteSoId:_sitesModel.siteSoId,
+        siteSoname:_soValue,siteStageId:labelId, inactiveReasonText:_inactiveReasonTextValue,siteNextVisitDate:_sitesModel.siteNextVisitDate,siteClosureReasonText:_sitesModel.siteClosureReasonText,
+        siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,siteOppertunityId:_siteOpportunitStatusEnityId,
+        assignedTo: _sitesModel.assignedTo,siteStatusId:_sitesModel.siteStatusId,siteCreationDate:_sitesModel.siteCreationDate,siteConstructionId:_constructionId,noOfFloors:_selectedSiteFloorId,
+        siteScore: siteScore,syncStatus:false);
+
+      _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
+    
+
+
+
+
+
+  }
 }
 
 class ImageDetails {
@@ -5715,3 +5749,8 @@ class ImageDetails {
 
   ImageDetails(this.from, this.file);
 }
+
+
+
+
+
