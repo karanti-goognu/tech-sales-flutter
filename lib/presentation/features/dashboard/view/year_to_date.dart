@@ -60,38 +60,44 @@ class _YearToDateState extends State<YearToDate> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black38),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                        items: ['waheguru', 'waheguru'] 
-                            .map((e) => DropdownMenuItem(
-                                  child: Text(
-                                    e,
-                                  ),
-                                ))
-                            .toList(),
-                        onChanged: (_) {}),
+                Transform(
+                  transform: Matrix4.identity()..scale(0.8),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black38),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                          items: ['waheguru', 'waheguru']
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(
+                                      e,
+                                    ),
+                                  ))
+                              .toList(),
+                          onChanged: (_) {}),
+                    ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black38),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                        items: ['waheguru', 'waheguru']
-                            .map((e) => DropdownMenuItem(
-                                  child: Text(e),
-                                ))
-                            .toList(),
-                        onChanged: (_) {}),
+                Transform(
+                  transform: Matrix4.identity()..scale(0.8),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black38),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                          items: ['waheguru', 'waheguru']
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                  ))
+                              .toList(),
+                          onChanged: (_) {}),
+                    ),
                   ),
                 ),
               ],

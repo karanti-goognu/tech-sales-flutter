@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+
     super.initState();
     _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     initPlatformState();
@@ -82,6 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
         print('Journey Ended');
         _homeController.checkInStatus = StringConstants.journeyEnded;
       }
+
+
     }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -531,6 +534,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget checkInSliderButton() {
     return SliderButton(
+
       action: () async {
         if (await Permission.location.request().isGranted) {
           _homeController.getAccessKey(RequestIds.CHECK_IN);
@@ -538,7 +542,6 @@ class _HomeScreenState extends State<HomeScreen> {
           print('permission denied');
         }
       },
-
       ///Put label over here
       label: Text(
         "Swipe to start your day ",

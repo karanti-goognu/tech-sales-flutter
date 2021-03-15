@@ -29,6 +29,7 @@ class _DashboardState extends State<Dashboard> {
   File imgFile;
   Random random = Random();
   DashboardController _dashboardController = Get.find();
+  @override
 
   Future<Uint8List> _capturePng() async {
     RenderRepaintBoundary boundary =
@@ -63,6 +64,8 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    print('height');
+    print(MediaQuery.of(context).size.height);
     return RepaintBoundary(
       key: previewContainer,
       child: DefaultTabController(

@@ -809,7 +809,7 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "18.4.46"
+    version: "18.4.47"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
@@ -817,6 +817,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "18.4.46-beta"
+  syncfusion_flutter_gauges:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_gauges
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "18.4.47"
   synchronized:
     dependency: transitive
     description:
