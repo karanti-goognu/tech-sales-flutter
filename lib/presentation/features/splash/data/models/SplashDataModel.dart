@@ -57,14 +57,16 @@ class SplashDataModel {
     if (json['siteOpportunityStatusEntity'] != null) {
       siteOpportunityStatusRepository = new List<SiteOpportuityStatus>();
       json['siteOpportunityStatusEntity'].forEach((v) {
-        siteOpportunityStatusRepository.add(new SiteOpportuityStatus.fromJson(v));
+        siteOpportunityStatusRepository
+            .add(new SiteOpportuityStatus.fromJson(v));
       });
     }
 
     if (json['siteProbabilityWinningEntity'] != null) {
       siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>();
       json['siteProbabilityWinningEntity'].forEach((v) {
-        siteProbabilityWinningEntity.add(new SiteProbabilityWinningEntity.fromJson(v));
+        siteProbabilityWinningEntity
+            .add(new SiteProbabilityWinningEntity.fromJson(v));
       });
     }
     if (json['siteStageEntity'] != null) {
@@ -313,17 +315,33 @@ class EmployeeDetails {
   String employeeFirstName;
   String employeeName;
 
+  String employeeDesignation;
+  String employeeReportingManagerId;
+  int employeeUserRoleId;
+  String employeeBaseLocation;
+  String employeeWorkLocation;
+
   EmployeeDetails(
       {this.referenceId,
       this.mobileNumber,
       this.employeeFirstName,
-      this.employeeName});
+      this.employeeName,
+      this.employeeDesignation,
+      this.employeeReportingManagerId,
+      this.employeeUserRoleId,
+      this.employeeBaseLocation,
+      this.employeeWorkLocation});
 
   EmployeeDetails.fromJson(Map<String, dynamic> json) {
     referenceId = json['reference-id'];
     mobileNumber = json['mobile-number'];
     employeeFirstName = json['employee-first-name'];
     employeeName = json['employee-name'];
+    employeeDesignation = json['employee-designation'];
+    employeeReportingManagerId = json['employee-reporting_manager_id'];
+    employeeUserRoleId = json['employee-user_role_id'];
+    employeeBaseLocation = json['employee-base_location'];
+    employeeWorkLocation = json['employee-work_location'];
   }
 
   Map<String, dynamic> toJson() {
@@ -332,6 +350,11 @@ class EmployeeDetails {
     data['mobile-number'] = this.mobileNumber;
     data['employee-first-name'] = this.employeeFirstName;
     data['employee-name'] = this.employeeName;
+    data['employee-designation'] = this.employeeDesignation;
+    data['employee-reporting_manager_id'] = this.employeeReportingManagerId;
+    data['employee-user_role_id'] = this.employeeUserRoleId;
+    data['employee-base_location'] = this.employeeBaseLocation;
+    data['employee-work_location'] = this.employeeWorkLocation;
     return data;
   }
 }

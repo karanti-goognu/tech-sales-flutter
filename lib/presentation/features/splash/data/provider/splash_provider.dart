@@ -73,10 +73,12 @@ class MyApiClientSplash {
 
       var response =
           await httpClient.get(url, headers: requestHeadersEmpIdAndNo);
-      print('Response body is : ${(response.body)}');
+      print('Response body for refresh Api is : ${(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        print(data['employee-details']);
         SplashDataModel splashDataModel = SplashDataModel.fromJson(data);
+        print(splashDataModel.employeeDetails);
         //print('Access key Object is :: $accessKeyModel');
         return splashDataModel;
         print(2);

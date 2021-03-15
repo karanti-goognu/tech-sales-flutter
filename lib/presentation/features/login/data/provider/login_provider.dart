@@ -204,6 +204,7 @@ class MyApiClient {
       if (response.statusCode == 200) {
         print('success');
         var data = json.decode(response.body);
+        print(data);
         ValidateOtpModel validateOtpModel = ValidateOtpModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
         return validateOtpModel;
