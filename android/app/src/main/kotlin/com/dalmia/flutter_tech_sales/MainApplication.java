@@ -16,11 +16,11 @@ public class MainApplication extends FlutterApplication {
         MoEngage.Builder builder = new Builder(this, "USWINCHCY9D2ZRV2XSAZBC0M")
                 .setNotificationSmallIcon(R.mipmap.ic_launcher)
                 .setNotificationLargeIcon(R.mipmap.ic_launcher)
-                .optOutDefaultInAppDisplay()
+               // .optOutDefaultInAppDisplay()
                 .enableLogs(LogLevel.VERBOSE)
                 .enablePushKitTokenRegistration();
 
-        MoEInitializer.initialize(getApplicationContext(), builder);
+          MoEInitializer.initialize(getApplicationContext(), builder);
         // optional, required in-case notification customisation is required.
         MoEPushHelper.getInstance().setMessageListener(new CustomPushListener());
     }
