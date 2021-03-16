@@ -15,7 +15,10 @@ class DashboardRepository {
  Future shareReport(File image, String userSecurityKey, String accessKey, String empID){
    return apiClient.shareReport(image, userSecurityKey, accessKey, empID);
  }
-  
+
+ Future getMonthViewDetails(String empID, String yearMonth){
+    return apiClient.getMonthViewDetails(empID,yearMonth);
+ }
 
 
 }

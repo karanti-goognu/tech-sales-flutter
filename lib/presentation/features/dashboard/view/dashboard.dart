@@ -30,7 +30,6 @@ class _DashboardState extends State<Dashboard> {
   Random random = Random();
   DashboardController _dashboardController = Get.find();
   @override
-
   Future<Uint8List> _capturePng() async {
     RenderRepaintBoundary boundary =
         previewContainer.currentContext.findRenderObject();
@@ -61,81 +60,86 @@ class _DashboardState extends State<Dashboard> {
 
   ScreenshotController screenshotController = ScreenshotController();
   // Uint8List _imageFile;
+  @override
+  void initState() {
+    _dashboardController.getMonthViewDetails();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     print('height');
     print(MediaQuery.of(context).size.height);
-    return RepaintBoundary(
-      key: previewContainer,
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-            appBar: AppBar(
-              title: Text('MY DASHBOARD'),
-              backgroundColor: ColorConstants.appBarColor,
-              actions: [
-                Transform.scale(
-                  scale: 0.8,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: MaterialButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        print("Hello");
-                        _printPngBytes();
-                        // _screenShot();
-                        // _imageFile = null;
-                        // screenshotController
-                        //     .capture(delay: Duration(milliseconds: 10))
-                        //     .then((Uint8List image) async {
-                        //   print(image);
-                        //   _imageFile = image;
-                        //   Get.dialog(
-                        //       Container(
-                        //         child: Image.memory(
-                        //           _imageFile,
-                        //           height: 100,
-                        //           width: 100,
-                        //           fit: BoxFit.contain,
-                        //         ),
-                        //       ),
-                        //       barrierDismissible: true);
-                        // }).catchError((onError) {
-                        //   print(onError);
-                        // });
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.share),
-                          Text('Share'),
-                        ],
-                      ),
-                      color: HexColor('#f9a61a'),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('MY DASHBOARD'),
+            backgroundColor: ColorConstants.appBarColor,
+            actions: [
+              Transform.scale(
+                scale: 0.8,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: MaterialButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      print("Hello");
+                      _printPngBytes();
+                      // _screenShot();
+                      // _imageFile = null;
+                      // screenshotController
+                      //     .capture(delay: Duration(milliseconds: 10))
+                      //     .then((Uint8List image) async {
+                      //   print(image);
+                      //   _imageFile = image;
+                      //   Get.dialog(
+                      //       Container(
+                      //         child: Image.memory(
+                      //           _imageFile,
+                      //           height: 100,
+                      //           width: 100,
+                      //           fit: BoxFit.contain,
+                      //         ),
+                      //       ),
+                      //       barrierDismissible: true);
+                      // }).catchError((onError) {
+                      //   print(onError);
+                      // });
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.share),
+                        Text('Share'),
+                      ],
                     ),
+                    color: HexColor('#f9a61a'),
                   ),
-                )
+                ),
+              )
+            ],
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  text: "MONTH TO DATE",
+                ),
+                Tab(
+                  text: "YEAR TO DATE",
+                ),
               ],
-              bottom: TabBar(
-                tabs: [
-                  Tab(
-                    text: "MONTH TO DATE",
-                  ),
-                  Tab(
-                    text: "YEAR TO DATE",
-                  ),
-                ],
-              ),
             ),
-            bottomNavigationBar: BottomNavigator(),
-            floatingActionButton: BackFloatingButton(),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: TabBarView(
+          ),
+          bottomNavigationBar: BottomNavigator(),
+          floatingActionButton: BackFloatingButton(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: RepaintBoundary(
+            key: previewContainer,
+            child: TabBarView(
               children: [MonthToDate(), YearToDate()],
-            )),
-        // ),
-      ),
+            ),
+          )),
+      // ),
     );
   }
 }

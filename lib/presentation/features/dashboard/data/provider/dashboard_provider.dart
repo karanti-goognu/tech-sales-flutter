@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
@@ -66,5 +67,26 @@ class MyApiClientDashboard {
     } catch (_) {
       print('exception at Dashboard Repo : ShareReport method ${_.toString()}');
     }
+  }
+
+  Future getMonthViewDetails(String empID, String yearMonth)async{
+    try{
+      var url=UrlConstants.dashboadrMonthlyView+empID+'&yearMonth='+yearMonth;
+      print(url);
+      var response = await httpClient.get(url,headers: requestHeaders);
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        DashboardMonthlyViewModel dashboardMonthlyViewModel;
+        dashboardMonthlyViewModel = DashboardMonthlyViewModel.fromJson(data);
+        return dashboardMonthlyViewModel;
+      } else
+        print('error');
+
+    }catch(_){
+      print('Exception at Dashboard Repo : Monthly View ${_.toString()}');
+    }
+
+
   }
 }
