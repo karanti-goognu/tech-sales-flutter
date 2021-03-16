@@ -380,6 +380,7 @@ class SitesModal {
     data['siteConstructionId'] = this.siteConstructionId;
     data['noOfFloors'] = this.noOfFloors;
     data['siteScore'] = this.siteScore;
+
     return data;
   }
 }

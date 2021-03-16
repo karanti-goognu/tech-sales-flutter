@@ -5722,6 +5722,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     String _dealerNameValue=_dealerName.text;
     String _soValue=_so.text;
     String _inactiveReasonTextValue=_inactiveReasonText.text;
+
+
     
     SitesModal _dataModel=new SitesModal(siteId:widget.siteId,siteBuiltArea:_siteBuiltUpAreaValue,siteProductDemo:_isSwitchedSiteProductDemoValue,
         siteProductOralBriefing:_isSwitchedSiteProductOralBriefingValue,sitePlotNumber:_plotNumberValue,siteTotalSitePotential:_siteTotalPtValue,siteOwnerName:_ownerNameValue,
@@ -5732,8 +5734,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,siteOppertunityId:_siteOpportunitStatusEnityId,
         assignedTo: _sitesModel.assignedTo,siteStatusId:_sitesModel.siteStatusId,siteCreationDate:_sitesModel.siteCreationDate,siteConstructionId:_constructionId,noOfFloors:_selectedSiteFloorId,
         siteScore: siteScore,syncStatus:false);
-
-      _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
+       _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
     
 
 
