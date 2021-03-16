@@ -40,8 +40,7 @@ class _SiteScreenState extends State<SiteScreen> {
   int selectedPosition = 0;
   int currentTab = 0;
 
-  final db = SiteListDBHelper();
-  List<SitesEntity> siteList = new List();
+
 
   ScrollController _scrollController;
 
@@ -92,13 +91,6 @@ class _SiteScreenState extends State<SiteScreen> {
         // await db.addSiteEntityInDraftList(siteListModelForDb);
         await db.insertSiteEntityInTable(siteEntity);
 
-        fetchSiteList();
-        // db.fetchAllSites().then((value) {
-        //    setState(() {
-        //      _siteController.fetchSiteList();
-        //    });
-        // });
-
       }
     }
   }
@@ -107,7 +99,7 @@ class _SiteScreenState extends State<SiteScreen> {
   void initState() {
     super.initState();
 
-    // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     // fetchSiteList();
 
     internetChecking().then((result) => {
@@ -119,7 +111,7 @@ class _SiteScreenState extends State<SiteScreen> {
                   colorText: Colors.white,
                   backgroundColor: Colors.green,
                   snackPosition: SnackPosition.BOTTOM),
-              storeOfflineSiteData()
+              // storeOfflineSiteData()
             }
           else
             {
@@ -128,19 +120,11 @@ class _SiteScreenState extends State<SiteScreen> {
                   colorText: Colors.white,
                   backgroundColor: Colors.red,
                   snackPosition: SnackPosition.BOTTOM),
-              fetchSiteList()
+              // fetchSiteList()
             }
         });
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
-  }
-
-  fetchSiteList() async {
-    db.fetchAllSites().then((value) {
-      setState(() {
-        siteList = value;
-      });
-    });
   }
 
   @override
@@ -811,7 +795,7 @@ class _SiteScreenState extends State<SiteScreen> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: siteList.length,
+                        itemCount: _siteController.sitesListResponse.sitesEntity.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),
                         // itemExtent: 125.0,
@@ -823,7 +807,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
                                           ViewSiteScreen(
-                                              siteList[index].siteId)));
+                                              _siteController.sitesListResponse.sitesEntity[index].siteId)));
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,
@@ -881,7 +865,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   padding:
                                                       const EdgeInsets.all(2.0),
                                                   child: Text(
-                                                    "Site ID (${siteList[index].siteId})",
+                                                    "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontFamily: "Muli",
@@ -895,7 +879,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   padding:
                                                       const EdgeInsets.all(2.0),
                                                   child: Text(
-                                                    "District: ${siteList[index].siteDistrict} ",
+                                                    "District: ${_siteController.sitesListResponse.sitesEntity[index].siteDistrict} ",
                                                     style: TextStyle(
                                                         color: Colors.black38,
                                                         fontSize: 12,
@@ -923,7 +907,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                                     0.1),
                                                         label: Text(
                                                             (printSiteStage(
-                                                                siteList[index]
+                                                                _siteController.sitesListResponse.sitesEntity[index]
                                                                     .siteStageId)),
                                                             style: TextStyle(
                                                                 color: HexColor(
@@ -943,7 +927,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       padding: EdgeInsets.only(
                                                           left: 10.0),
                                                       child: Text(
-                                                        " ${siteList[index].siteCreationDate}",
+                                                        " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
                                                         //  textAlign: TextAlign.start,
                                                         style: TextStyle(
                                                           fontSize: 10,
@@ -994,7 +978,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                             ),
                                                       ),
                                                       Text(
-                                                          "${siteList[index].sitePotentialMt}MT",
+                                                          "${_siteController.sitesListResponse.sitesEntity[index].sitePotentialMt}MT",
                                                           style: TextStyle(
                                                               // color: Colors.black38,
                                                               fontSize: 15,
@@ -1010,12 +994,12 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  (siteList[index]
+                                                  (_siteController.sitesListResponse.sitesEntity[index]
                                                               .siteOppertunityId ==
                                                           null)
                                                       ? ""
                                                       : printOpportuityStatus(
-                                                          siteList[index]
+                                                          _siteController.sitesListResponse.sitesEntity[index]
                                                               .siteOppertunityId),
                                                   style: TextStyle(
                                                       color: Colors.blue,
@@ -1031,7 +1015,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   height: 8,
                                                 ),
                                                 Text(
-                                                  "Site Score - ${siteList[index].siteScore}",
+                                                  "Site Score - ${_siteController.sitesListResponse.sitesEntity[index].siteScore}",
                                                   style: TextStyles
                                                       .robotoRegular14,
                                                   textAlign: TextAlign.right,
@@ -1051,7 +1035,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     ),
                                                     GestureDetector(
                                                       child: Text(
-                                                        "${siteList[index].contactNumber}",
+                                                        "${_siteController.sitesListResponse.sitesEntity[index].contactNumber}",
                                                         style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 15,
@@ -1065,7 +1049,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                       ),
                                                       onTap: () {
                                                         String num =
-                                                            siteList[index]
+                                                            _siteController.sitesListResponse.sitesEntity[index]
                                                                 .contactNumber;
                                                         launch('tel:$num');
                                                       },
@@ -1104,12 +1088,12 @@ class _SiteScreenState extends State<SiteScreen> {
                                                 ),
                                           ),*/
                                           Text(
-                                            (siteList[index]
+                                            (_siteController.sitesListResponse.sitesEntity[index]
                                                         .siteProbabilityWinningId ==
                                                     null)
                                                 ? ""
                                                 : printProbabilityOfWinning(
-                                                    siteList[index]
+                                                    _siteController.sitesListResponse.sitesEntity[index]
                                                         .siteProbabilityWinningId),
                                             style: TextStyle(
                                                 color: Colors.blue,
@@ -1138,8 +1122,7 @@ class _SiteScreenState extends State<SiteScreen> {
         builder: (BuildContext bc) {
           return SiteFilterWidget();
         }).whenComplete(() {
-          siteList = _siteController.cartListing;
-      print('Hey there, I\'m calling after hide bottomSheet'+siteList.length.toString());
+
     });
   }
 
