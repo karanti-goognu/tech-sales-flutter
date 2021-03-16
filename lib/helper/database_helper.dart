@@ -39,7 +39,7 @@ class DatabaseHelper{
   Future<Database> open() async {
     String path = await initDb(DbConstants.DATA_BASE);
     var database =
-    await openDatabase(path, version: 1, onCreate: _createDb, onUpgrade: _onUpgrade);
+    await openDatabase(path, version: 4, onCreate: _createDb, onUpgrade: _onUpgrade);
     return database;
   }
 
@@ -297,6 +297,11 @@ class DatabaseHelper{
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_Site_OPPORTUNITY_STATUS_ENTITY}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY}");
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_STATUS_ENTITY}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_INFLUENCER}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_INFLUENCER_TYPE}");
+    db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_SITE_INFLUENCER_CATEGORY}");
+
     _createDb(db,newVersion);
   }
 

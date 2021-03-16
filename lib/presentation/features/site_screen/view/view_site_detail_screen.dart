@@ -19,8 +19,10 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/util.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -35,6 +37,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/utils/constants/db_constants.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
+import 'package:sqflite/sqflite.dart';
 
 class ViewSiteScreen extends StatefulWidget {
   int siteId;
@@ -1706,11 +1709,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           //   //leagueSize = int.parse(value);
                           //   return null;
                           // },
-                          onChanged: (data) {
-                            setState(() {
-                              _ownerName.text = data;
-                            });
-                          },
+                          // onChanged: (data) {
+                          //   setState(() {
+                          //     _ownerName.text = data;
+                          //   });
+                          // },
                           style: TextStyle(
                               fontSize: 18,
                               color: ColorConstants.inputBoxHintColor,
@@ -1731,11 +1734,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             }
                             return null;
                           },
-                          onChanged: (data) {
-                            setState(() {
-                              _contactNumber.text = data;
-                            });
-                          },
+                          // onChanged: (data) {
+                          //   _contactNumber..text = checkNumber(data)
+                          //     ..selection = TextSelection.collapsed(offset: 0);
+                          //   setState(() {
+                          //     _contactNumber.text = data;
+                          //   });
+                          // },
                           style: TextStyle(
                               fontSize: 18,
                               color: ColorConstants.inputBoxHintColor,
@@ -2056,12 +2061,26 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                             ),
                             onPressed: () async {
-                              if (_imgDetails.length < 5) {
-                                _showPicker(context);
-                              } else {
-                                Get.dialog(CustomDialogs().errorDialog(
-                                    "You can add only upto 5 photos"));
-                              }
+                              internetChecking().then((result){
+                                if (!result){
+                                  Get.snackbar(
+                                      "No internet connection.", "",
+                                      colorText: Colors.white,
+                                      backgroundColor: Colors.red,
+                                      snackPosition: SnackPosition.BOTTOM);
+                                  return ;
+                                }else{
+                                  if (_imgDetails.length < 5) {
+                                    _showPicker(context);
+                                  } else {
+                                    Get.dialog(CustomDialogs().errorDialog(
+                                        "You can add only upto 5 photos"));
+                                  }
+                                }
+
+                              });
+
+
                             },
                           ),
                         ),
@@ -2081,31 +2100,45 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                               .toLowerCase());
                                           return GestureDetector(
                                             onTap: () {
-                                              return showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      content: new Container(
-                                                        // width: 500,
-                                                        // height: 500,
-                                                        child: _imgDetails[
-                                                                        index]
-                                                                    .from
-                                                                    .toLowerCase() ==
+                                              internetChecking().then((result){
+                                                if (!result){
+                                                  Get.snackbar(
+                                                      "No internet connection.", "",
+                                                      colorText: Colors.white,
+                                                      backgroundColor: Colors.red,
+                                                      snackPosition: SnackPosition.BOTTOM);
+
+                                                }else{
+                                                  return showDialog(
+                                                      context: context,
+                                                      builder:
+                                                          (BuildContext context) {
+                                                        return AlertDialog(
+                                                          content: new Container(
+                                                            // width: 500,
+                                                            // height: 500,
+                                                            child: _imgDetails[
+                                                            index]
+                                                                .from
+                                                                .toLowerCase() ==
                                                                 "network"
-                                                            ? Image.network(
+                                                                ? Image.network(
                                                                 _imgDetails[
-                                                                        index]
+                                                                index]
                                                                     .file
                                                                     .path)
-                                                            : Image.file(
+                                                                : Image.file(
                                                                 _imgDetails[
-                                                                        index]
+                                                                index]
                                                                     .file),
-                                                      ),
-                                                    );
-                                                  });
+                                                          ),
+                                                        );
+                                                      });
+                                                }
+
+                                              });
+
+
                                             },
                                             child: Row(
                                               mainAxisAlignment:
@@ -2218,7 +2251,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         SizedBox(height: 16),
 
                         SizedBox(height: 35),
-
+             /*Site data update button*/
                         Center(
                           child: RaisedButton(
                             elevation: 5,
@@ -2238,8 +2271,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     fontSize: 17),
                               ),
                             ),
-                            onPressed: () async {
-                              UpdateRequest();
+                            onPressed: () {
+                             // UpdateRequest();
+                              _updateSiteDataFromDb();
                             },
                           ),
                         ),
@@ -4223,39 +4257,56 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   // //  print(_listInfluencerDetail[
                   //   _listInfluencerDetail.length - 1]
                   //       .inflName);
-                  if (_listInfluencerDetail.length == 0) {
-                    setState(() {
-                      _listInfluencerDetail.add(new InfluencerDetail(
-                          isExpanded: true, isPrimarybool: true));
-                    });
-                  } else if (_listInfluencerDetail[
-                                  _listInfluencerDetail.length - 1]
-                              .inflName !=
+                  /*Internet check */
+                  internetChecking().then((result){
+                    if (!result){
+                      Get.snackbar(
+                          "No internet connection.", "",
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM);
+
+                      }else{
+
+                      if (_listInfluencerDetail.length == 0) {
+                        setState(() {
+                          _listInfluencerDetail.add(new InfluencerDetail(
+                              isExpanded: true, isPrimarybool: true));
+                        });
+                      } else if (_listInfluencerDetail[
+                      _listInfluencerDetail.length - 1]
+                          .inflName !=
                           null &&
-                      _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                          _listInfluencerDetail[_listInfluencerDetail.length - 1]
                               .inflName
                               .text !=
-                          "null" &&
-                      !_listInfluencerDetail[_listInfluencerDetail.length - 1]
-                          .inflName
-                          .text
-                          .isNullOrBlank) {
-                    InfluencerDetail infl = new InfluencerDetail(
-                        isExpanded: true, isPrimarybool: false);
+                              "null" &&
+                          !_listInfluencerDetail[_listInfluencerDetail.length - 1]
+                              .inflName
+                              .text
+                              .isNullOrBlank) {
+                        InfluencerDetail infl = new InfluencerDetail(
+                            isExpanded: true, isPrimarybool: false);
 
-                    // Item item = new Item(
-                    //     headerValue: "agx ", expandedValue: "dnxcx");
-                    setState(() {
-                      // _data.add(item);
-                      _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                          .isExpanded = false;
-                      _listInfluencerDetail.add(infl);
-                    });
-                  } else {
-                    print("Error : Please fill previous influencer first");
-                    Get.dialog(CustomDialogs()
-                        .errorDialog("Please fill previous influencer first"));
-                  }
+                        // Item item = new Item(
+                        //     headerValue: "agx ", expandedValue: "dnxcx");
+                        setState(() {
+                          // _data.add(item);
+                          _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                              .isExpanded = false;
+                          _listInfluencerDetail.add(infl);
+                        });
+                      } else {
+                        print("Error : Please fill previous influencer first");
+                        Get.dialog(CustomDialogs()
+                            .errorDialog("Please fill previous influencer first"));
+                      }
+                    }
+
+                  });
+
+
+
                 },
               ),
             ),
@@ -5703,9 +5754,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     int _constructionId=_selectedConstructionType.id;//m
     String _siteBuiltUpAreaValue=_siteBuiltupArea.text; //m
     int _selectedSiteFloorId=_selectedSiteFloor.id; 
-    int _siteOpportunitStatusEnityId=_siteOpportunitStatusEnity.id;
-    int _siteCompetitionStatusEntityId=_siteCompetitionStatusEntity.id;
-    int _siteProbabilityWinningEntityId=_siteProbabilityWinningEntity.id;
     String  _isSwitchedSiteProductDemoValue = isSwitchedsiteProductDemo? "F": "N";
     String  _isSwitchedSiteProductOralBriefingValue = isSwitchedsiteProductOralBriefing? "F": "N";
     String _siteTotalBagsValue=_siteTotalBags.text;
@@ -5722,27 +5770,121 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     String _dealerNameValue=_dealerName.text;
     String _soValue=_so.text;
     String _inactiveReasonTextValue=_inactiveReasonText.text;
+    bool status=true;
+    if(_constructionId==null)
+      status=false;
+    if(_siteBuiltUpAreaValue=="" || _siteBuiltUpAreaValue==null || _siteBuiltUpAreaValue =="_siteBuiltUpAreaValue")
+      status=false;
 
+    if (!Util.isMobileValid(_contactNumberValue))
+      status = false;
 
-    
-    SitesModal _dataModel=new SitesModal(siteId:widget.siteId,siteBuiltArea:_siteBuiltUpAreaValue,siteProductDemo:_isSwitchedSiteProductDemoValue,
+  if (!Util.isPinValid(_pincodeValue))
+      status = false;
+
+    if(_stateValue=="" || _stateValue==null || _stateValue=="null")
+    status=false;
+     if(_districtValue=="" || _districtValue == null || _districtValue == "null")
+    status=false;
+   if(_talukValue=="" || _talukValue ==null || _talukValue== "null")
+    status=false;
+
+   if(!status){
+     Get.dialog(CustomDialogs().errorDialog(
+         "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+     return;
+   }
+
+   SitesModal _dataModel=new SitesModal(siteId:widget.siteId,siteBuiltArea:_siteBuiltUpAreaValue,siteProductDemo:_isSwitchedSiteProductDemoValue,
         siteProductOralBriefing:_isSwitchedSiteProductOralBriefingValue,sitePlotNumber:_plotNumberValue,siteTotalSitePotential:_siteTotalPtValue,siteOwnerName:_ownerNameValue,
         siteOwnerContactNumber:_contactNumberValue,siteAddress:_siteAddressValue,siteState:_stateValue,siteDistrict:_districtValue,siteTaluk:_talukValue,sitePincode:_pincodeValue,
         siteGeotagLatitude:_currentPosition.altitude.toString(),
         siteGeotagLongitude:_currentPosition.longitude.toString(),siteGeotagType:geoTagType,siteReraNumber:_reraValue,siteDealerId:_sitesModel.siteDealerId,siteDealerName:_dealerNameValue,siteSoId:_sitesModel.siteSoId,
         siteSoname:_soValue,siteStageId:labelId, inactiveReasonText:_inactiveReasonTextValue,siteNextVisitDate:_sitesModel.siteNextVisitDate,siteClosureReasonText:_sitesModel.siteClosureReasonText,
-        siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,siteOppertunityId:_siteOpportunitStatusEnityId,
+        siteProbabilityWinningId:_sitesModel.siteProbabilityWinningId,siteCompetitionId:_sitesModel.siteCompetitionId,siteOppertunityId:_sitesModel.siteOppertunityId,
         assignedTo: _sitesModel.assignedTo,siteStatusId:_sitesModel.siteStatusId,siteCreationDate:_sitesModel.siteCreationDate,siteConstructionId:_constructionId,noOfFloors:_selectedSiteFloorId,
         siteScore: siteScore,syncStatus:false);
-       _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
-    
+       _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]).then((value){
+         if(value!=0){
 
-
-
+         }
+       });
 
 
   }
+
+
+
+  /*insert new row from db for visit data*/
+_insertVisitDataFromDb(){
+  String _siteTotalBalanceBagsValue= _siteTotalBalanceBags.text;
+  int _selectedConstructionTypeVisitId= _selectedConstructionTypeVisit.id; //m
+  int _selectedSiteVisitFloorId= _selectedSiteVisitFloor.id;  //m
+  String _stagePotentialVisitValue= _stagePotentialVisit.text;  //m
+  int _siteBrandFromLocalDBId= _siteBrandFromLocalDB.id;  //m
+  int _siteProductFromLocalDBId= _siteProductFromLocalDB.id;  //m
+   // String selectedSubDealer = subDealerList[0].;
+  String shipToPartyValue = subDealerList.length>0?subDealerList[0].shipToParty :"";
+  String _brandPriceVisitValue=_brandPriceVisit.text;
+  String _dateOfBagSuppliedValue=_dateOfBagSupplied.text;//m
+  String _siteCurrentTotalBagsValue=_siteCurrentTotalBags.text;
+  String _stageStatusValue=_stageStatus.text; //m
+  String _dateofConstructionValue=_dateofConstruction.text;
+  int _siteOpportunitStatusEnityId=_siteOpportunitStatusEnity.id; //m
+  int _siteCompetitionStatusEntityId=_siteCompetitionStatusEntity.id;//m
+  int _siteProbabilityWinningEntityId=_siteProbabilityWinningEntity.id;//m
+  String _nextVisitDateValue=_nextVisitDate.text;
+  String _commentsValue=_comments.text;
+  bool status=true;
+  if(_selectedSiteVisitFloorId==null || _selectedSiteVisitFloorId == null || _stagePotentialVisitValue==null || _siteBrandFromLocalDBId == null
+      || _siteOpportunitStatusEnityId==null || _siteCompetitionStatusEntityId ==null  || _siteProbabilityWinningEntityId==null ||
+      _stageStatusValue==null || _stageStatusValue=="null" || _stageStatusValue ==""||
+      _dateOfBagSuppliedValue==null || _dateOfBagSuppliedValue=="null" || _dateOfBagSuppliedValue ==""
+  )
+    status=false;
+
+  if(!status){
+    Get.dialog(CustomDialogs().errorDialog(
+        "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+    return;
+  }
+
+
+   SiteVisitHistoryEntity _visitDataModel=new SiteVisitHistoryEntity( totalBalancePotential:_siteTotalBalanceBagsValue,constructionStageId:_selectedConstructionTypeVisitId,floorId: _selectedSiteVisitFloorId,
+   stagePotential:_stagePotentialVisitValue,brandId:_siteBrandFromLocalDBId, brandPrice: _brandPriceVisitValue, constructionDate: _dateofConstructionValue, siteId:widget.siteId,
+      supplyDate: _dateOfBagSuppliedValue, supplyQty: _siteCurrentTotalBagsValue  , stageStatus: _stageStatusValue,  shipToParty: shipToPartyValue, syncStatus: false );
+
+   _helper.insertDataInTable(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, _visitDataModel.toJson(), ConflictAlgorithm.replace);
+
+
+
+  /*Next stage fields values*/
+  int _selectedConstructionTypeVisitNextStageId=_selectedConstructionTypeVisitNextStage.id;//m
+  int _selectedSiteVisitFloorNextStageId=_selectedSiteVisitFloorNextStage.id;//m
+  String _stagePotentialVisitNextStageValue= _stagePotentialVisitNextStage.text;
+  int _siteBrandFromLocalDBNextStageId= _siteBrandFromLocalDBNextStage.id;
+  String _brandPriceVisitNextStageValue= _brandPriceVisitNextStage.text;
+  int _siteProductFromLocalDBNextStageId= _siteProductFromLocalDBNextStage.id;
+  String _dateOfBagSuppliedNextStageValue= _dateOfBagSuppliedNextStage.text;
+  String _siteCurrentTotalBagsNextStageValue= _siteCurrentTotalBagsNextStage.text;
+  String _dateofConstructionNextStageValue= _dateofConstructionNextStage.text;
+
+
+
+  SiteNextStageEntity _nextDataModel=new SiteNextStageEntity(siteId:widget.siteId,constructionStageId:_selectedConstructionTypeVisitNextStageId ,stagePotential: _stagePotentialVisitNextStageValue ,
+      brandId:_siteBrandFromLocalDBNextStageId ,brandPrice:_brandPriceVisitNextStageValue ,stageStatus: "",constructionStartDt:_dateofConstructionNextStageValue ,
+      nextStageSupplyDate:_dateOfBagSuppliedNextStageValue ,nextStageSupplyQty: _siteCurrentTotalBagsNextStageValue,createdBy: "" ,createdOn: 0, syncStatus : false);
+
+  _helper.insertDataInTable(DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY, _nextDataModel.toJson(), ConflictAlgorithm.replace);
+
+
+
 }
+
+
+}
+
+
 
 class ImageDetails {
   String from;

@@ -205,8 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
         siteNextStageEntity = viewSiteDataResponse.siteNextStageEntity;
         if (siteNextStageEntity != null) {
           for (int i = 0; i < siteNextStageEntity.length; i++) {
-            provider.createSiteNextStageEntity(new SiteNextStageEntity(id: siteNextStageEntity[i].id,siteId: siteNextStageEntity[i].siteId,constructionStageId: siteNextStageEntity[i].constructionStageId,stagePotential: siteNextStageEntity[i].stagePotential,
-            brandId: siteNextStageEntity[i].brandId,brandPrice: siteNextStageEntity[i].brandPrice,stageStatus: siteNextStageEntity[i].stageStatus,
+            provider.createSiteNextStageEntity(new SiteNextStageEntity(id: siteNextStageEntity[i].id,siteId: siteNextStageEntity[i].siteId,constructionStageId: siteNextStageEntity[i].constructionStageId,
+                stagePotential: siteNextStageEntity[i].stagePotential, brandId: siteNextStageEntity[i].brandId,brandPrice: siteNextStageEntity[i].brandPrice,stageStatus: siteNextStageEntity[i].stageStatus,
             constructionStartDt: siteNextStageEntity[i].constructionStartDt,nextStageSupplyDate: siteNextStageEntity[i].nextStageSupplyDate,
             nextStageSupplyQty: siteNextStageEntity[i].nextStageSupplyQty,createdBy: siteNextStageEntity[i].createdBy,createdOn: siteNextStageEntity[i].createdOn));
           }

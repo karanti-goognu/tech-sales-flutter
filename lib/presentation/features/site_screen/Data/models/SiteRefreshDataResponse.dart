@@ -380,6 +380,8 @@ class SitesModal {
     data['siteConstructionId'] = this.siteConstructionId;
     data['noOfFloors'] = this.noOfFloors;
     data['siteScore'] = this.siteScore;
+    data['syncStatus'] = this.syncStatus;
+    print("siteUpdateTabledata    $data");
 
     return data;
   }
@@ -454,6 +456,7 @@ class SiteVisitHistoryEntity {
   String isAuthorised;
   String receiptNumber;
   bool isExpanded;
+  bool syncStatus;
 
   SiteVisitHistoryEntity(
       {this.id,
@@ -475,7 +478,9 @@ class SiteVisitHistoryEntity {
         this.soCode,
         this.isAuthorised,
         this.receiptNumber,
-        this.isExpanded});
+        this.isExpanded,
+        this.syncStatus
+      });
 
   SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -521,6 +526,7 @@ class SiteVisitHistoryEntity {
     data['soCode'] = this.soCode;
     data['isAuthorised'] = this.isAuthorised;
     data['receiptNumber'] = this.receiptNumber;
+    data['syncStatus'] = this.syncStatus;
     return data;
   }
 }
@@ -689,6 +695,7 @@ class SiteNextStageEntity {
   String nextStageSupplyQty;
   String createdBy;
   int createdOn;
+  bool syncStatus;
 
   SiteNextStageEntity(
       {this.id,
@@ -702,7 +709,9 @@ class SiteNextStageEntity {
         this.nextStageSupplyDate,
         this.nextStageSupplyQty,
         this.createdBy,
-        this.createdOn});
+        this.createdOn,
+        this.syncStatus
+      });
 
   SiteNextStageEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -733,6 +742,7 @@ class SiteNextStageEntity {
     data['nextStageSupplyQty'] = this.nextStageSupplyQty;
     data['createdBy'] = this.createdBy;
     data['createdOn'] = this.createdOn;
+    data['syncStatus'] = this.syncStatus;
     return data;
   }
 }

@@ -571,14 +571,6 @@ class SitesDBProvider extends Model {
     List<DealerForDb> dataEntity=new List<DealerForDb>();
     var db = await _database;
     var res = await db.rawQuery('SELECT DISTINCT soldToParty, soldToPartyName FROM counterListDealers');
-
-
-    // await db.query(DbConstants.TABLE_COUNTER_LIST_DEALERS).then((value){
-    //   print("dealerEntityForDb>>    ${value.length}");
-    //
-    //   dataEntity = value.map((dealerMap) => DealerForDb.fromDb(dealerMap)).toList();
-    //
-    // });
     if (res.isNotEmpty) {
       dataEntity = res.map((dealerMap) => DealerForDb.fromDb(dealerMap)).toList();
       print("res FROM DB   $res");
@@ -589,6 +581,9 @@ class SitesDBProvider extends Model {
 
 
   /*update site list table data*/
+
+
+
 
 
 
