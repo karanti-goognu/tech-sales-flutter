@@ -382,7 +382,17 @@ class SitesModal {
     data['siteScore'] = this.siteScore;
     data['syncStatus'] = this.syncStatus;
     print("siteUpdateTabledata    $data");
+    return data;
+  }
 
+  Map<String, dynamic> toJsonMap() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['siteNextVisitDate'] = this.siteNextVisitDate;
+    data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
+    data['siteCompetitionId'] = this.siteCompetitionId;
+    data['siteOppertunityId'] = this.siteOppertunityId;
+    data['syncStatus'] = this.syncStatus;
+    print("siteUpdateTabledata    $data");
     return data;
   }
 }

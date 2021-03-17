@@ -96,7 +96,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   List<DropdownMenuItem<String>> productSoldVisitSite = new List();
 
-  // SiteStageEntity _siteStageNextStage;
+   SiteStageEntity _siteStageNextStage;
   var _siteBuiltupArea = new TextEditingController();
   var _siteProductDemo = new TextEditingController();
   var _siteProductOralBriefing = new TextEditingController();
@@ -175,6 +175,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<InfluencerTypeEntity> influencerTypeEntity = new List();
   List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
   List<SiteStageEntity> siteStageEntity = new List();
+  List<SiteStageEntity> siteStageEntityNextStage = new List();
   List<InfluencerEntity> influencerEntity = new List();
   List<InfluencerDetail> _listInfluencerDetail = new List();
 
@@ -211,6 +212,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   /*Get side details from db*/
   getSiteDetailsDataFromDb(int siteId){
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+
     db.fetchMapList(DbConstants.TABLE_SITE_LIST, null, "${DbConstants.COL_SITE_ID} =?",[siteId] , null, null, null, null, null).then((value){
       value.forEach((element) {
         if(mounted)
@@ -330,6 +336,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
    print("fetchSiteStageEntityData   ${value.length}");
       setState(() {
         siteStageEntity.addAll(value);
+        siteStageEntityNextStage.addAll(value);
       });
     });
 
@@ -565,7 +572,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     myFocusNode.requestFocus();
 
 
-
+  //  Get.back();
 
 
 
@@ -2597,6 +2604,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     await BrandNameDbConfig.fetchAllDistinctProduct(value.brandName);
                 setState(() {
                   _siteBrandFromLocalDB = value;
+                  print("_siteBrandFromLocalDB   ${_siteBrandFromLocalDB.id}   ${_siteBrandFromLocalDB.brandName} ${_siteBrandFromLocalDB.productName}");
 
                   siteProductEntityfromLoaclDB = _siteProductEntityfromLoaclDB;
                   // _productSoldVisit.text = _siteBrand.productName;
@@ -3525,7 +3533,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   ),
                 ),
                 onPressed: () async {
-                  UpdateRequest();
+                  //visitData
+                  _insertVisitDataFromDb();
+                //  UpdateRequest();
                 },
               ),
             ),
@@ -4587,7 +4597,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     fontSize: 18,
                                     color: ColorConstants.inputBoxHintColor,
                                     fontFamily: "Muli"),
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 decoration: FormFieldStyle.buildInputDecoration(
                                     labelText: "Brand Price"),
                               ),
@@ -5012,7 +5022,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               fontSize: 18,
               color: ColorConstants.inputBoxHintColor,
               fontFamily: "Muli"),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
           decoration: FormFieldStyle.buildInputDecoration(
             labelText: "Brand Price",
           ),
@@ -5197,24 +5207,73 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           ),
         ),
         SizedBox(height: 16),
-        TextFormField(
-          controller: _stageStatusNextStage,
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter Site Built-Up Area ';
-            }
+        // TextFormField(
+        //   controller: _stageStatusNextStage,
+        //   validator: (value) {
+        //     if (value.isEmpty) {
+        //       return 'Please enter Site Built-Up Area ';
+        //     }
+        //
+        //     return null;
+        //   },
+        //   style: TextStyle(
+        //       fontSize: 18,
+        //       color: ColorConstants.inputBoxHintColor,
+        //       fontFamily: "Muli"),
+        //   keyboardType: TextInputType.text,
+        //   enabled: false,
+        //   decoration:
+        //       FormFieldStyle.buildInputDecoration(labelText: "Stage Status//"),
+        // ),
+        DropdownButtonFormField<SiteStageEntity>(
+          value: _siteStageNextStage,
+          items: siteStageEntityNextStage
+              .map((label) => DropdownMenuItem(
+            child: Text(
+              label.siteStageDesc,
+              style: TextStyle(
+                  fontSize: 16,
+                  color: ColorConstants.inputBoxHintColor,
+                  fontFamily: "Muli"),
+            ),
+            value: label,
+          ))
+              .toList(),
 
-            return null;
+          // hint: Text('Rating'),
+          onChanged: (value) {
+            setState(() {
+              _siteStageNextStage = value;
+
+
+            });
           },
-          style: TextStyle(
-              fontSize: 18,
-              color: ColorConstants.inputBoxHintColor,
-              fontFamily: "Muli"),
-          keyboardType: TextInputType.text,
-          enabled: false,
-          decoration:
-              FormFieldStyle.buildInputDecoration(labelText: "Stage Status"),
+          decoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: ColorConstants.backgroundColorBlue,
+                  //color: HexColor("#0000001F"),
+                  width: 1.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black26, width: 1.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red, width: 1.0),
+            ),
+            labelText: "Stage Status",
+            filled: false,
+            focusColor: Colors.black,
+            isDense: false,
+            labelStyle: TextStyle(
+                fontFamily: "Muli",
+                color: ColorConstants.inputBoxHintColorDark,
+                fontWeight: FontWeight.normal,
+                fontSize: 16.0),
+            fillColor: ColorConstants.backgroundColor,
+          ),
         ),
+        //siteStageEntityNextStage
         Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Text(
@@ -5790,15 +5849,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     status=false;
 
    if(!status){
-     Get.dialog(CustomDialogs().errorDialog(
-         "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+     Get.dialog(CustomDialogs()
+         .errorDialog("Please fill mandatory fields in \"Site Data\" TAb"));
      return;
    }
+
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
 
    SitesModal _dataModel=new SitesModal(siteId:widget.siteId,siteBuiltArea:_siteBuiltUpAreaValue,siteProductDemo:_isSwitchedSiteProductDemoValue,
         siteProductOralBriefing:_isSwitchedSiteProductOralBriefingValue,sitePlotNumber:_plotNumberValue,siteTotalSitePotential:_siteTotalPtValue,siteOwnerName:_ownerNameValue,
         siteOwnerContactNumber:_contactNumberValue,siteAddress:_siteAddressValue,siteState:_stateValue,siteDistrict:_districtValue,siteTaluk:_talukValue,sitePincode:_pincodeValue,
-        siteGeotagLatitude:_currentPosition.altitude.toString(),
+        siteGeotagLatitude:_currentPosition.latitude.toString(),
         siteGeotagLongitude:_currentPosition.longitude.toString(),siteGeotagType:geoTagType,siteReraNumber:_reraValue,siteDealerId:_sitesModel.siteDealerId,siteDealerName:_dealerNameValue,siteSoId:_sitesModel.siteSoId,
         siteSoname:_soValue,siteStageId:labelId, inactiveReasonText:_inactiveReasonTextValue,siteNextVisitDate:_sitesModel.siteNextVisitDate,siteClosureReasonText:_sitesModel.siteClosureReasonText,
         siteProbabilityWinningId:_sitesModel.siteProbabilityWinningId,siteCompetitionId:_sitesModel.siteCompetitionId,siteOppertunityId:_sitesModel.siteOppertunityId,
@@ -5806,7 +5870,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         siteScore: siteScore,syncStatus:false);
        _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]).then((value){
          if(value!=0){
-
+           Get.back();
+           Get.dialog(CustomDialogs()
+               .errorDialog("Site data update successfully"));
          }
        });
 
@@ -5817,12 +5883,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   /*insert new row from db for visit data*/
 _insertVisitDataFromDb(){
+  /*Next stage fields values*/
+
+
+
+
   String _siteTotalBalanceBagsValue= _siteTotalBalanceBags.text;
-  int _selectedConstructionTypeVisitId= _selectedConstructionTypeVisit.id; //m
-  int _selectedSiteVisitFloorId= _selectedSiteVisitFloor.id;  //m
+  int _selectedConstructionTypeVisitId=_selectedConstructionTypeVisit !=null?  _selectedConstructionTypeVisit.id : null; //m
+  int _selectedSiteVisitFloorId=_selectedSiteVisitFloor!=null? _selectedSiteVisitFloor.id :null;  //m
   String _stagePotentialVisitValue= _stagePotentialVisit.text;  //m
-  int _siteBrandFromLocalDBId= _siteBrandFromLocalDB.id;  //m
-  int _siteProductFromLocalDBId= _siteProductFromLocalDB.id;  //m
+  int _siteBrandFromLocalDBId= _siteProductFromLocalDB !=null?_siteProductFromLocalDB.id :null;  //m
+  //int _siteProductFromLocalDBId= _siteProductFromLocalDB.id;  //m
    // String selectedSubDealer = subDealerList[0].;
   String shipToPartyValue = subDealerList.length>0?subDealerList[0].shipToParty :"";
   String _brandPriceVisitValue=_brandPriceVisit.text;
@@ -5830,13 +5901,21 @@ _insertVisitDataFromDb(){
   String _siteCurrentTotalBagsValue=_siteCurrentTotalBags.text;
   String _stageStatusValue=_stageStatus.text; //m
   String _dateofConstructionValue=_dateofConstruction.text;
-  int _siteOpportunitStatusEnityId=_siteOpportunitStatusEnity.id; //m
-  int _siteCompetitionStatusEntityId=_siteCompetitionStatusEntity.id;//m
-  int _siteProbabilityWinningEntityId=_siteProbabilityWinningEntity.id;//m
+
+  int _siteOpportunitStatusEnityId=_siteOpportunitStatusEnity!=null?_siteOpportunitStatusEnity.id : null; //m
+  int _siteCompetitionStatusEntityId=_siteCompetitionStatusEntity!=null ?_siteCompetitionStatusEntity.id : null;//m
+  int _siteProbabilityWinningEntityId=_siteProbabilityWinningEntity!=null ? _siteProbabilityWinningEntity.id : null;//m
   String _nextVisitDateValue=_nextVisitDate.text;
   String _commentsValue=_comments.text;
+  print('_selectedConstructionTypeVisitId  $_selectedConstructionTypeVisitId');
+  print('_selectedSiteVisitFloorId  $_selectedSiteVisitFloorId');
+  print('_stagePotentialVisitValue  $_stagePotentialVisitValue');
+  print('_siteBrandFromLocalDBId  $_siteBrandFromLocalDBId');
+  print('_dateOfBagSuppliedValue  $_dateOfBagSuppliedValue');
+  print('_stageStatusValue  $_stageStatusValue');
   bool status=true;
-  if(_selectedSiteVisitFloorId==null || _selectedSiteVisitFloorId == null || _stagePotentialVisitValue==null || _siteBrandFromLocalDBId == null
+  if(_selectedConstructionTypeVisitId ==null || _selectedSiteVisitFloorId==null  || _stagePotentialVisitValue==null||
+      _stagePotentialVisitValue=="null"|| _stagePotentialVisitValue=="" || _siteBrandFromLocalDBId == null
       || _siteOpportunitStatusEnityId==null || _siteCompetitionStatusEntityId ==null  || _siteProbabilityWinningEntityId==null ||
       _stageStatusValue==null || _stageStatusValue=="null" || _stageStatusValue ==""||
       _dateOfBagSuppliedValue==null || _dateOfBagSuppliedValue=="null" || _dateOfBagSuppliedValue ==""
@@ -5844,38 +5923,59 @@ _insertVisitDataFromDb(){
     status=false;
 
   if(!status){
-    Get.dialog(CustomDialogs().errorDialog(
-        "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+    Get.dialog(CustomDialogs()
+        .errorDialog("Please fill mandatory fields in \"Visit Data\" Tab"));
     return;
   }
 
+  if(addNextButtonDisable){
+    int _constructionId= _selectedConstructionTypeVisitNextStage !=null ?_selectedConstructionTypeVisitNextStage.id : null;//m
+    int _floorId=_selectedSiteVisitFloorNextStage!=null ?_selectedSiteVisitFloorNextStage.id : null;//m
+    String _stagePotentialValue= _stagePotentialVisitNextStage.text; //m
 
-   SiteVisitHistoryEntity _visitDataModel=new SiteVisitHistoryEntity( totalBalancePotential:_siteTotalBalanceBagsValue,constructionStageId:_selectedConstructionTypeVisitId,floorId: _selectedSiteVisitFloorId,
+    int _brandId= _siteProductFromLocalDBNextStage!=null ?_siteProductFromLocalDBNextStage.id :null ; //m
+    String _brandPrice= _brandPriceVisitNextStage.text; //m
+    String _dateSuppliedValue= _dateOfBagSuppliedNextStage.text;//m
+    String _suppliedQtyValue= _siteCurrentTotalBagsNextStage.text;
+    String _stagStatusValue= _siteStageNextStage!=null ?_siteStageNextStage.siteStageDesc :null; //m
+    String _dateOfConstructionNextStageValue= _dateofConstructionNextStage.text;
+
+    bool status=true;
+    if(_constructionId==null || _floorId==null ||
+        _stagePotentialValue=="" || _stagePotentialValue==null || _stagePotentialValue=="null" || _brandId==null||
+        _brandPrice== "" || _brandPrice==null || _brandPrice =="null" ||
+        _dateSuppliedValue==null || _dateSuppliedValue=="" || _dateSuppliedValue=="null" || _suppliedQtyValue==null || _suppliedQtyValue=="" || _suppliedQtyValue=="null"
+        || _stagStatusValue==null || _stagStatusValue=="" || _stagStatusValue=="null" )
+      status=false;
+
+    if(!status){
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+      return;
+    }
+    SiteNextStageEntity _nextDataModel=new SiteNextStageEntity(siteId:widget.siteId,constructionStageId:_constructionId ,stagePotential: _stagePotentialValue ,
+        brandId:_brandId ,brandPrice:_brandPrice ,stageStatus: _stagStatusValue, constructionStartDt:_dateOfConstructionNextStageValue ,
+        nextStageSupplyDate:_dateSuppliedValue ,nextStageSupplyQty: _suppliedQtyValue, syncStatus : false);
+    _helper.insertDataInTable(DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY, _nextDataModel.toJson(), ConflictAlgorithm.replace);
+
+  }
+
+  /*new data insert in siteVisitHistoryEntity table*/
+  SiteVisitHistoryEntity _visitDataModel=new SiteVisitHistoryEntity( totalBalancePotential:_siteTotalBalanceBagsValue,constructionStageId:_selectedConstructionTypeVisitId,floorId: _selectedSiteVisitFloorId,
    stagePotential:_stagePotentialVisitValue,brandId:_siteBrandFromLocalDBId, brandPrice: _brandPriceVisitValue, constructionDate: _dateofConstructionValue, siteId:widget.siteId,
       supplyDate: _dateOfBagSuppliedValue, supplyQty: _siteCurrentTotalBagsValue  , stageStatus: _stageStatusValue,  shipToParty: shipToPartyValue, syncStatus: false );
-
    _helper.insertDataInTable(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, _visitDataModel.toJson(), ConflictAlgorithm.replace);
 
+/*update data in site table*/
+  SitesModal _dataModel=new SitesModal(siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,
+      siteOppertunityId:_siteOpportunitStatusEnityId,siteNextVisitDate: _nextVisitDateValue, syncStatus:false);
+  _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJsonMap(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
+
+  /*new data insert in siteVisitHistoryEntity table*/
+  SiteCommentsEntity _commentsEntity =new SiteCommentsEntity(siteId: widget.siteId, siteCommentText: _commentsValue);
+  _helper.insertDataInTable(DbConstants.TABLE_SITE_COMMENT_ENTITY, _commentsEntity.toJson(),  ConflictAlgorithm.replace);
 
 
-  /*Next stage fields values*/
-  int _selectedConstructionTypeVisitNextStageId=_selectedConstructionTypeVisitNextStage.id;//m
-  int _selectedSiteVisitFloorNextStageId=_selectedSiteVisitFloorNextStage.id;//m
-  String _stagePotentialVisitNextStageValue= _stagePotentialVisitNextStage.text;
-  int _siteBrandFromLocalDBNextStageId= _siteBrandFromLocalDBNextStage.id;
-  String _brandPriceVisitNextStageValue= _brandPriceVisitNextStage.text;
-  int _siteProductFromLocalDBNextStageId= _siteProductFromLocalDBNextStage.id;
-  String _dateOfBagSuppliedNextStageValue= _dateOfBagSuppliedNextStage.text;
-  String _siteCurrentTotalBagsNextStageValue= _siteCurrentTotalBagsNextStage.text;
-  String _dateofConstructionNextStageValue= _dateofConstructionNextStage.text;
-
-
-
-  SiteNextStageEntity _nextDataModel=new SiteNextStageEntity(siteId:widget.siteId,constructionStageId:_selectedConstructionTypeVisitNextStageId ,stagePotential: _stagePotentialVisitNextStageValue ,
-      brandId:_siteBrandFromLocalDBNextStageId ,brandPrice:_brandPriceVisitNextStageValue ,stageStatus: "",constructionStartDt:_dateofConstructionNextStageValue ,
-      nextStageSupplyDate:_dateOfBagSuppliedNextStageValue ,nextStageSupplyQty: _siteCurrentTotalBagsNextStageValue,createdBy: "" ,createdOn: 0, syncStatus : false);
-
-  _helper.insertDataInTable(DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY, _nextDataModel.toJson(), ConflictAlgorithm.replace);
 
 
 

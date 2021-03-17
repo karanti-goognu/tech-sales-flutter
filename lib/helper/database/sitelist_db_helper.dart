@@ -375,7 +375,7 @@ class SitesDBProvider extends Model {
     List<BrandModelforDB> brandEntity=new List<BrandModelforDB>();
     var db = await _database;
    // var res = await db.rawQuery('SELECT DISTINCT brandName FROM brandName');
-    await db.rawQuery("SELECT DISTINCT "+DbConstants.COL_BRAND_NAME+" FROM " +DbConstants.TABLE_BRAND_NAME).then((value) {
+    await db.rawQuery("SELECT DISTINCT "+DbConstants.COL_BRAND_NAME /*+", "+ DbConstants.COL_ID*/ +" FROM " +DbConstants.TABLE_BRAND_NAME).then((value) {
       value.forEach((element) {
         brandEntity.add(BrandModelforDB.fromDb(element));
       });
