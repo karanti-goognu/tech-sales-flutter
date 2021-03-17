@@ -204,7 +204,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         // print('ho');
-        // print(data['listOfMonthYear']);
+         print(data['mwpplanModel']);
         return GetMWPResponse.fromJson(data);
       } else {
       //  print('Error in else');
