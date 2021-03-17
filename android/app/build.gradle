@@ -103,6 +103,5 @@ dependencies {
     implementation("com.moengage:hms-pushkit:1.2.01")
     implementation("com.moengage:rich-notification:1.2.02")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.moengage:moe-android-sdk:11.0.04"
 
 }
