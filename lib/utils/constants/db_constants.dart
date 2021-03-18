@@ -39,6 +39,7 @@ class DbConstants{
 
   /*Tables column name*/
   static const String COL_ID = "id";
+  static const String COL_ROW_ID = "id_row";
   static const String COL_LEAD_MODEL = "leadModel";
   static const String COL_DEALER_NAME = "dealerName";
   static const String COL_CONSTRUCT_STAGE_ENTITY = "constructStageEntity";

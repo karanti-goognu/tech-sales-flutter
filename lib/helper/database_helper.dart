@@ -39,7 +39,7 @@ class DatabaseHelper{
   Future<Database> open() async {
     String path = await initDb(DbConstants.DATA_BASE);
     var database =
-    await openDatabase(path, version: 5, onCreate: _createDb, onUpgrade: _onUpgrade);
+    await openDatabase(path, version: 2, onCreate: _createDb, onUpgrade: _onUpgrade);
     return database;
   }
 
@@ -205,6 +205,7 @@ class DatabaseHelper{
     );
 
     await db.execute('CREATE TABLE ${DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY} ('
+        '${DbConstants.COL_ROW_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
         '${DbConstants.COL_ID} INTEGER,'
         '${DbConstants.COL_SITE_VISIT_HISTORY_totalBalancePotential} TEXT,'
         '${DbConstants.COL_SITE_VISIT_HISTORY_constructionStageId} INTEGER,'

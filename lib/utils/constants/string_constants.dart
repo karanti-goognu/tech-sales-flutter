@@ -53,4 +53,12 @@ abstract class StringConstants {
   static String visits = 'VISITS';
   static String influencersMeet = 'INFLUENCERS MEET';
   static String services = 'SERVICES';
+  static const String HIDE_NEXT_STAGE_BUTTON = 'Please fill mandatory fields in \"Add Next Stage\" or hide next stage';
+  static const String SITE_DATA_UPDATE = 'Site data update successfully';
+  static const String VISIT_DATA_INSERTED = 'Visit data inserted successfully';
+  static const String NOT_AUTHORISED = 'You can not add new visit because visit data not authorised';
+  static const String SITE_DATA_ALREADY_UPDATE = 'You have already update the site data So first you need to sync that data to server.';
+
+
+
 }

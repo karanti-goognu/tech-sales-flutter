@@ -340,6 +340,8 @@ class SitesModal {
     siteConstructionId = json['siteConstructionId'];
     noOfFloors = json['noOfFloors'];
     siteScore = json['siteScore'];
+
+
   }
 
 
@@ -446,6 +448,7 @@ class SitephotosEntity {
 }
 
 class SiteVisitHistoryEntity {
+
   int id;
   String totalBalancePotential;
   int constructionStageId;

@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dartz/dartz_unsafe.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -196,6 +199,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   CounterListModel selectedSubDealer = CounterListModel();
   DatabaseHelper _helper;
+  StreamSubscription<DataConnectionStatus> listener;
+
 
   @override
   void initState() {
@@ -209,17 +214,34 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     getConstructionData();
 
 
+    checkConnection();
+
+  }
 
 
+  checkConnection() async{
+    listener = DataConnectionChecker().onStatusChange.listen((status) {
+      print("status internet   $status");
+      switch (status){
+
+        case DataConnectionStatus.connected:
+          // InternetStatus = "Connected to the Internet";
+          // contentmessage = "Connected to the Internet";
+          // _showDialog(InternetStatus,contentmessage,context);
+          break;
+        case DataConnectionStatus.disconnected:
+          // InternetStatus = "You are disconnected to the Internet. ";
+          // contentmessage = "Please check your internet connection";
+          // _showDialog(InternetStatus,contentmessage,context);
+          break;
+      }
+    });
+    return await DataConnectionChecker().connectionStatus;
   }
 
 
   /*Get side details from db*/
   getSiteDetailsDataFromDb(int siteId){
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
 
     db.fetchMapList(DbConstants.TABLE_SITE_LIST, null, "${DbConstants.COL_SITE_ID} =?",[siteId] , null, null, null, null, null).then((value){
       value.forEach((element) {
@@ -237,6 +259,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   /*get construction data from tables*/
   getConstructionData() async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+
     SitesDBProvider model = ScopedModel.of(this.context);
     model.fetchConstructionStageEntityData().then((value)  {
       setState(() {
@@ -576,7 +603,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     myFocusNode.requestFocus();
 
 
-  //  Get.back();
+   Get.back();
 
 
 
@@ -1855,33 +1882,43 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 ),
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  geoTagType = "M";
-                                });
-                                LocationResult result =
-                                    await showLocationPicker(
-                                  context,
-                                  StringConstants.API_Key,
-                                  initialCenter: LatLng(31.1975844, 29.9598339),
-                                  automaticallyAnimateToCurrentLocation: true,
-//                      mapStylePath: 'assets/mapStyle.json',
-                                  myLocationButtonEnabled: true,
-                                  // requiredGPS: true,
-                                  layersButtonEnabled: false,
-                                  // countries: ['AE', 'NG']
+                                internetChecking().then((result) async {
+                                  if (!result) {
+                                    Get.snackbar(
+                                        "No internet connection.", "",
+                                        colorText: Colors.white,
+                                        backgroundColor: Colors.red,
+                                        snackPosition: SnackPosition.BOTTOM);
 
-//                      resultCardAlignment: Alignment.bottomCenter,
-                                  // desiredAccuracy: LocationAccuracy.best,
-                                );
-                                print("result = $result");
-                                setState(() {
-                                  _pickedLocation = result;
-                                  _currentPosition = new Position(
-                                      latitude: _pickedLocation!=null?_pickedLocation.latLng.latitude:0.0,
-                                      longitude: _pickedLocation!=null?_pickedLocation.latLng.longitude:0.0);
-                                  _getAddressFromLatLng();
-                                  //print(_pickedLocation.latLng.latitude);
+                                  }else{
+                                    setState(() {
+                                      geoTagType = "M";
+                                    });
+                                    LocationResult result =
+                                        await showLocationPicker(
+                                      context,
+                                      StringConstants.API_Key,
+                                      initialCenter: LatLng(31.1975844, 29.9598339),
+                                      automaticallyAnimateToCurrentLocation: true,
+                                      myLocationButtonEnabled: true,
+                                      layersButtonEnabled: false,
+
+                                    );
+                                    print("result.... = $result");
+                                    setState(() {
+                                      _pickedLocation = result;
+                                      _currentPosition = new Position(
+                                          latitude: _pickedLocation!=null?_pickedLocation.latLng.latitude:0.0,
+                                          longitude: _pickedLocation!=null?_pickedLocation.latLng.longitude:0.0);
+                                      _getAddressFromLatLng();
+                                      //print(_pickedLocation.latLng.latitude);
+                                    });
+                                  }
                                 });
+
+
+
+
                               },
                             ),
                           ],
@@ -5494,9 +5531,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
+
+
+      Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
+
+        print("result.... = $position");
+
         setState(() {
           _currentPosition = position;
         });
@@ -5514,10 +5557,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     try {
       List<Placemark> p = await geolocator.placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
+
       Placemark place = p[0];
       setState(() {
         _siteAddress.text =
             place.name + "," + place.thoroughfare + "," + place.subLocality;
+        print("_getAddressFromLatLng   ${_siteAddress.text}");
         _district.text = place.subAdministrativeArea;
         _state.text = place.administrativeArea;
         _pincode.text = place.postalCode;
@@ -5527,7 +5572,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             "${place.locality}, ${place.postalCode}, ${place.country}";
 
         print(
-            "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+            "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea},"
+                " ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
     } catch (e) {
       print(e);
@@ -5859,35 +5905,47 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
 
-   SitesModal _dataModel=new SitesModal(siteId:widget.siteId,siteBuiltArea:_siteBuiltUpAreaValue,siteProductDemo:_isSwitchedSiteProductDemoValue,
-        siteProductOralBriefing:_isSwitchedSiteProductOralBriefingValue,sitePlotNumber:_plotNumberValue,siteTotalSitePotential:_siteTotalPtValue,siteOwnerName:_ownerNameValue,
-        siteOwnerContactNumber:_contactNumberValue,siteAddress:_siteAddressValue,siteState:_stateValue,siteDistrict:_districtValue,siteTaluk:_talukValue,sitePincode:_pincodeValue,
-        siteGeotagLatitude:_currentPosition.latitude.toString(),
-        siteGeotagLongitude:_currentPosition.longitude.toString(),siteGeotagType:geoTagType,siteReraNumber:_reraValue,siteDealerId:_sitesModel.siteDealerId,siteDealerName:_dealerNameValue,siteSoId:_sitesModel.siteSoId,
-        siteSoname:_soValue,siteStageId:labelId, inactiveReasonText:_inactiveReasonTextValue,siteNextVisitDate:_sitesModel.siteNextVisitDate,siteClosureReasonText:_sitesModel.siteClosureReasonText,
-        siteProbabilityWinningId:_sitesModel.siteProbabilityWinningId,siteCompetitionId:_sitesModel.siteCompetitionId,siteOppertunityId:_sitesModel.siteOppertunityId,
-        assignedTo: _sitesModel.assignedTo,siteStatusId:_sitesModel.siteStatusId,siteCreationDate:_sitesModel.siteCreationDate,siteConstructionId:_constructionId,noOfFloors:_selectedSiteFloorId,
-        siteScore: siteScore,syncStatus:false);
-       _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]).then((value){
-         if(value!=0){
-           Get.back();
-           Get.dialog(CustomDialogs()
-               .errorDialog("Site data update successfully"));
-         }
+   /*update site data only when the syncStatus is true */
+       _helper.fetchMapList(DbConstants.TABLE_SITE_LIST, [DbConstants.COL_SYNC_STATUS],  "${DbConstants.COL_SITE_ID} = ? ", [widget.siteId], null, null, null, null, null).then((value){
+
+         value.forEach((element) {
+
+           int dataSyncStatus=element[DbConstants.COL_SYNC_STATUS];
+           if(dataSyncStatus!=1){
+             Get.back();
+             Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_ALREADY_UPDATE));
+
+           }
+           else{
+             SitesModal _dataModel=new SitesModal(siteId:widget.siteId,siteBuiltArea:_siteBuiltUpAreaValue,siteProductDemo:_isSwitchedSiteProductDemoValue,
+                 siteProductOralBriefing:_isSwitchedSiteProductOralBriefingValue,sitePlotNumber:_plotNumberValue,siteTotalSitePotential:_siteTotalPtValue,siteOwnerName:_ownerNameValue,
+                 siteOwnerContactNumber:_contactNumberValue,siteAddress:_siteAddressValue,siteState:_stateValue,siteDistrict:_districtValue,siteTaluk:_talukValue,sitePincode:_pincodeValue,
+                 siteGeotagLatitude:_currentPosition.latitude.toString(),
+                 siteGeotagLongitude:_currentPosition.longitude.toString(),siteGeotagType:geoTagType,siteReraNumber:_reraValue,siteDealerId:_sitesModel.siteDealerId,siteDealerName:_dealerNameValue,siteSoId:_sitesModel.siteSoId,
+                 siteSoname:_soValue,siteStageId:labelId, inactiveReasonText:_inactiveReasonTextValue,siteNextVisitDate:_sitesModel.siteNextVisitDate,siteClosureReasonText:_sitesModel.siteClosureReasonText,
+                 siteProbabilityWinningId:_sitesModel.siteProbabilityWinningId,siteCompetitionId:_sitesModel.siteCompetitionId,siteOppertunityId:_sitesModel.siteOppertunityId,
+                 assignedTo: _sitesModel.assignedTo,siteStatusId:_sitesModel.siteStatusId,siteCreationDate:_sitesModel.siteCreationDate,siteConstructionId:_constructionId,noOfFloors:_selectedSiteFloorId,
+                 siteScore: siteScore,syncStatus:false);
+             _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]).then((value){
+               if(value!=0){
+                 Get.back();
+                 Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_UPDATE));
+               }
+             });
+           }
+
+
+         });
        });
+
+
 
 
   }
 
-
-
   /*insert new row from db for visit data*/
 _insertVisitDataFromDb(){
   /*Next stage fields values*/
-
-
-
-
   String _siteTotalBalanceBagsValue= _siteTotalBalanceBags.text;
   int _selectedConstructionTypeVisitId=_selectedConstructionTypeVisit !=null?  _selectedConstructionTypeVisit.id : null; //m
   int _selectedSiteVisitFloorId=_selectedSiteVisitFloor!=null? _selectedSiteVisitFloor.id :null;  //m
@@ -5900,19 +5958,13 @@ _insertVisitDataFromDb(){
   String _dateOfBagSuppliedValue=_dateOfBagSupplied.text;//m
   String _siteCurrentTotalBagsValue=_siteCurrentTotalBags.text;
   String _stageStatusValue=_stageStatus.text; //m
-  String _dateofConstructionValue=_dateofConstruction.text;
+  String _dateOfConstructionValue=_dateofConstruction.text;
 
   int _siteOpportunitStatusEnityId=_siteOpportunitStatusEnity!=null?_siteOpportunitStatusEnity.id : null; //m
   int _siteCompetitionStatusEntityId=_siteCompetitionStatusEntity!=null ?_siteCompetitionStatusEntity.id : null;//m
   int _siteProbabilityWinningEntityId=_siteProbabilityWinningEntity!=null ? _siteProbabilityWinningEntity.id : null;//m
   String _nextVisitDateValue=_nextVisitDate.text;
   String _commentsValue=_comments.text;
-  print('_selectedConstructionTypeVisitId  $_selectedConstructionTypeVisitId');
-  print('_selectedSiteVisitFloorId  $_selectedSiteVisitFloorId');
-  print('_stagePotentialVisitValue  $_stagePotentialVisitValue');
-  print('_siteBrandFromLocalDBId  $_siteBrandFromLocalDBId');
-  print('_dateOfBagSuppliedValue  $_dateOfBagSuppliedValue');
-  print('_stageStatusValue  $_stageStatusValue');
   bool status=true;
   if(_selectedConstructionTypeVisitId ==null || _selectedSiteVisitFloorId==null  || _stagePotentialVisitValue==null||
       _stagePotentialVisitValue=="null"|| _stagePotentialVisitValue=="" || _siteBrandFromLocalDBId == null
@@ -5928,65 +5980,81 @@ _insertVisitDataFromDb(){
     return;
   }
 
-  if(addNextButtonDisable){
-    int _constructionId= _selectedConstructionTypeVisitNextStage !=null ?_selectedConstructionTypeVisitNextStage.id : null;//m
-    int _floorId=_selectedSiteVisitFloorNextStage!=null ?_selectedSiteVisitFloorNextStage.id : null;//m
-    String _stagePotentialValue= _stagePotentialVisitNextStage.text; //m
+  _checkUserIsAuthorisedForDataInsert().then((isAuthorised){
+    if(!isAuthorised){
+      Get.dialog(CustomDialogs()
+          .errorDialog(StringConstants.NOT_AUTHORISED));
 
-    int _brandId= _siteProductFromLocalDBNextStage!=null ?_siteProductFromLocalDBNextStage.id :null ; //m
-    String _brandPrice= _brandPriceVisitNextStage.text; //m
-    String _dateSuppliedValue= _dateOfBagSuppliedNextStage.text;//m
-    String _suppliedQtyValue= _siteCurrentTotalBagsNextStage.text;
-    String _stagStatusValue= _siteStageNextStage!=null ?_siteStageNextStage.siteStageDesc :null; //m
-    String _dateOfConstructionNextStageValue= _dateofConstructionNextStage.text;
+    }else{
+      if(addNextButtonDisable){
+        int _constructionId= _selectedConstructionTypeVisitNextStage !=null ?_selectedConstructionTypeVisitNextStage.id : null;//m
+        int _floorId=_selectedSiteVisitFloorNextStage!=null ?_selectedSiteVisitFloorNextStage.id : null;//m
+        String _stagePotentialValue= _stagePotentialVisitNextStage.text; //m
 
-    bool status=true;
-    if(_constructionId==null || _floorId==null ||
-        _stagePotentialValue=="" || _stagePotentialValue==null || _stagePotentialValue=="null" || _brandId==null||
-        _brandPrice== "" || _brandPrice==null || _brandPrice =="null" ||
-        _dateSuppliedValue==null || _dateSuppliedValue=="" || _dateSuppliedValue=="null" || _suppliedQtyValue==null || _suppliedQtyValue=="" || _suppliedQtyValue=="null"
-        || _stagStatusValue==null || _stagStatusValue=="" || _stagStatusValue=="null" )
-      status=false;
+        int _brandId= _siteProductFromLocalDBNextStage!=null ?_siteProductFromLocalDBNextStage.id :null ; //m
+        String _brandPrice= _brandPriceVisitNextStage.text; //m
+        String _dateSuppliedValue= _dateOfBagSuppliedNextStage.text;//m
+        String _suppliedQtyValue= _siteCurrentTotalBagsNextStage.text;
+        String _stagStatusValue= _siteStageNextStage!=null ?_siteStageNextStage.siteStageDesc :null; //m
+        String _dateOfConstructionNextStageValue= _dateofConstructionNextStage.text;
 
-    if(!status){
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
-      return;
-    }
-    SiteNextStageEntity _nextDataModel=new SiteNextStageEntity(siteId:widget.siteId,constructionStageId:_constructionId ,stagePotential: _stagePotentialValue ,
-        brandId:_brandId ,brandPrice:_brandPrice ,stageStatus: _stagStatusValue, constructionStartDt:_dateOfConstructionNextStageValue ,
-        nextStageSupplyDate:_dateSuppliedValue ,nextStageSupplyQty: _suppliedQtyValue, syncStatus : false);
-    _helper.insertDataInTable(DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY, _nextDataModel.toJson(), ConflictAlgorithm.replace);
+        bool status=true;
+        if(_constructionId==null || _floorId==null ||
+            _stagePotentialValue=="" || _stagePotentialValue==null || _stagePotentialValue=="null" || _brandId==null||
+            _brandPrice== "" || _brandPrice==null || _brandPrice =="null" ||
+            _dateSuppliedValue==null || _dateSuppliedValue=="" || _dateSuppliedValue=="null" || _suppliedQtyValue==null || _suppliedQtyValue=="" || _suppliedQtyValue=="null"
+            || _stagStatusValue==null || _stagStatusValue=="" || _stagStatusValue=="null" )
+          status=false;
 
-  }
+        if(!status){
+          Get.dialog(CustomDialogs().errorDialog(
+              StringConstants.HIDE_NEXT_STAGE_BUTTON));
+          return;
+        }
+        SiteNextStageEntity _nextDataModel=new SiteNextStageEntity(siteId:widget.siteId,constructionStageId:_constructionId ,stagePotential: _stagePotentialValue ,
+            brandId:_brandId ,brandPrice:_brandPrice ,stageStatus: _stagStatusValue, constructionStartDt:_dateOfConstructionNextStageValue ,
+            nextStageSupplyDate:_dateSuppliedValue ,nextStageSupplyQty: _suppliedQtyValue, syncStatus : false);
+        _helper.insertDataInTable(DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY, _nextDataModel.toJson(), ConflictAlgorithm.replace);
 
-  /*new data insert in siteVisitHistoryEntity table*/
-  SiteVisitHistoryEntity _visitDataModel=new SiteVisitHistoryEntity( totalBalancePotential:_siteTotalBalanceBagsValue,constructionStageId:_selectedConstructionTypeVisitId,floorId: _selectedSiteVisitFloorId,
-   stagePotential:_stagePotentialVisitValue,brandId:_siteBrandFromLocalDBId, brandPrice: _brandPriceVisitValue, constructionDate: _dateofConstructionValue, siteId:widget.siteId,
-      supplyDate: _dateOfBagSuppliedValue, supplyQty: _siteCurrentTotalBagsValue  , stageStatus: _stageStatusValue,  shipToParty: shipToPartyValue, syncStatus: false );
-   _helper.insertDataInTable(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, _visitDataModel.toJson(), ConflictAlgorithm.replace);
+      }
+
+      /*new data insert in siteVisitHistoryEntity table*/
+      SiteVisitHistoryEntity _visitDataModel=new SiteVisitHistoryEntity( totalBalancePotential:_siteTotalBalanceBagsValue,constructionStageId:_selectedConstructionTypeVisitId,floorId: _selectedSiteVisitFloorId,
+          stagePotential:_stagePotentialVisitValue,brandId:_siteBrandFromLocalDBId, brandPrice: _brandPriceVisitValue, constructionDate: _dateOfConstructionValue, siteId:widget.siteId,
+          supplyDate: _dateOfBagSuppliedValue, supplyQty: _siteCurrentTotalBagsValue  , isAuthorised:"N" ,stageStatus: _stageStatusValue,  shipToParty: shipToPartyValue, syncStatus: false );
+      _helper.insertDataInTable(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, _visitDataModel.toJson(), ConflictAlgorithm.replace);
 
 /*update data in site table*/
-  SitesModal _dataModel=new SitesModal(siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,
-      siteOppertunityId:_siteOpportunitStatusEnityId,siteNextVisitDate: _nextVisitDateValue, syncStatus:false);
-  _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJsonMap(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
+      SitesModal _dataModel=new SitesModal(siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,
+          siteOppertunityId:_siteOpportunitStatusEnityId,siteNextVisitDate: _nextVisitDateValue, syncStatus:false);
+      _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJsonMap(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
 
-  /*new data insert in siteVisitHistoryEntity table*/
-  SiteCommentsEntity _commentsEntity =new SiteCommentsEntity(siteId: widget.siteId, siteCommentText: _commentsValue);
-  _helper.insertDataInTable(DbConstants.TABLE_SITE_COMMENT_ENTITY, _commentsEntity.toJson(),  ConflictAlgorithm.replace).then((value){
-    if(value!=0){
-      Get.dialog(CustomDialogs()
-          .errorDialog("Visit data inserted successfully"));
+      /*new data insert in siteVisitHistoryEntity table*/
+      SiteCommentsEntity _commentsEntity =new SiteCommentsEntity(siteId: widget.siteId, siteCommentText: _commentsValue);
+      _helper.insertDataInTable(DbConstants.TABLE_SITE_COMMENT_ENTITY, _commentsEntity.toJson(),  ConflictAlgorithm.replace).then((value){
+        if(value!=0){
+          Get.dialog(CustomDialogs()
+              .errorDialog(StringConstants.VISIT_DATA_INSERTED));
+        }
+
+      });
     }
 
   });
-
-
-
-
-
 }
 
+/*Store data in visit table*/
+Future<bool> _checkUserIsAuthorisedForDataInsert() async {
+  bool isAuthorised=false;
+  await _helper.fetchMapList(DbConstants.TABLE_SITE_COMMENT_ENTITY, [DbConstants.COL_SITE_VISIT_HISTORY_isAuthorised], "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId],null, null,
+       "${DbConstants.COL_ROW_ID} ASC", 1,null).then((value){
+     value.forEach((element){
+       String isAuthorisedValue= element[DbConstants.COL_SITE_VISIT_HISTORY_isAuthorised];
+       isAuthorised=isAuthorisedValue!="N"? true: false;
+     });
+   });
+  return isAuthorised;
+ }
 
 }
 
