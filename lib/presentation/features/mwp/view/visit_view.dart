@@ -28,8 +28,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   @override
   void initState() {
 
-
-
     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
     // setState(() {
     //   dropdownValue = 'RETENTION SITE';

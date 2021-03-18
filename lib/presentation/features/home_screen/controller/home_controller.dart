@@ -1,6 +1,6 @@
-
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/repository/home_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -35,11 +35,25 @@ class HomeController extends GetxController {
   final _employeeName = "_empty".obs;
   final _checkInStatus = StringConstants.empty.obs;
   final _disableSlider = false.obs;
+  final _sitesConverted = '0'.obs;
+  final _volumeConverted = '0'.obs;
+  final _newInfl = '0'.obs;
+  final _dspSlabsConverted = '0'.obs;
 
-  //test
+  get sitesConverted => this._sitesConverted.value;
+  set sitesConverted(value) => this._sitesConverted.value = value;
+
+  get volumeConverted => this._volumeConverted.value;
+  set volumeConverted(value) => this._volumeConverted.value = value;
+
+  get newInfl => this._newInfl.value;
+  set newInfl(value) => this._newInfl.value = value;
+
+  get dspSlabsConverted => this._dspSlabsConverted.value;
+  set dspSlabsConverted(value) => this._dspSlabsConverted.value = value;
+
   get disableSlider => this._disableSlider.value;
   set disableSlider(value) => this._disableSlider.value = value;
-  //
 
   get accessKeyResponse => this._accessKeyResponse.value;
 
@@ -77,13 +91,12 @@ class HomeController extends GetxController {
         snackPosition: SnackPosition.BOTTOM);
   }
 
-
-  disable(){
-    this.disableSlider=true;
+  disable() {
+    this.disableSlider = true;
   }
 
-  enable(){
-    this.disableSlider=false;
+  enable() {
+    this.disableSlider = false;
   }
 
   getAccessKey(int requestId) {
@@ -102,14 +115,39 @@ class HomeController extends GetxController {
         case RequestIds.CHECK_OUT:
           getCheckOutDetails(this.accessKeyResponse.accessKey);
           break;
+        case RequestIds.HOME_DASHBOARD:
+          getDashboardDetails();
+          break;
       }
     });
+  }
+
+  getDashboardDetails() {
+    String empId = "empty";
+    String userSecurityKey = "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      print('$empId $userSecurityKey');
+      print('waheguru\nwaheguru');
+      repository.getHomeDashboardDetails(empId).then((_) {
+        print("waheguru---");
+        DashboardModel data = _;
+        print(data.dashBoardViewModal.dspSlabsConverted);
+        this.sitesConverted = data.dashBoardViewModal.sitesConverted;
+        this.dspSlabsConverted = data.dashBoardViewModal.dspSlabsConverted;
+        this.sitesConverted = data.dashBoardViewModal.sitesConverted;
+        this.newInfl = data.dashBoardViewModal.newInfl;
+      });
+    }).catchError((e) => print(e));
   }
 
   getCheckInDetails(String accessKey) {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     String empId = "empty";
@@ -136,7 +174,7 @@ class HomeController extends GetxController {
         print(
             'Date is ${date.toString()} Formatted Date :: $formattedDate Latitude $journeyStartLat Longitude $journeyStartLong');
         print('Disable the button');
-        this.disableSlider=true;
+        this.disableSlider = true;
         repository
             .getCheckInDetails(
                 url,
@@ -166,7 +204,7 @@ class HomeController extends GetxController {
                 this.checkInResponse.journeyEntity.journeyStartTime;
             print("${this.checkInResponse}");
             print('Enable the button');
-            this.disableSlider=false;
+            this.disableSlider = false;
           }
           Get.back();
         });
@@ -179,7 +217,7 @@ class HomeController extends GetxController {
   getCheckOutDetails(String accessKey) {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     String empId = "empty";

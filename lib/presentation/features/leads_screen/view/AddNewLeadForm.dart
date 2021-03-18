@@ -386,7 +386,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
             Form(
               key: _formKeyForNewLeadForm,
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(13.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -610,10 +610,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             setState(() {
                               _pickedLocation = result;
                               _currentPosition = new Position(
+
                                   latitude: _pickedLocation.latLng.latitude,
                                   longitude: _pickedLocation.latLng.longitude);
-                              print(_currentPosition);
-
+//                              print(_currentPosition);
                               _getAddressFromLatLng();
                             });
                           },
@@ -2671,7 +2671,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
     setState(() {
       // print(image.path);
-
       if (image != null) {
         listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
         _imageList.add(image);

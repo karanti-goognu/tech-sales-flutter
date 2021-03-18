@@ -1,13 +1,15 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/notification/controller/notification_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -34,53 +36,28 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
   SiteController _siteController = Get.find();
+  // DashboardController _dashboardController =Get.find();
 
 
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
     new MenuDetailsModel("Sites", "assets/images/img3.png"),
-    new MenuDetailsModel("Influencers", "assets/images/img4.png"),
+    new MenuDetailsModel("Dashboard", "assets/images/img4.png"),
     new MenuDetailsModel("MWP", "assets/images/mwp.png"),
-    new MenuDetailsModel("SR &\nComplaint", "assets/images/sr.png"),
-    new MenuDetailsModel("Video\nTutorial", "assets/images/tutorial.png"),
+    new MenuDetailsModel("SR & Complaint", "assets/images/sr.png"),
+    new MenuDetailsModel("Video Tutorial", "assets/images/tutorial.png"),
   ];
+
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
 
-  storeOfflineSiteData() async {
-    final db = SiteListDBHelper();
-    await db.clearTable();
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-    for (int i = 0;
-        i < _siteController.sitesListResponse.sitesEntity.length;
-        i++) {
-      SitesEntity siteEntity = new SitesEntity(
-          siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
-          leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
-          siteDistrict:
-              _siteController.sitesListResponse.sitesEntity[i].siteDistrict,
-          siteStageId:
-              _siteController.sitesListResponse.sitesEntity[i].siteStageId,
-          siteCreationDate:
-              _siteController.sitesListResponse.sitesEntity[i].siteCreationDate,
-          sitePotentialMt:
-              _siteController.sitesListResponse.sitesEntity[i].sitePotentialMt,
-          siteOppertunityId: _siteController
-              .sitesListResponse.sitesEntity[i].siteOppertunityId,
-          siteScore: _siteController.sitesListResponse.sitesEntity[i].siteScore,
-          contactNumber:
-              _siteController.sitesListResponse.sitesEntity[i].contactNumber,
-          siteProbabilityWinningId: _siteController
-              .sitesListResponse.sitesEntity[i].siteProbabilityWinningId);
-      SiteListModelForDB siteListModelForDb =
-          new SiteListModelForDB(null, json.encode(siteEntity));
-      await db.addSiteEntityInDraftList(siteListModelForDb);
-    }
-  }
+  
+
   Future<void> initPlatformState() async {
     if (!mounted) return;
     //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
   }
+
   void _onPushClick(PushCampaign message) {
     print("This is a push click callback from native to flutter. Payload " +
         message.toString());
@@ -88,8 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
+    _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     initPlatformState();
     _moengagePlugin.initialise();
     _moengagePlugin.enableSDKLogs();
@@ -107,6 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
         print('Journey Ended');
         _homeController.checkInStatus = StringConstants.journeyEnded;
       }
+
+
     }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -115,9 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // MoEngage implementation done here ....
       _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
-      _moengagePlugin.setFirstName(prefs.getString(StringConstants.employeeName));
-      _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
-
+      _moengagePlugin
+          .setFirstName(prefs.getString(StringConstants.employeeName));
+      _moengagePlugin
+          .setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
     });
   }
 
@@ -262,64 +243,257 @@ class _HomeScreenState extends State<HomeScreen> {
               // ),
             ],
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          body: Stack(
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.0, top: 20, bottom: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Obx(
-                      () => Text(
-                        "Hello , ${_homeController.employeeName}",
-                        style: TextStyle(
-                            // color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: "Muli"),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 10.0, top: 20, bottom: 10),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     // mainAxisAlignment: MainAxisAlignment.start,
+                  //     children: [
+                  //       Obx(
+                  //         () => Text(
+                  //           "Hello , ${_homeController.employeeName}",
+                  //           style: TextStyle(
+                  //               // color: Colors.white,
+                  //               fontSize: 24,
+                  //               fontWeight: FontWeight.normal,
+                  //               fontFamily: "Muli"),
+                  //         ),
+                  //       ),
+                  //       Text("Here are today's",
+                  //           textAlign: TextAlign.start,
+                  //           style: TextStyle(
+                  //               //  color: Colors.white.withOpacity(0.7),
+                  //               fontSize: 15,
+                  //               fontFamily: "Muli")),
+                  //       Text("recommended actions for you",
+                  //           style: TextStyle(
+                  //               // color: Colors.white.withOpacity(0.7),
+                  //               fontSize: 15,
+                  //               fontFamily: "Muli")),
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 15,
+                  // ),
+
+                  Obx(() {
+                    if (_homeController.disableSlider != true) {
+                      return (_homeController.checkInStatus ==
+                              StringConstants.checkIn)
+                          ? checkInSliderButton()
+                          : (_homeController.checkInStatus ==
+                                  StringConstants.checkOut)
+                              ? checkOutSliderButton()
+                              : journeyEnded();
+                    } else {
+                      return disabledSliderButton();
+                    }
+                  }),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Card(
+                    clipBehavior: Clip.antiAlias,
+                    borderOnForeground: true,
+                    //shadowColor: colornew,
+                    elevation: 20,
+                    margin: EdgeInsets.symmetric(horizontal: 12.0),
+                    color: Colors.white,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/desktop.svg',
+                                color: Color(0xfff9a61a),
+                                width: 30,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                'Key Metrics',
+                                overflow: TextOverflow.clip,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              Icon(
+                                Icons.info_outline_rounded,
+                                color: Color(0xfff9a61a),
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 100,
+                            width: MediaQuery.of(context).size.width - 24,
+                            child: GridView.count(
+                              shrinkWrap: true,
+                              // itemCount: 4,
+                              physics: NeverScrollableScrollPhysics(),
+                              crossAxisCount: 2,
+                              // gridDelegate:
+                              //     SliverGridDelegateWithFixedCrossAxisCount(
+
+                                childAspectRatio: 3.4,
+                              // ),
+                              //   new HomeScreenDashboardModel("New Influencers", _homeController.newInfl),
+  //   new HomeScreenDashboardModel("DSP Slabs Converted", _homeController.dspSlabsConverted),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    // color: Colors.red,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: 4),
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: 
+                                          
+                                          Obx(()=>Text(
+                                            _homeController.sitesConverted,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: HexColor('39B54A'),
+                                                  width: 1.6),
+                                              shape: BoxShape.circle),
+                                        ),
+                                        Flexible(child: Text('Sites converted'))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    // color: Colors.red,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: 4),
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: 
+                                           Obx(()=>Text(
+                                            _homeController.volumeConverted,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: HexColor('39B54A'),
+                                                  width: 1.6),
+                                              shape: BoxShape.circle),
+                                        ),
+                                        Flexible(
+                                            child: Text('Volume Converted (MT)'))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    // color: Colors.red,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: 4),
+                                          padding: const EdgeInsets.all(6.0),
+                                          child:
+                                           Obx(()=> Text(
+                                            _homeController.newInfl,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: HexColor('39B54A'),
+                                                  width: 1.6),
+                                              shape: BoxShape.circle),
+                                        ),
+                                        Flexible(
+                                            child: Text('New Influencers'))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    // color: Colors.red,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: 4),
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: 
+                                           Obx(()=>Text(
+                                            _homeController.dspSlabsConverted,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: HexColor('39B54A'),
+                                                  width: 1.6),
+                                              shape: BoxShape.circle),
+                                        ),
+                                        Flexible(
+                                            child: Text('DSP Slabs Converted'))
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Text("Here are today's",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            //  color: Colors.white.withOpacity(0.7),
-                            fontSize: 15,
-                            fontFamily: "Muli")),
-                    Text("recommended actions for you",
-                        style: TextStyle(
-                            // color: Colors.white.withOpacity(0.7),
-                            fontSize: 15,
-                            fontFamily: "Muli")),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: userMenuWidget(),
+                  ))
+                ],
               ),
-              SizedBox(
-                height: 15,
-              ),
-              Obx(() {
-                if (_homeController.disableSlider != true) {
-                  return (_homeController.checkInStatus ==
-                          StringConstants.checkIn)
-                      ? checkInSliderButton()
-                      : (_homeController.checkInStatus ==
-                              StringConstants.checkOut)
-                          ? checkOutSliderButton()
-                          : journeyEnded();
-                } else {
-                  return disabledSliderButton();
-                }
-              }),
-              SizedBox(
-                height: 15,
-              ),
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: userMenuWidget(),
-              ))
+
+              Positioned(
+            right: -10,
+            top: 30,
+            child: 
+            UrlConstants.baseUrl.contains('mobileqacloud')?
+            Chip(
+              backgroundColor: ColorConstants.appBarColor,
+              label: Text('QA     ', style: TextStyle(color: Colors.white),),
+            ):
+            UrlConstants.baseUrl.contains('mobiledevcloud')?
+            Chip(
+              backgroundColor: ColorConstants.appBarColor,
+              label: Text('Dev     ', style: TextStyle(color: Colors.white),),
+            ):Container(),
+          ),
             ],
           ),
           floatingActionButton:
@@ -363,6 +537,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget checkInSliderButton() {
     return SliderButton(
+
       action: () async {
         if (await Permission.location.request().isGranted) {
           _homeController.getAccessKey(RequestIds.CHECK_IN);
@@ -370,7 +545,6 @@ class _HomeScreenState extends State<HomeScreen> {
           print('permission denied');
         }
       },
-
       ///Put label over here
       label: Text(
         "Swipe to start your day ",
@@ -459,11 +633,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget userMenuWidget() {
     return GridView.builder(
         itemCount: list.length,
-        // childAspectRatio: ( 2),
-        //  padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 1.9,
+            childAspectRatio: 2.3,
             crossAxisSpacing: 1,
             mainAxisSpacing: 2),
         // itemExtent: 125.0,
@@ -475,17 +647,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.LEADS_SCREEN);
                   break;
                 case 1:
-                  storeOfflineSiteData();
-                  Get.toNamed(
-                    Routes.SITES_SCREEN,
-                  );
+                  // storeOfflineSiteData();
+                  Get.toNamed(Routes.SITES_SCREEN);
                   break;
                 case 2:
-                  Get.dialog(
-                      CustomDialogs().errorDialog(" Page Coming Soon .... "));
+                  Get.toNamed(Routes.DASHBOARD);
                   break;
                 case 3:
-                  Get.toNamed(Routes.ADD_MWP_SCREEN);
+                  Get.to(Routes.ADD_MWP_SCREEN);
                   break;
                 case 4:
                   Get.toNamed(Routes.SERVICE_REQUESTS);
@@ -498,79 +667,39 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Card(
               clipBehavior: Clip.antiAlias,
               borderOnForeground: true,
-              //shadowColor: colornew,
               elevation: 20,
               margin: EdgeInsets.all(10.0),
-              color: ((index == 0) ||
-                      (index == 1) ||
-                      (index == 3) ||
-                      (index == 4) ||
-                      (index == 5))
-                  ? Colors.white
-                  : Colors.white60,
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          // height: 60,
-                          //                         // width: 60,
-                          margin: EdgeInsets.only(left: 10),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                            // border: Border.all(color: Colors.black, width: 0.0),
-                            // borderRadius: new BorderRadius.all(Radius.circular(70)),
-                          ),
-                          child: Image.asset(
-                            list[index].imgURL,
-                            width: 30,
-                            height: 30,
-                          ),
-                        ),
-                        // Icon(
-                        //   Icons.no_photography_outlined,
-                        //   size: 90,
-                        //   color: Colors.black12,
-                        // ),
-                        SizedBox(
-                          width: 6,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              list[index].value,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Muli",
-                                  fontWeight: FontWeight.bold
-                                  //fontWeight: FontWeight.normal
-                                  ),
-                            ),
-                            (index == 2)
-                                ? Text(
-                                    "Coming Soon",
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontSize: 12,
-                                        fontFamily: "Muli",
-                                        fontWeight: FontWeight.bold
-                                        //fontWeight: FontWeight.normal
-                                        ),
-                                  )
-                                : Container(),
-                          ],
-                        )
-                      ],
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: Image.asset(
+                        list[index].imgURL,
+                        width: 30,
+                        height: 30,
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      width: 6,
+                    ),
+                    Flexible(
+                      child: Text(
+                        list[index].value,
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "Muli",
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -583,4 +712,11 @@ class MenuDetailsModel {
   String imgURL;
 
   MenuDetailsModel(this.value, this.imgURL);
+}
+
+class HomeScreenDashboardModel {
+  String text;
+  String value;
+
+  HomeScreenDashboardModel(this.text, this.value);
 }

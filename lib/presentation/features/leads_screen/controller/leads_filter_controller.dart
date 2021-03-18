@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
@@ -173,6 +176,19 @@ class LeadsFilterController extends GetxController {
     repository.getAccessKey().then((data) {
       Get.back();
       this.accessKeyResponse = data;
+
+      if (this.accessKeyResponse.respCode == 'DM1005') {
+        print(this.accessKeyResponse.respMsg);
+        Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+        _prefs.then((SharedPreferences prefs) {
+          prefs.setString(StringConstants.userSecurityKey, '');
+          prefs.setString(StringConstants.isUserLoggedIn, "false");
+          prefs.setString(StringConstants.employeeName, '');
+          prefs.setString(StringConstants.employeeId, '');
+          prefs.setString(StringConstants.mobileNumber, '');
+        });
+        SystemNavigator.pop(); 
+      }
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
         String userSecurityKey =
@@ -230,7 +246,7 @@ class LeadsFilterController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('User Security key is :: $userSecurityKey');
       String encryptedEmpId =
-          encryptString(empId, StringConstants.encryptedKey).toString();
+      encryptString(empId, StringConstants.encryptedKey).toString();
       String assignTo = "";
       if (this.assignToDate != StringConstants.empty) {
         assignTo = "&assignDateTo=${this.assignToDate}";
@@ -277,7 +293,7 @@ class LeadsFilterController extends GetxController {
       }
       //debugPrint('request without encryption: $body');
       String url =
-          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=2000&offset=${this.offset}";
+          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=10&offset=${this.offset}";
       var encodedUrl = Uri.encodeFull(url);
       debugPrint('Url is : $encodedUrl');
       repository
@@ -286,7 +302,26 @@ class LeadsFilterController extends GetxController {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
-          this.leadsListResponse = data;
+          if(this.leadsListResponse.leadsEntity == null|| this.leadsListResponse.leadsEntity.isEmpty){
+            this.leadsListResponse = data;
+          }else{
+            print("adding");
+            print(json.encode(data));
+            // this._leadsListResponse.value.leadsEntity.addAll(data.leadsEntity);
+            // this.leadsListResponseAddLeads = data.leadsEntity;
+            print(leadsListResponse.leadsEntity.length);
+            // this.leadsListResponse = data;
+            LeadsListModel leadListResponseServer = data;
+            if(leadListResponseServer.leadsEntity.isNotEmpty){
+              leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
+              this.leadsListResponse = leadListResponseServer;
+              Get.snackbar("Note", "Loading more ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xffffffff),duration: Duration(milliseconds: 2000));
+            } else{
+              Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
+            }
+          }
+          //this.fullLeadsList= this.fullLeadsList.arrdd(this.leadsListResponse);
+          //  print("Length of full list is ${this.fullLeadsList.length}");
           if (leadsListResponse.respCode == "LD2006") {
             //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
           } else {

@@ -17,6 +17,7 @@ class SplashDataModel {
   Null respCode;
   Null respMsg;
   EmployeeDetails employeeDetails;
+  List<ReportingTsoListModel> reportingTsoListModel;
   List<UserMenu> userMenu;
   JourneyDetails journeyDetails;
 
@@ -33,6 +34,7 @@ class SplashDataModel {
       this.srctRequestEntity,
       this.influencerCategoryEntity,
       this.severity,
+      this.reportingTsoListModel,
       this.userSecurityKey,
       this.respCode,
       this.respMsg,
@@ -57,14 +59,16 @@ class SplashDataModel {
     if (json['siteOpportunityStatusEntity'] != null) {
       siteOpportunityStatusRepository = new List<SiteOpportuityStatus>();
       json['siteOpportunityStatusEntity'].forEach((v) {
-        siteOpportunityStatusRepository.add(new SiteOpportuityStatus.fromJson(v));
+        siteOpportunityStatusRepository
+            .add(new SiteOpportuityStatus.fromJson(v));
       });
     }
 
     if (json['siteProbabilityWinningEntity'] != null) {
       siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>();
       json['siteProbabilityWinningEntity'].forEach((v) {
-        siteProbabilityWinningEntity.add(new SiteProbabilityWinningEntity.fromJson(v));
+        siteProbabilityWinningEntity
+            .add(new SiteProbabilityWinningEntity.fromJson(v));
       });
     }
     if (json['siteStageEntity'] != null) {
@@ -108,6 +112,12 @@ class SplashDataModel {
       influencerCategoryEntity = new List<InfluencerCategoryEntity>();
       json['influencerCategoryEntity'].forEach((v) {
         influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
+      });
+    }
+    if (json['reportingTsoListModel'] != null) {
+      reportingTsoListModel = new List<ReportingTsoListModel>();
+      json['reportingTsoListModel'].forEach((v) {
+        reportingTsoListModel.add(new ReportingTsoListModel.fromJson(v));
       });
     }
     severity = json['severity'].cast<String>();
@@ -174,6 +184,10 @@ class SplashDataModel {
     if (this.srctRequestEntity != null) {
       data['srctRequestEntity'] =
           this.srctRequestEntity.map((v) => v.toJson()).toList();
+    }
+    if (this.reportingTsoListModel != null) {
+      data['reportingTsoListModel'] =
+          this.reportingTsoListModel.map((v) => v.toJson()).toList();
     }
     data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
@@ -313,17 +327,33 @@ class EmployeeDetails {
   String employeeFirstName;
   String employeeName;
 
+  String employeeDesignation;
+  String employeeReportingManagerId;
+  int employeeUserRoleId;
+  String employeeBaseLocation;
+  String employeeWorkLocation;
+
   EmployeeDetails(
       {this.referenceId,
       this.mobileNumber,
       this.employeeFirstName,
-      this.employeeName});
+      this.employeeName,
+      this.employeeDesignation,
+      this.employeeReportingManagerId,
+      this.employeeUserRoleId,
+      this.employeeBaseLocation,
+      this.employeeWorkLocation});
 
   EmployeeDetails.fromJson(Map<String, dynamic> json) {
     referenceId = json['reference-id'];
     mobileNumber = json['mobile-number'];
     employeeFirstName = json['employee-first-name'];
     employeeName = json['employee-name'];
+    employeeDesignation = json['employee-designation'];
+    employeeReportingManagerId = json['employee-reporting_manager_id'];
+    employeeUserRoleId = json['employee-user_role_id'];
+    employeeBaseLocation = json['employee-base_location'];
+    employeeWorkLocation = json['employee-work_location'];
   }
 
   Map<String, dynamic> toJson() {
@@ -332,6 +362,11 @@ class EmployeeDetails {
     data['mobile-number'] = this.mobileNumber;
     data['employee-first-name'] = this.employeeFirstName;
     data['employee-name'] = this.employeeName;
+    data['employee-designation'] = this.employeeDesignation;
+    data['employee-reporting_manager_id'] = this.employeeReportingManagerId;
+    data['employee-user_role_id'] = this.employeeUserRoleId;
+    data['employee-base_location'] = this.employeeBaseLocation;
+    data['employee-work_location'] = this.employeeWorkLocation;
     return data;
   }
 }
@@ -456,6 +491,25 @@ class SrctRequestEntity {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['requestText'] = this.requestText;
+    return data;
+  }
+}
+
+class ReportingTsoListModel {
+  String tsoId;
+  String tsoName;
+
+  ReportingTsoListModel({this.tsoId, this.tsoName});
+
+  ReportingTsoListModel.fromJson(Map<String, dynamic> json) {
+    tsoId = json['tsoId'];
+    tsoName = json['tsoName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['tsoId'] = this.tsoId;
+    data['tsoName'] = this.tsoName;
     return data;
   }
 }

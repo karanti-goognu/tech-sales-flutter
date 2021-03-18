@@ -1,6 +1,8 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/model/AddMWPPlanModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -20,14 +22,39 @@ class AddMWPPlan extends StatefulWidget {
 class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   MWPPlanController _mwpPlanController = Get.find();
   AppController _appController = Get.find();
+  Map _source = {ConnectivityResult.none: false};
+  MyConnectivity _connectivity = MyConnectivity.instance;
+  String connectivityString;
 
   @override
   void initState() {
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+    });
     super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    _connectivity.disposeStream();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.none:
+        connectivityString = "Offline";
+        break;
+      case ConnectivityResult.mobile:
+        connectivityString = "Mobile: Online";
+        break;
+      case ConnectivityResult.wifi:
+        connectivityString = "WiFi: Online";
+    }
+
     List<String> mwpNames = [
       "Total Conversion Vol. (MT)",
       "New ILP members",
@@ -212,6 +239,16 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   }
 
   Widget returnSaveRow() {
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.none:
+        connectivityString = "Offline";
+        break;
+      case ConnectivityResult.mobile:
+        connectivityString = "Mobile: Online";
+        break;
+      case ConnectivityResult.wifi:
+        connectivityString = "WiFi: Online";
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -255,8 +292,13 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
             onPressed: () {
               // Validate returns true if the form is valid, or false
               // otherwise.
-              _mwpPlanController.action = "SUBMIT";
-              _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN);
+              print("Connection-->"+connectivityString);
+              if (connectivityString == 'Offline') {
+              _mwpPlanController.showNoInternetSnack();
+              } else {
+                _mwpPlanController.action = "SUBMIT";
+                _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN);
+              }
             },
             child: Padding(
               padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
@@ -304,6 +346,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
     final node = FocusScope.of(context);
     return Obx(
       () => TextFormField(
+
           initialValue: (_mwpPlanController.getMWPResponse != null)
               ? (_mwpPlanController.getMWPResponse.mwpplanModel != null)
                   ? returnTargetValue(index)

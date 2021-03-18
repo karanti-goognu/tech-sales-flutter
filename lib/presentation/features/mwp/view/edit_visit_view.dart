@@ -33,8 +33,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
   @override
   void initState() {
-    print(_addEventController.visitRemarks.runtimeType);
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
+
     super.initState();
   }
 
@@ -119,6 +119,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                   ?
                                   DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
+
                                   value: _addEventController.visitSubType,
                                   onChanged: (String newValue) {
                                     if (_addEventController.visitSubType ==
@@ -143,11 +144,12 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                     }
                                   },
                                   items: <String>[
-                                    'RETENTION SITE',
-                                    'LEADS',
-                                    'CONVERSION OPPORTUNITY',
-                                    'COUNTER',
-                                    'TECHNOCRAT'
+                                    _addEventController.visitSubType
+                                    // 'RETENTION SITE',
+                                    // 'LEADS',
+                                    // 'CONVERSION OPPORTUNITY',
+                                    // 'COUNTER',
+                                    // 'TECHNOCRAT'
                                   ].map<DropdownMenuItem<String>>(
                                       (String value) {
                                     return DropdownMenuItem<String>(
@@ -184,6 +186,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               TextFormField(
+                                key: Key(_addEventController.visitSiteId),
                                 initialValue: _addEventController.visitSiteId,
                                 enabled: false,
                                 validator: (value) {
@@ -427,6 +430,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                       _addEventController.visitResponseModel.mwpVisitModel.visitEndTime ==
                                           null)
                                   ? TextFormField(
+                                  key: Key(_addEventController.visitRemarks),
                                       initialValue: _addEventController.visitRemarks == 'null'
                                           ? ''
                                           : _addEventController.visitRemarks,
@@ -451,6 +455,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                   .mwpVisitModel.visitEndTime ==
                                               null)
                                       ? TextFormField(
+                                         key: Key(_addEventController.visitRemarks),
                                           initialValue: _addEventController.visitRemarks,
                                           onChanged: (_) {
                                             _addEventController.visitRemarks =
@@ -460,6 +465,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                           maxLines: 3,
                                           decoration: _inputDecoration("Remarks", false))
                                       : TextFormField(
+                                  key: Key(_addEventController.visitRemarks),
                                           readOnly: true,
                                           validator: (value) {
                                             if (value.isEmpty) {
@@ -476,9 +482,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                           keyboardType: TextInputType.text,
                                           maxLines: 3,
                                           decoration: _inputDecoration("Remarks", false))),
-                              SizedBox(
-                                height: 16,
-                              ),
+                              SizedBox(height: 16,),
                               Obx(() => (_addEventController.visitResponseModel
                                               .mwpVisitModel.visitStartTime ==
                                           null &&

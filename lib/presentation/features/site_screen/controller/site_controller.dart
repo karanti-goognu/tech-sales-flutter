@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/Repository/sites_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
@@ -26,6 +28,11 @@ class SiteController extends GetxController {
   //final _filterDataResponse = SitesFilterModel().obs;
   final _sitesListResponse = SitesListModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
+
+  var _sitesListOffline = List<SitesEntity>().obs;
+
+  List<SitesEntity> _siteList = new List();
+
 
   final _phoneNumber = "8860080067".obs;
 
@@ -111,6 +118,14 @@ class SiteController extends GetxController {
   set selectedSiteStatusValue(value) =>
       this._selectedSiteStatusValue.value = value;
 
+  get sitesListOffline => _sitesListOffline;
+
+  List<SitesEntity> get cartListing => _siteList;
+
+  set sitesListOffline(value) {
+    this._sitesListOffline.assignAll(value);
+  }
+
   set selectedSiteInfluencerCat(value) =>
       this._selectedSiteInfluencerCat.value = value;
 
@@ -118,6 +133,8 @@ class SiteController extends GetxController {
       this._selectedSiteInfluencerCatValue.value = value;
 
   set sitesListResponse(value) => this._sitesListResponse.value = value;
+
+  // set sitesListOffline(value) => this._sitesListOffline.assignAll(value);
 
   getSitesData(String accessKey) {
     String empId = "empty";
@@ -286,4 +303,36 @@ class SiteController extends GetxController {
           userSecurityKey, updateDataRequest, list, context, siteId);
     });
   }
+
+   fetchSiteList() async {
+
+     final db = SiteListDBHelper();
+     db.fetchAllSites().then((value) => {
+       this.sitesListOffline = value,
+       _siteList = value
+     });
+     return _siteList;
+    //await db.removeLeadInDraft(2);
+  }
+
+  fetchFliterSiteList(String appendQuery,String whereArgs) async {
+    final db = SiteListDBHelper();
+    db.filterSiteEntityList(appendQuery, whereArgs).then((value) => {
+    this.sitesListOffline = value,
+      _siteList = value
+    });
+    return _siteList;
+    //await db.removeLeadInDraft(2);
+  }
+
+  fetchFliterSiteList1(List<SitesEntity> value) async {
+
+      _siteList = value;
+
+    return _siteList;
+    //await db.removeLeadInDraft(2);
+  }
+
+
+
 }

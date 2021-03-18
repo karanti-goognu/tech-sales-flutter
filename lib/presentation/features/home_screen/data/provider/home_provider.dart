@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -74,6 +75,24 @@ class MyApiClientHome {
         print('error');
     } catch (_) {
       print('exception ${_.toString()}');
+    }
+  }
+
+  getHomePageDashboardDetails(String empId) async {
+    try {
+      String url = UrlConstants.homepageDashboardData + empId;
+      print(url);
+      var response = await httpClient.get(url, headers: requestHeaders);
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        DashboardModel dashboardModel;
+        dashboardModel = DashboardModel.fromJson(data);
+        return dashboardModel;
+      } else
+        print('error');
+    } catch (_) {
+      print('Exception at Dashboard Repo (Homepage Dashboard Details) ${_.toString()}');
     }
   }
 }

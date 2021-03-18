@@ -44,6 +44,13 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
   }
 //*****
 
+  showNoInternetSnack() {
+    Get.snackbar(
+        "No internet connection.", "Please check your internet connection.",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM);
+  }
 
 
   Future<AccessKeyModel> getAccessKey(){
@@ -51,14 +58,43 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
 
   }
 
-  Future<ServiceRequestComplaintListModel> getSrListData(String accessKey, int offset) async {
+  Future<ServiceRequestComplaintListModel> getSrListData(
+      String accessKey, int offset) async {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      srListData = await repository.getSrListData(accessKey,userSecurityKey, empID, this.offset);
+      ServiceRequestComplaintListModel srDataToBeAdded;
+      print("offset is ${this.offset}");
+      srDataToBeAdded = await repository.getSrListData(
+          accessKey, userSecurityKey, empID, this.offset);
+      if (srListData.srComplaintListModal == null ||
+          srListData.srComplaintListModal.isEmpty) {
+        print('---------------------------');
+        print('For the first time');
+        srListData = srDataToBeAdded;
+      } else {
+        print('---------------------------');
+        print('New One');
+        print(srDataToBeAdded.srComplaintListModal);
+        if(srDataToBeAdded.srComplaintListModal!=null&&srDataToBeAdded.srComplaintListModal.isNotEmpty){
+          print('---------------------------');
+          print('For the second time');
+          print("adding");
+          print(srDataToBeAdded.srComplaintListModal.length);
+          srListData.srComplaintListModal
+              .addAll(srDataToBeAdded.srComplaintListModal);
+          Get.snackbar("Note", "Loading more ..",
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Color(0xffffffff),
+              duration: Duration(milliseconds: 2000));}
+        else{
+          print('---------------------------');
+          print('When empty');
+          Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
+        }}
     });
     return srListData;
   }

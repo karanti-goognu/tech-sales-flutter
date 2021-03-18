@@ -68,6 +68,13 @@ dependencies:
   moengage_flutter: ^3.0.0
   firebase_messaging: ^6.0.9
   moengage_inbox: ^2.0.0
+  data_connection_checker: ^0.3.4
+  syncfusion_flutter_charts: ^18.4.44+1
+  syncfusion_flutter_datagrid: ^18.4.44-beta
+  screenshot: ^0.3.0
+  scoped_model:
+  syncfusion_flutter_gauges: ^18.4.47
+
 
 #  autocomplete_textfield: ^1.7.3
 

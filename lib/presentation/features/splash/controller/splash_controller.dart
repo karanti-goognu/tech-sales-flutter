@@ -125,7 +125,8 @@ class SplashController extends GetxController {
         } else {
           this.splashDataModel = data;
           print("Opportunity Model ${this.splashDataModel.siteOpportunityStatusRepository}");
-          print("Opportunity Model ${this.splashDataModel.siteSubTypeEntity}");
+//          print("Opportunity Model ${this.splashDataModel.siteSubTypeEntity}");
+          print("Reporting TSO List Model ${this.splashDataModel.reportingTsoListModel }");
           openNextPage();
           /*if (splashDataModel.respCode == "LD2006") {
             Get.dialog(CustomDialogs().errorDialog(splashDataModel.respMsg));

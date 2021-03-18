@@ -92,7 +92,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Complaint ID"),
+            FormFieldStyle.buildInputDecoration(labelText: "Complaint ID"),
           ),
           SizedBox(
             height: 16,
@@ -127,7 +127,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Days open"),
+            FormFieldStyle.buildInputDecoration(labelText: "Days open"),
           ),
           SizedBox(height: 16),
           TextFormField(
@@ -143,14 +143,14 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             controller: _department,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Department*"),
+            FormFieldStyle.buildInputDecoration(labelText: "Department*"),
           ),
           SizedBox(height: 16),
           TextFormField(
             controller: _requestType,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Request Type*"),
+            FormFieldStyle.buildInputDecoration(labelText: "Request Type*"),
           ),
           SizedBox(height: 16),
           TextFormField(
@@ -166,7 +166,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Customer Type"),
+            FormFieldStyle.buildInputDecoration(labelText: "Customer Type"),
           ),
           SizedBox(height: 16),
           TextFormField(
@@ -174,7 +174,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Severity"),
+            FormFieldStyle.buildInputDecoration(labelText: "Severity"),
           ),
           SizedBox(height: 16),
           TextFormField(
@@ -182,7 +182,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Customer ID*"),
+            FormFieldStyle.buildInputDecoration(labelText: "Customer ID*"),
           ),
           SizedBox(height: 16),
           TextFormField(
@@ -207,11 +207,9 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             maxLines: 4,
             controller: _description,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Description"),
+            FormFieldStyle.buildInputDecoration(labelText: "Description"),
           ),
-          SizedBox(height: 16),
-          Container(
-              width: MediaQuery.of(context).size.width, child: ImageUpload()),
+
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
@@ -225,7 +223,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             controller: _district,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "District"),
+            FormFieldStyle.buildInputDecoration(labelText: "District"),
           ),
           SizedBox(height: 16),
           TextFormField(
@@ -240,7 +238,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             controller: _pin,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Pincode"),
+            FormFieldStyle.buildInputDecoration(labelText: "Pincode"),
           ),
           SizedBox(height: 16),
           RaisedButton(

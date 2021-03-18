@@ -26,5 +26,7 @@ abstract class Routes {
   static const VIDEO_TUTORIAL = '/video_tutorial';
   static const ADD_INFLUENCER = '/add_influencer';
   static const NOTIFICATION = '/notification';
+  static const DASHBOARD = '/dashboard';
+
 
 }

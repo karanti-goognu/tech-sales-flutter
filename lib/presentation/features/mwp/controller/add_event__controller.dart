@@ -61,6 +61,8 @@ class AddEventController extends GetxController {
   final _visitStartTime = StringConstants.empty.obs;
   final _nextVisitDate = "Next Visit Date".obs;
   final _visitRemarks = StringConstants.empty.obs;
+
+
   final _totalParticipants = StringConstants.empty.obs;
   final _isLoading = false.obs;
   final _isLoadingVisitView = false.obs;
@@ -202,7 +204,7 @@ class AddEventController extends GetxController {
 
   set visitSiteId(value) => this._visitSiteId.value = value;
 
-  set visitRemarks(value) => this._visitRemarks.value = value;
+  set visitRemarks(value) => this._visitRemarks.value = value ;
 
   set dalmiaInflCount(value) => this._dalmiaInflCount.value = value;
 
@@ -412,7 +414,6 @@ class AddEventController extends GetxController {
           this.visitSubType =
               this.visitResponseModel.mwpVisitModel.visitSubType.toString();
           this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
-          print(this.visitResponseModel.mwpVisitModel.remark.toString());
         }
       });
     });

@@ -96,23 +96,26 @@ class AddEventScreenPageState extends State<AddEvent> {
                           border: Border.all()),
                       child: DropdownButtonHideUnderline(
                           child: Obx(
-                        () => DropdownButton<String>(
-                          value: _addEventController.selectedView,
-                          onChanged: (String newValue) {
-                            _addEventController.selectedView = newValue;
-                          },
-                          items: <String>[
-                            'Visit',
-                            'Influencers meet',
-                            'Service Requests'
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      )),
+                                () => DropdownButton<String>(
+                              value: _addEventController.selectedView,
+                              onChanged: (String newValue) {
+                                _addEventController.selectedView = newValue;
+                                if(_addEventController.selectedView=='Service Requests'){
+                                  Get.offNamed(Routes.SERVICE_REQUEST_CREATION);
+                                }
+                              },
+                              items: <String>[
+                                'Visit',
+                                'Influencers meet',
+                                'Service Requests'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          )),
                     ),
                   ),
                 ],
@@ -122,7 +125,10 @@ class AddEventScreenPageState extends State<AddEvent> {
               ),
               Obx(() => (_addEventController.selectedView == "Visit")
                   ? AddEventVisit()
-                  : AddEventInfluencerMeet()),
+                  :
+              (_addEventController.selectedView == "Influencers meet")
+                  ? AddEventInfluencerMeet():
+              AddEventInfluencerMeet()),
               SizedBox(
                 height: 30,
               ),

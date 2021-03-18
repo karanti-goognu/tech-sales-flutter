@@ -1,4 +1,6 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoScreen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -19,6 +21,9 @@ class _VideoRequestsState extends State<VideoRequests> {
 
   TsoAppTutorialListModel tsoAppTutorialListModel;
   TutorialListController eventController = Get.find();
+  Map _source = {ConnectivityResult.none: false};
+  MyConnectivity _connectivity = MyConnectivity.instance;
+
 
   var data;
   getAppTutorialListData() async {
@@ -29,6 +34,10 @@ class _VideoRequestsState extends State<VideoRequests> {
 
   @override
   void initState() {
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+    });
     getAppTutorialListData().whenComplete(() {
       setState(() {
         tsoAppTutorialListModel = data;
@@ -37,6 +46,12 @@ class _VideoRequestsState extends State<VideoRequests> {
     super.initState();
   }
 
+
+  @override
+  void dispose() {
+    _connectivity.disposeStream();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +109,15 @@ class _VideoRequestsState extends State<VideoRequests> {
                       return GestureDetector(
                         onTap: () {
                           print("hi");
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context)=>Video(videoData: tsoAppTutorialListModel.tsoAppTutorial[index],)
-                          ));
+                          if (_source.keys.toList()[0] == ConnectivityResult.none) {
+                            eventController.showNoInternetSnack();
+                          } else {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) =>
+                                    Video(videoData: tsoAppTutorialListModel
+                                        .tsoAppTutorial[index],)
+                            ));
+                          }
                           // activityVideo(context, index);
                         },
                         child: Card(

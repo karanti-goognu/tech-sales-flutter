@@ -64,7 +64,7 @@ class MwpplanModel {
   int createdOn;
   int submittedOn;
   int approvedOn;
-  Null rejectedOn;
+  int rejectedOn;
   String actionedBy;
 
   MwpplanModel(
@@ -138,12 +138,12 @@ class MwpplanModel {
     actualMiniContractorMeetNo = json['actualMiniContractorMeetNo'];
     actualConsumerMeetNo = json['actualConsumerMeetNo'];
     status = json['status'];
-    createdBy = json['createdBy'];
-    createdOn = json['createdOn'];
-    submittedOn = json['submittedOn'];
-    approvedOn = json['approvedOn'];
-    rejectedOn = json['rejectedOn'];
-    actionedBy = json['actionedBy'];
+    createdBy = json['createdBy']!=null?json['createdBy']:"";
+    createdOn = json['createdOn']!=null?json['createdOn']:0;
+    submittedOn = json['submittedOn']!=null?json['submittedOn']:0;
+    approvedOn = json['approvedOn']!=null?json['approvedOn']:0;
+    rejectedOn = json['rejectedOn']!=null?json['rejectedOn']:0;
+    actionedBy = json['actionedBy']!=null?json['actionedBy']:"";
   }
 
   Map<String, dynamic> toJson() {

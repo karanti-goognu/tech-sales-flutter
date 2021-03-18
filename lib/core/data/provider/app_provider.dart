@@ -127,7 +127,7 @@ class MyApiClientApp {
       SaveMeetRequest saveMeetRequest) async {
     try {
       var body = jsonEncode(saveMeetRequest);
-     // print('body is  :: $body');
+     print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey),
@@ -204,7 +204,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         // print('ho');
-        // print(data['listOfMonthYear']);
+         print(data['mwpplanModel']);
         return GetMWPResponse.fromJson(data);
       } else {
       //  print('Error in else');

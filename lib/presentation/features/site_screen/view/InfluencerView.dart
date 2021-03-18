@@ -61,9 +61,11 @@ class _InfluencerViewState extends State<InfluencerView> {
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
   List<SiteBrandEntity> siteBrandEntity = new List();
+
   List<BrandModelforDB> siteBrandEntityfromLoaclDB = new List();
   List<BrandModelforDB> siteProductEntityfromLoaclDB = new List();
   List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage = new List();
+
   List<SiteInfluencerEntity> siteInfluencerEntity = new List();
   List<InfluencerTypeEntity> influencerTypeEntity = new List();
   List<InfluencerCategoryEntity> influencerCategoryEntity = new List();

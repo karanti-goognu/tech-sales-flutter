@@ -60,11 +60,11 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             },
             items: ['GENIUNE', 'NOT GENIUNE']
                 .map((e) => DropdownMenuItem(
-                      child: Text(
-                        e,
-                      ),
-                      value: e,
-                    ))
+              child: Text(
+                e,
+              ),
+              value: e,
+            ))
                 .toList(),
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
@@ -77,7 +77,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             style: FormFieldStyle.formFieldTextStyle,
             keyboardType: TextInputType.text,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Location"),
+            FormFieldStyle.buildInputDecoration(labelText: "Location"),
           ),
           SizedBox(height: 16),
           FlatButton.icon(
@@ -131,72 +131,72 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         fontSize: 17),
                   ),
                 ),
-                onPressed: () => _showPicker(context)),
+                onPressed: () => _imgFromCamera()),
           ),
           _imageList != null
               ? Row(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _imageList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                return showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: new Container(
-                                          // width: 500,
-                                          // height: 500,
-                                          child: Image.file(_imageList[index]),
-                                        ),
-                                      );
-                                    });
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Picture ${(index + 1)}. ",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      ),
-                                      Text(
-                                        "Image_${(index + 1)}.jpg",
-                                        style: TextStyle(
-                                            color: HexColor("#007CBF"),
-                                            fontSize: 15),
-                                      ),
-                                    ],
+            children: [
+              Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _imageList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          return showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: new Container(
+                                    // width: 500,
+                                    // height: 500,
+                                    child: Image.file(_imageList[index]),
                                   ),
-                                  GestureDetector(
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: HexColor("#FFCD00"),
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        _imageList.removeAt(index);
-                                      });
-                                    },
-                                  )
-                                ],
+                                );
+                              });
+                        },
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Picture ${(index + 1)}. ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                                Text(
+                                  "Image_${(index + 1)}.jpg",
+                                  style: TextStyle(
+                                      color: HexColor("#007CBF"),
+                                      fontSize: 15),
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              child: Icon(
+                                Icons.delete,
+                                color: HexColor("#FFCD00"),
                               ),
-                            );
-                          }),
-                    ),
-                  ],
-                )
+                              onTap: () {
+                                setState(() {
+                                  _imageList.removeAt(index);
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+            ],
+          )
               : Container(
-                  color: Colors.blue,
-                  height: 10,
-                ),
+            color: Colors.blue,
+            height: 10,
+          ),
           SizedBox(height: 16),
           DropdownButtonFormField(
             style: FormFieldStyle.formFieldTextStyle,
@@ -205,10 +205,10 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             items: ['YES', 'NO']
                 .map(
                   (e) => DropdownMenuItem(
-                    child: Text(e),
-                    value: e,
-                  ),
-                )
+                child: Text(e),
+                value: e,
+              ),
+            )
                 .toList(),
             onChanged: (val) {
               setState(() {
@@ -221,22 +221,22 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
           SizedBox(height: 16),
           widget.dept == 'TECHNICAL SERVICES'
               ? DropdownButtonFormField(
-                  style: FormFieldStyle.formFieldTextStyle,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                      labelText: "TechVan Required"),
-                  items: ['YES', 'NO']
-                      .map(
-                        (e) => DropdownMenuItem(
-                          child: Text(e),
-                          value: e,
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (val) {
-                    setState(() {
-                      _techVan = val;
-                    });
-                  },
+            style: FormFieldStyle.formFieldTextStyle,
+            decoration: FormFieldStyle.buildInputDecoration(
+                labelText: "TechVan Required"),
+            items: ['YES', 'NO']
+                .map(
+                  (e) => DropdownMenuItem(
+                child: Text(e),
+                value: e,
+              ),
+            )
+                .toList(),
+            onChanged: (val) {
+              setState(() {
+                _techVan = val;
+              });
+            },
             validator: (value)=> value==null? 'This field cannot be empty': null,
           )
               : Container(),
@@ -245,82 +245,82 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               : Container(),
           _productComplaint == 'YES'
               ? Column(
-                  children: [
-                    DropdownButtonFormField(
-                      style: FormFieldStyle.formFieldTextStyle,
-                      decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "Product Type"),
-                      items: ['DALMIA', 'DSP', 'KONARK']
-                          .map(
-                            (e) => DropdownMenuItem(
-                              child: Text(e),
-                              value: e,
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (val) {
-                        setState(() {
-                          _productType = val;
-                        });
-                      },
-                      validator: (value)=> (value==null) && (_productComplaint=='YES') ? 'Please select the Product Type': null,
-                    ),
-                    SizedBox(height: 16),
-                    TextFormField(
-                      controller: _batchNo,
-                      decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: 'Batch No.',
-                      ),
-                      validator: (value)=> (value.isEmpty) && (_productComplaint=='YES') ? 'Please select the Product Type': null,
-                    ),
-                    SizedBox(height: 16),
-                    TextFormField(
-                      controller: _dateOfPurchase,
-                      readOnly: true,
-                      // validator: (value)=> '$value',
-                      onTap: () => PickDate.selectDate(
-                              context: context, lastDate: DateTime.now())
-                          .then(
-                        (value) => value.isNull
-                            ? null
-                            : setState(
-                                () {
-                                  final DateFormat formatter =
-                                      DateFormat("yyyy-MM-dd");
-                                  _dateOfPurchase.text =
-                                      formatter.format(value);
-                                },
-                              ),
-                      ),
-                      decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: 'Date of Purchase',
-                        suffixIcon: Icon(
-                          Icons.calendar_today_outlined,
-                          color: HexColor('#F9A61A'),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    TextFormField(
-                      controller: _sourcePlant,
-                      style: FormFieldStyle.formFieldTextStyle,
-                      keyboardType: TextInputType.text,
-                      decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "Source Plant"),
-                      validator: (value)=> (value.isEmpty) && (_productComplaint=='YES') ? 'Please enter the details about source plant': null,
-                    ),
-                    SizedBox(height: 16),
-                    TextFormField(
-                      controller: _noOfBags,
-                      style: FormFieldStyle.formFieldTextStyle,
-                      keyboardType: TextInputType.phone,
-                      decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "No. of Bags"),
-                      validator: (value)=> (value.isEmpty) && (_productComplaint=='YES') ? 'Please enter the number of bags': null,
-                    ),
-                    SizedBox(height: 16),
-                  ],
+            children: [
+              DropdownButtonFormField(
+                style: FormFieldStyle.formFieldTextStyle,
+                decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Product Type"),
+                items: ['DALMIA', 'DSP', 'KONARK']
+                    .map(
+                      (e) => DropdownMenuItem(
+                    child: Text(e),
+                    value: e,
+                  ),
                 )
+                    .toList(),
+                onChanged: (val) {
+                  setState(() {
+                    _productType = val;
+                  });
+                },
+                validator: (value)=> (value==null) && (_productComplaint=='YES') ? 'Please select the Product Type': null,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _batchNo,
+                decoration: FormFieldStyle.buildInputDecoration(
+                  labelText: 'Batch No.',
+                ),
+                validator: (value)=> (value.isEmpty) && (_productComplaint=='YES') ? 'Please select the Product Type': null,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _dateOfPurchase,
+                readOnly: true,
+                // validator: (value)=> '$value',
+                onTap: () => PickDate.selectDate(
+                    context: context, lastDate: DateTime.now())
+                    .then(
+                      (value) => value.isNull
+                      ? null
+                      : setState(
+                        () {
+                      final DateFormat formatter =
+                      DateFormat("yyyy-MM-dd");
+                      _dateOfPurchase.text =
+                          formatter.format(value);
+                    },
+                  ),
+                ),
+                decoration: FormFieldStyle.buildInputDecoration(
+                  labelText: 'Date of Purchase',
+                  suffixIcon: Icon(
+                    Icons.calendar_today_outlined,
+                    color: HexColor('#F9A61A'),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _sourcePlant,
+                style: FormFieldStyle.formFieldTextStyle,
+                keyboardType: TextInputType.text,
+                decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Source Plant"),
+                validator: (value)=> (value.isEmpty) && (_productComplaint=='YES') ? 'Please enter the details about source plant': null,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _noOfBags,
+                style: FormFieldStyle.formFieldTextStyle,
+                keyboardType: TextInputType.phone,
+                decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "No. of Bags"),
+                validator: (value)=> (value.isEmpty) && (_productComplaint=='YES') ? 'Please enter the number of bags': null,
+              ),
+              SizedBox(height: 16),
+            ],
+          )
               : Container(),
           DropdownButtonFormField(
             style: FormFieldStyle.formFieldTextStyle,
@@ -330,10 +330,10 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             widget.resolutionStatus
                 .map(
                   (e) => DropdownMenuItem(
-                    child: Text(e.resolutionText),
-                    value: e.id,
-                  ),
-                )
+                child: Text(e.resolutionText),
+                value: e.id,
+              ),
+            )
                 .toList():[],
             onChanged: (val) {
               _resolutionStatus = val;
@@ -348,7 +348,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             style: FormFieldStyle.formFieldTextStyle,
             keyboardType: TextInputType.text,
             decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Comment*"),
+            FormFieldStyle.buildInputDecoration(labelText: "Comment*"),
           ),
           TextFormField(
             style: FormFieldStyle.formFieldTextStyle,
@@ -358,12 +358,12 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             onTap: () =>
                 PickDate.selectDate(context: context, firstDate: DateTime.now())
                     .then((value) => value.isNull
-                        ? null
-                        : setState(() {
-                            final DateFormat formatter =
-                                DateFormat("yyyy-MM-dd");
-                            _nextVisitDate.text = formatter.format(value);
-                          })),
+                    ? null
+                    : setState(() {
+                  final DateFormat formatter =
+                  DateFormat("yyyy-MM-dd");
+                  _nextVisitDate.text = formatter.format(value);
+                })),
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Next visit date*",
                 suffixIcon: Icon(
@@ -451,52 +451,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
       empID = prefs.getString(StringConstants.employeeId);
     });
     return empID;
-  }
-
-  _imgFromGallery() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
-    // print(image.path);
-    // setState(() {
-    if (image != null) {
-      print(basename(image.path));
-      setState(() {
-        _imageList.add(image);
-      });
-
-      // saveServiceRequest.srComplaintPhotosEntity.add(image);
-
-    }
-  }
-
-  void _showPicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Photo Library'),
-                      onTap: () {
-                        _imgFromGallery();
-                        Navigator.of(context).pop();
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
-                    onTap: () {
-                      _imgFromCamera();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
   _getCurrentLocation() async {
     if (!(await Geolocator().isLocationServiceEnabled())) {

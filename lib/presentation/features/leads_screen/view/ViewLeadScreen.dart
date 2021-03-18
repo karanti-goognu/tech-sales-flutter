@@ -3483,6 +3483,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
         });
 
         _getAddressFromLatLng();
+        Get.back();
+
       }).catchError((e) {
         print(e);
       });
@@ -3495,7 +3497,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
           _currentPosition.latitude, _currentPosition.longitude);
 
       Placemark place = p[0];
-      Get.back();
       setState(() {
         _siteAddress.text =
             place.name + "," + place.thoroughfare + place.subLocality;
