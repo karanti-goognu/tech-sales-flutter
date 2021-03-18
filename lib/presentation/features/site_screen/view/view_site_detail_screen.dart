@@ -5973,7 +5973,13 @@ _insertVisitDataFromDb(){
 
   /*new data insert in siteVisitHistoryEntity table*/
   SiteCommentsEntity _commentsEntity =new SiteCommentsEntity(siteId: widget.siteId, siteCommentText: _commentsValue);
-  _helper.insertDataInTable(DbConstants.TABLE_SITE_COMMENT_ENTITY, _commentsEntity.toJson(),  ConflictAlgorithm.replace);
+  _helper.insertDataInTable(DbConstants.TABLE_SITE_COMMENT_ENTITY, _commentsEntity.toJson(),  ConflictAlgorithm.replace).then((value){
+    if(value!=0){
+      Get.dialog(CustomDialogs()
+          .errorDialog("Visit data inserted successfully"));
+    }
+
+  });
 
 
 
