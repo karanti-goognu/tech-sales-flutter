@@ -119,17 +119,17 @@ PODS:
     - Flutter
   - "location_permissions (3.0.0+1)":
     - Flutter
-  - MoEngage-iOS-SDK (6.3.1):
-    - MORichNotification (~> 4.1.0)
-  - moengage_flutter (2.0.3):
+  - MoEngage-iOS-SDK (7.0.2):
+    - MORichNotification (< 5.1.0, >= 5.0.0)
+  - moengage_flutter (3.0.0):
     - Flutter
-    - MoEPluginBase (~> 1.1.0)
-  - MoEngageInApp (1.0.2):
-    - MoEngage-iOS-SDK (~> 6.0)
-  - MoEPluginBase (1.1.1):
-    - MoEngage-iOS-SDK (< 7.0.0, >= 6.2.4)
-    - MoEngageInApp (~> 1.0.0)
-  - MORichNotification (4.1.0)
+    - MoEPluginBase (< 2.1.0, >= 2.0.2)
+  - MoEngageInApp (2.0.2):
+    - MoEngage-iOS-SDK (< 7.1.0, >= 7.0.0)
+  - MoEPluginBase (2.0.2):
+    - MoEngage-iOS-SDK (< 7.1.0, >= 7.0.1)
+    - MoEngageInApp (< 2.1.0, >= 2.0.0)
+  - MORichNotification (5.0.0)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
     - nanopb/encode (= 1.30906.0)
@@ -141,7 +141,7 @@ PODS:
     - Flutter
   - "permission_handler (5.1.0+2)":
     - Flutter
-  - PromisesObjC (1.2.11)
+  - PromisesObjC (1.2.12)
   - Protobuf (3.14.0)
   - Reachability (3.2)
   - shared_preferences (0.0.1):
@@ -280,16 +280,16 @@ SPEC CHECKSUMS:
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   location_permissions: 7e0f9aa0f60deb8ff93ddf0e2a164c7e8197bc94
-  MoEngage-iOS-SDK: 762780af81349d68bb052dc4b828226240175623
-  moengage_flutter: 8848db884ee476b79f49634c692de34496933291
-  MoEngageInApp: fe20af7e7093e16f2269935dffdaedfae368441f
-  MoEPluginBase: c88bacc29c76fe91d460ad48ae231afe8332f27f
-  MORichNotification: 0cf09d604e5139ed00da39b086c09b904fd92b5d
+  MoEngage-iOS-SDK: 6c417155f8a8bd39f1047aa64a7773c73ca1953b
+  moengage_flutter: 43002c2069bd38df5f4f2af0372e1d0bf637b25a
+  MoEngageInApp: daf85a52c4a3d5dc663f31c23589a60b513acb64
+  MoEPluginBase: 490c5b1ab57761ff0aa44c09bdd7662a13f8e1ee
+  MORichNotification: abf1f1aaed3a9366dc8e966c55652bff7716b3b8
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
-  PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
+  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: 0cde852566359049847168e51bd1c690e0f70056
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d

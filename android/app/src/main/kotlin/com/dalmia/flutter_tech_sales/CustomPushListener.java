@@ -3,7 +3,7 @@ package com.dalmia.flutter_tech_sales;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import com.moengage.core.Logger;
+//import com.moengage.core.Logger;
 import com.moengage.plugin.base.PluginPushCallback;
 
 /**
@@ -16,11 +16,11 @@ public class CustomPushListener extends PluginPushCallback {
 
   @Override public void onHandleRedirection(Activity activity, Bundle payload) {
     super.onHandleRedirection(activity, payload);
-    Logger.v(TAG + " onHandleRedirection() : ");
+  //  Logger.v(TAG + " onHandleRedirection() : ");
   }
 
   @Override public void onNotificationReceived(Context context, Bundle payload) {
     super.onNotificationReceived(context, payload);
-    Logger.v(TAG + " onNotificationReceived() : ");
+   // Logger.v(TAG + " onNotificationReceived() : ");
   }
 }

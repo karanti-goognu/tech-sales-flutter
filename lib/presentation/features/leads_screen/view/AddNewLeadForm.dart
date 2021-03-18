@@ -115,7 +115,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   @override
   void dispose() {
     super.dispose();
-    _formKeyForNewLeadForm.currentState!=null?_formKeyForNewLeadForm.currentState.dispose():print("nothing happened");
+    _formKeyForNewLeadForm.currentState != null
+        ? _formKeyForNewLeadForm.currentState.dispose()
+        : print("nothing happened");
     //_addLeadsController.dispose();
     // _formKey.currentState.dispose();
   }
@@ -554,6 +556,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             setState(() {
                               geoTagType = "A";
                             });
+                            Get.dialog(Center(
+                              child: CircularProgressIndicator(),
+                            ));
                             _getCurrentLocation();
                           },
                         ),
@@ -605,10 +610,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             setState(() {
                               _pickedLocation = result;
                               _currentPosition = new Position(
-                                  latitude: _pickedLocation!=null?_pickedLocation.latLng.latitude:0.0,
-                                  longitude: _pickedLocation!=null?_pickedLocation.latLng.longitude:0.0);
+
+                                  latitude: _pickedLocation.latLng.latitude,
+                                  longitude: _pickedLocation.latLng.longitude);
+//                              print(_currentPosition);
                               _getAddressFromLatLng();
-                              //print(_pickedLocation.latLng.latitude);
                             });
                           },
                         ),
@@ -742,7 +748,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         FilteringTextInputFormatter.digitsOnly
                       ],
                       //  maxLength: 6,
-                      decoration: FormFieldStyle.buildInputDecoration(labelText: "Pincode",),
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Pincode",
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
@@ -757,21 +765,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     ),
                     SizedBox(height: 16),
                     TextFormField(
-                      controller: _state,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter State ';
-                        }
+                        controller: _state,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter State ';
+                          }
 
-                        return null;
-                      },
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                      keyboardType: TextInputType.text,
-                      decoration:FormFieldStyle.buildInputDecoration(labelText: "State")
-                    ),
+                          return null;
+                        },
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.text,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "State")),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
                       child: Text(
@@ -798,7 +806,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
-                        decoration:FormFieldStyle.buildInputDecoration(labelText: "District"),
+                      decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "District"),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
@@ -827,7 +836,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
-                      decoration:FormFieldStyle.buildInputDecoration(labelText: "Taluk"),
+                      decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Taluk"),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
@@ -984,12 +994,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           //       )
                                           //     :
                                           Text(
-                                                  "Influencer Details ${(index+1)} ",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                ),
+                                            "Influencer Details ${(index + 1)} ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ),
                                           Switch(
                                             onChanged: (value) {
                                               setState(() {
@@ -1114,7 +1123,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       fontSize: 18),
                                                 )
                                               : Text(
-                                                  "Influencer Details ${(index+1)} ",
+                                                  "Influencer Details ${(index + 1)} ",
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -1351,193 +1360,192 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       data;
                                                   // print(inflDetail.inflName.text);
 
-                                                    if (inflDetail
-                                                            .inflName.text !=
-                                                        "null") {
+                                                  if (inflDetail
+                                                          .inflName.text !=
+                                                      "null") {
+                                                    setState(() {
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflContact =
+                                                          new TextEditingController();
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflName =
+                                                          new TextEditingController();
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+                                                      //  print(inflDetail.inflName.text);
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflTypeId =
+                                                          new TextEditingController();
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflCatId =
+                                                          new TextEditingController();
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflTypeValue =
+                                                          new TextEditingController();
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflCatValue =
+                                                          new TextEditingController();
+
+                                                      print(
+                                                          inflDetail.inflName);
+
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflContact =
+                                                          inflDetail
+                                                              .inflContact;
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflName =
+                                                          inflDetail.inflName;
+                                                      _listInfluencerDetail[
+                                                              index]
+                                                          .id = inflDetail.id;
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .ilpIntrested =
+                                                          inflDetail
+                                                              .ilpIntrested;
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .createdOn =
+                                                          inflDetail.createdOn;
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflTypeValue =
+                                                          inflDetail
+                                                              .inflTypeValue;
+                                                      _listInfluencerDetail[
+                                                                  index]
+                                                              .inflCatValue =
+                                                          inflDetail
+                                                              .inflCatValue;
+                                                      _listInfluencerDetail[
+                                                              index]
+                                                          .createdBy = empId;
+                                                      print(
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflName);
+
+                                                      for (int i = 0;
+                                                          i <
+                                                              influencerTypeEntity
+                                                                  .length;
+                                                          i++) {
+                                                        if (influencerTypeEntity[
+                                                                    i]
+                                                                .inflTypeId
+                                                                .toString() ==
+                                                            inflDetail
+                                                                .inflTypeId
+                                                                .text) {
+                                                          _listInfluencerDetail[
+                                                                      index]
+                                                                  .inflTypeId =
+                                                              inflDetail
+                                                                  .inflTypeId;
+                                                          //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflTypeValue
+                                                              .text = influencerTypeEntity[
+                                                                  influencerTypeEntity[
+                                                                              i]
+                                                                          .inflTypeId -
+                                                                      1]
+                                                              .inflTypeDesc;
+                                                          break;
+                                                        } else {
+                                                          // _listInfluencerDetail[
+                                                          // index]
+                                                          //     .inflContact
+                                                          //     .clear();
+                                                          // _listInfluencerDetail[
+                                                          // index]
+                                                          //     .inflName
+                                                          //     .clear();
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflTypeId
+                                                              .clear();
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflTypeValue
+                                                              .clear();
+                                                        }
+                                                      }
+                                                      print(
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflName);
+                                                      // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
+
+                                                      for (int i = 0;
+                                                          i <
+                                                              influencerCategoryEntity
+                                                                  .length;
+                                                          i++) {
+                                                        if (influencerCategoryEntity[
+                                                                    i]
+                                                                .inflCatId
+                                                                .toString() ==
+                                                            inflDetail.inflCatId
+                                                                .text) {
+                                                          _listInfluencerDetail[
+                                                                      index]
+                                                                  .inflCatId =
+                                                              inflDetail
+                                                                  .inflCatId;
+                                                          //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflCatValue
+                                                              .text = influencerCategoryEntity[
+                                                                  influencerCategoryEntity[
+                                                                              i]
+                                                                          .inflCatId -
+                                                                      1]
+                                                              .inflCatDesc;
+                                                          break;
+                                                        } else {
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflCatId
+                                                              .clear();
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflCatValue
+                                                              .clear();
+                                                        }
+                                                      }
+                                                    });
+                                                  } else {
+                                                    if (_listInfluencerDetail[
+                                                                index]
+                                                            .inflContact !=
+                                                        null) {
                                                       setState(() {
                                                         _listInfluencerDetail[
-                                                                    index]
-                                                                .inflContact =
-                                                            new TextEditingController();
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .inflName =
-                                                            new TextEditingController();
-                                                        FocusScope.of(context)
-                                                            .unfocus();
-                                                        //  print(inflDetail.inflName.text);
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .inflTypeId =
-                                                            new TextEditingController();
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .inflCatId =
-                                                            new TextEditingController();
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .inflTypeValue =
-                                                            new TextEditingController();
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .inflCatValue =
-                                                            new TextEditingController();
-
-                                                        print(inflDetail
-                                                            .inflName);
-
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .inflContact =
-                                                            inflDetail
-                                                                .inflContact;
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .inflName =
-                                                            inflDetail.inflName;
+                                                                index]
+                                                            .inflContact
+                                                            .clear();
                                                         _listInfluencerDetail[
                                                                 index]
-                                                            .id = inflDetail.id;
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .ilpIntrested =
-                                                            inflDetail
-                                                                .ilpIntrested;
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .createdOn =
-                                                            inflDetail
-                                                                .createdOn;
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .inflTypeValue =
-                                                            inflDetail
-                                                                .inflTypeValue;
-                                                        _listInfluencerDetail[
-                                                                    index]
-                                                                .inflCatValue =
-                                                            inflDetail
-                                                                .inflCatValue;
-                                                        _listInfluencerDetail[
-                                                                index]
-                                                            .createdBy = empId;
-                                                        print(
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflName);
-
-                                                        for (int i = 0;
-                                                            i <
-                                                                influencerTypeEntity
-                                                                    .length;
-                                                            i++) {
-                                                          if (influencerTypeEntity[
-                                                                      i]
-                                                                  .inflTypeId
-                                                                  .toString() ==
-                                                              inflDetail
-                                                                  .inflTypeId
-                                                                  .text) {
-                                                            _listInfluencerDetail[
-                                                                        index]
-                                                                    .inflTypeId =
-                                                                inflDetail
-                                                                    .inflTypeId;
-                                                            //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflTypeValue
-                                                                .text = influencerTypeEntity[
-                                                                    influencerTypeEntity[i]
-                                                                            .inflTypeId -
-                                                                        1]
-                                                                .inflTypeDesc;
-                                                            break;
-                                                          } else {
-                                                            // _listInfluencerDetail[
-                                                            // index]
-                                                            //     .inflContact
-                                                            //     .clear();
-                                                            // _listInfluencerDetail[
-                                                            // index]
-                                                            //     .inflName
-                                                            //     .clear();
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflTypeId
-                                                                .clear();
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflTypeValue
-                                                                .clear();
-                                                          }
-                                                        }
-                                                        print(
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflName);
-                                                        // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
-
-                                                        for (int i = 0;
-                                                            i <
-                                                                influencerCategoryEntity
-                                                                    .length;
-                                                            i++) {
-                                                          if (influencerCategoryEntity[
-                                                                      i]
-                                                                  .inflCatId
-                                                                  .toString() ==
-                                                              inflDetail
-                                                                  .inflCatId
-                                                                  .text) {
-                                                            _listInfluencerDetail[
-                                                                        index]
-                                                                    .inflCatId =
-                                                                inflDetail
-                                                                    .inflCatId;
-                                                            //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflCatValue
-                                                                .text = influencerCategoryEntity[
-                                                                    influencerCategoryEntity[i]
-                                                                            .inflCatId -
-                                                                        1]
-                                                                .inflCatDesc;
-                                                            break;
-                                                          } else {
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflCatId
-                                                                .clear();
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflCatValue
-                                                                .clear();
-                                                          }
-                                                        }
+                                                            .inflName
+                                                            .clear();
                                                       });
-                                                    } else {
-                                                      if (_listInfluencerDetail[
-                                                                  index]
-                                                              .inflContact !=
-                                                          null) {
-                                                       setState(() {
-                                                         _listInfluencerDetail[
-                                                         index]
-                                                             .inflContact
-                                                             .clear();
-                                                         _listInfluencerDetail[
-                                                         index]
-                                                             .inflName
-                                                             .clear();
-                                                       });
-                                                      }
-                                                      return Get.dialog(
-                                                          CustomDialogs()
-                                                              .showDialog(
-                                                                  "No influencer registered with this number"));
                                                     }
+                                                    return Get.dialog(
+                                                        CustomDialogs().showDialog(
+                                                            "No influencer registered with this number"));
+                                                  }
                                                   Get.back();
                                                 });
                                               });
@@ -2714,6 +2722,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         });
 
         _getAddressFromLatLng();
+        Get.back();
       }).catchError((e) {
         print(e);
       });
@@ -2722,11 +2731,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   _getAddressFromLatLng() async {
     try {
+      print("from lat long waheguru");
       List<Placemark> p = await geolocator.placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
 
       Placemark place = p[0];
-
       setState(() {
         _siteAddress.text =
             place.name + "," + place.thoroughfare + "," + place.subLocality;
