@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/notification/controller/notification_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
   SiteController _siteController = Get.find();
+
 
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
@@ -189,8 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.dialog(CustomDialogs()
-                            .errorDialog("Page Coming Soon .... "));
+                        Get.toNamed(Routes.NOTIFICATION);
+                        // Get.dialog(CustomDialogs()
+                        //     .errorDialog("Page Coming Soon .... "));
                       },
                       child: Container(
                         height: 40,

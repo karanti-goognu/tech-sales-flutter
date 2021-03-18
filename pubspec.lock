@@ -489,7 +489,14 @@ packages:
       name: moengage_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.0"
+  moengage_inbox:
+    dependency: "direct main"
+    description:
+      name: moengage_inbox
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   nested:
     dependency: transitive
     description:
