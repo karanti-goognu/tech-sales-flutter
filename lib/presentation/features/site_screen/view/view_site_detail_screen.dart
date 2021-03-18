@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/helper/brand_name_db_config.dart';
 import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
 import 'package:flutter_tech_sales/helper/database_helper.dart';
@@ -50,8 +51,11 @@ class ViewSiteScreen extends StatefulWidget {
 
 class _ViewSiteScreenState extends State<ViewSiteScreen>
     with SingleTickerProviderStateMixin {
-  //final db = DatabaseHelper();
+   //final db = DatabaseHelper();
   bool fromDropDown=false;
+  // final db = BrandNameDBHelper();
+  static final db= DatabaseHelper();
+
   FocusNode myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
@@ -615,7 +619,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     });
   }
 
-  static final db= DatabaseHelper();
 
   /*Get side details from db*/
 
@@ -922,7 +925,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             labelText =
                                                                                 _siteStage.siteStageDesc;
                                                                             setState(() {
-                                                                              fromDropDown= true;
+                                                                              fromDropDown = true;
                                                                             });
                                                                             UpdateRequest();
                                                                           } else {
@@ -1229,7 +1232,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             labelText =
                                                                                 _siteStage.siteStageDesc;
                                                                             setState(() {
-                                                                              fromDropDown= true;
+                                                                              fromDropDown = true;
                                                                             });
                                                                             UpdateRequest();
                                                                           } else {
@@ -1818,6 +1821,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 setState(() {
                                   geoTagType = "A";
                                 });
+                                Get.dialog(Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+
                                 _getCurrentLocation();
                               },
                             ),
@@ -5495,6 +5502,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         });
 
         _getAddressFromLatLng();
+              Get.back();
+
       }).catchError((e) {
         print(e);
       });
@@ -5505,9 +5514,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     try {
       List<Placemark> p = await geolocator.placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
-
       Placemark place = p[0];
-
       setState(() {
         _siteAddress.text =
             place.name + "," + place.thoroughfare + "," + place.subLocality;
@@ -5572,23 +5579,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   Future<void> UpdateRequest() async {
     print('$visitDataDealer $visitDataSubDealer');
     print("fromDropDown: $fromDropDown");
-    if(fromDropDown==true){
+    if (fromDropDown == true) {
       print("0000000000000000000000000o");
       if (_siteBuiltupArea.text == "" ||
           _siteBuiltupArea.text == null ||
           _siteBuiltupArea.text == "null") {
         Get.dialog(CustomDialogs()
             .errorDialog("Please fill mandatory fields in \"Site Data\" Tab"));
-      }
-      else{
+      } else {
         updateSiteLogic();
         setState(() {
-          fromDropDown=false;
+          fromDropDown = false;
         });
       }
-
-    }
-   else if (_siteBuiltupArea.text == "" ||
+    } else if (_siteBuiltupArea.text == "" ||
         _siteBuiltupArea.text == null ||
         _siteBuiltupArea.text == "null") {
       Get.dialog(CustomDialogs()
@@ -5636,8 +5640,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     }
   }
 
-
-  updateSiteLogic() async{
+  updateSiteLogic() async {
     String empId;
     String mobileNumber;
     String name;
@@ -5687,8 +5690,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       if (_selectedConstructionTypeVisitNextStage != null) {
         siteNextStageEntity.add(new SiteNextStageEntity(
           siteId: widget.siteId,
-          constructionStageId:
-          _selectedConstructionTypeVisitNextStage.id ?? 1,
+          constructionStageId: _selectedConstructionTypeVisitNextStage.id ?? 1,
           stagePotential: _stagePotentialVisitNextStage.text,
           brandId: _siteProductFromLocalDBNextStage.id,
           brandPrice: _brandPriceVisitNextStage.text,
@@ -5715,11 +5717,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
       if (_listInfluencerDetail.length != 0) {
         if (_listInfluencerDetail[
-        _listInfluencerDetail.length - 1]
-            .inflName ==
-            null ||
-            _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                .inflName ==
+                        _listInfluencerDetail.length - 1]
+                    .inflName ==
+                null ||
+            _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
                 null ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1]
                 .inflName
@@ -5730,7 +5731,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
 
       List<updateResponse.SiteInfluencerEntityNew> newInfluencerEntity =
-      new List();
+          new List();
 
       for (int i = 0; i < _listInfluencerDetail.length; i++) {
         newInfluencerEntity.add(new updateResponse.SiteInfluencerEntityNew(
@@ -5773,13 +5774,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "productDemo": _siteProductDemo.text,
         "productOralBriefing": _siteProductOralBriefing.text,
         "soCode": viewSiteDataResponse.sitesModal.siteSoId,
-        "inactiveReasonText": (_inactiveReasonText.text != "")
-            ? _inactiveReasonText.text
-            : null,
+        "inactiveReasonText":
+            (_inactiveReasonText.text != "") ? _inactiveReasonText.text : null,
         "nextVisitDate":
-        (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
+            (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
         "closureReasonText":
-        (closureReasonText.text != "") ? closureReasonText.text : null,
+            (closureReasonText.text != "") ? closureReasonText.text : null,
         "createdBy": "",
         "siteCommentsEntity": newSiteCommentsEntity,
         "siteVisitHistoryEntity": siteVisitHistoryEntity,

@@ -354,11 +354,17 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
     final node = FocusScope.of(context);
     return Obx(
       () => TextFormField(
+
           initialValue: (_mwpPlanController.getMWPResponse != null)
               ? (_mwpPlanController.getMWPResponse.mwpplanModel != null)
                   ? returnTargetValue(index)
                   : ""
               : "",
+          readOnly: (_mwpPlanController.getMWPResponse.mwpplanModel != null)
+              ? (_mwpPlanController.getMWPResponse.mwpplanModel.status=="APPROVE")
+              ? true
+              : false
+              : false,
           maxLength: 4,
           textAlign: TextAlign.center,
           onEditingComplete: ()=>node.nextFocus(),
