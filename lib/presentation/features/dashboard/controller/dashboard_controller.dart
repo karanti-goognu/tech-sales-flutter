@@ -12,17 +12,28 @@ import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardController extends GetxController {
-  // @override
-  // void onInit() {
-  //   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  //   super.onInit();
-  // }
-
   final DashboardRepository repository;
-
   DashboardController({@required this.repository}) : assert(repository != null);
 
   final _accessKeyResponse = AccessKeyModel().obs;
+  final _mtdGeneratedVolumeSiteList = DashboardMtdGeneratedVolumeSiteList().obs;
+
+  get mtdGeneratedVolumeSiteList => _mtdGeneratedVolumeSiteList;
+
+  set mtdGeneratedVolumeSiteList(value) {
+    _mtdGeneratedVolumeSiteList.value = value;
+    print(_mtdGeneratedVolumeSiteList.value.totalSiteCount);
+  }
+
+  final _mtdConvertedVolumeList = DashboardMtdConvertedVolumeList().obs;
+
+
+  get mtdConvertedVolumeList => _mtdConvertedVolumeList;
+
+  set mtdConvertedVolumeList(value) {
+    _mtdConvertedVolumeList.value = value;
+  }
+
   final _phoneNumber = "8860080067".obs;
   final _empId = "_empty".obs;
   final _employeeName = "_empty".obs;
@@ -163,7 +174,9 @@ class DashboardController extends GetxController {
 
       repository.getDashboardMtdGeneratedVolumeSiteList(empID,yearMonth).then((_) {
         DashboardMtdGeneratedVolumeSiteList data = _;
-        print(data);
+        print(data.respCode);
+        this.mtdGeneratedVolumeSiteList = data;
+        print(this.mtdGeneratedVolumeSiteList);
 
       });
     }).catchError((e) => print(e));
@@ -198,24 +211,11 @@ class DashboardController extends GetxController {
       repository.getDashboardMtdConvertedVolumeList(empID,yearMonth).then((_) {
         DashboardMtdConvertedVolumeList data = _;
         print(data);
+        this.mtdConvertedVolumeList = data;
 
       });
     }).catchError((e) => print(e));
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

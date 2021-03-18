@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
+import 'package:get/get.dart';
 
 class VolumeGeneratedSiteList extends StatefulWidget {
   @override
@@ -11,9 +13,11 @@ class VolumeGeneratedSiteList extends StatefulWidget {
 }
 
 class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
+  DashboardController _dashboardController= Get.find();
   @override
   void initState() {
-    // TODO: implement initState
+    _dashboardController.getDashboardMtdGeneratedVolumeSiteList();
+//    print(_dashboardController.mtdGeneratedVolumeSiteList);
     super.initState();
   }
   @override
@@ -57,7 +61,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total Count-20'),
+              Text('Total Count- ${0}'),
               Text('Total Potential-2500 MT'),
             ],
           ),
@@ -69,18 +73,10 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                 // itemExtent: 125.0,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {
-//                      Navigator.push(
-//                          context,
-//                          new CupertinoPageRoute(
-//                              builder: (BuildContext context) =>
-//                                  ViewSiteScreen(
-//                                      siteList[index].siteId)));
-                    },
+                    onTap: () { },
                     child: Card(
                       clipBehavior: Clip.antiAlias,
                       borderOnForeground: true,
-                      //shadowColor: colornew,
                       elevation: 6,
                       margin: EdgeInsets.all(5.0),
                       color: Colors.white,
@@ -309,16 +305,6 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceBetween,
                                 children: [
-                                  /*Text(
-                                            "Exclusive Dalmia ",
-                                            style: TextStyle(
-                                                color: Colors.blue,
-                                                fontSize: 12,
-                                                fontFamily: "Muli",
-                                                fontWeight: FontWeight.bold
-                                                //fontWeight: FontWeight.normal
-                                                ),
-                                          ),*/
                                   Text(
                                      "",
                                     style: TextStyle(

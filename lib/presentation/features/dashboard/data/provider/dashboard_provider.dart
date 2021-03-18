@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -87,8 +88,9 @@ class MyApiClientDashboard {
   }
 
   Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth) async{
+    print('$empID $yearMonth');
     try{
-      var url=UrlConstants.dashboardMtdGeneratedVolumeSiteList+empID+'&yearMonth='+yearMonth;
+      var url=UrlConstants.dashboardMtdGeneratedVolumeSiteList+'EMP0006700'+'&yearMonth='+yearMonth;
       print(url);
       var response = await httpClient.get(url,headers: requestHeaders);
       print('Response body is : ${json.decode(response.body)}');
@@ -107,16 +109,18 @@ class MyApiClientDashboard {
   }
 
   Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth) async{
+    print('$empID $yearMonth');
     try{
-      var url=UrlConstants.dashboardMtdConvertedVolumeList+empID+'&yearMonth='+yearMonth;
+      var url=UrlConstants.dashboardMtdConvertedVolumeList+'EMP0006700'+'&yearMonth='+yearMonth;
       print(url);
       var response = await httpClient.get(url,headers: requestHeaders);
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        DashboardMtdGeneratedVolumeSiteList dashboardMtdGeneratedVolumeSiteList;
-        dashboardMtdGeneratedVolumeSiteList = DashboardMtdGeneratedVolumeSiteList.fromJson(data);
-        return dashboardMtdGeneratedVolumeSiteList;
+        print("waheguru: $data");
+        DashboardMtdConvertedVolumeList dashboardMtdConvertedVolumeList;
+        dashboardMtdConvertedVolumeList = DashboardMtdConvertedVolumeList.fromJson(data);
+        return dashboardMtdConvertedVolumeList;
       } else
         print('error');
 

@@ -25,7 +25,7 @@ class DashboardRepository {
   }
 
   Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth){
-    return apiClient.getDashboardMtdGeneratedVolumeSiteList(empID,yearMonth);
+    return apiClient.getDashboardMtdConvertedVolumeList(empID,yearMonth);
   }
 
 
