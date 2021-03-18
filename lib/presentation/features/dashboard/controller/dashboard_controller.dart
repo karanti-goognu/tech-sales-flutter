@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/repository/dashboard_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -134,6 +136,72 @@ class DashboardController extends GetxController {
     }).catchError((e) => print(e));
   }
 
+  getDashboardMtdGeneratedVolumeSiteList({String empID}) {
+    print("EMP ID inside controller: $empID");
+    String empId = empID??"empty";
+    String userSecurityKey = "empty";
+    int year = DateTime.now().year;
+    int month = DateTime.now().month;
+    String yearMonth;
+    if (month > 3) {
+      yearMonth = year.toString() + '-' + month.toString();
+    } else {
+      yearMonth = (year - 1).toString() +
+          '-' +
+          (month.toString().length == 1
+              ? '0' + month.toString()
+              : month.toString());
+    }
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      print("Before prefs: $empId");
+      if (empId=='empty')
+        empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      print("After prefs: $empId");
+
+      repository.getDashboardMtdGeneratedVolumeSiteList(empID,yearMonth).then((_) {
+        DashboardMtdGeneratedVolumeSiteList data = _;
+        print(data);
+
+      });
+    }).catchError((e) => print(e));
+  }
+
+
+  getDashboardMtdConvertedVolumeList({String empID}) {
+    print("EMP ID inside controller: $empID");
+    String empId = empID??"empty";
+    String userSecurityKey = "empty";
+    int year = DateTime.now().year;
+    int month = DateTime.now().month;
+    String yearMonth;
+    if (month > 3) {
+      yearMonth = year.toString() + '-' + month.toString();
+    } else {
+      yearMonth = (year - 1).toString() +
+          '-' +
+          (month.toString().length == 1
+              ? '0' + month.toString()
+              : month.toString());
+    }
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      print("Before prefs: $empId");
+      if (empId=='empty')
+        empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      print("After prefs: $empId");
+
+      repository.getDashboardMtdConvertedVolumeList(empID,yearMonth).then((_) {
+        DashboardMtdConvertedVolumeList data = _;
+        print(data);
+
+      });
+    }).catchError((e) => print(e));
+  }
 
 
 

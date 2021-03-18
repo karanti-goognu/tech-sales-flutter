@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -82,6 +83,46 @@ class MyApiClientDashboard {
       print('Exception at Dashboard Repo : Monthly View ${_.toString()}');
     }
 
+
+  }
+
+  Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth) async{
+    try{
+      var url=UrlConstants.dashboardMtdGeneratedVolumeSiteList+empID+'&yearMonth='+yearMonth;
+      print(url);
+      var response = await httpClient.get(url,headers: requestHeaders);
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        DashboardMtdGeneratedVolumeSiteList dashboardMtdGeneratedVolumeSiteList;
+        dashboardMtdGeneratedVolumeSiteList = DashboardMtdGeneratedVolumeSiteList.fromJson(data);
+        return dashboardMtdGeneratedVolumeSiteList;
+      } else
+        print('error');
+
+    }catch(_){
+      print('Exception at Dashboard Repo : Volume Site List View ${_.toString()}');
+    }
+
+  }
+
+  Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth) async{
+    try{
+      var url=UrlConstants.dashboardMtdConvertedVolumeList+empID+'&yearMonth='+yearMonth;
+      print(url);
+      var response = await httpClient.get(url,headers: requestHeaders);
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        DashboardMtdGeneratedVolumeSiteList dashboardMtdGeneratedVolumeSiteList;
+        dashboardMtdGeneratedVolumeSiteList = DashboardMtdGeneratedVolumeSiteList.fromJson(data);
+        return dashboardMtdGeneratedVolumeSiteList;
+      } else
+        print('error');
+
+    }catch(_){
+      print('Exception at Dashboard Repo : Volume MTD Converted ${_.toString()}');
+    }
 
   }
 }

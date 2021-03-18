@@ -56,7 +56,6 @@ abstract class UrlConstants {
   static const String getServiceRequestFormData = '$baseUrl/srcomplaint/sr_complaint_add';
   static const String getRequestorDetails = '$baseUrl/srcomplaint/sr_requester_search?referenceId=';
   static const String getComplaintListData = '$baseUrl/srcomplaint/sr_list_view?referenceId=';
-  
   static const String addServiceRequest = '$baseUrl/srcomplaint/sr_complaint_save';
   static const String srComplaintView = '$baseUrl/srcomplaint/sr_complaint_view?referenceId=';
   static const String updateServiceRequest = '$baseUrl/srcomplaint/sr_complaint_update';
@@ -65,6 +64,8 @@ abstract class UrlConstants {
   static const String homepageDashboardData = '$baseUrl/dashboard/view?referenceID=';
   static const String shareReport = '$baseUrl/dashboard/reportSharing?reference-Id=';
   static const String dashboadrMonthlyView = '$baseUrl/dashboard/dashboadrMonthlyView?referenceID=';
+  static const String dashboardMtdConvertedVolumeList = '$baseUrl/dashboard/dashboardMtdConvertedVolumeList?referenceID=';
+  static const String dashboardMtdGeneratedVolumeSiteList = '$baseUrl/dashboard/dashboardMtdGeneratedVolumeSiteList?referenceID=';
 
 
 }
