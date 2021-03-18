@@ -62,7 +62,7 @@ abstract class UrlConstants {
   static const String AppTutorialList = '$baseUrl/tsoAppTuorial/view';
   static const String getSiteAreaDetails = '$baseUrl/sites/site-areaDetails?referenceID=';
   static const String homepageDashboardData = '$baseUrl/dashboard/view?referenceID=';
-  static const String shareReport = '$baseUrl/dashboard/reportSharing?reference-Id=EMP1015278';
+  static const String shareReport = '$baseUrl/dashboard/reportSharing?reference-Id=';
   static const String dashboadrMonthlyView = '$baseUrl/dashboard/dashboadrMonthlyView?referenceID=';
 
 

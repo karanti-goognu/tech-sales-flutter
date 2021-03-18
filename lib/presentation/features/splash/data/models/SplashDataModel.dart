@@ -17,6 +17,7 @@ class SplashDataModel {
   Null respCode;
   Null respMsg;
   EmployeeDetails employeeDetails;
+  List<ReportingTsoListModel> reportingTsoListModel;
   List<UserMenu> userMenu;
   JourneyDetails journeyDetails;
 
@@ -33,6 +34,7 @@ class SplashDataModel {
       this.srctRequestEntity,
       this.influencerCategoryEntity,
       this.severity,
+      this.reportingTsoListModel,
       this.userSecurityKey,
       this.respCode,
       this.respMsg,
@@ -112,6 +114,12 @@ class SplashDataModel {
         influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
+    if (json['reportingTsoListModel'] != null) {
+      reportingTsoListModel = new List<ReportingTsoListModel>();
+      json['reportingTsoListModel'].forEach((v) {
+        reportingTsoListModel.add(new ReportingTsoListModel.fromJson(v));
+      });
+    }
     severity = json['severity'].cast<String>();
     userSecurityKey = json['user-security-key'];
     respCode = json['resp-code'];
@@ -176,6 +184,10 @@ class SplashDataModel {
     if (this.srctRequestEntity != null) {
       data['srctRequestEntity'] =
           this.srctRequestEntity.map((v) => v.toJson()).toList();
+    }
+    if (this.reportingTsoListModel != null) {
+      data['reportingTsoListModel'] =
+          this.reportingTsoListModel.map((v) => v.toJson()).toList();
     }
     data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
@@ -479,6 +491,25 @@ class SrctRequestEntity {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['requestText'] = this.requestText;
+    return data;
+  }
+}
+
+class ReportingTsoListModel {
+  String tsoId;
+  String tsoName;
+
+  ReportingTsoListModel({this.tsoId, this.tsoName});
+
+  ReportingTsoListModel.fromJson(Map<String, dynamic> json) {
+    tsoId = json['tsoId'];
+    tsoName = json['tsoName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['tsoId'] = this.tsoId;
+    data['tsoName'] = this.tsoName;
     return data;
   }
 }

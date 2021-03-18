@@ -1,14 +1,13 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui' as ui;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/month_to_date.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/year_to_date.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -29,10 +28,15 @@ class _DashboardState extends State<Dashboard> {
   File imgFile;
   Random random = Random();
   DashboardController _dashboardController = Get.find();
+  SplashController _splashController = Get.find();
+  List<ReportingTsoListModel> _employeeDropDownData;
+  String empID;
   @override
   Future<Uint8List> _capturePng() async {
     RenderRepaintBoundary boundary =
         previewContainer.currentContext.findRenderObject();
+    print("waheguru waheguru waheguru");
+    print(boundary.child.runtimeType);
 
     if (boundary.debugNeedsPaint) {
       print("Waiting for boundary to be painted.");
@@ -47,22 +51,22 @@ class _DashboardState extends State<Dashboard> {
 
   void _printPngBytes() async {
     var pngBytes = await _capturePng();
-    var bs64 = base64Encode(pngBytes);
     int num = random.nextInt(100);
     final directory = (await getExternalStorageDirectory()).path;
     imgFile = new File('$directory/screenshot$num.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
-    // print(pngBytes);
-    // print(bs64);
+
   }
 
   ScreenshotController screenshotController = ScreenshotController();
-  // Uint8List _imageFile;
   @override
   void initState() {
     _dashboardController.getMonthViewDetails();
+    print(_splashController.splashDataModel.reportingTsoListModel);
+    _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
+    print('--');
     super.initState();
   }
 
@@ -70,76 +74,96 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     print('height');
     print(MediaQuery.of(context).size.height);
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text('MY DASHBOARD'),
-            backgroundColor: ColorConstants.appBarColor,
-            actions: [
-              Transform.scale(
-                scale: 0.8,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: MaterialButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      print("Hello");
-                      _printPngBytes();
-                      // _screenShot();
-                      // _imageFile = null;
-                      // screenshotController
-                      //     .capture(delay: Duration(milliseconds: 10))
-                      //     .then((Uint8List image) async {
-                      //   print(image);
-                      //   _imageFile = image;
-                      //   Get.dialog(
-                      //       Container(
-                      //         child: Image.memory(
-                      //           _imageFile,
-                      //           height: 100,
-                      //           width: 100,
-                      //           fit: BoxFit.contain,
-                      //         ),
-                      //       ),
-                      //       barrierDismissible: true);
-                      // }).catchError((onError) {
-                      //   print(onError);
-                      // });
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.share),
-                        Text('Share'),
-                      ],
+    return RepaintBoundary(
+      key: previewContainer,
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: AppBar(
+                automaticallyImplyLeading: false,
+              title: Text('MY DASHBOARD'),
+              backgroundColor: ColorConstants.appBarColor,
+              actions: [
+                Transform.scale(
+                  scale: 0.7,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: MaterialButton(
+                      minWidth: 100,
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        _printPngBytes();
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.share),
+                          Text('Share'),
+                        ],
+                      ),
+                      color: HexColor('#f9a61a'),
                     ),
-                    color: HexColor('#f9a61a'),
                   ),
-                ),
-              )
-            ],
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  text: "MONTH TO DATE",
-                ),
-                Tab(
-                  text: "YEAR TO DATE",
-                ),
+                )
               ],
+              bottom: PreferredSize(
+                preferredSize: _employeeDropDownData.isEmpty?Size.fromHeight(50):Size.fromHeight(110),
+                child: Column(
+                  children: [
+                    _employeeDropDownData.isEmpty?Container()
+                    :DropdownButtonHideUnderline(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4)
+                        ),
+                        margin: EdgeInsets.all(8),
+                        padding: EdgeInsets.symmetric(horizontal: 12,vertical: 0),
+                        child: DropdownButtonFormField(
+                            isExpanded: true,
+                            iconEnabledColor: ColorConstants.appBarColor,
+                            items: _employeeDropDownData
+                                .map((e) => DropdownMenuItem(
+                              value: e.tsoId,
+                              child: Text(
+                                '(${e.tsoId})  ${e.tsoName}',
+                                style: TextStyle(color: ColorConstants.appBarColor,fontWeight: FontWeight.bold),
+                              ),
+                            ))
+                                .toList(),
+                            value:empID,
+                            onChanged: (value) {
+                              print(value);
+                              setState(() {
+                                empID=value;
+                              });
+                              _dashboardController.getMonthViewDetails(empID: empID);
+                            }),
+                      ),
+                    ),
+                    TabBar(
+                      tabs: [
+                        Tab(
+                          text: "MONTH TO DATE",
+                        ),
+                        Tab(
+                          text: "YEAR TO DATE",
+                        ),
+                      ],
+                      indicatorColor: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          bottomNavigationBar: BottomNavigator(),
-          floatingActionButton: BackFloatingButton(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          body: RepaintBoundary(
-            key: previewContainer,
-            child: TabBarView(
+            bottomNavigationBar: BottomNavigator(),
+            floatingActionButton: BackFloatingButton(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            body: TabBarView(
               children: [MonthToDate(), YearToDate()],
-            ),
-          )),
-      // ),
+            )),
+        // ),
+      ),
     );
   }
 }

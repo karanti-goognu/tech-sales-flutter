@@ -15,7 +15,6 @@ class MyApiClientDashboard {
 
   getAccessKey() async {
     try {
-      // print("dsacsdcc" + requestHeaders.toString());
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
       print('Response body is : ${json.decode(response.body)}');
@@ -35,9 +34,9 @@ class MyApiClientDashboard {
   Future shareReport(File image, String userSecurityKey, String accessKey,
       String empID) async {
     try {
+      String url = UrlConstants.shareReport+empID;
       http.MultipartRequest request = new http.MultipartRequest(
-          'POST', Uri.parse(UrlConstants.shareReport));
-          print(UrlConstants.shareReport);
+          'POST', Uri.parse(url));
       request.headers.addAll(
           requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey));
       String fileName = image.path.split("/").last;
@@ -56,14 +55,10 @@ class MyApiClientDashboard {
               print(data);
 
         });
-//        print(result.statusCode);
-
-
           });
-      print("Request headers :: " + request.headers.toString());
-      print("Request Body/Fields :: " + request.fields.toString());
-      print("Files:: " + request.files.toString());
-      print(request.toString());
+//      print("Request headers :: " + request.headers.toString());
+//      print("Request Body/Fields :: " + request.fields.toString());
+//      print("Files:: " + request.files.toString());
     } catch (_) {
       print('exception at Dashboard Repo : ShareReport method ${_.toString()}');
     }

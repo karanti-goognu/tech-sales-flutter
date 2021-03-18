@@ -82,11 +82,15 @@ class DashboardController extends GetxController {
     print(empID);
     repository
         .shareReport(image, userSecurityKey, accessKey, empID)
-        .then((value) => print(value));
+        .then((value) {
+      print(value);
+      Get.snackbar('Note', value.toString());
+    });
   }
 
-  getMonthViewDetails() {
-    String empId = "empty";
+  getMonthViewDetails({String empID}) {
+    print("EMP ID inside controller: $empID");
+    String empId = empID??"empty";
     String userSecurityKey = "empty";
     int year = DateTime.now().year;
     int month = DateTime.now().month;
@@ -102,10 +106,13 @@ class DashboardController extends GetxController {
     }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
+      print("Before prefs: $empId");
+      if (empId=='empty')
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('$empId $userSecurityKey');
+      print("After prefs: $empId");
+
       repository.getMonthViewDetails(empId, yearMonth).then((_) {
         DashboardMonthlyViewModel data = _;
         this.convTargetCount = data.convTargetCount;
@@ -126,6 +133,24 @@ class DashboardController extends GetxController {
       });
     }).catchError((e) => print(e));
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   get accessKeyResponse => this._accessKeyResponse.value;
   get phoneNumber => this._phoneNumber.value;
