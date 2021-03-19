@@ -51,7 +51,6 @@ class MyApiClientDashboard {
       request.send().then((result) async{http.Response.fromStream(result).then((response) {
            data = json.decode(response.body);
               print(data);
-              print("first");
            Get.snackbar('Note', data['resp-msg'].toString(),backgroundColor: ColorConstants.checkinColor);
            return data;
         });

@@ -71,6 +71,7 @@ class DashboardController extends GetxController {
   }
 
   getDetailsForSharingReport(File image) {
+    Future.delayed(Duration.zero,()=>Center(child: CircularProgressIndicator(),));
     print(image.path);
     String userSecurityCode;
     String empID;

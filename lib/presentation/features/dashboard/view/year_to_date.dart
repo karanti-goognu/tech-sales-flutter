@@ -103,13 +103,25 @@ class _YearToDateState extends State<YearToDate> {
                   ),
                   Expanded(child: Container(),),
                   GestureDetector(
-                    child: Row(
-                      children: [
-                        Icon(Icons.share),
-                        Text('Share'),
-                      ],
+                    child: Container(
+                      padding: EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 4),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),
+                          color: HexColor('FF8500'),
+                          boxShadow: [BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(4, 4),
+                              spreadRadius: 2,
+                              blurRadius: 4
+                          )]
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.share),
+                          Text('Share'),
+                        ],
+                      ),
                     ),
-                    onTap:()=>_printPngBytes() ,
+                    onTap: () => _printPngBytes(),
                   ),
                 ],
               ),

@@ -67,7 +67,7 @@ class _MonthToDateState extends State<MonthToDate> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+        padding: const EdgeInsets.only(left: 4.0, right: 4.0),
         child: ListView(
           children: [
             RepaintBoundary(
@@ -94,16 +94,29 @@ class _MonthToDateState extends State<MonthToDate> {
                                     'February Details',
                                     style: TextStyle(fontSize: 18),
                                   ),
+                                  Expanded(child: Container(),),
                                   GestureDetector(
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.share),
-                                        Text('Share'),
-                                      ],
+                                    child: Container(
+                                      padding: EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 4),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),
+                                        color: HexColor('FF8500'),
+                                        boxShadow: [BoxShadow(
+                                          color: Colors.black12,
+                                          offset: Offset(4, 4),
+                                          spreadRadius: 2,
+                                          blurRadius: 4
+                                        )]
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.share),
+                                          Text('Share'),
+                                        ],
+                                      ),
                                     ),
                                     onTap: () => _printPngBytes(),
                                   ),
-//                                  Expanded(child: Container())
+                                  SizedBox(width: 8,)
                                 ],
                               ),
                               SizedBox(

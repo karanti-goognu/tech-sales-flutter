@@ -40,12 +40,8 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     print(_splashController.splashDataModel.reportingTsoListModel);
     _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
-
-
-//    print('${_employeeDropDownData[0].tsoId}');
     empID=_employeeDropDownData.isEmpty?getEmpID():
         _employeeDropDownData[0].tsoId;
-
     print(empID);
 
     int year = DateTime.now().year;
