@@ -53,7 +53,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
           return true;
         },
         child: Scaffold(
-            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomInset: false,
             //resizeToAvoidBottomInset: true,
             extendBody: true,
             appBar: new AppBar(

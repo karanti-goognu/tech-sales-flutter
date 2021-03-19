@@ -247,7 +247,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         // titleSpacing: 50,
