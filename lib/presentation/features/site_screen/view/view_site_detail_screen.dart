@@ -77,6 +77,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   double siteScore = 0.0;
   String visitDataDealer;
   String visitDataSubDealer;
+  String isUserOnline="Offline";
+  bool isUserOnlineStatus=false;
 
   ConstructionStageEntity _selectedConstructionType;
   ConstructionStageEntity _selectedConstructionTypeVisit;
@@ -223,16 +225,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     listener = DataConnectionChecker().onStatusChange.listen((status) {
       print("status internet   $status");
       switch (status){
-
         case DataConnectionStatus.connected:
-          // InternetStatus = "Connected to the Internet";
-          // contentmessage = "Connected to the Internet";
-          // _showDialog(InternetStatus,contentmessage,context);
+          if(mounted)
+          setState(() {
+            isUserOnline="Online";
+            isUserOnlineStatus=true;
+          });
           break;
         case DataConnectionStatus.disconnected:
-          // InternetStatus = "You are disconnected to the Internet. ";
-          // contentmessage = "Please check your internet connection";
-          // _showDialog(InternetStatus,contentmessage,context);
+          if(mounted)
+            setState(() {
+              isUserOnline="Offline";
+              isUserOnlineStatus=false;
+            });
           break;
       }
     });
@@ -691,7 +696,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 20.0, bottom: 10, left: 5),
+                              top: 3.0, bottom: 3, left: 5),
                           child: Text(
                             "Trade site details",
                             style: TextStyle(
@@ -704,7 +709,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: Row(
                         children: [
                           Column(
@@ -733,7 +738,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   : Container(),
                             ],
                           ),
-                          SizedBox(width: 70),
+                          SizedBox(width: 50),
+
                           Expanded(
                             child: Container(
                               padding:
@@ -1293,6 +1299,40 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ],
                       ),
                     ),
+
+
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 5),
+                      child: Row(
+                        children: [
+
+                       new Container(
+                         height: 20,
+                         width: 20,
+
+                         decoration: BoxDecoration(
+                           color: isUserOnlineStatus ? Colors.green :Colors.orange,
+                           borderRadius: BorderRadius.all(Radius.circular(10)),
+                         ) ,
+                       ),
+
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                  left: 5),
+                            child: Text(
+                              isUserOnline,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: SizeConfig.safeBlockHorizontal*3.3,
+                                  color: HexColor("#006838"),
+                                  fontFamily: "Muli"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
                   ],
                 ),
               ],
@@ -5858,7 +5898,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   _updateSiteDataFromDb(){
     int _constructionId=_selectedConstructionType.id;//m
     String _siteBuiltUpAreaValue=_siteBuiltupArea.text; //m
-    int _selectedSiteFloorId=_selectedSiteFloor.id; 
+    int _selectedSiteFloorId=_selectedSiteFloor!=null?_selectedSiteFloor.id: 0;
     String  _isSwitchedSiteProductDemoValue = isSwitchedsiteProductDemo? "F": "N";
     String  _isSwitchedSiteProductOralBriefingValue = isSwitchedsiteProductOralBriefing? "F": "N";
     String _siteTotalBagsValue=_siteTotalBags.text;
@@ -5910,7 +5950,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
          value.forEach((element) {
 
-           int dataSyncStatus=element[DbConstants.COL_SYNC_STATUS];
+           int dataSyncStatus = element[DbConstants.COL_SYNC_STATUS];
            if(dataSyncStatus!=1){
              Get.back();
              Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_ALREADY_UPDATE));
@@ -5979,26 +6019,28 @@ _insertVisitDataFromDb(){
         .errorDialog("Please fill mandatory fields in \"Visit Data\" Tab"));
     return;
   }
+  // _checkSyncStatus().then((value){
+  // })
+
 
   _checkUserIsAuthorisedForDataInsert().then((isAuthorised){
+
     if(!isAuthorised){
       Get.dialog(CustomDialogs()
           .errorDialog(StringConstants.NOT_AUTHORISED));
-
     }else{
       if(addNextButtonDisable){
         int _constructionId= _selectedConstructionTypeVisitNextStage !=null ?_selectedConstructionTypeVisitNextStage.id : null;//m
         int _floorId=_selectedSiteVisitFloorNextStage!=null ?_selectedSiteVisitFloorNextStage.id : null;//m
         String _stagePotentialValue= _stagePotentialVisitNextStage.text; //m
-
         int _brandId= _siteProductFromLocalDBNextStage!=null ?_siteProductFromLocalDBNextStage.id :null ; //m
         String _brandPrice= _brandPriceVisitNextStage.text; //m
         String _dateSuppliedValue= _dateOfBagSuppliedNextStage.text;//m
         String _suppliedQtyValue= _siteCurrentTotalBagsNextStage.text;
         String _stagStatusValue= _siteStageNextStage!=null ?_siteStageNextStage.siteStageDesc :null; //m
         String _dateOfConstructionNextStageValue= _dateofConstructionNextStage.text;
-
         bool status=true;
+
         if(_constructionId==null || _floorId==null ||
             _stagePotentialValue=="" || _stagePotentialValue==null || _stagePotentialValue=="null" || _brandId==null||
             _brandPrice== "" || _brandPrice==null || _brandPrice =="null" ||
@@ -6024,7 +6066,7 @@ _insertVisitDataFromDb(){
           supplyDate: _dateOfBagSuppliedValue, supplyQty: _siteCurrentTotalBagsValue  , isAuthorised:"N" ,stageStatus: _stageStatusValue,  shipToParty: shipToPartyValue, syncStatus: false );
       _helper.insertDataInTable(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, _visitDataModel.toJson(), ConflictAlgorithm.replace);
 
-/*update data in site table*/
+     /*update data in site table*/
       SitesModal _dataModel=new SitesModal(siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,
           siteOppertunityId:_siteOpportunitStatusEnityId,siteNextVisitDate: _nextVisitDateValue, syncStatus:false);
       _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJsonMap(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
@@ -6043,22 +6085,37 @@ _insertVisitDataFromDb(){
   });
 }
 
-/*Store data in visit table*/
+/*check user is authorised for insert visit data */
 Future<bool> _checkUserIsAuthorisedForDataInsert() async {
-  bool isAuthorised=false;
-  await _helper.fetchMapList(DbConstants.TABLE_SITE_COMMENT_ENTITY, [DbConstants.COL_SITE_VISIT_HISTORY_isAuthorised], "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId],null, null,
+  print("_checkUserIsAuthorisedForDataInsert    call");
+
+  bool isAuthorised=true;
+  await _helper.fetchMapList(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, null, "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId],null, null,
        "${DbConstants.COL_ROW_ID} ASC", 1,null).then((value){
      value.forEach((element){
        String isAuthorisedValue= element[DbConstants.COL_SITE_VISIT_HISTORY_isAuthorised];
-       isAuthorised=isAuthorisedValue!="N"? true: false;
+     print("isAuthorisedValue    $isAuthorisedValue");
+       isAuthorised=isAuthorisedValue=="N"? false: true;
      });
    });
   return isAuthorised;
  }
 
+
+ /*Check sync status from site table*/
+  Future<bool> _checkSyncStatus() async {
+  bool isInsertData=true;
+  await _helper.fetchMapList(DbConstants.TABLE_SITE_LIST, [DbConstants.COL_SYNC_STATUS],  "${DbConstants.COL_SITE_ID} = ? ", [widget.siteId], null, null, null, null, null).then((value){
+      value.forEach((element) {
+        int dataSyncStatus = element[DbConstants.COL_SYNC_STATUS];
+        if(dataSyncStatus==0)
+          isInsertData=false;
+      });
+    });
+  return isInsertData;
+  }
+
 }
-
-
 
 class ImageDetails {
   String from;

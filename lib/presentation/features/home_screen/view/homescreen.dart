@@ -96,6 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
       await _siteController.getSiteRefreshData(accessKeyModel.accessKey)
           .then((data) async {
             print("data   $data");
+            if(data==null)
+              return;
         viewSiteDataResponse = data;
 
         sitesEntity = viewSiteDataResponse.sitesModal;
@@ -362,8 +364,9 @@ class _HomeScreenState extends State<HomeScreen> {
     //                       border: Border.all(color: Colors.black, width: 0.0),
     //                       borderRadius:
 
-                          return ScopedModelDescendant<SitesDBProvider>(builder: (context, child, model) {
-            return Stack(children: <Widget>[
+    return ScopedModelDescendant<SitesDBProvider>(builder: (context, child, model) {
+
+      return Stack(children: <Widget>[
         WillPopScope(
           onWillPop: () async {
             // You can do some work here.
@@ -616,7 +619,6 @@ class _HomeScreenState extends State<HomeScreen> {
         size: 40.0,
         //  semanticLabel: 'Text to announce in accessibility modes',
       )),
-
       ///Change All the color and size from here.
       alignLabel: Alignment.center,
       width: MediaQuery.of(context).size.width,

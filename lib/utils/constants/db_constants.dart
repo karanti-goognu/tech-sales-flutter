@@ -1,6 +1,6 @@
 class DbConstants{
   /*db name*/
-  static const String DATA_BASE = "database.db";
+  static const String DATA_BASE = "dalmiatso.db";
 
   /*Tables Name*/
   static const String TABLE_DRAFT_LEAD = "draftLead";
@@ -32,7 +32,8 @@ class DbConstants{
   static const String TABLE_SR_COMPLAIN_RESOLUTION_ENTITY = "srComplainResolutionEntity";
   static const String TABLE_SR_COMPLAINT_TYPE_ENTITY= "srComplaintTypeEntity";
   static const String TABLE_SRCT_REQUEST_ENTITY= "srctRequestEntity";
- // static const String TABLE_SEVERITY= "severity";
+
+  // static const String TABLE_SEVERITY= "severity";
   static const String TABLE_EMPLOYEE_DETAILS= "employee-details";
 
 
@@ -40,6 +41,7 @@ class DbConstants{
   /*Tables column name*/
   static const String COL_ID = "id";
   static const String COL_ROW_ID = "id_row";
+  static const String COL_VISIT_HISTORY_ID = "visit_history_id";
   static const String COL_LEAD_MODEL = "leadModel";
   static const String COL_DEALER_NAME = "dealerName";
   static const String COL_CONSTRUCT_STAGE_ENTITY = "constructStageEntity";
