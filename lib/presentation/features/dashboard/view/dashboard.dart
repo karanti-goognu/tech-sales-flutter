@@ -36,7 +36,8 @@ class _DashboardState extends State<Dashboard> {
     _dashboardController.getMonthViewDetails();
     print(_splashController.splashDataModel.reportingTsoListModel);
     _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
-    print('--');
+    print('${_employeeDropDownData[0].tsoId}');
+    empID=_employeeDropDownData[0].tsoId;
     super.initState();
   }
 
@@ -64,8 +65,9 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       margin: EdgeInsets.all(8),
                       padding: EdgeInsets.symmetric(horizontal: 12,vertical: 0),
-                      child: DropdownButtonFormField(
+                      child: DropdownButton(
                           isExpanded: true,
+                          value:empID,
                           iconEnabledColor: ColorConstants.appBarColor,
                           items: _employeeDropDownData
                               .map((e) => DropdownMenuItem(
@@ -76,7 +78,6 @@ class _DashboardState extends State<Dashboard> {
                             ),
                           ))
                               .toList(),
-                          value:empID,
                           onChanged: (value) {
                             print(value);
                             setState(() {
