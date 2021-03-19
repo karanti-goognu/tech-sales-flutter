@@ -47,21 +47,16 @@ class MyApiClientDashboard {
       var length = await image.length();
       var multipartFileSign =new http.MultipartFile('file', stream, length, filename: fileName);
       request.files.add(multipartFileSign);
-      request.fields['shareReportWithFileModel '] =json.encode({"shareWith": "S"});
+      request.fields['shareReportWithFileModel '] =json.encode({"shareWith": "S",  "repotName":empID});
       request.send().then((result) async{http.Response.fromStream(result).then((response) {
            data = json.decode(response.body);
               print(data);
               print("first");
            Get.snackbar('Note', data['resp-msg'].toString(),backgroundColor: ColorConstants.checkinColor);
-
            return data;
-
-
         });
           });
-//      print("Request headers :: " + request.headers.toString());
-//      print("Request Body/Fields :: " + request.fields.toString());
-//      print("Files:: " + request.files.toString());
+
     } catch (_) {
       print('exception at Dashboard Repo : ShareReport method ${_.toString()}');
     }

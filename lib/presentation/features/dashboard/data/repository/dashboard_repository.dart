@@ -13,7 +13,6 @@ class DashboardRepository {
   }
 
  Future shareReport(File image, String userSecurityKey, String accessKey, String empID){
-    print("second");
    return apiClient.shareReport(image, userSecurityKey, accessKey, empID);
  }
 
