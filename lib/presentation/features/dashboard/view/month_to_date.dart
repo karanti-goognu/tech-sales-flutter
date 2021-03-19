@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
@@ -17,6 +16,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class MonthToDate extends StatefulWidget {
+  final empID, yearMonth;
+  MonthToDate({this.empID, this.yearMonth});
   @override
   _MonthToDateState createState() => _MonthToDateState();
 }
@@ -28,13 +29,12 @@ class _MonthToDateState extends State<MonthToDate> {
 
   static GlobalKey previewContainer = new GlobalKey();
   File imgFile;
+  String empID;
+  String yearMonthForFileName;
   Random random = Random();
   Future<Uint8List> _capturePng() async {
     RenderRepaintBoundary boundary =
-    previewContainer.currentContext.findRenderObject();
-    print("waheguru waheguru waheguru");
-    print(boundary.child.runtimeType);
-
+        previewContainer.currentContext.findRenderObject();
     if (boundary.debugNeedsPaint) {
       print("Waiting for boundary to be painted.");
       await Future.delayed(const Duration(milliseconds: 20));
@@ -50,15 +50,18 @@ class _MonthToDateState extends State<MonthToDate> {
     var pngBytes = await _capturePng();
     int num = random.nextInt(100);
     final directory = (await getExternalStorageDirectory()).path;
-    imgFile = new File('$directory/screenshot$num.png');
+    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
-
   }
 
-
- 
+  @override
+  void initState() {
+    empID = widget.empID;
+    yearMonthForFileName = widget.yearMonth;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +74,9 @@ class _MonthToDateState extends State<MonthToDate> {
               key: previewContainer,
               child: Column(
                 children: [
-                  SizedBox(height: 16,),
+                  SizedBox(
+                    height: 16,
+                  ),
                   Container(
                     color: ThemeData.light().scaffoldBackgroundColor,
                     height: 640,
@@ -82,7 +87,8 @@ class _MonthToDateState extends State<MonthToDate> {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'February Details',
@@ -95,7 +101,7 @@ class _MonthToDateState extends State<MonthToDate> {
                                         Text('Share'),
                                       ],
                                     ),
-                                    onTap:()=>_printPngBytes() ,
+                                    onTap: () => _printPngBytes(),
                                   ),
 //                                  Expanded(child: Container())
                                 ],
@@ -123,8 +129,8 @@ class _MonthToDateState extends State<MonthToDate> {
                                       child: CupertinoSwitch(
                                         value: _currentMothDetailsVolume,
                                         onChanged: (_) {
-                                          setState(
-                                              () => _currentMothDetailsVolume = _);
+                                          setState(() =>
+                                              _currentMothDetailsVolume = _);
                                         },
                                         activeColor: Colors.amber,
                                       )),
@@ -139,7 +145,8 @@ class _MonthToDateState extends State<MonthToDate> {
                                       ? SfCircularChart(
                                           margin: EdgeInsets.zero,
                                           // backgroundColor: Colors.yellow,
-                                          annotations: <CircularChartAnnotation>[
+                                          annotations: <
+                                              CircularChartAnnotation>[
                                             CircularChartAnnotation(
                                               // height: '45.0',
                                               widget: Container(
@@ -154,15 +161,16 @@ class _MonthToDateState extends State<MonthToDate> {
                                                           "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%\n",
                                                       style: TextStyle(
                                                           fontSize: 24,
-                                                          color: HexColor('#002A64'),
+                                                          color: HexColor(
+                                                              '#002A64'),
                                                           fontWeight:
                                                               FontWeight.bold),
                                                       children: [
                                                         TextSpan(
                                                           text:
                                                               "Site conversion efficiency",
-                                                          style:
-                                                              TextStyle(fontSize: 10),
+                                                          style: TextStyle(
+                                                              fontSize: 10),
                                                         )
                                                       ]),
                                                   textAlign: TextAlign.center,
@@ -178,10 +186,11 @@ class _MonthToDateState extends State<MonthToDate> {
                                             isVisible: true,
                                             position: LegendPosition.right,
                                             backgroundColor: Colors.white,
-                                            width:
-                                                (MediaQuery.of(context).size.width /
-                                                        2)
-                                                    .toString(),
+                                            width: (MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2)
+                                                .toString(),
                                             title: LegendTitle(),
                                           ),
                                           series: <CircularSeries>[
@@ -206,12 +215,15 @@ class _MonthToDateState extends State<MonthToDate> {
                                                 ],
                                                 innerRadius: '65.0',
                                                 pointColorMapper:
-                                                    (ChartData data, _) => data.color,
+                                                    (ChartData data, _) =>
+                                                        data.color,
                                                 strokeColor: Colors.red,
-                                                xValueMapper: (ChartData data, _) =>
-                                                    data.x,
-                                                yValueMapper: (ChartData data, _) =>
-                                                    data.y)
+                                                xValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.x,
+                                                yValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.y)
                                           ])
                                       : Column(
                                           children: [
@@ -231,19 +243,35 @@ class _MonthToDateState extends State<MonthToDate> {
                                                           GaugeRange(
                                                               startValue: 0,
                                                               endValue: 500,
-                                                              color: Colors.green,
+                                                              color:
+                                                                  Colors.green,
                                                               startWidth: 10,
                                                               endWidth: 10),
                                                           GaugeRange(
                                                               startValue: 500,
                                                               endValue: 750,
-                                                              color: Colors.orange,
+                                                              color:
+                                                                  Colors.orange,
                                                               startWidth: 10,
                                                               endWidth: 10),
                                                         ],
-                                                        pointers: <GaugePointer>[
+                                                        pointers: <
+                                                            GaugePointer>[
                                                           NeedlePointer(
-                                                            value: (int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString()),
+                                                            value: (int.parse(_dashboardController
+                                                                            .convTargetCount
+                                                                            .toString()) /
+                                                                        int.parse(_dashboardController
+                                                                            .generatedCount
+                                                                            .toString()))
+                                                                    .isNaN
+                                                                ? 0
+                                                                : int.parse(_dashboardController
+                                                                        .convTargetCount
+                                                                        .toString()) /
+                                                                    int.parse(_dashboardController
+                                                                        .generatedCount
+                                                                        .toString()),
                                                             needleColor:
                                                                 Colors.black12,
                                                           )
@@ -252,13 +280,11 @@ class _MonthToDateState extends State<MonthToDate> {
                                                             GaugeAnnotation>[
                                                           GaugeAnnotation(
                                                               widget: Container(
-                                                                  child:  Text(
-                                                                  "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%",
-                                                                      style:
-                                                                          TextStyle(
+                                                                  child: Text(
+                                                                      "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%",
+                                                                      style: TextStyle(
 //                                                                    fontSize: 25,
-                                                                              fontWeight:
-                                                                                  FontWeight.bold))),
+                                                                          fontWeight: FontWeight.bold))),
                                                               angle: 190,
                                                               positionFactor: 0.3)
                                                         ])
@@ -276,7 +302,8 @@ class _MonthToDateState extends State<MonthToDate> {
                                                     Container(
                                                       child: Row(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment.end,
+                                                            MainAxisAlignment
+                                                                .end,
                                                         children: [
                                                           Text(
                                                               "Generated-${_dashboardController.generatedVolume} MT"),
@@ -294,13 +321,15 @@ class _MonthToDateState extends State<MonthToDate> {
                                                                               VolumeGeneratedSiteList())))
                                                         ],
                                                       ),
-                                                      alignment: Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
                                                       color: Colors.blue,
                                                     ),
                                                     Container(
                                                       child: Row(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment.end,
+                                                            MainAxisAlignment
+                                                                .end,
                                                         children: [
                                                           Text(
                                                               "Converted-${_dashboardController.convertedVolume} MT"),
@@ -318,20 +347,23 @@ class _MonthToDateState extends State<MonthToDate> {
                                                                               VolumeConvertedTable())))
                                                         ],
                                                       ),
-                                                      alignment: Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
                                                       color: Colors.green,
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           "Remaining Tgt-${_dashboardController.remainingTargetVolume} MT"),
                                                       color: Colors.yellow,
-                                                      alignment: Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           "Conv. Target-${_dashboardController.convTargetVolume} MT"),
                                                       color: Colors.indigo,
-                                                      alignment: Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
                                                     )
                                                   ],
                                                 )),
@@ -378,8 +410,8 @@ class _MonthToDateState extends State<MonthToDate> {
                                       child: CupertinoSwitch(
                                         value: _currentMothDspSlabVolume,
                                         onChanged: (_) {
-                                          setState(
-                                              () => _currentMothDspSlabVolume = _);
+                                          setState(() =>
+                                              _currentMothDspSlabVolume = _);
                                         },
                                         activeColor: Colors.amber,
                                       )),
@@ -397,13 +429,15 @@ class _MonthToDateState extends State<MonthToDate> {
                                             isVisible: true,
                                             position: LegendPosition.right,
                                             backgroundColor: Colors.white,
-                                            width:
-                                                (MediaQuery.of(context).size.width /
-                                                        2)
-                                                    .toString(),
+                                            width: (MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2)
+                                                .toString(),
                                             title: LegendTitle(),
                                           ),
-                                          annotations: <CircularChartAnnotation>[
+                                          annotations: <
+                                              CircularChartAnnotation>[
                                               CircularChartAnnotation(
                                                 // height: '45.0',
                                                 widget: Container(
@@ -412,13 +446,15 @@ class _MonthToDateState extends State<MonthToDate> {
                                                   width: 77,
                                                   child: Text.rich(
                                                     TextSpan(
-                                                        text:"${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%\n",
+                                                        text:
+                                                            "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%\n",
                                                         style: TextStyle(
                                                             fontSize: 24,
-                                                            color:
-                                                                HexColor('#002A64'),
+                                                            color: HexColor(
+                                                                '#002A64'),
                                                             fontWeight:
-                                                                FontWeight.bold),
+                                                                FontWeight
+                                                                    .bold),
                                                         children: [
                                                           TextSpan(
                                                             text:
@@ -461,10 +497,12 @@ class _MonthToDateState extends State<MonthToDate> {
                                                   pointColorMapper:
                                                       (ChartData data, _) =>
                                                           data.color,
-                                                  xValueMapper: (ChartData data, _) =>
-                                                      data.x,
-                                                  yValueMapper: (ChartData data, _) =>
-                                                      data.y)
+                                                  xValueMapper:
+                                                      (ChartData data, _) =>
+                                                          data.x,
+                                                  yValueMapper:
+                                                      (ChartData data, _) =>
+                                                          data.y)
                                             ])
                                       : Column(
                                           children: [
@@ -484,19 +522,35 @@ class _MonthToDateState extends State<MonthToDate> {
                                                           GaugeRange(
                                                               startValue: 0,
                                                               endValue: 500,
-                                                              color: Colors.green,
+                                                              color:
+                                                                  Colors.green,
                                                               startWidth: 10,
                                                               endWidth: 10),
                                                           GaugeRange(
                                                               startValue: 500,
                                                               endValue: 750,
-                                                              color: Colors.orange,
+                                                              color:
+                                                                  Colors.orange,
                                                               startWidth: 10,
                                                               endWidth: 10),
                                                         ],
-                                                        pointers: <GaugePointer>[
+                                                        pointers: <
+                                                            GaugePointer>[
                                                           NeedlePointer(
-                                                            value: (int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString()),
+                                                            value: (int.parse(_dashboardController
+                                                                            .convTargetCount
+                                                                            .toString()) /
+                                                                        int.parse(_dashboardController
+                                                                            .generatedCount
+                                                                            .toString()))
+                                                                    .isNaN
+                                                                ? 0
+                                                                : int.parse(_dashboardController
+                                                                        .convTargetCount
+                                                                        .toString()) /
+                                                                    int.parse(_dashboardController
+                                                                        .generatedCount
+                                                                        .toString()),
                                                             needleColor:
                                                                 Colors.black12,
                                                           )
@@ -507,11 +561,9 @@ class _MonthToDateState extends State<MonthToDate> {
                                                               widget: Container(
                                                                   child: Text(
                                                                       '${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%',
-                                                                      style:
-                                                                          TextStyle(
+                                                                      style: TextStyle(
 //                                                                    fontSize: 25,
-                                                                              fontWeight:
-                                                                                  FontWeight.bold))),
+                                                                          fontWeight: FontWeight.bold))),
                                                               angle: 190,
                                                               positionFactor: 0.3)
                                                         ])
@@ -529,13 +581,15 @@ class _MonthToDateState extends State<MonthToDate> {
                                                     Container(
                                                       child: Text(
                                                           "Opportunity-${_dashboardController.remainingTargetVolume} MT"),
-                                                      alignment: Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
                                                       color: Colors.blue,
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           "Converted-${_dashboardController.convTargetVolume} MT"),
-                                                      alignment: Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
                                                       color: Colors.green,
                                                     )
                                                   ],
@@ -547,7 +601,24 @@ class _MonthToDateState extends State<MonthToDate> {
                         ),
                         Expanded(
                           child: MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              int year = DateTime.now().year;
+                              int month = DateTime.now().month-1;
+                              String yearMonth;
+                              if (month > 3) {
+                                yearMonth =
+                                    year.toString() + '-' + month.toString();
+                              } else {
+                                yearMonth = (year - 1).toString() +
+                                    '-' +
+                                    (month.toString().length == 1
+                                        ? '0' + month.toString()
+                                        : month.toString());
+                              }
+                              _dashboardController.getMonthViewDetails(
+                                empID: widget.empID,yearMonth: yearMonth
+                              );
+                            },
                             child: Text(
                               'Show January (Prev.) Data',
                               style: TextStyle(color: Colors.white),

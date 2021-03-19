@@ -96,28 +96,28 @@ class DashboardController extends GetxController {
     repository
         .shareReport(image, userSecurityKey, accessKey, empID)
         .then((value) {
-      print(value);
-      Get.snackbar('Note', value.toString());
+      print("third");
+      print("Inside controller $value");
     });
   }
 
-  getMonthViewDetails({String empID}) {
+  getMonthViewDetails({String empID, String yearMonth}) {
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator(),)));
     print("EMP ID inside controller: $empID");
     String empId = empID??"empty";
     String userSecurityKey = "empty";
-    int year = DateTime.now().year;
-    int month = DateTime.now().month;
-    String yearMonth;
-    if (month > 3) {
-      yearMonth = year.toString() + '-' + month.toString();
-    } else {
-      yearMonth = (year - 1).toString() +
-          '-' +
-          (month.toString().length == 1
-              ? '0' + month.toString()
-              : month.toString());
-    }
+//    int year = DateTime.now().year;
+//    int month = DateTime.now().month;
+//    String yearMonth;
+//    if (month > 3) {
+//      yearMonth = year.toString() + '-' + month.toString();
+//    } else {
+//      yearMonth = (year - 1).toString() +
+//          '-' +
+//          (month.toString().length == 1
+//              ? '0' + month.toString()
+//              : month.toString());
+//    }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       print("Before prefs: $empId");

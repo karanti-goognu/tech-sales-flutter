@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,13 +7,9 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/view/year_to_
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:typed_data';
-
 import 'package:screenshot/screenshot.dart';
 
 class Dashboard extends StatefulWidget {
@@ -28,16 +22,28 @@ class _DashboardState extends State<Dashboard> {
   SplashController _splashController = Get.find();
   List<ReportingTsoListModel> _employeeDropDownData;
   String empID;
-
+  String yearMonth;
 
   ScreenshotController screenshotController = ScreenshotController();
   @override
   void initState() {
-    _dashboardController.getMonthViewDetails();
     print(_splashController.splashDataModel.reportingTsoListModel);
     _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
     print('${_employeeDropDownData[0].tsoId}');
     empID=_employeeDropDownData[0].tsoId;
+    int year = DateTime.now().year;
+    int month = DateTime.now().month;
+    if (month > 3) {
+      yearMonth = year.toString() + '-' + month.toString();
+    } else {
+      yearMonth = (year - 1).toString() +
+          '-' +
+          (month.toString().length == 1
+              ? '0' + month.toString()
+              : month.toString());
+    }
+    _dashboardController.getMonthViewDetails(yearMonth: yearMonth);
+
     super.initState();
   }
 
@@ -83,7 +89,7 @@ class _DashboardState extends State<Dashboard> {
                             setState(() {
                               empID=value;
                             });
-                            _dashboardController.getMonthViewDetails(empID: empID);
+                            _dashboardController.getMonthViewDetails(empID: empID, yearMonth: yearMonth);
                           }),
                     ),
                   ),
@@ -107,7 +113,7 @@ class _DashboardState extends State<Dashboard> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           body: TabBarView(
-            children: [MonthToDate(), YearToDate()],
+            children: [MonthToDate(empID:empID, yearMonth:yearMonth), YearToDate()],
           )),
       // ),
     );

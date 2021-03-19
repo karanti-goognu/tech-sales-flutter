@@ -6,8 +6,10 @@ import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class MyApiClientDashboard {
@@ -36,25 +38,24 @@ class MyApiClientDashboard {
   Future shareReport(File image, String userSecurityKey, String accessKey,
       String empID) async {
     try {
+      var data;
       String url = UrlConstants.shareReport+empID;
-      http.MultipartRequest request = new http.MultipartRequest(
-          'POST', Uri.parse(url));
-      request.headers.addAll(
-          requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey));
+      http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(url));
+      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey));
       String fileName = image.path.split("/").last;
       var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
       var length = await image.length();
-      var multipartFileSign =
-          new http.MultipartFile('file', stream, length, filename: fileName);
+      var multipartFileSign =new http.MultipartFile('file', stream, length, filename: fileName);
       request.files.add(multipartFileSign);
-      request.fields['shareReportWithFileModel '] =
-          json.encode({"shareWith": "S"});
-      request.send().then((result) async{
-        http.Response.fromStream(result).then((response) {
-          print("---@@---");
-          print(response.body);
-          var data = json.decode(response.body);
+      request.fields['shareReportWithFileModel '] =json.encode({"shareWith": "S"});
+      request.send().then((result) async{http.Response.fromStream(result).then((response) {
+           data = json.decode(response.body);
               print(data);
+              print("first");
+           Get.snackbar('Note', data['resp-msg'].toString(),backgroundColor: ColorConstants.checkinColor);
+
+           return data;
+
 
         });
           });
