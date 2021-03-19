@@ -17,18 +17,18 @@ class DashboardController extends GetxController {
 
   final _accessKeyResponse = AccessKeyModel().obs;
   final _mtdGeneratedVolumeSiteList = DashboardMtdGeneratedVolumeSiteList().obs;
-
-  get mtdGeneratedVolumeSiteList => _mtdGeneratedVolumeSiteList;
+  get mtdGeneratedVolumeSiteList => _mtdGeneratedVolumeSiteList.value;
 
   set mtdGeneratedVolumeSiteList(value) {
     _mtdGeneratedVolumeSiteList.value = value;
-    print(_mtdGeneratedVolumeSiteList.value.totalSiteCount);
+    print("Inside setter");
+    print(_mtdGeneratedVolumeSiteList.value.totalSiteCount.runtimeType);
+    print(value);
   }
 
   final _mtdConvertedVolumeList = DashboardMtdConvertedVolumeList().obs;
 
-
-  get mtdConvertedVolumeList => _mtdConvertedVolumeList;
+  get mtdConvertedVolumeList => _mtdConvertedVolumeList.value;
 
   set mtdConvertedVolumeList(value) {
     _mtdConvertedVolumeList.value = value;
@@ -102,6 +102,7 @@ class DashboardController extends GetxController {
   }
 
   getMonthViewDetails({String empID}) {
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator(),)));
     print("EMP ID inside controller: $empID");
     String empId = empID??"empty";
     String userSecurityKey = "empty";
@@ -143,6 +144,8 @@ class DashboardController extends GetxController {
         this.mwpPlanApproveStatus = data.mwpPlanApproveStatus;
         this.remainingTargetCount = data.remainingTargetCount;
         this.remainingTargetVolume = data.remainingTargetVolume;
+        Get.back();
+
       });
     }).catchError((e) => print(e));
   }
@@ -174,9 +177,10 @@ class DashboardController extends GetxController {
 
       repository.getDashboardMtdGeneratedVolumeSiteList(empID,yearMonth).then((_) {
         DashboardMtdGeneratedVolumeSiteList data = _;
-        print(data.respCode);
+        print("data: ${data.totalSiteCount.runtimeType}");
         this.mtdGeneratedVolumeSiteList = data;
         print(this.mtdGeneratedVolumeSiteList);
+        print(this.mtdGeneratedVolumeSiteList.totalSiteCount);
 
       });
     }).catchError((e) => print(e));
@@ -210,7 +214,6 @@ class DashboardController extends GetxController {
 
       repository.getDashboardMtdConvertedVolumeList(empID,yearMonth).then((_) {
         DashboardMtdConvertedVolumeList data = _;
-        print(data);
         this.mtdConvertedVolumeList = data;
 
       });
