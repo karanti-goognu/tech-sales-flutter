@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_g
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,7 +30,7 @@ class _MonthToDateState extends State<MonthToDate> {
 
   static GlobalKey previewContainer = new GlobalKey();
   File imgFile;
-  String empID;
+  String empID, _currentMonth, _previousMonth;
   String yearMonthForFileName;
   Random random = Random();
   Future<Uint8List> _capturePng() async {
@@ -60,6 +61,10 @@ class _MonthToDateState extends State<MonthToDate> {
   void initState() {
     empID = widget.empID;
     yearMonthForFileName = widget.yearMonth;
+    final DateFormat formatter = DateFormat("MMMM");
+    _currentMonth = formatter.format(DateTime.now());
+    _previousMonth = formatter.format(DateTime(DateTime.now().year,DateTime.now().month-1));
+    print(_previousMonth);
     super.initState();
   }
 
@@ -91,30 +96,39 @@ class _MonthToDateState extends State<MonthToDate> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'February Details',
+                                    '$_currentMonth Details',
                                     style: TextStyle(fontSize: 18),
                                   ),
                                   Expanded(child: Container(),),
                                   GestureDetector(
                                     child: Container(
-                                      padding: EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 4),
+                                      padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
                                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),
-                                        color: HexColor('FF8500'),
+//                                        color: HexColor('FF8500'),
+                                      color: ThemeData.light().scaffoldBackgroundColor,
                                         boxShadow: [BoxShadow(
                                           color: Colors.black12,
                                           offset: Offset(4, 4),
                                           spreadRadius: 2,
                                           blurRadius: 4
-                                        )]
+                                        ),
+                                          BoxShadow(
+                                              color: Colors.white,
+                                              offset: Offset(-4, -4),
+                                              spreadRadius: 2,
+                                              blurRadius: 4
+                                          ),
+                                        ]
                                       ),
                                       child: Row(
                                         children: [
-                                          Icon(Icons.share),
+                                          Icon(Icons.share, color: ColorConstants.appBarColor,),
                                           Text('Share'),
                                         ],
                                       ),
                                     ),
                                     onTap: () => _printPngBytes(),
+
                                   ),
                                   SizedBox(width: 8,)
                                 ],
@@ -336,7 +350,7 @@ class _MonthToDateState extends State<MonthToDate> {
                                                       ),
                                                       alignment:
                                                           Alignment.center,
-                                                      color: Colors.blue,
+                                                      color: Colors.blue.withOpacity(0.3),
                                                     ),
                                                     Container(
                                                       child: Row(
@@ -362,19 +376,19 @@ class _MonthToDateState extends State<MonthToDate> {
                                                       ),
                                                       alignment:
                                                           Alignment.center,
-                                                      color: Colors.green,
+                                                      color: Colors.green.withOpacity(0.3),
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           "Remaining Tgt-${_dashboardController.remainingTargetVolume} MT"),
-                                                      color: Colors.yellow,
+                                                      color: Colors.yellow.withOpacity(0.3),
                                                       alignment:
                                                           Alignment.center,
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           "Conv. Target-${_dashboardController.convTargetVolume} MT"),
-                                                      color: Colors.indigo,
+                                                      color: Colors.indigo.withOpacity(0.3),
                                                       alignment:
                                                           Alignment.center,
                                                     )
@@ -391,6 +405,7 @@ class _MonthToDateState extends State<MonthToDate> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
+                              SizedBox(height: 4,),
                               Row(
                                 children: [
                                   Text(
@@ -633,7 +648,7 @@ class _MonthToDateState extends State<MonthToDate> {
                               );
                             },
                             child: Text(
-                              'Show January (Prev.) Data',
+                              'Show $_previousMonth (Prev.) Data',
                               style: TextStyle(color: Colors.white),
                             ),
                             color: ColorConstants.appBarColor,

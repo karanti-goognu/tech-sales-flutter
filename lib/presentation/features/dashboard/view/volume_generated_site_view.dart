@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -14,11 +15,16 @@ class VolumeGeneratedSiteList extends StatefulWidget {
 
 class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
   DashboardController _dashboardController= Get.find();
+  List<SitesEntity> _sitesEntity;
   @override
   void initState() {
     _dashboardController.getDashboardMtdGeneratedVolumeSiteList();
     print("Inside initstate");
     print(_dashboardController.mtdGeneratedVolumeSiteList.totalSiteCount);
+    print(_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity);
+    _sitesEntity= _dashboardController.mtdGeneratedVolumeSiteList.sitesEntity;
+
+    print('yes');
     super.initState();
   }
   @override
@@ -59,13 +65,14 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('MTD Vol. Generated',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Total Count- ${_dashboardController.mtdGeneratedVolumeSiteList.totalSiteCount}'),
-              Text('Total Potential-${_dashboardController.mtdGeneratedVolumeSiteList.totalSitePotential} MT'),
-            ],
-          ),
+          Obx(()=>
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Total Count- ${_dashboardController.mtdGeneratedVolumeSiteList.totalSiteCount}'),
+                  Text('Total Potential-${_dashboardController.mtdGeneratedVolumeSiteList.totalSitePotential} MT'),
+                ],
+              ),),
           Obx(()=>
               Expanded(
                   child:
@@ -108,7 +115,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                                 const EdgeInsets.all(2.0),
                                                 child: Obx(
                                                       ()=>Text(
-                                                    "Site ID - ${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity.siteId}",
+                                                    "Site ID - ${_sitesEntity[index].siteId}",
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontFamily: "Muli",
@@ -123,7 +130,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                                 padding:
                                                 const EdgeInsets.all(2.0),
                                                 child: Text(
-                                                  "District: Delhi",
+                                                  "District: ${_sitesEntity[index].siteDistrict}",
                                                   style: TextStyle(
                                                       color: Colors.black38,
                                                       fontSize: 12,
@@ -150,7 +157,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                                           .withOpacity(
                                                           0.1),
                                                       label: Text(
-                                                        'test',
+                                                        '${_sitesEntity[index].inactiveReasonText}',
                                                         style: TextStyle(
                                                             color: HexColor(
                                                                 "#39B54A"),
@@ -169,7 +176,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                                     padding: EdgeInsets.only(
                                                         left: 10.0),
                                                     child: Text(
-                                                      " Today",
+                                                      " ${_sitesEntity[index].createdOn}",
                                                       //  textAlign: TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 10,
@@ -220,7 +227,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "20 MT",
+                                                      "${_sitesEntity[index].sitePotentialMt} MT",
                                                       style: TextStyle(
                                                         // color: Colors.black38,
                                                           fontSize: 15,
@@ -235,7 +242,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                                   ],
                                                 ),
                                               ),
-                                              Text("",
+                                              Text("${_sitesEntity[index].siteOppertunityId}",
                                                 style: TextStyle(
                                                     color: Colors.blue,
                                                     fontSize: 10,
@@ -250,7 +257,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                                 height: 8,
                                               ),
                                               Text(
-                                                "Site Score - ",
+                                                "Site Score - ${_sitesEntity[index].siteScore}",
                                                 style: TextStyles
                                                     .robotoRegular14,
                                                 textAlign: TextAlign.right,
@@ -270,7 +277,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                                   ),
                                                   GestureDetector(
                                                     child: Text(
-                                                      "099999999",
+                                                      "${_sitesEntity[index].contactNumber}",
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 15,
