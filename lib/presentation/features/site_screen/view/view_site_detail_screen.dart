@@ -78,7 +78,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   String visitDataDealer;
   String visitDataSubDealer;
   String isUserOnline="Offline";
- static bool isUserOnlineStatus=false;
+//  static bool isUserOnlineStatus=false;
 
   ConstructionStageEntity _selectedConstructionType;
   ConstructionStageEntity _selectedConstructionTypeVisit;
@@ -226,9 +226,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   checkConnection() async {
     internetChecking().then((result){
       if(mounted)
-      setState(() {
-        isUserOnlineStatus=result;
-      });
+      _siteController.isUserOnlineStatus=result;
+      // setState(() {
+      //   isUserOnlineStatus=result;
+      // });
     });
     listener = DataConnectionChecker().onStatusChange.listen((status) {
       print("status internet   $status");
@@ -238,7 +239,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
            if(mounted)
           setState(() {
            // isUserOnline="Online";
-            isUserOnlineStatus=true;
+            // isUserOnlineStatus=true;
+            _siteController.isUserOnlineStatus=true;
           });
           break;
         case DataConnectionStatus.disconnected:
@@ -247,7 +249,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           if(mounted)
             setState(() {
              // isUserOnline="Offline";
-              isUserOnlineStatus=false;
+              // isUserOnlineStatus=false;
+              _siteController.isUserOnlineStatus=false;
             });
           break;
       }
@@ -709,12 +712,21 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       children: [
                         Expanded(
                           flex: 1,
-                          child: new Container(
+                          child: Obx(()=>
+                          _siteController.isUserOnlineStatus?
+                          new Container(
                             alignment: Alignment.center,
                             height: SizeConfig.screenHeight*.01,
-                            color: isUserOnlineStatus? Colors.green: Colors.red,
+                            color:  Colors.green,
 
-                          ),
+                          ):
+                          new Container(
+                            alignment: Alignment.center,
+                            height: SizeConfig.screenHeight*.01,
+                            color: Colors.red,
+
+                          )
+                          )
                         ),
                       ],
                     ),

@@ -55,13 +55,14 @@ class SiteController extends GetxController {
 
   final _selectedSiteInfluencerCat = StringConstants.empty.obs;
   final _selectedSiteInfluencerCatValue = StringConstants.empty.obs;
+  final _isUserOnlineStatus = false.obs;
   // var _isUserOnlineStatus = false.obs;
   //
-  // get isUserOnlineStatus => _isUserOnlineStatus;
-  //
-  // set isUserOnlineStatus(value) {
-  //   _isUserOnlineStatus = value;
-  // }
+  get isUserOnlineStatus => _isUserOnlineStatus.value;
+  
+  set isUserOnlineStatus(value) {
+    _isUserOnlineStatus.value = value;
+  }
 
   get selectedFilterCount => this._selectedFilterCount.value;
 
