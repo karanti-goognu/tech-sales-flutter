@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/notification/controller/notification_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -50,6 +51,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
+  MoEngageInbox _moEngageInbox;
+  int unReadMessageCount = 0;
+
+  Future<int> unReadMessageCoun() async {
+    int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
+    return unReadMessageCount;
+  }
 
   
 
@@ -85,8 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
         print('Journey Ended');
         _homeController.checkInStatus = StringConstants.journeyEnded;
       }
-
-
     }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -100,6 +106,16 @@ class _HomeScreenState extends State<HomeScreen> {
       _moengagePlugin
           .setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
     });
+
+    _moEngageInbox = MoEngageInbox();
+    WidgetsBinding.instance.addPostFrameCallback((_) => {
+      unReadMessageCoun().then((value) => {
+        setState(() {
+          unReadMessageCount = value;
+        }),
+      })
+    });
+
   }
 
   @override
@@ -170,28 +186,59 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.only(right: 25.0, top: 20),
                 child: Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.NOTIFICATION);
-                        // Get.dialog(CustomDialogs()
-                        //     .errorDialog("Page Coming Soon .... "));
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 0.0),
-                          borderRadius:
+                    Stack(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 0.0, right: 3),
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.toNamed(Routes.NOTIFICATION);
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                                border:
+                                Border.all(color: Colors.black, width: 0.0),
+                                borderRadius:
+                                new BorderRadius.all(Radius.circular(70)),
+                              ),
+                              child: Icon(
+                                Icons.notifications_none_outlined,
+                                color: HexColor("#FFCD00"),
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 20,
+                          right: 10,
+                          child: Container(
+                            height: 17,
+                            width: 17,
+                            decoration: new BoxDecoration(
+                              color: Colors.redAccent,
+                              border:
+                              Border.all(color: Colors.redAccent, width: 0.0),
+                              borderRadius:
                               new BorderRadius.all(Radius.circular(70)),
-                        ),
-                        child: Icon(
-                          Icons.notifications_none_outlined,
-                          color: HexColor("#FFCD00"),
-                          size: 30,
-                        ),
-                      ),
+                            ),
+                            child: Text(
+                              (unReadMessageCount >= 0
+                                  ? unReadMessageCount.toString()
+                                  : ""),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(
                       height: 8,
