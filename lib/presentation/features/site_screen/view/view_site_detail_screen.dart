@@ -698,18 +698,25 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             ),
                           ],
                         ))),
+
                 Column(
                  // crossAxisAlignment: CrossAxisAlignment.start,
                 //  mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
 
-                    new Container(
-                      alignment: Alignment.center,
-                      height: SizeConfig.screenHeight*.01,
-                      color: isUserOnlineStatus? Colors.green: Colors.red,
-                      child: new Text(""),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: new Container(
+                            alignment: Alignment.center,
+                            height: SizeConfig.screenHeight*.01,
+                            color: isUserOnlineStatus? Colors.green: Colors.red,
 
+                          ),
+                        ),
+                      ],
                     ),
                     Row(
                       children: [
