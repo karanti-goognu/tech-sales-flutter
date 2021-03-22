@@ -26,7 +26,8 @@ class _ReadOtpScreenPageState extends State<ReadOtpScreen> {
     return MaterialApp(
       theme: ThemeData.light(),
       home: Scaffold(
-        resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomInset:false,
+        // resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),

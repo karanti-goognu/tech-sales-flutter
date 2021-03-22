@@ -253,7 +253,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       floatingActionButton: Container(

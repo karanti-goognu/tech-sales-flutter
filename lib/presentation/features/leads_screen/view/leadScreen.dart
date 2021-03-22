@@ -99,7 +99,7 @@ class _LeadScreenState extends State<LeadScreen> {
           return true;
         },
         child: Scaffold(
-          resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomInset: false,
           //resizeToAvoidBottomInset: true,
           extendBody: true,
           key: _leadScreenFormKey,

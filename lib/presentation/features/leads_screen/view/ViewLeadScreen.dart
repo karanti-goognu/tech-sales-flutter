@@ -341,7 +341,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       //        Get.back();
       return Scaffold(
         resizeToAvoidBottomInset: true,
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         body: Container(
           child: AlertDialog(
             content: SingleChildScrollView(

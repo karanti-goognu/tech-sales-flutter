@@ -1,22 +1,18 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
-import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/notification/controller/notification_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
-import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
-import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
@@ -36,8 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
   SiteController _siteController = Get.find();
-  // DashboardController _dashboardController =Get.find();
 
+  // DashboardController _dashboardController =Get.find();
 
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
@@ -50,8 +46,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
+  MoEngageInbox _moEngageInbox;
+  int unReadMessageCount = 0;
 
-  
+  Future<int> unReadMessageCoun() async {
+    int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
+    return unReadMessageCount;
+  }
 
   Future<void> initPlatformState() async {
     if (!mounted) return;
@@ -65,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-
     super.initState();
     _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     initPlatformState();
@@ -85,8 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
         print('Journey Ended');
         _homeController.checkInStatus = StringConstants.journeyEnded;
       }
-
-
     }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -100,6 +98,15 @@ class _HomeScreenState extends State<HomeScreen> {
       _moengagePlugin
           .setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
     });
+
+    _moEngageInbox = MoEngageInbox();
+    WidgetsBinding.instance.addPostFrameCallback((_) => {
+          unReadMessageCoun().then((value) => {
+                setState(() {
+                  unReadMessageCount = value;
+                }),
+              })
+        });
   }
 
   @override
@@ -170,28 +177,59 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.only(right: 25.0, top: 20),
                 child: Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.NOTIFICATION);
-                        // Get.dialog(CustomDialogs()
-                        //     .errorDialog("Page Coming Soon .... "));
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 0.0),
-                          borderRadius:
-                              new BorderRadius.all(Radius.circular(70)),
+                    Stack(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 0.0, right: 3),
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.toNamed(Routes.NOTIFICATION);
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                                border:
+                                    Border.all(color: Colors.black, width: 0.0),
+                                borderRadius:
+                                    new BorderRadius.all(Radius.circular(70)),
+                              ),
+                              child: Icon(
+                                Icons.notifications_none_outlined,
+                                color: HexColor("#FFCD00"),
+                                size: 30,
+                              ),
+                            ),
+                          ),
                         ),
-                        child: Icon(
-                          Icons.notifications_none_outlined,
-                          color: HexColor("#FFCD00"),
-                          size: 30,
-                        ),
-                      ),
+                        Positioned(
+                          bottom: 20,
+                          right: 10,
+                          child: Container(
+                            height: 17,
+                            width: 17,
+                            decoration: new BoxDecoration(
+                              color: Colors.redAccent,
+                              border: Border.all(
+                                  color: Colors.redAccent, width: 0.0),
+                              borderRadius:
+                                  new BorderRadius.all(Radius.circular(70)),
+                            ),
+                            child: Text(
+                              (unReadMessageCount >= 0
+                                  ? unReadMessageCount.toString()
+                                  : ""),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(
                       height: 8,
@@ -307,8 +345,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     margin: EdgeInsets.symmetric(horizontal: 12.0),
                     color: Colors.white,
                     child: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 4),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -351,10 +389,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               // gridDelegate:
                               //     SliverGridDelegateWithFixedCrossAxisCount(
 
-                                childAspectRatio: 3.4,
+                              childAspectRatio: 3.4,
                               // ),
                               //   new HomeScreenDashboardModel("New Influencers", _homeController.newInfl),
-  //   new HomeScreenDashboardModel("DSP Slabs Converted", _homeController.dspSlabsConverted),
+                              //   new HomeScreenDashboardModel("DSP Slabs Converted", _homeController.dspSlabsConverted),
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
@@ -365,13 +403,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Container(
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
-                                          child: 
-                                          
-                                          Obx(()=>Text(
-                                            _homeController.sitesConverted,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),),
+                                          child: Obx(
+                                            () => Text(
+                                              _homeController.sitesConverted,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: HexColor('39B54A'),
@@ -392,12 +430,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Container(
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
-                                          child: 
-                                           Obx(()=>Text(
-                                            _homeController.volumeConverted,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),),
+                                          child: Obx(
+                                            () => Text(
+                                              _homeController.volumeConverted,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: HexColor('39B54A'),
@@ -405,7 +444,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               shape: BoxShape.circle),
                                         ),
                                         Flexible(
-                                            child: Text('Volume Converted (MT)'))
+                                            child:
+                                                Text('Volume Converted (MT)'))
                                       ],
                                     ),
                                   ),
@@ -419,20 +459,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Container(
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
-                                          child:
-                                           Obx(()=> Text(
-                                            _homeController.newInfl,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),),
+                                          child: Obx(
+                                            () => Text(
+                                              _homeController.newInfl,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: HexColor('39B54A'),
                                                   width: 1.6),
                                               shape: BoxShape.circle),
                                         ),
-                                        Flexible(
-                                            child: Text('New Influencers'))
+                                        Flexible(child: Text('New Influencers'))
                                       ],
                                     ),
                                   ),
@@ -446,12 +486,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Container(
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
-                                          child: 
-                                           Obx(()=>Text(
-                                            _homeController.dspSlabsConverted,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),),
+                                          child: Obx(
+                                            () => Text(
+                                              _homeController.dspSlabsConverted,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: HexColor('39B54A'),
@@ -478,22 +519,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   ))
                 ],
               ),
-
               Positioned(
-            right: -10,
-            top: 30,
-            child: 
-            UrlConstants.baseUrl.contains('mobileqacloud')?
-            Chip(
-              backgroundColor: ColorConstants.appBarColor,
-              label: Text('QA     ', style: TextStyle(color: Colors.white),),
-            ):
-            UrlConstants.baseUrl.contains('mobiledevcloud')?
-            Chip(
-              backgroundColor: ColorConstants.appBarColor,
-              label: Text('Dev     ', style: TextStyle(color: Colors.white),),
-            ):Container(),
-          ),
+                right: -10,
+                top: 30,
+                child: UrlConstants.baseUrl.contains('mobileqacloud')
+                    ? Chip(
+                        backgroundColor: ColorConstants.appBarColor,
+                        label: Text(
+                          'QA     ',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    : UrlConstants.baseUrl.contains('mobiledevcloud')
+                        ? Chip(
+                            backgroundColor: ColorConstants.appBarColor,
+                            label: Text(
+                              'Dev     ',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        : Container(),
+              ),
             ],
           ),
           floatingActionButton:
@@ -537,7 +583,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget checkInSliderButton() {
     return SliderButton(
-
       action: () async {
         if (await Permission.location.request().isGranted) {
           _homeController.getAccessKey(RequestIds.CHECK_IN);
@@ -545,6 +590,7 @@ class _HomeScreenState extends State<HomeScreen> {
           print('permission denied');
         }
       },
+
       ///Put label over here
       label: Text(
         "Swipe to start your day ",
