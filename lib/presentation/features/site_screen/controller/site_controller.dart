@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
@@ -56,6 +55,13 @@ class SiteController extends GetxController {
 
   final _selectedSiteInfluencerCat = StringConstants.empty.obs;
   final _selectedSiteInfluencerCatValue = StringConstants.empty.obs;
+  // var _isUserOnlineStatus = false.obs;
+  //
+  // get isUserOnlineStatus => _isUserOnlineStatus;
+  //
+  // set isUserOnlineStatus(value) {
+  //   _isUserOnlineStatus = value;
+  // }
 
   get selectedFilterCount => this._selectedFilterCount.value;
 

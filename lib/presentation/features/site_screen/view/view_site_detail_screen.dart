@@ -78,7 +78,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   String visitDataDealer;
   String visitDataSubDealer;
   String isUserOnline="Offline";
-  bool isUserOnlineStatus=false;
+ static bool isUserOnlineStatus=false;
 
   ConstructionStageEntity _selectedConstructionType;
   ConstructionStageEntity _selectedConstructionTypeVisit;
@@ -207,35 +207,46 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
     _helper=new DatabaseHelper();
     _tabController = TabController(vsync: this, length: 4);
+    checkConnection();
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
  // getSiteData();
     getConstructionData();
 
 
-    checkConnection();
+
 
   }
 
 
-  checkConnection() async{
+  checkConnection() async {
+    internetChecking().then((result){
+      if(mounted)
+      setState(() {
+        isUserOnlineStatus=result;
+      });
+    });
     listener = DataConnectionChecker().onStatusChange.listen((status) {
       print("status internet   $status");
       switch (status){
         case DataConnectionStatus.connected:
-          if(mounted)
+        //  _siteController.isUserOnlineStatus=true;
+           if(mounted)
           setState(() {
-            isUserOnline="Online";
+           // isUserOnline="Online";
             isUserOnlineStatus=true;
           });
           break;
         case DataConnectionStatus.disconnected:
+        //  _siteController.isUserOnlineStatus=false;
+
           if(mounted)
             setState(() {
-              isUserOnline="Offline";
+             // isUserOnline="Offline";
               isUserOnlineStatus=false;
             });
           break;
@@ -664,7 +675,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           resizeToAvoidBottomPadding: false,
-
           backgroundColor: Colors.white,
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -672,6 +682,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             toolbarHeight: 180,
             titleSpacing: 0,
             title: Stack(
+              alignment: Alignment.topLeft,
               children: [
                 Positioned(
                     top: 0,
@@ -688,10 +699,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           ],
                         ))),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                 // crossAxisAlignment: CrossAxisAlignment.start,
+                //  mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
+
+                    new Container(
+                      alignment: Alignment.center,
+                      height: SizeConfig.screenHeight*.01,
+                      color: isUserOnlineStatus? Colors.green: Colors.red,
+                      child: new Text(""),
+
+                    ),
                     Row(
                       children: [
                         Padding(
@@ -728,13 +747,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                               siteScore != 0.0
                                   ? Text(
-                                      "Site Score: " + siteScore.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: HexColor("#002A64"),
-                                        fontFamily: "Muli",
-                                      ),
-                                    )
+                                "Site Score: " + siteScore.toString(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: HexColor("#002A64"),
+                                  fontFamily: "Muli",
+                                ),
+                              )
                                   : Container(),
                             ],
                           ),
@@ -743,7 +762,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           Expanded(
                             child: Container(
                               padding:
-                                  const EdgeInsets.only(left: 1.0, right: 1.0),
+                              const EdgeInsets.only(left: 1.0, right: 1.0),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: Colors.white,
@@ -761,20 +780,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   value: _siteStage,
                                   items: siteStageEntity
                                       .map((label) => DropdownMenuItem(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0),
-                                              child: Text(
-                                                label.siteStageDesc,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: ColorConstants
-                                                        .inputBoxHintColor,
-                                                    fontFamily: "Muli"),
-                                              ),
-                                            ),
-                                            value: label,
-                                          ))
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0),
+                                      child: Text(
+                                        label.siteStageDesc,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: ColorConstants
+                                                .inputBoxHintColor,
+                                            fontFamily: "Muli"),
+                                      ),
+                                    ),
+                                    value: label,
+                                  ))
                                       .toList(),
                                   //  elevation: 0,
                                   iconSize: 40,
@@ -799,19 +818,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                             builder: (BuildContext context) {
                                               return AlertDialog(
                                                   contentPadding:
-                                                      EdgeInsets.all(0.0),
+                                                  EdgeInsets.all(0.0),
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  5.0))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              5.0))),
                                                   content: Container(
                                                       width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
+                                                      MediaQuery.of(context)
+                                                          .size
+                                                          .width,
                                                       child:
-                                                          SingleChildScrollView(
+                                                      SingleChildScrollView(
                                                         child: Stack(
                                                           //
 
@@ -834,28 +853,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                             Center(
                                                               child: Padding(
                                                                 padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
+                                                                const EdgeInsets
+                                                                    .all(
+                                                                    8.0),
                                                                 child: Column(
                                                                   mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
+                                                                  MainAxisAlignment
+                                                                      .center,
                                                                   children: [
                                                                     SizedBox(
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.03,
                                                                     ),
                                                                     Container(
                                                                       width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
+                                                                          .size
+                                                                          .width *
                                                                           0.3,
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.12,
                                                                       child: Image
                                                                           .asset(
@@ -866,28 +885,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                       "Closed",
                                                                       style: TextStyle(
                                                                           fontSize:
-                                                                              30,
+                                                                          30,
                                                                           color:
-                                                                              HexColor("#B00020")),
+                                                                          HexColor("#B00020")),
                                                                     ),
                                                                     SizedBox(
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.03,
                                                                     ),
                                                                     Center(
                                                                       child:
-                                                                          Text(
+                                                                      Text(
                                                                         "Please add your comment to complete this rejection",
                                                                         maxLines:
-                                                                            2,
+                                                                        2,
                                                                         textAlign:
-                                                                            TextAlign.center,
+                                                                        TextAlign.center,
                                                                         style:
-                                                                            TextStyle(
+                                                                        TextStyle(
                                                                           fontSize:
-                                                                              15,
+                                                                          15,
 
                                                                           //color: HexColor("#B00020")
                                                                         ),
@@ -896,49 +915,49 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                                                                     Padding(
                                                                       padding: const EdgeInsets
-                                                                              .all(
+                                                                          .all(
                                                                           10.0),
                                                                       child:
-                                                                          TextFormField(
+                                                                      TextFormField(
                                                                         controller:
-                                                                            closureReasonText,
+                                                                        closureReasonText,
                                                                         maxLength:
-                                                                            100,
+                                                                        100,
                                                                         onChanged:
                                                                             (value) async {},
                                                                         style: TextStyle(
                                                                             fontSize:
-                                                                                18,
+                                                                            18,
                                                                             color:
-                                                                                ColorConstants.inputBoxHintColor,
+                                                                            ColorConstants.inputBoxHintColor,
                                                                             fontFamily: "Muli"),
                                                                         keyboardType:
-                                                                            TextInputType.text,
+                                                                        TextInputType.text,
                                                                         maxLines:
-                                                                            4,
+                                                                        4,
                                                                         decoration:
-                                                                            FormFieldStyle.buildInputDecoration(labelText: "Comments"),
+                                                                        FormFieldStyle.buildInputDecoration(labelText: "Comments"),
                                                                       ),
                                                                     ),
                                                                     Center(
                                                                       child:
-                                                                          RaisedButton(
+                                                                      RaisedButton(
                                                                         elevation:
-                                                                            5,
+                                                                        5,
                                                                         shape:
-                                                                            RoundedRectangleBorder(
+                                                                        RoundedRectangleBorder(
                                                                           borderRadius:
-                                                                              BorderRadius.circular(5.0),
+                                                                          BorderRadius.circular(5.0),
                                                                         ),
                                                                         color: HexColor(
                                                                             "#1C99D4"),
                                                                         child:
-                                                                            Padding(
+                                                                        Padding(
                                                                           padding: const EdgeInsets.only(
                                                                               bottom: 10,
                                                                               top: 10),
                                                                           child:
-                                                                              Text(
+                                                                          Text(
                                                                             "SUBMIT",
                                                                             style: TextStyle(
                                                                                 color: Colors.white,
@@ -969,8 +988,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                     ),
                                                                     SizedBox(
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.01,
                                                                     ),
                                                                     //         // Image.asset('assets/images/rejected.png'),
@@ -988,19 +1007,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                             builder: (BuildContext context) {
                                               return AlertDialog(
                                                   contentPadding:
-                                                      EdgeInsets.all(0.0),
+                                                  EdgeInsets.all(0.0),
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  5.0))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              5.0))),
                                                   content: Container(
                                                       width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
+                                                      MediaQuery.of(context)
+                                                          .size
+                                                          .width,
                                                       child:
-                                                          SingleChildScrollView(
+                                                      SingleChildScrollView(
                                                         child: Stack(
                                                           //
 
@@ -1023,28 +1042,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                             Center(
                                                               child: Padding(
                                                                 padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
+                                                                const EdgeInsets
+                                                                    .all(
+                                                                    8.0),
                                                                 child: Column(
                                                                   mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
+                                                                  MainAxisAlignment
+                                                                      .center,
                                                                   children: [
                                                                     SizedBox(
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.03,
                                                                     ),
                                                                     Container(
                                                                       width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
+                                                                          .size
+                                                                          .width *
                                                                           0.3,
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.12,
                                                                       child: Image
                                                                           .asset(
@@ -1055,28 +1074,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                       "Inactive",
                                                                       style: TextStyle(
                                                                           fontSize:
-                                                                              30,
+                                                                          30,
                                                                           color:
-                                                                              HexColor("#B00020")),
+                                                                          HexColor("#B00020")),
                                                                     ),
                                                                     SizedBox(
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.03,
                                                                     ),
                                                                     Center(
                                                                       child:
-                                                                          Text(
+                                                                      Text(
                                                                         "Please add your comment to complete this Inactive",
                                                                         maxLines:
-                                                                            2,
+                                                                        2,
                                                                         textAlign:
-                                                                            TextAlign.center,
+                                                                        TextAlign.center,
                                                                         style:
-                                                                            TextStyle(
+                                                                        TextStyle(
                                                                           fontSize:
-                                                                              15,
+                                                                          15,
 
                                                                           //color: HexColor("#B00020")
                                                                         ),
@@ -1084,18 +1103,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                     ),
                                                                     SizedBox(
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.01,
                                                                     ),
                                                                     Padding(
                                                                       padding: const EdgeInsets
-                                                                              .all(
+                                                                          .all(
                                                                           10.0),
                                                                       child:
-                                                                          TextFormField(
+                                                                      TextFormField(
                                                                         controller:
-                                                                            _nextVisitDate,
+                                                                        _nextVisitDate,
                                                                         // validator: (value) {
                                                                         //   if (value.isEmpty) {
                                                                         //     return "Contact Name can't be empty";
@@ -1104,7 +1123,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                         //   return null;
                                                                         // },
                                                                         readOnly:
-                                                                            true,
+                                                                        true,
                                                                         onChanged:
                                                                             (data) {
                                                                           // setState(() {
@@ -1113,42 +1132,42 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                         },
                                                                         style: TextStyle(
                                                                             fontSize:
-                                                                                18,
+                                                                            18,
                                                                             color:
-                                                                                ColorConstants.inputBoxHintColor,
+                                                                            ColorConstants.inputBoxHintColor,
                                                                             fontFamily: "Muli"),
                                                                         keyboardType:
-                                                                            TextInputType.text,
+                                                                        TextInputType.text,
                                                                         decoration:
-                                                                            InputDecoration(
+                                                                        InputDecoration(
                                                                           focusedBorder:
-                                                                              OutlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                             borderSide: BorderSide(
                                                                                 color: ColorConstants.backgroundColorBlue,
                                                                                 //color: HexColor("#0000001F"),
                                                                                 width: 1.0),
                                                                           ),
                                                                           disabledBorder:
-                                                                              OutlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                             borderSide:
-                                                                                BorderSide(color: Colors.black26, width: 1.0),
+                                                                            BorderSide(color: Colors.black26, width: 1.0),
                                                                           ),
                                                                           enabledBorder:
-                                                                              OutlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                             borderSide:
-                                                                                BorderSide(color: Colors.black26, width: 1.0),
+                                                                            BorderSide(color: Colors.black26, width: 1.0),
                                                                           ),
                                                                           errorBorder:
-                                                                              OutlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                             borderSide:
-                                                                                BorderSide(color: Colors.red, width: 1.0),
+                                                                            BorderSide(color: Colors.red, width: 1.0),
                                                                           ),
                                                                           labelText:
-                                                                              "Next Visit Date ",
+                                                                          "Next Visit Date ",
                                                                           suffixIcon:
-                                                                              IconButton(
+                                                                          IconButton(
                                                                             icon:
-                                                                                Icon(
+                                                                            Icon(
                                                                               Icons.date_range_rounded,
                                                                               size: 22,
                                                                               color: ColorConstants.clearAllTextColor,
@@ -1177,75 +1196,75 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             },
                                                                           ),
                                                                           filled:
-                                                                              false,
+                                                                          false,
                                                                           focusColor:
-                                                                              Colors.black,
+                                                                          Colors.black,
                                                                           isDense:
-                                                                              false,
+                                                                          false,
                                                                           labelStyle: TextStyle(
                                                                               fontFamily: "Muli",
                                                                               color: ColorConstants.inputBoxHintColorDark,
                                                                               fontWeight: FontWeight.normal,
                                                                               fontSize: 16.0),
                                                                           fillColor:
-                                                                              ColorConstants.backgroundColor,
+                                                                          ColorConstants.backgroundColor,
                                                                         ),
                                                                       ),
                                                                     ),
                                                                     SizedBox(
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.01,
                                                                     ),
                                                                     Padding(
                                                                       padding: const EdgeInsets
-                                                                              .all(
+                                                                          .all(
                                                                           10.0),
                                                                       child:
-                                                                          TextFormField(
+                                                                      TextFormField(
                                                                         controller:
-                                                                            _inactiveReasonText,
+                                                                        _inactiveReasonText,
                                                                         maxLength:
-                                                                            100,
+                                                                        100,
                                                                         onChanged:
                                                                             (value) async {},
                                                                         style: TextStyle(
                                                                             fontSize:
-                                                                                18,
+                                                                            18,
                                                                             color:
-                                                                                ColorConstants.inputBoxHintColor,
+                                                                            ColorConstants.inputBoxHintColor,
                                                                             fontFamily: "Muli"),
                                                                         keyboardType:
-                                                                            TextInputType.text,
+                                                                        TextInputType.text,
                                                                         maxLines:
-                                                                            4,
+                                                                        4,
                                                                         decoration:
-                                                                            FormFieldStyle.buildInputDecoration(
+                                                                        FormFieldStyle.buildInputDecoration(
                                                                           labelText:
-                                                                              "Comments",
+                                                                          "Comments",
                                                                         ),
                                                                       ),
                                                                     ),
                                                                     Center(
                                                                       child:
-                                                                          RaisedButton(
+                                                                      RaisedButton(
                                                                         elevation:
-                                                                            5,
+                                                                        5,
                                                                         shape:
-                                                                            RoundedRectangleBorder(
+                                                                        RoundedRectangleBorder(
                                                                           borderRadius:
-                                                                              BorderRadius.circular(5.0),
+                                                                          BorderRadius.circular(5.0),
                                                                         ),
                                                                         color: HexColor(
                                                                             "#1C99D4"),
                                                                         child:
-                                                                            Padding(
+                                                                        Padding(
                                                                           padding: const EdgeInsets.only(
                                                                               bottom: 10,
                                                                               top: 10),
                                                                           child:
-                                                                              Text(
+                                                                          Text(
                                                                             "SUBMIT",
                                                                             style: TextStyle(
                                                                                 color: Colors.white,
@@ -1276,8 +1295,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                     ),
                                                                     SizedBox(
                                                                       height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                          .size
+                                                                          .height *
                                                                           0.01,
                                                                     ),
                                                                     //         // Image.asset('assets/images/rejected.png'),
@@ -1301,37 +1320,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     ),
 
 
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 5),
-                      child: Row(
-                        children: [
 
-                       new Container(
-                         height: 20,
-                         width: 20,
-
-                         decoration: BoxDecoration(
-                           color: isUserOnlineStatus ? Colors.green :Colors.orange,
-                           borderRadius: BorderRadius.all(Radius.circular(10)),
-                         ) ,
-                       ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                  left: 5),
-                            child: Text(
-                              isUserOnline,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: SizeConfig.safeBlockHorizontal*3.3,
-                                  color: HexColor("#006838"),
-                                  fontFamily: "Muli"),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
 
                   ],
                 ),
@@ -1377,7 +1366,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           ),
           floatingActionButton: BackFloatingButton(),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator(),
           //child:Text("classroomName")
         ));
@@ -1924,11 +1913,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               onPressed: () async {
                                 internetChecking().then((result) async {
                                   if (!result) {
-                                    Get.snackbar(
-                                        "No internet connection.", "",
-                                        colorText: Colors.white,
-                                        backgroundColor: Colors.red,
-                                        snackPosition: SnackPosition.BOTTOM);
+                                    Get.dialog(CustomDialogs().errorDialog(
+                                    StringConstants.MANUAL_NOT_ACCESS));
+
+                                    // Get.snackbar(
+                                    //     "No internet connection.", "",
+                                    //     colorText: Colors.white,
+                                    //     backgroundColor: Colors.red,
+                                    //     snackPosition: SnackPosition.BOTTOM);
+
+
 
                                   }else{
                                     setState(() {
@@ -2154,11 +2148,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             onPressed: () async {
                               internetChecking().then((result){
                                 if (!result){
-                                  Get.snackbar(
-                                      "No internet connection.", "",
-                                      colorText: Colors.white,
-                                      backgroundColor: Colors.red,
-                                      snackPosition: SnackPosition.BOTTOM);
+                                  Get.dialog(CustomDialogs().errorDialog(
+                                      StringConstants.PHOTO_NOT_UPLOAD));
+
                                   return ;
                                 }else{
                                   if (_imgDetails.length < 5) {
@@ -5895,7 +5887,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
 /*update site data from database*/
-  _updateSiteDataFromDb(){
+  _updateSiteDataFromDb() async {
     int _constructionId=_selectedConstructionType.id;//m
     String _siteBuiltUpAreaValue=_siteBuiltupArea.text; //m
     int _selectedSiteFloorId=_selectedSiteFloor!=null?_selectedSiteFloor.id: 0;
@@ -5946,7 +5938,34 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             barrierDismissible: false));
 
    /*update site data only when the syncStatus is true */
-       _helper.fetchMapList(DbConstants.TABLE_SITE_LIST, [DbConstants.COL_SYNC_STATUS],  "${DbConstants.COL_SITE_ID} = ? ", [widget.siteId], null, null, null, null, null).then((value){
+    await _checkSyncStatus().then((value){
+      print("_checkSyncStatus  $value");
+      if(!value){
+        Get.back();
+        Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_ALREADY_UPDATE));
+        return;
+      } else{
+        SitesModal _dataModel=new SitesModal(siteId:widget.siteId,siteBuiltArea:_siteBuiltUpAreaValue,siteProductDemo:_isSwitchedSiteProductDemoValue,
+            siteProductOralBriefing:_isSwitchedSiteProductOralBriefingValue,sitePlotNumber:_plotNumberValue,siteTotalSitePotential:_siteTotalPtValue,siteOwnerName:_ownerNameValue,
+            siteOwnerContactNumber:_contactNumberValue,siteAddress:_siteAddressValue,siteState:_stateValue,siteDistrict:_districtValue,siteTaluk:_talukValue,sitePincode:_pincodeValue,
+            siteGeotagLatitude:_currentPosition.latitude.toString(),
+            siteGeotagLongitude:_currentPosition.longitude.toString(),siteGeotagType:geoTagType,siteReraNumber:_reraValue,siteDealerId:_sitesModel.siteDealerId,siteDealerName:_dealerNameValue,siteSoId:_sitesModel.siteSoId,
+            siteSoname:_soValue,siteStageId:labelId, inactiveReasonText:_inactiveReasonTextValue,siteNextVisitDate:_sitesModel.siteNextVisitDate,siteClosureReasonText:_sitesModel.siteClosureReasonText,
+            siteProbabilityWinningId:_sitesModel.siteProbabilityWinningId,siteCompetitionId:_sitesModel.siteCompetitionId,siteOppertunityId:_sitesModel.siteOppertunityId,
+            assignedTo: _sitesModel.assignedTo,siteStatusId:_sitesModel.siteStatusId,siteCreationDate:_sitesModel.siteCreationDate,siteConstructionId:_constructionId,noOfFloors:_selectedSiteFloorId,
+            siteScore: siteScore,syncStatus:false);
+        _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]).then((value){
+          if(value!=0){
+            Get.back();
+            Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_UPDATE));
+          }
+        });
+      }
+    });
+
+
+
+      /* _helper.fetchMapList(DbConstants.TABLE_SITE_LIST, [DbConstants.COL_SYNC_STATUS],  "${DbConstants.COL_SITE_ID} = ? ", [widget.siteId], null, null, null, null, null).then((value){
 
          value.forEach((element) {
 
@@ -5957,26 +5976,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
            }
            else{
-             SitesModal _dataModel=new SitesModal(siteId:widget.siteId,siteBuiltArea:_siteBuiltUpAreaValue,siteProductDemo:_isSwitchedSiteProductDemoValue,
-                 siteProductOralBriefing:_isSwitchedSiteProductOralBriefingValue,sitePlotNumber:_plotNumberValue,siteTotalSitePotential:_siteTotalPtValue,siteOwnerName:_ownerNameValue,
-                 siteOwnerContactNumber:_contactNumberValue,siteAddress:_siteAddressValue,siteState:_stateValue,siteDistrict:_districtValue,siteTaluk:_talukValue,sitePincode:_pincodeValue,
-                 siteGeotagLatitude:_currentPosition.latitude.toString(),
-                 siteGeotagLongitude:_currentPosition.longitude.toString(),siteGeotagType:geoTagType,siteReraNumber:_reraValue,siteDealerId:_sitesModel.siteDealerId,siteDealerName:_dealerNameValue,siteSoId:_sitesModel.siteSoId,
-                 siteSoname:_soValue,siteStageId:labelId, inactiveReasonText:_inactiveReasonTextValue,siteNextVisitDate:_sitesModel.siteNextVisitDate,siteClosureReasonText:_sitesModel.siteClosureReasonText,
-                 siteProbabilityWinningId:_sitesModel.siteProbabilityWinningId,siteCompetitionId:_sitesModel.siteCompetitionId,siteOppertunityId:_sitesModel.siteOppertunityId,
-                 assignedTo: _sitesModel.assignedTo,siteStatusId:_sitesModel.siteStatusId,siteCreationDate:_sitesModel.siteCreationDate,siteConstructionId:_constructionId,noOfFloors:_selectedSiteFloorId,
-                 siteScore: siteScore,syncStatus:false);
-             _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]).then((value){
-               if(value!=0){
-                 Get.back();
-                 Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_UPDATE));
-               }
-             });
+
            }
 
 
          });
-       });
+       });*/
 
 
 
@@ -5984,7 +5989,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   /*insert new row from db for visit data*/
-_insertVisitDataFromDb(){
+_insertVisitDataFromDb() async {
   /*Next stage fields values*/
   String _siteTotalBalanceBagsValue= _siteTotalBalanceBags.text;
   int _selectedConstructionTypeVisitId=_selectedConstructionTypeVisit !=null?  _selectedConstructionTypeVisit.id : null; //m
@@ -5999,7 +6004,6 @@ _insertVisitDataFromDb(){
   String _siteCurrentTotalBagsValue=_siteCurrentTotalBags.text;
   String _stageStatusValue=_stageStatus.text; //m
   String _dateOfConstructionValue=_dateofConstruction.text;
-
   int _siteOpportunitStatusEnityId=_siteOpportunitStatusEnity!=null?_siteOpportunitStatusEnity.id : null; //m
   int _siteCompetitionStatusEntityId=_siteCompetitionStatusEntity!=null ?_siteCompetitionStatusEntity.id : null;//m
   int _siteProbabilityWinningEntityId=_siteProbabilityWinningEntity!=null ? _siteProbabilityWinningEntity.id : null;//m
@@ -6019,70 +6023,76 @@ _insertVisitDataFromDb(){
         .errorDialog("Please fill mandatory fields in \"Visit Data\" Tab"));
     return;
   }
-  // _checkSyncStatus().then((value){
-  // })
-
-
-  _checkUserIsAuthorisedForDataInsert().then((isAuthorised){
-
-    if(!isAuthorised){
-      Get.dialog(CustomDialogs()
-          .errorDialog(StringConstants.NOT_AUTHORISED));
+ await _checkSyncStatus().then((value){
+    if(!value){
+      Get.back();
+      Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_ALREADY_UPDATE));
+      return;
     }else{
-      if(addNextButtonDisable){
-        int _constructionId= _selectedConstructionTypeVisitNextStage !=null ?_selectedConstructionTypeVisitNextStage.id : null;//m
-        int _floorId=_selectedSiteVisitFloorNextStage!=null ?_selectedSiteVisitFloorNextStage.id : null;//m
-        String _stagePotentialValue= _stagePotentialVisitNextStage.text; //m
-        int _brandId= _siteProductFromLocalDBNextStage!=null ?_siteProductFromLocalDBNextStage.id :null ; //m
-        String _brandPrice= _brandPriceVisitNextStage.text; //m
-        String _dateSuppliedValue= _dateOfBagSuppliedNextStage.text;//m
-        String _suppliedQtyValue= _siteCurrentTotalBagsNextStage.text;
-        String _stagStatusValue= _siteStageNextStage!=null ?_siteStageNextStage.siteStageDesc :null; //m
-        String _dateOfConstructionNextStageValue= _dateofConstructionNextStage.text;
-        bool status=true;
-
-        if(_constructionId==null || _floorId==null ||
-            _stagePotentialValue=="" || _stagePotentialValue==null || _stagePotentialValue=="null" || _brandId==null||
-            _brandPrice== "" || _brandPrice==null || _brandPrice =="null" ||
-            _dateSuppliedValue==null || _dateSuppliedValue=="" || _dateSuppliedValue=="null" || _suppliedQtyValue==null || _suppliedQtyValue=="" || _suppliedQtyValue=="null"
-            || _stagStatusValue==null || _stagStatusValue=="" || _stagStatusValue=="null" )
-          status=false;
-
-        if(!status){
-          Get.dialog(CustomDialogs().errorDialog(
-              StringConstants.HIDE_NEXT_STAGE_BUTTON));
-          return;
-        }
-        SiteNextStageEntity _nextDataModel=new SiteNextStageEntity(siteId:widget.siteId,constructionStageId:_constructionId ,stagePotential: _stagePotentialValue ,
-            brandId:_brandId ,brandPrice:_brandPrice ,stageStatus: _stagStatusValue, constructionStartDt:_dateOfConstructionNextStageValue ,
-            nextStageSupplyDate:_dateSuppliedValue ,nextStageSupplyQty: _suppliedQtyValue, syncStatus : false);
-        _helper.insertDataInTable(DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY, _nextDataModel.toJson(), ConflictAlgorithm.replace);
-
-      }
-
-      /*new data insert in siteVisitHistoryEntity table*/
-      SiteVisitHistoryEntity _visitDataModel=new SiteVisitHistoryEntity( totalBalancePotential:_siteTotalBalanceBagsValue,constructionStageId:_selectedConstructionTypeVisitId,floorId: _selectedSiteVisitFloorId,
-          stagePotential:_stagePotentialVisitValue,brandId:_siteBrandFromLocalDBId, brandPrice: _brandPriceVisitValue, constructionDate: _dateOfConstructionValue, siteId:widget.siteId,
-          supplyDate: _dateOfBagSuppliedValue, supplyQty: _siteCurrentTotalBagsValue  , isAuthorised:"N" ,stageStatus: _stageStatusValue,  shipToParty: shipToPartyValue, syncStatus: false );
-      _helper.insertDataInTable(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, _visitDataModel.toJson(), ConflictAlgorithm.replace);
-
-     /*update data in site table*/
-      SitesModal _dataModel=new SitesModal(siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,
-          siteOppertunityId:_siteOpportunitStatusEnityId,siteNextVisitDate: _nextVisitDateValue, syncStatus:false);
-      _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJsonMap(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
-
-      /*new data insert in siteVisitHistoryEntity table*/
-      SiteCommentsEntity _commentsEntity =new SiteCommentsEntity(siteId: widget.siteId, siteCommentText: _commentsValue);
-      _helper.insertDataInTable(DbConstants.TABLE_SITE_COMMENT_ENTITY, _commentsEntity.toJson(),  ConflictAlgorithm.replace).then((value){
-        if(value!=0){
+      _checkUserIsAuthorisedForDataInsert().then((isAuthorised){
+        if(!isAuthorised){
           Get.dialog(CustomDialogs()
-              .errorDialog(StringConstants.VISIT_DATA_INSERTED));
+              .errorDialog(StringConstants.NOT_AUTHORISED));
+        }else{
+          if(addNextButtonDisable){
+            int _constructionId= _selectedConstructionTypeVisitNextStage !=null ?_selectedConstructionTypeVisitNextStage.id : null;//m
+            int _floorId=_selectedSiteVisitFloorNextStage!=null ?_selectedSiteVisitFloorNextStage.id : null;//m
+            String _stagePotentialValue= _stagePotentialVisitNextStage.text; //m
+            int _brandId= _siteProductFromLocalDBNextStage!=null ?_siteProductFromLocalDBNextStage.id :null ; //m
+            String _brandPrice= _brandPriceVisitNextStage.text; //m
+            String _dateSuppliedValue= _dateOfBagSuppliedNextStage.text;//m
+            String _suppliedQtyValue= _siteCurrentTotalBagsNextStage.text;
+            String _stagStatusValue= _siteStageNextStage!=null ?_siteStageNextStage.siteStageDesc :null; //m
+            String _dateOfConstructionNextStageValue= _dateofConstructionNextStage.text;
+            bool status=true;
+
+            if(_constructionId==null || _floorId==null ||
+                _stagePotentialValue=="" || _stagePotentialValue==null || _stagePotentialValue=="null" || _brandId==null||
+                _brandPrice== "" || _brandPrice==null || _brandPrice =="null" ||
+                _dateSuppliedValue==null || _dateSuppliedValue=="" || _dateSuppliedValue=="null" || _suppliedQtyValue==null || _suppliedQtyValue=="" || _suppliedQtyValue=="null"
+                || _stagStatusValue==null || _stagStatusValue=="" || _stagStatusValue=="null" )
+              status=false;
+
+            if(!status){
+              Get.dialog(CustomDialogs().errorDialog(
+                  StringConstants.HIDE_NEXT_STAGE_BUTTON));
+              return;
+            }
+            SiteNextStageEntity _nextDataModel=new SiteNextStageEntity(siteId:widget.siteId,constructionStageId:_constructionId ,stagePotential: _stagePotentialValue ,
+                brandId:_brandId ,brandPrice:_brandPrice ,stageStatus: _stagStatusValue, constructionStartDt:_dateOfConstructionNextStageValue ,
+                nextStageSupplyDate:_dateSuppliedValue ,nextStageSupplyQty: _suppliedQtyValue, syncStatus : false);
+            _helper.insertDataInTable(DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY, _nextDataModel.toJson(), ConflictAlgorithm.replace);
+
+          }
+
+          /*new data insert in siteVisitHistoryEntity table*/
+          SiteVisitHistoryEntity _visitDataModel=new SiteVisitHistoryEntity( totalBalancePotential:_siteTotalBalanceBagsValue,constructionStageId:_selectedConstructionTypeVisitId,floorId: _selectedSiteVisitFloorId,
+              stagePotential:_stagePotentialVisitValue,brandId:_siteBrandFromLocalDBId, brandPrice: _brandPriceVisitValue, constructionDate: _dateOfConstructionValue, siteId:widget.siteId,
+              supplyDate: _dateOfBagSuppliedValue, supplyQty: _siteCurrentTotalBagsValue  , isAuthorised:"N" ,stageStatus: _stageStatusValue,  shipToParty: shipToPartyValue, syncStatus: false );
+          _helper.insertDataInTable(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, _visitDataModel.toJson(), ConflictAlgorithm.replace);
+
+          /*update data in site table*/
+          SitesModal _dataModel=new SitesModal(siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,
+              siteOppertunityId:_siteOpportunitStatusEnityId,siteNextVisitDate: _nextVisitDateValue, syncStatus:false);
+          _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJsonMap(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]);
+
+          /*new data insert in siteVisitHistoryEntity table*/
+          SiteCommentsEntity _commentsEntity =new SiteCommentsEntity(siteId: widget.siteId, siteCommentText: _commentsValue);
+          _helper.insertDataInTable(DbConstants.TABLE_SITE_COMMENT_ENTITY, _commentsEntity.toJson(),  ConflictAlgorithm.replace).then((value){
+            if(value!=0){
+              Get.dialog(CustomDialogs()
+                  .errorDialog(StringConstants.VISIT_DATA_INSERTED));
+            }
+
+          });
         }
 
       });
     }
-
   });
+
+
+
 }
 
 /*check user is authorised for insert visit data */

@@ -145,7 +145,7 @@ class MyApiClientSites {
   getSiteDetailsData(String accessKey, String userSecurityKey, int siteId, String empID) async {
     try {
       //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
-      var bodyEncrypted = {"SiteId": siteId};
+      //var bodyEncrypted = {"SiteId": siteId};
       // print('Request body is  : ${json.encode(bodyEncrypted)}');
       // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
       String url= UrlConstants.getSiteData + "$siteId&referenceID=$empID";

@@ -7,7 +7,6 @@ import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -499,7 +498,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   // fetchSiteList()
                                 }
                             });
-                          },
+                          },onDoubleTap: (){},
                           child: Container(
                             height: 40,
                             width: 40,
@@ -741,30 +740,44 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              switch (index) {
-                case 0:
-                  Get.toNamed(Routes.LEADS_SCREEN);
-                  break;
-                case 1:
-                  // storeOfflineSiteData();
-                  Get.toNamed(
-                    Routes.SITES_SCREEN,
-                  );
-                  break;
-                case 2:
-                  Get.dialog(
-                      CustomDialogs().errorDialog(" Page Coming Soon .... "));
-                  break;
-                case 3:
-                  Get.toNamed(Routes.ADD_MWP_SCREEN);
-                  break;
-                case 4:
-                  Get.toNamed(Routes.SERVICE_REQUESTS);
-                  break;
-                case 5:
-                  Get.toNamed(Routes.VIDEO_TUTORIAL);
-                  break;
-              }
+
+         internetChecking().then((result) async {
+      if (!result && index!=1 ) {
+        Get.snackbar(
+            "No internet connection.", "",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM);
+        return;
+      }else{
+        switch (index) {
+          case 0:
+            Get.toNamed(Routes.LEADS_SCREEN);
+            break;
+          case 1:
+          // storeOfflineSiteData();
+            Get.toNamed(
+              Routes.SITES_SCREEN,
+            );
+            break;
+          case 2:
+            Get.dialog(
+                CustomDialogs().errorDialog(" Page Coming Soon .... "));
+            break;
+          case 3:
+            Get.toNamed(Routes.ADD_MWP_SCREEN);
+            break;
+          case 4:
+            Get.toNamed(Routes.SERVICE_REQUESTS);
+            break;
+          case 5:
+            Get.toNamed(Routes.VIDEO_TUTORIAL);
+            break;
+        }
+      }
+    });
+
+
             },
             child: Card(
               clipBehavior: Clip.antiAlias,

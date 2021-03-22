@@ -58,6 +58,8 @@ abstract class StringConstants {
   static const String VISIT_DATA_INSERTED = 'Visit data inserted successfully';
   static const String NOT_AUTHORISED = 'You can not add new visit because visit data not authorised';
   static const String SITE_DATA_ALREADY_UPDATE = 'You have already update the site data So first you need to sync that data to server.';
+  static const String MANUAL_NOT_ACCESS = 'You have no internet connection. So you can\'t access location manually.';
+  static const String PHOTO_NOT_UPLOAD = 'You have no internet connection. So you can\'t upload image.';
 
 
 
