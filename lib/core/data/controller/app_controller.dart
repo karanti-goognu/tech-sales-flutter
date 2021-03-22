@@ -102,7 +102,6 @@ class AppController extends GetxController {
           } else {
             // print('Not expired');
             Get.back();
-            Get.back();
             switch (requestId) {
               case RequestIds.GET_SITES_LIST:
                 _siteController.getSitesData(this.accessKeyResponse.accessKey);
