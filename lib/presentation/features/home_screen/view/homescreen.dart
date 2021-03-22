@@ -323,8 +323,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     SizeConfig().init(context);
+
     // return
     //   WillPopScope(
     //   onWillPop: () async {
@@ -362,7 +362,6 @@ class _HomeScreenState extends State<HomeScreen> {
     //                       color: Colors.white,
     //                       border: Border.all(color: Colors.black, width: 0.0),
     //                       borderRadius:
-
     return ScopedModelDescendant<SitesDBProvider>(builder: (context, child, model) {
 
       return Stack(children: <Widget>[

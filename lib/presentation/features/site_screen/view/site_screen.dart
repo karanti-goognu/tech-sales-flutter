@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
@@ -39,6 +40,8 @@ class _SiteScreenState extends State<SiteScreen> {
   int selectedPosition = 0;
   int currentTab = 0;
   bool internetCheck = false;
+  StreamSubscription<DataConnectionStatus> listener;
+
 
   // final db = SiteListDBHelper();
   List<SitesEntity> siteList = new List();
@@ -61,51 +64,6 @@ class _SiteScreenState extends State<SiteScreen> {
     return result;
   }
 
-  // storeOfflineSiteData() async {
-  //   SitesDBProvider model = ScopedModel.of(this.context);
-  //   model.clearTable();
-  //   _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-  //   if (_siteController.sitesListResponse.sitesEntity != null) {
-  //     for (int i = 0;
-  //         i < _siteController.sitesListResponse.sitesEntity.length;
-  //         i++) {
-  //       SitesEntity siteEntity = new SitesEntity(
-  //           siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
-  //           leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
-  //           siteDistrict:
-  //               _siteController.sitesListResponse.sitesEntity[i].siteDistrict,
-  //           siteStageId:
-  //               _siteController.sitesListResponse.sitesEntity[i].siteStageId,
-  //           siteStatusId:
-  //           _siteController.sitesListResponse.sitesEntity[i].siteStatusId,
-  //           siteCreationDate: _siteController
-  //               .sitesListResponse.sitesEntity[i].siteCreationDate,
-  //           sitePotentialMt: _siteController
-  //               .sitesListResponse.sitesEntity[i].sitePotentialMt,
-  //           siteOppertunityId: _siteController
-  //               .sitesListResponse.sitesEntity[i].siteOppertunityId,
-  //           siteScore:
-  //               _siteController.sitesListResponse.sitesEntity[i].siteScore,
-  //           contactNumber: _siteController.sitesListResponse.sitesEntity[i].contactNumber,
-  //           sitePincode: _siteController.sitesListResponse.sitesEntity[i].sitePincode,
-  //           siteProbabilityWinningId: _siteController.sitesListResponse.sitesEntity[i].siteProbabilityWinningId,
-  //           syncStatus:true);
-  //       // SiteListModelForDB siteListModelForDb = new SiteListModelForDB(null, json.encode(siteEntity));
-  //       // await db.addSiteEntityInDraftList(siteListModelForDb);
-  //       // await db.insertSiteEntityInTable(siteEntity);
-  //       model.createSiteEntity(siteEntity);
-  //       model.fetchAllSites().then((value) => {
-  //
-  //       });
-  //       // db.fetchAllSites().then((value) {
-  //       //    setState(() {
-  //       //      _siteController.fetchSiteList();
-  //       //    });
-  //       // });
-  //
-  //     }
-  //   }
-  // }
 
   @override
   void initState() {
@@ -120,39 +78,26 @@ class _SiteScreenState extends State<SiteScreen> {
     });
 
 
-    // internetChecking().then((result) => {
-    //       if (result == true)
-    //         {
-    //           internetCheck = true,
-    //           Get.snackbar(
-    //               "Internet connection Available.", "Fetching from API.",
-    //               colorText: Colors.white,
-    //               backgroundColor: Colors.green,
-    //               snackPosition: SnackPosition.BOTTOM),
-    //           // storeOfflineSiteData()
-    //         }
-    //       else
-    //         {
-    //           Get.snackbar(
-    //               "No internet connection.", "Fetching data from Database.",
-    //               colorText: Colors.white,
-    //               backgroundColor: Colors.red,
-    //               snackPosition: SnackPosition.BOTTOM),
-    //           internetCheck = false,
-    //           // fetchSiteList()
-    //         }
-    //     });
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
   }
-
-  // fetchSiteList() async {
-  //   db.fetchAllSites().then((value) {
-  //     setState(() {
-  //       siteList = value;
-  //     });
-  //   });
-  // }
+/*Check net Connection*/
+  checkConnection() async {
+    internetChecking().then((result){
+      _siteController.isUserOnlineStatus=result;
+    });
+    listener = DataConnectionChecker().onStatusChange.listen((status) {
+      switch (status){
+        case DataConnectionStatus.connected:
+          _siteController.isUserOnlineStatus=true;
+          break;
+        case DataConnectionStatus.disconnected:
+          _siteController.isUserOnlineStatus=false;
+          break;
+      }
+    });
+    return await DataConnectionChecker().connectionStatus;
+  }
 
   @override
   void dispose() {
@@ -173,572 +118,598 @@ class _SiteScreenState extends State<SiteScreen> {
               Get.offNamed(Routes.HOME_SCREEN);
               return true;
               },
-            child: Scaffold(
-              extendBody: true,
-              backgroundColor: ColorConstants.backgroundColorGrey,
-              appBar: AppBar(
-                // titleSpacing: 50,
-                // leading: new Container(),
-                backgroundColor: ColorConstants.appBarColor,
-                toolbarHeight: 120,
-                centerTitle: false,
-                title: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      // mainAxisSize: MainAxisSize.max,
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Scaffold(
+                  extendBody: true,
+                  backgroundColor: ColorConstants.backgroundColorGrey,
+                  appBar: AppBar(
+                    // titleSpacing: 50,
+                    // leading: new Container(),
+                    backgroundColor: ColorConstants.appBarColor,
+                    toolbarHeight: 120,
+                    centerTitle: false,
+                    title: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          "OPEN SITES",
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontFamily: "Muli"),
+
+
+                        Row(
+                          // mainAxisSize: MainAxisSize.max,
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "OPEN SITES",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                  fontFamily: "Muli"),
+                            ),
+                            Expanded(
+                              child: Container(),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                _settingModalBottomSheet(context);
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                  side: BorderSide(color: Colors.white)),
+                              color: Colors.transparent,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 5),
+                                child: Row(
+                                  children: [
+                                    //  Icon(Icons.exposure_zero_outlined),
+                                    Container(
+                                        height: 18,
+                                        width: 18,
+                                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                                        decoration: new BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: Colors.black, width: 0.0),
+                                          borderRadius:
+                                          new BorderRadius.all(Radius.circular(3)),
+                                        ),
+                                        child: Center(
+                                            child: Obx(() => Text(
+                                                "${_siteController.selectedFilterCount}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    //fontFamily: 'Raleway',
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.normal))))),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text(
+                                        'FILTER',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 18),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.search),
+                              onPressed: () => Get.toNamed(Routes.SEARCH_SITES_SCREEN),
+                            )
+                          ],
                         ),
-                        Expanded(
-                          child: Container(),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _settingModalBottomSheet(context);
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.white)),
-                          color: Colors.transparent,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
                             child: Row(
                               children: [
-                                //  Icon(Icons.exposure_zero_outlined),
-                                Container(
-                                    height: 18,
-                                    width: 18,
-                                    // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                                    decoration: new BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: Colors.black, width: 0.0),
-                                      borderRadius:
-                                      new BorderRadius.all(Radius.circular(3)),
-                                    ),
-                                    child: Center(
-                                        child: Obx(() => Text(
-                                            "${_siteController.selectedFilterCount}",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                //fontFamily: 'Raleway',
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal))))),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    'FILTER',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18),
-                                  ),
+                                SizedBox(
+                                  width: 8,
                                 ),
+                                Obx(() => (_siteController.assignToDate ==
+                                    StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                  label: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                          "${_siteController.assignFromDate} to ${_siteController.assignToDate}")
+                                    ],
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  shape: StadiumBorder(side: BorderSide()),
+                                  onSelected: (bool value) {
+                                    print("selected");
+                                  },
+                                )),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController.selectedSiteStatus ==
+                                    StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                  label: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                          "${_siteController.selectedSiteStatus}")
+                                    ],
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  shape: StadiumBorder(side: BorderSide()),
+                                  onSelected: (bool value) {
+                                    print("selected");
+                                  },
+                                )),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController.selectedSiteStage ==
+                                    StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                  label: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text("${_siteController.selectedSiteStage}")
+                                    ],
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  shape: StadiumBorder(side: BorderSide()),
+                                  onSelected: (bool value) {
+                                    print("selected");
+                                  },
+                                )),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController.selectedSitePincode ==
+                                    StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                  label: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                          "${_siteController.selectedSitePincode}")
+                                    ],
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  shape: StadiumBorder(side: BorderSide()),
+                                  onSelected: (bool value) {
+                                    print("selected");
+                                  },
+                                )),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController.selectedSiteInfluencerCat ==
+                                    StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                  label: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                          "${_siteController.selectedSiteInfluencerCat}")
+                                    ],
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  shape: StadiumBorder(side: BorderSide()),
+                                  onSelected: (bool value) {
+                                    print("selected");
+                                  },
+                                )),
                               ],
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.search),
-                          onPressed: () => Get.toNamed(Routes.SEARCH_SITES_SCREEN),
-                        )
+                            ))
                       ],
                     ),
-                    SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Obx(() => (_siteController.assignToDate ==
-                                StringConstants.empty)
-                                ? Container()
-                                : FilterChip(
-                              label: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.black,
+                    automaticallyImplyLeading: false,
+                  ),
+                  floatingActionButton:
+                  SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+                  // floatingActionButton: Container(
+                  //   height: 68.0,
+                  //   width: 68.0,
+                  //   child: FittedBox(
+                  //     child: FloatingActionButton(
+                  //       backgroundColor: Colors.amber,_siteController
+                  //       child: Icon(
+                  //         Icons.add,
+                  //         color: Colors.black,
+                  //       ),
+                  //       onPressed: () {
+                  //         gv.fromLead = false;
+                  //         Get.toNamed(Routes.ADD_LEADS_SCREEN);
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
+                  floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+                  bottomNavigationBar: BottomNavigator(),
+                  body: Container(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, left: 15.0, bottom: 5, right: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                  "Total Count : ${(model.siteListing == null) ? 0 : model.siteListing.length}",
+                                  style: TextStyle(
+                                    fontFamily: "Muli",
+                                    fontSize: SizeConfig.safeBlockHorizontal*3.5,
+                                    // color: HexColor("#FFFFFF99"),
                                   ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                      "${_siteController.assignFromDate} to ${_siteController.assignToDate}")
-                                ],
                               ),
-                              backgroundColor: Colors.transparent,
-                              shape: StadiumBorder(side: BorderSide()),
-                              onSelected: (bool value) {
-                                print("selected");
-                              },
-                            )),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Obx(() => (_siteController.selectedSiteStatus ==
-                                StringConstants.empty)
-                                ? Container()
-                                : FilterChip(
-                              label: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                      "${_siteController.selectedSiteStatus}")
-                                ],
-                              ),
-                              backgroundColor: Colors.transparent,
-                              shape: StadiumBorder(side: BorderSide()),
-                              onSelected: (bool value) {
-                                print("selected");
-                              },
-                            )),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Obx(() => (_siteController.selectedSiteStage ==
-                                StringConstants.empty)
-                                ? Container()
-                                : FilterChip(
-                              label: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text("${_siteController.selectedSiteStage}")
-                                ],
-                              ),
-                              backgroundColor: Colors.transparent,
-                              shape: StadiumBorder(side: BorderSide()),
-                              onSelected: (bool value) {
-                                print("selected");
-                              },
-                            )),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Obx(() => (_siteController.selectedSitePincode ==
-                                StringConstants.empty)
-                                ? Container()
-                                : FilterChip(
-                              label: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                      "${_siteController.selectedSitePincode}")
-                                ],
-                              ),
-                              backgroundColor: Colors.transparent,
-                              shape: StadiumBorder(side: BorderSide()),
-                              onSelected: (bool value) {
-                                print("selected");
-                              },
-                            )),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Obx(() => (_siteController.selectedSiteInfluencerCat ==
-                                StringConstants.empty)
-                                ? Container()
-                                : FilterChip(
-                              label: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                      "${_siteController.selectedSiteInfluencerCat}")
-                                ],
-                              ),
-                              backgroundColor: Colors.transparent,
-                              shape: StadiumBorder(side: BorderSide()),
-                              onSelected: (bool value) {
-                                print("selected");
-                              },
-                            )),
-                          ],
-                        ))
-                  ],
-                ),
-                automaticallyImplyLeading: false,
-              ),
-              floatingActionButton:
-              SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
-              // floatingActionButton: Container(
-              //   height: 68.0,
-              //   width: 68.0,
-              //   child: FittedBox(
-              //     child: FloatingActionButton(
-              //       backgroundColor: Colors.amber,_siteController
-              //       child: Icon(
-              //         Icons.add,
-              //         color: Colors.black,
-              //       ),
-              //       onPressed: () {
-              //         gv.fromLead = false;
-              //         Get.toNamed(Routes.ADD_LEADS_SCREEN);
-              //       },
-              //     ),
-              //   ),
-              // ),
-              floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-              bottomNavigationBar: BottomNavigator(),
-              body: Container(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 15.0, bottom: 5, right: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              "Total Count : ${(model.siteListing == null) ? 0 : model.siteListing.length}",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                fontSize: SizeConfig.safeBlockHorizontal*3.5,
-                                // color: HexColor("#FFFFFF99"),
-                              ),
+                               Text(
+                                "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : double.parse(_siteController.sitesListResponse.totalSitePotential).toStringAsFixed(2)}",
+                                style: TextStyle(
+                                  fontFamily: "Muli",
+                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
+                                  // color: HexColor("#FFFFFF99"),
+                              )),
+                            ],
                           ),
-                           Text(
-                            "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : double.parse(_siteController.sitesListResponse.totalSitePotential).toStringAsFixed(2)}",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              fontSize: SizeConfig.safeBlockHorizontal*3.5,
-                              // color: HexColor("#FFFFFF99"),
-                          )),
-                        ],
-                      ),
-                    ),
-                    // Expanded(child: leadsDetailWidget(model)),
-                    Expanded(child:FutureBuilder<List<SitesModal>>(
-                      future: model.fetchAllSites1(),
-                      // future: model.fetchAllSites(),
-                      builder: (BuildContext context, AsyncSnapshot<List<SitesModal>> snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                              itemCount:snapshot.data.length,
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, right: 10, bottom: 10),
-                              // itemExtent: 125.0,
-                              itemBuilder: (context, index) {
-                                SitesModal siteList = snapshot.data[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        new CupertinoPageRoute(
-                                            builder: (BuildContext context) =>
-                                                ViewSiteScreen(
-                                                    siteList.siteId)));
-                                  },
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    borderOnForeground: true,
-                                    //shadowColor: colornew,
-                                    elevation: 6,
-                                    margin: EdgeInsets.all(5.0),
-                                    color: Colors.white,
-                                    child: Container(
-                                      padding: EdgeInsets.all(8),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                        ),
+                        // Expanded(child: leadsDetailWidget(model)),
+                        Expanded(child:FutureBuilder<List<SitesModal>>(
+                          future: model.fetchAllSites1(),
+                          // future: model.fetchAllSites(),
+                          builder: (BuildContext context, AsyncSnapshot<List<SitesModal>> snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.builder(
+                                  itemCount:snapshot.data.length,
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10, bottom: 10),
+                                  // itemExtent: 125.0,
+                                  itemBuilder: (context, index) {
+                                    SitesModal siteList = snapshot.data[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            new CupertinoPageRoute(
+                                                builder: (BuildContext context) =>
+                                                    ViewSiteScreen(
+                                                        siteList.siteId)));
+                                      },
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        borderOnForeground: true,
+                                        //shadowColor: colornew,
+                                        elevation: 6,
+                                        margin: EdgeInsets.all(5.0),
+                                        color: Colors.white,
+                                        child: Container(
+                                          padding: EdgeInsets.all(8),
+                                          child: Column(
                                             children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.only(
-                                                      left: 5.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.all(2.0),
-                                                        child: Text(
-                                                          "Site ID (${siteList.siteId})",
-                                                          style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontFamily: "Muli",
-                                                              fontWeight:
-                                                              FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.all(2.0),
-                                                        child: Text(
-                                                          "District: ${siteList.siteDistrict} ",
-                                                          style: TextStyle(
-                                                              color: Colors.black38,
-                                                              fontSize: 12,
-                                                              fontFamily: "Muli",
-                                                              fontWeight:
-                                                              FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Row(
+                                              Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(
+                                                          left: 5.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
                                                         children: [
                                                           Padding(
                                                             padding:
-                                                            const EdgeInsets.only(
-                                                                left: 1.0),
-                                                            child: Chip(
-                                                              shape: StadiumBorder(
-                                                                  side: BorderSide(
-                                                                      color: HexColor(
-                                                                          "#39B54A"))),
-                                                              backgroundColor:
-                                                              HexColor("#39B54A")
-                                                                  .withOpacity(
-                                                                  0.1),
-                                                              label: Text(
-                                                                (printSiteStage(
-                                                                    siteList
-                                                                        .siteStageId,model)),
-                                                                style: TextStyle(
-                                                                    color: HexColor(
-                                                                        "#39B54A"),
-                                                                    fontSize: SizeConfig.safeBlockHorizontal*3,
-                                                                    fontFamily:
-                                                                    "Muli",
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .bold
-                                                                  //fontWeight: FontWeight.normal
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding: EdgeInsets.only(
-                                                                left: 10.0),
+                                                            const EdgeInsets.all(2.0),
                                                             child: Text(
-                                                              " ${siteList.siteCreationDate}",
-                                                              overflow: TextOverflow.ellipsis,
-                                                              //  textAlign: TextAlign.start,
+                                                              "Site ID (${siteList.siteId})",
                                                               style: TextStyle(
-                                                                fontSize:  SizeConfig.safeBlockHorizontal*2.5,
-                                                                fontFamily: "Muli",
-                                                                fontWeight:
-                                                                FontWeight.bold,
-
-                                                                //fontWeight: FontWeight.normal
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.only(
-                                                      right: 15.0, bottom: 10),
-                                                  child: Column(
-                                                    mainAxisSize: MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.spaceEvenly,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.only(
-                                                            top: 8.0),
-                                                        child: Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child: Container(),
-                                                            ),
-                                                            Text(
-                                                              "Site-Pt: ",
-                                                              style: TextStyle(
-                                                                  color:
-                                                                  Colors.black38,
-                                                                  fontSize: 15,
+                                                                  fontSize: 18,
                                                                   fontFamily: "Muli",
                                                                   fontWeight:
                                                                   FontWeight.bold
                                                                 //fontWeight: FontWeight.normal
                                                               ),
                                                             ),
-                                                            Text(
-                                                              "${siteList.siteTotalSitePotential}MT",
-                                                              style: TextStyle(
-                                                                // color: Colors.black38,
-                                                                  fontSize: 15,
-                                                                  fontFamily:
-                                                                  "Muli",
-                                                                  fontWeight:
-                                                                  FontWeight
-                                                                      .bold
-                                                                //fontWeight: FontWeight.normal
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        (siteList
-                                                            .siteOppertunityId ==
-                                                            null)
-                                                            ? ""
-                                                            : printOpportuityStatus(
-                                                            siteList
-                                                                .siteOppertunityId,model),
-                                                        style: TextStyle(
-                                                            color: Colors.blue,
-                                                            fontSize: 10,
-                                                            fontFamily: "Muli",
-                                                            fontWeight:
-                                                            FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
-                                                        ),
-                                                        textAlign: TextAlign.right,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 8,
-                                                      ),
-                                                      Text(
-                                                        "Site Score - ${siteList.siteScore}",
-                                                        style: TextStyles
-                                                            .robotoRegular14,
-                                                        textAlign: TextAlign.right,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 30,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: Container(),
                                                           ),
-                                                          Icon(
-                                                            Icons.call,
-                                                            color:
-                                                            HexColor("#8DC63F"),
-                                                          ),
-                                                          GestureDetector(
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets.all(2.0),
                                                             child: Text(
-                                                              "${siteList.siteOwnerContactNumber}",
+                                                              "District: ${siteList.siteDistrict} ",
                                                               style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 15,
+                                                                  color: Colors.black38,
+                                                                  fontSize: 12,
                                                                   fontFamily: "Muli",
                                                                   fontWeight:
-                                                                  FontWeight.bold,
-                                                                  fontStyle:
-                                                                  FontStyle.italic
+                                                                  FontWeight.bold
                                                                 //fontWeight: FontWeight.normal
                                                               ),
                                                             ),
-                                                            onTap: () {
-                                                              String num =
-                                                                  siteList
-                                                                      .siteOwnerContactNumber;
-                                                              launch('tel:$num');
-                                                            },
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                const EdgeInsets.only(
+                                                                    left: 1.0),
+                                                                child: Chip(
+                                                                  shape: StadiumBorder(
+                                                                      side: BorderSide(
+                                                                          color: HexColor(
+                                                                              "#39B54A"))),
+                                                                  backgroundColor:
+                                                                  HexColor("#39B54A")
+                                                                      .withOpacity(
+                                                                      0.1),
+                                                                  label: Text(
+                                                                    (printSiteStage(
+                                                                        siteList
+                                                                            .siteStageId,model)),
+                                                                    style: TextStyle(
+                                                                        color: HexColor(
+                                                                            "#39B54A"),
+                                                                        fontSize: SizeConfig.safeBlockHorizontal*3,
+                                                                        fontFamily:
+                                                                        "Muli",
+                                                                        fontWeight:
+                                                                        FontWeight
+                                                                            .bold
+                                                                      //fontWeight: FontWeight.normal
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets.only(
+                                                                    left: 10.0),
+                                                                child: Text(
+                                                                  " ${siteList.siteCreationDate}",
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                  //  textAlign: TextAlign.start,
+                                                                  style: TextStyle(
+                                                                    fontSize:  SizeConfig.safeBlockHorizontal*2.5,
+                                                                    fontFamily: "Muli",
+                                                                    fontWeight:
+                                                                    FontWeight.bold,
+
+                                                                    //fontWeight: FontWeight.normal
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(
+                                                          right: 15.0, bottom: 10),
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.max,
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.spaceEvenly,
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets.only(
+                                                                top: 8.0),
+                                                            child: Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  child: Container(),
+                                                                ),
+                                                                Text(
+                                                                  "Site-Pt: ",
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                      Colors.black38,
+                                                                      fontSize: 15,
+                                                                      fontFamily: "Muli",
+                                                                      fontWeight:
+                                                                      FontWeight.bold
+                                                                    //fontWeight: FontWeight.normal
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "${siteList.siteTotalSitePotential}MT",
+                                                                  style: TextStyle(
+                                                                    // color: Colors.black38,
+                                                                      fontSize: 15,
+                                                                      fontFamily:
+                                                                      "Muli",
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .bold
+                                                                    //fontWeight: FontWeight.normal
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            (siteList
+                                                                .siteOppertunityId ==
+                                                                null)
+                                                                ? ""
+                                                                : printOpportuityStatus(
+                                                                siteList
+                                                                    .siteOppertunityId,model),
+                                                            style: TextStyle(
+                                                                color: Colors.blue,
+                                                                fontSize: 10,
+                                                                fontFamily: "Muli",
+                                                                fontWeight:
+                                                                FontWeight.bold
+                                                              //fontWeight: FontWeight.normal
+                                                            ),
+                                                            textAlign: TextAlign.right,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 8,
+                                                          ),
+                                                          Text(
+                                                            "Site Score - ${siteList.siteScore}",
+                                                            style: TextStyles
+                                                                .robotoRegular14,
+                                                            textAlign: TextAlign.right,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 30,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Container(),
+                                                              ),
+                                                              Icon(
+                                                                Icons.call,
+                                                                color:
+                                                                HexColor("#8DC63F"),
+                                                              ),
+                                                              GestureDetector(
+                                                                child: Text(
+                                                                  "${siteList.siteOwnerContactNumber}",
+                                                                  style: TextStyle(
+                                                                      color: Colors.black,
+                                                                      fontSize: 15,
+                                                                      fontFamily: "Muli",
+                                                                      fontWeight:
+                                                                      FontWeight.bold,
+                                                                      fontStyle:
+                                                                      FontStyle.italic
+                                                                    //fontWeight: FontWeight.normal
+                                                                  ),
+                                                                ),
+                                                                onTap: () {
+                                                                  String num =
+                                                                      siteList
+                                                                          .siteOwnerContactNumber;
+                                                                  launch('tel:$num');
+                                                                },
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                                                child: Container(
+                                                  color: Colors.grey,
+                                                  width: double.infinity,
+                                                  height: 1,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      (siteList
+                                                          .siteProbabilityWinningId ==
+                                                          null)
+                                                          ? ""
+                                                          : printProbabilityOfWinning(
+                                                          siteList
+                                                              .siteProbabilityWinningId,model),
+                                                      style: TextStyle(
+                                                          color: Colors.blue,
+                                                          fontSize: 12,
+                                                          fontFamily: "Muli",
+                                                          fontWeight: FontWeight.bold
+                                                        //fontWeight: FontWeight.normal
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(8, 4, 8, 0),
-                                            child: Container(
-                                              color: Colors.grey,
-                                              width: double.infinity,
-                                              height: 1,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text(
-                                                  (siteList
-                                                      .siteProbabilityWinningId ==
-                                                      null)
-                                                      ? ""
-                                                      : printProbabilityOfWinning(
-                                                      siteList
-                                                          .siteProbabilityWinningId,model),
-                                                  style: TextStyle(
-                                                      color: Colors.blue,
-                                                      fontSize: 12,
-                                                      fontFamily: "Muli",
-                                                      fontWeight: FontWeight.bold
-                                                    //fontWeight: FontWeight.normal
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                );
-                              });
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      },
-                    ), ),
-                    SizedBox(
-                      height: 30,
+                                    );
+                                  });
+                            } else {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                          },
+                        ), ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: Obx(()=>
+
+                        Padding(
+                          padding:  EdgeInsets.only(top: SizeConfig.screenHeightSafeTop),
+                          child: new Container(
+                            alignment: Alignment.center,
+                            height: SizeConfig.screenHeight*.01,
+                            color: _siteController.isUserOnlineStatus?  Colors.green: Colors.red,
+
+                          ),
+                        )
+                        )
                     ),
                   ],
                 ),
-              ),
+              ],
             ))
       ]);
     });
