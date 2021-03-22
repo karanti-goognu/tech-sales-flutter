@@ -52,7 +52,14 @@ class DashboardController extends GetxController {
   final _mwpPlanApproveStatus = ''.obs;
   final _remainingTargetCount = 0.obs;
   final _remainingTargetVolume = 0.obs;
+  final _isPrev=false.obs;
 
+
+  get isPrev => _isPrev;
+
+  set isPrev(value) {
+    _isPrev.value = value;
+  }
 
   getAccessKey(int requestId) {
     print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');

@@ -49,7 +49,6 @@ class _MonthToDateState extends State<MonthToDate> {
 
   void _printPngBytes() async {
     var pngBytes = await _capturePng();
-    int num = random.nextInt(100);
     final directory = (await getExternalStorageDirectory()).path;
     imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile.writeAsBytes(pngBytes);
@@ -63,7 +62,8 @@ class _MonthToDateState extends State<MonthToDate> {
     yearMonthForFileName = widget.yearMonth;
     final DateFormat formatter = DateFormat("MMMM");
     _currentMonth = formatter.format(DateTime.now());
-    _previousMonth = formatter.format(DateTime(DateTime.now().year,DateTime.now().month-1));
+    _previousMonth = formatter
+        .format(DateTime(DateTime.now().year, DateTime.now().month - 1));
     print(_previousMonth);
     super.initState();
   }
@@ -95,42 +95,55 @@ class _MonthToDateState extends State<MonthToDate> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    '$_currentMonth Details',
-                                    style: TextStyle(fontSize: 18),
+                                  Obx(() => _dashboardController.isPrev==false
+                                      ? Text(
+                                          '$_currentMonth Details',
+                                          style: TextStyle(fontSize: 18),
+                                        )
+                                      : Text(
+                                          '$_previousMonth Details',
+                                          style: TextStyle(fontSize: 18),
+                                        )),
+                                  Expanded(
+                                    child: Container(),
                                   ),
-                                  Expanded(child: Container(),),
                                   GestureDetector(
                                     child: Container(
-                                      padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),
+                                      padding: EdgeInsets.only(
+                                          left: 8, right: 8, top: 4, bottom: 4),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
 //                                        color: HexColor('FF8500'),
-                                      color: ThemeData.light().scaffoldBackgroundColor,
-                                        boxShadow: [BoxShadow(
-                                          color: Colors.black12,
-                                          offset: Offset(4, 4),
-                                          spreadRadius: 2,
-                                          blurRadius: 4
-                                        ),
-                                          BoxShadow(
-                                              color: Colors.white,
-                                              offset: Offset(-4, -4),
-                                              spreadRadius: 2,
-                                              blurRadius: 4
-                                          ),
-                                        ]
-                                      ),
+                                          color: ThemeData.light()
+                                              .scaffoldBackgroundColor,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.black12,
+                                                offset: Offset(4, 4),
+                                                spreadRadius: 2,
+                                                blurRadius: 4),
+                                            BoxShadow(
+                                                color: Colors.white,
+                                                offset: Offset(-4, -4),
+                                                spreadRadius: 2,
+                                                blurRadius: 4),
+                                          ]),
                                       child: Row(
                                         children: [
-                                          Icon(Icons.share, color: ColorConstants.appBarColor,),
+                                          Icon(
+                                            Icons.share,
+                                            color: ColorConstants.appBarColor,
+                                          ),
                                           Text('Share'),
                                         ],
                                       ),
                                     ),
                                     onTap: () => _printPngBytes(),
-
                                   ),
-                                  SizedBox(width: 8,)
+                                  SizedBox(
+                                    width: 8,
+                                  )
                                 ],
                               ),
                               SizedBox(
@@ -172,8 +185,7 @@ class _MonthToDateState extends State<MonthToDate> {
                                       ? SfCircularChart(
                                           margin: EdgeInsets.zero,
                                           // backgroundColor: Colors.yellow,
-                                          annotations: <
-                                              CircularChartAnnotation>[
+                                          annotations: <CircularChartAnnotation>[
                                             CircularChartAnnotation(
                                               // height: '45.0',
                                               widget: Container(
@@ -350,7 +362,8 @@ class _MonthToDateState extends State<MonthToDate> {
                                                       ),
                                                       alignment:
                                                           Alignment.center,
-                                                      color: Colors.blue.withOpacity(0.3),
+                                                      color: Colors.blue
+                                                          .withOpacity(0.3),
                                                     ),
                                                     Container(
                                                       child: Row(
@@ -376,19 +389,22 @@ class _MonthToDateState extends State<MonthToDate> {
                                                       ),
                                                       alignment:
                                                           Alignment.center,
-                                                      color: Colors.green.withOpacity(0.3),
+                                                      color: Colors.green
+                                                          .withOpacity(0.3),
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           "Remaining Tgt-${_dashboardController.remainingTargetVolume} MT"),
-                                                      color: Colors.yellow.withOpacity(0.3),
+                                                      color: Colors.yellow
+                                                          .withOpacity(0.3),
                                                       alignment:
                                                           Alignment.center,
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           "Conv. Target-${_dashboardController.convTargetVolume} MT"),
-                                                      color: Colors.indigo.withOpacity(0.3),
+                                                      color: Colors.indigo
+                                                          .withOpacity(0.3),
                                                       alignment:
                                                           Alignment.center,
                                                     )
@@ -405,7 +421,9 @@ class _MonthToDateState extends State<MonthToDate> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              SizedBox(height: 4,),
+                              SizedBox(
+                                height: 4,
+                              ),
                               Row(
                                 children: [
                                   Text(
@@ -628,32 +646,63 @@ class _MonthToDateState extends State<MonthToDate> {
                           ),
                         ),
                         Expanded(
-                          child: MaterialButton(
-                            onPressed: () {
-                              int year = DateTime.now().year;
-                              int month = DateTime.now().month-1;
-                              String yearMonth;
-                              if (month > 3) {
-                                yearMonth =
-                                    year.toString() + '-' + month.toString();
-                              } else {
-                                yearMonth = (year - 1).toString() +
-                                    '-' +
-                                    (month.toString().length == 1
-                                        ? '0' + month.toString()
-                                        : month.toString());
-                              }
-                              _dashboardController.getMonthViewDetails(
-                                empID: widget.empID,yearMonth: yearMonth
-                              );
-                            },
-                            child: Text(
-                              'Show $_previousMonth (Prev.) Data',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            color: ColorConstants.appBarColor,
-                          ),
-                        ),
+                            child: Obx(
+                          () => _dashboardController.isPrev == false
+                              ? MaterialButton(
+                                  onPressed: () {
+                                    int year = DateTime.now().year;
+                                    int month = DateTime.now().month - 1;
+                                    String yearMonth;
+                                    if (month > 3) {
+                                      yearMonth = year.toString() +
+                                          '-' +
+                                          month.toString();
+                                    } else {
+                                      yearMonth = (year - 1).toString() +
+                                          '-' +
+                                          (month.toString().length == 1
+                                              ? '0' + month.toString()
+                                              : month.toString());
+                                    }
+                                    _dashboardController.getMonthViewDetails(
+                                        empID: widget.empID,
+                                        yearMonth: yearMonth);
+                                    _dashboardController.isPrev = true;
+                                  },
+                                  child: Text(
+                                    'Show $_previousMonth (Prev.) Data',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  color: ColorConstants.appBarColor,
+                                )
+                              : MaterialButton(
+                                  onPressed: () {
+                                    int year = DateTime.now().year;
+                                    int month = DateTime.now().month;
+                                    String yearMonth;
+                                    if (month > 3) {
+                                      yearMonth = year.toString() +
+                                          '-' +
+                                          month.toString();
+                                    } else {
+                                      yearMonth = (year - 1).toString() +
+                                          '-' +
+                                          (month.toString().length == 1
+                                              ? '0' + month.toString()
+                                              : month.toString());
+                                    }
+                                    _dashboardController.getMonthViewDetails(
+                                        empID: widget.empID,
+                                        yearMonth: yearMonth);
+                                    _dashboardController.isPrev = false;
+                                  },
+                                  child: Text(
+                                    'Show $_currentMonth (Current) Data',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  color: ColorConstants.appBarColor,
+                                ),
+                        )),
                       ],
                     ),
                   ),
