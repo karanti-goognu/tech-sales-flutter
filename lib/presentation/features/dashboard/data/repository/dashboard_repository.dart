@@ -20,5 +20,14 @@ class DashboardRepository {
     return apiClient.getMonthViewDetails(empID,yearMonth);
  }
 
+ Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth){
+    return apiClient.getDashboardMtdGeneratedVolumeSiteList(empID,yearMonth);
+  }
+
+  Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth){
+    return apiClient.getDashboardMtdConvertedVolumeList(empID,yearMonth);
+  }
+
+
 
 }

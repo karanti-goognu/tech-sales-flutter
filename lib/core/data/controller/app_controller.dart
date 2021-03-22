@@ -87,7 +87,6 @@ class AppController extends GetxController {
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
-      Get.back();
       this.accessKeyResponse = data;
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
@@ -102,6 +101,7 @@ class AppController extends GetxController {
             getSecretKey(requestId);
           } else {
             // print('Not expired');
+            Get.back();
             switch (requestId) {
               case RequestIds.GET_SITES_LIST:
                 _siteController.getSitesData(this.accessKeyResponse.accessKey);

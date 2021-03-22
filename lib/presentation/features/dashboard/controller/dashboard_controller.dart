@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/repository/dashboard_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -10,17 +12,28 @@ import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardController extends GetxController {
-  // @override
-  // void onInit() {
-  //   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  //   super.onInit();
-  // }
-
   final DashboardRepository repository;
-
   DashboardController({@required this.repository}) : assert(repository != null);
 
   final _accessKeyResponse = AccessKeyModel().obs;
+  final _mtdGeneratedVolumeSiteList = DashboardMtdGeneratedVolumeSiteList().obs;
+  get mtdGeneratedVolumeSiteList => _mtdGeneratedVolumeSiteList.value;
+
+  set mtdGeneratedVolumeSiteList(value) {
+    _mtdGeneratedVolumeSiteList.value = value;
+    print("Inside setter");
+    print(_mtdGeneratedVolumeSiteList.value.totalSiteCount.runtimeType);
+    print(value);
+  }
+
+  final _mtdConvertedVolumeList = DashboardMtdConvertedVolumeList().obs;
+
+  get mtdConvertedVolumeList => _mtdConvertedVolumeList.value;
+
+  set mtdConvertedVolumeList(value) {
+    _mtdConvertedVolumeList.value = value;
+  }
+
   final _phoneNumber = "8860080067".obs;
   final _empId = "_empty".obs;
   final _employeeName = "_empty".obs;
@@ -39,7 +52,14 @@ class DashboardController extends GetxController {
   final _mwpPlanApproveStatus = ''.obs;
   final _remainingTargetCount = 0.obs;
   final _remainingTargetVolume = 0.obs;
+  final _isPrev=false.obs;
 
+
+  get isPrev => _isPrev;
+
+  set isPrev(value) {
+    _isPrev.value = value;
+  }
 
   getAccessKey(int requestId) {
     print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
@@ -58,6 +78,7 @@ class DashboardController extends GetxController {
   }
 
   getDetailsForSharingReport(File image) {
+    Future.delayed(Duration.zero,()=>Center(child: CircularProgressIndicator(),));
     print(image.path);
     String userSecurityCode;
     String empID;
@@ -76,34 +97,35 @@ class DashboardController extends GetxController {
 
   shareReport(
       File image, String userSecurityKey, String accessKey, String empID) {
-    print('waheguru path$image.path');
-    print('waheguru accesskey $accessKey');
-    print('waheguru secretkey $userSecurityKey');
+    print(' path$image.path');
+    print('accesskey $accessKey');
+    print('secretkey $userSecurityKey');
     print(empID);
     repository
         .shareReport(image, userSecurityKey, accessKey, empID)
         .then((value) {
-      print(value);
-      Get.snackbar('Note', value.toString());
+      print("third");
+      print("Inside controller $value");
     });
   }
 
-  getMonthViewDetails({String empID}) {
+  getMonthViewDetails({String empID, String yearMonth}) {
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator(),)));
     print("EMP ID inside controller: $empID");
     String empId = empID??"empty";
     String userSecurityKey = "empty";
-    int year = DateTime.now().year;
-    int month = DateTime.now().month;
-    String yearMonth;
-    if (month > 3) {
-      yearMonth = year.toString() + '-' + month.toString();
-    } else {
-      yearMonth = (year - 1).toString() +
-          '-' +
-          (month.toString().length == 1
-              ? '0' + month.toString()
-              : month.toString());
-    }
+//    int year = DateTime.now().year;
+//    int month = DateTime.now().month;
+//    String yearMonth;
+//    if (month > 3) {
+//      yearMonth = year.toString() + '-' + month.toString();
+//    } else {
+//      yearMonth = (year - 1).toString() +
+//          '-' +
+//          (month.toString().length == 1
+//              ? '0' + month.toString()
+//              : month.toString());
+//    }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       print("Before prefs: $empId");
@@ -130,24 +152,81 @@ class DashboardController extends GetxController {
         this.mwpPlanApproveStatus = data.mwpPlanApproveStatus;
         this.remainingTargetCount = data.remainingTargetCount;
         this.remainingTargetVolume = data.remainingTargetVolume;
+        Get.back();
+
+      });
+    }).catchError((e) => print(e));
+  }
+
+  getDashboardMtdGeneratedVolumeSiteList({String empID}) {
+    print("EMP ID inside controller: $empID");
+    String empId = empID??"empty";
+    String userSecurityKey = "empty";
+    int year = DateTime.now().year;
+    int month = DateTime.now().month;
+    String yearMonth;
+    if (month > 3) {
+      yearMonth = year.toString() + '-' + month.toString();
+    } else {
+      yearMonth = (year - 1).toString() +
+          '-' +
+          (month.toString().length == 1
+              ? '0' + month.toString()
+              : month.toString());
+    }
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      print("Before prefs: $empId");
+      if (empId=='empty')
+        empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      print("After prefs: $empId");
+
+      repository.getDashboardMtdGeneratedVolumeSiteList(empID,yearMonth).then((_) {
+        DashboardMtdGeneratedVolumeSiteList data = _;
+        print("data: ${data.totalSiteCount.runtimeType}");
+        this.mtdGeneratedVolumeSiteList = data;
+        print(this.mtdGeneratedVolumeSiteList);
+        print(this.mtdGeneratedVolumeSiteList.totalSiteCount);
+
       });
     }).catchError((e) => print(e));
   }
 
 
+  getDashboardMtdConvertedVolumeList({String empID}) {
+    print("EMP ID inside controller: $empID");
+    String empId = empID??"empty";
+    String userSecurityKey = "empty";
+    int year = DateTime.now().year;
+    int month = DateTime.now().month;
+    String yearMonth;
+    if (month > 3) {
+      yearMonth = year.toString() + '-' + month.toString();
+    } else {
+      yearMonth = (year - 1).toString() +
+          '-' +
+          (month.toString().length == 1
+              ? '0' + month.toString()
+              : month.toString());
+    }
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      print("Before prefs: $empId");
+      if (empId=='empty')
+        empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      print("After prefs: $empId");
 
+      repository.getDashboardMtdConvertedVolumeList(empID,yearMonth).then((_) {
+        DashboardMtdConvertedVolumeList data = _;
+        this.mtdConvertedVolumeList = data;
 
-
-
-
-
-
-
-
-
-
-
-
+      });
+    }).catchError((e) => print(e));
+  }
 
 
 

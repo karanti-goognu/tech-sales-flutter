@@ -175,15 +175,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ? Colors.white
                         : Colors.grey[200],
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                            left: BorderSide(
-                              color: (inboxMessage.isClicked == true)
-                                  ? HexColor("#F9A61A")
-                                  : HexColor("#007CBF"),
-                              width: 0,
-                            )),
-                      ),
                       child: Column(
                         children: [
                           Row(

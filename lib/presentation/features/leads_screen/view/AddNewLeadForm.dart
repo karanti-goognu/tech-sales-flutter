@@ -2730,7 +2730,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   _getAddressFromLatLng() async {
     try {
-      print("from lat long waheguru");
+      print("from lat long ");
       List<Placemark> p = await geolocator.placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
 

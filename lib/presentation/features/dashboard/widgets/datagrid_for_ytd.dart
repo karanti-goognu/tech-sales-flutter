@@ -20,6 +20,7 @@ class DataGridForYTD extends StatelessWidget {
     controller: _controller,
     source: _employeeDataSource,
     gridLinesVisibility: GridLinesVisibility.none,
+    verticalScrollPhysics: NeverScrollableScrollPhysics(),
     columns: [
       GridNumericColumn(mappingName: 'id', headerText: 'MTD'),
       GridTextColumn(mappingName: 'name', headerText: 'Tgt'),
