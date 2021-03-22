@@ -394,6 +394,7 @@ class _LeadScreenState extends State<LeadScreen> {
           //   ),
           // )
           body: Container(
+            padding: EdgeInsets.all(0),
             child: Column(
               children: [
                 Padding(
@@ -631,161 +632,81 @@ class _LeadScreenState extends State<LeadScreen> {
                           width: 6,
                         )),
                   ),
-                  child: Stack(
+                  child: Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
                     children: [
-                      // Positioned(
-                      //     top: 0,
-                      //     left: 250,
-                      //     right: 0,
-                      //     child: Container(
-                      //         color: Colors.white,
-                      //         child: Column(
-                      //           children: <Widget>[
-                      //             Image.asset(
-                      //               'assets/images/Container.png',
-                      //               fit: BoxFit.fitHeight,
-                      //             ),
-                      //           ],
-                      //         ))),
-                      Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 3.0),
-                            child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                    padding:
-                                    const EdgeInsets.all(
-                                        2.0),
-                                    child: Obx(
-                                          () => Text(
-                                        "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontFamily: "Muli",
-                                            fontWeight:
-                                            FontWeight.bold
-                                          //fontWeight: FontWeight.normal
-                                        ),
-                                      ),
-                                    )),
-                                Padding(
-                                    padding:
-                                    const EdgeInsets.all(
-                                        2.0),
-                                    child: Obx(
-                                          () => Text(
-                                        "District: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadDistrictName}",
-                                        style: TextStyle(
-                                            color:
-                                            Colors.black38,
-                                            fontSize: 14,
-                                            fontFamily: "Muli",
-                                            fontWeight:
-                                            FontWeight.bold
-                                          //fontWeight: FontWeight.normal
-                                        ),
-                                      ),
-                                    )),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                      const EdgeInsets.only(
-                                          left: 1.0),
-                                      child: Chip(
-                                        shape: StadiumBorder(
-                                            side: BorderSide(
-                                                color: HexColor(
-                                                    "#39B54A"))),
-                                        backgroundColor:
-                                        HexColor("#39B54A")
-                                            .withOpacity(
-                                            0.1),
-                                        label: Obx(
-                                              () => Text(
-                                            (_splashController
-                                                .splashDataModel
-                                                .leadStatusEntity[(_leadsFilterController
-                                                .leadsListResponse
-                                                .leadsEntity[
-                                            index]
-                                                .leadStatusId) -
-                                                1]
-                                                .leadStatusDesc),
-                                            style: TextStyle(
-                                                color: HexColor(
-                                                    "#39B54A"),
-                                                fontSize: 8,
-                                                fontFamily:
-                                                "Muli",
-                                                fontWeight:
-                                                FontWeight
-                                                    .bold
-                                              //fontWeight: FontWeight.normal
-                                            ),
-                                          ),
-                                        ),
+                      Expanded(
+                        flex: 13,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 3.0),
+                          child: Column(
+                            mainAxisAlignment:MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                  padding:
+                                  const EdgeInsets.all(
+                                      2.0),
+                                  child: Obx(
+                                        () => Text(
+                                      "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "Muli",
+                                          fontWeight:
+                                          FontWeight.bold
+                                        //fontWeight: FontWeight.normal
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 10.0),
-                                      child: Text(
-                                        " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
-                                          _leadsFilterController
+                                  )),
+                              Padding(
+                                  padding:
+                                  const EdgeInsets.all(
+                                      2.0),
+                                  child: Obx(
+                                        () => Text(
+                                      "District: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadDistrictName}",
+                                      style: TextStyle(
+                                          color:
+                                          Colors.black38,
+                                          fontSize: 14,
+                                          fontFamily: "Muli",
+                                          fontWeight:
+                                          FontWeight.bold
+                                        //fontWeight: FontWeight.normal
+                                      ),
+                                    ),
+                                  )),
+                              Row(
+                                children: [
+                                  Transform.scale(
+                                    scale: 0.9,
+                                    child: Chip(
+                                      shape: StadiumBorder(
+                                          side: BorderSide(
+                                              color: HexColor(
+                                                  "#39B54A"))),
+                                      backgroundColor:
+                                      HexColor("#39B54A")
+                                          .withOpacity(
+                                          0.1),
+                                      label: Obx(
+                                            () => Text(
+                                          (_splashController
+                                              .splashDataModel
+                                              .leadStatusEntity[(_leadsFilterController
                                               .leadsListResponse
                                               .leadsEntity[
                                           index]
-                                              .createdOn,
-                                        ))}",
-                                        //  textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: "Muli",
-                                          fontWeight:
-                                          FontWeight.bold,
-
-                                          //fontWeight: FontWeight.normal
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 5.0, bottom: 10),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceEvenly,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets.only(
-                                        top: 8.0),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Site-Pt: ",
+                                              .leadStatusId) -
+                                              1]
+                                              .leadStatusDesc),
                                           style: TextStyle(
-                                              color: Colors
-                                                  .black38,
-                                              fontSize: 14,
+                                              color: HexColor(
+                                                  "#39B54A"),
+                                              fontSize: 8,
                                               fontFamily:
                                               "Muli",
                                               fontWeight:
@@ -794,82 +715,143 @@ class _LeadScreenState extends State<LeadScreen> {
                                             //fontWeight: FontWeight.normal
                                           ),
                                         ),
-                                        Obx(
-                                              () => Text(
-                                            "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
-                                            style: TextStyle(
-                                              // color: Colors.black38,
-                                                fontSize: 14,
-                                                fontFamily:
-                                                "Muli",
-                                                fontWeight:
-                                                FontWeight
-                                                    .bold
-                                              //fontWeight: FontWeight.normal
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                  // Text(
-                                  //   "Call Contractor",
-                                  //   style: TextStyle(
-                                  //       // color: Colors.white,
-                                  //       fontSize: 11,
-                                  //       fontFamily: "Muli",
-                                  //       fontWeight: FontWeight.bold
-                                  //       //fontWeight: FontWeight.normal
-                                  //       ),
-                                  // ),
-                                  Obx(
-                                        () => GestureDetector(
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.call,
-                                            color: HexColor(
-                                                "#8DC63F"),
-                                          ),
-                                          Text(
-                                            "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                            //" Call Contractor",
-                                            style: TextStyle(
-                                                color: Colors
-                                                    .black,
-                                                fontSize: 14,
-                                                fontFamily:
-                                                "Muli",
-                                                fontWeight:
-                                                FontWeight
-                                                    .bold,
-                                                fontStyle:
-                                                FontStyle
-                                                    .italic
-                                              //fontWeight: FontWeight.normal
-                                            ),
-                                          ),
-                                        ],
                                       ),
-                                      onTap: () {
-                                        String num =
-                                            _leadsFilterController
-                                                .leadsListResponse
-                                                .leadsEntity[
-                                            index]
-                                                .contactNumber;
-                                        launch('tel:$num');
-                                      },
                                     ),
                                   ),
+                                  Text(
+                                    " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
+                                      _leadsFilterController
+                                          .leadsListResponse
+                                          .leadsEntity[
+                                      index]
+                                          .createdOn,
+                                    ))}",
+                                    //  textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.safeBlockHorizontal*2.6,
+                                      fontFamily: "Muli",
+                                      fontWeight:
+                                      FontWeight.bold,
+
+                                      //fontWeight: FontWeight.normal
+                                    ),
+                                  ),
+                                  Expanded(child: Container(),)
                                 ],
-                              ),
-                            ),
+                              )
+                            ],
                           ),
-                        ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 5.0, bottom: 10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment:
+                            MainAxisAlignment
+                                .spaceEvenly,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(
+                                    top: 8.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(child: Container(),),
+                                    Text(
+                                      "Site-Pt: ",
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black38,
+                                          fontSize: 14,
+                                          fontFamily:
+                                          "Muli",
+                                          fontWeight:
+                                          FontWeight
+                                              .bold
+                                        //fontWeight: FontWeight.normal
+                                      ),
+                                    ),
+                                    Obx(
+                                          () => Text(
+                                        "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
+                                        style: TextStyle(
+                                          // color: Colors.black38,
+                                            fontSize: 14,
+                                            fontFamily:
+                                            "Muli",
+                                            fontWeight:
+                                            FontWeight
+                                                .bold
+                                          //fontWeight: FontWeight.normal
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              // Text(
+                              //   "Call Contractor",
+                              //   style: TextStyle(
+                              //       // color: Colors.white,
+                              //       fontSize: 11,
+                              //       fontFamily: "Muli",
+                              //       fontWeight: FontWeight.bold
+                              //       //fontWeight: FontWeight.normal
+                              //       ),
+                              // ),
+                              Obx(
+                                    () => GestureDetector(
+                                  child: Row(
+                                    children: [
+                                      Expanded(child: Container(),),
+                                      Icon(
+                                        Icons.call,
+                                        color: HexColor(
+                                            "#8DC63F"),
+                                      ),
+                                      Text(
+                                        "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                        //" Call Contractor",
+                                        style: TextStyle(
+                                            color: Colors
+                                                .black,
+                                            fontSize: SizeConfig.safeBlockHorizontal*3,
+                                            fontFamily:
+                                            "Muli",
+                                            fontWeight:
+                                            FontWeight
+                                                .bold,
+                                            fontStyle:
+                                            FontStyle
+                                                .italic
+                                          //fontWeight: FontWeight.normal
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    String num =
+                                        _leadsFilterController
+                                            .leadsListResponse
+                                            .leadsEntity[
+                                        index]
+                                            .contactNumber;
+                                    launch('tel:$num');
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
