@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/controller/da
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/bar_graph_for_ytd.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/datagrid_for_ytd.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/line_series_for_ytd.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
@@ -67,6 +68,7 @@ class _YearToDateState extends State<YearToDate> {
 
   @override
   void initState() {
+    _dashboardController.getYearlyViewDetails();
     super.initState();
     populateData();
     print(_employees[0].id);
@@ -104,19 +106,32 @@ class _YearToDateState extends State<YearToDate> {
                   Expanded(child: Container(),),
                   GestureDetector(
                     child: Container(
-                      padding: EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 4),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),
-                          color: HexColor('FF8500'),
-                          boxShadow: [BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(4, 4),
-                              spreadRadius: 2,
-                              blurRadius: 4
-                          )]
-                      ),
+                      padding: EdgeInsets.only(
+                          left: 8, right: 8, top: 4, bottom: 4),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.circular(25),
+//                                        color: HexColor('FF8500'),
+                          color: ThemeData.light()
+                              .scaffoldBackgroundColor,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(4, 4),
+                                spreadRadius: 2,
+                                blurRadius: 4),
+                            BoxShadow(
+                                color: Colors.white,
+                                offset: Offset(-4, -4),
+                                spreadRadius: 2,
+                                blurRadius: 4),
+                          ]),
                       child: Row(
                         children: [
-                          Icon(Icons.share),
+                          Icon(
+                            Icons.share,
+                            color: ColorConstants.appBarColor,
+                          ),
                           Text('Share'),
                         ],
                       ),
@@ -130,7 +145,6 @@ class _YearToDateState extends State<YearToDate> {
                 children: [
                   Transform.scale(
                     scale: 0.7,
-//                    transform: Matrix4.identity()..scale(0.7),
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                       decoration: BoxDecoration(

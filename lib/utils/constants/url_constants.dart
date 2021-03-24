@@ -66,6 +66,7 @@ abstract class UrlConstants {
   static const String dashboadrMonthlyView = '$baseUrl/dashboard/dashboadrMonthlyView?referenceID=';
   static const String dashboardMtdConvertedVolumeList = '$baseUrl/dashboard/dashboardMtdConvertedVolumeList?referenceID=';
   static const String dashboardMtdGeneratedVolumeSiteList = '$baseUrl/dashboard/dashboardMtdGeneratedVolumeSiteList?referenceID=';
+  static const String dashboardYearlyView = '$baseUrl/dashboard/dashboardYearlyView?referenceID=';
 
 
 }

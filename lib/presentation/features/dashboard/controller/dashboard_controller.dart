@@ -77,6 +77,22 @@ class DashboardController extends GetxController {
     });
   }
 
+  getYearlyViewDetails() {
+    Future.delayed(Duration.zero,()=>Center(child: CircularProgressIndicator(),));
+//    String userSecurityCode;
+    String empID;
+    repository.getAccessKey().then((value) {
+      print(value.accessKey);
+      this.accessKeyResponse = value;
+      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+      _prefs.then((SharedPreferences prefs) {
+//        userSecurityCode = prefs.getString(StringConstants.userSecurityKey);
+        empID = prefs.getString(StringConstants.employeeId);
+        repository.getYearlyViewDetails(empID);
+      });
+    });
+  }
+
   getDetailsForSharingReport(File image) {
     Future.delayed(Duration.zero,()=>Center(child: CircularProgressIndicator(),));
     print(image.path);
@@ -112,7 +128,9 @@ class DashboardController extends GetxController {
   getMonthViewDetails({String empID, String yearMonth}) {
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator(),)));
     print("EMP ID inside controller: $empID");
+
     String empId = empID??"empty";
+
     String userSecurityKey = "empty";
 //    int year = DateTime.now().year;
 //    int month = DateTime.now().month;
@@ -134,6 +152,9 @@ class DashboardController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print("After prefs: $empId");
+      print('Controller empID: ${this.empId}');
+      this.empId=empId;
+      print('Controller empID: ${this.empId}');
 
       repository.getMonthViewDetails(empId, yearMonth).then((_) {
         DashboardMonthlyViewModel data = _;

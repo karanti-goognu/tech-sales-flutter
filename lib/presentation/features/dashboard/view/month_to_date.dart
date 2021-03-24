@@ -48,6 +48,7 @@ class _MonthToDateState extends State<MonthToDate> {
   }
 
   void _printPngBytes() async {
+    print(empID);
     var pngBytes = await _capturePng();
     final directory = (await getExternalStorageDirectory()).path;
     imgFile = new File('$directory/$empID-$yearMonthForFileName.png');

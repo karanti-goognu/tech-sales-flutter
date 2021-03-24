@@ -28,6 +28,10 @@ class DashboardRepository {
     return apiClient.getDashboardMtdConvertedVolumeList(empID,yearMonth);
   }
 
+  Future getYearlyViewDetails(String empID){
+    return apiClient.getYearlyViewDetails(empID);
+  }
+
 
 
 }

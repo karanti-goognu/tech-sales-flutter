@@ -5,6 +5,7 @@ import 'package:async/async.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardYearlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -121,6 +122,27 @@ class MyApiClientDashboard {
     }catch(_){
       print('Exception at Dashboard Repo : Volume MTD Converted ${_.toString()}');
     }
+
+  }
+
+  Future getYearlyViewDetails(String empID)async{
+    try{
+      var url=UrlConstants.dashboardYearlyView+empID;
+      print(url);
+      var response = await httpClient.get(url,headers: requestHeaders);
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        DashboardYearlyViewModel dashboardYearlyViewModel;
+        dashboardYearlyViewModel = DashboardYearlyViewModel.fromJson(data);
+        return dashboardYearlyViewModel;
+      } else
+        print('error');
+
+    }catch(_){
+      print('Exception at Dashboard Repo : Yearly View ${_.toString()}');
+    }
+
 
   }
 }
