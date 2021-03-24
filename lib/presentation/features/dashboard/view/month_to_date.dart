@@ -18,12 +18,12 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class MonthToDate extends StatefulWidget {
   final empID, yearMonth;
-  MonthToDate({this.empID, this.yearMonth});
+  MonthToDate({this.empID, this.yearMonth, });
   @override
-  _MonthToDateState createState() => _MonthToDateState();
+  MonthToDateState createState() => MonthToDateState();
 }
 
-class _MonthToDateState extends State<MonthToDate> {
+class MonthToDateState extends State<MonthToDate> {
   bool _currentMothDetailsVolume = false;
   bool _currentMothDspSlabVolume = false;
   DashboardController _dashboardController = Get.find();

@@ -25,9 +25,8 @@ class _DashboardState extends State<Dashboard> {
   List<ReportingTsoListModel> _employeeDropDownData;
   String empID;
   String yearMonth;
-
-
-  callFromInitState()async{
+GlobalKey<MonthToDateState> monthToDateKey = GlobalKey();
+  callFromInitState() async {
     int year = DateTime.now().year;
     int month = DateTime.now().month;
     if (month > 3) {
@@ -40,15 +39,17 @@ class _DashboardState extends State<Dashboard> {
               : month.toString());
     }
 
-    _dashboardController.getMonthViewDetails(yearMonth: yearMonth).then((value){
+    _dashboardController
+        .getMonthViewDetails(yearMonth: yearMonth)
+        .then((value) {
       print("isProcessComplete    $value");
       print("_dashboardController.empId    ${_dashboardController.empId}");
-      empID=_employeeDropDownData.isEmpty?_dashboardController.empId:_employeeDropDownData[0].tsoId;
-
-
+      empID = _employeeDropDownData.isEmpty
+          ? _dashboardController.empId
+          : _employeeDropDownData[0].tsoId;
     });
-     _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
-
+    _employeeDropDownData =
+        _splashController.splashDataModel.reportingTsoListModel;
   }
 
   @override
@@ -65,14 +66,19 @@ class _DashboardState extends State<Dashboard> {
               : month.toString());
     }
 
-    _dashboardController.getMonthViewDetails(yearMonth: yearMonth).then((value){
+    _dashboardController
+        .getMonthViewDetails(yearMonth: yearMonth)
+        .then((value) {
       print("isProcessComplete    $value");
       print("_dashboardController.empId    ${_dashboardController.empId}");
-      empID=_employeeDropDownData.isEmpty?_dashboardController.empId:_employeeDropDownData[0].tsoId;
+      empID = _employeeDropDownData.isEmpty
+          ? _dashboardController.empId
+          : _employeeDropDownData[0].tsoId;
 
-print(empID);
+      print(empID);
     });
-    _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
+    _employeeDropDownData =
+        _splashController.splashDataModel.reportingTsoListModel;
 //    callFromInitState();
 
     super.initState();
@@ -84,45 +90,52 @@ print(empID);
       length: 2,
       child: Scaffold(
           appBar: AppBar(
-              automaticallyImplyLeading: false,
+            automaticallyImplyLeading: false,
             title: Text('MY DASHBOARD'),
             centerTitle: true,
             backgroundColor: ColorConstants.appBarColor,
             bottom: PreferredSize(
-              preferredSize: _employeeDropDownData.isEmpty?Size.fromHeight(50):Size.fromHeight(110),
+              preferredSize: _employeeDropDownData.isEmpty
+                  ? Size.fromHeight(50)
+                  : Size.fromHeight(110),
               child: Column(
                 children: [
-                  _employeeDropDownData.isEmpty?Container()
-                  :DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4)
-                      ),
-                      margin: EdgeInsets.all(8),
-                      padding: EdgeInsets.symmetric(horizontal: 12,vertical: 0),
-                      child: DropdownButton(
-                          isExpanded: true,
-                          value:empID,
-                          iconEnabledColor: ColorConstants.appBarColor,
-                          items: _employeeDropDownData
-                              .map((e) => DropdownMenuItem(
-                            value: e.tsoId,
-                            child: Text(
-                              '(${e.tsoId})  ${e.tsoName}',
-                              style: TextStyle(color: ColorConstants.appBarColor,fontWeight: FontWeight.bold),
-                            ),
-                          ))
-                              .toList(),
-                          onChanged: (value) {
+                  _employeeDropDownData.isEmpty
+                      ? Container()
+                      : DropdownButtonHideUnderline(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4)),
+                            margin: EdgeInsets.all(8),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 0),
+                            child: DropdownButton(
+                                isExpanded: true,
+                                value: empID,
+                                iconEnabledColor: ColorConstants.appBarColor,
+                                items: _employeeDropDownData
+                                    .map((e) => DropdownMenuItem(
+                                          value: e.tsoId,
+                                          child: Text(
+                                            '(${e.tsoId})  ${e.tsoName}',
+                                            style: TextStyle(
+                                                color:
+                                                    ColorConstants.appBarColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
 //                            print(value);
-                            setState(() {
-                              empID=value;
-                            });
-                            _dashboardController.getMonthViewDetails(empID: empID, yearMonth: yearMonth);
-                          }),
-                    ),
-                  ),
+                                  setState(() {
+                                    empID = value;
+                                  });
+                                  _dashboardController.getMonthViewDetails(
+                                      empID: empID, yearMonth: yearMonth);
+                                }),
+                          ),
+                        ),
                   TabBar(
                     tabs: [
                       Tab(
@@ -143,11 +156,15 @@ print(empID);
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           body: TabBarView(
-            children: [MonthToDate(empID:empID, yearMonth:yearMonth), YearToDate()],
+            children: [
+              MonthToDate(empID: empID, yearMonth: yearMonth, key:monthToDateKey),
+              YearToDate()
+            ],
           )),
       // ),
     );
   }
+
   @override
   void dispose() {
     _dashboardController.dispose();
