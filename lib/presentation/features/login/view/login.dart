@@ -33,6 +33,7 @@ class LoginScreenPageState extends State<LoginScreen> {
   void initState() {
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
+      if(mounted)
       setState(() => _source = source);
     });
     super.initState();

@@ -1,4 +1,6 @@
 
+import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+
 class SiteRefreshDataResponse {
   // List<SiteStageEntity> leadStatusEntity;
   List<SiteStageEntity> siteStageEntity;
@@ -268,6 +270,18 @@ class SitesModal {
   double siteScore;
   bool syncStatus;
 
+  String createdBy;
+  String createdOn;
+  String updatedBy;
+  String updatedOn;
+  int sitePotentialMt;
+  String siteSegment;
+
+
+
+
+     /*Socode and sitePotentialMt not on site model*/
+
   SitesModal(
       {  this.siteId,
         this.siteBuiltArea,
@@ -303,7 +317,7 @@ class SitesModal {
         this.siteConstructionId,
         this.noOfFloors,
         this.siteScore,
-        this.syncStatus});
+        this.syncStatus,this.createdBy,this.createdOn,this.updatedBy,this.updatedOn,this.sitePotentialMt,this.siteSegment});
 
   SitesModal.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -383,8 +397,14 @@ class SitesModal {
     data['noOfFloors'] = this.noOfFloors;
     data['siteScore'] = this.siteScore;
     data['syncStatus'] = this.syncStatus;
+
+
     print("siteUpdateTabledata    $data");
     return data;
+
+
+
+
   }
 
   Map<String, dynamic> toJsonMap() {
@@ -397,6 +417,53 @@ class SitesModal {
     print("siteUpdateTabledata    $data");
     return data;
   }
+
+
+
+/*Map data for create json for pass site data to server*/
+  Map getJsonData() {
+    var map = {};
+    map[UrlConstants.ASSIGNED_TO] = this.assignedTo;
+    map[UrlConstants.CLOSURE_REASON_TEXT] = this.siteClosureReasonText ;
+    map[UrlConstants.CONTACT_NAME] = this.siteOwnerName;
+    map[UrlConstants.CONTACT_NUMBER] = this.siteOwnerContactNumber;
+    map[UrlConstants.CREATED_BY] = this.createdBy;
+    map[UrlConstants.CREATED_ON] = this.createdOn;
+    map[UrlConstants.DEALER_ID] = this.siteDealerId;
+    map[UrlConstants.INACTIVE_REASON_TEXT] = this.inactiveReasonText;
+    map[UrlConstants.NEXT_VISIT_DATE] = this.siteNextVisitDate;
+    map[UrlConstants.NO_OF_FLOORS] = this.noOfFloors;
+    map[UrlConstants.PLOT_NUMBER] = this.sitePlotNumber;
+    map[UrlConstants.PRODUCT_DEMO] = this.siteProductDemo;
+    map[UrlConstants.PRODUCT_ORAL_BRIEFING] = this.siteProductOralBriefing;
+    map[UrlConstants.RERA_NUMBER] = this.siteReraNumber;
+    map[UrlConstants.SITE_ADDRESS] = this.siteAddress;
+    map[UrlConstants.SITE_BUILD_AREA] = this.siteBuiltArea;
+    map[UrlConstants.SO_CODE] = this.siteSoname;
+    map[UrlConstants.UPDATED_BY] = this.updatedBy;
+    map[UrlConstants.UPDATED_ON] = this.updatedOn;
+    map[UrlConstants.SITE_COMPETITION_ID] = this.siteCompetitionId;
+    map[UrlConstants.SITE_CONSTRUCTION_ID] = this.siteConstructionId;
+    map[UrlConstants.SITE_CREATION_DATE] = this.siteCreationDate;
+    map[UrlConstants.SITE_DISTRICT] = this.siteDistrict;
+    map[UrlConstants.SITE_GEO_TAG] = this.siteGeotagType;
+    map[UrlConstants.SITE_GEO_TAG_LAT] = this.siteGeotagLatitude;
+    map[UrlConstants.SITE_GEO_TAG_LONG] = this.siteGeotagLongitude;
+    map[UrlConstants.SITE_ID] = this.siteId;
+    map[UrlConstants.SITE_PIN_CODE] = this.sitePincode;
+    map[UrlConstants.SITE_POTENTIAL_MT] = this.sitePotentialMt;
+    map[UrlConstants.SITE_PROBABILITY_WINNING_ID] = this.siteProbabilityWinningId;
+    map[UrlConstants.SITE_SCORE] = this.siteScore;
+    map[UrlConstants.SITE_SEGMENT] = this.siteSegment;
+    map[UrlConstants.SITE_STAGE_ID] = this.siteStageId;
+    map[UrlConstants.SITE_STATE] = this.siteState;
+    map[UrlConstants.SITE_STATUS_ID] = this.siteStatusId;
+    map[UrlConstants.SITE_TALUK] = this.siteTaluk;
+
+    return map;
+  }
+
+
 }
 
 class SiteFloorsEntity {
@@ -755,7 +822,6 @@ class SiteNextStageEntity {
     data['nextStageSupplyQty'] = this.nextStageSupplyQty;
     data['createdBy'] = this.createdBy;
     data['createdOn'] = this.createdOn;
-    data['syncStatus'] = this.syncStatus;
     return data;
   }
 }

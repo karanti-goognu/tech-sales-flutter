@@ -19,6 +19,7 @@ Map<String, String> requestHeadersWithAccessKey(String accessKey) {
   return requestHeaders;
 }
 
+/*.*/
 Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String accessKey , String userSecurityKey) {
   Map<String, String> requestHeaders = new Map();
   requestHeaders = {

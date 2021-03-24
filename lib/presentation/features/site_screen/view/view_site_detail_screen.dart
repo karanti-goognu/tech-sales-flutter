@@ -266,6 +266,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
     SitesDBProvider model = ScopedModel.of(this.context);
     model.fetchConstructionStageEntityData().then((value)  {
+      if(mounted)
       setState(() {
         constructionStageEntity.addAll(value);
         constructionStageEntityNew.addAll(value);
@@ -276,6 +277,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     });
 
     model.fetchBrandData().then((value)  {
+      if(mounted)
       setState(() {
         siteBrandEntityfromLoaclDB.addAll(value);
       });
@@ -286,6 +288,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 /*set floor data in list*/
     await model.fetchFloorsData().then((value){
+      if(mounted)
       setState(() {
         siteFloorsEntity.addAll(value);
         siteFloorsEntityNew.addAll(value);
@@ -298,24 +301,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 /*set floor data in list*/
     await model.fetchVisitHistoryData().then((value){
+      if(mounted)
       setState(() {
         siteVisitHistoryEntity.addAll(value);
       });
     });
 
     await model.fetchProWinningData().then((value){
+      if(mounted)
       setState(() {
         siteProbabilityWinningEntity.addAll(value);
       });
     });
 
  await model.fetchCompetitionStatusData().then((value){
+   if(mounted)
       setState(() {
         siteCompetitionStatusEntity.addAll(value);
       });
     });
 
  await model.fetchOpportunityStatusData().then((value){
+   if(mounted)
       setState(() {
         siteOpportunityStatusEntity.addAll(value);
       });
@@ -323,6 +330,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
  await model.fetchCommentEntityData().then((value){
+   if(mounted)
       setState(() {
         siteCommentsEntity.addAll(value);
       });
@@ -330,12 +338,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
  await model.fetchPhotoData().then((value){
+   if(mounted)
       setState(() {
         sitephotosEntity.addAll(value);
       });
     });
 
  await model.fetchInfluencerTypeData().then((value){
+   if(mounted)
       setState(() {
         influencerTypeEntity.addAll(value);
       });
@@ -344,6 +354,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
  await model.fetchInfluencerCategoryData().then((value){
+   if(mounted)
       setState(() {
         influencerCategoryEntity.addAll(value);
       });
@@ -351,12 +362,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
  await model.fetchInfluencerData().then((value){
+   if(mounted)
       setState(() {
         influencerEntity.addAll(value);
       });
     });
 
  await model.fetchSiteInfluencerEntityData().then((value){
+   if(mounted)
       setState(() {
         siteInfluencerEntity.addAll(value);
       });
@@ -365,6 +378,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
  await model.fetchSiteStageEntityData().then((value){
    print("fetchSiteStageEntityData   ${value.length}");
+   if(mounted)
       setState(() {
         siteStageEntity.addAll(value);
         siteStageEntityNextStage.addAll(value);
@@ -372,11 +386,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     });
 
    await model.fetchCounterDealersData().then((value){
+     if(mounted)
       setState(() {
         counterListModel.addAll(value);
       });
     });
  await model.fetchDealerData().then((value){
+   if(mounted)
       setState(() {
         dealerEntityForDb.addAll(value);
        });
@@ -793,6 +809,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                                         // hint: Text('Rating'),
                                         onChanged: (value) {
+                                          if(mounted)
                                           setState(() {
                                             // _siteStage = value;
                                             // labelId = _siteStage.id;
@@ -963,6 +980,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                                       _siteStage.id;
                                                                                   labelText =
                                                                                       _siteStage.siteStageDesc;
+                                                                                  if(mounted)
                                                                                   setState(() {
                                                                                     fromDropDown = true;
                                                                                   });
@@ -1169,6 +1187,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                                       lastDate: DateTime(2101),
                                                                                     );
 
+                                                                                    if(mounted)
+
                                                                                     setState(() {
                                                                                       final DateFormat formatter = DateFormat("yyyy-MM-dd");
                                                                                       if(picked!=null) {
@@ -1270,6 +1290,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                                       _siteStage.id;
                                                                                   labelText =
                                                                                       _siteStage.siteStageDesc;
+                                                                                  if(mounted)
                                                                                   setState(() {
                                                                                     fromDropDown = true;
                                                                                   });
@@ -1422,6 +1443,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           // hint: Text('Rating'),
 
                           onChanged: (value) {
+                            if(mounted)
                             setState(() {
                               _selectedConstructionType = value;
 
@@ -1555,6 +1577,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                                   // hint: Text('Rating'),
                                   onChanged: (value) {
+                                    if(mounted)
                                     setState(() {
                                       FocusScope.of(context)
                                           .requestFocus(new FocusNode());
@@ -1702,6 +1725,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   // initialValue: _totalBags.toString(),
                                   controller: _siteTotalBags,
                                   onChanged: (value) {
+                                    if(mounted)
                                     setState(() {
                                       // _totalBags.text = value ;
                                       if (_siteTotalBags.text == null ||
@@ -1742,6 +1766,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 child: TextFormField(
                                   controller: _siteTotalPt,
                                   onChanged: (value) {
+                                    if(mounted)
                                     setState(() {
                                       // _totalBags.text = value ;
                                       if (_siteTotalPt.text == null ||
@@ -1883,6 +1908,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 ),
                               ),
                               onPressed: () {
+                                if(mounted)
                                 setState(() {
                                   geoTagType = "A";
                                 });
@@ -1934,6 +1960,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
                                   }else{
+                                    if(mounted)
                                     setState(() {
                                       geoTagType = "M";
                                     });
@@ -1948,6 +1975,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                                     );
                                     print("result.... = $result");
+                                    if(mounted)
                                     setState(() {
                                       _pickedLocation = result;
                                       _currentPosition = new Position(
@@ -2261,6 +2289,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                     color: HexColor("#FFCD00"),
                                                   ),
                                                   onTap: () {
+                                                    if(mounted)
                                                     setState(() {
                                                       _imgDetails
                                                           .removeAt(index);
@@ -2400,6 +2429,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   ),
                   GestureDetector(
                     onTap: () {
+                      if(mounted)
                       setState(() {
                         _initialIndex = 3;
                         _tabController.animateTo(3);
@@ -2437,6 +2467,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       // initialValue: _totalBags.toString(),
                       controller: _siteTotalBalanceBags,
                       onChanged: (value) {
+                        if(mounted)
                         setState(() {
                           // _totalBags.text = value ;
                           if (_siteTotalBalanceBags.text == null ||
@@ -2478,6 +2509,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     child: TextFormField(
                       controller: _siteTotalBalancePt,
                       onChanged: (value) {
+                        if(mounted)
                         setState(() {
                           // _totalBags.text = value ;
                           if (_siteTotalBalancePt.text == null ||
@@ -2535,6 +2567,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
               // hint: Text('Rating'),
               onChanged: (value) {
+                if(mounted)
                 setState(() {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   _selectedConstructionTypeVisit = value;
@@ -2591,6 +2624,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
               // hint: Text('Rating'),
               onChanged: (value) {
+                if(mounted)
                 setState(() {
                   _selectedSiteVisitFloor = value;
 
@@ -2687,6 +2721,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 _siteProductFromLocalDB = null;
                 List<BrandModelforDB> _siteProductEntityfromLoaclDB =
                     await BrandNameDbConfig.fetchAllDistinctProduct(value.brandName);
+                if(mounted)
                 setState(() {
                   _siteBrandFromLocalDB = value;
                   print("_siteBrandFromLocalDB   ${_siteBrandFromLocalDB.id}   ${_siteBrandFromLocalDB.brandName} ${_siteBrandFromLocalDB.productName}");
@@ -2735,7 +2770,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 // hint: Text('Rating'),
                 onChanged: (value) {
                   print("Product Value");
-                  print(value);
+                  if(mounted)
                   setState(() {
                     _siteProductFromLocalDB = value;
                     print(_siteProductFromLocalDB.id);
@@ -2770,6 +2805,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 print(" Dealer Value");
                 print(value);
                 selectedSubDealer = null;
+                if(mounted)
                 setState(() {
                   subDealerList = new List();
                   visitDataDealer = value.toString();
@@ -2815,6 +2851,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     onChanged: (value) {
                       // print("Sub Dealer Value");
                       // print(value.shipToParty.toString());
+                      if(mounted)
                       setState(() {
                         visitDataSubDealer = value.shipToParty.toString();
                       });
@@ -2948,7 +2985,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               firstDate: DateTime(2001),
                               lastDate: DateTime.now(),
                             );
-
+                            if(mounted)
                             setState(() {
                               final DateFormat formatter = DateFormat("yyyy-MM-dd");
                               if(picked!=null) {
@@ -3131,7 +3168,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       firstDate: DateTime(2001),
                       lastDate: DateTime.now(),
                     );
-
+                    if(mounted)
                     setState(() {
                       final DateFormat formatter = DateFormat("yyyy-MM-dd");
                       if(picked!=null) {
@@ -3165,6 +3202,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           ),
                         ),
                         onPressed: () async {
+                          if(mounted)
                           setState(() {
                             addNextButtonDisable = !addNextButtonDisable;
                           });
@@ -3188,6 +3226,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           ),
                         ),
                         onPressed: () async {
+                          if(mounted)
                           setState(() {
                             addNextButtonDisable = !addNextButtonDisable;
                           });
@@ -3225,6 +3264,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ))
                   .toList(),
               onChanged: (value) {
+                if(mounted)
                 setState(() {
                   labelProbabilityText = value.siteProbabilityStatus;
                   labelProbabilityId = value.id;
@@ -3264,6 +3304,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ))
                   .toList(),
               onChanged: (value) {
+                if(mounted)
                 setState(() {
                   _siteCompetitionStatusEntity = value;
                 });
@@ -3301,6 +3342,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ))
                   .toList(),
               onChanged: (value) {
+                if(mounted)
                 setState(() {
                   _siteOpportunitStatusEnity = value;
                 });
@@ -3372,7 +3414,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       firstDate: DateTime.now(),
                       lastDate: DateTime(2101),
                     );
-
+                    if(mounted)
                     setState(() {
                       final DateFormat formatter = DateFormat("yyyy-MM-dd");
                       if(picked!=null) {
@@ -3528,14 +3570,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               Text(
                                 siteCommentsEntity[
                                         siteCommentsEntity.length - 1]
-                                    .creatorName,
+                                    .creatorName??"",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 25),
                               ),
                               Text(
                                 siteCommentsEntity[
                                         siteCommentsEntity.length - 1]
-                                    .siteCommentText,
+                                    .siteCommentText??"",
                                 style: TextStyle(
                                     color: Colors.black.withOpacity(0.5),
                                     fontSize: 25),
@@ -3545,7 +3587,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     DateTime.fromMillisecondsSinceEpoch(
                                         siteCommentsEntity[
                                                 siteCommentsEntity.length - 1]
-                                            .createdOn)),
+                                            .createdOn??0)),
                                 style: TextStyle(
                                     color: Colors.black.withOpacity(0.5),
                                     fontSize: 15),
@@ -6021,11 +6063,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         return;
       }
     }
-
-
-
-
-
     Future.delayed(
         Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -6033,10 +6070,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
    /*update site data only when the syncStatus is true */
     await _checkSyncStatus().then((value){
       print("_checkSyncStatus  $value");
+
       if(!value){
         Get.back();
-        Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_ALREADY_UPDATE));
-        return;
+        internetChecking().then((result){
+          if(result){
+            _siteController.syncDataToServer(_helper);
+          }else{
+
+            Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_ALREADY_UPDATE));
+            return;
+          }
+        });
+
+
       } else{
         /*check user is authorised for update or insert data*/
         _checkUserIsAuthorisedForDataInsert().then((isAuthorised) {
@@ -6044,23 +6091,23 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             Get.dialog(CustomDialogs()
                 .errorDialog(StringConstants.NOT_AUTHORISED));
           } else {
-
+            SiteNextStageEntity _nextDataModel;
             if(addNextButtonDisable){
-              SiteNextStageEntity _nextDataModel=new SiteNextStageEntity(siteId:widget.siteId,constructionStageId:_constructionIdForNextVisit ,stagePotential: _stagePotentialValueForNextVisit ,
+                _nextDataModel=new SiteNextStageEntity(siteId:widget.siteId,constructionStageId:_constructionIdForNextVisit ,stagePotential: _stagePotentialValueForNextVisit ,
                   brandId:_brandIdForNextVisit ,brandPrice:_brandPriceForNextVisit ,stageStatus: _stagStatusValueForNextVisit, constructionStartDt:_dateOfConstructionForNextVisit ,
                   nextStageSupplyDate:_dateSuppliedValueForNextVisit ,nextStageSupplyQty: _suppliedQtyValueForNextVisit, syncStatus : false);
-              _helper.insertDataInTable(DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY, _nextDataModel.toJson(), ConflictAlgorithm.replace);
+             // _helper.insertDataInTable(DbConstants.TABLE_SITE_NEXT_STAGE_ENTITY, _nextDataModel.toJson(), ConflictAlgorithm.replace);
             }
 
             /*new data insert in siteVisitHistoryEntity table*/
             SiteCommentsEntity _commentsEntity =new SiteCommentsEntity(siteId: widget.siteId, siteCommentText: _commentsValue);
-            _helper.insertDataInTable(DbConstants.TABLE_SITE_COMMENT_ENTITY, _commentsEntity.toJson(),  ConflictAlgorithm.replace);
+           // _helper.insertDataInTable(DbConstants.TABLE_SITE_COMMENT_ENTITY, _commentsEntity.toJson(),  ConflictAlgorithm.replace);
 
             /*new data insert in siteVisitHistoryEntity table*/
             SiteVisitHistoryEntity _visitDataModel=new SiteVisitHistoryEntity( totalBalancePotential:_siteTotalBalanceBagsValue,constructionStageId:_selectedConstructionTypeVisitId,floorId: _selectedSiteVisitFloorId,
                 stagePotential:_stagePotentialVisitValue,brandId:_siteBrandFromLocalDBId, brandPrice: _brandPriceVisitValue, constructionDate: _dateOfConstructionValue, siteId:widget.siteId,
                 supplyDate: _dateOfBagSuppliedValue, supplyQty: _siteCurrentTotalBagsValue  , isAuthorised:"N" ,stageStatus: _stageStatusValue,  shipToParty: shipToPartyValue, syncStatus: false );
-            _helper.insertDataInTable(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, _visitDataModel.toJson(), ConflictAlgorithm.replace);
+            //_helper.insertDataInTable(DbConstants.TABLE_SITE_VISIT_HISTORY_ENTITY, _visitDataModel.toJson(), ConflictAlgorithm.replace);
 
 
 /*Update Site data */
@@ -6073,12 +6120,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 siteProbabilityWinningId:_siteProbabilityWinningEntityId,siteCompetitionId:_siteCompetitionStatusEntityId,siteOppertunityId:_siteOpportunitStatusEnityId,
                 assignedTo: _sitesModel.assignedTo,siteStatusId:_sitesModel.siteStatusId,siteCreationDate:_sitesModel.siteCreationDate,siteConstructionId:_constructionId,noOfFloors:_selectedSiteFloorId,
                 siteScore: siteScore,syncStatus:false);
-            _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]).then((value){
-              if(value!=0){
-                Get.back();
-                Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_UPDATE));
-              }
-            });
+                 _siteController.storeDataInLocalDbAndServer(_helper,widget.siteId,_dataModel,_visitDataModel,_commentsEntity,nextDataModel: _nextDataModel );
+
+            // _helper.updateTableRow(DbConstants.TABLE_SITE_LIST, _dataModel.toJson(), "${DbConstants.COL_SITE_ID} = ? ",[widget.siteId]).then((value){
+            //   if(value!=0){
+            //     Get.back();
+            //     Get.dialog(CustomDialogs().errorDialog(StringConstants.SITE_DATA_UPDATE));
+            //   }
+            // });
           }
         });
 

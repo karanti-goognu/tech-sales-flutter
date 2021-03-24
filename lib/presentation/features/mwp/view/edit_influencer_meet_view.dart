@@ -97,6 +97,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                   value:
                                       _addEventController.selectedEventTypeMeet,
                                   onChanged: (String newValue) {
+                                    if(mounted)
                                     setState(() {
                                       dropdownValue = newValue;
                                       _addEventController
@@ -236,6 +237,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                     value: _addEventController
                                         .selectedVenueTypeMeet,
                                     onChanged: (String newValue) {
+                                      if(mounted)
                                       setState(() {
                                         dropdownValue = newValue;
                                         _addEventController
@@ -518,6 +520,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
+      if(mounted)
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);

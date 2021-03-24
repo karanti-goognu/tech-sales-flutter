@@ -314,10 +314,7 @@ class SitesDBProvider extends Model {
   Future<void> clearRefreshTable() async{
     var db = await _database;
     db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
-
-
     db.delete("${DbConstants.TABLE_SITE_LIST}");
-
     db.delete("${DbConstants.TABLE_SITE_PHOTOS_ENTITY}");
     db.delete("${DbConstants.TABLE_SITE_COMMENT_ENTITY}");
     db.delete("${DbConstants.TABLE_DRAFT_LEAD}");

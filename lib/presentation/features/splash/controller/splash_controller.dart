@@ -88,8 +88,7 @@ class SplashController extends GetxController {
       String mobileNumberEncrypted =
           encryptString(mobileNumber, StringConstants.encryptedKey);
       print('$empIdEncrypted \n$mobileNumberEncrypted');
-      repository
-          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
+      repository.getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
         Get.back();
         this.secretKeyResponse = data;
@@ -124,8 +123,14 @@ class SplashController extends GetxController {
           debugPrint('Leads Data Response is null');
         } else {
           this.splashDataModel = data;
+
           print("Opportunity Model ${this.splashDataModel.siteOpportunityStatusRepository}");
           print("Opportunity Model ${this.splashDataModel.siteSubTypeEntity}");
+         var journeyDate= splashDataModel.journeyDetails.journeyDate;
+         var journeyEndTime= splashDataModel.journeyDetails.journeyEndTime;
+          print("Opportunity journeyDate $journeyDate     $journeyEndTime");
+          prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+          prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
           openNextPage();
           /*if (splashDataModel.respCode == "LD2006") {
             Get.dialog(CustomDialogs().errorDialog(splashDataModel.respMsg));

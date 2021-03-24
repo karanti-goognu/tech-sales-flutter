@@ -112,6 +112,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                             },
                             onDayPressed:
                                 (DateTime date, List<Event> events) {
+                                  if(mounted)
                               this.setState(() {
                                 _currentDate2 = date;
                               });
@@ -151,7 +152,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                               _appController.getAccessKey(
                                   RequestIds.GET_CALENDER_EVENTS);
                               //_calendarEventController.isLoading = true;
-
+                              if(mounted)
                               this.setState(() {
                                 _targetDateTime = date;
                                 _currentMonth =

@@ -239,6 +239,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                       child: DropdownButton<String>(
                                         value: _addEventController.visitType,
                                         onChanged: (String newValue) {
+                                          if(mounted)
                                           setState(() {
                                             _addEventController.visitType =
                                                 newValue;
@@ -652,6 +653,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
+      if(mounted)
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);
@@ -667,6 +669,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
+      if(mounted)
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);

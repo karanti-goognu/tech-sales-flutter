@@ -53,6 +53,7 @@ class _RequestCreationState extends State<RequestCreation> {
       await eventController
           .getSrComplaintFormData(value.accessKey)
           .then((data) {
+        if(mounted)
         setState(() {
           srComplaintModel = data;
         });
@@ -71,12 +72,14 @@ class _RequestCreationState extends State<RequestCreation> {
           .getRequestorDetails(value.accessKey, requestorType)
           .then((data) {
         if (data != null) {
+          if(mounted)
           setState(() {
             requestorDetailsModel = data;
           });
           for (int i = 0;
               i < requestorDetailsModel.srComplaintRequesterList.length;
               i++) {
+            if(mounted)
             setState(() {
               suggestions.add(requestorDetailsModel
                       .srComplaintRequesterList[i].requesterName +
@@ -116,6 +119,7 @@ class _RequestCreationState extends State<RequestCreation> {
   void initState() {
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
+      if(mounted)
       setState(() => _source = source);
     });
     getDropdownData();
@@ -179,6 +183,7 @@ class _RequestCreationState extends State<RequestCreation> {
                               children: [
                                 DropdownButtonFormField(
                                   onChanged: (value) {
+                                    if(mounted)
                                     setState(() {
                                       requestDepartmentId = value;
                                     });
@@ -201,6 +206,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 DropdownButtonFormField(
                                   onChanged: (value) {
+                                    if(mounted)
                                     setState(() {
                                       selectedRequestSubtypeSeverity = [];
                                       selectedRequestSubtypeObjectList = [];
@@ -364,6 +370,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                       ? 'Please select Customer Type'
                                       : null,
                                   onChanged: (value) {
+                                    if(mounted)
                                     setState(() {
                                       FocusScope.of(context).requestFocus(new FocusNode());
                                       creatorType = value;
@@ -575,6 +582,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                                                 "#FFCD00"),
                                                           ),
                                                           onTap: () {
+                                                            if(mounted)
                                                             setState(() {
                                                               _imageList
                                                                   .removeAt(
@@ -664,6 +672,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                         List subTypeDetails = List();
                                         selectedRequestSubtypeObjectList
                                             .forEach((element) {
+                                          if(mounted)
                                           setState(() {
                                             subTypeDetails.add({
                                               "createdBy": empId,
@@ -675,6 +684,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                         });
 
                                         _imageList.forEach((element) {
+                                          if(mounted)
                                           setState(() {
                                             imageDetails.add({
                                               //ToDo: Change srComplaint Id to some dynamic value
@@ -780,6 +790,7 @@ class _RequestCreationState extends State<RequestCreation> {
               child: TextFormField(
                 controller: _query,
                 onChanged: (value) {
+                  if(mounted)
                   setState(() {
                     requestSubtype = srComplaintModel
                         .serviceRequestComplaintTypeEntity
@@ -815,6 +826,7 @@ class _RequestCreationState extends State<RequestCreation> {
                           onChanged: (newValue) {
                             // if (!checkedValues.contains(true) ||
                             //     checkedValues[index] == true) {
+                            if(mounted)
                             setState(() {
                               selectedRequestSubtype.contains(
                                       requestSubtype[index]
@@ -836,6 +848,7 @@ class _RequestCreationState extends State<RequestCreation> {
                               selectedRequestSubtypeSeverity = [];
                               selectedRequestSubtypeObjectList
                                   .forEach((element) {
+                                if(mounted)
                                 setState(() {
                                   selectedRequestSubtypeSeverity
                                       .add(element.complaintSeverity);
@@ -892,16 +905,19 @@ class _RequestCreationState extends State<RequestCreation> {
                     //  print(selectedRequestSubtype);
                    //   print(selectedRequestSubtypeSeverity);
                       if (selectedRequestSubtypeSeverity.contains('HIGH')) {
+                        if(mounted)
                         setState(() {
                           _severity.text = 'HIGH';
                         });
                       } else if (selectedRequestSubtypeSeverity
                           .contains('MEDIUM')) {
+                        if(mounted)
                         setState(() {
                           _severity.text = 'MEDIUM';
                         });
                       } else if (selectedRequestSubtypeSeverity
                           .contains('LOW')) {
+                        if(mounted)
                         setState(() {
                           _severity.text = 'LOW';
                         });
@@ -945,6 +961,7 @@ class _RequestCreationState extends State<RequestCreation> {
   // List<ServiceRequestComplaintTypeEntity> serviceRequestComplaintType;
   ServiceRequestComplaintTypeEntity serviceRequestComplaintType;
   customFunction(dataFromOtherClass) {
+    if(mounted)
     setState(() {
       serviceRequestComplaintType = dataFromOtherClass;
       _requestSubType.text = serviceRequestComplaintType.serviceRequestTypeText;
@@ -965,6 +982,7 @@ class _RequestCreationState extends State<RequestCreation> {
         maxWidth: 480,
         maxHeight: 600);
     if (image != null) {
+      if(mounted)
       setState(() {
         _imageList.add(image);
       });
@@ -1005,6 +1023,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                     '${e.requesterName} (${e.requesterCode})'),
                                 groupValue: customer,
                                 onChanged: (text) {
+                                  if(mounted)
                                   setState(() {
                                     _requestorName.text = text.requesterName;
                                     _customerID.text = text.requesterCode;

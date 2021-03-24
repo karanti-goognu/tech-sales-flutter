@@ -160,6 +160,7 @@ class _VisitDataViewState extends State<VisitDataView> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      if(mounted)
                       setState(() {
                         _initialIndex = 3;
                         _tabController.animateTo(3);
@@ -197,6 +198,7 @@ class _VisitDataViewState extends State<VisitDataView> {
                       // initialValue: _totalBags.toString(),
                       controller: _siteTotalBalanceBags,
                       onChanged: (value) {
+                        if(mounted)
                         setState(() {
                           // _totalBags.text = value ;
                           if (_siteTotalBalanceBags.text == null ||
@@ -238,6 +240,7 @@ class _VisitDataViewState extends State<VisitDataView> {
                     child: TextFormField(
                       controller: _siteTotalBalancePt,
                       onChanged: (value) {
+                        if(mounted)
                         setState(() {
                           // _totalBags.text = value ;
                           if (_siteTotalBalancePt.text == null ||
@@ -295,6 +298,7 @@ class _VisitDataViewState extends State<VisitDataView> {
 
               // hint: Text('Rating'),
               onChanged: (value) {
+                if(mounted)
                 setState(() {
                   _selectedConstructionTypeVisit = value;
                   print(_selectedConstructionTypeVisit.id);

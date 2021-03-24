@@ -173,6 +173,7 @@ class _DealersListWidgetState extends State<DealersListWidget> {
     /*else{
       _addEventController.dealerListSelected.remove(index);
     }*/
+    if(mounted)
     setState(() {
       _addEventController.dealerList[index].isSelected = val;
       if (val) {

@@ -50,6 +50,11 @@ class MyRepositorySites {
     return apiClient.getSiteRefreshData(accessKey, userSecurityKey, empID);
   }
 
+  /*sync site data to server*/
+ syncSiteData(String empID,String accessKey, String userSecurityKey, Map<String, dynamic> siteMapData) {
+    return apiClient.syncSiteDataToServer(empID, siteMapData, accessKey, userSecurityKey);
+  }
+
 
 
 

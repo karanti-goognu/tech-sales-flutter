@@ -30,6 +30,7 @@ class _RequestUpdationState extends State<RequestUpdation> {
       await srListController
           .getComplaintViewData(value.accessKey, widget.id.toString())
           .then((value) {
+        if(mounted)
         setState(() {
           complaintViewModel = value;
         });
@@ -191,6 +192,7 @@ class _RequestUpdationState extends State<RequestUpdation> {
                         children: [
                           GestureDetector(
                             onTap: () {
+                              if(mounted)
                               setState(() {
                                 option = 1;
                               });
@@ -210,6 +212,7 @@ class _RequestUpdationState extends State<RequestUpdation> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              if(mounted)
                               setState(() {
                                 option = 2;
                               });

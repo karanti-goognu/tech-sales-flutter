@@ -120,36 +120,28 @@ class AppController extends GetxController {
                 _addEventController.saveVisit(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.GET_CALENDER_EVENTS:
-                _calendarEventController
-                    .getCalendarEvent(this.accessKeyResponse.accessKey);
+                _calendarEventController.getCalendarEvent(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.GET_CALENDER_EVENTS_OF_DAY:
-                _calendarEventController
-                    .getCalendarEventOfDay(this.accessKeyResponse.accessKey);
+                _calendarEventController.getCalendarEventOfDay(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.TARGET_VS_ACTUAL:
-                _calendarEventController
-                    .getTargetVsActualEvent(this.accessKeyResponse.accessKey);
+                _calendarEventController.getTargetVsActualEvent(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.GET_DEALERS_LIST:
-                _addEventController
-                    .getDealersList(this.accessKeyResponse.accessKey);
+                _addEventController.getDealersList(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.SAVE_VISIT:
-                _addEventController
-                    .saveVisit(this.accessKeyResponse.accessKey);
+                _addEventController.saveVisit(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.SAVE_MEET:
-                _addEventController
-                    .saveMeet(this.accessKeyResponse.accessKey);
+                _addEventController.saveMeet(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.VIEW_VISIT:
-                _addEventController
-                    .viewVisitData(this.accessKeyResponse.accessKey);
+                _addEventController.viewVisitData(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.VIEW_MEET:
-                _addEventController
-                    .viewMeetData(this.accessKeyResponse.accessKey);
+                _addEventController.viewMeetData(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.UPDATE_VISIT:
                 _addEventController

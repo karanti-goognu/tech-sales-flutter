@@ -286,4 +286,21 @@ class MyApiClientSites {
       print('exception ${_.toString()}');
     }
   }
+
+
+
+  syncSiteDataToServer(String empID, Map<String, dynamic> mapData, String accessKey, String userSecurityKey) async {
+    String url= UrlConstants.getSiteUpdateRefreshDetails + "$empID";
+     await http.post(url, body: mapData, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),  ).then((response) {
+      final statusCode = response.statusCode;
+       print("statusCode  syncSiteDataToServer  $statusCode");
+
+      try {
+        final Map responseBody = json.decode(response.body);
+       } catch (Ex) {
+
+      }
+    });
+
+  }
 }

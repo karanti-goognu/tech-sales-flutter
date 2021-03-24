@@ -67,6 +67,7 @@ class _ReadOtpScreenPageState extends State<ReadOtpScreen> {
               RaisedButton(
                 child: Text('Set code to 123456'),
                 onPressed: () async {
+                  if(mounted)
                   setState(() {
                     _code = '123456';
                   });
@@ -81,6 +82,7 @@ class _ReadOtpScreenPageState extends State<ReadOtpScreen> {
                 child: Text('Get app signature'),
                 onPressed: () async {
                   signature = await SmsAutoFill().getAppSignature;
+                  if(mounted)
                   setState(() {});
                 },
               ),
@@ -111,6 +113,7 @@ class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage>
 
   @override
   void codeUpdated() {
+    if(mounted)
     setState(() {
       otpCode = code;
     });
@@ -122,6 +125,7 @@ class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage>
     listenForCode();
 
     SmsAutoFill().getAppSignature.then((signature) {
+      if(mounted)
       setState(() {
         appSignature = signature;
       });

@@ -16,6 +16,7 @@ class _AddInfluencerViewState extends State<AddInfluencerView> {
   Duration oneSec = const Duration(seconds:1);
   changeColors(){
     new Timer.periodic(oneSec, (Timer t) =>
+
     setState(() {
       _color = Color.fromRGBO(
         random.nextInt(100),

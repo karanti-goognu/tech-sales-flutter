@@ -54,6 +54,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   child: DropdownButton<String>(
                     value: _addEventController.visitSubType,
                     onChanged: (String newValue) {
+                      if(mounted)
                       setState(() {
                         _addEventController.visitSubType = newValue;
                       });
@@ -76,6 +77,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                         ),
                         onTap: () {
                           print(value);
+                          if(mounted)
                           setState(() {
                             switch (value) {
                               case "RETENTION SITE":
@@ -285,6 +287,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
+      if(mounted)
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);

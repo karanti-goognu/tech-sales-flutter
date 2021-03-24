@@ -90,6 +90,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
     super.initState();
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
+      if(mounted)
       setState(() => _source = source);
     });
     _focusNode = FocusNode();
@@ -122,6 +123,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   }
 
   void _requestFocus() {
+    if(mounted)
     setState(() {
       FocusScope.of(context).requestFocus(_focusNode);
     });

@@ -182,6 +182,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                           // hint: Text('Rating'),
 
                           onChanged: (value) {
+                            if(mounted)
                             setState(() {
                               _selectedConstructionType = value;
                             });
@@ -312,6 +313,7 @@ class _SiteDataViewState extends State<SiteDataView> {
 
                                   // hint: Text('Rating'),
                                   onChanged: (value) {
+                                    if(mounted)
                                     setState(() {
                                       _selectedSiteFloor = value;
                                     });
@@ -456,6 +458,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                   // initialValue: _totalBags.toString(),
                                   controller: _siteTotalBags,
                                   onChanged: (value) {
+                                    if(mounted)
                                     setState(() {
                                       // _totalBags.text = value ;
                                       if (_siteTotalBags.text == null ||
@@ -498,6 +501,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                 child: TextFormField(
                                   controller: _siteTotalPt,
                                   onChanged: (value) {
+                                    if(mounted)
                                     setState(() {
                                       // _totalBags.text = value ;
                                       if (_siteTotalPt.text == null ||
@@ -542,6 +546,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                           //   return null;
                           // },
                           onChanged: (data) {
+                            if(mounted)
                             setState(() {
                               _ownerName.text = data;
                             });
@@ -567,6 +572,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                             return null;
                           },
                           onChanged: (data) {
+                            if(mounted)
                             setState(() {
                               _contactNumber.text = data;
                             });
@@ -638,6 +644,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                 ),
                               ),
                               onPressed: () {
+                                if(mounted)
                                 setState(() {
                                   geoTagType = "A";
                                 });
@@ -675,6 +682,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                 ),
                               ),
                               onPressed: () async {
+                                if(mounted)
                                 setState(() {
                                   geoTagType = "M";
                                 });
@@ -694,6 +702,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                   // desiredAccuracy: LocationAccuracy.best,
                                 );
                                 print("result = $result");
+                                if(mounted)
                                 setState(() {
                                   _pickedLocation = result;
                                   _currentPosition = new Position(
@@ -976,6 +985,7 @@ class _SiteDataViewState extends State<SiteDataView> {
                                                     color: HexColor("#FFCD00"),
                                                   ),
                                                   onTap: () {
+                                                    if(mounted)
                                                     setState(() {
                                                       _imgDetails
                                                           .removeAt(index);
@@ -1332,6 +1342,7 @@ class _SiteDataViewState extends State<SiteDataView> {
 
       Placemark place = p[0];
       Get.back();
+      if(mounted)
       setState(() {
         _siteAddress.text =
             place.name + "," + place.thoroughfare + "," + place.subLocality;
@@ -1354,7 +1365,7 @@ class _SiteDataViewState extends State<SiteDataView> {
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50);
-
+    if(mounted)
     setState(() {
       //print(image.path);
       if (image != null) {
@@ -1371,7 +1382,7 @@ class _SiteDataViewState extends State<SiteDataView> {
   _imgFromGallery() async {
     File image = await ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
-
+    if(mounted)
     setState(() {
       // print(image.path);
 
@@ -1393,6 +1404,7 @@ class _SiteDataViewState extends State<SiteDataView> {
       geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
+        if(mounted)
         setState(() {
           _currentPosition = position;
         });
@@ -1406,12 +1418,14 @@ class _SiteDataViewState extends State<SiteDataView> {
 
   void toggleSwitchForProductDemo(bool value) {
     if (isSwitchedsiteProductDemo == false) {
+      if(mounted)
       setState(() {
         isSwitchedsiteProductDemo = true;
         _siteProductDemo.text = "Y";
         // textValue = 'Switch Button is ON';
       });
     } else {
+      if(mounted)
       setState(() {
         isSwitchedsiteProductDemo = false;
         _siteProductDemo.text = "N";
@@ -1422,12 +1436,14 @@ class _SiteDataViewState extends State<SiteDataView> {
 
   void toggleSwitchForOralBriefing(bool value) {
     if (isSwitchedsiteProductOralBriefing == false) {
+      if(mounted)
       setState(() {
         isSwitchedsiteProductOralBriefing = true;
         _siteProductOralBriefing.text = "Y";
         // textValue = 'Switch Button is ON';
       });
     } else {
+      if(mounted)
       setState(() {
         isSwitchedsiteProductOralBriefing = false;
         _siteProductOralBriefing.text = "N";

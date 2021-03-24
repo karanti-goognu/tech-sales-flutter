@@ -78,6 +78,7 @@ class _PastStageHistoryViewState extends State<PastStageHistoryView> {
                                               fontSize: 17),
                                         ),
                                         onPressed: () {
+                                          if(mounted)
                                           setState(() {
                                             siteVisitHistoryEntity[index]
                                                 .isExpanded =
@@ -106,6 +107,7 @@ class _PastStageHistoryViewState extends State<PastStageHistoryView> {
                                               fontSize: 17),
                                         ),
                                         onPressed: () {
+                                          if(mounted)
                                           setState(() {
                                             siteVisitHistoryEntity[index]
                                                 .isExpanded =
@@ -154,6 +156,7 @@ class _PastStageHistoryViewState extends State<PastStageHistoryView> {
                                               fontSize: 17),
                                         ),
                                         onPressed: () {
+                                          if(mounted)
                                           setState(() {
                                             siteVisitHistoryEntity[index]
                                                 .isExpanded =
@@ -182,6 +185,7 @@ class _PastStageHistoryViewState extends State<PastStageHistoryView> {
                                               fontSize: 17),
                                         ),
                                         onPressed: () {
+                                          if(mounted)
                                           setState(() {
                                             siteVisitHistoryEntity[index]
                                                 .isExpanded =

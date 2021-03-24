@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/database/sitelist_db_helper.dart';
+import 'package:flutter_tech_sales/helper/database_helper.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteRefreshDataResponse.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/controller/
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/db_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -38,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
   SiteController _siteController = Get.find();
+  DatabaseHelper _databaseHelper;
 
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
@@ -65,8 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return result;
   }
 
-  Future<void> getSiteRefreshData(SitesDBProvider provider) async {
-
+  Future<void> getSiteRefreshData({SitesDBProvider provider}) async {
+    if(provider!=null)
     provider.clearRefreshTable();
     SiteRefreshDataResponse viewSiteDataResponse = new SiteRefreshDataResponse();
     List<SitephotosEntity> sitephotosList = new List();
@@ -81,7 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
     List<SiteCommentsEntity> siteCommentsEntity = new List();
     List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
     List<CounterListModel> counterListModel = new List();
-
     List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
     List<SiteInfluencerEntity> siteInfluencerEntity = new List();
     List<InfluencerTypeEntity> influencerTypeEntity = new List();
@@ -284,25 +286,54 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     initPlatformState();
+    _databaseHelper=new DatabaseHelper();
     // _moengagePlugin.initialise();
     // _moengagePlugin.enableSDKLogs();
     // _moengagePlugin.setUpPushCallbacks(_onPushClick);
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-    if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
-      print('Check In');
-      _homeController.checkInStatus = StringConstants.checkIn;
-    } else {
-      if (_splashController.splashDataModel.journeyDetails.journeyEndTime ==
-          null) {
-        print('Check Out');
-        _homeController.checkInStatus = StringConstants.checkOut;
-      } else {
-        print('Journey Ended');
-        _homeController.checkInStatus = StringConstants.journeyEnded;
-      }
-    }
+    internetChecking().then((result){
+      if(result)
+        _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+
+    });
+
+
+    //   if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
+    //    print('Check In');
+    //    _homeController.checkInStatus = StringConstants.checkIn;
+    //  } else {
+    //    if (_splashController.splashDataModel.journeyDetails.journeyEndTime ==
+    //        null) {
+    //      print('Check Out');
+    //      _homeController.checkInStatus = StringConstants.checkOut;
+    //    } else {
+    //      print('Journey Ended');
+    //      _homeController.checkInStatus = StringConstants.journeyEnded;
+    //    }
+    //  }
+
+
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
+      _homeController.checkInStatus = StringConstants.journeyEnded;
+     var journeyDate= prefs.getString(StringConstants.JOURNEY_DATE);
+      var journeyEndDate = prefs.getString(StringConstants.JOURNEY_END_DATE);
+     if (journeyDate == null) {
+       print('Check In');
+       _homeController.checkInStatus = StringConstants.checkIn;
+     } else {
+       if (journeyEndDate ==
+           null) {
+         print('Check Out');
+         _homeController.checkInStatus = StringConstants.checkOut;
+       } else {
+         print('Journey Ended');
+         _homeController.checkInStatus = StringConstants.journeyEnded;
+       }
+     }
+
+
+
+
       _homeController.employeeName =
           prefs.getString(StringConstants.employeeName);
 
@@ -312,7 +343,30 @@ class _HomeScreenState extends State<HomeScreen> {
       // _moengagePlugin.setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
 
     });
+   _autoCallSyncData();
   }
+
+  /*auto call sync data */
+  _autoCallSyncData() async {
+
+   await _databaseHelper.getCount(DbConstants.TABLE_SITE_LIST).then((value) {
+     print("siteTableRowCount    $value");
+     if(value==0){
+       SitesDBProvider model = ScopedModel.of(this.context);
+       internetChecking().then((result) => {
+         if (result == true){
+           getSiteRefreshData(provider: model),
+         }
+       });
+     }
+   });
+
+
+
+
+  }
+
+
 
   @override
   void dispose() {
@@ -485,7 +539,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       colorText: Colors.white,
                                       backgroundColor: Colors.green,
                                       snackPosition: SnackPosition.BOTTOM),
-                                      getSiteRefreshData(model)
+                                      getSiteRefreshData(provider:model)
                                 }
                               else
                                 {

@@ -51,6 +51,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         data = await eventController.getSrListData(
             value.accessKey, eventController.offset);
       });
+      if(mounted)
       setState(() {
         serviceRequestComplaintListModel = data;
       });
@@ -60,6 +61,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   @override
   void initState() {
     getSRListData().whenComplete(() {
+      if(mounted)
       setState(() {
         serviceRequestComplaintListModel = data;
       });
@@ -112,6 +114,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   onPressed: () =>
                       Get.bottomSheet(FilterWidget()).then((value) {
                         print(value);
+                        if(mounted)
                         setState(() {
                           // totalFilters = value.isEmpty ? value[3] : 0;
                           totalFilters = value[3];
@@ -123,6 +126,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                               value[0], value[1], value[2])
                               .then((data) {
                             // print(data.toJson());
+                            if(mounted)
                             setState(() {
                               serviceRequestComplaintListModel = data;
                             });
