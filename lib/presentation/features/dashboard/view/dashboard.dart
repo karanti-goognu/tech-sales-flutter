@@ -25,7 +25,7 @@ class _DashboardState extends State<Dashboard> {
   List<ReportingTsoListModel> _employeeDropDownData;
   String empID;
   String yearMonth;
-GlobalKey<MonthToDateState> monthToDateKey = GlobalKey();
+GlobalKey<MonthToDateState> monthToDateKey;
   callFromInitState() async {
     int year = DateTime.now().year;
     int month = DateTime.now().month;
@@ -42,11 +42,19 @@ GlobalKey<MonthToDateState> monthToDateKey = GlobalKey();
     _dashboardController
         .getMonthViewDetails(yearMonth: yearMonth)
         .then((value) {
-      print("isProcessComplete    $value");
-      print("_dashboardController.empId    ${_dashboardController.empId}");
+      print("_dashboardController.empId ???????   ${_dashboardController.empId}");
+      print("_dashboardController.monthToDateKey   ${_dashboardController.empId} $monthToDateKey    $monthToDateKey.currentState");
+      monthToDateKey.currentState.passEmpId(_dashboardController.empId);
+
+
+     // print("isProcessComplete    $value");
+
       empID = _employeeDropDownData.isEmpty
           ? _dashboardController.empId
           : _employeeDropDownData[0].tsoId;
+
+
+
     });
     _employeeDropDownData =
         _splashController.splashDataModel.reportingTsoListModel;
@@ -56,6 +64,7 @@ GlobalKey<MonthToDateState> monthToDateKey = GlobalKey();
   void initState() {
     int year = DateTime.now().year;
     int month = DateTime.now().month;
+    monthToDateKey = GlobalKey();
     if (month > 3) {
       yearMonth = year.toString() + '-' + month.toString();
     } else {
@@ -74,11 +83,12 @@ GlobalKey<MonthToDateState> monthToDateKey = GlobalKey();
       empID = _employeeDropDownData.isEmpty
           ? _dashboardController.empId
           : _employeeDropDownData[0].tsoId;
-
+      monthToDateKey.currentState.passEmpId(empID);
       print(empID);
     });
     _employeeDropDownData =
         _splashController.splashDataModel.reportingTsoListModel;
+
 //    callFromInitState();
 
     super.initState();
@@ -157,7 +167,7 @@ GlobalKey<MonthToDateState> monthToDateKey = GlobalKey();
               FloatingActionButtonLocation.centerDocked,
           body: TabBarView(
             children: [
-              MonthToDate(empID: empID, yearMonth: yearMonth, key:monthToDateKey),
+              MonthToDate(key:monthToDateKey,empID: empID, yearMonth: yearMonth),
               YearToDate()
             ],
           )),

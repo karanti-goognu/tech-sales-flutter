@@ -18,7 +18,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class MonthToDate extends StatefulWidget {
   final empID, yearMonth;
-  MonthToDate({this.empID, this.yearMonth, });
+  MonthToDate({Key key,this.empID, this.yearMonth, }): super(key: key);
   @override
   MonthToDateState createState() => MonthToDateState();
 }
@@ -27,6 +27,7 @@ class MonthToDateState extends State<MonthToDate> {
   bool _currentMothDetailsVolume = false;
   bool _currentMothDspSlabVolume = false;
   DashboardController _dashboardController = Get.find();
+  String empId="";
 
   static GlobalKey previewContainer = new GlobalKey();
   File imgFile;
@@ -719,6 +720,13 @@ class MonthToDateState extends State<MonthToDate> {
       ),
     );
   }
+
+
+  /*Pass empId*/
+  void passEmpId(String empIdValue){
+   print("passed empId ...   $empIdValue");
+   this.empId=empIdValue;
+ }
 }
 
 class ChartData {
