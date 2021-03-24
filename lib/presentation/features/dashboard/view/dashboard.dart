@@ -26,16 +26,6 @@ class _DashboardState extends State<Dashboard> {
   String empID;
   String yearMonth;
 
-  String getEmpID(){
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs){
-      empID =  prefs.getString(StringConstants.employeeId);
-      print("Prefs: $empID");
-    });
-    print("Inside EMP-ID function");
-    print(empID);
-    return empID;
-  }
 
   callFromInitState()async{
     int year = DateTime.now().year;
@@ -63,35 +53,33 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    print(1);
-//    int year = DateTime.now().year;
-//    int month = DateTime.now().month;
-//    if (month > 3) {
-//      yearMonth = year.toString() + '-' + month.toString();
-//    } else {
-//      yearMonth = (year - 1).toString() +
-//          '-' +
-//          (month.toString().length == 1
-//              ? '0' + month.toString()
-//              : month.toString());
-//    }
-//    _dashboardController.getMonthViewDetails(yearMonth: yearMonth);
-//    print("Initstate:");
-//
-//    print(_dashboardController.empId);
-//    _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
-//    empID=_employeeDropDownData.isEmpty?getEmpID():
-//    _employeeDropDownData[0].tsoId;
-//    print("Initstate: $empID");
-    callFromInitState();
+    int year = DateTime.now().year;
+    int month = DateTime.now().month;
+    if (month > 3) {
+      yearMonth = year.toString() + '-' + month.toString();
+    } else {
+      yearMonth = (year - 1).toString() +
+          '-' +
+          (month.toString().length == 1
+              ? '0' + month.toString()
+              : month.toString());
+    }
+
+    _dashboardController.getMonthViewDetails(yearMonth: yearMonth).then((value){
+      print("isProcessComplete    $value");
+      print("_dashboardController.empId    ${_dashboardController.empId}");
+      empID=_employeeDropDownData.isEmpty?_dashboardController.empId:_employeeDropDownData[0].tsoId;
+
+print(empID);
+    });
+    _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
+//    callFromInitState();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-//    print('height');
-//    print(MediaQuery.of(context).size.height);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
