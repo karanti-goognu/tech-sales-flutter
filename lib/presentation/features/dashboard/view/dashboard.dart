@@ -54,9 +54,6 @@ class _DashboardState extends State<Dashboard> {
      print(_dashboardController.empId);
      _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
      empID=_employeeDropDownData.isEmpty?_dashboardController.empId:_employeeDropDownData[0].tsoId;
-
-
-
   }
 
   @override
