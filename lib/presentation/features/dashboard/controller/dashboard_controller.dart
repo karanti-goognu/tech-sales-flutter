@@ -125,7 +125,8 @@ class DashboardController extends GetxController {
     });
   }
 
-  getMonthViewDetails({String empID, String yearMonth}) {
+ Future<bool> getMonthViewDetails({String empID, String yearMonth}) async {
+    bool isProcessComplete=false;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator(),)));
     print("EMP ID inside controller: $empID");
 
@@ -145,18 +146,21 @@ class DashboardController extends GetxController {
 //              : month.toString());
 //    }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
+   await _prefs.then((SharedPreferences prefs) async {
+
       print("Before prefs: $empId");
       if (empId=='empty')
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      print("empId    $empId");
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print("After prefs: $empId");
       print('Controller empID: ${this.empId}');
       this.empId=empId;
       print('Controller empID: ${this.empId}');
-
+      isProcessComplete=true;
       repository.getMonthViewDetails(empId, yearMonth).then((_) {
+
         DashboardMonthlyViewModel data = _;
         this.convTargetCount = data.convTargetCount;
         this.convTargetVolume = data.convTargetVolume;
@@ -177,7 +181,7 @@ class DashboardController extends GetxController {
 
       });
     }).catchError((e) => print(e));
-
+return isProcessComplete;
   }
 
   getDashboardMtdGeneratedVolumeSiteList({String empID}) {

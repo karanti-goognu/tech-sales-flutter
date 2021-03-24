@@ -50,10 +50,15 @@ class _DashboardState extends State<Dashboard> {
               : month.toString());
     }
 
-    _dashboardController.getMonthViewDetails(yearMonth: yearMonth);
-     print(_dashboardController.empId);
+    _dashboardController.getMonthViewDetails(yearMonth: yearMonth).then((value){
+      print("isProcessComplete    $value");
+      print("_dashboardController.empId    ${_dashboardController.empId}");
+      empID=_employeeDropDownData.isEmpty?_dashboardController.empId:_employeeDropDownData[0].tsoId;
+
+
+    });
      _employeeDropDownData=_splashController.splashDataModel.reportingTsoListModel;
-     empID=_employeeDropDownData.isEmpty?_dashboardController.empId:_employeeDropDownData[0].tsoId;
+
   }
 
   @override
