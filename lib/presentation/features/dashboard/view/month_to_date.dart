@@ -52,7 +52,7 @@ class MonthToDateState extends State<MonthToDate> {
     print(empID);
     var pngBytes = await _capturePng();
     final directory = (await getExternalStorageDirectory()).path;
-    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
+    imgFile = new File('$directory/$empId-$yearMonthForFileName.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
@@ -726,6 +726,10 @@ class MonthToDateState extends State<MonthToDate> {
   void passEmpId(String empIdValue){
    print("passed empId ...   $empIdValue");
    this.empId=empIdValue;
+   print(empID);
+   print(empId);
+   print(this.empId);
+   print('this.empId');
  }
 }
 
