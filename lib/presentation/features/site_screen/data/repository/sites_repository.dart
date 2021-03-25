@@ -51,8 +51,8 @@ class MyRepositorySites {
   }
 
   /*sync site data to server*/
- syncSiteData(String empID,String accessKey, String userSecurityKey, Map<String, dynamic> siteMapData) {
-    return apiClient.syncSiteDataToServer(empID, siteMapData, accessKey, userSecurityKey);
+ syncSiteData(String empID,String accessKey, String userSecurityKey, var siteMapData) {
+    return apiClient.syncSiteDataToServer(empID,  accessKey, userSecurityKey,siteMapData);
   }
 
 

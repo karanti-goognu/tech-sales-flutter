@@ -289,15 +289,18 @@ class MyApiClientSites {
 
 
 
-  syncSiteDataToServer(String empID, Map<String, dynamic> mapData, String accessKey, String userSecurityKey) async {
+  syncSiteDataToServer(String empID, String accessKey, String userSecurityKey, var mapData,) async {
+    String mobileDataView = json.encode(mapData);
     String url= UrlConstants.getSiteUpdateRefreshDetails + "$empID";
-     await http.post(url, body: mapData, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),  ).then((response) {
+     await http.post(url, body: mobileDataView, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),  ).then((response) {
       final statusCode = response.statusCode;
        print("statusCode  syncSiteDataToServer  $statusCode");
 
       try {
         final Map responseBody = json.decode(response.body);
-       } catch (Ex) {
+        print("statusCode  responseBody  $responseBody");
+
+      } catch (Ex) {
 
       }
     });

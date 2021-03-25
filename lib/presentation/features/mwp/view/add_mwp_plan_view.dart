@@ -45,7 +45,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   @override
   Widget build(BuildContext context) {
 
-    List<String> mwpNames = [
+  /*  List<String> mwpNames = [
       "Total Conversion Vol. (MT)",
       "New ILP members",
       "DSP Slabs Conv. Nos.",
@@ -59,6 +59,32 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "Contractor Meet",
       "Mini Contractor Meet",
       "Consumer Meet"
+    ];*/
+
+    List<String> mwpNames = [
+      "Total Conversion Vol. (MT)",
+      "New ILP members",
+      "DSP Slabs Conv. Nos.",
+      "Site Conv. (Vol MT)",
+      /*"Site Conv. (No. of sites)",*/
+      "Site Visits (Total)",
+      /*"Site Visits (Unique)",*/
+      "Contractor Visit",
+      "Technocrat visit",
+      "Tech Van Demo",
+      "Tech Van Service",
+
+      "Influencer Visits",
+
+      "Mason Meet",
+      "Counter Meet",
+      "Contractor Meet",
+      "Mini Contractor Meet",
+      "Consumer Meet",
+      "Technocrat meet",
+      "Block Level meet"
+
+
     ];
     List<AddMwpModel> mwpPlanList = new List();
     for (int i = 0; i < mwpNames.length; i++) {

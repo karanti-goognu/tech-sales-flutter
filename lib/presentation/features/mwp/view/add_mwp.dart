@@ -232,7 +232,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
                                             child: Text(
                                               value,
                                               style: TextStyle(
-                                                  fontSize: 14,
+                                                  fontSize: SizeConfig.safeBlockHorizontal*.01,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           );
