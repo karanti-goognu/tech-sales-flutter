@@ -11,6 +11,7 @@ class ViewLeadDataResponse {
   List<InfluencerTypeEntity> influencerTypeEntity;
   List<LeadRejectReasonEntity> leadRejectReasonEntity;
   List<NextStageConstructionEntity> nextStageConstructionEntity;
+  List<CounterListModel> counterListModel;
   LeadsEntity leadsEntity;
   List<DealerList> dealerList;
 
@@ -27,12 +28,21 @@ class ViewLeadDataResponse {
       this.influencerTypeEntity,
       this.leadRejectReasonEntity,
       this.nextStageConstructionEntity,
+        this.counterListModel,
       this.leadsEntity,
-      this.dealerList});
+      this.dealerList,
+        });
 
   ViewLeadDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+    if (json['counterListModel'] != null) {
+      counterListModel = new List<CounterListModel>();
+      json['counterListModel'].forEach((v) {
+        counterListModel.add(new CounterListModel.fromJson(v));
+      });
+    }
+
     if (json['leadStageEntity'] != null) {
       leadStageEntity = new List<LeadStageEntity>();
       json['leadStageEntity'].forEach((v) {
@@ -110,7 +120,11 @@ class ViewLeadDataResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
-    if (this.leadStageEntity != null) {
+
+    if (this.leadStageEntity != null) {if (this.counterListModel != null) {
+      data['counterListModel'] =
+          this.counterListModel.map((v) => v.toJson()).toList();
+    }
       data['leadStageEntity'] =
           this.leadStageEntity.map((v) => v.toJson()).toList();
     }
@@ -1180,3 +1194,33 @@ class LeadsEntity {
 //     return data;
 //   }
 // }
+
+
+class CounterListModel {
+  String shipToParty;
+  String shipToPartyName;
+  String soldToParty;
+  String soldToPartyName;
+
+  CounterListModel(
+      {this.shipToParty,
+        this.shipToPartyName,
+        this.soldToParty,
+        this.soldToPartyName});
+
+  CounterListModel.fromJson(Map<String, dynamic> json) {
+    shipToParty = json['shipToParty'];
+    shipToPartyName = json['shipToPartyName'];
+    soldToParty = json['soldToParty'];
+    soldToPartyName = json['soldToPartyName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['shipToParty'] = this.shipToParty;
+    data['shipToPartyName'] = this.shipToPartyName;
+    data['soldToParty'] = this.soldToParty;
+    data['soldToPartyName'] = this.soldToPartyName;
+    return data;
+  }
+}

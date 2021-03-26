@@ -335,21 +335,21 @@ class MyApiClientLeads {
     });
   }
 
-  getLeadData(String accessKey, String userSecurityKey, int leadId) async {
+  getLeadData(String accessKey, String userSecurityKey, int leadId, String empId) async {
     try {
       //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var bodyEncrypted = {"leadId": leadId};
       // print('Request body is  : ${json.encode(bodyEncrypted)}');
       // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
 
-      print("URL is :: " + UrlConstants.getLeadData + "$leadId");
+      print("URL is :: " + UrlConstants.getLeadData + "$leadId" + '&referenceID='+empId);
       print("Request Header :: " +
           json.encode(requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey)));
       final response = await get(
-        Uri.parse(UrlConstants.getLeadData + "$leadId"),
+         Uri.parse(UrlConstants.getLeadData + "$leadId" + '&referenceID='+empId),
         headers:
-            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+        requestHeadersWithAccessKeyAndSecretKeyAndEmpId(accessKey, userSecurityKey,empId),
       );
       print('Response body is  : ${json.decode(response.body)}');
       if (response.statusCode == 200) {

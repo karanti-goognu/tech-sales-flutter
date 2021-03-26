@@ -59,6 +59,8 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "Total Conversion Vol. (MT)",
       "New ILP members",
       "DSP Slabs Conv. Nos.",
+      "DSP Conversion Vol",
+
       "Site Conv. (Vol MT)",
       "Site Conv. (No. of sites)",
       "Site Visits (Total)",
@@ -69,7 +71,32 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "Contractor Meet",
       "Mini Contractor Meet",
       "Consumer Meet"
+      "Technocrat meet",
+      "Block Level meet"
     ];
+
+    /*List<String> mwpNames = [
+      "Total Conversion Vol. (MT)",
+      "New ILP members",
+      "DSP Slabs Conv. Nos.",
+      "Site Conv. (Vol MT)",
+      "Site Visits (Total)",
+      "Contractor Visit",
+      "Technocrat visit",
+      "Tech Van Demo",
+      "Tech Van Service",
+      "Influencer Visits",
+      "Mason Meet",
+      "Counter Meet",
+      "Contractor Meet",
+      "Mini Contractor Meet",
+      "Consumer Meet",
+      "Technocrat meet",
+      "Block Level meet"
+
+
+    ];*/
+
     List<AddMwpModel> mwpPlanList = new List();
     for (int i = 0; i < mwpNames.length; i++) {
       mwpPlanList.add(

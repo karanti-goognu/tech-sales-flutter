@@ -254,113 +254,145 @@ class SitesModal {
   int noOfFloors;
   double siteScore;
 
+  String createdOn;
+   int leadId;
+   int siteId;
+   String siteSegment;
+   String updatedBy;
+  String updatedOn;
+  String dealerConfirmedChangedBy;
+  String dealerConfirmedChangedOn;
+
   SitesModal(
-      {this.siteBuiltArea,
-      this.siteProductDemo,
-      this.siteProductOralBriefing,
-      this.sitePlotNumber,
-      this.siteTotalSitePotential,
-      this.siteOwnerName,
-      this.siteOwnerContactNumber,
-      this.siteAddress,
-      this.siteState,
-      this.siteDistrict,
-      this.siteTaluk,
-      this.sitePincode,
-      this.siteGeotagLatitude,
-      this.siteGeotagLongitude,
-      this.siteGeotagType,
-      this.siteReraNumber,
-      this.siteDealerId,
-      this.siteDealerName,
-      this.siteSoId,
-      this.siteSoname,
-      this.siteStageId,
-      this.inactiveReasonText,
-      this.siteNextVisitDate,
-      this.siteClosureReasonText,
-      this.siteProbabilityWinningId,
-      this.siteCompetitionId,
-      this.siteOppertunityId,
-      this.assignedTo,
-      this.siteStatusId,
-      this.siteCreationDate,
-      this.siteConstructionId,
-      this.noOfFloors,
-      this.siteScore});
+      {this.assignedTo,
+        this.createdOn,
+        this.dealerConfirmedChangedBy,
+        this.dealerConfirmedChangedOn,
+        this.inactiveReasonText,
+        this.leadId,
+        this.noOfFloors,
+        this.siteAddress,
+        this.siteBuiltArea,
+        this.siteClosureReasonText,
+        this.siteCompetitionId,
+        this.siteConstructionId,
+        this.siteCreationDate,
+        this.siteDealerId,
+        this.siteDealerName,
+        this.siteDistrict,
+        this.siteGeotagLatitude,
+        this.siteGeotagLongitude,
+        this.siteGeotagType,
+        this.siteId,
+        this.siteNextVisitDate,
+        this.siteOppertunityId,
+        this.siteOwnerContactNumber,
+        this.siteOwnerName,
+        this.sitePincode,
+        this.sitePlotNumber,
+        this.siteProbabilityWinningId,
+        this.siteProductDemo,
+        this.siteProductOralBriefing,
+        this.siteReraNumber,
+        this.siteScore,
+        this.siteSegment,
+        this.siteSoId,
+        this.siteSoname,
+        this.siteStageId,
+        this.siteState,
+        this.siteStatusId,
+        this.siteTaluk,
+        this.siteTotalSitePotential,
+        this.updatedBy,
+        this.updatedOn});
 
   SitesModal.fromJson(Map<String, dynamic> json) {
-    siteBuiltArea = json['siteBuiltArea'];
-    siteProductDemo = json['siteProductDemo'];
-    siteProductOralBriefing = json['siteProductOralBriefing'];
-    sitePlotNumber = json['sitePlotNumber'];
-    siteTotalSitePotential = json['siteTotalSitePotential'];
-    siteOwnerName = json['siteOwnerName'];
-    siteOwnerContactNumber = json['siteOwnerContactNumber'];
+    assignedTo = json['assignedTo'];
+    createdOn = json['createdOn'];
+    dealerConfirmedChangedBy = json['dealerConfirmedChangedBy'];
+    dealerConfirmedChangedOn = json['dealerConfirmedChangedOn'];
+    inactiveReasonText = json['inactiveReasonText'];
+    leadId = json['leadId'];
+    noOfFloors = json['noOfFloors'];
     siteAddress = json['siteAddress'];
-    siteState = json['siteState'];
+    siteBuiltArea = json['siteBuiltArea'];
+    siteClosureReasonText = json['siteClosureReasonText'];
+    siteCompetitionId = json['siteCompetitionId'];
+    siteConstructionId = json['siteConstructionId'];
+    siteCreationDate = json['siteCreationDate'];
+    siteDealerId = json['siteDealerId'];
+    siteDealerName = json['siteDealerName'];
     siteDistrict = json['siteDistrict'];
-    siteTaluk = json['siteTaluk'];
-    sitePincode = json['sitePincode'];
     siteGeotagLatitude = json['siteGeotag_latitude'];
     siteGeotagLongitude = json['siteGeotag_longitude'];
     siteGeotagType = json['siteGeotag_type'];
+    siteId = json['siteId'];
+    siteNextVisitDate = json['siteNextVisitDate'];
+    siteOppertunityId = json['siteOppertunityId'];
+    siteOwnerContactNumber = json['siteOwnerContactNumber'];
+    siteOwnerName = json['siteOwnerName'];
+    sitePincode = json['sitePincode'];
+    sitePlotNumber = json['sitePlotNumber'];
+    siteProbabilityWinningId = json['siteProbabilityWinningId'];
+    siteProductDemo = json['siteProductDemo'];
+    siteProductOralBriefing = json['siteProductOralBriefing'];
     siteReraNumber = json['siteRera_number'];
-    siteDealerId = json['siteDealerId'];
-    siteDealerName = json['siteDealerName'];
+    siteScore = json['siteScore'];
+    siteSegment = json['siteSegment'];
     siteSoId = json['siteSoId'];
     siteSoname = json['siteSoname'];
     siteStageId = json['siteStageId'];
-    inactiveReasonText = json['inactiveReasonText'];
-    siteNextVisitDate = json['siteNextVisitDate'];
-    siteClosureReasonText = json['siteClosureReasonText'];
-    siteProbabilityWinningId = json['siteProbabilityWinningId'];
-    siteCompetitionId = json['siteCompetitionId'];
-    siteOppertunityId = json['siteOppertunityId'];
-    assignedTo = json['assignedTo'];
+    siteState = json['siteState'];
     siteStatusId = json['siteStatusId'];
-    siteCreationDate = json['siteCreationDate'];
-    siteConstructionId = json['siteConstructionId'];
-    noOfFloors = json['noOfFloors'];
-    siteScore = json['siteScore'];
+    siteTaluk = json['siteTaluk'];
+    siteTotalSitePotential = json['siteTotalSitePotential'];
+    updatedBy = json['updatedBy'];
+    updatedOn = json['updatedOn'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['siteBuiltArea'] = this.siteBuiltArea;
-    data['siteProductDemo'] = this.siteProductDemo;
-    data['siteProductOralBriefing'] = this.siteProductOralBriefing;
-    data['sitePlotNumber'] = this.sitePlotNumber;
-    data['siteTotalSitePotential'] = this.siteTotalSitePotential;
-    data['siteOwnerName'] = this.siteOwnerName;
-    data['siteOwnerContactNumber'] = this.siteOwnerContactNumber;
+    data['assignedTo'] = this.assignedTo;
+    data['createdOn'] = this.createdOn;
+    data['dealerConfirmedChangedBy'] = this.dealerConfirmedChangedBy;
+    data['dealerConfirmedChangedOn'] = this.dealerConfirmedChangedOn;
+    data['inactiveReasonText'] = this.inactiveReasonText;
+    data['leadId'] = this.leadId;
+    data['noOfFloors'] = this.noOfFloors;
     data['siteAddress'] = this.siteAddress;
-    data['siteState'] = this.siteState;
+    data['siteBuiltArea'] = this.siteBuiltArea;
+    data['siteClosureReasonText'] = this.siteClosureReasonText;
+    data['siteCompetitionId'] = this.siteCompetitionId;
+    data['siteConstructionId'] = this.siteConstructionId;
+    data['siteCreationDate'] = this.siteCreationDate;
+    data['siteDealerId'] = this.siteDealerId;
+    data['siteDealerName'] = this.siteDealerName;
     data['siteDistrict'] = this.siteDistrict;
-    data['siteTaluk'] = this.siteTaluk;
-    data['sitePincode'] = this.sitePincode;
     data['siteGeotag_latitude'] = this.siteGeotagLatitude;
     data['siteGeotag_longitude'] = this.siteGeotagLongitude;
     data['siteGeotag_type'] = this.siteGeotagType;
+    data['siteId'] = this.siteId;
+    data['siteNextVisitDate'] = this.siteNextVisitDate;
+    data['siteOppertunityId'] = this.siteOppertunityId;
+    data['siteOwnerContactNumber'] = this.siteOwnerContactNumber;
+    data['siteOwnerName'] = this.siteOwnerName;
+    data['sitePincode'] = this.sitePincode;
+    data['sitePlotNumber'] = this.sitePlotNumber;
+    data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
+    data['siteProductDemo'] = this.siteProductDemo;
+    data['siteProductOralBriefing'] = this.siteProductOralBriefing;
     data['siteRera_number'] = this.siteReraNumber;
-    data['siteDealerId'] = this.siteDealerId;
-    data['siteDealerName'] = this.siteDealerName;
+    data['siteScore'] = this.siteScore;
+    data['siteSegment'] = this.siteSegment;
     data['siteSoId'] = this.siteSoId;
     data['siteSoname'] = this.siteSoname;
     data['siteStageId'] = this.siteStageId;
-    data['inactiveReasonText'] = this.inactiveReasonText;
-    data['siteNextVisitDate'] = this.siteNextVisitDate;
-    data['siteClosureReasonText'] = this.siteClosureReasonText;
-    data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
-    data['siteCompetitionId'] = this.siteCompetitionId;
-    data['siteOppertunityId'] = this.siteOppertunityId;
-    data['assignedTo'] = this.assignedTo;
+    data['siteState'] = this.siteState;
     data['siteStatusId'] = this.siteStatusId;
-    data['siteCreationDate'] = this.siteCreationDate;
-    data['siteConstructionId'] = this.siteConstructionId;
-    data['noOfFloors'] = this.noOfFloors;
-    data['siteScore'] = this.siteScore;
-
+    data['siteTaluk'] = this.siteTaluk;
+    data['siteTotalSitePotential'] = this.siteTotalSitePotential;
+    data['updatedBy'] = this.updatedBy;
+    data['updatedOn'] = this.updatedOn;
     return data;
   }
 }
@@ -522,6 +554,10 @@ class SiteVisitHistoryEntity {
   String receiptNumber;
   bool isExpanded;
 
+  String authorisedBy;
+  String authorisedOn;
+
+
   SiteVisitHistoryEntity(
       {this.id,
         this.totalBalancePotential,
@@ -541,7 +577,7 @@ class SiteVisitHistoryEntity {
         this.shipToParty,
         this.soCode,
         this.isAuthorised,
-        this.receiptNumber});
+        this.receiptNumber,this.authorisedBy, this.authorisedOn});
 
   SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -564,6 +600,8 @@ class SiteVisitHistoryEntity {
     isAuthorised = json['isAuthorised'];
     isExpanded = false;
     receiptNumber = json['receiptNumber'];
+    authorisedBy = json['authorisedBy'];
+    authorisedOn = json['authorisedOn'];
   }
 
   Map<String, dynamic> toJson() {
@@ -587,6 +625,8 @@ class SiteVisitHistoryEntity {
     data['soCode'] = this.soCode;
     data['isAuthorised'] = this.isAuthorised;
     data['receiptNumber'] = this.receiptNumber;
+    data['authorisedBy'] = this.authorisedBy;
+    data['authorisedOn'] = this.authorisedOn;
     return data;
   }
 }

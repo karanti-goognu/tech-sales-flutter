@@ -578,7 +578,8 @@ class _HomeScreenState extends State<HomeScreen> {
       highlightedColor: Colors.grey,
       baseColor: Colors.white,
       vibrationFlag: true,
-      dismissible: false,
+
+      dismissible: false, action: null,
     );
   }
 

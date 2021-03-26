@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
@@ -84,8 +85,18 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   LeadStageEntity leadStageVal = new LeadStageEntity();
   List<LeadRejectReasonEntity> leadRejectReasonEntity = new List();
   List<NextStageConstructionEntity> nextStageConstructionEntity = new List();
+  /*Work on dealer and subdelear*/
+  List<CounterListModel> counterListModel = new List();
+  List<CounterListModel> subDealerList = new List();
+  CounterListModel selectedSubDealer = CounterListModel();
+  List<DealerForDb> dealerEntityForDb = new List();
+
+
   List<DealerList> dealerList = new List();
   List<ImageDetails> _imgDetails = new List();
+  String leadDataDealer;
+  String leadDataSubDealer;
+
 
   FocusNode myFocusNode;
   bool viewMoreActive = false;
@@ -126,6 +137,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
   List<InfluencerCategoryEntity> influencerCategoryEntity;
 
   AddLeadsController _addLeadsController = Get.find();
+  final db = BrandNameDBHelper();
 
   @override
   void initState() {
@@ -133,7 +145,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
     print("sumitdhawan");
     _addLeadsController = Get.find();
     // myFocusNode = FocusNode();
-    getLeadData();
+    _callGetAccessKeyAndGetLeadIdData();
   }
 
   @override
@@ -143,26 +155,52 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
     // myFocusNode.dispose();
   }
 
-  getLeadData() async {
-    // AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
+
+  _callGetAccessKeyAndGetLeadIdData() async {
     print("sumitdhawan");
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _addLeadsController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
       print("AccessKey :: " + accessKeyModel.accessKey);
-      await _addLeadsController
-          .getLeadData(accessKeyModel.accessKey, widget.leadId)
-          .then((data) {
+
+      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+      _prefs.then((SharedPreferences prefs) {
+        String  empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+
+        getLeadData(accessKeyModel.accessKey,empId);
+
+      });
+    });
+  }
+
+  getLeadData(String accessKey, String empId ) async {
+    // AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
+
+    await _addLeadsController.getLeadData(accessKey, widget.leadId, empId)
+        .then((data) async {
         print("here");
         print(data);
         viewLeadDataResponse = data;
 
         print(viewLeadDataResponse);
         // myFocusNode.requestFocus();
-        setState(() {
+        counterListModel = viewLeadDataResponse.counterListModel;
+        int listLength=counterListModel.length;
+        if(listLength>0)
+        for (int i = 0; i < listLength; i++) {
+          int id = await db.addDealer(DealerForDb(
+              counterListModel[i].soldToParty,
+              counterListModel[i].soldToPartyName));
+          print("ADDED :  $id");
+        }
+        dealerEntityForDb = await db.fetchAllDistinctDealers();
+        dealerEntityForDb.forEach((e) => print(e.toMapForDb().toString()));
+        setState(()  {
+
           leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
           LeadStatusEntity list;
           print(viewLeadDataResponse.leadsEntity.leadStatusId);
+
           for (int i = 0; i < leadStatusEntity.length; i++) {
             if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
                 leadStatusEntity[i].id.toString()) {
@@ -332,11 +370,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
       //         () => Get.dialog(Center(),
       //         barrierDismissible: false));
       //  Get.back();
-    });
+    //});
   }
 
   @override
   Widget build(BuildContext context) {
+
     if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
       //        Get.back();
       return Scaffold(
@@ -513,373 +552,395 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                     viewLeadDataResponse));
                                           } else if (_selectedValuedummy.id ==
                                               3) {
+
+
                                             showDialog(
                                                 context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
+                                                builder: (BuildContext context) {
+                                                  return StatefulBuilder(
+                                                    builder: (BuildContext context, StateSetter setState) {
+                                                    return   AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
                                                             BorderRadius.all(
                                                                 Radius.circular(
                                                                     5.0))),
-                                                    content: Container(
-                                                      width:
+                                                        content: Container(
+                                                          width:
                                                           MediaQuery.of(context)
                                                               .size
                                                               .width,
-                                                      child:
+                                                          child:
                                                           SingleChildScrollView(
-                                                        child: Column(
-                                                          children: [
-                                                            DropdownButtonFormField<
-                                                                NextStageConstructionEntity>(
-                                                              value:
+                                                            child: Column(
+                                                              children: [
+                                                                DropdownButtonFormField<
+                                                                    NextStageConstructionEntity>(
+                                                                  value:
                                                                   _selectedNextStageConstructionEntity,
-                                                              items:
+                                                                  items:
                                                                   nextStageConstructionEntity
                                                                       .map((label) =>
-                                                                          DropdownMenuItem(
-                                                                            child:
-                                                                                Text(
-                                                                              label.nexStageConsText,
-                                                                              style: TextStyle(fontSize: 15, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
-                                                                            ),
-                                                                            value:
-                                                                                label,
-                                                                          ))
-                                                                      .toList(),
-
-                                                              // hint: Text('Rating'),
-                                                              onChanged:
-                                                                  (value) {
-                                                                setState(() {
-                                                                  _selectedNextStageConstructionEntity =
-                                                                      value;
-                                                                });
-                                                              },
-                                                              decoration: FormFieldStyle
-                                                                  .buildInputDecoration(
-                                                                      labelText:
-                                                                          "Next Stage of Construction"),
-                                                            ),
-                                                            SizedBox(
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.02),
-                                                            TextFormField(
-                                                              controller:
-                                                                  _nextDateofConstruction,
-                                                              // validator: (value) {
-                                                              //   if (value.isEmpty) {
-                                                              //     return "Contact Name can't be empty";
-                                                              //   }
-                                                              //   //leagueSize = int.parse(value);
-                                                              //   return null;
-                                                              // },
-                                                              readOnly: true,
-                                                              onChanged:
-                                                                  (data) {
-                                                                // setState(() {
-                                                                //   _contactName.text = data;
-                                                                // });
-                                                              },
-                                                              style: TextStyle(
-                                                                  fontSize: 18,
-                                                                  color: ColorConstants
-                                                                      .inputBoxHintColor,
-                                                                  fontFamily:
-                                                                      "Muli"),
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .text,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                focusedBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                          color: ColorConstants
-                                                                              .backgroundColorBlue,
-                                                                          //color: HexColor("#0000001F"),
-                                                                          width:
-                                                                              1.0),
-                                                                ),
-                                                                disabledBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide: BorderSide(
-                                                                      color: Colors
-                                                                          .black26,
-                                                                      width:
-                                                                          1.0),
-                                                                ),
-                                                                enabledBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide: BorderSide(
-                                                                      color: Colors
-                                                                          .black26,
-                                                                      width:
-                                                                          1.0),
-                                                                ),
-                                                                errorBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide: BorderSide(
-                                                                      color: Colors
-                                                                          .red,
-                                                                      width:
-                                                                          1.0),
-                                                                ),
-                                                                labelText:
-                                                                    "Next date of construction",
-                                                                suffixIcon:
-                                                                    IconButton(
-                                                                  icon: Icon(
-                                                                    Icons
-                                                                        .date_range_rounded,
-                                                                    size: 22,
-                                                                    color: ColorConstants
-                                                                        .clearAllTextColor,
-                                                                  ),
-                                                                  onPressed:
-                                                                      () async {
-                                                                    print(
-                                                                        "here");
-                                                                    final DateTime picked = await showDatePicker(
-                                                                        context:
-                                                                            context,
-                                                                        initialDate:
-                                                                            DateTime
-                                                                                .now(),
-                                                                        firstDate:
-                                                                            DateTime
-                                                                                .now(),
-                                                                        lastDate:
-                                                                            DateTime(2101));
-
-                                                                    setState(
-                                                                        () {
-                                                                      final DateFormat
-                                                                          formatter =
-                                                                          DateFormat(
-                                                                              "yyyy-MM-dd");
-                                                                      final String
-                                                                          formattedDate =
-                                                                          formatter
-                                                                              .format(picked);
-                                                                      nextStageConstructionPickedDate =
-                                                                          picked;
-                                                                      _nextDateofConstruction
-                                                                              .text =
-                                                                          formattedDate;
-                                                                    });
-                                                                  },
-                                                                ),
-                                                                filled: false,
-                                                                focusColor:
-                                                                    Colors
-                                                                        .black,
-                                                                isDense: false,
-                                                                labelStyle: TextStyle(
-                                                                    fontFamily:
-                                                                        "Muli",
-                                                                    color: ColorConstants
-                                                                        .inputBoxHintColorDark,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    fontSize:
-                                                                        16.0),
-                                                                fillColor:
-                                                                    ColorConstants
-                                                                        .backgroundColor,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  0.02,
-                                                            ),
-                                                            DropdownButtonFormField<
-                                                                DealerList>(
-                                                              value:
-                                                                  _SelectedDealer,
-                                                              items: dealerList
-                                                                  .map((label) =>
                                                                       DropdownMenuItem(
                                                                         child:
-                                                                            Text(
-                                                                          label
-                                                                              .dealerName,
-                                                                          style: TextStyle(
-                                                                              fontSize: 15,
-                                                                              color: ColorConstants.inputBoxHintColor,
-                                                                              fontFamily: "Muli"),
+                                                                        Text(
+                                                                          label.nexStageConsText,
+                                                                          style: TextStyle(fontSize: 15, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
                                                                         ),
                                                                         value:
-                                                                            label,
+                                                                        label,
                                                                       ))
-                                                                  .toList(),
+                                                                      .toList(),
 
-                                                              // hint: Text('Rating'),
-                                                              onChanged:
-                                                                  (value) {
-                                                                setState(() {
-                                                                  _SelectedDealer =
-                                                                      value;
-                                                                });
-                                                              },
-                                                              decoration:
+                                                                  // hint: Text('Rating'),
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    setState(() {
+                                                                      _selectedNextStageConstructionEntity =
+                                                                          value;
+                                                                    });
+                                                                  },
+                                                                  decoration: FormFieldStyle
+                                                                      .buildInputDecoration(
+                                                                      labelText:
+                                                                      "Next Stage of Construction"),
+                                                                ),
+                                                                SizedBox(
+                                                                    height: MediaQuery.of(
+                                                                        context)
+                                                                        .size
+                                                                        .height *
+                                                                        0.02),
+                                                                TextFormField(
+                                                                  controller:
+                                                                  _nextDateofConstruction,
+                                                                  // validator: (value) {
+                                                                  //   if (value.isEmpty) {
+                                                                  //     return "Contact Name can't be empty";
+                                                                  //   }
+                                                                  //   //leagueSize = int.parse(value);
+                                                                  //   return null;
+                                                                  // },
+                                                                  readOnly: true,
+                                                                  onChanged:
+                                                                      (data) {
+                                                                    // setState(() {
+                                                                    //   _contactName.text = data;
+                                                                    // });
+                                                                  },
+                                                                  style: TextStyle(
+                                                                      fontSize: 18,
+                                                                      color: ColorConstants
+                                                                          .inputBoxHintColor,
+                                                                      fontFamily:
+                                                                      "Muli"),
+                                                                  keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                                  decoration:
                                                                   InputDecoration(
-                                                                focusedBorder:
+                                                                    focusedBorder:
                                                                     OutlineInputBorder(
-                                                                  borderSide:
+                                                                      borderSide:
                                                                       BorderSide(
                                                                           color: ColorConstants
                                                                               .backgroundColorBlue,
                                                                           //color: HexColor("#0000001F"),
                                                                           width:
-                                                                              1.0),
-                                                                ),
-                                                                enabledBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide: BorderSide(
-                                                                      color: Colors
-                                                                          .black26,
-                                                                      width:
                                                                           1.0),
-                                                                ),
-                                                                errorBorder:
+                                                                    ),
+                                                                    disabledBorder:
                                                                     OutlineInputBorder(
-                                                                  borderSide: BorderSide(
-                                                                      color: Colors
-                                                                          .red,
-                                                                      width:
+                                                                      borderSide: BorderSide(
+                                                                          color: Colors
+                                                                              .black26,
+                                                                          width:
                                                                           1.0),
-                                                                ),
-                                                                labelText:
-                                                                    "Dealer",
-                                                                filled: false,
-                                                                focusColor:
+                                                                    ),
+                                                                    enabledBorder:
+                                                                    OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          color: Colors
+                                                                              .black26,
+                                                                          width:
+                                                                          1.0),
+                                                                    ),
+                                                                    errorBorder:
+                                                                    OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          color: Colors
+                                                                              .red,
+                                                                          width:
+                                                                          1.0),
+                                                                    ),
+                                                                    labelText:
+                                                                    "Next date of construction",
+                                                                    suffixIcon:
+                                                                    IconButton(
+                                                                      icon: Icon(
+                                                                        Icons
+                                                                            .date_range_rounded,
+                                                                        size: 22,
+                                                                        color: ColorConstants
+                                                                            .clearAllTextColor,
+                                                                      ),
+                                                                      onPressed:
+                                                                          () async {
+                                                                        print(
+                                                                            "here");
+                                                                        final DateTime picked = await showDatePicker(
+                                                                            context:
+                                                                            context,
+                                                                            initialDate:
+                                                                            DateTime
+                                                                                .now(),
+                                                                            firstDate:
+                                                                            DateTime
+                                                                                .now(),
+                                                                            lastDate:
+                                                                            DateTime(2101));
+
+                                                                        setState(
+                                                                                () {
+                                                                              final DateFormat
+                                                                              formatter =
+                                                                              DateFormat(
+                                                                                  "yyyy-MM-dd");
+                                                                              final String
+                                                                              formattedDate =
+                                                                              formatter
+                                                                                  .format(picked);
+                                                                              nextStageConstructionPickedDate =
+                                                                                  picked;
+                                                                              _nextDateofConstruction
+                                                                                  .text =
+                                                                                  formattedDate;
+                                                                            });
+                                                                      },
+                                                                    ),
+                                                                    filled: false,
+                                                                    focusColor:
                                                                     Colors
                                                                         .black,
-                                                                isDense: false,
-                                                                labelStyle: TextStyle(
-                                                                    fontFamily:
+                                                                    isDense: false,
+                                                                    labelStyle: TextStyle(
+                                                                        fontFamily:
                                                                         "Muli",
-                                                                    color: ColorConstants
-                                                                        .inputBoxHintColorDark,
-                                                                    fontWeight:
+                                                                        color: ColorConstants
+                                                                            .inputBoxHintColorDark,
+                                                                        fontWeight:
                                                                         FontWeight
                                                                             .normal,
-                                                                    fontSize:
+                                                                        fontSize:
                                                                         16.0),
-                                                                fillColor:
+                                                                    fillColor:
                                                                     ColorConstants
                                                                         .backgroundColor,
-                                                              ),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: MediaQuery.of(
+                                                                      context)
+                                                                      .size
+                                                                      .height *
+                                                                      0.02,
+                                                                ),
+                                                                /*DropDown for dealer*/
+                                                                DropdownButtonFormField(
+                                                                  items: dealerEntityForDb
+                                                                      .map((e) => DropdownMenuItem(
+                                                                    value: e.id,
+                                                                    child: SizedBox(
+                                                                      width: MediaQuery.of(context).size.width - 100,
+                                                                      child: Text('${e.dealerName} (${e.id})',
+                                                                          style: TextStyle(fontSize: 14)),
+                                                                    ),
+                                                                  ))
+                                                                      .toList(),
+                                                                  onChanged: (value) {
+                                                                    print(" Dealer Value");
+                                                                    print(value);
+
+
+
+                                                                    setState(() {
+                                                                      selectedSubDealer = null;
+                                                                    //  subDealerList = new List();
+                                                                      subDealerList.clear();
+                                                                      subDealerList = counterListModel
+                                                                          .where((e) => e.soldToParty == leadDataDealer)
+                                                                          .toList();
+                                                                      leadDataDealer = value.toString();
+                                                                      print("subDealerList   ${subDealerList.length}  $leadDataDealer  ");
+                                                                      selectedSubDealer = subDealerList[0];
+                                                                      leadDataSubDealer = subDealerList[0].shipToParty;
+
+                                                                      // Future.delayed(const Duration(milliseconds: 500), () {
+                                                                      //   setState(() {
+                                                                      //     // Here you can write your code for open new view
+                                                                      //
+                                                                      //
+                                                                      //     print("callll");
+                                                                      //   });
+                                                                      //
+                                                                      // });
+
+                                                                    });
+                                                                  },
+                                                                  style: FormFieldStyle.formFieldTextStyle,
+                                                                  decoration:
+                                                                  FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
+                                                                  validator: (value) =>
+                                                                  value == null ? 'Please select Dealer' : null,
+                                                                ),
+                                                                SizedBox(
+                                                                    height: MediaQuery.of(
+                                                                        context)
+                                                                        .size
+                                                                        .height *
+                                                                        0.02),
+                                                                /*DropDown For SubDealer*/
+                                                                subDealerList.isEmpty
+                                                                    ? Container()
+                                                                    : DropdownButtonFormField(
+                                                                  items: subDealerList.isNotEmpty
+                                                                      ? subDealerList
+                                                                      .map((e) => DropdownMenuItem(
+                                                                    value: e,
+                                                                    child: SizedBox(
+                                                                      width:
+                                                                      MediaQuery.of(context).size.width - 100,
+                                                                      child: Text(
+                                                                        '${e.shipToPartyName} (${e.shipToParty})',
+                                                                        style: TextStyle(fontSize: 14),
+                                                                      ),
+                                                                    ),
+                                                                  ))
+                                                                      .toList()
+                                                                      : [
+                                                                    DropdownMenuItem(
+                                                                        child: Text("No Sub Dealer"), value: "0")
+                                                                  ],
+                                                                  value: selectedSubDealer,
+                                                                  validator: (value) => value == null || value.isEmpty
+                                                                      ? 'Please select Sub-Dealer'
+                                                                      : null,
+                                                                  onChanged: (value) {
+                                                                    // print("Sub Dealer Value");
+                                                                    // print(value.shipToParty.toString());
+                                                                    setState(() {
+                                                                      leadDataSubDealer = value.shipToParty.toString();
+                                                                    });
+                                                                    print(leadDataSubDealer);
+                                                                  },
+                                                                  style: FormFieldStyle.formFieldTextStyle,
+                                                                  decoration: FormFieldStyle.buildInputDecoration(
+                                                                      labelText: "Sub-Dealer"),
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: Text(
-                                                          'Submit',
-                                                          style: GoogleFonts
-                                                              .roboto(
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            child: Text(
+                                                              'Submit',
+                                                              style: GoogleFonts
+                                                                  .roboto(
                                                                   fontSize: 17,
                                                                   letterSpacing:
-                                                                      1.25,
+                                                                  1.25,
                                                                   fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
+                                                                  FontStyle
+                                                                      .normal,
                                                                   // fontWeight: FontWeight.bold,
                                                                   color: ColorConstants
                                                                       .buttonNormalColor),
-                                                        ),
-                                                        onPressed: () {
-                                                          if (!(_selectedNextStageConstructionEntity.nextStageConsId != null &&
-                                                              _selectedNextStageConstructionEntity
+                                                            ),
+                                                            onPressed: () {
+                                                              if (!(_selectedNextStageConstructionEntity.nextStageConsId != null &&
+                                                                  _selectedNextStageConstructionEntity
                                                                       .nextStageConsId !=
-                                                                  "" &&
-                                                              _selectedNextStageConstructionEntity
+                                                                      "" &&
+                                                                  _selectedNextStageConstructionEntity
                                                                       .nextStageConsId !=
-                                                                  null &&
-                                                              _selectedNextStageConstructionEntity
+                                                                      null &&
+                                                                  _selectedNextStageConstructionEntity
                                                                       .nextStageConsId !=
-                                                                  "")) {
-                                                            Get.dialog(
-                                                                CustomDialogs()
-                                                                    .errorDialog(
+                                                                      "")) {
+                                                                Get.dialog(
+                                                                    CustomDialogs()
+                                                                        .errorDialog(
                                                                         "Please fill the details first"));
-                                                          } else {
-                                                            if (nextStageConstructionPickedDate
+                                                              } else {
+                                                                if (nextStageConstructionPickedDate
                                                                     .difference(
-                                                                        DateTime
-                                                                            .now())
+                                                                    DateTime
+                                                                        .now())
                                                                     .inDays >
-                                                                31) {
-                                                              showDialog(
-                                                                  context:
+                                                                    31) {
+                                                                  showDialog(
+                                                                      context:
                                                                       context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    return AlertDialog(
-                                                                      content:
+                                                                      builder:
+                                                                          (BuildContext
+                                                                      context) {
+                                                                        return AlertDialog(
+                                                                          content:
                                                                           SingleChildScrollView(
-                                                                        child:
+                                                                            child:
                                                                             ListBody(
-                                                                          children: <
+                                                                              children: <
+                                                                                  Widget>[
+                                                                                Text(
+                                                                                  "Next Construction date is more than 31 days from now, "
+                                                                                      "So status will be changed to FUTURE "
+                                                                                      "OPPORTUNITY . ",
+                                                                                  style: GoogleFonts.roboto(fontSize: 16, height: 1.4, letterSpacing: .25, fontStyle: FontStyle.normal, color: ColorConstants.inputBoxHintColorDark),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          actions: <
                                                                               Widget>[
-                                                                            Text(
-                                                                              "Next Construction date is more than 31 days from now, "
-                                                                              "So status will be changed to FUTURE "
-                                                                              "OPPORTUNITY . ",
-                                                                              style: GoogleFonts.roboto(fontSize: 16, height: 1.4, letterSpacing: .25, fontStyle: FontStyle.normal, color: ColorConstants.inputBoxHintColorDark),
+                                                                            TextButton(
+                                                                              child:
+                                                                              Text(
+                                                                                'OK',
+                                                                                style: GoogleFonts.roboto(
+                                                                                    fontSize: 17,
+                                                                                    letterSpacing: 1.25,
+                                                                                    fontStyle: FontStyle.normal,
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: ColorConstants.buttonNormalColor),
+                                                                              ),
+                                                                              onPressed:
+                                                                                  () {
+                                                                                updateStatusforNextStage(context,
+                                                                                    5);
+                                                                              },
                                                                             ),
                                                                           ],
-                                                                        ),
-                                                                      ),
-                                                                      actions: <
-                                                                          Widget>[
-                                                                        TextButton(
-                                                                          child:
-                                                                              Text(
-                                                                            'OK',
-                                                                            style: GoogleFonts.roboto(
-                                                                                fontSize: 17,
-                                                                                letterSpacing: 1.25,
-                                                                                fontStyle: FontStyle.normal,
-                                                                                fontWeight: FontWeight.bold,
-                                                                                color: ColorConstants.buttonNormalColor),
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            updateStatusforNextStage(context,
-                                                                                5);
-                                                                          },
-                                                                        ),
-                                                                      ],
-                                                                    );
-                                                                  });
-                                                            } else {
-                                                              updateStatusforNextStage(
-                                                                  context, 3);
-                                                            }
+                                                                        );
+                                                                      });
+                                                                } else {
+                                                                  updateStatusforNextStage(
+                                                                      context, 3);
+                                                                }
 
-                                                            //});
-                                                          }
-                                                        },
-                                                      ),
-                                                    ],
+                                                                //});
+                                                              }
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+
                                                   );
                                                 });
+
+
+
                                           } else if (_selectedValuedummy.id ==
                                               4) {
                                             String empId;

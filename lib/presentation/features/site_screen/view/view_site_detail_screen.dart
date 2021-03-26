@@ -205,7 +205,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         await db.clearTable();
         siteBrandEntity = viewSiteDataResponse!=null?viewSiteDataResponse.siteBrandEntity:"";
         counterListModel = viewSiteDataResponse.counterListModel;
-        // print(counterListModel);
+
         // print("aaaaaaaaaaaaaaa");
 
         for (int i = 0; i < siteBrandEntity.length; i++) {
@@ -457,8 +457,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   @override
   Widget build(BuildContext context) {
-    // print(viewSiteDataResponse.counterListModel.forEach((element) {print(element);}));
-    //gv.selectedClass = widget.classroomId;
+     //gv.selectedClass = widget.classroomId;
     return DefaultTabController(
         initialIndex: _initialIndex,
         length: 4,
@@ -2509,6 +2508,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   value == null ? 'Please select Dealer' : null,
             ),
             SizedBox(height: 16),
+
             subDealerList.isEmpty
                 ? Container()
                 : DropdownButtonFormField(
