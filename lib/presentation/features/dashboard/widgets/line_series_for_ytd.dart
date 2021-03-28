@@ -26,8 +26,14 @@ class _LineSeriesForYTDState extends State<LineSeriesForYTD> {
   Widget build(BuildContext context) {
 
     return SfCartesianChart(
-        primaryXAxis: CategoryAxis(),
+        primaryXAxis: CategoryAxis(
+            majorGridLines: MajorGridLines(width: 0),
+            labelRotation: 90,
+            visibleMaximum: 12
 
+//            labelPlacement: LabelPlacement.betweenTicks,
+//            interval: 5
+        ),
         // title: ChartTitle(text: 'Half yearly sales analysis'),
         legend: Legend(isVisible: true, position:LegendPosition.top),
         tooltipBehavior: TooltipBehavior(enable: true),
