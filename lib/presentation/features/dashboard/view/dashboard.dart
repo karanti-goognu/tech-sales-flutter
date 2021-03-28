@@ -22,51 +22,20 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   DashboardController _dashboardController = Get.find();
   SplashController _splashController = Get.find();
-  List<ReportingTsoListModel> _employeeDropDownData;
+  List<ReportingTsoListModel> _employeeDropDownData=[];
   String empID;
   String yearMonth;
-GlobalKey<MonthToDateState> monthToDateKey;
-  callFromInitState() async {
-    int year = DateTime.now().year;
-    int month = DateTime.now().month;
-    if (month > 3) {
-      yearMonth = year.toString() + '-' + month.toString();
-    } else {
-      yearMonth = (year - 1).toString() +
-          '-' +
-          (month.toString().length == 1
-              ? '0' + month.toString()
-              : month.toString());
-    }
-
-    _dashboardController
-        .getMonthViewDetails(yearMonth: yearMonth)
-        .then((value) {
-      print("_dashboardController.empId ???????   ${_dashboardController.empId}");
-      print("_dashboardController.monthToDateKey   ${_dashboardController.empId} $monthToDateKey    $monthToDateKey.currentState");
-      monthToDateKey.currentState.passEmpId(_dashboardController.empId);
-
-
-     // print("isProcessComplete    $value");
-
-      empID = _employeeDropDownData.isEmpty
-          ? _dashboardController.empId
-          : _employeeDropDownData[0].tsoId;
-
-
-
-    });
-    _employeeDropDownData =
-        _splashController.splashDataModel.reportingTsoListModel;
-  }
+  GlobalKey<MonthToDateState> monthToDateKey;
 
   @override
   void initState() {
     int year = DateTime.now().year;
     int month = DateTime.now().month;
     monthToDateKey = GlobalKey();
-    if (month > 3) {
-      yearMonth = year.toString() + '-' + month.toString();
+    if (month >= 3) {
+      yearMonth = year.toString() + '-' + (month.toString().length == 1
+          ? '0' + month.toString()
+          : month.toString());
     } else {
       yearMonth = (year - 1).toString() +
           '-' +
@@ -74,22 +43,28 @@ GlobalKey<MonthToDateState> monthToDateKey;
               ? '0' + month.toString()
               : month.toString());
     }
+    _employeeDropDownData = _splashController.splashDataModel.reportingTsoListModel;
 
-    _dashboardController
-        .getMonthViewDetails(yearMonth: yearMonth)
+    empID = _employeeDropDownData.isEmpty ? _dashboardController.empId: _employeeDropDownData[0].tsoId;
+    _dashboardController.getMonthViewDetails(yearMonth: yearMonth)
         .then((value) {
-      print("isProcessComplete    $value");
-      print("_dashboardController.empId    ${_dashboardController.empId}");
-      empID = _employeeDropDownData.isEmpty
-          ? _dashboardController.empId
-          : _employeeDropDownData[0].tsoId;
+          if(_employeeDropDownData.isEmpty ){
+            print("isProcessComplete    $value");
+            print("_dashboardController.empId    ${_dashboardController.empId}");
+            monthToDateKey.currentState.passEmpId(_dashboardController.empId);
+            empID=_dashboardController.empId;
+            print("EMP ID is now $empID");
+          }
+
+    });
+
+/*    if(_employeeDropDownData.isEmpty){
       monthToDateKey.currentState.passEmpId(empID);
       print(empID);
-    });
-    _employeeDropDownData =
-        _splashController.splashDataModel.reportingTsoListModel;
-
-//    callFromInitState();
+    }else{
+      empID = _employeeDropDownData[0].tsoId;
+    }
+//      empID = _employeeDropDownData.isEmpty ? _dashboardController.empId: _employeeDropDownData[0].tsoId;*/
 
     super.initState();
   }
@@ -102,7 +77,7 @@ GlobalKey<MonthToDateState> monthToDateKey;
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: Text('MY DASHBOARD'),
-            centerTitle: true,
+//            centerTitle: true,
             backgroundColor: ColorConstants.appBarColor,
             bottom: PreferredSize(
               preferredSize: _employeeDropDownData.isEmpty
@@ -167,7 +142,8 @@ GlobalKey<MonthToDateState> monthToDateKey;
               FloatingActionButtonLocation.centerDocked,
           body: TabBarView(
             children: [
-              MonthToDate(key:monthToDateKey,empID: empID, yearMonth: yearMonth),
+              MonthToDate(
+                  key: monthToDateKey, empID: empID, yearMonth: yearMonth),
               YearToDate()
             ],
           )),

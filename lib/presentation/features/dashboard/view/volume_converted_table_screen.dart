@@ -20,7 +20,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
   @override
   void initState() {
     _dashboardController.getDashboardMtdConvertedVolumeList();
-    print('${_dashboardController.mtdConvertedVolumeList.supplyQty}test');
+//    print('${_dashboardController.mtdConvertedVolumeList.supplyQty}test');
     super.initState();
   }
 
@@ -65,7 +65,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
             'MTD Vol. Converted',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          Text('Total Count-20'),
+          Text('Total Count-0'),
           Container(
             child: SfDataGrid(
               controller: _controller,

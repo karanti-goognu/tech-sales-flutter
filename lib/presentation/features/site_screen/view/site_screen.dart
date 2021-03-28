@@ -807,7 +807,8 @@ class _SiteScreenState extends State<SiteScreen> {
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
                                           ViewSiteScreen(
-                                              _siteController.sitesListResponse.sitesEntity[index].siteId)));
+                                              _siteController.sitesListResponse.sitesEntity[index].siteId))
+                              );
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,

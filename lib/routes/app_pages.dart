@@ -11,6 +11,8 @@ import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/bindings/tutorial_binding.dart';
 import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencerView.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
@@ -140,11 +142,16 @@ class AppPages {
       page: () => Dashboard(),
       binding: DashboardBinding(),
     ),
-    // GetPage(
-    //   name: Routes.SERVICE_REQUEST_UPDATESCREEN,
-    //   page: () => RequestUpdation(),
-    //   binding: SRBinding(),
-    // ),
+     GetPage(
+       name: Routes.DASHBOARD_SITE_LIST,
+       page: () => VolumeGeneratedSiteList(),
+       binding: SRBinding(),
+     ),
+    GetPage(
+      name: Routes.DASHBOARD_VOLUME_CONVERTED,
+      page: () => VolumeConvertedTable(),
+      binding: SRBinding(),
+    ),
     GetPage(
       name: Routes.NOTIFICATION,
       page: () => NotificationScreen(),

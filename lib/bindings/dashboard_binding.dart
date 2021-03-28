@@ -13,5 +13,6 @@ class DashboardBinding implements Bindings {
               apiClient: MyApiClientDashboard(httpClient: http.Client()))
               );
     });
+
   }
 }
