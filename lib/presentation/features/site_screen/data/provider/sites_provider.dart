@@ -157,6 +157,8 @@ class MyApiClientSites {
       if (response.statusCode == 200) {
         Get.back();
         var data = json.decode(response.body);
+        print('Response body is  ---: $data');
+
         // print('@@@@');
         // print(data);
         ViewSiteDataResponse viewSiteDataResponse =
@@ -226,9 +228,10 @@ class MyApiClientSites {
               http.Response.fromStream(result).then((response) {
                 print("---@@---");
                 print(response.body);
-
+                  if(response.body==null)
+                    return;
                 var data = json.decode(response.body);
-                //    print(data);
+                   print(data);
 
                 //      print(response.body)  ;
                 UpdateLeadResponseModel updateLeadResponseModel =

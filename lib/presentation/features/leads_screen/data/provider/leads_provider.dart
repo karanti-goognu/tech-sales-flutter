@@ -412,6 +412,7 @@ class MyApiClientLeads {
             .send()
             .then((result) async {
               http.Response.fromStream(result).then((response) {
+                print("/////////////////${response.body}");
                 print(response.statusCode);
 
                 var data = json.decode(response.body);
@@ -420,15 +421,11 @@ class MyApiClientLeads {
                     UpdateLeadResponseModel.fromJson(data);
 
                 if (updateLeadResponseModel.respCode == "LD2009") {
-                  //Get.back();
+
                   gv.selectedLeadID = updateLeadResponseModel.leadId;
-                  /*  Get.dialog(CustomDialogs()
-                      .showDialog(updateLeadResponseModel.respMsg));*/
-                  // Get.back();
-                  //  Get.back();
+
 
                   Get.back();
-                  // Get.back();
                   Get.offNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead(updateLeadResponseModel.respMsg));

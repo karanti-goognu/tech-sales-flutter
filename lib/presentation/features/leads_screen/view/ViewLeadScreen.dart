@@ -31,6 +31,8 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'dialog/lead_change_to_site_dialog.dart';
+
 class ViewLeadScreen extends StatefulWidget {
   int leadId;
 
@@ -40,7 +42,7 @@ class ViewLeadScreen extends StatefulWidget {
   _ViewLeadScreenState createState() => _ViewLeadScreenState();
 }
 
-class _ViewLeadScreenState extends State<ViewLeadScreen> {
+class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadToSiteDialogListener {
   final _formKeyForViewLeadScreen = GlobalKey<FormState>();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
@@ -441,7 +443,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                         ],
                       ))),
               Form(
-                key: _formKeyForViewLeadScreen,
+               // key: _formKeyForViewLeadScreen,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
@@ -553,10 +555,18 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                           } else if (_selectedValuedummy.id ==
                                               3) {
 
-
                                             showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) => new ChangeLeadToSiteDialog(selectedNextStageConstructionEntity: _selectedNextStageConstructionEntity,
+                                                dealerEntityForDb: dealerEntityForDb, counterListModel: counterListModel, mListener: this,)
+                                            );
+
+
+                                          /*  showDialog(
                                                 context: context,
                                                 builder: (BuildContext context) {
+
                                                   return StatefulBuilder(
                                                     builder: (BuildContext context, StateSetter setState) {
                                                     return   AlertDialog(
@@ -745,7 +755,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                       .height *
                                                                       0.02,
                                                                 ),
-                                                                /*DropDown for dealer*/
+                                                                *//*DropDown for dealer*//*
                                                                 DropdownButtonFormField(
                                                                   items: dealerEntityForDb
                                                                       .map((e) => DropdownMenuItem(
@@ -799,7 +809,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                         .size
                                                                         .height *
                                                                         0.02),
-                                                                /*DropDown For SubDealer*/
+                                                                *//*DropDown For SubDealer*//*
                                                                 subDealerList.isEmpty
                                                                     ? Container()
                                                                     : DropdownButtonFormField(
@@ -937,8 +947,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                     },
 
                                                   );
-                                                });
-
+                                                }).then((value) => setState(() {}));*/
 
 
                                           } else if (_selectedValuedummy.id ==
@@ -1322,8 +1331,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                               5) {
                                             showDialog(
                                                 context: context,
-                                                builder:
-                                                    (BuildContext context) {
+                                                builder: (BuildContext context) {
                                                   return AlertDialog(
                                                     shape: RoundedRectangleBorder(
                                                         borderRadius:
@@ -1592,7 +1600,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                                                     .errorDialog(
                                                                         "Please fill the details first"));
                                                           } else {
-                                                            updateStatusforNextStage(
+                                                            updateStatusForNextStage(
                                                                 context, 5);
                                                           }
                                                         },
@@ -3577,7 +3585,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
     }
   }
 
-  updateStatusforNextStage(BuildContext context, int statusId) {
+  updateStatusForNextStage(BuildContext context, int statusId,{String dealerId, String subDealerId}) {
     String empId;
     String mobileNumber;
     String name;
@@ -3678,9 +3686,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
         'leadIsDuplicate': viewLeadDataResponse.leadsEntity.leadIsDuplicate,
         'rejectionComment': viewLeadDataResponse.leadsEntity.rejectionComment,
         'nextDateCconstruction': _nextDateofConstruction.text,
-        'nextStageConstruction':
-            _selectedNextStageConstructionEntity.nextStageConsId,
-        'siteDealerId': _SelectedDealer.dealerId,
+        'nextStageConstruction': _selectedNextStageConstructionEntity.nextStageConsId,
+        'siteDealerId': dealerId,
+        "subdealerId":subDealerId , //need to pass selected value
         // 'listLeadcomments':
         //     new List(),
         // 'listLeadImage':
@@ -3692,7 +3700,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
         'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity
       };
 
-      print(updateRequestModel);
+      print("$updateRequestModel");
+
 
       _addLeadsController.updateLeadData(updateRequestModel, new List<File>(),
           context, viewLeadDataResponse.leadsEntity.leadId);
@@ -4012,6 +4021,46 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
           );
         });
   }
+
+  /*Show dialog for lead to site*/
+
+    _getLeadToSiteConvertDialog(){
+
+    }
+
+  @override
+  userChangeDealerId() {
+    // TODO: implement userChangeDealerId
+    if(mounted)
+      setState(() {
+
+      });
+  }
+
+
+  String selectedDealerId="";
+  String selectedDealerSubId="";
+  String selectedDate="";
+
+
+  @override
+  updateStatusForNextStageAllow(BuildContext context,int statusId, NextStageConstructionEntity selectedNextStageConstructionEntity,
+      String nextStageConstructionPicked, String dealerId, String subDealerId) {
+    // TODO: implement updateStatusForNextStageAllow
+    selectedDealerId=dealerId;
+    selectedDealerSubId=subDealerId;
+    _selectedNextStageConstructionEntity=selectedNextStageConstructionEntity;
+    selectedDate=nextStageConstructionPicked;
+    print("_selectedNextStageConstructionEntity  $nextStageConstructionPicked    ${_selectedNextStageConstructionEntity.nextStageConsId}");
+    // nextStageConstructionPickedDate=nextStageConstructionPicked;
+    _nextDateofConstruction.text=nextStageConstructionPicked;
+    print("_selectedNextStageConstructionEntity    ${nextStageConstructionPickedDate}");
+
+    updateStatusForNextStage( context, statusId, dealerId: selectedDealerId, subDealerId:  selectedDealerSubId);
+
+  }
+
+
 }
 
 class Item {

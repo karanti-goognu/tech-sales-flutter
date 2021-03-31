@@ -106,7 +106,7 @@ class HomeController extends GetxController {
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
-      Get.back();
+    //  Get.back();
       this.accessKeyResponse = data;
       switch (requestId) {
         case RequestIds.CHECK_IN:
@@ -122,16 +122,16 @@ class HomeController extends GetxController {
     });
   }
 
-  getDashboardDetails() {
+  getDashboardDetails() async {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
+   await _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('$empId $userSecurityKey');
-      repository.getHomeDashboardDetails(empId).then((_) {
+     await repository.getHomeDashboardDetails(empId).then((_) {
         DashboardModel data = _;
         print(data.dashBoardViewModal.dspSlabsConverted);
         this.sitesConverted = data.dashBoardViewModal.sitesConverted;

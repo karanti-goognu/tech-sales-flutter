@@ -223,6 +223,8 @@ class LeadInfluencerEntity {
   Null updatedOn;
   String isPrimary;
 
+
+
   LeadInfluencerEntity(
       {this.id,
       this.leadId,
@@ -503,6 +505,12 @@ class LeadsEntity {
   int nextStageConstruction;
   String siteDealerId;
 
+
+  String subdealerId;
+
+
+
+
   LeadsEntity(
       {this.leadId,
       this.leadSegment,
@@ -535,7 +543,9 @@ class LeadsEntity {
       this.leadscol,
       this.nextDateCconstruction,
       this.nextStageConstruction,
-      this.siteDealerId});
+      this.siteDealerId,
+      this.subdealerId
+      });
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
     leadId = json['leadId'];
@@ -570,6 +580,7 @@ class LeadsEntity {
     nextDateCconstruction = json['nextDateCconstruction'];
     nextStageConstruction = json['nextStageConstruction'];
     siteDealerId = json['siteDealerId'];
+    subdealerId = json['subdealerId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -606,6 +617,7 @@ class LeadsEntity {
     data['nextDateCconstruction'] = this.nextDateCconstruction;
     data['nextStageConstruction'] = this.nextStageConstruction;
     data['siteDealerId'] = this.siteDealerId;
+    data['subdealerId'] = this.subdealerId;
     return data;
   }
 }

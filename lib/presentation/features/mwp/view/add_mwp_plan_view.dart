@@ -71,6 +71,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "Contractor Meet",
       "Mini Contractor Meet",
       "Consumer Meet"
+
       "Technocrat meet",
       "Block Level meet"
     ];

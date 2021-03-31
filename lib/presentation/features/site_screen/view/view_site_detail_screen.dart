@@ -12,6 +12,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models
     as updateResponse;
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/dialog/ConformationDialog.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -47,6 +48,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   bool isSwitchedsiteProductOralBriefing = false;
   bool addNextButtonDisable = false;
   bool viewMoreActive = false;
+  bool isAllowSelectDealer=false;
   String labelText;
   int labelId;
   String labelConstructionText;
@@ -59,7 +61,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   int labelOpportunityId;
   double siteScore = 0.0;
   String visitDataDealer;
-  String visitDataSubDealer;
+  String visitDataSubDealer="";
 
   ConstructionStageEntity _selectedConstructionType;
   ConstructionStageEntity _selectedConstructionTypeVisit;
@@ -121,6 +123,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   //String _comment;
   var _rera = new TextEditingController();
   var _dealerName = new TextEditingController();
+  var _subDealerName = new TextEditingController();
   var _so = new TextEditingController();
   var _plotNumber = TextEditingController();
   var _siteAddress = TextEditingController();
@@ -203,7 +206,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
         // print(viewSiteDataResponse);
         await db.clearTable();
-        siteBrandEntity = viewSiteDataResponse!=null?viewSiteDataResponse.siteBrandEntity:"";
+        siteBrandEntity = viewSiteDataResponse!=null?viewSiteDataResponse.siteBrandEntity:new List();
         counterListModel = viewSiteDataResponse.counterListModel;
 
         // print("aaaaaaaaaaaaaaa");
@@ -233,11 +236,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           siteFloorsEntityNew = viewSiteDataResponse.siteFloorsEntity;
           siteFloorsEntityNewNextStage = viewSiteDataResponse.siteFloorsEntity;
           siteBrandEntity = viewSiteDataResponse.siteBrandEntity;
-
           siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
 
           sitephotosEntity = viewSiteDataResponse.sitephotosEntity;
           influencerTypeEntity = viewSiteDataResponse.influencerTypeEntity;
+          String isDealerConformedChangedBySo=viewSiteDataResponse.sitesModal.isDealerConfirmedChangedBySo;
+          print("isDealerConformedChangedBySo  $isDealerConformedChangedBySo");
+          isAllowSelectDealer=isDealerConformedChangedBySo!="N"? true:false ;
 
           //  print(influencerTypeEntity.length);
           influencerCategoryEntity =
@@ -311,7 +316,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           print(viewSiteDataResponse.siteVisitHistoryEntity);
           // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
           siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
-          // print(viewSiteDataResponse.siteVisitHistoryEntity.length);
+          print(viewSiteDataResponse.siteVisitHistoryEntity.length);
+
+          // siteVisitHistoryEntity.add(SiteVisitHistoryEntity(id: 1));
+          // siteVisitHistoryEntity.add(SiteVisitHistoryEntity(id: 2));
+          // siteVisitHistoryEntity.add(SiteVisitHistoryEntity(id: 6, isAuthorised:"N", soldToParty: "0007030238"));
+          // siteVisitHistoryEntity.add(SiteVisitHistoryEntity(id: 3));
+
+
           sitesModal = viewSiteDataResponse.sitesModal;
           _siteProductDemo.text = sitesModal.siteProductDemo;
           if (_siteProductDemo.text == 'N') {
@@ -353,6 +365,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _taluk.text = sitesModal.siteTaluk;
           _rera.text = sitesModal.siteReraNumber;
           _dealerName.text = sitesModal.siteDealerName;
+          _subDealerName.text = sitesModal.siteSubDealerName;
           _so.text = sitesModal.siteSoname;
           geoTagType = sitesModal.siteGeotagType;
 
@@ -561,11 +574,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       .map((label) => DropdownMenuItem(
                                             child: Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8.0),
+                                                  left: 7.0),
                                               child: Text(
                                                 label.siteStageDesc,
                                                 style: TextStyle(
-                                                    fontSize: 16,
+                                                    fontSize: 14,
                                                     color: ColorConstants
                                                         .inputBoxHintColor,
                                                     fontFamily: "Muli"),
@@ -575,9 +588,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                           ))
                                       .toList(),
                                   //  elevation: 0,
-                                  iconSize: 40,
+                                  iconSize: 30,
                                   hint: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
+                                    padding: const EdgeInsets.only(left: 6.0),
                                     child: (labelText != null)
                                         ? Text(labelText)
                                         : Text(""),
@@ -1300,23 +1313,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child:
-                                    DropdownButtonFormField<SiteFloorsEntity>(
+                                child: DropdownButtonFormField<SiteFloorsEntity>(
                                   value: _selectedSiteFloor,
                                   items: siteFloorsEntity
                                       .map((label) => DropdownMenuItem(
                                             child: Text(
                                               label.siteFloorTxt,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: ColorConstants
-                                                      .inputBoxHintColor,
+                                              style: TextStyle(fontSize: 18,
+                                                  color: ColorConstants.inputBoxHintColor,
                                                   fontFamily: "Muli"),
                                             ),
                                             value: label,
                                           ))
                                       .toList(),
-
                                   // hint: Text('Rating'),
                                   onChanged: (value) {
                                     setState(() {
@@ -1404,7 +1413,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 "Product oral briefing",
                                 style: TextStyle(
                                     //fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     // color: HexColor("#000000DE"),
                                     fontFamily: "Muli"),
                               ),
@@ -2002,6 +2011,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                         SizedBox(height: 16),
 
+
                         TextFormField(
                           controller: _rera,
                           validator: (value) {
@@ -2025,9 +2035,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                         TextFormField(
                           controller: _dealerName,
+                          readOnly: true,
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Please enter Dealer Name ';
+                              return 'Please enter dealer Name ';
                             }
 
                             return null;
@@ -2041,6 +2052,34 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             labelText: "Dealer",
                           ),
                         ),
+
+
+                      SizedBox(height: 16),
+
+                        TextFormField(
+                          controller: _subDealerName,
+                          readOnly: true,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter Sub_dealer Name ';
+                            }
+
+                            return null;
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.text,
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Sub-Dealer",
+                          ),
+                        ),
+
+
+
+
+
 
                         SizedBox(height: 16),
 
@@ -2116,7 +2155,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     "Current Stage",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 18,
                         // color: HexColor("#000000DE"),
                         fontFamily: "Muli"),
                   ),
@@ -2131,7 +2170,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       "View previous detail",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: 15,
                           color: HexColor("#F9A61A"),
                           fontFamily: "Muli"),
                     ),
@@ -2476,36 +2515,76 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               ),
             ),
             SizedBox(height: 16),
-            DropdownButtonFormField(
-              items: dealerEntityForDb
-                  .map((e) => DropdownMenuItem(
-                        value: e.id,
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
-                          child: Text('${e.dealerName} (${e.id})',
-                              style: TextStyle(fontSize: 14)),
-                        ),
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                print(" Dealer Value");
-                print(value);
-                selectedSubDealer = null;
-                setState(() {
-                  subDealerList = new List();
-                  visitDataDealer = value.toString();
-                  subDealerList = counterListModel
-                      .where((e) => e.soldToParty == visitDataDealer)
-                      .toList();
-                  selectedSubDealer = subDealerList[0];
-                  visitDataSubDealer = subDealerList[0].shipToParty;
-                });
+            GestureDetector(
+              onTap: (){
+                if(!isAllowSelectDealer)
+
+                  Get.dialog(new ConformationDialog(message:"This dealer not conformed by so."));
+
               },
-              style: FormFieldStyle.formFieldTextStyle,
-              decoration:
-                  FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
-              validator: (value) =>
-                  value == null ? 'Please select Dealer' : null,
+              child: DropdownButtonFormField(
+                items: dealerEntityForDb
+                    .map((e) => DropdownMenuItem(
+                          value: e.id,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: Text('${e.dealerName} (${e.id})',
+                                style: TextStyle(fontSize: 14)),
+                          ),
+                        ))
+                    .toList(),
+
+
+                onChanged: isAllowSelectDealer ? (value) {
+
+                  siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
+                  int listLength=siteVisitHistoryEntity.length;
+
+                    if(listLength>0){
+                    SiteVisitHistoryEntity latestRecordData=siteVisitHistoryEntity.elementAt(0);
+                    if(latestRecordData.soldToParty != value)
+                      if(latestRecordData.isAuthorised=="N"){
+
+                        dealerEntityForDb.map((e) => DropdownMenuItem(
+                          value: e.id,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: Text('${e.dealerName} (${e.id})',
+                                style: TextStyle(fontSize: 14)),
+                          ),
+                        ));
+                        return Get.dialog(CustomDialogs().showDialog(
+                            "Your previous supplier not authorised"));
+
+                      }
+                  }
+
+
+
+
+                  print("...........$value");
+                  selectedSubDealer = null;
+                  setState(() {
+                    subDealerList = new List();
+                    visitDataDealer = value.toString();
+                    subDealerList = counterListModel
+                        .where((e) => e.soldToParty == visitDataDealer)
+                        .toList();
+                    selectedSubDealer = subDealerList[0];
+                    visitDataSubDealer = subDealerList[0].shipToParty;
+                    sitesModal.isDealerConfirmedChangedBySo="N";
+                  });
+
+                }: null,
+
+
+
+                style: FormFieldStyle.formFieldTextStyle,
+                decoration:
+                    FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
+                validator: (value) =>
+                    value == null ? 'Please select Dealer' : null,
+              ),
             ),
             SizedBox(height: 16),
 
@@ -3015,7 +3094,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         child: Text(
                           label.opportunityStatus,
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                         ),
@@ -3820,7 +3899,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                     .clear();
                                               }
 
-                                              // Get.back();
+
                                               return Get.dialog(CustomDialogs()
                                                   .showDialog(
                                                       "No influencer registered with this number"));
@@ -5259,7 +5338,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             "${place.locality}, ${place.postalCode}, ${place.country}";
 
         print(
-            "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+            "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, "
+                "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
     } catch (e) {
       print(e);
@@ -5398,6 +5478,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           createdBy: empId));
       // print("-------1234");
       // print(newSiteCommentsEntity[0].siteId);
+
+
       if (_selectedConstructionTypeVisit != null) {
         siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
             totalBalancePotential: _siteTotalBalancePt.text,
@@ -5416,7 +5498,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             soldToParty: visitDataDealer,
             shipToParty: visitDataSubDealer,
             receiptNumber: "",
-            isAuthorised: "N"));
+            isAuthorised: "N",
+            authorisedBy: "",
+          authorisedOn:""
+        ));
       }
 
       if (_selectedConstructionTypeVisitNextStage != null) {
@@ -5481,24 +5566,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
 
       var updateDataRequest = {
-//
-//           "siteVisitHistoryEntity": siteVisitHistoryEntity,
-//           "siteNextStageEntity": siteNextStageEntity,
-//           "sitePhotosEntity": newSitePhotoEntity,
-//           "siteInfluencerEntity": newInfluencerEntity,
-//           "siteConstructionId": _selectedConstructionType.id,
-//           "siteCompetitionId": _siteCompetitionStatusEntity != null
-//               ? _siteCompetitionStatusEntity.id
-//               : null,
-//           "siteOppertunityId": _siteOpportunitStatusEnity != null
-//               ? _siteOpportunitStatusEnity.id
-//               : null,
-//           "siteProbabilityWinningId": _siteProbabilityWinningEntity != null
-//               ? _siteProbabilityWinningEntity.id
-//               : null,
-
-        //
-        "siteId": widget.siteId,
+         "siteId": widget.siteId,
         "siteSegment": "TRADE",
         "assignedTo": viewSiteDataResponse.sitesModal.assignedTo,
         "siteStatusId": viewSiteDataResponse.sitesModal.siteStatusId,
@@ -5545,14 +5613,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "siteProbabilityWinningId": _siteProbabilityWinningEntity != null
             ? _siteProbabilityWinningEntity.id
             : null,
+        "dealerConfirmedChangedBy": "",
+        "dealerConfirmedChangedOn": "",
+        "isDealerConfirmedChangedBySo": sitesModal!=null? sitesModal.isDealerConfirmedChangedBySo:"",
+        "subdealerId": visitDataSubDealer,
       };
-      // print(updateDataRequest);
+       print(updateDataRequest);
       print('updateDataRequest---- $updateDataRequest');
-
       _siteController.updateLeadData(
           updateDataRequest, _imageList, context, widget.siteId);
 
-      // Get.back();
+
     });
   }
 }

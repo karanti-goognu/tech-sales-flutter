@@ -205,6 +205,7 @@ class MyApiClientApp {
         var data = json.decode(response.body);
         // print('ho');
          print(data['mwpplanModel']);
+         print("view-mwp     $data");
         return GetMWPResponse.fromJson(data);
       } else {
       //  print('Error in else');

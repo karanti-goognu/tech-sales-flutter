@@ -593,16 +593,6 @@ class _LeadScreenState extends State<LeadScreen> {
                         .leadId),
                     binding: AddLeadsBinding());
 
-                // Navigator.push(
-                //   context,
-                //   new CupertinoPageRoute(
-                //     builder: (BuildContext context) =>
-                //         ViewLeadScreen(_leadsFilterController
-                //             .leadsListResponse
-                //             .leadsEntity[index]
-                //             .leadId),
-                //   ),
-                // );
               },
               child: Card(
                 clipBehavior: Clip.antiAlias,

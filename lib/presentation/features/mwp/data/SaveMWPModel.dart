@@ -18,6 +18,51 @@ class SaveMWPModel {
   String createdBy;
   String actionedBy;
 
+  String dspConversionVol;
+  String contractorVisit;
+  String technocratVisit;
+  String techVanDemo;
+  String techVanService;
+  String slabServices;
+  String technocratMeet;
+  String blockLevelMeet;
+
+
+
+
+  /*String mwpMonth;
+  String referenceId;
+  Double dspConversionVol;
+  double totalConvMt;
+  Integer newIlpMembers;
+  Integer dspSlabConvNo;
+  double siteConvMt;
+  Integer siteConvNo;
+  Integer siteVisitesNo;
+  Integer siteUniqueVisitsNo;
+  Integer inflVisitsNo;
+  Integer masonMeetNo;
+  Integer counterMeetNo;
+  Integer contractorMeetNo;
+  Integer miniContractorMeetNo;
+  Integer consumerMeetNo;
+  String status;
+  String createdBy;
+  Date createdOn;
+  Date submittedOn;
+  Date approvedOn;
+  Date rejectedOn;
+  String actionedBy;
+  Integer contractorVisit;
+  Integer technocratVisit;
+  Integer techVanDemo;
+  Integer techVanService;
+  Integer slabServices;
+  Integer technocratMeet;
+  Integer blockLevelMeet;*/
+
+
+
   SaveMWPModel(
       this.mwpMonth,
       this.referenceId,

@@ -19,6 +19,10 @@ class ViewSiteDataResponse {
   List<SiteInfluencerEntity> siteInfluencerEntity;
   List<CounterListModel> counterListModel;
 
+
+
+
+
   ViewSiteDataResponse(
       {this.respCode,
       this.respMsg,
@@ -253,15 +257,26 @@ class SitesModal {
   int siteConstructionId;
   int noOfFloors;
   double siteScore;
-
   String createdOn;
-   int leadId;
+   double leadId;
    int siteId;
    String siteSegment;
    String updatedBy;
   String updatedOn;
   String dealerConfirmedChangedBy;
   String dealerConfirmedChangedOn;
+
+
+
+
+  String isDealerConfirmedChangedBySo;
+  String subdealerId;
+  String siteSubDealerName;
+
+
+
+
+
 
   SitesModal(
       {this.assignedTo,
@@ -279,6 +294,7 @@ class SitesModal {
         this.siteCreationDate,
         this.siteDealerId,
         this.siteDealerName,
+         this.siteSubDealerName,
         this.siteDistrict,
         this.siteGeotagLatitude,
         this.siteGeotagLongitude,
@@ -304,7 +320,10 @@ class SitesModal {
         this.siteTaluk,
         this.siteTotalSitePotential,
         this.updatedBy,
-        this.updatedOn});
+        this.updatedOn,
+        this.isDealerConfirmedChangedBySo,
+        this.subdealerId
+      });
 
   SitesModal.fromJson(Map<String, dynamic> json) {
     assignedTo = json['assignedTo'];
@@ -348,6 +367,10 @@ class SitesModal {
     siteTotalSitePotential = json['siteTotalSitePotential'];
     updatedBy = json['updatedBy'];
     updatedOn = json['updatedOn'];
+    isDealerConfirmedChangedBySo = json['isDealerConfirmedChangedBySo'];
+    subdealerId = json['subdealerId'];
+    siteSubDealerName = json['siteSubDealerName'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -393,6 +416,10 @@ class SitesModal {
     data['siteTotalSitePotential'] = this.siteTotalSitePotential;
     data['updatedBy'] = this.updatedBy;
     data['updatedOn'] = this.updatedOn;
+    data['isDealerConfirmedChangedBySo'] = this.isDealerConfirmedChangedBySo;
+    data['subdealerId'] = this.subdealerId;
+    data['siteSubDealerName'] = this.siteSubDealerName;
+
     return data;
   }
 }
@@ -553,7 +580,6 @@ class SiteVisitHistoryEntity {
   String isAuthorised;
   String receiptNumber;
   bool isExpanded;
-
   String authorisedBy;
   String authorisedOn;
 
@@ -795,6 +821,11 @@ class SiteNextStageEntity {
   String nextStageSupplyQty;
   String createdBy;
   int createdOn;
+  String floorId;
+
+
+
+
 
   SiteNextStageEntity(
       {this.id,
@@ -808,7 +839,9 @@ class SiteNextStageEntity {
       this.nextStageSupplyDate,
       this.nextStageSupplyQty,
       this.createdBy,
-      this.createdOn});
+      this.createdOn,
+      this.floorId
+      });
 
   SiteNextStageEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -823,6 +856,7 @@ class SiteNextStageEntity {
     nextStageSupplyQty = json['nextStageSupplyQty'];
     createdBy = json['createdBy'];
     createdOn = json['createdOn'];
+    floorId = json['floorId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -839,6 +873,7 @@ class SiteNextStageEntity {
     data['nextStageSupplyQty'] = this.nextStageSupplyQty;
     data['createdBy'] = this.createdBy;
     data['createdOn'] = this.createdOn;
+    data['floorId'] = this.floorId;
     return data;
   }
 }
@@ -850,6 +885,8 @@ class SiteCommentsEntity {
   String creatorName;
   String createdBy;
   int createdOn;
+
+
 
   SiteCommentsEntity(
       {this.id,
@@ -947,6 +984,8 @@ class SiteInfluencerEntity {
   Null updatedBy;
   Null updatedOn;
   String isPrimary;
+
+
 
   SiteInfluencerEntity(
       {this.isPrimary,

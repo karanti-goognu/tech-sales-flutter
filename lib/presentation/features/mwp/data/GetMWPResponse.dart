@@ -67,124 +67,159 @@ class MwpplanModel {
   int rejectedOn;
   String actionedBy;
 
-  MwpplanModel(
-      {this.id,
-        this.tsoId,
-        this.mwpMonth,
-        this.referenceId,
-        this.totalConvMt,
-        this.newIlpMembers,
-        this.dspSlabConvNo,
-        this.siteConvMt,
-        this.siteConvNo,
-        this.siteVisitesNo,
-        this.siteUniqueVisitsNo,
-        this.inflVisitsNo,
-        this.masonMeetNo,
-        this.counterMeetNo,
-        this.contractorMeetNo,
-        this.miniContractorMeetNo,
-        this.consumerMeetNo,
-        this.actualTotalConvMt,
-        this.actualNewIlpMembers,
+
+  int slabServices;
+  int blockLevelMeet;
+  int contractorVisit;
+  int dspConversionVol;
+  int techVanDemo;
+  int techVanService;
+  int technocratMeet;
+  int technocratVisit;
+
+
+     MwpplanModel(
+      {this.actionedBy,
+        this.actualConsumerMeetNo,
+        this.actualContractorMeetNo,
+        this.actualCounterMeetNo,
         this.actualDspSlabConvNo,
-        this.actualSiteConvMt,
-        this.actualSiteConvNo,
-        this.actualSiteVisitesNo,
-        this.actualSiteUniqueVisitsNo,
         this.actualInflVisitsNo,
         this.actualMasonMeetNo,
-        this.actualCounterMeetNo,
-        this.actualContractorMeetNo,
         this.actualMiniContractorMeetNo,
-        this.actualConsumerMeetNo,
-        this.status,
+        this.actualNewIlpMembers,
+        this.actualSiteConvMt,
+        this.actualSiteConvNo,
+        this.actualSiteUniqueVisitsNo,
+        this.actualSiteVisitesNo,
+        this.actualTotalConvMt,
+        this.approvedOn,
+        this.blockLevelMeet,
+        this.consumerMeetNo,
+        this.contractorMeetNo,
+        this.contractorVisit,
+        this.counterMeetNo,
         this.createdBy,
         this.createdOn,
-        this.submittedOn,
-        this.approvedOn,
+        this.dspConversionVol,
+        this.dspSlabConvNo,
+        this.id,
+        this.inflVisitsNo,
+        this.masonMeetNo,
+        this.miniContractorMeetNo,
+        this.mwpMonth,
+        this.newIlpMembers,
+        this.referenceId,
         this.rejectedOn,
-        this.actionedBy});
+        this.siteConvMt,
+        this.siteConvNo,
+        this.siteUniqueVisitsNo,
+        this.siteVisitesNo,
+        this.slabServices,
+        this.status,
+        this.submittedOn,
+        this.techVanDemo,
+        this.techVanService,
+        this.technocratMeet,
+        this.technocratVisit,
+        this.totalConvMt,
+        this.tsoId});
 
   MwpplanModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    tsoId = json['tsoId'];
-    mwpMonth = json['mwpMonth'];
-    referenceId = json['referenceId'];
-    totalConvMt = json['totalConvMt'];
-    newIlpMembers = json['newIlpMembers'];
-    dspSlabConvNo = json['dspSlabConvNo'];
-    siteConvMt = json['siteConvMt'];
-    siteConvNo = json['siteConvNo'];
-    siteVisitesNo = json['siteVisitesNo'];
-    siteUniqueVisitsNo = json['siteUniqueVisitsNo'];
-    inflVisitsNo = json['inflVisitsNo'];
-    masonMeetNo = json['masonMeetNo'];
-    counterMeetNo = json['counterMeetNo'];
-    contractorMeetNo = json['contractorMeetNo'];
-    miniContractorMeetNo = json['miniContractorMeetNo'];
-    consumerMeetNo = json['consumerMeetNo'];
-    actualTotalConvMt = json['actualTotalConvMt'];
-    actualNewIlpMembers = json['actualNewIlpMembers'];
+    actionedBy = json['actionedBy'];
+    actualConsumerMeetNo = json['actualConsumerMeetNo'];
+    actualContractorMeetNo = json['actualContractorMeetNo'];
+    actualCounterMeetNo = json['actualCounterMeetNo'];
     actualDspSlabConvNo = json['actualDspSlabConvNo'];
-    actualSiteConvMt = json['actualSiteConvMt'];
-    actualSiteConvNo = json['actualSiteConvNo'];
-    actualSiteVisitesNo = json['actualSiteVisitesNo'];
-    actualSiteUniqueVisitsNo = json['actualSiteUniqueVisitsNo'];
     actualInflVisitsNo = json['actualInflVisitsNo'];
     actualMasonMeetNo = json['actualMasonMeetNo'];
-    actualCounterMeetNo = json['actualCounterMeetNo'];
-    actualContractorMeetNo = json['actualContractorMeetNo'];
     actualMiniContractorMeetNo = json['actualMiniContractorMeetNo'];
-    actualConsumerMeetNo = json['actualConsumerMeetNo'];
+    actualNewIlpMembers = json['actualNewIlpMembers'];
+    actualSiteConvMt = json['actualSiteConvMt'];
+    actualSiteConvNo = json['actualSiteConvNo'];
+    actualSiteUniqueVisitsNo = json['actualSiteUniqueVisitsNo'];
+    actualSiteVisitesNo = json['actualSiteVisitesNo'];
+    actualTotalConvMt = json['actualTotalConvMt'];
+    approvedOn = json['approvedOn'];
+    blockLevelMeet = json['blockLevelMeet'];
+    consumerMeetNo = json['consumerMeetNo'];
+    contractorMeetNo = json['contractorMeetNo'];
+    contractorVisit = json['contractorVisit'];
+    counterMeetNo = json['counterMeetNo'];
+    createdBy = json['createdBy'];
+    createdOn = json['createdOn'];
+    dspConversionVol = json['dspConversionVol'];
+    dspSlabConvNo = json['dspSlabConvNo'];
+    id = json['id'];
+    inflVisitsNo = json['inflVisitsNo'];
+    masonMeetNo = json['masonMeetNo'];
+    miniContractorMeetNo = json['miniContractorMeetNo'];
+    mwpMonth = json['mwpMonth'];
+    newIlpMembers = json['newIlpMembers'];
+    referenceId = json['referenceId'];
+    rejectedOn = json['rejectedOn'];
+    siteConvMt = json['siteConvMt'];
+    siteConvNo = json['siteConvNo'];
+    siteUniqueVisitsNo = json['siteUniqueVisitsNo'];
+    siteVisitesNo = json['siteVisitesNo'];
+    slabServices = json['slabServices'];
     status = json['status'];
-    createdBy = json['createdBy']!=null?json['createdBy']:"";
-    createdOn = json['createdOn']!=null?json['createdOn']:0;
-    submittedOn = json['submittedOn']!=null?json['submittedOn']:0;
-    approvedOn = json['approvedOn']!=null?json['approvedOn']:0;
-    rejectedOn = json['rejectedOn']!=null?json['rejectedOn']:0;
-    actionedBy = json['actionedBy']!=null?json['actionedBy']:"";
+    submittedOn = json['submittedOn'];
+    techVanDemo = json['techVanDemo'];
+    techVanService = json['techVanService'];
+    technocratMeet = json['technocratMeet'];
+    technocratVisit = json['technocratVisit'];
+    totalConvMt = json['totalConvMt'];
+    tsoId = json['tsoId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['tsoId'] = this.tsoId;
-    data['mwpMonth'] = this.mwpMonth;
-    data['referenceId'] = this.referenceId;
-    data['totalConvMt'] = this.totalConvMt;
-    data['newIlpMembers'] = this.newIlpMembers;
-    data['dspSlabConvNo'] = this.dspSlabConvNo;
-    data['siteConvMt'] = this.siteConvMt;
-    data['siteConvNo'] = this.siteConvNo;
-    data['siteVisitesNo'] = this.siteVisitesNo;
-    data['siteUniqueVisitsNo'] = this.siteUniqueVisitsNo;
-    data['inflVisitsNo'] = this.inflVisitsNo;
-    data['masonMeetNo'] = this.masonMeetNo;
-    data['counterMeetNo'] = this.counterMeetNo;
-    data['contractorMeetNo'] = this.contractorMeetNo;
-    data['miniContractorMeetNo'] = this.miniContractorMeetNo;
-    data['consumerMeetNo'] = this.consumerMeetNo;
-    data['actualTotalConvMt'] = this.actualTotalConvMt;
-    data['actualNewIlpMembers'] = this.actualNewIlpMembers;
+    data['actionedBy'] = this.actionedBy;
+    data['actualConsumerMeetNo'] = this.actualConsumerMeetNo;
+    data['actualContractorMeetNo'] = this.actualContractorMeetNo;
+    data['actualCounterMeetNo'] = this.actualCounterMeetNo;
     data['actualDspSlabConvNo'] = this.actualDspSlabConvNo;
-    data['actualSiteConvMt'] = this.actualSiteConvMt;
-    data['actualSiteConvNo'] = this.actualSiteConvNo;
-    data['actualSiteVisitesNo'] = this.actualSiteVisitesNo;
-    data['actualSiteUniqueVisitsNo'] = this.actualSiteUniqueVisitsNo;
     data['actualInflVisitsNo'] = this.actualInflVisitsNo;
     data['actualMasonMeetNo'] = this.actualMasonMeetNo;
-    data['actualCounterMeetNo'] = this.actualCounterMeetNo;
-    data['actualContractorMeetNo'] = this.actualContractorMeetNo;
     data['actualMiniContractorMeetNo'] = this.actualMiniContractorMeetNo;
-    data['actualConsumerMeetNo'] = this.actualConsumerMeetNo;
-    data['status'] = this.status;
+    data['actualNewIlpMembers'] = this.actualNewIlpMembers;
+    data['actualSiteConvMt'] = this.actualSiteConvMt;
+    data['actualSiteConvNo'] = this.actualSiteConvNo;
+    data['actualSiteUniqueVisitsNo'] = this.actualSiteUniqueVisitsNo;
+    data['actualSiteVisitesNo'] = this.actualSiteVisitesNo;
+    data['actualTotalConvMt'] = this.actualTotalConvMt;
+    data['approvedOn'] = this.approvedOn;
+    data['blockLevelMeet'] = this.blockLevelMeet;
+    data['consumerMeetNo'] = this.consumerMeetNo;
+    data['contractorMeetNo'] = this.contractorMeetNo;
+    data['contractorVisit'] = this.contractorVisit;
+    data['counterMeetNo'] = this.counterMeetNo;
     data['createdBy'] = this.createdBy;
     data['createdOn'] = this.createdOn;
-    data['submittedOn'] = this.submittedOn;
-    data['approvedOn'] = this.approvedOn;
+    data['dspConversionVol'] = this.dspConversionVol;
+    data['dspSlabConvNo'] = this.dspSlabConvNo;
+    data['id'] = this.id;
+    data['inflVisitsNo'] = this.inflVisitsNo;
+    data['masonMeetNo'] = this.masonMeetNo;
+    data['miniContractorMeetNo'] = this.miniContractorMeetNo;
+    data['mwpMonth'] = this.mwpMonth;
+    data['newIlpMembers'] = this.newIlpMembers;
+    data['referenceId'] = this.referenceId;
     data['rejectedOn'] = this.rejectedOn;
-    data['actionedBy'] = this.actionedBy;
+    data['siteConvMt'] = this.siteConvMt;
+    data['siteConvNo'] = this.siteConvNo;
+    data['siteUniqueVisitsNo'] = this.siteUniqueVisitsNo;
+    data['siteVisitesNo'] = this.siteVisitesNo;
+    data['slabServices'] = this.slabServices;
+    data['status'] = this.status;
+    data['submittedOn'] = this.submittedOn;
+    data['techVanDemo'] = this.techVanDemo;
+    data['techVanService'] = this.techVanService;
+    data['technocratMeet'] = this.technocratMeet;
+    data['technocratVisit'] = this.technocratVisit;
+    data['totalConvMt'] = this.totalConvMt;
+    data['tsoId'] = this.tsoId;
     return data;
   }
 }
