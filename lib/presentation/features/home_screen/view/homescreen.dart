@@ -73,14 +73,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-
+    print("homescreen.dart :::::: initState()");
     super.initState();
-    _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     initPlatformState();
     _moengagePlugin.initialise();
     _moengagePlugin.enableSDKLogs();
     _moengagePlugin.setUpPushCallbacks(_onPushClick);
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+   /// _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+
     if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
       print('Check In');
       _homeController.checkInStatus = StringConstants.checkIn;
@@ -94,6 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
         _homeController.checkInStatus = StringConstants.journeyEnded;
       }
     }
+//    _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
+
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       _homeController.employeeName =
@@ -121,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
+    print("homescreen.dart :::::: dispose()");
     super.dispose();
     // _homeController.dispose();
   }
@@ -163,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.0),
                           borderRadius:
-                              new BorderRadius.all(Radius.circular(70)),
+                          new BorderRadius.all(Radius.circular(70)),
                         ),
                         child: Icon(
                           Icons.calendar_today_sharp,
@@ -333,12 +336,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   Obx(() {
                     if (_homeController.disableSlider != true) {
                       return (_homeController.checkInStatus ==
-                              StringConstants.checkIn)
+                          StringConstants.checkIn)
                           ? checkInSliderButton()
                           : (_homeController.checkInStatus ==
-                                  StringConstants.checkOut)
-                              ? checkOutSliderButton()
-                              : journeyEnded();
+                          StringConstants.checkOut)
+                          ? checkOutSliderButton()
+                          : journeyEnded();
                     } else {
                       return disabledSliderButton();
                     }
@@ -355,7 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.white,
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -398,10 +401,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               // gridDelegate:
                               //     SliverGridDelegateWithFixedCrossAxisCount(
 
-                                childAspectRatio: 3.4,
+                              childAspectRatio: 3.4,
                               // ),
                               //   new HomeScreenDashboardModel("New Influencers", _homeController.newInfl),
-  //   new HomeScreenDashboardModel("DSP Slabs Converted", _homeController.dspSlabsConverted),
+                              //   new HomeScreenDashboardModel("DSP Slabs Converted", _homeController.dspSlabsConverted),
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
@@ -440,7 +443,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
                                           child:
-                                           Obx(()=>Text(
+                                          Obx(()=>Text(
                                             _homeController.volumeConverted,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
@@ -467,7 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
                                           child:
-                                           Obx(()=> Text(
+                                          Obx(()=> Text(
                                             _homeController.newInfl,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
@@ -494,7 +497,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
                                           child:
-                                           Obx(()=>Text(
+                                          Obx(()=>Text(
                                             _homeController.dspSlabsConverted,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
@@ -520,33 +523,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: userMenuWidget(),
-                  ))
+                        padding: const EdgeInsets.all(8.0),
+                        child: userMenuWidget(),
+                      ))
                 ],
               ),
 
               Positioned(
-            right: -10,
-            top: 30,
-            child:
-            UrlConstants.baseUrl.contains('mobileqacloud')?
-            Chip(
-              backgroundColor: ColorConstants.appBarColor,
-              label: Text('QA     ', style: TextStyle(color: Colors.white),),
-            ):
-            UrlConstants.baseUrl.contains('mobiledevcloud')?
-            Chip(
-              backgroundColor: ColorConstants.appBarColor,
-              label: Text('Dev     ', style: TextStyle(color: Colors.white),),
-            ):Container(),
-          ),
+                right: -10,
+                top: 30,
+                child:
+                UrlConstants.baseUrl.contains('mobileqacloud')?
+                Chip(
+                  backgroundColor: ColorConstants.appBarColor,
+                  label: Text('QA     ', style: TextStyle(color: Colors.white),),
+                ):
+                UrlConstants.baseUrl.contains('mobiledevcloud')?
+                Chip(
+                  backgroundColor: ColorConstants.appBarColor,
+                  label: Text('Dev     ', style: TextStyle(color: Colors.white),),
+                ):Container(),
+              ),
             ],
           ),
           floatingActionButton:
-              SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+          SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator()),
     );
   }
@@ -563,11 +566,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       icon: Center(
           child: Icon(
-        Icons.play_disabled,
-        color: Colors.white,
-        size: 40.0,
-        //  semanticLabel: 'Text to announce in accessibility modes',
-      )),
+            Icons.play_disabled,
+            color: Colors.white,
+            size: 40.0,
+            //  semanticLabel: 'Text to announce in accessibility modes',
+          )),
 
       ///Change All the color and size from here.
       alignLabel: Alignment.center,
@@ -603,11 +606,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       icon: Center(
           child: Icon(
-        Icons.play_circle_filled_outlined,
-        color: Colors.white,
-        size: 40.0,
-        //  semanticLabel: 'Text to announce in accessibility modes',
-      )),
+            Icons.play_circle_filled_outlined,
+            color: Colors.white,
+            size: 40.0,
+            //  semanticLabel: 'Text to announce in accessibility modes',
+          )),
 
       ///Change All the color and size from here.
       alignLabel: Alignment.center,
@@ -645,11 +648,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       icon: Center(
           child: Icon(
-        Icons.arrow_forward_outlined,
-        color: Colors.white,
-        size: 40.0,
-        //  semanticLabel: 'Text to announce in accessibility modes',
-      )),
+            Icons.arrow_forward_outlined,
+            color: Colors.white,
+            size: 40.0,
+            //  semanticLabel: 'Text to announce in accessibility modes',
+          )),
 
       ///Change All the color and size from here.
       alignLabel: Alignment.center,
@@ -695,7 +698,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.toNamed(Routes.LEADS_SCREEN);
                   break;
                 case 1:
-                  // storeOfflineSiteData();
+                // storeOfflineSiteData();
                   Get.toNamed(Routes.SITES_SCREEN);
                   break;
                 case 2:

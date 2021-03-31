@@ -136,7 +136,7 @@ class SiteController extends GetxController {
   // set sitesListOffline(value) => this._sitesListOffline.assignAll(value);
 
   getSitesData(String accessKey) {
-    Get.back();
+   Get.back();
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();

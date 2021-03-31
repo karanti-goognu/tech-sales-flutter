@@ -5561,9 +5561,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
       print(newInfluencerEntity);
 
-      if (_selectedSiteFloor == null) {
-        _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
-      }
+      // if (_selectedSiteFloor == null) {
+      //   _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
+      // }
 
       var updateDataRequest = {
          "siteId": widget.siteId,
@@ -5587,7 +5587,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "siteCreationDate": viewSiteDataResponse.sitesModal.siteCreationDate,
         "dealerId": viewSiteDataResponse.sitesModal.siteDealerId,
         "siteBuiltArea": _siteBuiltupArea.text,
-        "noOfFloors": _selectedSiteFloor.id,
+        "noOfFloors": _selectedSiteFloor!=null?_selectedSiteFloor.id:1,
         "productDemo": _siteProductDemo.text,
         "productOralBriefing": _siteProductOralBriefing.text,
         "soCode": viewSiteDataResponse.sitesModal.siteSoId,

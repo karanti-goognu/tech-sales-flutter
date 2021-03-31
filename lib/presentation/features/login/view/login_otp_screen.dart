@@ -110,6 +110,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
       case ConnectivityResult.wifi:
         connectivityString = "WiFi: Online";
     }
+
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
@@ -343,7 +344,8 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
     print('$connectivityString');
     (connectivityString == 'Offline')
         ? _loginController.showNoInternetSnack()
-        : _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
+        :
+    _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
   }
 
   LoginOtpScreenPageState(this.mobileNumber);

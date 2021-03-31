@@ -178,7 +178,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
   getLeadData(String accessKey, String empId ) async {
     // AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
 
-    await _addLeadsController.getLeadData(accessKey, widget.leadId, empId)
+    await _addLeadsController.getLeadData(accessKey, widget.leadId)
         .then((data) async {
         print("here");
         print(data);

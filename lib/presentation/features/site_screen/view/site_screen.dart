@@ -803,11 +803,10 @@ class _SiteScreenState extends State<SiteScreen> {
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  new CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ViewSiteScreen(
-                                              _siteController.sitesListResponse.sitesEntity[index].siteId)));
+                                  context, new CupertinoPageRoute(
+                                  builder: (BuildContext context) =>
+                                          ViewSiteScreen(_siteController.sitesListResponse.sitesEntity[index].siteId))
+                              );
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,

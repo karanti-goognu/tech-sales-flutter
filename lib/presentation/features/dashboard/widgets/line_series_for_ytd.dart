@@ -1,62 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/year_to_date.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class LineSeriesForYTD extends StatelessWidget {
+class LineSeriesForYTD extends StatefulWidget {
   const LineSeriesForYTD({
     Key key,
     @required this.chartData,
+    @required this.chartData2,
   }) : super(key: key);
 
   final List<ChartData> chartData;
-  
+  final List<ChartData> chartData2;
+
+  @override
+  _LineSeriesForYTDState createState() => _LineSeriesForYTDState();
+}
+
+class _LineSeriesForYTDState extends State<LineSeriesForYTD> {
+  DashboardController _dashboardController = Get.find();
 
   @override
   Widget build(BuildContext context) {
 
-  List<_SalesData> data = [
-    _SalesData('Jan', 35),
-    _SalesData('Feb', 28),
-    _SalesData('Mar', 34),
-    _SalesData('Apr', 32),
-    _SalesData('May', 40)
-  ];
-    List<_SalesData> data2 = [
-    _SalesData('Jan', 3),
-    _SalesData('Feb', 8),
-    _SalesData('Mar', 34),
-    _SalesData('Apr', 2),
-    _SalesData('May', 40)
-  ];
-
     return SfCartesianChart(
-        primaryXAxis: CategoryAxis(),
-      
+        primaryXAxis: CategoryAxis(
+            majorGridLines: MajorGridLines(width: 0),
+            labelRotation: 90,
+            visibleMaximum: 12
+
+//            labelPlacement: LabelPlacement.betweenTicks,
+//            interval: 5
+        ),
         // title: ChartTitle(text: 'Half yearly sales analysis'),
         legend: Legend(isVisible: true, position:LegendPosition.top),
         tooltipBehavior: TooltipBehavior(enable: true),
-        series: <ChartSeries<_SalesData, String>>[
-          LineSeries<_SalesData, String>(
-              dataSource: data,
-              xValueMapper: (_SalesData sales, _) => sales.year,
-              yValueMapper: (_SalesData sales, _) => sales.sales,
-              name: 'Leads Gen. Avg',
+        series: <ChartSeries<ChartData, String>>[
+          LineSeries<ChartData, String>(
+              dataSource: widget.chartData,
+            xValueMapper: (ChartData data, _) => data.month,
+            yValueMapper: (ChartData data, _) => data.count,
+              name: _dashboardController.lineChartLegend1.toString(),
               dataLabelSettings: DataLabelSettings(isVisible: true),
               ),
-               LineSeries<_SalesData, String>(
-              dataSource: data2,
-              xValueMapper: (_SalesData sales, _) => sales.year,
-              yValueMapper: (_SalesData sales, _) => sales.sales,
-              name: 'Leads Conv. Avg',
+               LineSeries<ChartData, String>(
+              dataSource: widget.chartData2,
+                 xValueMapper: (ChartData data, _) => data.month,
+                 yValueMapper: (ChartData data, _) => data.count,
+              name: _dashboardController.lineChartLegend2.toString(),
               dataLabelSettings: DataLabelSettings(isVisible: true),
               )
         ]);
   }
-}
-
-class _SalesData {
-  _SalesData(this.year, this.sales);
-
-  final String year;
-  final double sales;
 }

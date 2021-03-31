@@ -61,6 +61,7 @@ class SplashController extends GetxController {
             print('Not expired');
             switch (requestId) {
               case RequestIds.REFRESH_DATA:
+                print("on splash_controller.dart :::: getAccessKey");
                 getRefreshData(this.accessKeyResponse.accessKey);
                 break;
             }
@@ -127,6 +128,7 @@ class SplashController extends GetxController {
           print("Opportunity Model ${this.splashDataModel.siteOpportunityStatusRepository}");
 //          print("Opportunity Model ${this.splashDataModel.siteSubTypeEntity}");
           print("Reporting TSO List Model ${this.splashDataModel.reportingTsoListModel }");
+          print("on splash_controller.dart ::: before openNextPage()");
           openNextPage();
           /*if (splashDataModel.respCode == "LD2006") {
             Get.dialog(CustomDialogs().errorDialog(splashDataModel.respMsg));
@@ -139,6 +141,7 @@ class SplashController extends GetxController {
   }
 
   openNextPage() {
+    print("on splash_controller.dart openNextPage()");
     Get.offNamed(Routes.HOME_SCREEN);
   }
 }

@@ -586,7 +586,8 @@ class _LeadScreenState extends State<LeadScreen> {
             // print(${_splashController.splashDataModel.leadStatusEntity[(_leadsFilterController.leadsListResponse.leadsEntity[index].leadStatusId) - 1].leadStatusDesc}');
             return GestureDetector(
               onTap: () {
-                Get.to(
+                print("Lead ID: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId}");
+                Get.to(()=>
                     ViewLeadScreen(_leadsFilterController
                         .leadsListResponse
                         .leadsEntity[index]

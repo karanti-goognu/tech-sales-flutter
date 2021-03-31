@@ -106,7 +106,7 @@ class HomeController extends GetxController {
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
-    //  Get.back();
+
       this.accessKeyResponse = data;
       switch (requestId) {
         case RequestIds.CHECK_IN:
@@ -126,8 +126,8 @@ class HomeController extends GetxController {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-   await _prefs.then((SharedPreferences prefs) async {
-      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      await  _prefs.then((SharedPreferences prefs) async {
+       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('$empId $userSecurityKey');

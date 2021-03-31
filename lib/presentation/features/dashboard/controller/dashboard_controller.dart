@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardYearlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/repository/dashboard_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -12,28 +13,20 @@ import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
   final DashboardRepository repository;
+
   DashboardController({@required this.repository}) : assert(repository != null);
 
   final _accessKeyResponse = AccessKeyModel().obs;
   final _mtdGeneratedVolumeSiteList = DashboardMtdGeneratedVolumeSiteList().obs;
-  get mtdGeneratedVolumeSiteList => _mtdGeneratedVolumeSiteList.value;
-
-  set mtdGeneratedVolumeSiteList(value) {
-    _mtdGeneratedVolumeSiteList.value = value;
-    print("Inside setter");
-    print(_mtdGeneratedVolumeSiteList.value.totalSiteCount.runtimeType);
-    print(value);
-  }
-
   final _mtdConvertedVolumeList = DashboardMtdConvertedVolumeList().obs;
-
-  get mtdConvertedVolumeList => _mtdConvertedVolumeList.value;
-
-  set mtdConvertedVolumeList(value) {
-    _mtdConvertedVolumeList.value = value;
-  }
-
+  final _dashboardYearlyViewModel = DashboardYearlyViewModel().obs;
+  final _monthList = [].obs;
   final _phoneNumber = "8860080067".obs;
   final _empId = "_empty".obs;
   final _employeeName = "_empty".obs;
@@ -52,14 +45,40 @@ class DashboardController extends GetxController {
   final _mwpPlanApproveStatus = ''.obs;
   final _remainingTargetCount = 0.obs;
   final _remainingTargetVolume = 0.obs;
-  final _isPrev=false.obs;
+  final _isPrev = false.obs;
+  final _barGraphLegend1 = ''.obs;
+  final _lineChartLegend1 = ''.obs;
+  final _lineChartLegend2 = ''.obs;
+  final _yearMonth = ''.obs;
+  final _gotYearlyData = false.obs;
 
 
-  get isPrev => _isPrev;
+  get gotYearlyData => _gotYearlyData;
 
-  set isPrev(value) {
-    _isPrev.value = value;
+  set gotYearlyData(value) {
+    _gotYearlyData.value = value;
   }
+
+  get yearMonth => _yearMonth;
+
+  set yearMonth(value) {
+    _yearMonth.value = value;
+  }
+
+  final _leadGenerated=[].obs;
+  final _avgLeadGenerated=[].obs;
+  final _leadConverted=[].obs;
+  final _avgLeadConverted=[].obs;
+  final _volumeConverted=[].obs;
+  final _volumeGenerated=[].obs;
+  final _avgVolumeConverted=[].obs;
+  final _avgVolumeGenerated=[].obs;
+
+
+
+
+
+
 
   getAccessKey(int requestId) {
     print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
@@ -77,24 +96,57 @@ class DashboardController extends GetxController {
     });
   }
 
-  getYearlyViewDetails() {
-    Future.delayed(Duration.zero,()=>Center(child: CircularProgressIndicator(),));
+  Future<bool> getYearlyViewDetails() async {
+    print("called");
+    bool isProcessComplete = false;
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(
+            Center(
+              child: CircularProgressIndicator(),
+            ),
+            barrierDismissible: false));
 //    String userSecurityCode;
     String empID;
     repository.getAccessKey().then((value) {
-      print(value.accessKey);
       this.accessKeyResponse = value;
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      _prefs.then((SharedPreferences prefs) {
+      _prefs.then((SharedPreferences prefs) async {
 //        userSecurityCode = prefs.getString(StringConstants.userSecurityKey);
         empID = prefs.getString(StringConstants.employeeId);
-        repository.getYearlyViewDetails(empID);
+        repository.getYearlyViewDetails(empID).then((data) {
+          DashboardYearlyViewModel dataX = data;
+          this.dashboardYearlyViewModel = data;
+//          print(dataX.dashboardYearlyModels);
+//          print(":::: $data ::::");
+          List tempMonthList = dataX.dashboardYearlyModels
+              .map(
+                (e) => e.showMonth,
+              )
+              .toList();
+          this.monthList = tempMonthList.toSet().toList();
+          print(this.monthList);
+          this.gotYearlyData= true;
+
+          print("IN CONTROLLER");
+
+//          this.countAndActualList= dataX.dashboardYearlyModels.map((e) => e.leadGenerated).toList();
+//          print(dataX.dashboardYearlyModels);
+//          print(this.dashboardYearlyViewModel.dashboardYearlyModels);
+          isProcessComplete = true;
+        });
       });
+      Get.back();
     });
+    return isProcessComplete;
   }
 
   getDetailsForSharingReport(File image) {
-    Future.delayed(Duration.zero,()=>Center(child: CircularProgressIndicator(),));
+    Future.delayed(
+        Duration.zero,
+        () => Center(
+              child: CircularProgressIndicator(),
+            ));
     print(image.path);
     String userSecurityCode;
     String empID;
@@ -120,46 +172,33 @@ class DashboardController extends GetxController {
     repository
         .shareReport(image, userSecurityKey, accessKey, empID)
         .then((value) {
-      print("third");
       print("Inside controller $value");
     });
   }
 
- Future<bool> getMonthViewDetails({String empID, String yearMonth}) async {
-    bool isProcessComplete=false;
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator(),)));
+  Future<bool> getMonthViewDetails({String empID, String yearMonth}) async {
+    bool isProcessComplete = false;
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator())));
     print("EMP ID inside controller: $empID");
-
-    String empId = empID??"empty";
-
+    String empId = empID ?? "empty";
     String userSecurityKey = "empty";
-//    int year = DateTime.now().year;
-//    int month = DateTime.now().month;
-//    String yearMonth;
-//    if (month > 3) {
-//      yearMonth = year.toString() + '-' + month.toString();
-//    } else {
-//      yearMonth = (year - 1).toString() +
-//          '-' +
-//          (month.toString().length == 1
-//              ? '0' + month.toString()
-//              : month.toString());
-//    }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-   await _prefs.then((SharedPreferences prefs) async {
-
+    await _prefs.then((SharedPreferences prefs) async {
       print("Before prefs: $empId");
-      if (empId=='empty')
-      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      if (empId == 'empty')
+        empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       print("empId    $empId");
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print("After prefs: $empId");
       print('Controller empID: ${this.empId}');
-      this.empId=empId;
-      print('Controller empID: ${this.empId}');
-      isProcessComplete=true;
+      this.empId = empId;
+      print('Controller empID after month details: ${this.empId}');
+      isProcessComplete = true;
       repository.getMonthViewDetails(empId, yearMonth).then((_) {
+        print(_.generatedCount);
 
         DashboardMonthlyViewModel data = _;
         this.convTargetCount = data.convTargetCount;
@@ -178,21 +217,28 @@ class DashboardController extends GetxController {
         this.remainingTargetCount = data.remainingTargetCount;
         this.remainingTargetVolume = data.remainingTargetVolume;
         Get.back();
-
       });
     }).catchError((e) => print(e));
-return isProcessComplete;
+    return isProcessComplete;
   }
 
   getDashboardMtdGeneratedVolumeSiteList({String empID}) {
-    print("EMP ID inside controller: $empID");
-    String empId = empID??"empty";
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    print("EMP ID inside controller volume site list: $empID");
+    String empId = empID ?? "empty";
     String userSecurityKey = "empty";
     int year = DateTime.now().year;
     int month = DateTime.now().month;
     String yearMonth;
-    if (month > 3) {
-      yearMonth = year.toString() + '-' + month.toString();
+    if (month >= 3) {
+      yearMonth = year.toString() +
+          '-' +
+          (month.toString().length == 1
+              ? '0' + month.toString()
+              : month.toString());
     } else {
       yearMonth = (year - 1).toString() +
           '-' +
@@ -202,34 +248,35 @@ return isProcessComplete;
     }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      print("Before prefs: $empId");
-      if (empId=='empty')
+      if (empId == 'empty')
         empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print("After prefs: $empId");
-
-      repository.getDashboardMtdGeneratedVolumeSiteList(empID,yearMonth).then((_) {
+      repository
+          .getDashboardMtdGeneratedVolumeSiteList(empId, yearMonth)
+          .then((_) {
         DashboardMtdGeneratedVolumeSiteList data = _;
-        print("data: ${data.totalSiteCount.runtimeType}");
+//        print(data);
         this.mtdGeneratedVolumeSiteList = data;
-        print(this.mtdGeneratedVolumeSiteList);
-        print(this.mtdGeneratedVolumeSiteList.totalSiteCount);
-
+        Get.back();
+//        print(this.mtdGeneratedVolumeSiteList);
+//        print(this.mtdGeneratedVolumeSiteList.totalSiteCount);
       });
     }).catchError((e) => print(e));
   }
-
 
   getDashboardMtdConvertedVolumeList({String empID}) {
-    print("EMP ID inside controller: $empID");
-    String empId = empID??"empty";
+    String empId = empID ?? "empty";
     String userSecurityKey = "empty";
     int year = DateTime.now().year;
     int month = DateTime.now().month;
     String yearMonth;
-    if (month > 3) {
-      yearMonth = year.toString() + '-' + month.toString();
+    if (month >= 3) {
+      yearMonth = year.toString() +
+          '-' +
+          (month.toString().length == 1
+              ? '0' + month.toString()
+              : month.toString());
     } else {
       yearMonth = (year - 1).toString() +
           '-' +
@@ -240,22 +287,18 @@ return isProcessComplete;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       print("Before prefs: $empId");
-      if (empId=='empty')
+      if (empId == 'empty')
         empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print("After prefs: $empId");
 
-      repository.getDashboardMtdConvertedVolumeList(empID,yearMonth).then((_) {
+      repository.getDashboardMtdConvertedVolumeList(empId, yearMonth).then((_) {
         DashboardMtdConvertedVolumeList data = _;
         this.mtdConvertedVolumeList = data;
-
       });
     }).catchError((e) => print(e));
   }
-
-
-
 
   get accessKeyResponse => this._accessKeyResponse.value;
   get phoneNumber => this._phoneNumber.value;
@@ -354,5 +397,106 @@ return isProcessComplete;
 
   set convertedVolume(value) {
     _convertedVolume.value = value;
+  }
+
+  get mtdGeneratedVolumeSiteList => _mtdGeneratedVolumeSiteList.value;
+
+  set mtdGeneratedVolumeSiteList(value) {
+    _mtdGeneratedVolumeSiteList.value = value;
+  }
+
+  get mtdConvertedVolumeList => _mtdConvertedVolumeList.value;
+
+  set mtdConvertedVolumeList(value) {
+    _mtdConvertedVolumeList.value = value;
+  }
+
+  get monthList => _monthList;
+
+  set monthList(value) {
+    _monthList.assignAll(value);
+  }
+
+  get dashboardYearlyViewModel => _dashboardYearlyViewModel.value;
+
+  set dashboardYearlyViewModel(value) {
+    _dashboardYearlyViewModel.value = value;
+  }
+  get isPrev => _isPrev;
+
+  set isPrev(value) {
+    _isPrev.value = value;
+  }
+
+  get avgLeadGenerated => _avgLeadGenerated;
+
+  set avgLeadGenerated(value) {
+    _avgLeadGenerated.addAll(value);
+  }
+
+  get leadConverted => _leadConverted;
+
+  set leadConverted(value) {
+    _leadConverted.addAll(value);
+  }
+
+  get avgLeadConverted => _avgLeadConverted;
+
+  set avgLeadConverted(value) {
+    _avgLeadConverted.addAll(value);
+  }
+
+  get volumeConverted => _volumeConverted;
+
+  set volumeConverted(value) {
+    _volumeConverted.addAll(value);
+  }
+
+  get volumeGenerated => _volumeGenerated;
+
+  set volumeGenerated(value) {
+    _volumeGenerated.addAll(value);
+  }
+
+  get avgVolumeConverted => _avgVolumeConverted;
+
+  set avgVolumeConverted(value) {
+    _avgVolumeConverted.addAll(value);
+  }
+
+  get avgVolumeGenerated => _avgVolumeGenerated;
+
+  set avgVolumeGenerated(value) {
+    _avgVolumeGenerated.addAll(value);
+  }
+  get leadGenerated => _leadGenerated;
+
+  set leadGenerated(value) {
+    _leadGenerated.addAll(value);
+  }
+
+  get lineChartLegend2 => _lineChartLegend2;
+
+  set lineChartLegend2(value) {
+    _lineChartLegend2.value = value;
+  }
+  get lineChartLegend1 => _lineChartLegend1;
+
+  set lineChartLegend1(value) {
+    _lineChartLegend1.value = value;
+  }
+
+  get barGraphLegend1 => _barGraphLegend1;
+
+  set barGraphLegend1(value) {
+    _barGraphLegend1.value = value;
+  }
+
+  final _barGraphLegend2 = ''.obs;
+
+  get barGraphLegend2 => _barGraphLegend2;
+
+  set barGraphLegend2(value) {
+    _barGraphLegend2.value = value;
   }
 }

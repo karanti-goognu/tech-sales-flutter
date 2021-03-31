@@ -82,6 +82,7 @@ class SplashScreenPageState extends State<SplashScreen> {
       if (isUserLoggedIn == "false") {
         Get.offNamed(Routes.LOGIN);
       } else {
+        print("on splash_screen.dart");
         _splashController.getSecretKey(RequestIds.REFRESH_DATA);
       }
     });

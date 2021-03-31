@@ -119,7 +119,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
       accessKeyModel = data;
       print("AccessKey :: " + accessKeyModel.accessKey);
       await _addLeadsController
-          .getLeadData(accessKeyModel.accessKey, int.parse(gv.selectedLeadID), "")
+          .getLeadData(accessKeyModel.accessKey, int.parse(gv.selectedLeadID))
           .then((data) {
         // print(data);
         viewLeadDataResponse = data;

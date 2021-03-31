@@ -27,7 +27,7 @@ class MyApiClientDashboard {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel;
         accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
+//        print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -70,6 +70,7 @@ class MyApiClientDashboard {
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        print("Monthly data ${response.body}");
         DashboardMonthlyViewModel dashboardMonthlyViewModel;
         dashboardMonthlyViewModel = DashboardMonthlyViewModel.fromJson(data);
         return dashboardMonthlyViewModel;
@@ -86,7 +87,7 @@ class MyApiClientDashboard {
   Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth) async{
     print('$empID $yearMonth');
     try{
-      var url=UrlConstants.dashboardMtdGeneratedVolumeSiteList+'EMP0006700'+'&yearMonth='+yearMonth;
+      var url=UrlConstants.dashboardMtdGeneratedVolumeSiteList+empID+'&yearMonth='+yearMonth;
       print(url);
       var response = await httpClient.get(url,headers: requestHeaders);
       print('Response body is : ${json.decode(response.body)}');
@@ -107,7 +108,7 @@ class MyApiClientDashboard {
   Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth) async{
     print('$empID $yearMonth');
     try{
-      var url=UrlConstants.dashboardMtdConvertedVolumeList+'EMP0006700'+'&yearMonth='+yearMonth;
+      var url=UrlConstants.dashboardMtdConvertedVolumeList+empID+'&yearMonth='+yearMonth;
       print(url);
       var response = await httpClient.get(url,headers: requestHeaders);
       print('Response body is : ${json.decode(response.body)}');

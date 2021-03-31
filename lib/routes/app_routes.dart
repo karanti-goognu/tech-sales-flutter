@@ -27,6 +27,8 @@ abstract class Routes {
   static const ADD_INFLUENCER = '/add_influencer';
   static const NOTIFICATION = '/notification';
   static const DASHBOARD = '/dashboard';
+  static const DASHBOARD_SITE_LIST = '/dashboard_site_list';
+  static const DASHBOARD_VOLUME_CONVERTED= '/dashboard_volume_converted';
 
 
 }
