@@ -576,6 +576,7 @@ class ConvertedColumnChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.dspSlabConvertedCount.toString())}%\n");
     return Expanded(
         child: _currentMothDetailsVolume == false
             ? Obx(() => SfCircularChart(

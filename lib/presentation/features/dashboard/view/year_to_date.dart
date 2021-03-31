@@ -8,7 +8,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardYearlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/bar_graph_for_ytd.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/datagrid_for_ytd.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/line_series_for_ytd.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -37,9 +36,9 @@ class _YearToDateState extends State<YearToDate> {
   List<DashboardYearlyModels> _thisYearData;
   List<ChartData> _barGraphGeneratedField = [];
   List<ChartData> _barGraphFieldConverted = [];
-  List<ChartData> _lineChartGenerated= [];
+  List<ChartData> _lineChartGenerated = [];
   List<ChartData> _lineChartConverted = [];
-
+  var _dataForDataGrid;
 
   getCountAndActualDataForBarGraph() {
     print("Count and Actual $_thisYearData");
@@ -52,9 +51,9 @@ class _YearToDateState extends State<YearToDate> {
           _thisYearData[i].leadGenerated.toDouble(),
           _dashboardController.monthList[i]));
 
-      _barGraphFieldConverted.add(ChartData(_thisYearData[i].leadConverted.toDouble(),
+      _barGraphFieldConverted.add(ChartData(
+          _thisYearData[i].leadConverted.toDouble(),
           _dashboardController.monthList[i]));
-
     }
   }
 
@@ -66,53 +65,57 @@ class _YearToDateState extends State<YearToDate> {
     _dashboardController.barGraphLegend2 = 'Volume Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
       _barGraphGeneratedField.add(ChartData(
-          _thisYearData[i].generatedVolume, _dashboardController.monthList[i]));
+          _thisYearData[i].generatedVolume.toDouble(),
+          _dashboardController.monthList[i]));
 
       _barGraphFieldConverted.add(ChartData(
-          _thisYearData[i].convertedVolume, _dashboardController.monthList[i]));
-
+          _thisYearData[i].convertedVolume.toDouble(),
+          _dashboardController.monthList[i]));
     }
   }
 
-  getVolumeAndAverageDataForLineChart(){
+  getVolumeAndAverageDataForLineChart() {
     print("Volume and Average $_thisYearData");
-    _lineChartGenerated= [];
+    _lineChartGenerated = [];
     _lineChartConverted = [];
     _dashboardController.lineChartLegend1 = 'Avg Generated Volume ';
-    _dashboardController.lineChartLegend2= 'Avg Converted Volume';
+    _dashboardController.lineChartLegend2 = 'Avg Converted Volume';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
       _lineChartGenerated.add(ChartData(
-          _thisYearData[i].avgGeneratedVolume.toDouble(), _dashboardController.monthList[i]));
+          _thisYearData[i].avgGeneratedVolume.toDouble(),
+          _dashboardController.monthList[i]));
 
       _lineChartConverted.add(ChartData(
-          _thisYearData[i].avgConvertedVolume.toDouble(), _dashboardController.monthList[i]));
-
+          _thisYearData[i].avgConvertedVolume.toDouble(),
+          _dashboardController.monthList[i]));
     }
-
   }
 
-  getCountAndAverageDataForLineChart(){
+  getCountAndAverageDataForLineChart() {
     print("Count and Average $_thisYearData");
-    _lineChartGenerated= [];
+    _lineChartGenerated = [];
     _lineChartConverted = [];
     _dashboardController.lineChartLegend1 = 'Avg Lead Generated ';
-    _dashboardController.lineChartLegend2= 'Avg Lead Converted';
+    _dashboardController.lineChartLegend2 = 'Avg Lead Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
       _lineChartGenerated.add(ChartData(
-          _thisYearData[i].avgLeadGenerated.toDouble(), _dashboardController.monthList[i]));
+          _thisYearData[i].avgLeadGenerated.toDouble(),
+          _dashboardController.monthList[i]));
 
       _lineChartConverted.add(ChartData(
-          _thisYearData[i].avgLeadConverted.toDouble(), _dashboardController.monthList[i]));
-
+          _thisYearData[i].avgLeadConverted.toDouble(),
+          _dashboardController.monthList[i]));
     }
-
-
   }
+
+
 
   @override
   void initState() {
     print("Initstate Called");
     _dashboardController.getYearlyViewDetails().then((value) {
+      print("::::::$value ::::::");
+      print("IN VIEW");
       _yearMonthList =
           _dashboardController.dashboardYearlyViewModel.dashboardYearlyModels
               .map(
@@ -121,7 +124,7 @@ class _YearToDateState extends State<YearToDate> {
               .toList()
               .toSet()
               .toList();
-  print("setstate called");
+      print("setstate called");
       setState(() {
         yearMonth = _yearMonthList[1];
       });
@@ -132,6 +135,8 @@ class _YearToDateState extends State<YearToDate> {
       print(
           "This year data length${_thisYearData.length} yearMonth $yearMonth");
       getCountAndActualDataForBarGraph();
+      _dataForDataGrid = _dashboardController.dashboardYearlyViewModel.mtdCount;
+      print(_dataForDataGrid);
     });
     super.initState();
     populateData();
@@ -176,12 +181,12 @@ class _YearToDateState extends State<YearToDate> {
                           setState(() {
                             _ytdIsVolume = _;
                           });
-                          if(actualOrAverage=="Actual"){
+                          if (actualOrAverage == "Actual") {
                             if (_ytdIsVolume == true)
                               getVolumeAndActualDataForBarGraph();
                             else
                               getCountAndActualDataForBarGraph();
-                          }else{
+                          } else {
                             if (_ytdIsVolume == true)
                               getVolumeAndAverageDataForLineChart();
                             else
@@ -249,22 +254,30 @@ class _YearToDateState extends State<YearToDate> {
                       child: yearMonth == null
                           ? Container()
                           : DropdownButtonHideUnderline(
-                              child: DropdownButton(
+                              child: Obx(
+                              () => _dashboardController.gotYearlyData==true?
+                              DropdownButton(
                                   value: yearMonth,
                                   iconEnabledColor: HexColor('FF8500'),
                                   items: _yearMonthList
                                       .map<DropdownMenuItem>(
                                           (e) => DropdownMenuItem(
-                                                child: Text(e),
-                                                value: e,
-                                              ))
+                                        child: Text(e),
+                                        value: e,
+                                      ))
                                       .toList(),
+                                  onTap: () {
+                                    print("On Tap called");
+                                  },
                                   onChanged: (_) {
+                                    print("On changed called");
                                     setState(() {
                                       yearMonth = _;
                                       _thisYearData = _dashboardController
-                                          .dashboardYearlyViewModel.dashboardYearlyModels
-                                          .where((DashboardYearlyModels i) => i.showYear == yearMonth)
+                                          .dashboardYearlyViewModel
+                                          .dashboardYearlyModels
+                                          .where((DashboardYearlyModels i) =>
+                                      i.showYear == yearMonth)
                                           .toList();
                                       print(
                                           "This year data length${_thisYearData.length} yearMonth $yearMonth");
@@ -277,12 +290,12 @@ class _YearToDateState extends State<YearToDate> {
                                           .dashboardYearlyViewModel
                                           .dashboardYearlyModels
                                           .where((DashboardYearlyModels i) =>
-                                              i.showYear == yearMonth)
+                                      i.showYear == yearMonth)
                                           .toList();
                                       getCountAndActualDataForBarGraph();
                                     }
-                                  }),
-                            ),
+                                  }):Container(),
+                            )),
                     ),
                   ),
                   Transform.scale(
@@ -308,14 +321,12 @@ class _YearToDateState extends State<YearToDate> {
                               setState(() {
                                 actualOrAverage = _;
                               });
-                              if(actualOrAverage=='Actual'){
+                              if (actualOrAverage == 'Actual') {
                                 if (_ytdIsVolume == true)
                                   getVolumeAndActualDataForBarGraph();
                                 else
                                   getCountAndActualDataForBarGraph();
-
-                              }
-                              else{
+                              } else {
                                 if (_ytdIsVolume == true)
                                   getVolumeAndAverageDataForLineChart();
                                 else
@@ -329,18 +340,21 @@ class _YearToDateState extends State<YearToDate> {
               ),
               actualOrAverage == "Actual"
                   ? SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                    child: Container(
-                      width: SizeConfig.screenWidth*1.5,
-                      child: BarGraphForYTD(
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        width: SizeConfig.screenWidth * 1.5,
+                        child: BarGraphForYTD(
                           chartData: _barGraphGeneratedField,
                           chartData2: _barGraphFieldConverted,
                         ),
+                      ),
+                    )
+                  : LineSeriesForYTD(
+                      chartData: _lineChartGenerated,
+                      chartData2: _lineChartConverted,
                     ),
-                  )
-                  : LineSeriesForYTD(chartData: _lineChartGenerated, chartData2:_lineChartConverted ,),
-              // Expanded(child: BarGraphForYTD(chartData: chartData)),
-              DataGridForYTD(controller: _controller),
+//              DataGridForYTD(controller: _controller),
+              _ytdIsVolume?_returnDataGridForVolume(_dashboardController.dashboardYearlyViewModel.mtdVolume):_returnDataGridForCount(_dashboardController.dashboardYearlyViewModel.mtdCount),
             ],
           ),
         ),
@@ -364,12 +378,211 @@ class _YearToDateState extends State<YearToDate> {
 
   void _printPngBytes() async {
     var pngBytes = await _capturePng();
-    int num = random.nextInt(100);
     final directory = (await getExternalStorageDirectory()).path;
     imgFile = new File('$directory/screenshot$yearMonth.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
+  }
+
+  Widget _returnDataGridForCount(MtdCount data) {
+    return Column(
+      children: [
+        Container(
+          height: SizeConfig.screenHeight / 20,
+          color: HexColor('707070'),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "MTD",
+                  style: TextStyle(color: HexColor('FFFFFF')),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text("Tgt",
+                    style: TextStyle(color: HexColor('FFFFFF')),
+                    textAlign: TextAlign.center),
+              ),
+              Expanded(
+                child: Text("Pro. Rata",
+                    style: TextStyle(color: HexColor('FFFFFF')),
+                    textAlign: TextAlign.center),
+              ),
+              Expanded(
+                child: Text("Act",
+                    style: TextStyle(color: HexColor('FFFFFF')),
+                    textAlign: TextAlign.center),
+              ),
+              Expanded(
+                child: Text("Act%",
+                    style: TextStyle(color: HexColor('FFFFFF')),
+                    textAlign: TextAlign.center),
+              )
+            ],
+          ),
+        ),
+        Container(
+          color: Colors.black.withOpacity(0.12),
+//              height: SizeConfig.screenHeight/11,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Conv",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text("${data.convTargetCount}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.convProrataCount}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.convActCount}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.convAchvCountPerc}%", textAlign: TextAlign.center),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Slab",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text("${data.slabTargetCount}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.slabProrataCount}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.slabActCount}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.slabAchvCountPerc}%", textAlign: TextAlign.center),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _returnDataGridForVolume(MtdVolume data) {
+    return Column(
+      children: [
+        Container(
+          height: SizeConfig.screenHeight / 20,
+          color: HexColor('707070'),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "MTD",
+                  style: TextStyle(color: HexColor('FFFFFF')),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text("Tgt",
+                    style: TextStyle(color: HexColor('FFFFFF')),
+                    textAlign: TextAlign.center),
+              ),
+              Expanded(
+                child: Text("Pro. Rata",
+                    style: TextStyle(color: HexColor('FFFFFF')),
+                    textAlign: TextAlign.center),
+              ),
+              Expanded(
+                child: Text("Act",
+                    style: TextStyle(color: HexColor('FFFFFF')),
+                    textAlign: TextAlign.center),
+              ),
+              Expanded(
+                child: Text("Act%",
+                    style: TextStyle(color: HexColor('FFFFFF')),
+                    textAlign: TextAlign.center),
+              )
+            ],
+          ),
+        ),
+        Container(
+          color: Colors.black.withOpacity(0.12),
+//              height: SizeConfig.screenHeight/11,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Conv",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text("${data.convTargetVolume}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.convProrataVolume}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.convActVolume}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.convAchvVolumePerc}%", textAlign: TextAlign.center),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Slab",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text("${data.slabTargetVolume}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.slabProrataVolume}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.slabActVolume}", textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      child: Text("${data.slabAchvVolumePerc}%", textAlign: TextAlign.center),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 }
 

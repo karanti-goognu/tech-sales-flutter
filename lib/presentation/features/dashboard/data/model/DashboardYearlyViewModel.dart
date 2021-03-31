@@ -113,51 +113,6 @@ class DashboardYearlyModels {
 }
 
 class MtdCount {
-  int convAchvVolumePerc;
-  int convActVolume;
-  int convProrataVolume;
-  int convTargetVolume;
-  int slabAchvVolumePerc;
-  int slabActVolume;
-  int slabProrataVolume;
-  int slabTargetVolume;
-
-  MtdCount(
-      {this.convAchvVolumePerc,
-        this.convActVolume,
-        this.convProrataVolume,
-        this.convTargetVolume,
-        this.slabAchvVolumePerc,
-        this.slabActVolume,
-        this.slabProrataVolume,
-        this.slabTargetVolume});
-
-  MtdCount.fromJson(Map<String, dynamic> json) {
-    convAchvVolumePerc = json['conv_achv_volume_perc'];
-    convActVolume = json['conv_act_volume'];
-    convProrataVolume = json['conv_prorata_volume'];
-    convTargetVolume = json['conv_target_volume'];
-    slabAchvVolumePerc = json['slab_achv_volume_perc'];
-    slabActVolume = json['slab_act_volume'];
-    slabProrataVolume = json['slab_prorata_volume'];
-    slabTargetVolume = json['slab_target_volume'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['conv_achv_volume_perc'] = this.convAchvVolumePerc;
-    data['conv_act_volume'] = this.convActVolume;
-    data['conv_prorata_volume'] = this.convProrataVolume;
-    data['conv_target_volume'] = this.convTargetVolume;
-    data['slab_achv_volume_perc'] = this.slabAchvVolumePerc;
-    data['slab_act_volume'] = this.slabActVolume;
-    data['slab_prorata_volume'] = this.slabProrataVolume;
-    data['slab_target_volume'] = this.slabTargetVolume;
-    return data;
-  }
-}
-
-class MtdVolume {
   int convAchvCountPerc;
   int convActCount;
   int convProrataCount;
@@ -167,7 +122,7 @@ class MtdVolume {
   int slabProrataCount;
   int slabTargetCount;
 
-  MtdVolume(
+  MtdCount(
       {this.convAchvCountPerc,
         this.convActCount,
         this.convProrataCount,
@@ -177,7 +132,7 @@ class MtdVolume {
         this.slabProrataCount,
         this.slabTargetCount});
 
-  MtdVolume.fromJson(Map<String, dynamic> json) {
+  MtdCount.fromJson(Map<String, dynamic> json) {
     convAchvCountPerc = json['conv_achv_count_perc'];
     convActCount = json['conv_act_count'];
     convProrataCount = json['conv_prorata_count'];
@@ -198,6 +153,51 @@ class MtdVolume {
     data['slab_act_count'] = this.slabActCount;
     data['slab_prorata_count'] = this.slabProrataCount;
     data['slab_target_count'] = this.slabTargetCount;
+    return data;
+  }
+}
+
+class MtdVolume {
+  int convAchvVolumePerc;
+  int convActVolume;
+  int convProrataVolume;
+  int convTargetVolume;
+  int slabAchvVolumePerc;
+  int slabActVolume;
+  int slabProrataVolume;
+  int slabTargetVolume;
+
+  MtdVolume(
+      {this.convAchvVolumePerc,
+        this.convActVolume,
+        this.convProrataVolume,
+        this.convTargetVolume,
+        this.slabAchvVolumePerc,
+        this.slabActVolume,
+        this.slabProrataVolume,
+        this.slabTargetVolume});
+
+  MtdVolume.fromJson(Map<String, dynamic> json) {
+    convAchvVolumePerc = json['conv_achv_volume_perc'];
+    convActVolume = json['conv_act_volume'];
+    convProrataVolume = json['conv_prorata_volume'];
+    convTargetVolume = json['conv_target_volume'];
+    slabAchvVolumePerc = json['slab_achv_volume_perc'];
+    slabActVolume = json['slab_act_volume'];
+    slabProrataVolume = json['slab_prorata_volume'];
+    slabTargetVolume = json['slab_target_volume'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['conv_achv_volume_perc'] = this.convAchvVolumePerc;
+    data['conv_act_volume'] = this.convActVolume;
+    data['conv_prorata_volume'] = this.convProrataVolume;
+    data['conv_target_volume'] = this.convTargetVolume;
+    data['slab_achv_volume_perc'] = this.slabAchvVolumePerc;
+    data['slab_act_volume'] = this.slabActVolume;
+    data['slab_prorata_volume'] = this.slabProrataVolume;
+    data['slab_target_volume'] = this.slabTargetVolume;
     return data;
   }
 }

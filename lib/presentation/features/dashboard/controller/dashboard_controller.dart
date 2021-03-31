@@ -50,7 +50,14 @@ class DashboardController extends GetxController {
   final _lineChartLegend1 = ''.obs;
   final _lineChartLegend2 = ''.obs;
   final _yearMonth = ''.obs;
+  final _gotYearlyData = false.obs;
 
+
+  get gotYearlyData => _gotYearlyData;
+
+  set gotYearlyData(value) {
+    _gotYearlyData.value = value;
+  }
 
   get yearMonth => _yearMonth;
 
@@ -90,7 +97,7 @@ class DashboardController extends GetxController {
   }
 
   Future<bool> getYearlyViewDetails() async {
-//    print("called");
+    print("called");
     bool isProcessComplete = false;
     Future.delayed(
         Duration.zero,
@@ -102,7 +109,6 @@ class DashboardController extends GetxController {
 //    String userSecurityCode;
     String empID;
     repository.getAccessKey().then((value) {
-      print(value.accessKey);
       this.accessKeyResponse = value;
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) async {
@@ -111,6 +117,8 @@ class DashboardController extends GetxController {
         repository.getYearlyViewDetails(empID).then((data) {
           DashboardYearlyViewModel dataX = data;
           this.dashboardYearlyViewModel = data;
+//          print(dataX.dashboardYearlyModels);
+//          print(":::: $data ::::");
           List tempMonthList = dataX.dashboardYearlyModels
               .map(
                 (e) => e.showMonth,
@@ -118,6 +126,10 @@ class DashboardController extends GetxController {
               .toList();
           this.monthList = tempMonthList.toSet().toList();
           print(this.monthList);
+          this.gotYearlyData= true;
+
+          print("IN CONTROLLER");
+
 //          this.countAndActualList= dataX.dashboardYearlyModels.map((e) => e.leadGenerated).toList();
 //          print(dataX.dashboardYearlyModels);
 //          print(this.dashboardYearlyViewModel.dashboardYearlyModels);
@@ -168,9 +180,7 @@ class DashboardController extends GetxController {
     bool isProcessComplete = false;
     Future.delayed(
         Duration.zero,
-        () => Get.dialog(Center(
-              child: CircularProgressIndicator(),
-            )));
+        () => Get.dialog(Center(child: CircularProgressIndicator())));
     print("EMP ID inside controller: $empID");
     String empId = empID ?? "empty";
     String userSecurityKey = "empty";
