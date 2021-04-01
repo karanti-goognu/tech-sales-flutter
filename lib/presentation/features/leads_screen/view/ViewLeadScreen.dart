@@ -3838,13 +3838,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                       List<updateRequest.LeadInfluencerEntity>
                                           listInfluencer = new List();
 
-                                      print(_listInfluencerDetail.length);
+//                                      print(_listInfluencerDetail.length);
 
                                       for (int i = 0;
                                           i < _listInfluencerDetail.length;
                                           i++) {
-                                        print(
-                                            _listInfluencerDetail[i].toJson());
+//                                        print(_listInfluencerDetail[i].toJson());
                                         listInfluencer.add(new updateRequest
                                                 .LeadInfluencerEntity(
                                             id: _listInfluencerDetail[i]
@@ -3862,12 +3861,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                             isDelete: "N"));
                                       }
 
-                                      print("Dhawannnnn ::" +
-                                          listInfluencer.length.toString());
+//                                      print("Dhawannnnn ::" + listInfluencer.length.toString());
                                       for (int i = 0;
                                           i < listInfluencer.length;
                                           i++) {
-                                        print(listInfluencer[i].toJson());
+//                                        print(listInfluencer[i].toJson());
                                       }
 
                                       var updateRequestModel = {
@@ -3915,7 +3913,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                         'leadInfluencerEntity': listInfluencer
                                       };
 
-                                      print(commentsList.length);
+//                                      print(commentsList.length);
 
                                       leadStageVal.id =
                                           leadStageEntity[index].id;
@@ -3930,8 +3928,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> {
                                           viewLeadDataResponse
                                               .leadsEntity.leadId);
 
-                                      Get.back();
-                                    });
+//                                      Get.back();
+                                    }).whenComplete(() => Get.back());
                                   }
                                 } else {
                                   Get.back();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/view/year_to_date.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
@@ -111,4 +110,38 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
       ),
     );
   }
+}
+
+class EmployeeDataSource extends DataGridSource<Employee> {
+  @override
+
+  @override
+  getValue(Employee employee, String columnName) {
+    switch (columnName) {
+      case 'id':
+        return employee.id;
+        break;
+      case 'name':
+        return employee.name;
+        break;
+      case 'salary':
+        return employee.salary;
+        break;
+      case 'designation':
+        return employee.designation;
+        break;
+      default:
+        return ' ';
+        break;
+    }
+  }
+}
+
+class Employee {
+  Employee(this.id, this.name, this.designation, this.salary, this.perc);
+  final int id;
+  final String name;
+  final String designation;
+  final int salary;
+  final int perc;
 }

@@ -193,7 +193,7 @@ class LeadsFilterController extends GetxController {
       _prefs.then((SharedPreferences prefs) {
         String userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-        print('User Security key is :: $userSecurityKey');
+//        print('User Security key is :: $userSecurityKey');
         if (userSecurityKey != "empty") {
           //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
@@ -295,7 +295,7 @@ class LeadsFilterController extends GetxController {
       String url =
           "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=10&offset=${this.offset}";
       var encodedUrl = Uri.encodeFull(url);
-      debugPrint('Url is : $encodedUrl');
+//      debugPrint('Url is : $encodedUrl');
       repository
           .getLeadsData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
@@ -313,6 +313,7 @@ class LeadsFilterController extends GetxController {
             // this.leadsListResponse = data;
             LeadsListModel leadListResponseServer = data;
             if(leadListResponseServer.leadsEntity.isNotEmpty){
+              leadListResponseServer.leadsEntity=[];
               leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
               Get.snackbar("Note", "Loading more ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xffffffff),duration: Duration(milliseconds: 2000));
