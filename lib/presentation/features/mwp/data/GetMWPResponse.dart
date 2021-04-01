@@ -77,6 +77,15 @@ class MwpplanModel {
   int technocratMeet;
   int technocratVisit;
 
+  int actualSlabServices;
+  int actualBlockLevelMeet;
+  int actualContractorVisit;
+  int actualDspConversionVol;
+  int actualTechVanDemo;
+  int actualTechVanService;
+  int actualTechnocratMeet;
+  int actualTechnocratVisit;
+
 
      MwpplanModel(
       {this.actionedBy,
@@ -117,13 +126,24 @@ class MwpplanModel {
         this.siteVisitesNo,
         this.slabServices,
         this.status,
+
         this.submittedOn,
         this.techVanDemo,
         this.techVanService,
         this.technocratMeet,
         this.technocratVisit,
         this.totalConvMt,
-        this.tsoId});
+        this.tsoId,
+
+        this.actualBlockLevelMeet,
+        this.actualContractorVisit,
+        this.actualDspConversionVol,
+        this.actualSlabServices,
+        this.actualTechnocratMeet,
+        this.actualTechnocratVisit,
+        this.actualTechVanDemo,
+        this.actualTechVanService
+      });
 
   MwpplanModel.fromJson(Map<String, dynamic> json) {
     actionedBy = json['actionedBy'];
@@ -171,6 +191,13 @@ class MwpplanModel {
     technocratVisit = json['technocratVisit'];
     totalConvMt = json['totalConvMt'];
     tsoId = json['tsoId'];
+    actualBlockLevelMeet = json['actualBlockLevelMeet'];
+    actualContractorVisit = json['actualContractorVisit'];
+    actualDspConversionVol = json['actualDspConversionVol'];
+    actualSlabServices = json['actualSlabServices'];
+    actualTechnocratMeet = json['actualTechnocratMeet'];
+    actualTechnocratVisit = json['actualTechnocratVisit'];
+    actualTechVanDemo = json['actualTechVanDemo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -220,6 +247,13 @@ class MwpplanModel {
     data['technocratVisit'] = this.technocratVisit;
     data['totalConvMt'] = this.totalConvMt;
     data['tsoId'] = this.tsoId;
+    data['actualBlockLevelMeet'] = this.actualBlockLevelMeet;
+    data['actualContractorVisit'] = this.actualContractorVisit;
+    data['actualDspConversionVol'] = this.actualDspConversionVol;
+    data['actualSlabServices'] = this.actualSlabServices;
+    data['actualTechnocratMeet'] = this.actualTechnocratMeet;
+    data['actualTechnocratVisit'] = this.actualTechnocratVisit;
+    data['actualTechVanDemo'] = this.actualTechVanDemo;
     return data;
   }
 }

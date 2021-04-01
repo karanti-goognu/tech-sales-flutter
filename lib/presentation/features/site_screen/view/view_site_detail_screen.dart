@@ -2518,7 +2518,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             GestureDetector(
               onTap: (){
                 if(!isAllowSelectDealer)
-
                   Get.dialog(new ConformationDialog(message:"This dealer not conformed by so."));
 
               },

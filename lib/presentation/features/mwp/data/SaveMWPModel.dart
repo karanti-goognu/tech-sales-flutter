@@ -18,49 +18,14 @@ class SaveMWPModel {
   String createdBy;
   String actionedBy;
 
-  String dspConversionVol;
-  String contractorVisit;
-  String technocratVisit;
-  String techVanDemo;
-  String techVanService;
-  String slabServices;
-  String technocratMeet;
-  String blockLevelMeet;
-
-
-
-
-  /*String mwpMonth;
-  String referenceId;
-  Double dspConversionVol;
-  double totalConvMt;
-  Integer newIlpMembers;
-  Integer dspSlabConvNo;
-  double siteConvMt;
-  Integer siteConvNo;
-  Integer siteVisitesNo;
-  Integer siteUniqueVisitsNo;
-  Integer inflVisitsNo;
-  Integer masonMeetNo;
-  Integer counterMeetNo;
-  Integer contractorMeetNo;
-  Integer miniContractorMeetNo;
-  Integer consumerMeetNo;
-  String status;
-  String createdBy;
-  Date createdOn;
-  Date submittedOn;
-  Date approvedOn;
-  Date rejectedOn;
-  String actionedBy;
-  Integer contractorVisit;
-  Integer technocratVisit;
-  Integer techVanDemo;
-  Integer techVanService;
-  Integer slabServices;
-  Integer technocratMeet;
-  Integer blockLevelMeet;*/
-
+  int dspConversionVol;
+  int contractorVisit;
+  int technocratVisit;
+  int techVanDemo;
+  int techVanService;
+  int slabServices;
+  int technocratMeet;
+  int blockLevelMeet;
 
 
   SaveMWPModel(
@@ -81,7 +46,16 @@ class SaveMWPModel {
       this.consumerMeetNo,
       this.status,
       this.createdBy,
-      this.actionedBy);
+      this.actionedBy,
+      this.dspConversionVol,
+      this.contractorVisit,
+      this.technocratVisit,
+      this.techVanDemo,
+      this.techVanService,
+      this.slabServices,
+      this.technocratMeet,
+      this.blockLevelMeet
+      );
 
   SaveMWPModel.fromJson(Map<String, dynamic> json) {
     mwpMonth = json['mwpMonth'];
@@ -102,6 +76,14 @@ class SaveMWPModel {
     status = json['status'];
     createdBy = json['createdBy'];
     actionedBy = json['actionedBy'];
+    dspConversionVol = json['dspConversionVol'];
+    contractorVisit = json['contractorVisit'];
+    technocratVisit = json['technocratVisit'];
+    techVanDemo = json['techVanDemo'];
+    techVanService = json['techVanService'];
+    slabServices = json['slabServices'];
+    technocratMeet = json['technocratMeet'];
+    blockLevelMeet = json['blockLevelMeet'];
   }
 
   Map<String, dynamic> toJson() {
@@ -124,6 +106,14 @@ class SaveMWPModel {
     data['status'] = this.status;
     data['createdBy'] = this.createdBy;
     data['actionedBy'] = this.actionedBy;
+    data['dspConversionVol'] = this.dspConversionVol;
+    data['contractorVisit'] = this.contractorVisit;
+    data['technocratVisit'] = this.technocratVisit;
+    data['techVanDemo'] = this.techVanDemo;
+    data['techVanService'] = this.techVanService;
+    data['slabServices'] = this.slabServices;
+    data['technocratMeet'] = this.technocratMeet;
+    data['blockLevelMeet'] = this.blockLevelMeet;
     return data;
   }
 }

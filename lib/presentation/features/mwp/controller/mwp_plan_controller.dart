@@ -28,6 +28,7 @@ class MWPPlanController extends GetxController {
   final _totalConversionVol = 0.obs;
   final _newILPMembers = 0.obs;
   final _dspSlab = 0.obs;
+  final _dspConVol = 0.obs;
   final _siteConVol = 0.obs;
   final _siteConNo = 0.obs;
   final _siteVisitsTotal = 0.obs;
@@ -38,6 +39,24 @@ class MWPPlanController extends GetxController {
   final _contractorMeet = 0.obs;
   final _miniContractorMeet = 0.obs;
   final _consumerMeet = 0.obs;
+  final _contractorVisit = 0.obs;
+  final _technoVisit = 0.obs;
+  final _technocratVisit = 0.obs;
+
+  final _techVanDemo = 0.obs;
+  final _techVanService = 0.obs;
+  final _slabServices = 0.obs;
+  final _technocratMeet = 0.obs;
+  final _blockLevelMeet = 0.obs;
+
+  get contractorVisit => _contractorVisit;
+
+  set contractorVisit(value) {
+    this._contractorVisit.value = value;
+  }
+
+
+
   final _action = "SAVE".obs;
   final _selectedMonth = StringConstants.empty.obs;
 
@@ -68,6 +87,11 @@ class MWPPlanController extends GetxController {
   get newILPMembers => this._newILPMembers.value;
 
   set newILPMembers(value) => this._newILPMembers.value = value;
+  get dspConVol => _dspConVol;
+
+  set dspConVol(value) {
+    this._dspConVol.value = value;
+  }
 
   get dspSlab => this._dspSlab.value;
 
@@ -148,7 +172,11 @@ class MWPPlanController extends GetxController {
           this.consumerMeet,
           this.action,
           empId,
-          empId);
+          empId, int.parse(this.dspConVol.toString()),
+          int.parse(this.contractorVisit.toString()),
+          int.parse(this.technocratVisit.toString()),
+          int.parse(this.techVanDemo.toString()),int.parse(this.techVanService.toString()),int.parse(this.slabServices.toString()),
+          int.parse(this.technocratMeet.toString()), int.parse(this.blockLevelMeet.toString()));
 
       debugPrint('Save MWP Model : ${json.encode(saveMWPModel)}');
       String url = "${UrlConstants.saveMWPData}";
@@ -214,6 +242,16 @@ class MWPPlanController extends GetxController {
           this.miniContractorMeet = 0;
           this.consumerMeet = 0;
           this.counterMeet=0;
+          this.dspConVol=0;
+          this.blockLevelMeet=0;
+          this.technocratMeet=0;
+          this.slabServices=0;
+          this.techVanService=0;
+          this.techVanDemo=0;
+          this.technocratVisit=0;
+          this.contractorVisit=0;
+          this.contractorMeet=0;
+
         } else {
           debugPrint('MWP Data Response is not null');
           this.getMWPResponse = data;
@@ -234,11 +272,62 @@ class MWPPlanController extends GetxController {
             this.miniContractorMeet = this.getMWPResponse.mwpplanModel.miniContractorMeetNo;
             this.consumerMeet = this.getMWPResponse.mwpplanModel.consumerMeetNo;
             this.counterMeet = this.getMWPResponse.mwpplanModel.counterMeetNo;
-          } else {
+
+            this.dspConVol=this.getMWPResponse.mwpplanModel.dspConversionVol;
+            this.blockLevelMeet=this.getMWPResponse.mwpplanModel.blockLevelMeet;
+            this.technocratMeet=this.getMWPResponse.mwpplanModel.technocratMeet;
+            this.slabServices=this.getMWPResponse.mwpplanModel.slabServices;
+             this.techVanService=this.getMWPResponse.mwpplanModel.techVanService;
+            this.techVanDemo=this.getMWPResponse.mwpplanModel.techVanDemo;
+            this.technocratVisit=this.getMWPResponse.mwpplanModel.technocratVisit;
+            this.contractorVisit=this.getMWPResponse.mwpplanModel.contractorVisit;
+           } else {
             Get.dialog(CustomDialogs().errorDialog(saveMWPResponse.respMsg),barrierDismissible: false);
           }
         }
       });
     });
+  }
+
+  get technoVisit => _technoVisit;
+
+  set technoVisit(value) {
+    this._technoVisit.value = value;
+  }
+
+  get technocratVisit => _technocratVisit;
+
+  set technocratVisit(value) {
+    this._technocratVisit.value = value;
+  }
+
+  get techVanDemo => _techVanDemo;
+
+  set techVanDemo(value) {
+    this._techVanDemo.value = value;
+  }
+
+  get techVanService => _techVanService;
+
+  set techVanService(value) {
+    this._techVanService.value = value;
+  }
+
+  get slabServices => _slabServices;
+
+  set slabServices(value) {
+    this._slabServices.value = value;
+  }
+
+  get technocratMeet => _technocratMeet;
+
+  set technocratMeet(value) {
+    this._technocratMeet.value = value;
+  }
+
+  get blockLevelMeet => _blockLevelMeet;
+
+  set blockLevelMeet(value) {
+    this._blockLevelMeet.value = value;
   }
 }
