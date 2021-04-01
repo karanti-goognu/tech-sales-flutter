@@ -47,6 +47,7 @@ class MyApiClientHome {
       String journeyEndLat,
       String journeyEndLong) async {
     try {
+
       var requestBody = {
         "reference-id": referenceId,
         "journey-Date": journeyDate,
@@ -59,16 +60,18 @@ class MyApiClientHome {
       };
 
       print('Request Body is ${json.encode(requestBody)}');
-      print(
-          'Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
+      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
+
       var response = await httpClient.post(UrlConstants.getCheckInDetails,
-          headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey),
           body: jsonEncode(requestBody));
+
       print('Response body is : ${json.decode(response.body)}');
+
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         JourneyModel journeyModel = JourneyModel.fromJson(data);
+
         //print('Access key Object is :: $accessKeyModel');
         return journeyModel;
       } else
@@ -83,7 +86,7 @@ class MyApiClientHome {
       String url = UrlConstants.homepageDashboardData + empId;
       print(url);
       var response = await httpClient.get(url, headers: requestHeaders);
-      print('Response body is : ${json.decode(response.body)}');
+   //   print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         DashboardModel dashboardModel;

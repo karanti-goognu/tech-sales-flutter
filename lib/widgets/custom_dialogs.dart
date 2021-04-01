@@ -46,7 +46,9 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
+
             Get.back();
+
           },
         ),
       ],

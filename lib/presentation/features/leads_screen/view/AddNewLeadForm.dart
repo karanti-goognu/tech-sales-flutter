@@ -2624,7 +2624,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       context);
                                   _commentsListNew = new List();
 
-                                  Get.back();
+
                                 });
 
                                 //  _comments.clear();

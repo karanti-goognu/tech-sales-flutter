@@ -335,19 +335,21 @@ class MyApiClientLeads {
     });
   }
 
+
   getLeadData(String accessKey, String userSecurityKey, int leadId, String empID) async {
-    try {
+     try {
       //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var bodyEncrypted = {"leadId": leadId};
-      // print('Request body is  : ${json.encode(bodyEncrypted)}');
-      // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
 
-//      print("URL is :: " + UrlConstants.getLeadData + "$leadId");
-//      print("Request Header :: " +json.encode(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey)));
+      print("Request Header :: " +
+          json.encode(requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey)));
+
+
       final response = await get(
         Uri.parse(UrlConstants.getLeadData + "$leadId"+"&referenceID=$empID"),
-        headers:
-            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+         headers:
+         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
 //      print('Response body is  : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
@@ -410,7 +412,9 @@ class MyApiClientLeads {
             .send()
             .then((result) async {
               http.Response.fromStream(result).then((response) {
-//                print(response.statusCode);
+                 print("/////////////////${response.body}");
+                print(response.statusCode);
+ //                print(response.statusCode);
 
                 var data = json.decode(response.body);
 //                print(data);
@@ -418,15 +422,11 @@ class MyApiClientLeads {
                     UpdateLeadResponseModel.fromJson(data);
 
                 if (updateLeadResponseModel.respCode == "LD2009") {
-                  //Get.back();
+
                   gv.selectedLeadID = updateLeadResponseModel.leadId;
-                  /*  Get.dialog(CustomDialogs()
-                      .showDialog(updateLeadResponseModel.respMsg));*/
-                  // Get.back();
-                  //  Get.back();
+
 
                   Get.back();
-                  // Get.back();
                   Get.offNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead(updateLeadResponseModel.respMsg));

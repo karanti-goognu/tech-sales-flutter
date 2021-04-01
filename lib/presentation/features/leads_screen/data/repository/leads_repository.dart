@@ -45,8 +45,8 @@ class MyRepositoryLeads {
         accessKey, userSecurityKey, saveLeadRequestModel, imageList, context);
   }
 
-  getLeadData(String accessKey, String userSecurityKey, int leadId, String empID) {
-    return apiClient.getLeadData(accessKey, userSecurityKey, leadId, empID);
+  getLeadData(String accessKey, String userSecurityKey, int leadId, String empId) {
+    return apiClient.getLeadData(accessKey, userSecurityKey, leadId, empId);
   }
 
   updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,

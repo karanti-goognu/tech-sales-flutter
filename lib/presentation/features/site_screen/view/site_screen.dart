@@ -803,11 +803,9 @@ class _SiteScreenState extends State<SiteScreen> {
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  new CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ViewSiteScreen(
-                                              _siteController.sitesListResponse.sitesEntity[index].siteId))
+                                  context, new CupertinoPageRoute(
+                                  builder: (BuildContext context) =>
+                                          ViewSiteScreen(_siteController.sitesListResponse.sitesEntity[index].siteId))
                               );
                             },
                             child: Card(
@@ -913,7 +911,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                             style: TextStyle(
                                                                 color: HexColor(
                                                                     "#39B54A"),
-                                                                fontSize: 12,
+                                                                fontSize: 11,
                                                                 fontFamily:
                                                                     "Muli",
                                                                 fontWeight:
@@ -926,12 +924,12 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     ),
                                                     Padding(
                                                       padding: EdgeInsets.only(
-                                                          left: 10.0),
+                                                          left: 8.0),
                                                       child: Text(
                                                         " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
                                                         //  textAlign: TextAlign.start,
                                                         style: TextStyle(
-                                                          fontSize: 10,
+                                                          fontSize: 9,
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold,

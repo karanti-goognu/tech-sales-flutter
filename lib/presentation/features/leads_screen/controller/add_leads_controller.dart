@@ -121,9 +121,10 @@ class AddLeadsController extends GetxController {
     });
   }
 
-  getLeadData(String accessKey, int leadId) async {
+   getLeadData(String accessKey, int leadId) async {
+
     print(":::getLeadData()");
-    String userSecurityKey = "";
+     String userSecurityKey = "";
     String empID = "";
     ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -132,8 +133,9 @@ class AddLeadsController extends GetxController {
       empID = prefs.getString(StringConstants.employeeId);
       print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
       viewLeadDataResponse =
+
           await repository.getLeadData(accessKey, userSecurityKey, leadId, empID);
-    });
+     });
     print(viewLeadDataResponse);
 
     return viewLeadDataResponse;

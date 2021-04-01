@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _moengagePlugin.initialise();
     _moengagePlugin.enableSDKLogs();
     _moengagePlugin.setUpPushCallbacks(_onPushClick);
-//    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+
     if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
       print('Check In');
       _homeController.checkInStatus = StringConstants.checkIn;
@@ -580,7 +580,8 @@ class _HomeScreenState extends State<HomeScreen> {
       highlightedColor: Colors.grey,
       baseColor: Colors.white,
       vibrationFlag: true,
-      dismissible: false,
+
+      dismissible: false, action: null,
     );
   }
 

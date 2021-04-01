@@ -230,9 +230,8 @@ class AddMWPScreenPageState extends State<AddMWP> {
                                           return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  fontSize: 14,
+                                              value, style: TextStyle(
+                                                  fontSize: SizeConfig.safeBlockHorizontal*.1,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           );
