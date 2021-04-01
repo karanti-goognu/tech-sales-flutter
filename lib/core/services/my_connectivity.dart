@@ -26,7 +26,7 @@ class MyConnectivity {
   }
 
   void _checkStatus(ConnectivityResult result) async {
-    print("check status called");
+//    print("check status called");
     bool isOnline = false;
     try {
       final result = await InternetAddress.lookup('google.com');
