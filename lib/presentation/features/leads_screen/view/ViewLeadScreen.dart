@@ -3908,13 +3908,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
                                       List<updateRequest.LeadInfluencerEntity>
                                           listInfluencer = new List();
 
-                                      print(_listInfluencerDetail.length);
+//                                      print(_listInfluencerDetail.length);
 
                                       for (int i = 0;
                                           i < _listInfluencerDetail.length;
                                           i++) {
-                                        print(
-                                            _listInfluencerDetail[i].toJson());
+//                                        print(_listInfluencerDetail[i].toJson());
                                         listInfluencer.add(new updateRequest
                                                 .LeadInfluencerEntity(
                                             id: _listInfluencerDetail[i]
@@ -3932,12 +3931,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
                                             isDelete: "N"));
                                       }
 
-                                      print("Dhawannnnn ::" +
-                                          listInfluencer.length.toString());
+//                                      print("Dhawannnnn ::" + listInfluencer.length.toString());
                                       for (int i = 0;
                                           i < listInfluencer.length;
                                           i++) {
-                                        print(listInfluencer[i].toJson());
+//                                        print(listInfluencer[i].toJson());
                                       }
 
                                       var updateRequestModel = {
@@ -3985,7 +3983,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
                                         'leadInfluencerEntity': listInfluencer
                                       };
 
-                                      print(commentsList.length);
+//                                      print(commentsList.length);
 
                                       leadStageVal.id =
                                           leadStageEntity[index].id;
@@ -4000,8 +3998,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
                                           viewLeadDataResponse
                                               .leadsEntity.leadId);
 
-                                      Get.back();
-                                    });
+//                                      Get.back();
+                                    }).whenComplete(() => Get.back());
                                   }
                                 } else {
                                   Get.back();

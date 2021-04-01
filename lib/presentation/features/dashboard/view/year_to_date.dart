@@ -21,7 +21,6 @@ class YearToDate extends StatefulWidget {
   _YearToDateState createState() => _YearToDateState();
 }
 
-final List<Employee> _employees = <Employee>[];
 
 class _YearToDateState extends State<YearToDate> {
   final DataGridController _controller = DataGridController();
@@ -108,47 +107,42 @@ class _YearToDateState extends State<YearToDate> {
     }
   }
 
-
+getYearlyData()async{
+  await _dashboardController.getYearlyViewDetails().then((value) {
+    print("::::::$value ::::::");
+    print("IN VIEW");
+    _yearMonthList =
+        _dashboardController.dashboardYearlyViewModel.dashboardYearlyModels
+            .map(
+              (e) => e.showYear,
+        )
+            .toList()
+            .toSet()
+            .toList();
+    print("setstate called");
+    setState(() {
+      yearMonth = _yearMonthList[1];
+    });
+    _thisYearData = _dashboardController
+        .dashboardYearlyViewModel.dashboardYearlyModels
+        .where((DashboardYearlyModels i) => i.showYear == yearMonth)
+        .toList();
+    print(
+        "This year data length${_thisYearData.length} yearMonth $yearMonth");
+    getCountAndActualDataForBarGraph();
+    _dataForDataGrid = _dashboardController.dashboardYearlyViewModel.mtdCount;
+    print(_dataForDataGrid);
+  });
+}
 
   @override
   void initState() {
     print("Initstate Called");
-    _dashboardController.getYearlyViewDetails().then((value) {
-      print("::::::$value ::::::");
-      print("IN VIEW");
-      _yearMonthList =
-          _dashboardController.dashboardYearlyViewModel.dashboardYearlyModels
-              .map(
-                (e) => e.showYear,
-              )
-              .toList()
-              .toSet()
-              .toList();
-      print("setstate called");
-      setState(() {
-        yearMonth = _yearMonthList[1];
-      });
-      _thisYearData = _dashboardController
-          .dashboardYearlyViewModel.dashboardYearlyModels
-          .where((DashboardYearlyModels i) => i.showYear == yearMonth)
-          .toList();
-      print(
-          "This year data length${_thisYearData.length} yearMonth $yearMonth");
-      getCountAndActualDataForBarGraph();
-      _dataForDataGrid = _dashboardController.dashboardYearlyViewModel.mtdCount;
-      print(_dataForDataGrid);
-    });
+    getYearlyData();
     super.initState();
-    populateData();
-//    print(_employees[0].id);
-    // print(_employeeDataSource);
   }
 
-  void populateData() {
-    // data will be added to grid in this function
-//    _employees.add(Employee(10001, 'James', 'Project Lead', 20000,10));
-//    _employees.add(Employee(10002, 'Kathryn', 'Manager', 30000,29));
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -339,22 +333,37 @@ class _YearToDateState extends State<YearToDate> {
                 ],
               ),
               actualOrAverage == "Actual"
-                  ? SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Container(
-                        width: SizeConfig.screenWidth * 1.5,
-                        child: BarGraphForYTD(
-                          chartData: _barGraphGeneratedField,
-                          chartData2: _barGraphFieldConverted,
+                  ? Theme(
+                data: ThemeData(highlightColor: Colors.amberAccent,),
+                    child: Scrollbar(
+                      thickness: 8,
+                      radius: Radius.circular(12),
+                      child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Container(
+                            width: SizeConfig.screenWidth * 1.3,
+                            height: SizeConfig.screenHeight /2.5,
+                            child: BarGraphForYTD(
+                              chartData: _barGraphGeneratedField,
+                              chartData2: _barGraphFieldConverted,
+                            ),
+                          ),
                         ),
-                      ),
-                    )
+                    ),
+                  )
                   : LineSeriesForYTD(
                       chartData: _lineChartGenerated,
                       chartData2: _lineChartConverted,
                     ),
+                SizedBox(
+                  height: 20,
+                ),
 //              DataGridForYTD(controller: _controller),
-              _ytdIsVolume?_returnDataGridForVolume(_dashboardController.dashboardYearlyViewModel.mtdVolume):_returnDataGridForCount(_dashboardController.dashboardYearlyViewModel.mtdCount),
+              _dashboardController.dashboardYearlyViewModel.mtdVolume==null?Center(child: CircularProgressIndicator(),):
+              _ytdIsVolume? _returnDataGridForVolume(_dashboardController.dashboardYearlyViewModel.mtdVolume):_returnDataGridForCount(_dashboardController.dashboardYearlyViewModel.mtdCount),
+              SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),
@@ -377,12 +386,14 @@ class _YearToDateState extends State<YearToDate> {
   }
 
   void _printPngBytes() async {
+    Get.dialog(Center(child: CircularProgressIndicator()));
     var pngBytes = await _capturePng();
     final directory = (await getExternalStorageDirectory()).path;
     imgFile = new File('$directory/screenshot$yearMonth.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
+    Get.back();
   }
 
   Widget _returnDataGridForCount(MtdCount data) {
@@ -594,37 +605,4 @@ class ChartData {
 
 // final List<Employee> _employees = <Employee>[];
 
-class EmployeeDataSource extends DataGridSource<Employee> {
-  @override
-  List<Employee> get dataSource => _employees;
 
-  @override
-  getValue(Employee employee, String columnName) {
-    switch (columnName) {
-      case 'id':
-        return employee.id;
-        break;
-      case 'name':
-        return employee.name;
-        break;
-      case 'salary':
-        return employee.salary;
-        break;
-      case 'designation':
-        return employee.designation;
-        break;
-      default:
-        return ' ';
-        break;
-    }
-  }
-}
-
-class Employee {
-  Employee(this.id, this.name, this.designation, this.salary, this.perc);
-  final int id;
-  final String name;
-  final String designation;
-  final int salary;
-  final int perc;
-}

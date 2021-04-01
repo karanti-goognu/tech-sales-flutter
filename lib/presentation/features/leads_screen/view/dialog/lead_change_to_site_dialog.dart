@@ -236,12 +236,25 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                       print(value);
                       widget.mListener.userChangeDealerId();
 
-                      setState(() {
-                        selectedSubDealer = null;
-                        leadDataDealer = value.toString();
+                      // setState(() {
+                      //   selectedSubDealer = null;
+                      //   leadDataDealer = value.toString();
+                      //
+                      //
+                      //
+                      //   subDealerList = widget.counterListModel.where((e) => e.soldToParty == leadDataDealer).toList();
+                      //   print("subDealerList   ${subDealerList.length}  $leadDataDealer  ");
+                      //   selectedSubDealer = subDealerList[0];
+                      //   leadDataSubDealer = subDealerList[0].shipToParty;
+                      //
+                      //
+                      //
+                      // });
 
-                        //  subDealerList = new List();
-                        subDealerList.clear();
+
+                      setState(() {
+                        subDealerList = new List();
+                        leadDataDealer = value.toString();
                         subDealerList = widget.counterListModel
                             .where((e) => e.soldToParty == leadDataDealer)
                             .toList();
@@ -249,17 +262,8 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                         selectedSubDealer = subDealerList[0];
                         leadDataSubDealer = subDealerList[0].shipToParty;
 
-                        // Future.delayed(const Duration(milliseconds: 500), () {
-                        //   setState(() {
-                        //     // Here you can write your code for open new view
-                        //
-                        //
-                        //     print("callll");
-                        //   });
-                        //
-                        // });
-
                       });
+
                     },
                     style: FormFieldStyle.formFieldTextStyle,
                     decoration:

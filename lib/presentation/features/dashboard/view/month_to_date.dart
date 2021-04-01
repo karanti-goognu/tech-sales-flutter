@@ -52,6 +52,7 @@ class MonthToDateState extends State<MonthToDate> {
   }
 
   void _printPngBytes() async {
+    Get.dialog(Center(child: CircularProgressIndicator()));
     String empIdForFileName= _dashboardController.empId;
     print(_dashboardController.empId);
     var pngBytes = await _capturePng();
@@ -61,6 +62,7 @@ class MonthToDateState extends State<MonthToDate> {
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
+    Get.back();
   }
   /*Pass empId*/
   void passEmpId(String empIdValue) {
@@ -400,7 +402,7 @@ class DspColumnChild extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                                 text:
-                                    "${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.dspSlabConvertedCount.toString())}%\n",
+                                    "${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString()))}%\n",
                                 style: TextStyle(
                                     fontSize: 24,
                                     color: HexColor('#002A64'),
@@ -733,41 +735,47 @@ class ConvertedColumnChild extends StatelessWidget {
                         shrinkWrap: true,
                         childAspectRatio: 5,
                         children: [
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                    "Generated-${_dashboardController.generatedVolume} MT"),
-                                IconButton(
-                                    icon: Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 14,
-                                    ),
-                                    onPressed: () =>
-                                        Get.toNamed(Routes.DASHBOARD_SITE_LIST))
-                              ],
+                          GestureDetector(
+                            onTap:  () =>
+                                Get.toNamed(Routes.DASHBOARD_SITE_LIST),
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                      "Generated-${_dashboardController.generatedVolume} MT"),
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 14,
+                                      ),
+                                  )
+                                ],
+                              ),
+                              alignment: Alignment.center,
+                              color: Colors.blue.withOpacity(0.3),
                             ),
-                            alignment: Alignment.center,
-                            color: Colors.blue.withOpacity(0.3),
                           ),
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                    "Converted-${_dashboardController.convertedVolume} MT"),
-                                IconButton(
-                                    icon: Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 14,
-                                    ),
-                                    onPressed: () => Get.toNamed(
-                                        Routes.DASHBOARD_VOLUME_CONVERTED))
-                              ],
+                          GestureDetector(
+                            onTap: () => Get.toNamed(
+                                Routes.DASHBOARD_VOLUME_CONVERTED),
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                      "Converted-${_dashboardController.convertedVolume} MT"),
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 14,
+                                      ),
+                                      )
+                                ],
+                              ),
+                              alignment: Alignment.center,
+                              color: Colors.green.withOpacity(0.3),
                             ),
-                            alignment: Alignment.center,
-                            color: Colors.green.withOpacity(0.3),
                           ),
                           Container(
                             child: Text(

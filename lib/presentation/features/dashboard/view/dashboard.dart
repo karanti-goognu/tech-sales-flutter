@@ -151,9 +151,9 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  @override
-  void dispose() {
-    _dashboardController.dispose();
-    super.dispose();
-  }
+//  @override
+//  void dispose() {
+//    _dashboardController.dispose();
+//    super.dispose();
+//  }
 }
