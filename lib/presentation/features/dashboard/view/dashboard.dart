@@ -121,7 +121,8 @@ class _DashboardState extends State<Dashboard> {
                                     _dashboardController.getMonthViewDetails(
                                         empID: empID, yearMonth: yearMonth);
                                   }else{
-                                    _dashboardController.getYearlyViewDetails(empID);
+                                    print("Tab changed");
+//                                    _dashboardController.getYearlyViewDetails(empID);
                                   }
                                 }),
                           ),
