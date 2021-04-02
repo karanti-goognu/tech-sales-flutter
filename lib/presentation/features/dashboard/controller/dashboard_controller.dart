@@ -108,18 +108,15 @@ class DashboardController extends GetxController {
             barrierDismissible: false));
 //    String userSecurityCode;
     String empID;
-    repository.getAccessKey().then((value) {
+    var value= await repository.getAccessKey();
       this.accessKeyResponse = value;
-      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      _prefs.then((SharedPreferences prefs) async {
+     var prefs = await SharedPreferences.getInstance();
 //        userSecurityCode = prefs.getString(StringConstants.userSecurityKey);
         empID = prefs.getString(StringConstants.employeeId);
-        repository.getYearlyViewDetails(empID).then((data) {
-          DashboardYearlyViewModel dataX = data;
+       var data= await repository.getYearlyViewDetails(empID);
           this.dashboardYearlyViewModel = data;
-//          print(dataX.dashboardYearlyModels);
 //          print(":::: $data ::::");
-          List tempMonthList = dataX.dashboardYearlyModels
+          List tempMonthList = this.dashboardYearlyViewModel.dashboardYearlyModels
               .map(
                 (e) => e.showMonth,
               )
@@ -134,10 +131,7 @@ class DashboardController extends GetxController {
 //          print(dataX.dashboardYearlyModels);
 //          print(this.dashboardYearlyViewModel.dashboardYearlyModels);
           isProcessComplete = true;
-        });
-      });
       Get.back();
-    });
     return isProcessComplete;
   }
 

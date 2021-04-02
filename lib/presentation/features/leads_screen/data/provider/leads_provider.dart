@@ -38,7 +38,7 @@ class MyApiClientLeads {
       // print("dsacsdcc" + requestHeaders.toString());
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
-      print('Response body is : ${json.decode(response.body)}');
+//      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -64,7 +64,7 @@ class MyApiClientLeads {
 
       var response = await httpClient.get(UrlConstants.getSecretKey,
           headers: requestHeadersEmpIdAndNo);
-      print('Response body is : ${json.decode(response.body)}');
+//      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
@@ -85,13 +85,13 @@ class MyApiClientLeads {
       _prefs.then((SharedPreferences prefs) {
         userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-        print('$userSecurityKey');
+//        print('$userSecurityKey');
       });
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(UrlConstants.getFilterData,
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey));
-        print('Response body is : ${json.decode(response.body)}');
+//        print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -114,9 +114,9 @@ class MyApiClientLeads {
           headers:
               requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
       //var response = await httpClient.post(UrlConstants.loginCheck);
-      print('response is :  ${response.body}');
+//      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-        print('success');
+//        print('success');
         var data = json.decode(response.body);
         LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
@@ -135,7 +135,7 @@ class MyApiClientLeads {
           headers:
               requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
       //var response = await httpClient.post(UrlConstants.loginCheck);
-      print('response is :  ${response.body}');
+//      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
         print('success');
         var data = json.decode(response.body);
@@ -156,7 +156,7 @@ class MyApiClientLeads {
       var response = await httpClient.get(UrlConstants.addLeadsData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey));
-      print('Response body is  : ${json.decode(response.body)}');
+//      print('Response body is  : ${json.decode(response.body)}');
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -187,7 +187,7 @@ class MyApiClientLeads {
         headers:
             requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
-      print('Response body is  : ${json.decode(response.body)}');
+//      print('Response body is  : ${json.decode(response.body)}');
       // print('Response body is  : ${json.decode(response.body)}');
 
       if (response.statusCode == 200) {
@@ -274,9 +274,9 @@ class MyApiClientLeads {
           jsonEncode(uploadImageWithLeadModel);
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
-      print("Request headers :: " + request.headers.toString());
-      print("Request Body/Fields :: " + request.fields.toString());
-      print("Files:: " + request.files.toString());
+//      print("Request headers :: " + request.headers.toString());
+//      print("Request Body/Fields :: " + request.fields.toString());
+//      print("Files:: " + request.files.toString());
       try {
         request
             .send()
@@ -286,7 +286,7 @@ class MyApiClientLeads {
                 SaveLeadResponse saveLeadResponse =
                     SaveLeadResponse.fromJson(data);
 
-                print(response.body);
+//                print(response.body);
 
                 if (saveLeadResponse.respCode == "LD2008") {
                   Get.back();
@@ -299,7 +299,7 @@ class MyApiClientLeads {
                       imageList));
                 } else if (saveLeadResponse.respCode == "LD2007") {
                   if (gv.fromLead) {
-                    print('Draft id :: ${gv.draftID}');
+//                    print('Draft id :: ${gv.draftID}');
                     db.removeLeadInDraft(gv.draftID);
                     gv.fromLead = false;
                   }
@@ -340,26 +340,23 @@ class MyApiClientLeads {
      try {
       //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var bodyEncrypted = {"leadId": leadId};
-      // print('Request body is  : ${json.encode(bodyEncrypted)}');
-      // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
 
-
-     // print("URL is :: " + UrlConstants.getLeadData + "$leadId" + '&referenceID='+empId);
       print("Request Header :: " +
           json.encode(requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey)));
+
 
       final response = await get(
         Uri.parse(UrlConstants.getLeadData + "$leadId"+"&referenceID=$empID"),
          headers:
          requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
       );
-      print('Response body is  : ${json.decode(response.body)}');
+//      print('Response body is  : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         Get.back();
 
         var data = json.decode(response.body);
-        print(data);
+//        print(data);
         ViewLeadDataResponse viewLeadDataResponse =
             ViewLeadDataResponse.fromJson(data);
         return viewLeadDataResponse;
@@ -407,19 +404,20 @@ class MyApiClientLeads {
           json.encode(updateRequestModel);
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
-      print("Request headers :: " + request.headers.toString());
-      print("Request Body/Fields :: " + request.fields.toString());
+//      print("Request headers :: " + request.headers.toString());
+//      print("Request Body/Fields :: " + request.fields.toString());
       // print("Files:: " + request.files.toString());
       try {
         request
             .send()
             .then((result) async {
               http.Response.fromStream(result).then((response) {
-                print("/////////////////${response.body}");
+                 print("/////////////////${response.body}");
                 print(response.statusCode);
+ //                print(response.statusCode);
 
                 var data = json.decode(response.body);
-                print(data);
+//                print(data);
                 UpdateLeadResponseModel updateLeadResponseModel =
                     UpdateLeadResponseModel.fromJson(data);
 
