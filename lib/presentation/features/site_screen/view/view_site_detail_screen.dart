@@ -29,6 +29,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 
 class ViewSiteScreen extends StatefulWidget {
   int siteId;
@@ -471,6 +472,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   @override
   Widget build(BuildContext context) {
      //gv.selectedClass = widget.classroomId;
+    SizeConfig().init(context);
     return GestureDetector(
       onTap: (){
         FocusScope.of(context).requestFocus(new FocusNode());
@@ -3573,7 +3575,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     "Influencer Details ${(index + 1)} ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18),
+                                        fontSize: SizeConfig.safeBlockHorizontal*4.8
+                                    ),
                                   ),
                                   _listInfluencerDetail[index].isExpanded
                                       ? FlatButton.icon(
@@ -3584,7 +3587,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                           icon: Icon(
                                             Icons.remove,
                                             color: HexColor("#F9A61A"),
-                                            size: 18,
+                                            size: SizeConfig.safeBlockHorizontal*4,
                                           ),
                                           label: Text(
                                             "COLLAPSE",
@@ -3592,7 +3595,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                 color: HexColor("#F9A61A"),
                                                 fontWeight: FontWeight.bold,
                                                 // letterSpacing: 2,
-                                                fontSize: 17),
+                                                fontSize: SizeConfig.safeBlockHorizontal*4.5),
                                           ),
                                           onPressed: () {
                                             setState(() {

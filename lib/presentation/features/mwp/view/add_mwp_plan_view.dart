@@ -1,12 +1,11 @@
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
-import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/model/AddMWPPlanModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:get/get.dart';
@@ -22,38 +21,28 @@ class AddMWPPlan extends StatefulWidget {
 class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   MWPPlanController _mwpPlanController = Get.find();
   AppController _appController = Get.find();
-  Map _source = {ConnectivityResult.none: false};
-  MyConnectivity _connectivity = MyConnectivity.instance;
-  String connectivityString;
+
 
   @override
   void initState() {
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
-    });
-    super.initState();
+
+    // _connectivity.initialise();
+    // _connectivity?.myStream?.listen((source) {
+    //   setState(() => _source = source);
+    // });
+
+     super.initState();
   }
 
 
   @override
   void dispose() {
-    _connectivity.disposeStream();
-    super.dispose();
+    // _connectivity?.disposeStream();
+     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.none:
-        connectivityString = "Offline";
-        break;
-      case ConnectivityResult.mobile:
-        connectivityString = "Mobile: Online";
-        break;
-      case ConnectivityResult.wifi:
-        connectivityString = "WiFi: Online";
-    }
 
     List<String> mwpNames = [
       "Retention Volume",
@@ -64,7 +53,9 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "Site Conv. (No. of sites)",
       "Site Visits (Total)",
       "Site Visits (Unique)",
+/*
       "Influencer Visits",
+*/
       "Mason Meet",
       "Counter Meet",
       "Contractor Meet",
@@ -270,16 +261,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   }
 
   Widget returnSaveRow() {
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.none:
-        connectivityString = "Offline";
-        break;
-      case ConnectivityResult.mobile:
-        connectivityString = "Mobile: Online";
-        break;
-      case ConnectivityResult.wifi:
-        connectivityString = "WiFi: Online";
-    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -291,17 +273,41 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                 ? () {
                     // Validate returns true if the form is valid, or false
                     // otherwise.
-                    _mwpPlanController.action = "SAVE";
-                    _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN);
-                  }
+              internetChecking().then((result) => {
+                if (result == true)
+                  {
+                  _mwpPlanController.action = "SAVE",
+                  _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN),
+                  }else{
+                  Get.snackbar(
+                      "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                      colorText: Colors.white,
+                      backgroundColor: Colors.red,
+                      snackPosition: SnackPosition.BOTTOM),
+                  // fetchSiteList()
+                }
+              });
+            }
                 : (_mwpPlanController.getMWPResponse.mwpplanModel.status ==
                         "SUBMIT")
                     ? null
                     : () {
                         // Validate returns true if the form is valid, or false
                         // otherwise.
-                        _mwpPlanController.action = "SAVE";
-                        _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN);
+                        internetChecking().then((result) => {
+                if (result == true)
+                  {
+                            _mwpPlanController.action = "SAVE",
+                            _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN),
+                  }else{
+                  Get.snackbar(
+                      "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                      colorText: Colors.white,
+                      backgroundColor: Colors.red,
+                      snackPosition: SnackPosition.BOTTOM),
+                  // fetchSiteList()
+                }
+              });
                       },
             child: Padding(
               padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
@@ -323,13 +329,20 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
             onPressed: () {
               // Validate returns true if the form is valid, or false
               // otherwise.
-              print("Connection-->"+connectivityString);
-              if (connectivityString == 'Offline') {
-              _mwpPlanController.showNoInternetSnack();
-              } else {
-                _mwpPlanController.action = "SUBMIT";
-                _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN);
-              }
+              internetChecking().then((result) => {
+                if (result == true)
+                  {
+                  _mwpPlanController.action = "SUBMIT",
+                  _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN),
+                  }else{
+                  Get.snackbar(
+                      "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                      colorText: Colors.white,
+                      backgroundColor: Colors.red,
+                      snackPosition: SnackPosition.BOTTOM),
+                  // fetchSiteList()
+                }
+              });
             },
             child: Padding(
               padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
@@ -356,8 +369,20 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
             onPressed: () {
               // Validate returns true if the form is valid, or false
               // otherwise.
-              _mwpPlanController.action = "SUBMIT";
-              _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN);
+              internetChecking().then((result) => {
+                if (result == true)
+                  {
+                  _mwpPlanController.action = "SUBMIT",
+                  _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN),
+                  }else{
+                  Get.snackbar(
+                      "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                      colorText: Colors.white,
+                      backgroundColor: Colors.red,
+                      snackPosition: SnackPosition.BOTTOM),
+                  // fetchSiteList()
+                }
+              });
             },
             child: Padding(
               padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
@@ -424,43 +449,43 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                 case 7:
                   _mwpPlanController.siteVisitsUnique = int.parse(_);
                   break;
+                // case 8:
+                //   _mwpPlanController.influencerVisit = int.parse(_);
+                //   break;
                 case 8:
-                  _mwpPlanController.influencerVisit = int.parse(_);
-                  break;
-                case 9:
                   _mwpPlanController.masonMeet = int.parse(_);
                   break;
-                case 10:
+                case 9:
                   _mwpPlanController.counterMeet = int.parse(_);
                   break;
-                case 11:
+                case 10:
                   _mwpPlanController.contractorMeet = int.parse(_);
                   break;
-                case 12:
+                case 11:
                   _mwpPlanController.miniContractorMeet = int.parse(_);
                   break;
-                case 13:
+                case 12:
                   _mwpPlanController.consumerMeet = int.parse(_);
                   break;
-                  case 14:
+                  case 13:
                   _mwpPlanController.contractorVisit = int.parse(_);;
                   break;
-                case 15:
+                case 14:
                   _mwpPlanController.technoVisit = int.parse(_);;
                   break;
-                case 16:
+                case 15:
                   _mwpPlanController.techVanDemo = int.parse(_);;
                   break;
-                case 17:
+                case 16:
                   _mwpPlanController.techVanService = int.parse(_);;
                   break;
-                case 18:
+                case 17:
                   _mwpPlanController.slabServices = int.parse(_);;
                   break;
-                case 19:
+                case 18:
                   _mwpPlanController.technocratMeet = int.parse(_);;
                   break;
-                case 20:
+                case 19:
                   _mwpPlanController.blockLevelMeet = int.parse(_);;
                   break;
 
@@ -479,7 +504,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                   _mwpPlanController.dspSlab = 0;
                   break;
                 case 3:
-                  _mwpPlanController.dspConVol = 0;
+                  _mwpPlanController.dspConVol = 0.0;
                   break;
                 case 4:
                   _mwpPlanController.siteConVol = 0;
@@ -493,43 +518,43 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                 case 7:
                   _mwpPlanController.siteVisitsUnique = 0;
                   break;
+                // case 8:
+                //   _mwpPlanController.influencerVisit = 0;
+                //   break;
                 case 8:
-                  _mwpPlanController.influencerVisit = 0;
-                  break;
-                case 9:
                   _mwpPlanController.masonMeet = 0;
                   break;
-                case 10:
+                case 9:
                   _mwpPlanController.counterMeet = 0;
                   break;
-                case 11:
+                case 10:
                   _mwpPlanController.contractorMeet = 0;
                   break;
-                case 12:
+                case 11:
                   _mwpPlanController.miniContractorMeet = 0;
                   break;
-                case 13:
+                case 12:
                   _mwpPlanController.consumerMeet = 0;
                   break;
-                case 14:
+                case 13:
                   _mwpPlanController.contractorVisit = 0;
                   break;
-                case 15:
+                case 14:
                   _mwpPlanController.technoVisit = 0;
                   break;
-                case 16:
+                case 15:
                   _mwpPlanController.techVanDemo = 0;
                   break;
-                case 17:
+                case 16:
                   _mwpPlanController.techVanService = 0;
                   break;
-                case 18:
+                case 17:
                   _mwpPlanController.slabServices = 0;
                   break;
-                case 19:
+                case 18:
                   _mwpPlanController.technocratMeet = 0;
                   break;
-                  case 20:
+                  case 19:
                   _mwpPlanController.blockLevelMeet = 0;
                   break;
 
@@ -573,75 +598,75 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                   ? _mwpPlanController.getMWPResponse
                                       .mwpplanModel.actualSiteUniqueVisitsNo
                                       .toString()
-                                  : (index == 8)
+                                 /* : (index == 8)
                                       ? _mwpPlanController.getMWPResponse
                                           .mwpplanModel.actualInflVisitsNo
-                                          .toString()
-                                      : (index == 9)
+                                          .toString()*/
+                                      : (index == 8)
                                           ? _mwpPlanController.getMWPResponse
                                               .mwpplanModel.actualMasonMeetNo
                                               .toString()
-                                          : (index == 10)
+                                          : (index == 9)
                                               ? _mwpPlanController
                                                   .getMWPResponse
                                                   .mwpplanModel
                                                   .actualCounterMeetNo
                                                   .toString()
-                                              : (index == 11)
+                                              : (index == 10)
                                                   ? _mwpPlanController
                                                       .getMWPResponse
                                                       .mwpplanModel
                                                       .actualContractorMeetNo
                                                       .toString()
-                                                  : (index == 12)
+                                                  : (index == 11)
                                                       ? _mwpPlanController
                                                           .getMWPResponse
                                                           .mwpplanModel
                                                           .actualConsumerMeetNo
                                                           .toString()
-                                                      : (index == 13)
+                                                      : (index == 12)
                                                           ? _mwpPlanController
                                                               .getMWPResponse
                                                               .mwpplanModel
                                                               .actualConsumerMeetNo
                                                               .toString()
-                                                          :   (index == 14)
+                                                          :   (index == 13)
                                                              ? _mwpPlanController
                                                                .getMWPResponse
                                                                .mwpplanModel
                                                             .actualContractorVisit
                                                                .toString()
-                                                         : (index == 15)
+                                                         : (index == 14)
                                                             ? _mwpPlanController
                                                              .getMWPResponse
                                                               .mwpplanModel
                                                              .actualTechnocratVisit
                                                              .toString()
-                                                          : (index == 16)
+                                                          : (index == 15)
                                                            ? _mwpPlanController
                                                              .getMWPResponse
                                                               .mwpplanModel
                                                                .actualTechVanDemo
                                                                .toString()
-          : (index == 17)
+          : (index == 16)
           ? _mwpPlanController
           .getMWPResponse
           .mwpplanModel
           .actualTechVanService
           .toString()
-          : (index == 18)
+          : (index == 17)
           ? _mwpPlanController
           .getMWPResponse
           .mwpplanModel
           .actualSlabServices
           .toString()
-          : (index == 19)
+          : (index == 18)
           ? _mwpPlanController
           .getMWPResponse
           .mwpplanModel
           .actualTechnocratMeet
           .toString()
-          : (index == 20)
+          : (index == 19)
           ? _mwpPlanController
           .getMWPResponse
           .mwpplanModel
@@ -686,75 +711,75 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                   ? _mwpPlanController.getMWPResponse
                                       .mwpplanModel.siteUniqueVisitsNo
                                       .toString()
-                                  : (index == 8)
+                                 /* : (index == 8)
                                       ? _mwpPlanController.getMWPResponse
                                           .mwpplanModel.inflVisitsNo
-                                          .toString()
-                                      : (index == 9)
+                                          .toString()*/
+                                      : (index == 8)
                                           ? _mwpPlanController.getMWPResponse
                                               .mwpplanModel.masonMeetNo
                                               .toString()
-                                          : (index == 10)
+                                          : (index == 9)
                                               ? _mwpPlanController
                                                   .getMWPResponse
                                                   .mwpplanModel
                                                   .counterMeetNo
                                                   .toString()
-                                              : (index == 11)
+                                              : (index == 10)
                                                   ? _mwpPlanController
                                                       .getMWPResponse
                                                       .mwpplanModel
                                                       .contractorMeetNo
                                                       .toString()
-                                                  : (index == 12)
+                                                  : (index == 11)
                                                       ? _mwpPlanController
                                                           .getMWPResponse
                                                           .mwpplanModel
                                                           .miniContractorMeetNo
                                                           .toString()
-                                                      : (index == 13)
+                                                      : (index == 12)
                                                           ? _mwpPlanController
                                                               .getMWPResponse
                                                               .mwpplanModel
                                                               .consumerMeetNo
                                                               .toString()
-                                                      : (index == 14)
+                                                      : (index == 13)
                                                           ? _mwpPlanController
                                                               .getMWPResponse
                                                               .mwpplanModel
                                                               .contractorVisit
                                                               .toString()
-                                                  : (index == 15)
+                                                  : (index == 14)
                                                           ? _mwpPlanController
                                                               .getMWPResponse
                                                               .mwpplanModel
                                                               .technocratVisit
                                                               .toString()
-                                                    : (index == 16)
+                                                    : (index == 15)
                                                           ? _mwpPlanController
                                                               .getMWPResponse
                                                               .mwpplanModel
                                                               .techVanDemo
                                                               .toString()
-                                                   : (index == 17)
+                                                   : (index == 16)
                                                           ? _mwpPlanController
                                                               .getMWPResponse
                                                               .mwpplanModel
                                                               .techVanService
                                                               .toString()
-                                                   : (index == 18)
+                                                   : (index == 17)
                                                           ? _mwpPlanController
                                                               .getMWPResponse
                                                               .mwpplanModel
                                                               .slabServices
                                                               .toString()
-                                                    : (index == 19)
+                                                    : (index == 18)
                                                           ? _mwpPlanController
                                                               .getMWPResponse
                                                               .mwpplanModel
                                                               .technocratMeet
                                                               .toString()
-                                                    : (index == 20)
+                                                    : (index == 19)
                                                           ? _mwpPlanController
                                                               .getMWPResponse
                                                               .mwpplanModel

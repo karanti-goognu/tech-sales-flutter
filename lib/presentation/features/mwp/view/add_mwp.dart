@@ -33,6 +33,8 @@ class AddMWPScreenPageState extends State<AddMWP> {
       final DateFormat formatter = DateFormat('MMMM-yyyy');
       final String formatted = formatter.format(now);
       _mwpPlanController.selectedMonth = formatted;
+
+
       _appController.getAccessKey(RequestIds.GET_MWP_PLAN);
       _mwpPlanController.isLoading = true;
     });
@@ -88,56 +90,54 @@ class AddMWPScreenPageState extends State<AddMWP> {
                     ),
                     Obx(
                           () =>
-                      (_mwpPlanController
-                          .getMWPResponse.listOfMonthYear !=
-                          null) ?
+                      (_mwpPlanController.getMWPResponse.listOfMonthYear != null) ?
                       Flexible(
                         flex: 2,
-                        child: Container(
-                            width: double.infinity,
-                            padding:
-                            const EdgeInsets.fromLTRB(12, 4, 4, 4),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.white,
-                              boxShadow: [
-                                new BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 8.0,
-                                ),
-                              ],
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: Obx(
-                                    () => DropdownButton<String>(
-                                  value: _mwpPlanController.selectedMonth,
-                                  onChanged: (String newValue) {
-                                    print("Month--->"+'$newValue');
-                                    _mwpPlanController.selectedMonth =
-                                        newValue;
-                                    _appController.getAccessKey(
-                                        RequestIds.GET_MWP_PLAN);
-                                    _mwpPlanController.isLoading = true;
-                                  },
-                                  items: _mwpPlanController
-                                      .getMWPResponse.listOfMonthYear
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        );
-                                      }).toList(),
-                                ),
-                              ),
-                            )),
-                      )
-                          : Container(
+                              child: Container(
+                                  width: double.infinity,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(12, 4, 4, 4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      new BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 8.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: Obx(
+                                      () => DropdownButton<String>(
+                                        value: _mwpPlanController.selectedMonth,
+                                        onChanged: (String newValue) {
+                                          print("Month--->"+'$newValue');
+                                          _mwpPlanController.selectedMonth =
+                                              newValue;
+                                          _appController.getAccessKey(
+                                              RequestIds.GET_MWP_PLAN);
+                                          _mwpPlanController.isLoading = true;
+                                        },
+                                        items: _mwpPlanController
+                                            .getMWPResponse.listOfMonthYear
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value, style: TextStyle(
+                                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
+                                                  fontWeight: FontWeight.bold),
+
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  )),
+                            ) : Container(
                         child: Text("Error"),
                       ),
                     ),

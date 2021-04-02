@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -83,7 +84,14 @@ class SplashScreenPageState extends State<SplashScreen> {
         Get.offNamed(Routes.LOGIN);
       } else {
         print("on splash_screen.dart");
-        _splashController.getSecretKey(RequestIds.REFRESH_DATA);
+       // _splashController.getSecretKey(RequestIds.REFRESH_DATA);
+        internetChecking().then((result){
+          if(result)
+            _splashController.getSecretKey(RequestIds.REFRESH_DATA);
+          else
+            _splashController.openNextPage();
+        });
+
       }
     });
     _initializeFlutterFireFuture = _initializeFlutterFire();

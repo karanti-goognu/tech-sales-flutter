@@ -11,6 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginM
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -37,14 +38,14 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   LoginController _loginController = Get.find();
-  Map _source = {ConnectivityResult.none: false};
-  MyConnectivity _connectivity = MyConnectivity.instance;
-  String connectivityString;
+
 
   Timer _timer;
   int _start = 180;
   int _startInitial = 180;
   bool retryOtp = false;
+
+  bool _isButtonDisabled;
 
   void startTimer() {
     if (_loginController != null) {
@@ -60,8 +61,8 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
       const oneSec = const Duration(seconds: 1);
       _timer = new Timer.periodic(
         oneSec,
-        (Timer timer) => setState(
-          () {
+            (Timer timer) => setState(
+              () {
             if (_start < 1) {
               timer.cancel();
               _loginController.retryOtpActive = true;
@@ -80,7 +81,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   @override
   void dispose() {
     super.dispose();
-    _connectivity.disposeStream();
     _timer.cancel();
     _focusNode.dispose();
   }
@@ -88,10 +88,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   @override
   void initState() {
     super.initState();
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
-    });
+    _isButtonDisabled = false;
     _focusNode = FocusNode();
     //isUserLoggedIn = _loginController.getSharedPreference(StringConstants.isUserLoggedIn) as String?? "false";
     startTimer();
@@ -100,16 +97,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.none:
-        connectivityString = "Offline";
-        break;
-      case ConnectivityResult.mobile:
-        connectivityString = "Mobile: Online";
-        break;
-      case ConnectivityResult.wifi:
-        connectivityString = "WiFi: Online";
-    }
 
     return new WillPopScope(
         onWillPop: _onWillPop,
@@ -235,21 +222,21 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                       Expanded(
                         child: Container(
                             child: Obx(() => GestureDetector(
-                                  onTap: () {
-                                    (_loginController.retryOtpActive == false)
-                                        ? print('On click')
-                                        : retryOtpRequest();
-                                  },
-                                  child: new Text(
-                                    (_loginController.retryOtpActive == false)
-                                        ? "Resend OTP in $timeFormat"
-                                        : "Resend OTP",
-                                    style: (_loginController.retryOtpActive ==
-                                            false)
-                                        ? TextStyles.resendOtpTextStyleNormal
-                                        : TextStyles.resendOtpTextStyleEnabled,
-                                  ),
-                                ))),
+                              onTap: () {
+                                (_loginController.retryOtpActive == false)
+                                    ? print('On click')
+                                    : retryOtpRequest();
+                              },
+                              child: new Text(
+                                (_loginController.retryOtpActive == false)
+                                    ? "Resend OTP in $timeFormat"
+                                    : "Resend OTP",
+                                style: (_loginController.retryOtpActive ==
+                                    false)
+                                    ? TextStyles.resendOtpTextStyleNormal
+                                    : TextStyles.resendOtpTextStyleEnabled,
+                              ),
+                            ))),
                         flex: 2,
                       ),
                       Expanded(
@@ -259,14 +246,17 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                               color: ColorConstants.buttonNormalColor,
                               highlightColor: ColorConstants.buttonPressedColor,
                               onPressed: () {
-                                if (_formKey.currentState.validate()) {
-                                  afterValidateRequest(otpCode);
-                                  _loginController.attempts++;
+                                if(!_isButtonDisabled) {
+                                  if (_formKey.currentState.validate()) {
+                                    afterValidateRequest(otpCode);
+                                    _loginController.attempts++;
+                                  }
                                 }
                               },
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
                                 child: Text(
+                                  _isButtonDisabled?'HOLD ON':
                                   'VERIFY',
                                   style: ButtonStyles.buttonStyleBlue,
                                 ),
@@ -311,41 +301,71 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
-          context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text(
-                'Your login progress will be Lost.Do you still want to continue ?'),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('No'),
-              ),
-              new FlatButton(
-                onPressed: () => Get.toNamed(Routes.LOGIN),
-                child: new Text('Yes'),
-              ),
-            ],
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Are you sure?'),
+        content: new Text(
+            'Your login progress will be Lost.Do you still want to continue ?'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
           ),
-        )) ??
+          new FlatButton(
+            onPressed: () => Get.toNamed(Routes.LOGIN),
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    )) ??
         false;
   }
 
   void retryOtpRequest() {
-    (connectivityString == 'Offline')
-        ? _loginController.showNoInternetSnack()
-        : _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST);
-    startTimer();
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          _isButtonDisabled = false,
+          _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST),
+          startTimer()
+        }
+      else
+        {
+          Get.snackbar(
+              "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
+    // (connectivityString == 'Offline') ? _loginController.showNoInternetSnack() : _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST);
     /*_loginController.loginResponse*/
   }
 
   void afterValidateRequest(String otpCode) {
     _loginController.otpCode = otpCode;
-    print('$connectivityString');
-    (connectivityString == 'Offline')
-        ? _loginController.showNoInternetSnack()
-        :
-    _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+        _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST),
+          if(_loginController.validateOtpResponse.respCode == "DM1011")  {
+            _isButtonDisabled = true
+          }else{
+            _isButtonDisabled = false
+          }
+        }
+      else
+        {
+          Get.snackbar(
+              "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+          // fetchSiteList()
+        }
+    });
+
+    // (connectivityString == 'Offline') ? _loginController.showNoInternetSnack() : _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
   }
 
   LoginOtpScreenPageState(this.mobileNumber);

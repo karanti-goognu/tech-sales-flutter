@@ -25,6 +25,7 @@ class AddEventInfluencerMeetScreenPageState
   int _value = 0;
   TextEditingController dalmiaInfluencers = TextEditingController();
   TextEditingController nonDalmiaInfluencers = TextEditingController();
+  TextEditingController meetInitiatorName = TextEditingController();
 
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
@@ -73,7 +74,9 @@ class AddEventInfluencerMeetScreenPageState
                               'CONTRACTOR MEET',
                               'ENGINEER MEET',
                               'CONSUMER MEET',
-                              'MINI CONTRACTOR MEET'
+                              'MINI CONTRACTOR MEET',
+                              'TECHNOCRAT MEET',
+                              'BLOCK LEVEL MEET'
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -166,6 +169,27 @@ class AddEventInfluencerMeetScreenPageState
                           keyboardType: TextInputType.number,
                           decoration: _inputDecoration(
                               "Non-Dalmia Influencers", false)),
+                      _spaceBetweenFields(),
+                      TextFormField(
+                          controller: meetInitiatorName,
+                          // validator: (value) {
+                          //   if (value.isEmpty) {
+                          //     print('called validator');
+                          //     return "Non-Dalmia Influencers can't be empty ";
+                          //   }
+                          //   return null;
+                          // },
+                          onChanged: (_) {
+
+                          },
+                          onEditingComplete: (){
+                            print("Edit");
+                          },
+
+                          style: _myFormFont(),
+                          keyboardType: TextInputType.text,
+                          decoration: _inputDecoration(
+                              "Meet Initiator Name", false)),
                       _spaceBetweenFields(),
                       Text('Total Participants'),
                       Obx(() =>
@@ -326,7 +350,10 @@ class AddEventInfluencerMeetScreenPageState
                       TextFormField(
                           validator: (value) {
                             if (value.isEmpty) {
-                              return "Event location can't be empty ";
+                              String addressType;
+                              (_addEventController.selectedEventTypeMeet=="TECHNOCRAT MEET"||_addEventController.selectedEventTypeMeet=="BLOCK LEVEL MEET")?addressType= "Address can't be empty "
+                             : addressType= "Event location can't be empty ";
+                             return addressType;
                             }
                             return null;
                           },
@@ -335,8 +362,9 @@ class AddEventInfluencerMeetScreenPageState
                           },
                           style: _myFormFont(),
                           keyboardType: TextInputType.text,
-                          decoration:
-                              _inputDecoration("Event location", false)),
+                          decoration:(_addEventController.selectedEventTypeMeet=="TECHNOCRAT MEET"||_addEventController.selectedEventTypeMeet=="BLOCK LEVEL MEET")?
+                          _inputDecoration("Address", false):_inputDecoration("Event location", false)
+                      ),
                       _spaceBetweenFields(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

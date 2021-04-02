@@ -121,7 +121,8 @@ getYearlyData()async{
             .toList()
             .toSet()
             .toList();
-    print("setstate called");
+
+    if(mounted)
     setState(() {
       yearMonth = _yearMonthList[1];
     });
@@ -175,6 +176,7 @@ getYearlyData()async{
                       child: CupertinoSwitch(
                         value: _ytdIsVolume,
                         onChanged: (_) {
+                          if(mounted)
                           setState(() {
                             _ytdIsVolume = _;
                           });
@@ -268,6 +270,7 @@ getYearlyData()async{
                                   },
                                   onChanged: (_) {
                                     print("On changed called");
+                                    if(mounted)
                                     setState(() {
                                       yearMonth = _;
                                       _thisYearData = _dashboardController
@@ -317,6 +320,7 @@ getYearlyData()async{
                                     ))
                                 .toList(),
                             onChanged: (_) {
+                              if(mounted)
                               setState(() {
                                 actualOrAverage = _;
                               });

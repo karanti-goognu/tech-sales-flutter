@@ -28,7 +28,7 @@ class MWPPlanController extends GetxController {
   final _totalConversionVol = 0.obs;
   final _newILPMembers = 0.obs;
   final _dspSlab = 0.obs;
-  final _dspConVol = 0.obs;
+  final _dspConVol = 0.0.obs;
   final _siteConVol = 0.obs;
   final _siteConNo = 0.obs;
   final _siteVisitsTotal = 0.obs;
@@ -136,13 +136,7 @@ class MWPPlanController extends GetxController {
   get consumerMeet => _consumerMeet.value;
 
   set consumerMeet(value) => _consumerMeet.value = value;
-  showNoInternetSnack() {
-    Get.snackbar(
-        "No internet connection.", "Please check your internet connection.",
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-        snackPosition: SnackPosition.BOTTOM);
-  }
+
   saveMWPPlan(String accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
@@ -164,7 +158,7 @@ class MWPPlanController extends GetxController {
           this.siteConNo,
           this.siteVisitsTotal,
           this.siteVisitsUnique,
-          this.influencerVisit,
+        /*  this.influencerVisit,*/
           this.masonMeet,
           this.counterMeet,
           this.contractorMeet,
@@ -172,7 +166,7 @@ class MWPPlanController extends GetxController {
           this.consumerMeet,
           this.action,
           empId,
-          empId, int.parse(this.dspConVol.toString()),
+          empId,double.parse(this.dspConVol.toString()) ,
           int.parse(this.contractorVisit.toString()),
           int.parse(this.technocratVisit.toString()),
           int.parse(this.techVanDemo.toString()),int.parse(this.techVanService.toString()),int.parse(this.slabServices.toString()),

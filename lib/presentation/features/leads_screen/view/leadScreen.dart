@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'ViewLeadScreen.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 
 class LeadScreen extends StatefulWidget {
   @override
@@ -59,7 +60,16 @@ class _LeadScreenState extends State<LeadScreen> {
     }*/
     print("------------------------------");
     print(_leadsFilterController.offset);
-    _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+    internetChecking().then((result){
+      if(result)
+        _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+
+    });
+
+
+
+
+
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
   }
@@ -80,7 +90,7 @@ class _LeadScreenState extends State<LeadScreen> {
   void dispose() {
     //_connectivity.disposeStream();
     super.dispose();
-    _leadsFilterController.dispose();
+    _leadsFilterController?.dispose();
     _leadsFilterController.offset = 0;
     print(_leadsFilterController.offset);
     // Route.dispose();
@@ -638,8 +648,7 @@ class _LeadScreenState extends State<LeadScreen> {
                       //           ],
                       //         ))),
                       Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
@@ -685,6 +694,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                       ),
                                     )),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Padding(
                                       padding:
@@ -713,7 +723,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                             style: TextStyle(
                                                 color: HexColor(
                                                     "#39B54A"),
-                                                fontSize: 8,
+                                                fontSize: SizeConfig.safeBlockHorizontal*1.9,
                                                 fontFamily:
                                                 "Muli",
                                                 fontWeight:
@@ -727,7 +737,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(
-                                          left: 10.0),
+                                          left: SizeConfig.safeBlockHorizontal*1.3),
                                       child: Text(
                                         " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
                                           _leadsFilterController
@@ -738,7 +748,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                         ))}",
                                         //  textAlign: TextAlign.start,
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: SizeConfig.safeBlockHorizontal*2.8,
                                           fontFamily: "Muli",
                                           fontWeight:
                                           FontWeight.bold,
@@ -830,7 +840,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                             style: TextStyle(
                                                 color: Colors
                                                     .black,
-                                                fontSize: 14,
+                                                fontSize: SizeConfig.safeBlockHorizontal*3.8,
                                                 fontFamily:
                                                 "Muli",
                                                 fontWeight:

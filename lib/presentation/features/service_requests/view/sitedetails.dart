@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/contro
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
@@ -30,12 +31,25 @@ class _SiteDetailsState extends State<SiteDetails> {
 
   @override
   void initState() {
-    getData().whenComplete(() {
-      if (mounted) {
+
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          getData().whenComplete(() {
+            if (mounted) {
         // Update data.
-        setState(() {
-          siteListModel = data;
-        });
+             setState(() {
+               siteListModel = data;
+             });
+            }
+          })
+        }else{
+        Get.snackbar(
+            "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM),
+        // fetchSiteList()
       }
     });
     super.initState();
