@@ -40,10 +40,7 @@ class _SiteScreenState extends State<SiteScreen> {
   int selectedPosition = 0;
   int currentTab = 0;
 
-
-
   ScrollController _scrollController;
-
   _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
@@ -98,17 +95,13 @@ class _SiteScreenState extends State<SiteScreen> {
   void initState() {
     super.initState();
 
-
-    // fetchSiteList();
-
     internetChecking().then((result) => {
           if (result == true)
             {
             _appController.getAccessKey(RequestIds.GET_SITES_LIST),
               // storeOfflineSiteData()
 
-           _appController.getAccessKey(RequestIds.GET_SITES_LIST),
-            }
+             }
           else
             {
               Get.snackbar(
