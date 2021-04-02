@@ -151,7 +151,6 @@ getYearlyData()async{
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     print("Build Called");
-    print(widget.empID);
     return SingleChildScrollView(
       child: RepaintBoundary(
         key: previewContainer,
@@ -279,10 +278,9 @@ getYearlyData()async{
                                           .where((DashboardYearlyModels i) =>
                                       i.showYear == yearMonth)
                                           .toList();
-                                      print(
-                                          "This year data length${_thisYearData.length} yearMonth $yearMonth");
+//                                      print("This year data length${_thisYearData.length} yearMonth $yearMonth");
                                     });
-                                    print(yearMonth);
+//                                    print(yearMonth);
                                     if (_ytdIsVolume == true) {
                                       getVolumeAndActualDataForBarGraph();
                                       getVolumeAndAverageDataForLineChart();
@@ -325,11 +323,13 @@ getYearlyData()async{
                                 actualOrAverage = _;
                               });
                               if (actualOrAverage == 'Actual') {
+//                                print("Actual");
                                 if (_ytdIsVolume == true)
                                   getVolumeAndActualDataForBarGraph();
                                 else
                                   getCountAndActualDataForBarGraph();
                               } else {
+//                                print("Average");
                                 if (_ytdIsVolume == true)
                                   getVolumeAndAverageDataForLineChart();
                                 else
@@ -614,6 +614,5 @@ class ChartData {
   final String month;
 }
 
-// final List<Employee> _employees = <Employee>[];
 
 
