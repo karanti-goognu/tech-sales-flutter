@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardYearlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/repository/dashboard_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
@@ -23,7 +23,7 @@ class DashboardController extends GetxController {
   DashboardController({@required this.repository}) : assert(repository != null);
 
   final _accessKeyResponse = AccessKeyModel().obs;
-  final _mtdGeneratedVolumeSiteList = DashboardMtdGeneratedVolumeSiteList().obs;
+  final _mtdGeneratedVolumeSiteList = SitesListModel().obs;
   final _mtdConvertedVolumeList = DashboardMtdConvertedVolumeList().obs;
   final _dashboardYearlyViewModel = DashboardYearlyViewModel().obs;
   final _monthList = [].obs;
@@ -249,7 +249,7 @@ class DashboardController extends GetxController {
       repository
           .getDashboardMtdGeneratedVolumeSiteList(empId, yearMonth)
           .then((_) {
-        DashboardMtdGeneratedVolumeSiteList data = _;
+        SitesListModel data = _;
 //        print(data);
         this.mtdGeneratedVolumeSiteList = data;
         Get.back();
