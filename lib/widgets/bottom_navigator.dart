@@ -60,7 +60,7 @@ class BottomNavigator extends StatelessWidget {
                     Get.back();
                     Navigator.push(
                       context,
-                      CupertinoPageRoute(
+                      MaterialPageRoute(
                         builder: (BuildContext context) =>
                             DraftLeadListScreen(),
                       ),

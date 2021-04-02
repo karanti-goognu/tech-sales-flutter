@@ -26,6 +26,7 @@ class _DashboardState extends State<Dashboard> {
   String empID;
   String yearMonth;
   GlobalKey<MonthToDateState> monthToDateKey;
+  int _tabNumber=0;
 
   @override
   void initState() {
@@ -48,13 +49,13 @@ class _DashboardState extends State<Dashboard> {
     empID = _employeeDropDownData.isEmpty ? _dashboardController.empId: _employeeDropDownData[0].tsoId;
     _dashboardController.getMonthViewDetails(yearMonth: yearMonth)
         .then((value) {
-          if(_employeeDropDownData.isEmpty ){
-            print("isProcessComplete    $value");
-            print("_dashboardController.empId    ${_dashboardController.empId}");
-            monthToDateKey.currentState.passEmpId(_dashboardController.empId);
-            empID=_dashboardController.empId;
-            print("EMP ID is now $empID");
-          }
+      if(_employeeDropDownData.isEmpty ){
+        print("isProcessComplete    $value");
+        print("_dashboardController.empId    ${_dashboardController.empId}");
+        monthToDateKey.currentState.passEmpId(_dashboardController.empId);
+        empID=_dashboardController.empId;
+        print("EMP ID is now $empID");
+      }
 
     });
 
@@ -116,8 +117,12 @@ class _DashboardState extends State<Dashboard> {
                                   setState(() {
                                     empID = value;
                                   });
-                                  _dashboardController.getMonthViewDetails(
-                                      empID: empID, yearMonth: yearMonth);
+                                  if(_tabNumber==0){
+                                    _dashboardController.getMonthViewDetails(
+                                        empID: empID, yearMonth: yearMonth);
+                                  }else{
+                                    _dashboardController.getYearlyViewDetails(empID);
+                                  }
                                 }),
                           ),
                         ),
@@ -131,6 +136,9 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ],
                     indicatorColor: Colors.white,
+                    onTap: (i){
+                      _tabNumber=i;
+                    },
                   ),
                 ],
               ),
@@ -144,7 +152,7 @@ class _DashboardState extends State<Dashboard> {
             children: [
               MonthToDate(
                   key: monthToDateKey, empID: empID, yearMonth: yearMonth),
-              YearToDate()
+              YearToDate(empID: empID,)
             ],
           )),
       // ),
