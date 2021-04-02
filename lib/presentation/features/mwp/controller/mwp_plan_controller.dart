@@ -136,13 +136,7 @@ class MWPPlanController extends GetxController {
   get consumerMeet => _consumerMeet.value;
 
   set consumerMeet(value) => _consumerMeet.value = value;
-  showNoInternetSnack() {
-    Get.snackbar(
-        "No internet connection.", "Please check your internet connection.",
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-        snackPosition: SnackPosition.BOTTOM);
-  }
+
   saveMWPPlan(String accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";

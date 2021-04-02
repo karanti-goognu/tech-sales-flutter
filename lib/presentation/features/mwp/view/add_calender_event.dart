@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
@@ -32,14 +32,29 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
 
+
+
   @override
   void initState() {
     final DateTime now = DateTime.now();
     final DateFormat formatter = DateFormat('MMMM-yyyy');
     final String formatted = formatter.format(now);
     _calendarEventController.selectedMonth = formatted;
-    _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS);
-    _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL);
+
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+        _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS),
+        _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL),
+        }else{
+        Get.snackbar(
+            "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM),
+        // fetchSiteList()
+      }
+    });
     super.initState();
   }
 

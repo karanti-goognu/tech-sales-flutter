@@ -146,7 +146,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return FutureBuilder<List<InboxMessage>>(
       future: _moEngageInbox.fetchAllInboxMessages(),
       builder: (BuildContext context, AsyncSnapshot<List<InboxMessage>> snapshot) {
-        print("Data-->"+snapshot.data.length.toString());
         if (snapshot.hasData) {
           if(snapshot.data.length>0){
           return ListView.builder(

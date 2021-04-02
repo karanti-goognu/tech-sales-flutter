@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,6 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
     int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
     return unReadMessageCount;
   }
+
+  Future<bool> internetChecking() async {
+    // do something here
+    bool result = await DataConnectionChecker().hasConnection;
+    return result;
+  }
+
 
 
 
@@ -176,7 +184,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed(Routes.ADD_CALENDER_SCREEN);
+                        internetChecking().then((result) => {
+                          if (result == true)
+                            {
+                            Get.toNamed(Routes.ADD_CALENDER_SCREEN),
+                            }else{
+                            Get.snackbar(
+                                "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                            // fetchSiteList()
+                          }
+                        });
                       },
                       child: Container(
                         height: 40,
@@ -635,7 +655,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
       action: () async {
         if (await Permission.location.request().isGranted) {
-          _homeController.getAccessKey(RequestIds.CHECK_IN);
+          internetChecking().then((result) => {
+            if (result == true)
+              {
+              _homeController.getAccessKey(RequestIds.CHECK_IN)
+              }
+            else
+              {
+                Get.snackbar(
+                    "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.red,
+                    snackPosition: SnackPosition.BOTTOM),
+                // fetchSiteList()
+              }
+          });
         } else {
           print('permission denied');
         }
@@ -674,7 +708,21 @@ class _HomeScreenState extends State<HomeScreen> {
       action: () async {
         if (await Permission.location.request().isGranted) {
           // Either the permission was already granted before or the user just granted it.
-          _homeController.getAccessKey(RequestIds.CHECK_OUT);
+          internetChecking().then((result) => {
+            if (result == true)
+              {
+              _homeController.getAccessKey(RequestIds.CHECK_OUT)
+              }
+            else
+              {
+                Get.snackbar(
+                    "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.red,
+                    snackPosition: SnackPosition.BOTTOM),
+                // fetchSiteList()
+              }
+          });
         } else {
           print('permission not granted');
         }
@@ -739,23 +787,93 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               switch (index) {
                 case 0:
-                  Get.toNamed(Routes.LEADS_SCREEN);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                      Get.toNamed(Routes.LEADS_SCREEN),
+                      }else{
+                      Get.snackbar(
+                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM),
+                      // fetchSiteList()
+                    }
+                  });
                   break;
                 case 1:
-                // storeOfflineSiteData();
-                  Get.toNamed(Routes.SITES_SCREEN);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                      Get.toNamed(Routes.SITES_SCREEN),
+                      }else{
+                      Get.snackbar(
+                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM),
+                      // fetchSiteList()
+                    }
+                  });
                   break;
                 case 2:
-                  Get.toNamed(Routes.DASHBOARD);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                        Get.toNamed(Routes.DASHBOARD),
+                      }else{
+                      Get.snackbar(
+                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM),
+                      // fetchSiteList()
+                    }
+                  });
                   break;
                 case 3:
-                  Get.toNamed(Routes.ADD_MWP_SCREEN);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                      Get.toNamed(Routes.ADD_MWP_SCREEN),
+                      }else{
+                      Get.snackbar(
+                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM),
+                      // fetchSiteList()
+                    }
+                  });
                   break;
                 case 4:
-                  Get.toNamed(Routes.SERVICE_REQUESTS);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                      Get.toNamed(Routes.SERVICE_REQUESTS),
+                      }else{
+                      Get.snackbar(
+                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM),
+                      // fetchSiteList()
+                    }
+                  });
                   break;
                 case 5:
-                  Get.toNamed(Routes.VIDEO_TUTORIAL);
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                        Get.toNamed(Routes.VIDEO_TUTORIAL),
+                      }else{
+                      Get.snackbar(
+                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM),
+                    }
+                  });
                   break;
               }
             },
