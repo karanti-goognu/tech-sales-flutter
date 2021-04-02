@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'utils/constants/app_theme.dart';
 
+
 void main() async {
   runZonedGuarded(() {
     runApp(MyApp());

@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardYearlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -93,8 +93,8 @@ class MyApiClientDashboard {
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        DashboardMtdGeneratedVolumeSiteList dashboardMtdGeneratedVolumeSiteList;
-        dashboardMtdGeneratedVolumeSiteList = DashboardMtdGeneratedVolumeSiteList.fromJson(data);
+        SitesListModel dashboardMtdGeneratedVolumeSiteList;
+        dashboardMtdGeneratedVolumeSiteList = SitesListModel.fromJson(data);
         return dashboardMtdGeneratedVolumeSiteList;
       } else
         print('error');

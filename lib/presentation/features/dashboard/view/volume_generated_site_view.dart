@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdGeneratedVolumeSiteList.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
@@ -23,14 +22,14 @@ class VolumeGeneratedSiteList extends StatefulWidget {
 
 class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
   DashboardController _dashboardController = Get.find();
-  List<SitesEntity> _sitesEntity;
-  DashboardMtdGeneratedVolumeSiteList _siteList;
+//  List<SitesEntity> _sitesEntity;
+//  DashboardMtdGeneratedVolumeSiteList _siteList;
   @override
   void initState() {
     _dashboardController.getDashboardMtdGeneratedVolumeSiteList();
     print("Inside initstate");
-    _siteList = _dashboardController.mtdGeneratedVolumeSiteList;
-    _sitesEntity = _dashboardController.mtdGeneratedVolumeSiteList.sitesEntity;
+//    _siteList = _dashboardController.mtdGeneratedVolumeSiteList;
+//    _sitesEntity = _dashboardController.mtdGeneratedVolumeSiteList.sitesEntity;
     super.initState();
   }
 
@@ -68,310 +67,311 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
       bottomNavigationBar: BottomNavigator(),
       floatingActionButton: BackFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'MTD Vol. Generated',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body:
+      Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'MTD Vol. Generated',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        Obx(
+              () => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                  'Total Count- ${_dashboardController.mtdGeneratedVolumeSiteList.totalSiteCount}'),
+              Text(
+                  'Total Potential-${_dashboardController.mtdGeneratedVolumeSiteList.totalSitePotential} MT'),
+            ],
           ),
-          Obx(
-            () => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    'Total Count- ${_dashboardController.mtdGeneratedVolumeSiteList.totalSiteCount}'),
-                Text(
-                    'Total Potential-${_dashboardController.mtdGeneratedVolumeSiteList.totalSitePotential} MT'),
-              ],
-            ),
-          ),
-          Obx(
-            () => Expanded(
-                child: _dashboardController
-                                .mtdGeneratedVolumeSiteList.sitesEntity ==
-                            null ||
-                        _dashboardController
-                            .mtdGeneratedVolumeSiteList.sitesEntity.isEmpty
-                    ? Center(
-                        child: Text("Nothing to show"),
-                      )
-                    : ListView.builder(
-                        itemCount: 2,
-                        padding: const EdgeInsets.only(
-                            left: 10.0, right: 10, bottom: 10),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  new CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ViewSiteScreen(_dashboardController
-                                              .mtdGeneratedVolumeSiteList
-                                              .sitesEntity[index]
-                                              .siteId)));
-                            },
-                            child: Card(
-                              clipBehavior: Clip.antiAlias,
-                              borderOnForeground: true,
-                              elevation: 6,
-                              margin: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(2.0),
-                                                  child: Text(
-                                                    "Site ID (${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteId})",
+        ),
+        Obx(
+              () => Expanded(
+              child: _dashboardController
+                  .mtdGeneratedVolumeSiteList.sitesEntity ==
+                  null ||
+                  _dashboardController
+                      .mtdGeneratedVolumeSiteList.sitesEntity.isEmpty
+                  ? Center(
+                child: Text("Nothing to show"),
+              )
+                  : ListView.builder(
+                  itemCount: _dashboardController.mtdGeneratedVolumeSiteList.sitesEntity.length,
+                  padding: const EdgeInsets.only(
+                      left: 10.0, right: 10, bottom: 10),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            new CupertinoPageRoute(
+                                builder: (BuildContext context) =>
+                                    ViewSiteScreen(_dashboardController
+                                        .mtdGeneratedVolumeSiteList
+                                        .sitesEntity[index]
+                                        .siteId)));
+                      },
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        borderOnForeground: true,
+                        elevation: 6,
+                        margin: EdgeInsets.all(5.0),
+                        color: Colors.white,
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                            const EdgeInsets.all(2.0),
+                                            child: Text(
+                                              "Site ID (${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteId})",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontFamily: "Muli",
+                                                  fontWeight:
+                                                  FontWeight.bold
+                                                //fontWeight: FontWeight.normal
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                            const EdgeInsets.all(2.0),
+                                            child: Text(
+                                              "District: ${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteDistrict}",
+                                              style: TextStyle(
+                                                  color: Colors.black38,
+                                                  fontSize: 12,
+                                                  fontFamily: "Muli",
+                                                  fontWeight:
+                                                  FontWeight.bold
+                                                //fontWeight: FontWeight.normal
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.only(
+                                                    left: 1.0),
+                                                child: Chip(
+                                                  shape: StadiumBorder(
+                                                      side: BorderSide(
+                                                          color: HexColor(
+                                                              "#39B54A"))),
+                                                  backgroundColor:
+                                                  HexColor("#39B54A")
+                                                      .withOpacity(
+                                                      0.1),
+                                                  label: Text(
+                                                    '${printSiteStage(_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteStageId)}',
                                                     style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontFamily: "Muli",
-                                                        fontWeight:
-                                                            FontWeight.bold
-                                                        //fontWeight: FontWeight.normal
-                                                        ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(2.0),
-                                                  child: Text(
-                                                    "District: ${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteDistrict}",
-                                                    style: TextStyle(
-                                                        color: Colors.black38,
+                                                        color: HexColor(
+                                                            "#39B54A"),
                                                         fontSize: 12,
-                                                        fontFamily: "Muli",
+                                                        fontFamily:
+                                                        "Muli",
                                                         fontWeight:
-                                                            FontWeight.bold
-                                                        //fontWeight: FontWeight.normal
-                                                        ),
-                                                  ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 1.0),
-                                                      child: Chip(
-                                                        shape: StadiumBorder(
-                                                            side: BorderSide(
-                                                                color: HexColor(
-                                                                    "#39B54A"))),
-                                                        backgroundColor:
-                                                            HexColor("#39B54A")
-                                                                .withOpacity(
-                                                                    0.1),
-                                                        label: Text(
-                                                          '${printSiteStage(_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteStageId)}',
-                                                          style: TextStyle(
-                                                              color: HexColor(
-                                                                  "#39B54A"),
-                                                              fontSize: 12,
-                                                              fontFamily:
-                                                                  "Muli",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold
-                                                              //fontWeight: FontWeight.normal
-                                                              ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 10.0),
-                                                      child: Text(
-                                                        " ${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteCreationDate}",
-                                                        //  textAlign: TextAlign.start,
-                                                        style: TextStyle(
-                                                          fontSize: 10,
-                                                          fontFamily: "Muli",
-                                                          fontWeight:
-                                                              FontWeight.bold,
-
-                                                          //fontWeight: FontWeight.normal
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 15.0, bottom: 10),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 8.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Container(),
-                                                      ),
-                                                      Text(
-                                                        "Site-Pt: ${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].sitePotentialMt}",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black38,
-                                                            fontSize: 15,
-                                                            fontFamily: "Muli",
-                                                            fontWeight:
-                                                                FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
-                                                            ),
-                                                      ),
-                                                      Text(
-                                                        "MT",
-                                                        style: TextStyle(
-                                                            // color: Colors.black38,
-                                                            fontSize: 15,
-                                                            fontFamily: "Muli",
-                                                            fontWeight:
-                                                                FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
-                                                            ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${printOpportuityStatus(_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteOppertunityId)}",
-                                                  style: TextStyle(
-                                                      color: Colors.blue,
-                                                      fontSize: 10,
-                                                      fontFamily: "Muli",
-                                                      fontWeight:
-                                                          FontWeight.bold
+                                                        FontWeight
+                                                            .bold
                                                       //fontWeight: FontWeight.normal
-                                                      ),
-                                                  textAlign: TextAlign.right,
-                                                ),
-                                                SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Text(
-                                                  "Site Score - ${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteScore}",
-                                                  style: TextStyles
-                                                      .robotoRegular14,
-                                                  textAlign: TextAlign.right,
-                                                ),
-                                                SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(),
                                                     ),
-                                                    Icon(
-                                                      Icons.call,
-                                                      color:
-                                                          HexColor("#8DC63F"),
-                                                    ),
-                                                    GestureDetector(
-                                                      child: Text(
-                                                        "${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].contactNumber}",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 15,
-                                                            fontFamily: "Muli",
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontStyle:
-                                                                FontStyle.italic
-                                                            //fontWeight: FontWeight.normal
-                                                            ),
-                                                      ),
-                                                      onTap: () {
-                                                        String num =
-                                                            _dashboardController
-                                                                .mtdGeneratedVolumeSiteList
-                                                                .sitesEntity[
-                                                                    index]
-                                                                .contactNumber;
-                                                        launch('tel:$num');
-                                                      },
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(8, 4, 8, 0),
-                                      child: Container(
-                                        color: Colors.grey,
-                                        width: double.infinity,
-                                        height: 1,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 10.0),
+                                                child: Text(
+                                                  " ${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteCreationDate}",
+                                                  //  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    fontFamily: "Muli",
+                                                    fontWeight:
+                                                    FontWeight.bold,
+
+                                                    //fontWeight: FontWeight.normal
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 15.0, bottom: 10),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.end,
                                         children: [
+                                          Padding(
+                                            padding:
+                                            const EdgeInsets.only(
+                                                top: 8.0),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Container(),
+                                                ),
+                                                Text(
+                                                  "Site-Pt: ${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].sitePotentialMt}",
+                                                  style: TextStyle(
+                                                      color:
+                                                      Colors.black38,
+                                                      fontSize: 15,
+                                                      fontFamily: "Muli",
+                                                      fontWeight:
+                                                      FontWeight.bold
+                                                    //fontWeight: FontWeight.normal
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "MT",
+                                                  style: TextStyle(
+                                                    // color: Colors.black38,
+                                                      fontSize: 15,
+                                                      fontFamily: "Muli",
+                                                      fontWeight:
+                                                      FontWeight.bold
+                                                    //fontWeight: FontWeight.normal
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Text(
-                                            "${printProbabilityOfWinning(
-                                                _dashboardController
-                                                    .mtdGeneratedVolumeSiteList
-                                                    .sitesEntity[
-                                                index]
-                                                    .siteProbabilityWinningId)}",
+                                            "${printOpportuityStatus(_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteOppertunityId)}",
                                             style: TextStyle(
                                                 color: Colors.blue,
-                                                fontSize: 12,
+                                                fontSize: 10,
                                                 fontFamily: "Muli",
-                                                fontWeight: FontWeight.bold
-                                                //fontWeight: FontWeight.normal
+                                                fontWeight:
+                                                FontWeight.bold
+                                              //fontWeight: FontWeight.normal
+                                            ),
+                                            textAlign: TextAlign.right,
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            "Site Score - ${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].siteScore}",
+                                            style: TextStyles
+                                                .robotoRegular14,
+                                            textAlign: TextAlign.right,
+                                          ),
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(),
+                                              ),
+                                              Icon(
+                                                Icons.call,
+                                                color:
+                                                HexColor("#8DC63F"),
+                                              ),
+                                              GestureDetector(
+                                                child: Text(
+                                                  "${_dashboardController.mtdGeneratedVolumeSiteList.sitesEntity[index].contactNumber}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontFamily: "Muli",
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      fontStyle:
+                                                      FontStyle.italic
+                                                    //fontWeight: FontWeight.normal
+                                                  ),
                                                 ),
+                                                onTap: () {
+                                                  String num =
+                                                      _dashboardController
+                                                          .mtdGeneratedVolumeSiteList
+                                                          .sitesEntity[
+                                                      index]
+                                                          .contactNumber;
+                                                  launch('tel:$num');
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding:
+                                const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                                child: Container(
+                                  color: Colors.grey,
+                                  width: double.infinity,
+                                  height: 1,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "${printProbabilityOfWinning(
+                                          _dashboardController
+                                              .mtdGeneratedVolumeSiteList
+                                              .sitesEntity[
+                                          index]
+                                              .siteProbabilityWinningId)}",
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 12,
+                                          fontFamily: "Muli",
+                                          fontWeight: FontWeight.bold
+                                        //fontWeight: FontWeight.normal
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                          );
-                        })),
-          )
-        ],
-      ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  })),
+        )
+      ],
+    ),
     );
   }
   SplashController _splashController = Get.find();

@@ -108,8 +108,9 @@ class MyApiClientSites {
       //var response = await httpClient.post(UrlConstants.loginCheck);
       // print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-        // print('success');
+
         var data = json.decode(response.body);
+         print('site data $data');
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
         return sitesListModel;

@@ -99,7 +99,7 @@ class _SiteScreenState extends State<SiteScreen> {
   void initState() {
     super.initState();
 
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+
     // fetchSiteList();
 
     internetChecking().then((result) => {
@@ -112,6 +112,8 @@ class _SiteScreenState extends State<SiteScreen> {
                   backgroundColor: Colors.green,
                   snackPosition: SnackPosition.BOTTOM),
               // storeOfflineSiteData()
+
+           _appController.getAccessKey(RequestIds.GET_SITES_LIST),
             }
           else
             {

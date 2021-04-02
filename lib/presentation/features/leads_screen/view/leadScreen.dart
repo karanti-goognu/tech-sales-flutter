@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'ViewLeadScreen.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 
 class LeadScreen extends StatefulWidget {
   @override
@@ -59,7 +60,16 @@ class _LeadScreenState extends State<LeadScreen> {
     }*/
     print("------------------------------");
     print(_leadsFilterController.offset);
-    _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+    internetChecking().then((result){
+      if(result)
+        _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+
+    });
+
+
+
+
+
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
   }
@@ -80,7 +90,7 @@ class _LeadScreenState extends State<LeadScreen> {
   void dispose() {
     //_connectivity.disposeStream();
     super.dispose();
-    _leadsFilterController.dispose();
+    _leadsFilterController?.dispose();
     _leadsFilterController.offset = 0;
     print(_leadsFilterController.offset);
     // Route.dispose();

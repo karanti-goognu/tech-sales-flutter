@@ -81,25 +81,45 @@ class _HomeScreenState extends State<HomeScreen> {
     _moengagePlugin.enableSDKLogs();
     _moengagePlugin.setUpPushCallbacks(_onPushClick);
 
-    if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
-      print('Check In');
-      _homeController.checkInStatus = StringConstants.checkIn;
-    } else {
-      if (_splashController.splashDataModel.journeyDetails.journeyEndTime ==
-          null) {
-        print('Check Out');
-        _homeController.checkInStatus = StringConstants.checkOut;
-      } else {
-        print('Journey Ended');
-        _homeController.checkInStatus = StringConstants.journeyEnded;
-      }
-    }
+    // if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
+    //   print('Check In');
+    //   _homeController.checkInStatus = StringConstants.checkIn;
+    // } else {
+    //   if (_splashController.splashDataModel.journeyDetails.journeyEndTime ==
+    //       null) {
+    //     print('Check Out');
+    //     _homeController.checkInStatus = StringConstants.checkOut;
+    //   } else {
+    //     print('Journey Ended');
+    //     _homeController.checkInStatus = StringConstants.journeyEnded;
+    //   }
+    // }
 //    _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
 
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      _homeController.employeeName =
-          prefs.getString(StringConstants.employeeName);
+      _homeController.checkInStatus = StringConstants.journeyEnded;
+      var journeyDate= prefs.getString(StringConstants.JOURNEY_DATE);
+      var journeyEndDate = prefs.getString(StringConstants.JOURNEY_END_DATE);
+      if (journeyDate == null) {
+        print('Check In');
+        _homeController.checkInStatus = StringConstants.checkIn;
+      } else {
+        if (journeyEndDate ==
+            null) {
+          print('Check Out');
+          _homeController.checkInStatus = StringConstants.checkOut;
+        } else {
+          print('Journey Ended');
+          _homeController.checkInStatus = StringConstants.journeyEnded;
+        }
+      }
+
+
+
+
+
+      _homeController.employeeName = prefs.getString(StringConstants.employeeName);
 
       // MoEngage implementation done here ....
       _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
