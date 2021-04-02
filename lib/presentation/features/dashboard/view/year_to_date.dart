@@ -282,6 +282,7 @@ getYearlyData()async{
                                     print(yearMonth);
                                     if (_ytdIsVolume == true) {
                                       getVolumeAndActualDataForBarGraph();
+                                      getVolumeAndAverageDataForLineChart();
                                     } else {
                                       _thisYearData = _dashboardController
                                           .dashboardYearlyViewModel
@@ -290,6 +291,7 @@ getYearlyData()async{
                                       i.showYear == yearMonth)
                                           .toList();
                                       getCountAndActualDataForBarGraph();
+                                      getCountAndAverageDataForLineChart();
                                     }
                                   }):Container(),
                             )),
