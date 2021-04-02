@@ -22,7 +22,7 @@ class MyApiClientDashboard {
     try {
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
-      print('Response body is : ${json.decode(response.body)}');
+//      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel;

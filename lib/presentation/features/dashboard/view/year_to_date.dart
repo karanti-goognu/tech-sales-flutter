@@ -17,6 +17,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class YearToDate extends StatefulWidget {
+  final empID;
+  YearToDate({this.empID});
   @override
   _YearToDateState createState() => _YearToDateState();
 }
@@ -108,7 +110,7 @@ class _YearToDateState extends State<YearToDate> {
   }
 
 getYearlyData()async{
-  await _dashboardController.getYearlyViewDetails().then((value) {
+  await _dashboardController.getYearlyViewDetails(widget.empID).then((value) {
     print("::::::$value ::::::");
     print("IN VIEW");
     _yearMonthList =
@@ -149,6 +151,7 @@ getYearlyData()async{
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     print("Build Called");
+    print(widget.empID);
     return SingleChildScrollView(
       child: RepaintBoundary(
         key: previewContainer,
@@ -248,7 +251,7 @@ getYearlyData()async{
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: yearMonth == null
-                          ? Container()
+                          ? Container(child: Text("Unable to fetch data"),padding: EdgeInsets.all(12),)
                           : DropdownButtonHideUnderline(
                               child: Obx(
                               () => _dashboardController.gotYearlyData==true?
@@ -363,6 +366,8 @@ getYearlyData()async{
                   height: 20,
                 ),
 //              DataGridForYTD(controller: _controller),
+
+              _dashboardController.dashboardYearlyViewModel==null?Container():
               _dashboardController.dashboardYearlyViewModel.mtdVolume==null?Center(child: CircularProgressIndicator(),):
               _ytdIsVolume? _returnDataGridForVolume(_dashboardController.dashboardYearlyViewModel.mtdVolume):_returnDataGridForCount(_dashboardController.dashboardYearlyViewModel.mtdCount),
               SizedBox(

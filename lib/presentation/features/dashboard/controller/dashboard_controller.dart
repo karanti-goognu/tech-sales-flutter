@@ -96,7 +96,7 @@ class DashboardController extends GetxController {
     });
   }
 
-  Future<bool> getYearlyViewDetails() async {
+  Future<bool> getYearlyViewDetails(String empID) async {
     print("called");
     bool isProcessComplete = false;
     Future.delayed(
@@ -107,12 +107,12 @@ class DashboardController extends GetxController {
             ),
             barrierDismissible: false));
 //    String userSecurityCode;
-    String empID;
     var value= await repository.getAccessKey();
       this.accessKeyResponse = value;
      var prefs = await SharedPreferences.getInstance();
-//        userSecurityCode = prefs.getString(StringConstants.userSecurityKey);
-        empID = prefs.getString(StringConstants.employeeId);
+//    String empID;
+//        empID = prefs.getString(StringConstants.employeeId);
+    print(empID);
        var data= await repository.getYearlyViewDetails(empID);
           this.dashboardYearlyViewModel = data;
 //          print(":::: $data ::::");
