@@ -113,7 +113,7 @@ class _RequestCreationState extends State<RequestCreation> {
 
   @override
   void initState() {
-    _connectivity.initialise();
+    _connectivity?.initialise();
     _connectivity.myStream.listen((source) {
       setState(() => _source = source);
     });
@@ -123,7 +123,7 @@ class _RequestCreationState extends State<RequestCreation> {
 
   @override
   void dispose() {
-    _connectivity.disposeStream();
+    _connectivity?.disposeStream();
     super.dispose();
   }
 

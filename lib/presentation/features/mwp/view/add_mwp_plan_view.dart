@@ -29,7 +29,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   @override
   void initState() {
     _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
+    _connectivity?.myStream?.listen((source) {
       setState(() => _source = source);
     });
     super.initState();
@@ -38,7 +38,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
 
   @override
   void dispose() {
-    _connectivity.disposeStream();
+    _connectivity?.disposeStream();
     super.dispose();
   }
 

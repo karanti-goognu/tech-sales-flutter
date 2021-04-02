@@ -18,7 +18,7 @@ class SaveMWPModel {
   String createdBy;
   String actionedBy;
 
-  int dspConversionVol;
+  double dspConversionVol;
   int contractorVisit;
   int technocratVisit;
   int techVanDemo;

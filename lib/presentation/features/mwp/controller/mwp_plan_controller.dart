@@ -28,7 +28,7 @@ class MWPPlanController extends GetxController {
   final _totalConversionVol = 0.obs;
   final _newILPMembers = 0.obs;
   final _dspSlab = 0.obs;
-  final _dspConVol = 0.obs;
+  final _dspConVol = 0.0.obs;
   final _siteConVol = 0.obs;
   final _siteConNo = 0.obs;
   final _siteVisitsTotal = 0.obs;
@@ -172,7 +172,7 @@ class MWPPlanController extends GetxController {
           this.consumerMeet,
           this.action,
           empId,
-          empId, int.parse(this.dspConVol.toString()),
+          empId,double.parse(this.dspConVol.toString()) ,
           int.parse(this.contractorVisit.toString()),
           int.parse(this.technocratVisit.toString()),
           int.parse(this.techVanDemo.toString()),int.parse(this.techVanService.toString()),int.parse(this.slabServices.toString()),
