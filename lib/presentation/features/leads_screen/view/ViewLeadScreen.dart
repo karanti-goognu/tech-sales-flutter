@@ -383,7 +383,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
       return Scaffold(
         resizeToAvoidBottomInset: true,
         // resizeToAvoidBottomPadding: false,
-        backgroundColor: Colors.transparent,
+//        backgroundColor: Colors.transparent,
 
         body: Container(
           child: AlertDialog(

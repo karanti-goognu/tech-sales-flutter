@@ -143,10 +143,6 @@ class HomeController extends GetxController {
   }
 
   getCheckInDetails(String accessKey) {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     String empId = "empty";
     String userSecurityKey = "empty";
@@ -213,10 +209,7 @@ class HomeController extends GetxController {
   }
 
   getCheckOutDetails(String accessKey) {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     String empId = "empty";
     String userSecurityKey = "empty";
