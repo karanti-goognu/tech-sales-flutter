@@ -164,7 +164,7 @@ class MWPPlanController extends GetxController {
           this.siteConNo,
           this.siteVisitsTotal,
           this.siteVisitsUnique,
-          this.influencerVisit,
+        /*  this.influencerVisit,*/
           this.masonMeet,
           this.counterMeet,
           this.contractorMeet,

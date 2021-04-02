@@ -26,6 +26,7 @@ import 'package:moengage_flutter/push_campaign.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -129,6 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return WillPopScope(
       onWillPop: () async {
         // You can do some work here.
@@ -427,7 +429,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   width: 1.6),
                                               shape: BoxShape.circle),
                                         ),
-                                        Flexible(child: Text('Sites converted'))
+                                        Flexible(child: Text('Sites converted',
+                                          style: TextStyle(
+                                              fontSize: SizeConfig.safeBlockHorizontal*3.5,
+
+                                              fontFamily: "Muli"),
+                                        )
+
+                                        )
                                       ],
                                     ),
                                   ),
@@ -454,7 +463,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                               shape: BoxShape.circle),
                                         ),
                                         Flexible(
-                                            child: Text('Volume Converted (MT)'))
+                                            child: Text('Volume Converted (MT)',
+                                              style: TextStyle(
+                                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
+
+                                                  fontFamily: "Muli"),
+                                            )
+                                        )
                                       ],
                                     ),
                                   ),
@@ -481,7 +496,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                               shape: BoxShape.circle),
                                         ),
                                         Flexible(
-                                            child: Text('New Influencers'))
+                                            child: Text('New Influencers',
+                                              style: TextStyle(
+                                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
+
+                                                  fontFamily: "Muli"),
+                                            ))
                                       ],
                                     ),
                                   ),
@@ -508,7 +528,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                               shape: BoxShape.circle),
                                         ),
                                         Flexible(
-                                            child: Text('DSP Slabs Converted'))
+                                            child: Text('DSP Slabs Converted',
+                                              style: TextStyle(
+                                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
+
+                                                  fontFamily: "Muli"),
+                                            ))
                                       ],
                                     ),
                                   ),
@@ -743,7 +768,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         list[index].value,
                         overflow: TextOverflow.clip,
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: SizeConfig.safeBlockHorizontal*3.9,
                             fontFamily: "Muli",
                             fontWeight: FontWeight.bold),
                       ),

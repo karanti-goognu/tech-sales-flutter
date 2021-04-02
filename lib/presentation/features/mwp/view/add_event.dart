@@ -111,7 +111,12 @@ class AddEventScreenPageState extends State<AddEvent> {
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-                                  child: Text(value),
+                                  child: Text(value,
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.safeBlockHorizontal*3.8,
+
+                                        fontFamily: "Muli"),
+                                  ),
                                 );
                               }).toList(),
                             ),

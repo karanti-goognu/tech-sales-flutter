@@ -638,8 +638,7 @@ class _LeadScreenState extends State<LeadScreen> {
                       //           ],
                       //         ))),
                       Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
@@ -685,6 +684,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                       ),
                                     )),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Padding(
                                       padding:
@@ -713,7 +713,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                             style: TextStyle(
                                                 color: HexColor(
                                                     "#39B54A"),
-                                                fontSize: 8,
+                                                fontSize: SizeConfig.safeBlockHorizontal*1.9,
                                                 fontFamily:
                                                 "Muli",
                                                 fontWeight:
@@ -727,7 +727,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(
-                                          left: 10.0),
+                                          left: SizeConfig.safeBlockHorizontal*1.3),
                                       child: Text(
                                         " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
                                           _leadsFilterController
@@ -738,7 +738,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                         ))}",
                                         //  textAlign: TextAlign.start,
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: SizeConfig.safeBlockHorizontal*2.8,
                                           fontFamily: "Muli",
                                           fontWeight:
                                           FontWeight.bold,
@@ -830,7 +830,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                             style: TextStyle(
                                                 color: Colors
                                                     .black,
-                                                fontSize: 14,
+                                                fontSize: SizeConfig.safeBlockHorizontal*3.8,
                                                 fontFamily:
                                                 "Muli",
                                                 fontWeight:

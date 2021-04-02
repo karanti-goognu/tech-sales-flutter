@@ -231,8 +231,10 @@ class AddMWPScreenPageState extends State<AddMWP> {
                                             value: value,
                                             child: Text(
                                               value, style: TextStyle(
-                                                  fontSize: SizeConfig.safeBlockHorizontal*.1,
+                                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
                                                   fontWeight: FontWeight.bold),
+
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           );
                                         }).toList(),

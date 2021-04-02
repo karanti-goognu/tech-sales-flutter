@@ -208,10 +208,10 @@ class MyApiClientApp {
          print("view-mwp     $data");
         return GetMWPResponse.fromJson(data);
       } else {
-      //  print('Error in else');
+        print('Error in else');
       }
     } catch (_) {
-    //  print('exception ${_.toString()}');
+     print('exception ${_.toString()}');
     }
   }
 

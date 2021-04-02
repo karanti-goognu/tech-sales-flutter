@@ -38,7 +38,7 @@ class SaveMWPModel {
       this.siteConvNo,
       this.siteVisitesNo,
       this.siteUniqueVisitsNo,
-      this.inflVisitsNo,
+     /* this.inflVisitsNo,*/
       this.masonMeetNo,
       this.counterMeetNo,
       this.contractorMeetNo,
@@ -67,7 +67,7 @@ class SaveMWPModel {
     siteConvNo = json['siteConvNo'];
     siteVisitesNo = json['siteVisitesNo'];
     siteUniqueVisitsNo = json['siteUniqueVisitsNo'];
-    inflVisitsNo = json['inflVisitsNo'];
+  /*  inflVisitsNo = json['inflVisitsNo'];*/
     masonMeetNo = json['masonMeetNo'];
     counterMeetNo = json['counterMeetNo'];
     contractorMeetNo = json['contractorMeetNo'];
@@ -97,7 +97,7 @@ class SaveMWPModel {
     data['siteConvNo'] = this.siteConvNo;
     data['siteVisitesNo'] = this.siteVisitesNo;
     data['siteUniqueVisitsNo'] = this.siteUniqueVisitsNo;
-    data['inflVisitsNo'] = this.inflVisitsNo;
+    data['inflVisitsNo'] = 0;
     data['masonMeetNo'] = this.masonMeetNo;
     data['counterMeetNo'] = this.counterMeetNo;
     data['contractorMeetNo'] = this.contractorMeetNo;

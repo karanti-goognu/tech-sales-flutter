@@ -71,7 +71,7 @@ class MwpplanModel {
   int slabServices;
   int blockLevelMeet;
   int contractorVisit;
-  int dspConversionVol;
+  double dspConversionVol;
   int techVanDemo;
   int techVanService;
   int technocratMeet;
@@ -80,7 +80,7 @@ class MwpplanModel {
   int actualSlabServices;
   int actualBlockLevelMeet;
   int actualContractorVisit;
-  int actualDspConversionVol;
+  double actualDspConversionVol;
   int actualTechVanDemo;
   int actualTechVanService;
   int actualTechnocratMeet;
