@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
@@ -226,8 +227,20 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     // otherwise.
                     if (_formKey.currentState.validate()) {
                       //afterRequestLayout(empId, mobileNumber);
-                      _appController.getAccessKey(RequestIds.SAVE_VISIT);
-                      _addEventController.isLoading = true;
+                      internetChecking().then((result) => {
+                        if (result == true)
+                          {
+                            _appController.getAccessKey(RequestIds.SAVE_VISIT),
+                            _addEventController.isLoading = true
+                          }else{
+                          Get.snackbar(
+                              "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                              colorText: Colors.white,
+                              backgroundColor: Colors.red,
+                              snackPosition: SnackPosition.BOTTOM),
+                          // fetchSiteList()
+                        }
+                      });
                     }
                   },
                   child: Padding(

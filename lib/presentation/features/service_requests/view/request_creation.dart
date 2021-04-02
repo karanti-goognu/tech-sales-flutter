@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/get_sr_complaint_data_controller.dart';
@@ -33,9 +33,7 @@ class _RequestCreationState extends State<RequestCreation> {
   SaveServiceRequestController saveRequest = Get.find();
   List<File> _imageList = List<File>();
   SaveServiceRequest saveServiceRequest;
-  Map _source = {ConnectivityResult.none: false};
-  MyConnectivity _connectivity = MyConnectivity.instance;
-  String connectivityString;
+
 
   Future getEmpId() async {
     String empID = "";
@@ -113,17 +111,12 @@ class _RequestCreationState extends State<RequestCreation> {
 
   @override
   void initState() {
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
-    });
     getDropdownData();
     super.initState();
   }
 
   @override
   void dispose() {
-    _connectivity.disposeStream();
     super.dispose();
   }
 
@@ -654,10 +647,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                           middleText:
                                               "Request Sub-type and Severity cannot be empty");
                                     } else {
-                                      if (_source.keys.toList()[0] ==
-                                          ConnectivityResult.none) {
-                                        eventController.showNoInternetSnack();
-                                      } else {
+
                                         String empId = await getEmpId();
                                         List imageDetails = List();
                                         List subTypeDetails = List();
@@ -708,10 +698,21 @@ class _RequestCreationState extends State<RequestCreation> {
                                           "state": _state.text,
                                           "taluk": _taluk.text
                                         });
-                                        saveRequest.getAccessKeyAndSaveRequest(
-                                            _imageList, _saveServiceRequest);
+
                                         // print(_saveServiceRequest);
-                                      }
+                                      internetChecking().then((result) => {
+                                        if (result == true)
+                                          {
+                                            saveRequest.getAccessKeyAndSaveRequest(_imageList, _saveServiceRequest)
+                                          }else{
+                                          Get.snackbar(
+                                              "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                                              colorText: Colors.white,
+                                              backgroundColor: Colors.red,
+                                              snackPosition: SnackPosition.BOTTOM),
+                                          // fetchSiteList()
+                                        }
+                                      });
                                     }
                                   },
                                   color: HexColor("#1C99D4"),

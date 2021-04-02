@@ -65,9 +65,8 @@ class _SiteScreenState extends State<SiteScreen> {
     await db.clearTable();
     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     if (_siteController.sitesListResponse.sitesEntity != null) {
-      for (int i = 0;
-          i < _siteController.sitesListResponse.sitesEntity.length;
-          i++) {
+
+      for (int i = 0; i < _siteController.sitesListResponse.sitesEntity.length; i++) {
         SitesEntity siteEntity = new SitesEntity(
             siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
             leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
@@ -99,24 +98,18 @@ class _SiteScreenState extends State<SiteScreen> {
   void initState() {
     super.initState();
 
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     // fetchSiteList();
 
     internetChecking().then((result) => {
           if (result == true)
             {
-              print('YAY! Free cute dog pics!'),
-              Get.snackbar(
-                  "Internet connection Available.", "Fetching from API.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.green,
-                  snackPosition: SnackPosition.BOTTOM),
+            _appController.getAccessKey(RequestIds.GET_SITES_LIST),
               // storeOfflineSiteData()
             }
           else
             {
               Get.snackbar(
-                  "No internet connection.", "Fetching data from Database.",
+                  "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
                   colorText: Colors.white,
                   backgroundColor: Colors.red,
                   snackPosition: SnackPosition.BOTTOM),

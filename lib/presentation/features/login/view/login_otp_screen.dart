@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:connectivity/connectivity.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -37,9 +35,13 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   LoginController _loginController = Get.find();
-  Map _source = {ConnectivityResult.none: false};
-  MyConnectivity _connectivity = MyConnectivity.instance;
-  String connectivityString;
+
+  Future<bool> internetChecking() async {
+    // do something here
+    bool result = await DataConnectionChecker().hasConnection;
+    return result;
+  }
+
 
   Timer _timer;
   int _start = 180;
@@ -80,7 +82,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   @override
   void dispose() {
     super.dispose();
-    _connectivity.disposeStream();
     _timer.cancel();
     _focusNode.dispose();
   }
@@ -88,10 +89,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   @override
   void initState() {
     super.initState();
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
-    });
     _focusNode = FocusNode();
     //isUserLoggedIn = _loginController.getSharedPreference(StringConstants.isUserLoggedIn) as String?? "false";
     startTimer();
@@ -100,16 +97,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.none:
-        connectivityString = "Offline";
-        break;
-      case ConnectivityResult.mobile:
-        connectivityString = "Mobile: Online";
-        break;
-      case ConnectivityResult.wifi:
-        connectivityString = "WiFi: Online";
-    }
 
     return new WillPopScope(
         onWillPop: _onWillPop,
@@ -332,20 +319,41 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   }
 
   void retryOtpRequest() {
-    (connectivityString == 'Offline')
-        ? _loginController.showNoInternetSnack()
-        : _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST);
-    startTimer();
+
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+        _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST),
+        startTimer()
+        }else{
+        Get.snackbar(
+            "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM),
+        // fetchSiteList()
+      }
+    });
+
     /*_loginController.loginResponse*/
   }
 
   void afterValidateRequest(String otpCode) {
     _loginController.otpCode = otpCode;
-    print('$connectivityString');
-    (connectivityString == 'Offline')
-        ? _loginController.showNoInternetSnack()
-        :
-    _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
+
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+        _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST),
+        }else{
+        Get.snackbar(
+            "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM),
+        // fetchSiteList()
+      }
+    });
   }
 
   LoginOtpScreenPageState(this.mobileNumber);

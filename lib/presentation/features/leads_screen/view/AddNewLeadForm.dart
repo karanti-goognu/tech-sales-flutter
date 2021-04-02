@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,6 +84,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       myController.clear(); // clear the text from the input
     }
   }
+
+  Future<bool> internetChecking() async {
+    // do something here
+    bool result = await DataConnectionChecker().hasConnection;
+    return result;
+  }
+
 
   List<Item> _data = generateItems(1);
   List<InfluencerDetail> _listInfluencerDetail = new List();
@@ -223,20 +231,33 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         print('We are in catch :: Add New Form');
       }
     });
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+
+        }else{
+        Get.snackbar(
+            "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM),
+        // fetchSiteList()
+      }
+    });
     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
     AccessKeyModel accessKeyModel = new AccessKeyModel();
-    _addLeadsController.getAccessKeyOnly().then((data) async {
-      accessKeyModel = data;
-      print("AccessKey :: " + accessKeyModel.accessKey);
-      await _addLeadsController
-          .getAddLeadsData(accessKeyModel.accessKey)
-          .then((data) {
-        addLeadInitialModel = data;
-        setState(() {
+
+    internetChecking().then((result) => {
+      if (result == true){
+          _addLeadsController.getAccessKeyOnly().then((data) async {
+            accessKeyModel = data;
+            print("AccessKey :: " + accessKeyModel.accessKey);
+            await _addLeadsController.getAddLeadsData(accessKeyModel.accessKey).then((data) {
+              addLeadInitialModel = data;
+              setState(() {
           //siteSubTypeEntity = addLeadInitialModel.siteSubTypeEntity;
-          influencerTypeEntity = addLeadInitialModel.influencerTypeEntity;
-          influencerCategoryEntity =
-              addLeadInitialModel.influencerCategoryEntity;
+                 influencerTypeEntity = addLeadInitialModel.influencerTypeEntity;
+                 influencerCategoryEntity = addLeadInitialModel.influencerCategoryEntity;
           //  print(influencerCategoryEntity[0].inflCatDesc);
         });
       });
@@ -244,9 +265,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         _listInfluencerDetail
             .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
       }
-
       Get.back();
       myFocusNode.requestFocus();
+    })
+      }else{
+        Get.snackbar(
+            "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM),
+        // fetchSiteList()
+      }
     });
   }
 
@@ -2618,12 +2647,20 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     gv.draftID = 0;
                                   }
 
-                                  _addLeadsController.getAccessKeyAndSaveLead(
-                                      saveLeadRequestModel,
-                                      _imageList,
-                                      context);
-                                  _commentsListNew = new List();
-
+                                  internetChecking().then((result) => {
+                                    if (result == true)
+                                      {
+                                      _addLeadsController.getAccessKeyAndSaveLead(saveLeadRequestModel, _imageList, context),
+                                      _commentsListNew = new List()
+                                      }else{
+                                      Get.snackbar(
+                                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                                          colorText: Colors.white,
+                                          backgroundColor: Colors.red,
+                                          snackPosition: SnackPosition.BOTTOM),
+                                      // fetchSiteList()
+                                    }
+                                  });
 
                                 });
 

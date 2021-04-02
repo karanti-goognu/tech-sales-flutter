@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';

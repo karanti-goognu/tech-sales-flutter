@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/Vid
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/controller/tutorial_list_controller.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -21,8 +22,7 @@ class _VideoRequestsState extends State<VideoRequests> {
 
   TsoAppTutorialListModel tsoAppTutorialListModel;
   TutorialListController eventController = Get.find();
-  Map _source = {ConnectivityResult.none: false};
-  MyConnectivity _connectivity = MyConnectivity.instance;
+
 
 
   var data;
@@ -34,22 +34,28 @@ class _VideoRequestsState extends State<VideoRequests> {
 
   @override
   void initState() {
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
-    });
-    getAppTutorialListData().whenComplete(() {
-      setState(() {
-        tsoAppTutorialListModel = data;
-      });
+
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+        getAppTutorialListData().whenComplete(() {
+          setState(() {
+            tsoAppTutorialListModel = data;});
+        })
+        }else{
+        Get.snackbar(
+            "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM),
+        // fetchSiteList()
+      }
     });
     super.initState();
   }
 
-
   @override
   void dispose() {
-    _connectivity.disposeStream();
     super.dispose();
   }
 
@@ -109,15 +115,12 @@ class _VideoRequestsState extends State<VideoRequests> {
                       return GestureDetector(
                         onTap: () {
                           print("hi");
-                          if (_source.keys.toList()[0] == ConnectivityResult.none) {
-                            eventController.showNoInternetSnack();
-                          } else {
+
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) =>
                                     Video(videoData: tsoAppTutorialListModel
                                         .tsoAppTutorial[index],)
                             ));
-                          }
                           // activityVideo(context, index);
                         },
                         child: Card(
