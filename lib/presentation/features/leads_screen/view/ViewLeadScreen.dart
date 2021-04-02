@@ -383,6 +383,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
       return Scaffold(
         resizeToAvoidBottomInset: true,
         // resizeToAvoidBottomPadding: false,
+        backgroundColor: Colors.transparent,
+
         body: Container(
           child: AlertDialog(
             content: SingleChildScrollView(
@@ -3686,7 +3688,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
         'leadIsDuplicate': viewLeadDataResponse.leadsEntity.leadIsDuplicate,
         'rejectionComment': viewLeadDataResponse.leadsEntity.rejectionComment,
         'nextDateCconstruction': _nextDateofConstruction.text,
-        'nextStageConstruction': _selectedNextStageConstructionEntity.nextStageConsId,
+        'nextStageConstruction': _selectedNextStageConstructionEntity??_selectedNextStageConstructionEntity.nextStageConsId,
         'siteDealerId': dealerId,
         "subdealerId":subDealerId , //need to pass selected value
         // 'listLeadcomments':
@@ -4049,7 +4051,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
     selectedDealerSubId=subDealerId;
     _selectedNextStageConstructionEntity=selectedNextStageConstructionEntity;
     selectedDate=nextStageConstructionPicked;
-    print("_selectedNextStageConstructionEntity  $nextStageConstructionPicked    ${_selectedNextStageConstructionEntity.nextStageConsId}");
+   // print("_selectedNextStageConstructionEntity  $nextStageConstructionPicked    ${_selectedNextStageConstructionEntity.nextStageConsId}");
     // nextStageConstructionPickedDate=nextStageConstructionPicked;
     _nextDateofConstruction.text=nextStageConstructionPicked;
     print("_selectedNextStageConstructionEntity    ${nextStageConstructionPickedDate}");
