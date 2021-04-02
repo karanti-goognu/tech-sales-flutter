@@ -162,7 +162,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed(Routes.ADD_CALENDER_SCREEN);
+                        internetChecking().then((result) => {
+                          if (result == true)
+                            {
+                            Get.toNamed(Routes.ADD_CALENDER_SCREEN),
+                            }else{
+                            Get.snackbar(
+                                "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                            // fetchSiteList()
+                          }
+                        });
                       },
                       child: Container(
                         height: 40,
@@ -598,7 +610,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
       action: () async {
         if (await Permission.location.request().isGranted) {
-          _homeController.getAccessKey(RequestIds.CHECK_IN);
+          internetChecking().then((result) => {
+            if (result == true)
+              {
+              _homeController.getAccessKey(RequestIds.CHECK_IN)
+              }
+            else
+              {
+                Get.snackbar(
+                    "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.red,
+                    snackPosition: SnackPosition.BOTTOM),
+                // fetchSiteList()
+              }
+          });
         } else {
           print('permission denied');
         }
@@ -637,7 +663,21 @@ class _HomeScreenState extends State<HomeScreen> {
       action: () async {
         if (await Permission.location.request().isGranted) {
           // Either the permission was already granted before or the user just granted it.
-          _homeController.getAccessKey(RequestIds.CHECK_OUT);
+          internetChecking().then((result) => {
+            if (result == true)
+              {
+              _homeController.getAccessKey(RequestIds.CHECK_OUT)
+              }
+            else
+              {
+                Get.snackbar(
+                    "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.red,
+                    snackPosition: SnackPosition.BOTTOM),
+                // fetchSiteList()
+              }
+          });
         } else {
           print('permission not granted');
         }
