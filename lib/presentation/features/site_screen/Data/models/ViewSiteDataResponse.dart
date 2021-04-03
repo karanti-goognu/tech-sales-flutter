@@ -329,7 +329,7 @@ class SitesModal {
     assignedTo = json['assignedTo'];
     createdOn = json['createdOn'];
     dealerConfirmedChangedBy = json['dealerConfirmedChangedBy'];
-    dealerConfirmedChangedOn = json['dealerConfirmedChangedOn'];
+    dealerConfirmedChangedOn = json['dealerConfirmedChangedOn'].toString();
     inactiveReasonText = json['inactiveReasonText'];
     leadId = json['leadId'];
     noOfFloors = json['noOfFloors'];

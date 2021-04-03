@@ -2526,7 +2526,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               onTap: (){
                 if(!isAllowSelectDealer)
                   Get.dialog(CustomDialogs()
-                      .errorDialog("This dealer not conformed by so."));
+                      .errorDialog("This dealer not Confirmed by so."));
                  // Get.dialog(new ConformationDialog(message:"This dealer not conformed by so."));
 
               },
