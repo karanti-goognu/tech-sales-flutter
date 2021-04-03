@@ -383,7 +383,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
       return Scaffold(
         resizeToAvoidBottomInset: true,
         // resizeToAvoidBottomPadding: false,
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
 
         body: Container(
           child: AlertDialog(
@@ -3688,7 +3688,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
         'leadIsDuplicate': viewLeadDataResponse.leadsEntity.leadIsDuplicate,
         'rejectionComment': viewLeadDataResponse.leadsEntity.rejectionComment,
         'nextDateCconstruction': _nextDateofConstruction.text,
-        'nextStageConstruction': _selectedNextStageConstructionEntity??_selectedNextStageConstructionEntity.nextStageConsId,
+        'nextStageConstruction': _selectedNextStageConstructionEntity.nextStageConsId,
+        /*_selectedNextStageConstructionEntity.nextStageConsId*/
         'siteDealerId': dealerId,
         "subdealerId":subDealerId , //need to pass selected value
         // 'listLeadcomments':
