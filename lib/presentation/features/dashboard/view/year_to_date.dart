@@ -114,6 +114,7 @@ getYearlyData()async{
     print("::::::$value ::::::");
     print("IN VIEW");
     _yearMonthList =
+        _dashboardController.dashboardYearlyViewModel.dashboardYearlyModels==null?[]:
         _dashboardController.dashboardYearlyViewModel.dashboardYearlyModels
             .map(
               (e) => e.showYear,

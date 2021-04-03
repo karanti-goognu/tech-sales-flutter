@@ -278,6 +278,7 @@ class MonthToDateState extends State<MonthToDate> {
                           () => _dashboardController.isPrev == false
                               ? MaterialButton(
                                   onPressed: () {
+
                                     int year = DateTime.now().year;
                                     int month = DateTime.now().month - 1;
                                     String yearMonth;
@@ -292,14 +293,15 @@ class MonthToDateState extends State<MonthToDate> {
                                               ? '0' + month.toString()
                                               : month.toString());
                                     }
+                                    print("yearMonth:"+yearMonth);
 
                                     if(widget.empID=="_empty"){
+
                                       _dashboardController.getMonthViewDetails(
                                           empID: empID,
                                           yearMonth: yearMonth);
                                     }
                                     else{
-                                      print(widget.empID);
                                       _dashboardController.getMonthViewDetails(
                                           empID: widget.empID,
                                           yearMonth: yearMonth);
@@ -328,6 +330,8 @@ class MonthToDateState extends State<MonthToDate> {
                                               ? '0' + month.toString()
                                               : month.toString());
                                     }
+                                    print("yearMonth:"+yearMonth);
+
                                     if(widget.empID=="_empty"){
                                       _dashboardController.getMonthViewDetails(
                                           empID: empID,
@@ -446,121 +450,121 @@ class DspColumnChild extends StatelessWidget {
                           xValueMapper: (ChartData data, _) => data.x,
                           yValueMapper: (ChartData data, _) => data.y)
                     ]))
-            : Column(
-                children: [
-                  Expanded(
-                    flex: 9,
-                    child:
-                    _dashboardController
-                        .dspTotalOpperVolume==0?
-                    Center(child: Text("Target is not yet set"),)
-                        :
-                    SfRadialGauge(
-                        enableLoadingAnimation: true,
-                        axes: <RadialAxis>[
-                          RadialAxis(
-                              radiusFactor: 1.3,
-                              startAngle: 180,
-                              endAngle: 0,
-                              canScaleToFit: true,
-                              minimum: 0,
-                              maximum: int.parse(_dashboardController
+            : Obx(()=>Column(
+          children: [
+            Expanded(
+              flex: 9,
+              child:
+              _dashboardController
+                  .dspTotalOpperVolume==0?
+              Center(child: Text("Target is not yet set"),)
+                  :
+              SfRadialGauge(
+                  enableLoadingAnimation: true,
+                  axes: <RadialAxis>[
+                    RadialAxis(
+                        radiusFactor: 1.3,
+                        startAngle: 180,
+                        endAngle: 0,
+                        canScaleToFit: true,
+                        minimum: 0,
+                        maximum: int.parse(_dashboardController
+                            .dspTotalOpperVolume
+                            .toString())
+                            .toDouble(),
+                        ranges: <GaugeRange>[
+                          GaugeRange(
+                              startValue: 0,
+                              endValue: int.parse(_dashboardController
+                                  .dspTotalOpperVolume
+                                  .toString())
+                                  .toDouble() ==
+                                  0.0
+                                  ? 100
+                                  : int.parse(_dashboardController
                                   .dspTotalOpperVolume
                                   .toString())
                                   .toDouble(),
-                              ranges: <GaugeRange>[
-                                GaugeRange(
-                                    startValue: 0,
-                                    endValue: int.parse(_dashboardController
-                                                    .dspTotalOpperVolume
-                                                    .toString())
-                                                .toDouble() ==
-                                            0.0
-                                        ? 100
-                                        : int.parse(_dashboardController
-                                                .dspTotalOpperVolume
-                                                .toString())
-                                            .toDouble(),
-                                    color: HexColor('00ADEE'),
-                                    startWidth: 15,
-                                    endWidth: 15),
-                                GaugeRange(
-                                    startValue: 0,
-                                    endValue: (int.parse(_dashboardController
-                                                    .convTargetCount
-                                                    .toString()) /
-                                                int.parse(_dashboardController
-                                                    .generatedCount
-                                                    .toString()))
-                                            .isNaN
-                                        ? 0
-                                        : int.parse(_dashboardController
-                                                .convTargetCount
-                                                .toString()) /
-                                            int.parse(_dashboardController
-                                                .generatedCount
-                                                .toString()),
-                                    color: HexColor('39B54A'),
-                                    startWidth: 15,
-                                    endWidth: 15),
-                              ],
-                              pointers: <GaugePointer>[
-                                NeedlePointer(
-                                  value: (int.parse(_dashboardController
-                                                  .convTargetCount
-                                                  .toString()) /
-                                              int.parse(_dashboardController
-                                                  .generatedCount
-                                                  .toString()))
-                                          .isNaN
-                                      ? 0
-                                      : int.parse(_dashboardController
-                                              .convTargetCount
-                                              .toString()) /
-                                          int.parse(_dashboardController
-                                              .generatedCount
-                                              .toString()),
-                                  needleColor: Colors.black12,
-                                )
-                              ],
-                              annotations: <GaugeAnnotation>[
-                                GaugeAnnotation(
-                                    widget: Container(
-                                        child: Text(
-                                            '${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%',
-                                            style: TextStyle(
-//                                                                    fontSize: 25,
-                                                fontWeight: FontWeight.bold))),
-                                    angle: 190,
-                                    positionFactor: 0.3)
-                              ])
-                        ]),
-                  ),
-                  Expanded(
-                      flex: 5,
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        childAspectRatio: 5,
-                        children: [
-                          Container(
-                            child: Text(
-                                "Opportunity-${_dashboardController
-                                    .dspTotalOpperVolume} MT"),
-                            alignment: Alignment.center,
-                            color: Colors.blue,
-                          ),
-                          Container(
-                            child: Text(
-                                "Converted-${_dashboardController.dspSlabConvertedVolume} MT"),
-                            alignment: Alignment.center,
-                            color: Colors.green,
+                              color: HexColor('00ADEE'),
+                              startWidth: 15,
+                              endWidth: 15),
+                          GaugeRange(
+                              startValue: 0,
+                              endValue: (int.parse(_dashboardController
+                                  .convTargetCount
+                                  .toString()) /
+                                  int.parse(_dashboardController
+                                      .generatedCount
+                                      .toString()))
+                                  .isNaN
+                                  ? 0
+                                  : int.parse(_dashboardController
+                                  .convTargetCount
+                                  .toString()) /
+                                  int.parse(_dashboardController
+                                      .generatedCount
+                                      .toString()),
+                              color: HexColor('39B54A'),
+                              startWidth: 15,
+                              endWidth: 15),
+                        ],
+                        pointers: <GaugePointer>[
+                          NeedlePointer(
+                            value: (int.parse(_dashboardController
+                                .convTargetCount
+                                .toString()) /
+                                int.parse(_dashboardController
+                                    .generatedCount
+                                    .toString()))
+                                .isNaN
+                                ? 0
+                                : int.parse(_dashboardController
+                                .convTargetCount
+                                .toString()) /
+                                int.parse(_dashboardController
+                                    .generatedCount
+                                    .toString()),
+                            needleColor: Colors.black12,
                           )
                         ],
-                      )),
-                ],
-              ));
+                        annotations: <GaugeAnnotation>[
+                          GaugeAnnotation(
+                              widget: Container(
+                                  child: Text(
+                                      '${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%',
+                                      style: TextStyle(
+//                                                                    fontSize: 25,
+                                          fontWeight: FontWeight.bold))),
+                              angle: 190,
+                              positionFactor: 0.3)
+                        ])
+                  ]),
+            ),
+            Expanded(
+                flex: 5,
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  childAspectRatio: 5,
+                  children: [
+                    Container(
+                      child: Text(
+                          "Opportunity-${_dashboardController
+                              .dspTotalOpperVolume} MT"),
+                      alignment: Alignment.center,
+                      color: Colors.blue,
+                    ),
+                    Container(
+                      child: Text(
+                          "Converted-${_dashboardController.dspSlabConvertedVolume} MT"),
+                      alignment: Alignment.center,
+                      color: Colors.green,
+                    )
+                  ],
+                )),
+          ],
+        )));
   }
 }
 
@@ -644,155 +648,155 @@ class ConvertedColumnChild extends StatelessWidget {
                       xValueMapper: (ChartData data, _) => data.x,
                       yValueMapper: (ChartData data, _) => data.y)
                 ]))
-            : Column(
-                children: [
-                  Expanded(
-                    flex: 9,
-                    child:
-                    _dashboardController
-                        .generatedVolume==0?
-                     Center(child: Text("Target is not yet set"),)
-                    :SfRadialGauge(
-                        enableLoadingAnimation: true,
-                        axes: <RadialAxis>[
-                          RadialAxis(
-                              radiusFactor: 1.3,
-                              startAngle: 180,
-                              endAngle: 0,
-                              canScaleToFit: true,
-                              minimum: 0,
-                              maximum: int.parse(_dashboardController
-                                      .generatedVolume
-                                      .toString())
+            : Obx(()=>Column(
+          children: [
+            Expanded(
+              flex: 9,
+              child:
+              _dashboardController
+                  .generatedVolume==0?
+              Center(child: Text("Target is not yet set"),)
+                  :SfRadialGauge(
+                  enableLoadingAnimation: true,
+                  axes: <RadialAxis>[
+                    RadialAxis(
+                        radiusFactor: 1.3,
+                        startAngle: 180,
+                        endAngle: 0,
+                        canScaleToFit: true,
+                        minimum: 0,
+                        maximum: int.parse(_dashboardController
+                            .generatedVolume
+                            .toString())
+                            .toDouble(),
+                        ranges: <GaugeRange>[
+                          GaugeRange(
+                              startValue: 0,
+                              endValue: int.parse(_dashboardController
+                                  .generatedVolume
+                                  .toString())
                                   .toDouble(),
-                              ranges: <GaugeRange>[
-                                GaugeRange(
-                                    startValue: 0,
-                                    endValue: int.parse(_dashboardController
-                                            .generatedVolume
-                                            .toString())
-                                        .toDouble(),
-                                    color: HexColor('00ADEE'),
-                                    startWidth: 15,
-                                    endWidth: 15),
-                                GaugeRange(
-                                    startValue: 0,
-                                    endValue: (int.parse(_dashboardController
-                                                    .convTargetCount
-                                                    .toString()) /
-                                                int.parse(_dashboardController
-                                                    .generatedCount
-                                                    .toString()))
-                                            .isNaN
-                                        ? 0
-                                        : int.parse(_dashboardController
-                                                .convTargetCount
-                                                .toString()) /
-                                            int.parse(_dashboardController
-                                                .generatedCount
-                                                .toString()),
-                                    color: HexColor('39B54A'),
-                                    startWidth: 15,
-                                    endWidth: 15),
-                              ],
-                              pointers: <GaugePointer>[
-                                NeedlePointer(
-                                  value: (int.parse(_dashboardController
-                                                  .convTargetCount
-                                                  .toString()) /
-                                              int.parse(_dashboardController
-                                                  .generatedCount
-                                                  .toString()))
-                                          .isNaN
-                                      ? 0
-                                      : int.parse(_dashboardController
-                                              .convTargetCount
-                                              .toString()) /
-                                          int.parse(_dashboardController
-                                              .generatedCount
-                                              .toString()),
-                                  needleColor: Colors.black12,
-                                )
-                              ],
-                              annotations: <GaugeAnnotation>[
-                                GaugeAnnotation(
-                                    widget: Container(
-                                        child: Text(
-                                            "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%",
-                                            style: TextStyle(
-//                                                                    fontSize: 25,
-                                                fontWeight: FontWeight.bold))),
-                                    angle: 190,
-                                    positionFactor: 0.3)
-                              ])
-                        ]),
-                  ),
-                  Expanded(
-                      flex: 5,
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        childAspectRatio: 5,
-                        children: [
-                          GestureDetector(
-                            onTap:  () =>
-                                Get.toNamed(Routes.DASHBOARD_SITE_LIST),
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                      "Generated-${_dashboardController.generatedVolume} MT"),
-                                  IconButton(
-                                      icon: Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 14,
-                                      ),
-                                  )
-                                ],
-                              ),
-                              alignment: Alignment.center,
-                              color: Colors.blue.withOpacity(0.3),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => Get.toNamed(
-                                Routes.DASHBOARD_VOLUME_CONVERTED),
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                      "Converted-${_dashboardController.convertedVolume} MT"),
-                                  IconButton(
-                                      icon: Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 14,
-                                      ),
-                                      )
-                                ],
-                              ),
-                              alignment: Alignment.center,
-                              color: Colors.green.withOpacity(0.3),
-                            ),
-                          ),
-                          Container(
-                            child: Text(
-                                "Remaining Tgt-${_dashboardController.remainingTargetVolume} MT"),
-                            color: Colors.yellow.withOpacity(0.3),
-                            alignment: Alignment.center,
-                          ),
-                          Container(
-                            child: Text(
-                                "Conv. Target-${_dashboardController.convTargetVolume} MT"),
-                            color: Colors.indigo.withOpacity(0.3),
-                            alignment: Alignment.center,
+                              color: HexColor('00ADEE'),
+                              startWidth: 15,
+                              endWidth: 15),
+                          GaugeRange(
+                              startValue: 0,
+                              endValue: (int.parse(_dashboardController
+                                  .convTargetCount
+                                  .toString()) /
+                                  int.parse(_dashboardController
+                                      .generatedCount
+                                      .toString()))
+                                  .isNaN
+                                  ? 0
+                                  : int.parse(_dashboardController
+                                  .convTargetCount
+                                  .toString()) /
+                                  int.parse(_dashboardController
+                                      .generatedCount
+                                      .toString()),
+                              color: HexColor('39B54A'),
+                              startWidth: 15,
+                              endWidth: 15),
+                        ],
+                        pointers: <GaugePointer>[
+                          NeedlePointer(
+                            value: (int.parse(_dashboardController
+                                .convTargetCount
+                                .toString()) /
+                                int.parse(_dashboardController
+                                    .generatedCount
+                                    .toString()))
+                                .isNaN
+                                ? 0
+                                : int.parse(_dashboardController
+                                .convTargetCount
+                                .toString()) /
+                                int.parse(_dashboardController
+                                    .generatedCount
+                                    .toString()),
+                            needleColor: Colors.black12,
                           )
                         ],
-                      )),
-                ],
-              ));
+                        annotations: <GaugeAnnotation>[
+                          GaugeAnnotation(
+                              widget: Container(
+                                  child: Text(
+                                      "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%",
+                                      style: TextStyle(
+//                                                                    fontSize: 25,
+                                          fontWeight: FontWeight.bold))),
+                              angle: 190,
+                              positionFactor: 0.3)
+                        ])
+                  ]),
+            ),
+            Expanded(
+                flex: 5,
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  childAspectRatio: 5,
+                  children: [
+                    GestureDetector(
+                      onTap:  () =>
+                          Get.toNamed(Routes.DASHBOARD_SITE_LIST),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                                "Generated-${_dashboardController.generatedVolume} MT"),
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 14,
+                              ),
+                            )
+                          ],
+                        ),
+                        alignment: Alignment.center,
+                        color: Colors.blue.withOpacity(0.3),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Get.toNamed(
+                          Routes.DASHBOARD_VOLUME_CONVERTED),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                                "Converted-${_dashboardController.convertedVolume} MT"),
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 14,
+                              ),
+                            )
+                          ],
+                        ),
+                        alignment: Alignment.center,
+                        color: Colors.green.withOpacity(0.3),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                          "Remaining Tgt-${_dashboardController.remainingTargetVolume} MT"),
+                      color: Colors.yellow.withOpacity(0.3),
+                      alignment: Alignment.center,
+                    ),
+                    Container(
+                      child: Text(
+                          "Conv. Target-${_dashboardController.convTargetVolume} MT"),
+                      color: Colors.indigo.withOpacity(0.3),
+                      alignment: Alignment.center,
+                    )
+                  ],
+                )),
+          ],
+        )));
   }
 }
 
