@@ -384,7 +384,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen> implements ChangeLeadTo
         resizeToAvoidBottomInset: true,
         // resizeToAvoidBottomPadding: false,
         // backgroundColor: Colors.transparent,
-
         body: Container(
           child: AlertDialog(
             content: SingleChildScrollView(

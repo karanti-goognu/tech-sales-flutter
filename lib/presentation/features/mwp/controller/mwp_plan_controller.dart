@@ -40,8 +40,7 @@ class MWPPlanController extends GetxController {
   final _miniContractorMeet = 0.obs;
   final _consumerMeet = 0.obs;
   final _contractorVisit = 0.obs;
-  final _technoVisit = 0.obs;
-  final _technocratVisit = 0.obs;
+   final _technocratVisit = 0.obs;
 
   final _techVanDemo = 0.obs;
   final _techVanService = 0.obs;
@@ -236,7 +235,7 @@ class MWPPlanController extends GetxController {
           this.miniContractorMeet = 0;
           this.consumerMeet = 0;
           this.counterMeet=0;
-          this.dspConVol=0;
+          this.dspConVol=0.0;
           this.blockLevelMeet=0;
           this.technocratMeet=0;
           this.slabServices=0;
@@ -283,11 +282,7 @@ class MWPPlanController extends GetxController {
     });
   }
 
-  get technoVisit => _technoVisit;
 
-  set technoVisit(value) {
-    this._technoVisit.value = value;
-  }
 
   get technocratVisit => _technocratVisit;
 

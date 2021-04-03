@@ -198,6 +198,7 @@ class MwpplanModel {
     actualTechnocratMeet = json['actualTechnocratMeet'];
     actualTechnocratVisit = json['actualTechnocratVisit'];
     actualTechVanDemo = json['actualTechVanDemo'];
+    actualTechVanService = json['actualTechVanService'];
   }
 
   Map<String, dynamic> toJson() {
@@ -254,6 +255,7 @@ class MwpplanModel {
     data['actualTechnocratMeet'] = this.actualTechnocratMeet;
     data['actualTechnocratVisit'] = this.actualTechnocratVisit;
     data['actualTechVanDemo'] = this.actualTechVanDemo;
+    data['actualTechVanService'] = this.actualTechVanService;
     return data;
   }
 }

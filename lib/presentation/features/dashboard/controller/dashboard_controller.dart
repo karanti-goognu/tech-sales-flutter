@@ -112,8 +112,10 @@ class DashboardController extends GetxController {
      var prefs = await SharedPreferences.getInstance();
 //    String empID;
 //        empID = prefs.getString(StringConstants.employeeId);
+    empID=empID=='_empty'?prefs.getString(StringConstants.employeeId):empID;
     print(empID);
-       var data= await repository.getYearlyViewDetails(empID);
+
+    var data= await repository.getYearlyViewDetails(empID);
           this.dashboardYearlyViewModel = data;
 //          print(":::: $data ::::");
           List tempMonthList = this.dashboardYearlyViewModel.dashboardYearlyModels

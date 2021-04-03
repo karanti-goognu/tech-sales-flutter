@@ -151,7 +151,6 @@ getYearlyData()async{
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     print("Build Called");
-    print(widget.empID);
     return SingleChildScrollView(
       child: RepaintBoundary(
         key: previewContainer,
@@ -229,7 +228,12 @@ getYearlyData()async{
                               Icons.share,
                               color: ColorConstants.appBarColor,
                             ),
-                            Text('Share'),
+                            Text('Share',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.safeBlockHorizontal*2.9,
+                                  color: ColorConstants.blackColor,
+                                  fontFamily: "Muli"),
+                            ),
                           ],
                         ),
                       ),
@@ -279,12 +283,12 @@ getYearlyData()async{
                                           .where((DashboardYearlyModels i) =>
                                       i.showYear == yearMonth)
                                           .toList();
-                                      print(
-                                          "This year data length${_thisYearData.length} yearMonth $yearMonth");
+//                                      print("This year data length${_thisYearData.length} yearMonth $yearMonth");
                                     });
-                                    print(yearMonth);
+//                                    print(yearMonth);
                                     if (_ytdIsVolume == true) {
                                       getVolumeAndActualDataForBarGraph();
+                                      getVolumeAndAverageDataForLineChart();
                                     } else {
                                       _thisYearData = _dashboardController
                                           .dashboardYearlyViewModel
@@ -293,6 +297,7 @@ getYearlyData()async{
                                       i.showYear == yearMonth)
                                           .toList();
                                       getCountAndActualDataForBarGraph();
+                                      getCountAndAverageDataForLineChart();
                                     }
                                   }):Container(),
                             )),
@@ -313,7 +318,12 @@ getYearlyData()async{
                             iconEnabledColor: HexColor('FF8500'),
                             items: ['Actual', 'Average']
                                 .map((e) => DropdownMenuItem(
-                                      child: Text(e),
+                                      child: Text(e,
+                                        style: TextStyle(
+                                            fontSize: SizeConfig.safeBlockHorizontal*3.3,
+                                            color: ColorConstants.blackColor,
+                                            fontFamily: "Muli"),
+                                      ),
                                       value: e,
                                     ))
                                 .toList(),
@@ -323,11 +333,13 @@ getYearlyData()async{
                                 actualOrAverage = _;
                               });
                               if (actualOrAverage == 'Actual') {
+//                                print("Actual");
                                 if (_ytdIsVolume == true)
                                   getVolumeAndActualDataForBarGraph();
                                 else
                                   getCountAndActualDataForBarGraph();
                               } else {
+//                                print("Average");
                                 if (_ytdIsVolume == true)
                                   getVolumeAndAverageDataForLineChart();
                                 else
@@ -612,6 +624,5 @@ class ChartData {
   final String month;
 }
 
-// final List<Employee> _employees = <Employee>[];
 
 

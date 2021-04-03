@@ -59,8 +59,8 @@ class MyApiClientHome {
         "journey-End-Long": journeyEndLong
       };
 
-      print('Request Body is ${json.encode(requestBody)}');
-      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
+//      print('Request Body is ${json.encode(requestBody)}');
+//      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
 
       var response = await httpClient.post(UrlConstants.getCheckInDetails,
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey),

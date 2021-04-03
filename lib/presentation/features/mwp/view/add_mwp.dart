@@ -138,7 +138,8 @@ class AddMWPScreenPageState extends State<AddMWP> {
                                     ),
                                   )),
                             ) : Container(
-                        child: Text("Error"),
+//                        child: Text("Error"),
+                      child: CupertinoActivityIndicator(),
                       ),
                     ),
                   ],

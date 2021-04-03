@@ -8,6 +8,8 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
+
 // ignore: must_be_immutable
 class ChangeLeadToSiteDialog extends StatefulWidget {
   NextStageConstructionEntity selectedNextStageConstructionEntity;
@@ -224,34 +226,18 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                     items: widget.dealerEntityForDb
                         .map((e) => DropdownMenuItem(
                       value: e.id,
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width - 100,
-                        child: Text('${e.dealerName} (${e.id})',
-                            style: TextStyle(fontSize: 14)),
-                      ),
+                      child: Text('${e.dealerName} (${e.id})',
+                        overflow: TextOverflow.ellipsis,
+                           style: TextStyle(
+                          fontSize: SizeConfig.safeBlockHorizontal*3.1,
+                          color: ColorConstants.blackColor,
+
+                          ),),
                     ))
                         .toList(),
                     onChanged: (value) {
-                      print(" Dealer Value ${widget.counterListModel.length}");
-                      print(value);
+
                       widget.mListener.userChangeDealerId();
-
-                      // setState(() {
-                      //   selectedSubDealer = null;
-                      //   leadDataDealer = value.toString();
-                      //
-                      //
-                      //
-                      //   subDealerList = widget.counterListModel.where((e) => e.soldToParty == leadDataDealer).toList();
-                      //   print("subDealerList   ${subDealerList.length}  $leadDataDealer  ");
-                      //   selectedSubDealer = subDealerList[0];
-                      //   leadDataSubDealer = subDealerList[0].shipToParty;
-                      //
-                      //
-                      //
-                      // });
-
-
                       setState(() {
                         subDealerList = new List();
                         leadDataDealer = value.toString();
@@ -286,11 +272,13 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                         .map((e) => DropdownMenuItem(
                       value: e,
                       child: SizedBox(
-                        width:
-                        MediaQuery.of(context).size.width - 100,
+
                         child: Text(
                           '${e.shipToPartyName} (${e.shipToParty})',
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(
+                              fontSize: SizeConfig.safeBlockHorizontal*3.1,
+                              color: ColorConstants.blackColor,
+                              fontFamily: "Muli"),
                         ),
                       ),
                     ))

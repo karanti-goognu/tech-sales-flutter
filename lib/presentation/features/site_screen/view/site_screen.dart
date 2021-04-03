@@ -385,7 +385,7 @@ class _SiteScreenState extends State<SiteScreen> {
                           "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
                           style: TextStyle(
                             fontFamily: "Muli",
-                            fontSize: 15,
+                            fontSize: SizeConfig.safeBlockHorizontal*3.5,
                             // color: HexColor("#FFFFFF99"),
                           ),
                         ),
@@ -394,7 +394,7 @@ class _SiteScreenState extends State<SiteScreen> {
                             "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : double.parse(_siteController.sitesListResponse.totalSitePotential).toStringAsFixed(2)}",
                             style: TextStyle(
                               fontFamily: "Muli",
-                              fontSize: 15,
+                              fontSize: SizeConfig.safeBlockHorizontal*3.5,
                               // color: HexColor("#FFFFFF99"),
                             ),
                           )),
@@ -958,7 +958,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.black38,
-                                                            fontSize: 15,
+                                                            fontSize: SizeConfig.safeBlockHorizontal*.2,
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold
@@ -969,7 +969,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                           "${_siteController.sitesListResponse.sitesEntity[index].sitePotentialMt}MT",
                                                           style: TextStyle(
                                                               // color: Colors.black38,
-                                                              fontSize: 15,
+                                                              fontSize: 14,
                                                               fontFamily:
                                                                   "Muli",
                                                               fontWeight:

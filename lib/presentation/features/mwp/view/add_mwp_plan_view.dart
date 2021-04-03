@@ -422,6 +422,8 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
             counterStyle: TextStyle(fontSize: 0),
           ),
           onChanged: (_) {
+
+
             try {
               switch (index) {
                 case 0:
@@ -435,7 +437,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                   _mwpPlanController.dspSlab = int.parse(_);
                   break;
                 case 3:
-                  _mwpPlanController.dspConVol = int.parse(_);
+                  _mwpPlanController.dspConVol = double.parse(_);
                   break;
                   case 4:
                   _mwpPlanController.siteConVol = int.parse(_);
@@ -471,7 +473,9 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                   _mwpPlanController.contractorVisit = int.parse(_);;
                   break;
                 case 14:
-                  _mwpPlanController.technoVisit = int.parse(_);;
+                  print("onChanged    call  $index   $_");
+                  _mwpPlanController.technocratVisit = int.parse(_);
+
                   break;
                 case 15:
                   _mwpPlanController.techVanDemo = int.parse(_);;
@@ -491,7 +495,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
 
               }
             } catch (_) {
-              print('In exception');
+              print('In exception   $index');
               switch (index) {
                 case 0:
                   _mwpPlanController.totalConversionVol = 0;
@@ -540,7 +544,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                   _mwpPlanController.contractorVisit = 0;
                   break;
                 case 14:
-                  _mwpPlanController.technoVisit = 0;
+                  _mwpPlanController.technocratVisit = 0;
                   break;
                 case 15:
                   _mwpPlanController.techVanDemo = 0;
