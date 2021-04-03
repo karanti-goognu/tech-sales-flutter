@@ -12,6 +12,7 @@ class SaveMeetRequest {
   String eventLocation;
   String isSaveDraft;
   String createdBy;
+  String meetInitiatorName;
   List<MwpMeetDealers> mwpMeetDealers;
 
   SaveMeetRequest(
@@ -27,6 +28,7 @@ class SaveMeetRequest {
         this.eventLocation,
         this.isSaveDraft,
         this.createdBy,
+        this.meetInitiatorName,
         this.mwpMeetDealers,{this.id});
 
   SaveMeetRequest.fromJson(Map<String, dynamic> json) {
@@ -42,6 +44,7 @@ class SaveMeetRequest {
     eventLocation = json['eventLocation'];
     isSaveDraft = json['isSaveDraft'];
     createdBy = json['createdBy'];
+    meetInitiatorName = json['meetInitiatorName'];
     if (json['mwpMeetDealers'] != null) {
       mwpMeetDealers = new List<MwpMeetDealers>();
       json['mwpMeetDealers'].forEach((v) {
@@ -64,6 +67,7 @@ class SaveMeetRequest {
     data['eventLocation'] = this.eventLocation;
     data['isSaveDraft'] = this.isSaveDraft;
     data['createdBy'] = this.createdBy;
+    data['meetInitiatorName'] = this.meetInitiatorName;
     if (this.mwpMeetDealers != null) {
       data['mwpMeetDealers'] =
           this.mwpMeetDealers.map((v) => v.toJson()).toList();
