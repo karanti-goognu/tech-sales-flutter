@@ -327,6 +327,7 @@ class SitesModal {
 
   SitesModal.fromJson(Map<String, dynamic> json) {
     assignedTo = json['assignedTo'];
+
     createdOn = json['createdOn'];
     dealerConfirmedChangedBy = json['dealerConfirmedChangedBy'];
     dealerConfirmedChangedOn = json['dealerConfirmedChangedOn'].toString();
