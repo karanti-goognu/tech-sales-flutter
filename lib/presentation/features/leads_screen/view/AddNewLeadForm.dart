@@ -126,7 +126,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     _formKeyForNewLeadForm.currentState != null
         ? _formKeyForNewLeadForm.currentState.dispose()
         : print("nothing happened");
-    //_addLeadsController.dispose();
+    _addLeadsController.dispose();
     // _formKey.currentState.dispose();
   }
 

@@ -47,6 +47,8 @@ class _LeadScreenState extends State<LeadScreen> {
 
   @override
   void initState() {
+    print("Leads initstate called");
+
     super.initState();
     /* try {
       if (_loginController.validateOtpResponse.leadStatusEntity != null) {

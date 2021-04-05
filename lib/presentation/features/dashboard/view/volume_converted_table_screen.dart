@@ -6,7 +6,6 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class VolumeConvertedTable extends StatefulWidget {
   @override
@@ -14,8 +13,6 @@ class VolumeConvertedTable extends StatefulWidget {
 }
 
 class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
-  final DataGridController _controller = DataGridController();
-  final EmployeeDataSource _employeeDataSource = EmployeeDataSource();
   DashboardController _dashboardController = Get.find();
 
   @override
@@ -67,51 +64,10 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           Text('Total Count-0'),
-//          Container(
-//            child: SfDataGrid(
-//              controller: _controller,
-//              source: _employeeDataSource,
-//              headerRowHeight: 40,
-//              gridLinesVisibility: GridLinesVisibility.none,
-//              columns: [
-//                GridNumericColumn(
-//                    mappingName: 'id',
-//                    headerText: 'Site ID​',
-//                    width: 60,
-//                    padding: EdgeInsets.zero,
-//                    headerPadding: EdgeInsets.zero,
-//                ),
-//                GridTextColumn(
-//                    mappingName: 'name',
-//                    headerText: '    Current Stage​',
-//                    width: 125,
-//                    headerPadding: EdgeInsets.zero,
-//                ),
-//                GridTextColumn(
-//                    mappingName: 'designation',
-//                    headerText: 'Brand​',
-//                    width: 60,
-//                    headerPadding: EdgeInsets.zero,
-//                ),
-//                GridNumericColumn(
-//                    mappingName: 'salary',
-//                    headerText: 'Qty',
-//                    width: 60,
-//                    headerPadding: EdgeInsets.zero,
-//                ),
-//                GridNumericColumn(
-//                    mappingName: 'salary',
-//                    headerText: 'Supply Date',
-//                    width: 100,
-//                    headerPadding: EdgeInsets.zero,
-//                ),
-//              ],
-//            ),
-//          )
           Expanded(
             child: Container(
-              height: 300,
               child: ListView.separated(
+                  itemCount: 52,
                   itemBuilder: (context, index) {
                     return index == 0
                         ? Container(
@@ -120,6 +76,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                             child: Row(
                               children: [
                                 Expanded(
+                                  flex:2,
                                   child: Text(
                                     "Site ID​",
                                     style: TextStyle(
@@ -130,6 +87,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                   ),
                                 ),
                                 Expanded(
+                                  flex:2,
                                   child: Text("Current Stage​",
                                       style: TextStyle(
                                           color: HexColor('FFFFFF'),
@@ -139,6 +97,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                       textAlign: TextAlign.center),
                                 ),
                                 Expanded(
+                                  flex:2,
                                   child: Text("Brand​",
                                       style: TextStyle(
                                           color: HexColor('FFFFFF'),
@@ -148,6 +107,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                       textAlign: TextAlign.center),
                                 ),
                                 Expanded(
+                                  flex:2,
                                   child: Text("Qty",
                                       style: TextStyle(
                                           color: HexColor('FFFFFF'),
@@ -157,6 +117,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                       textAlign: TextAlign.center),
                                 ),
                                 Expanded(
+                                  flex:2,
                                   child: Text("Supply Date",
                                       style: TextStyle(
                                           color: HexColor('FFFFFF'),
@@ -180,33 +141,48 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                   child: Row(
                                     children: [
                                       Expanded(
+                                        flex:2,
                                         child: Text(
                                           "500067​",
                                           textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize:
+                                          SizeConfig.blockSizeHorizontal * 3),
                                         ),
                                       ),
                                       Expanded(
+                                        flex:2,
                                         child: Text(
                                           "Column & Lintel",
                                           textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize:
+                                            SizeConfig.blockSizeHorizontal * 3)
                                         ),
                                       ),
                                       Expanded(
+                                        flex:2,
                                         child: Text(
                                           "DSP",
                                           textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize:
+                                            SizeConfig.blockSizeHorizontal * 3)
                                         ),
                                       ),
                                       Expanded(
+                                        flex:2,
                                         child: Text(
                                           "50 bg​",
                                           textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize:
+                                            SizeConfig.blockSizeHorizontal * 3)
                                         ),
                                       ),
                                       Expanded(
+                                        flex:2,
                                         child: Text(
                                           "21-Feb-21",
                                           textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize:
+                                            SizeConfig.blockSizeHorizontal * 3)
                                         ),
                                       ),
                                       Expanded(
@@ -229,7 +205,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                   },
                   separatorBuilder: (BuildContext context, int index) =>
                       index == 0 ? Container() : Divider(),
-                  itemCount: 5),
+                 ),
             ),
           )
         ],
@@ -238,35 +214,3 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
   }
 }
 
-class EmployeeDataSource extends DataGridSource<Employee> {
-  @override
-  @override
-  getValue(Employee employee, String columnName) {
-    switch (columnName) {
-      case 'id':
-        return employee.id;
-        break;
-      case 'name':
-        return employee.name;
-        break;
-      case 'salary':
-        return employee.salary;
-        break;
-      case 'designation':
-        return employee.designation;
-        break;
-      default:
-        return ' ';
-        break;
-    }
-  }
-}
-
-class Employee {
-  Employee(this.id, this.name, this.designation, this.salary, this.perc);
-  final int id;
-  final String name;
-  final String designation;
-  final int salary;
-  final int perc;
-}
