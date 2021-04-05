@@ -428,21 +428,20 @@ class DspColumnChild extends StatelessWidget {
                       DoughnutSeries<ChartData, String>(
                           dataSource: [
                             ChartData(
-                                'Total Opp'
-                                'ty-${_dashboardController.dspTotalOpperCount}',
-                                100,
+                                'Total Opp\'ty-${_dashboardController.dspTotalOpperCount}',
+                                _dashboardController.dspTotalOpperCount.toDouble(),
                                 Color(0xff39B54A)),
                             ChartData(
                                 'DSP Target-${_dashboardController.dspTargetCount}',
-                                0,
+                                _dashboardController.dspTargetCount.toDouble(),
                                 Color(0xff00ADEE)),
                             ChartData(
                                 'Slab Converted-${_dashboardController.dspSlabConvertedCount}',
-                                0,
+                                _dashboardController.dspSlabConvertedCount.toDouble(),
                                 Color(0xff007CBF)),
                             ChartData(
                                 'Remaining Tgt-${_dashboardController.dspRemaingTargetCount}',
-                                0,
+                                _dashboardController.dspRemaingTargetCount.toDouble(),
                                 Color(0xffFFCD00)),
                           ],
                           innerRadius: '65.0',
@@ -627,19 +626,20 @@ class ConvertedColumnChild extends StatelessWidget {
                       dataSource: [
                         ChartData(
                             'Converted-${_dashboardController.convertedCount}',
-                            75,
+                            _dashboardController.convertedCount.toDouble(),
                             Color(0xff39B54A)),
                         ChartData(
                             'Generated-${_dashboardController.generatedCount}',
-                            25,
+                            _dashboardController.generatedCount.toDouble(),
+//                            (int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString()),
                             Color(0xff00ADEE)),
                         ChartData(
                             'Conv. Target-${_dashboardController.convTargetCount}',
-                            0,
+                            _dashboardController.convTargetCount.toDouble(),
                             Color(0xff007CBF)),
                         ChartData(
                             'Remaining Tgt-${_dashboardController.remainingTargetCount}',
-                            0,
+                            _dashboardController.remainingTargetCount.toDouble(),
                             Color(0xffFFCD00)),
                       ],
                       innerRadius: '65.0',
