@@ -302,11 +302,14 @@ class MyApiClientLeads {
 //                    print('Draft id :: ${gv.draftID}');
                     db.removeLeadInDraft(gv.draftID);
                     gv.fromLead = false;
+
                   }
                   gv.fromLead = false;
-                  //  Get.toNamed(Routes.LEADS_SCREEN);
+                  // Get.toNamed(Routes.HOME_SCREEN);
                   Get.back();
                   Get.back();
+                  Get.back();
+                  Get.toNamed(Routes.HOME_SCREEN);
 
                   /*Get.toNamed(Routes.LEADS_SCREEN);*/
 
