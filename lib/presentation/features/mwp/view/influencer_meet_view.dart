@@ -172,15 +172,19 @@ class AddEventInfluencerMeetScreenPageState
                       _spaceBetweenFields(),
                       TextFormField(
                           controller: meetInitiatorName,
-                          // validator: (value) {
-                          //   if (value.isEmpty) {
-                          //     print('called validator');
-                          //     return "Non-Dalmia Influencers can't be empty ";
-                          //   }
-                          //   return null;
-                          // },
+                          validator: (value) {
+                            if(_addEventController.selectedEventTypeMeet=="MINI CONTRACTOR MEET") {
+                              if (value.isEmpty) {
+                                print('called validator');
+                                return "Meet Initiator Name can't be empty ";
+                              }
+                              return null;
+                            }else{
+                              return null;
+                            }
+                          },
                           onChanged: (_) {
-
+                            _addEventController.meetInitiatorName = _.toString();
                           },
                           onEditingComplete: (){
                             print("Edit");
@@ -349,13 +353,22 @@ class AddEventInfluencerMeetScreenPageState
                       _spaceBetweenFields(),
                       TextFormField(
                           validator: (value) {
-                            if (value.isEmpty) {
-                              String addressType;
-                              (_addEventController.selectedEventTypeMeet=="TECHNOCRAT MEET"||_addEventController.selectedEventTypeMeet=="BLOCK LEVEL MEET")?addressType= "Address can't be empty "
-                             : addressType= "Event location can't be empty ";
-                             return addressType;
+                            if((_addEventController.selectedEventTypeMeet=="TECHNOCRAT MEET" || _addEventController.selectedEventTypeMeet=="BLOCK LEVEL MEET" || _addEventController.selectedEventTypeMeet=="CONSUMER MEET" || _addEventController.selectedEventTypeMeet=="MINI CONTRACTOR MEET")) {
+                              if (value.isEmpty) {
+                                String addressType;
+                                (_addEventController.selectedEventTypeMeet ==
+                                    "TECHNOCRAT MEET" ||
+                                    _addEventController.selectedEventTypeMeet ==
+                                        "BLOCK LEVEL MEET") ?
+                                addressType = "Address can't be empty "
+                                    : addressType =
+                                "Event location can't be empty ";
+                                return addressType;
+                              }
+                            }else {
+                              return null;
                             }
-                            return null;
+                              return null;
                           },
                           onChanged: (_) {
                             _addEventController.eventLocation = _.toString();

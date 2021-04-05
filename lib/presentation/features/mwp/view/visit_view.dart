@@ -64,6 +64,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                       'LEADS',
                       'CONVERSION OPPORTUNITY',
                       'COUNTER',
+                      'CONTRACTOR',
                       'TECHNOCRAT'
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
@@ -91,9 +92,13 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                               case "COUNTER":
                                 _addEventController.siteIdText = "Counter Code";
                                 break;
+                              case "CONTRACTOR":
+                                // _addEventController.siteIdText = "Technocrat ID";
+                                _addEventController.siteIdText = "Influencer Contact";
+                                break;
                               case "TECHNOCRAT":
-                                _addEventController.siteIdText =
-                                    "Technocrat ID";
+                              // _addEventController.siteIdText = "Technocrat ID";
+                                _addEventController.siteIdText = "Influencer Contact";
                                 break;
                             }
                           });
@@ -139,12 +144,14 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                         onChanged: (_) {
                           _addEventController.visitSiteId = _.toString();
                         },
+                        maxLength: _addEventController.siteIdText == "Influencer Contact"?10:null,
                         style: TextStyle(
                             fontSize: 18,
                             color: ColorConstants.inputBoxHintColor,
                             fontFamily: "Muli"),
-                        keyboardType: TextInputType.text,
+                        keyboardType: _addEventController.siteIdText == "Influencer Contact" ? TextInputType.phone : TextInputType.text,
                         decoration: _inputDecoration(
+
                             "${_addEventController.siteIdText}", false),
                       ),
                 SizedBox(height: 16),

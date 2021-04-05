@@ -75,6 +75,7 @@ class AddEventController extends GetxController {
   final _eventLocation = StringConstants.empty.obs;
   final _isSaveDraft = StringConstants.empty.obs;
   final _createdBy = StringConstants.empty.obs;
+  final _meetInitiatorName = StringConstants.empty.obs;
 
   get isLoading => this._isLoading.value;
 
@@ -150,6 +151,8 @@ class AddEventController extends GetxController {
   get isSaveDraft => this._isSaveDraft.value;
 
   get createdBy => this._createdBy.value;
+
+  get meetInitiatorName => this._meetInitiatorName.value;
 
   set isLoading(value) => this._isLoading.value = value;
 
@@ -228,6 +231,8 @@ class AddEventController extends GetxController {
 
   set selectedVenueTypeMeet(value) => this._selectedVenueTypeMeet.value = value;
 
+  set meetInitiatorName(value) => this._meetInitiatorName.value = value;
+
   saveVisit(String accessKey) {
     Future.delayed(Duration.zero,()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String empId = "empty";
@@ -302,6 +307,7 @@ class AddEventController extends GetxController {
         this.eventLocation,
         this.meetAction,
         empId,
+        this.meetInitiatorName,
         list,
       );
 
