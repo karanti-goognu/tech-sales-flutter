@@ -288,8 +288,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                 }
               });
             }
-                : (_mwpPlanController.getMWPResponse.mwpplanModel.status ==
-                        "SUBMIT")
+                : (_mwpPlanController.getMWPResponse.mwpplanModel.status == "SUBMIT")
                     ? null
                     : () {
                         // Validate returns true if the form is valid, or false

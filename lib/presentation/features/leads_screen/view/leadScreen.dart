@@ -131,7 +131,7 @@ class _LeadScreenState extends State<LeadScreen> {
                       "OPEN LEADS",
                       style: TextStyle(
                           fontWeight: FontWeight.normal,
-                          fontSize: 22,
+                          fontSize: SizeConfig.safeBlockHorizontal*5.2,
                           color: Colors.white,
                           fontFamily: "Muli"),
                     ),
@@ -416,7 +416,7 @@ class _LeadScreenState extends State<LeadScreen> {
                           "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
                           style: TextStyle(
                             fontFamily: "Muli",
-                            fontSize: 15,
+                            fontSize: SizeConfig.safeBlockHorizontal*3.7,
                             // color: HexColor("#FFFFFF99"),
                           ),
                         ),
@@ -425,7 +425,7 @@ class _LeadScreenState extends State<LeadScreen> {
                         "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
                         style: TextStyle(
                           fontFamily: "Muli",
-                          fontSize: 15,
+                          fontSize: SizeConfig.safeBlockHorizontal*3.7,
                           // color: HexColor("#FFFFFF99"),
                         ),
                       )),
@@ -785,7 +785,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                           style: TextStyle(
                                               color: Colors
                                                   .black38,
-                                              fontSize: 14,
+                                              fontSize: SizeConfig.safeBlockHorizontal*3.3,
                                               fontFamily:
                                               "Muli",
                                               fontWeight:
@@ -799,7 +799,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                             "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
                                             style: TextStyle(
                                               // color: Colors.black38,
-                                                fontSize: 14,
+                                                fontSize: SizeConfig.safeBlockHorizontal*3.4,
                                                 fontFamily:
                                                 "Muli",
                                                 fontWeight:
