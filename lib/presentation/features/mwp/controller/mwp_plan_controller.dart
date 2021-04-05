@@ -245,6 +245,7 @@ class MWPPlanController extends GetxController {
           this.contractorVisit=0;
           this.contractorMeet=0;
 
+
         } else {
           debugPrint('MWP Data Response is not null');
           this.getMWPResponse = data;

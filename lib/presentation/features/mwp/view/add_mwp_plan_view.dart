@@ -469,7 +469,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                   _mwpPlanController.consumerMeet = int.parse(_);
                   break;
                   case 13:
-                  _mwpPlanController.contractorVisit = int.parse(_);;
+                  _mwpPlanController.contractorVisit = int.parse(_);
                   break;
                 case 14:
                   print("onChanged    call  $index   $_");
@@ -477,19 +477,19 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
 
                   break;
                 case 15:
-                  _mwpPlanController.techVanDemo = int.parse(_);;
+                  _mwpPlanController.techVanDemo = int.parse(_);
                   break;
                 case 16:
-                  _mwpPlanController.techVanService = int.parse(_);;
+                  _mwpPlanController.techVanService = int.parse(_);
                   break;
                 case 17:
-                  _mwpPlanController.slabServices = int.parse(_);;
+                  _mwpPlanController.slabServices = int.parse(_);
                   break;
                 case 18:
-                  _mwpPlanController.technocratMeet = int.parse(_);;
+                  _mwpPlanController.technocratMeet = int.parse(_);
                   break;
                 case 19:
-                  _mwpPlanController.blockLevelMeet = int.parse(_);;
+                  _mwpPlanController.blockLevelMeet = int.parse(_);
                   break;
 
               }
