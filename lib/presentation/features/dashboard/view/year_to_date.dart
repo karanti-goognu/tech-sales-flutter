@@ -182,9 +182,16 @@ getYearlyData()async{
                           });
                           if (actualOrAverage == "Actual") {
                             if (_ytdIsVolume == true)
-                              getVolumeAndActualDataForBarGraph();
+                              {
+                                getVolumeAndActualDataForBarGraph();
+//                                print("Actual and Volume");
+                              }
                             else
-                              getCountAndActualDataForBarGraph();
+                              {
+                                getCountAndActualDataForBarGraph();
+//                                print("Actual and Count");
+                              }
+
                           } else {
                             if (_ytdIsVolume == true)
                               getVolumeAndAverageDataForLineChart();
