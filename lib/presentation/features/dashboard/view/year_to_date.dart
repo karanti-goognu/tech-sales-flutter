@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +14,8 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:screenshot/screenshot.dart';
+
 
 class YearToDate extends StatefulWidget {
   final empID;
@@ -40,6 +41,8 @@ class _YearToDateState extends State<YearToDate> {
   List<ChartData> _lineChartGenerated = [];
   List<ChartData> _lineChartConverted = [];
   var _dataForDataGrid;
+  ScreenshotController screenshotController = ScreenshotController();
+
 
   getCountAndActualDataForBarGraph() {
     print("Count and Actual $_thisYearData");
@@ -154,8 +157,8 @@ getYearlyData()async{
     SizeConfig().init(context);
     print("Build Called");
     return SingleChildScrollView(
-      child: RepaintBoundary(
-        key: previewContainer,
+      child: Screenshot(
+        controller: screenshotController,
         child: Container(
           color: ThemeData.light().scaffoldBackgroundColor,
           padding: const EdgeInsets.all(16.0),
@@ -401,25 +404,30 @@ getYearlyData()async{
     );
   }
 
-  Future<Uint8List> _capturePng() async {
-    RenderRepaintBoundary boundary =
-        previewContainer.currentContext.findRenderObject();
-
-    if (boundary.debugNeedsPaint) {
-      await Future.delayed(const Duration(milliseconds: 20));
-      return _capturePng();
-    }
-
-    var image = await boundary.toImage();
-    var byteData = await image.toByteData(format: ImageByteFormat.png);
-    return byteData.buffer.asUint8List();
-  }
+//  Future<Uint8List> _capturePng() async {
+//    RenderRepaintBoundary boundary =
+//        previewContainer.currentContext.findRenderObject();
+//
+//    if (boundary.debugNeedsPaint) {
+//      await Future.delayed(const Duration(milliseconds: 20));
+//      return _capturePng();
+//    }
+//
+//    var image = await boundary.toImage();
+//    var byteData = await image.toByteData(format: ImageByteFormat.png);
+//    return byteData.buffer.asUint8List();
+//  }
 
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
-    var pngBytes = await _capturePng();
+    String empIdForFileName= _dashboardController.empId;
+    print(_dashboardController.empId);
+//    var pngBytes = await _capturePng();
+    var pngBytes = await  screenshotController.capture(pixelRatio: 5);
+    print(pngBytes);
     final directory = (await getExternalStorageDirectory()).path;
-    imgFile = new File('$directory/${widget.empID}_$yearMonth.png');
+//    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
+    imgFile = new File('$directory/$empIdForFileName $yearMonth.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
