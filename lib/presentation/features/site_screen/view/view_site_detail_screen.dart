@@ -2550,9 +2550,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                     if(listLength>0){
                     SiteVisitHistoryEntity latestRecordData=siteVisitHistoryEntity.elementAt(0);
-                    if(latestRecordData.soldToParty != value)
-                      if(latestRecordData.isAuthorised=="N"){
 
+                    if(latestRecordData.soldToParty != value){
+                      if(latestRecordData.isAuthorised=="N"){
                         dealerEntityForDb.map((e) => DropdownMenuItem(
                           value: e.id,
                           child: SizedBox(
@@ -2563,7 +2563,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ));
                         return Get.dialog(CustomDialogs().errorDialog("Your previous supplier not authorised."));
 
-                      }
+                      }else
+                        sitesModal.isDealerConfirmedChangedBySo="N";
+                    }
+
                   }
 
                     selectedSubDealer = null;
@@ -2575,7 +2578,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         .toList();
                     selectedSubDealer = subDealerList[0];
                     visitDataSubDealer = subDealerList[0].shipToParty;
-                    sitesModal.isDealerConfirmedChangedBySo="N";
+
                   });
 
                 }: null,

@@ -159,8 +159,7 @@ class MyApiClientSites {
         var data = json.decode(response.body);
         // print('@@@@');
         // print(data);
-        ViewSiteDataResponse viewSiteDataResponse =
-            ViewSiteDataResponse.fromJson(data);
+        ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse.fromJson(data);
         // print('@@@@');
         // print(viewSiteDataResponse.counterListModel[0].soldToParty);
         if (viewSiteDataResponse.respCode == "ST2010") {

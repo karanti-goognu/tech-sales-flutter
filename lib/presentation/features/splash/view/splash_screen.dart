@@ -88,8 +88,14 @@ class SplashScreenPageState extends State<SplashScreen> {
         internetChecking().then((result){
           if(result)
             _splashController.getSecretKey(RequestIds.REFRESH_DATA);
-          else
-            _splashController.openNextPage();
+          else{
+            Future.delayed(const Duration(seconds: 3), () {
+              _splashController.openNextPage();
+
+            });
+
+          }
+
         });
 
       }

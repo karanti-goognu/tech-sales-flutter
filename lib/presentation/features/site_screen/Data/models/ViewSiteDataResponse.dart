@@ -83,15 +83,13 @@ class ViewSiteDataResponse {
     if (json['siteProbabilityWinningEntity'] != null) {
       siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>();
       json['siteProbabilityWinningEntity'].forEach((v) {
-        siteProbabilityWinningEntity
-            .add(new SiteProbabilityWinningEntity.fromJson(v));
+        siteProbabilityWinningEntity.add(new SiteProbabilityWinningEntity.fromJson(v));
       });
     }
     if (json['siteCompetitionStatusEntity'] != null) {
       siteCompetitionStatusEntity = new List<SiteCompetitionStatusEntity>();
       json['siteCompetitionStatusEntity'].forEach((v) {
-        siteCompetitionStatusEntity
-            .add(new SiteCompetitionStatusEntity.fromJson(v));
+        siteCompetitionStatusEntity.add(new SiteCompetitionStatusEntity.fromJson(v));
       });
     }
     if (json['siteBrandEntity'] != null) {
@@ -133,8 +131,7 @@ class ViewSiteDataResponse {
     if (json['siteOpportunityStatusEntity'] != null) {
       siteOpportunityStatusEntity = new List<SiteOpportunityStatusEntity>();
       json['siteOpportunityStatusEntity'].forEach((v) {
-        siteOpportunityStatusEntity
-            .add(new SiteOpportunityStatusEntity.fromJson(v));
+        siteOpportunityStatusEntity.add(new SiteOpportunityStatusEntity.fromJson(v));
       });
     }
     if (json['siteInfluencerEntity'] != null) {
@@ -265,18 +262,9 @@ class SitesModal {
   String updatedOn;
   String dealerConfirmedChangedBy;
   String dealerConfirmedChangedOn;
-
-
-
-
   String isDealerConfirmedChangedBySo;
   String subdealerId;
   String siteSubDealerName;
-
-
-
-
-
 
   SitesModal(
       {this.assignedTo,
@@ -326,51 +314,50 @@ class SitesModal {
       });
 
   SitesModal.fromJson(Map<String, dynamic> json) {
-    assignedTo = json['assignedTo'];
-
-    createdOn = json['createdOn'];
-    dealerConfirmedChangedBy = json['dealerConfirmedChangedBy'];
-    dealerConfirmedChangedOn = json['dealerConfirmedChangedOn'].toString();
-    inactiveReasonText = json['inactiveReasonText'];
+    assignedTo = json['assignedTo'].toString() ?? "";
+    createdOn = json['createdOn'].toString() ?? "";
+    dealerConfirmedChangedBy = json['dealerConfirmedChangedBy'].toString() ?? "";
+    dealerConfirmedChangedOn = json['dealerConfirmedChangedOn'].toString()??"";
+    inactiveReasonText = json['inactiveReasonText'].toString() ?? "";
     leadId = json['leadId'];
     noOfFloors = json['noOfFloors'];
-    siteAddress = json['siteAddress'];
-    siteBuiltArea = json['siteBuiltArea'];
-    siteClosureReasonText = json['siteClosureReasonText'];
+    siteAddress = json['siteAddress'].toString() ?? "";
+    siteBuiltArea = json['siteBuiltArea'].toString() ?? "";
+    siteClosureReasonText = json['siteClosureReasonText'].toString() ?? "";
     siteCompetitionId = json['siteCompetitionId'];
     siteConstructionId = json['siteConstructionId'];
-    siteCreationDate = json['siteCreationDate'];
-    siteDealerId = json['siteDealerId'];
-    siteDealerName = json['siteDealerName'];
-    siteDistrict = json['siteDistrict'];
-    siteGeotagLatitude = json['siteGeotag_latitude'];
-    siteGeotagLongitude = json['siteGeotag_longitude'];
-    siteGeotagType = json['siteGeotag_type'];
+    siteCreationDate = json['siteCreationDate'].toString() ?? "";
+    siteDealerId = json['siteDealerId'].toString() ?? "";
+    siteDealerName = json['siteDealerName'].toString() ?? "";
+    siteDistrict = json['siteDistrict'].toString() ?? "";
+    siteGeotagLatitude = json['siteGeotag_latitude'].toString() ?? "";
+    siteGeotagLongitude = json['siteGeotag_longitude'].toString() ?? "";
+    siteGeotagType = json['siteGeotag_type'].toString() ?? "";
     siteId = json['siteId'];
-    siteNextVisitDate = json['siteNextVisitDate'];
+    siteNextVisitDate = json['siteNextVisitDate'].toString() ?? "";
     siteOppertunityId = json['siteOppertunityId'];
-    siteOwnerContactNumber = json['siteOwnerContactNumber'];
-    siteOwnerName = json['siteOwnerName'];
-    sitePincode = json['sitePincode'];
-    sitePlotNumber = json['sitePlotNumber'];
+    siteOwnerContactNumber = json['siteOwnerContactNumber'].toString() ?? "";
+    siteOwnerName = json['siteOwnerName'].toString() ?? "";
+    sitePincode = json['sitePincode'].toString() ?? "";
+    sitePlotNumber = json['sitePlotNumber'].toString() ?? "";
     siteProbabilityWinningId = json['siteProbabilityWinningId'];
-    siteProductDemo = json['siteProductDemo'];
-    siteProductOralBriefing = json['siteProductOralBriefing'];
-    siteReraNumber = json['siteRera_number'];
+    siteProductDemo = json['siteProductDemo'].toString() ?? "";
+    siteProductOralBriefing = json['siteProductOralBriefing'].toString() ?? "";
+    siteReraNumber = json['siteRera_number'].toString() ?? "";
     siteScore = json['siteScore'];
-    siteSegment = json['siteSegment'];
-    siteSoId = json['siteSoId'];
-    siteSoname = json['siteSoname'];
+    siteSegment = json['siteSegment'].toString() ?? "";
+    siteSoId = json['siteSoId'].toString() ?? "";
+    siteSoname = json['siteSoname'].toString() ?? "";
     siteStageId = json['siteStageId'];
     siteState = json['siteState'];
     siteStatusId = json['siteStatusId'];
     siteTaluk = json['siteTaluk'];
     siteTotalSitePotential = json['siteTotalSitePotential'];
-    updatedBy = json['updatedBy'];
-    updatedOn = json['updatedOn'];
-    isDealerConfirmedChangedBySo = json['isDealerConfirmedChangedBySo'];
-    subdealerId = json['subdealerId'];
-    siteSubDealerName = json['siteSubDealerName'];
+    updatedBy = json['updatedBy'].toString() ?? "";
+    updatedOn = json['updatedOn'].toString() ?? "";
+    isDealerConfirmedChangedBySo = json['isDealerConfirmedChangedBySo'].toString() ?? "";
+    subdealerId = json['subdealerId'].toString() ?? "";
+    siteSubDealerName = json['siteSubDealerName'].toString() ?? "";
 
   }
 
@@ -433,7 +420,7 @@ class SiteFloorsEntity {
 
   SiteFloorsEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    siteFloorTxt = json['siteFloorTxt'];
+    siteFloorTxt = json['siteFloorTxt'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -457,8 +444,8 @@ class SitephotosEntity {
   SitephotosEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     siteId = json['siteId'];
-    photoName = json['photoName'];
-    createdBy = json['createdBy'];
+    photoName = json['photoName'].toString() ?? "";
+    createdBy = json['createdBy'].toString() ?? "";
     createdOn = json['createdOn'];
   }
 
@@ -608,27 +595,27 @@ class SiteVisitHistoryEntity {
 
   SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    totalBalancePotential = json['totalBalancePotential'];
+    totalBalancePotential = json['totalBalancePotential'].toString() ?? "";
     constructionStageId = json['constructionStageId'];
     floorId = json['floorId'];
-    stagePotential = json['stagePotential'];
+    stagePotential = json['stagePotential'].toString() ?? "";
     brandId = json['brandId'];
-    brandPrice = json['brandPrice'];
-    constructionDate = json['constructionDate'];
+    brandPrice = json['brandPrice'].toString() ?? "";
+    constructionDate = json['constructionDate'].toString() ?? "";
     siteId = json['siteId'];
-    supplyDate = json['supplyDate'];
-    supplyQty = json['supplyQty'];
-    stageStatus = json['stageStatus'];
+    supplyDate = json['supplyDate'].toString() ?? "";
+    supplyQty = json['supplyQty'].toString() ?? "";
+    stageStatus = json['stageStatus'].toString() ?? "";
     createdOn = json['createdOn'];
-    createdBy = json['createdBy'];
-    soldToParty = json['soldToParty'];
-    shipToParty = json['shipToParty'];
-    soCode = json['soCode'];
-    isAuthorised = json['isAuthorised'];
+    createdBy = json['createdBy'].toString() ?? "";
+    soldToParty = json['soldToParty'].toString() ?? "";
+    shipToParty = json['shipToParty'].toString() ?? "";
+    soCode = json['soCode'].toString() ?? "";
+    isAuthorised = json['isAuthorised'].toString() ?? "";
     isExpanded = false;
-    receiptNumber = json['receiptNumber'];
-    authorisedBy = json['authorisedBy'];
-    authorisedOn = json['authorisedOn'];
+    receiptNumber = json['receiptNumber'].toString() ?? "";
+    authorisedBy = json['authorisedBy'].toString()??"";
+    authorisedOn = json['authorisedOn'].toString() ??"";
   }
 
   Map<String, dynamic> toJson() {
@@ -666,7 +653,7 @@ class SiteStageEntity {
 
   SiteStageEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    siteStageDesc = json['siteStageDesc'];
+    siteStageDesc = json['siteStageDesc'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -685,7 +672,7 @@ class ConstructionStageEntity {
 
   ConstructionStageEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    constructionStageText = json['constructionStageText'];
+    constructionStageText = json['constructionStageText'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -704,7 +691,7 @@ class SiteProbabilityWinningEntity {
 
   SiteProbabilityWinningEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    siteProbabilityStatus = json['siteProbabilityStatus'];
+    siteProbabilityStatus = json['siteProbabilityStatus'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -723,7 +710,7 @@ class SiteCompetitionStatusEntity {
 
   SiteCompetitionStatusEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    competitionStatus = json['competitionStatus'];
+    competitionStatus = json['competitionStatus'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -743,8 +730,8 @@ class SiteBrandEntity {
 
   SiteBrandEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    brandName = json['brandName'];
-    productName = json['productName'];
+    brandName = json['brandName'].toString() ?? "";
+    productName = json['productName'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -782,14 +769,14 @@ class InfluencerEntity {
 
   InfluencerEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    inflName = json['inflName'];
-    inflContact = json['inflContact'];
+    inflName = json['inflName'].toString() ?? "";
+    inflContact = json['inflContact'].toString() ?? "";
     inflTypeId = json['inflTypeId'];
     inflCatId = json['inflCatId'];
-    ilpIntrested = json['ilpIntrested'];
+    ilpIntrested = json['ilpIntrested'].toString() ?? "";
     createdOn = json['createdOn'];
     isPrimarybool = json['isPrimarybool'];
-    isPrimary = json['isPrimary'];
+    isPrimary = json['isPrimary'].toString() ?? "";
     originalId = json['originalId'];
   }
 
@@ -825,9 +812,6 @@ class SiteNextStageEntity {
   String floorId;
 
 
-
-
-
   SiteNextStageEntity(
       {this.id,
       this.siteId,
@@ -848,16 +832,16 @@ class SiteNextStageEntity {
     id = json['id'];
     siteId = json['siteId'];
     constructionStageId = json['constructionStageId'];
-    stagePotential = json['stagePotential'];
+    stagePotential = json['stagePotential'].toString() ?? "";
     brandId = json['brandId'];
-    brandPrice = json['brandPrice'];
-    stageStatus = json['stageStatus'];
-    constructionStartDt = json['constructionStartDt'];
-    nextStageSupplyDate = json['nextStageSupplyDate'];
-    nextStageSupplyQty = json['nextStageSupplyQty'];
-    createdBy = json['createdBy'];
+    brandPrice = json['brandPrice'].toString() ?? "";
+    stageStatus = json['stageStatus'].toString() ?? "";
+    constructionStartDt = json['constructionStartDt'].toString() ?? "";
+    nextStageSupplyDate = json['nextStageSupplyDate'].toString() ?? "";
+    nextStageSupplyQty = json['nextStageSupplyQty'].toString() ?? "";
+    createdBy = json['createdBy'].toString() ?? "";
     createdOn = json['createdOn'];
-    floorId = json['floorId'];
+    floorId = json['floorId'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -886,9 +870,6 @@ class SiteCommentsEntity {
   String creatorName;
   String createdBy;
   int createdOn;
-
-
-
   SiteCommentsEntity(
       {this.id,
       this.siteId,
@@ -900,9 +881,9 @@ class SiteCommentsEntity {
   SiteCommentsEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     siteId = json['siteId'];
-    siteCommentText = json['siteCommentText'];
-    creatorName = json['creatorName'];
-    createdBy = json['createdBy'];
+    siteCommentText = json['siteCommentText'].toString() ?? "";
+    creatorName = json['creatorName'].toString() ?? "";
+    createdBy = json['createdBy'].toString() ?? "";
     createdOn = json['createdOn'];
   }
 
@@ -926,7 +907,7 @@ class InfluencerTypeEntity {
 
   InfluencerTypeEntity.fromJson(Map<String, dynamic> json) {
     inflTypeId = json['inflTypeId'];
-    inflTypeDesc = json['inflTypeDesc'];
+    inflTypeDesc = json['inflTypeDesc'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -945,7 +926,7 @@ class InfluencerCategoryEntity {
 
   InfluencerCategoryEntity.fromJson(Map<String, dynamic> json) {
     inflCatId = json['inflCatId'];
-    inflCatDesc = json['inflCatDesc'];
+    inflCatDesc = json['inflCatDesc'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -964,7 +945,7 @@ class SiteOpportunityStatusEntity {
 
   SiteOpportunityStatusEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    opportunityStatus = json['opportunityStatus'];
+    opportunityStatus = json['opportunityStatus'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -1003,12 +984,12 @@ class SiteInfluencerEntity {
     id = json['id'];
     siteId = json['siteId'];
     inflId = json['inflId'];
-    isDelete = json['isDelete'];
-    createdBy = json['createdBy'];
+    isDelete = json['isDelete'].toString() ?? "";
+    createdBy = json['createdBy'].toString() ?? "";
     createdOn = json['createdOn'];
     updatedBy = json['updatedBy'];
     updatedOn = json['updatedOn'];
-    isPrimary = json['isPrimary'];
+    isPrimary = json['isPrimary'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -1022,7 +1003,6 @@ class SiteInfluencerEntity {
     data['updatedBy'] = this.updatedBy;
     data['updatedOn'] = this.updatedOn;
     data['isPrimary'] = this.isPrimary;
-
     return data;
   }
 
@@ -1041,10 +1021,10 @@ class CounterListModel {
         this.shipToPartyName});
 
   CounterListModel.fromJson(Map<String, dynamic> json) {
-    soldToParty = json['soldToParty'];
-    soldToPartyName = json['soldToPartyName'];
-    shipToParty = json['shipToParty'];
-    shipToPartyName = json['shipToPartyName'];
+    soldToParty = json['soldToParty'].toString() ?? "";
+    soldToPartyName = json['soldToPartyName'].toString() ?? "";
+    shipToParty = json['shipToParty'].toString() ?? "";
+    shipToPartyName = json['shipToPartyName'].toString() ?? "";
   }
 
   Map<String, dynamic> toJson() {
