@@ -24,34 +24,35 @@ class _LineSeriesForYTDState extends State<LineSeriesForYTD> {
 
   @override
   Widget build(BuildContext context) {
-
     return SfCartesianChart(
         primaryXAxis: CategoryAxis(
-            majorGridLines: MajorGridLines(width: 0),
-            labelRotation: 90,
-            visibleMaximum: 12
+          majorGridLines: MajorGridLines(width: 0),
+          labelRotation: 90,
+          visibleMaximum: 12,
 
 //            labelPlacement: LabelPlacement.betweenTicks,
 //            interval: 5
         ),
         // title: ChartTitle(text: 'Half yearly sales analysis'),
-        legend: Legend(isVisible: true, position:LegendPosition.top),
+        legend: Legend(isVisible: true, position: LegendPosition.top),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <ChartSeries<ChartData, String>>[
           LineSeries<ChartData, String>(
-              dataSource: widget.chartData,
+            dataSource: widget.chartData,
+            markerSettings: MarkerSettings(isVisible: true),
             xValueMapper: (ChartData data, _) => data.month,
             yValueMapper: (ChartData data, _) => data.count,
-              name: _dashboardController.lineChartLegend1.toString(),
-              dataLabelSettings: DataLabelSettings(isVisible: true),
-              ),
-               LineSeries<ChartData, String>(
-              dataSource: widget.chartData2,
-                 xValueMapper: (ChartData data, _) => data.month,
-                 yValueMapper: (ChartData data, _) => data.count,
-              name: _dashboardController.lineChartLegend2.toString(),
-              dataLabelSettings: DataLabelSettings(isVisible: true),
-              )
+            name: _dashboardController.lineChartLegend1.toString(),
+            dataLabelSettings: DataLabelSettings(isVisible: true),
+          ),
+          LineSeries<ChartData, String>(
+            dataSource: widget.chartData2,
+            markerSettings: MarkerSettings(isVisible: true),
+            xValueMapper: (ChartData data, _) => data.month,
+            yValueMapper: (ChartData data, _) => data.count,
+            name: _dashboardController.lineChartLegend2.toString(),
+            dataLabelSettings: DataLabelSettings(isVisible: true),
+          )
         ]);
   }
 }

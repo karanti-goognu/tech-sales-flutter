@@ -430,7 +430,10 @@ class MyApiClientLeads {
 
 
                   Get.back();
-                  Get.offNamed(Routes.LEADS_SCREEN);
+                  Get.back();
+                  Get.back();
+//                  Get.toNamed(Routes.HOME_SCREEN);
+//                  Get.offNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead(updateLeadResponseModel.respMsg));
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
