@@ -406,7 +406,7 @@ class DspColumnChild extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                                 text:
-                                    "${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString()))}%\n",
+                                    "${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).toInt()}%\n",
                                 style: TextStyle(
                                     fontSize: 24,
                                     color: HexColor('#002A64'),
@@ -581,7 +581,7 @@ class ConvertedColumnChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.dspSlabConvertedCount.toString())}%\n");
+//    print((int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).toInt());
     return Expanded(
         child: _currentMothDetailsVolume == false
             ? Obx(() => SfCircularChart(
@@ -596,7 +596,9 @@ class ConvertedColumnChild extends StatelessWidget {
                       child: Text.rich(
                         TextSpan(
                             text:
-                                "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%\n",
+                                "${((int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN)
+                                    ? 0 :
+                                (int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).toInt()}%\n",
                             style: TextStyle(
                                 fontSize: 24,
                                 color: HexColor('#002A64'),

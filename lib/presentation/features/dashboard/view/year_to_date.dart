@@ -110,6 +110,7 @@ class _YearToDateState extends State<YearToDate> {
   }
 
 getYearlyData()async{
+    print(widget.empID);
   await _dashboardController.getYearlyViewDetails(widget.empID).then((value) {
     print("::::::$value ::::::");
     print("IN VIEW");
@@ -263,7 +264,7 @@ getYearlyData()async{
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: yearMonth == null
-                          ? Container(child: Text("Unable to fetch data"),padding: EdgeInsets.all(12),)
+                          ? CupertinoActivityIndicator()
                           : DropdownButtonHideUnderline(
                               child: Obx(
                               () => _dashboardController.gotYearlyData==true?
@@ -368,7 +369,7 @@ getYearlyData()async{
                       child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Container(
-                            width: SizeConfig.screenWidth * 1.3,
+                            width: SizeConfig.screenWidth * 1.4,
                             height: SizeConfig.screenHeight /2.5,
                             child: BarGraphForYTD(
                               chartData: _barGraphGeneratedField,
@@ -418,7 +419,7 @@ getYearlyData()async{
     Get.dialog(Center(child: CircularProgressIndicator()));
     var pngBytes = await _capturePng();
     final directory = (await getExternalStorageDirectory()).path;
-    imgFile = new File('$directory/screenshot$yearMonth.png');
+    imgFile = new File('$directory/${widget.empID}_$yearMonth.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
