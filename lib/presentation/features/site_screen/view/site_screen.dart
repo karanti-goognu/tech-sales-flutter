@@ -794,7 +794,7 @@ class _SiteScreenState extends State<SiteScreen> {
                               Navigator.push(
                                   context, new CupertinoPageRoute(
                                   builder: (BuildContext context) =>
-                                          ViewSiteScreen(_siteController.sitesListResponse.sitesEntity[index].siteId))
+                                          ViewSiteScreen(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
                               );
                             },
                             child: Card(

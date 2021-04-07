@@ -112,10 +112,10 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                   context,
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
-                                          ViewSiteScreen(_dashboardController
+                                          ViewSiteScreen(siteId: _dashboardController
                                               .mtdGeneratedVolumeSiteList
                                               .sitesEntity[index]
-                                              .siteId)));
+                                              .siteId,tabIndex: 0,)));
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,

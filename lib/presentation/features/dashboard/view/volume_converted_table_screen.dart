@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -144,74 +146,83 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                   :ListView.separated(
                 itemCount: _dashboardController.mtdConvertedVolumeList.volumeEntity.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 4.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex:2,
-                                child: Text(
-                                  "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].siteId}",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize:
-                                  SizeConfig.blockSizeHorizontal * 3),
-                                ),
-                              ),
-                              Expanded(
-                                flex:2,
-                                child: Text(
-                                    "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].constructionStageText}",
+                  return GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                          context,
+                          new CupertinoPageRoute(
+                              builder: (BuildContext context) =>
+                                  ViewSiteScreen(siteId: _dashboardController.mtdConvertedVolumeList.volumeEntity[index].siteId,tabIndex: 3,)));
+                    },
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex:2,
+                                  child: Text(
+                                    "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].siteId}",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize:
-                                    SizeConfig.blockSizeHorizontal * 3)
+                                    SizeConfig.blockSizeHorizontal * 3),
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                flex:2,
-                                child: Text(
-                                    "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].brandName}",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize:
-                                    SizeConfig.blockSizeHorizontal * 3)
+                                Expanded(
+                                  flex:2,
+                                  child: Text(
+                                      "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].constructionStageText}",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize:
+                                      SizeConfig.blockSizeHorizontal * 3)
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                flex:2,
-                                child: Text(
-                                    "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].supplyQty} bg",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize:
-                                    SizeConfig.blockSizeHorizontal * 3)
+                                Expanded(
+                                  flex:2,
+                                  child: Text(
+                                      "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].brandName}",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize:
+                                      SizeConfig.blockSizeHorizontal * 3)
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                flex:2,
-                                child: Text(
-                                    "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].supplyDate}",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize:
-                                    SizeConfig.blockSizeHorizontal * 3)
+                                Expanded(
+                                  flex:2,
+                                  child: Text(
+                                      "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].supplyQty} bg",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize:
+                                      SizeConfig.blockSizeHorizontal * 3)
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: HexColor('F9A61A')),
-                                      padding: EdgeInsets.all(4),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.white,
-                                        size: 14,
-                                      )))
-                            ],
+                                Expanded(
+                                  flex:2,
+                                  child: Text(
+                                      "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].supplyDate}",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize:
+                                      SizeConfig.blockSizeHorizontal * 3)
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: HexColor('F9A61A')),
+                                        padding: EdgeInsets.all(4),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Colors.white,
+                                          size: 14,
+                                        )))
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },
