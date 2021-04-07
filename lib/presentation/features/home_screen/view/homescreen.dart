@@ -399,8 +399,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           Container(
-                            height: 100,
-                            width: MediaQuery.of(context).size.width - 24,
+                          //  height: 130,
+                           // width: MediaQuery.of(context).size.width - 24,
                             child: GridView.count(
                               shrinkWrap: true,
                               // itemCount: 4,
@@ -409,7 +409,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // gridDelegate:
                               //     SliverGridDelegateWithFixedCrossAxisCount(
 
-                              childAspectRatio: 3.4,
+                              childAspectRatio: 2.8,
                               // ),
                               //   new HomeScreenDashboardModel("New Influencers", _homeController.newInfl),
                               //   new HomeScreenDashboardModel("DSP Slabs Converted", _homeController.dspSlabsConverted),
@@ -440,7 +440,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           style: TextStyle(
                                               fontSize: SizeConfig.safeBlockHorizontal*3.5,
 
+
                                               fontFamily: "Muli"),
+                                          maxLines: 2,
+
                                         )
 
                                         )
@@ -745,7 +748,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: list.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 2.3,
+            childAspectRatio: 2.1,
             crossAxisSpacing: 1,
             mainAxisSpacing: 2),
         // itemExtent: 125.0,
@@ -755,26 +758,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
               internetChecking().then((result) => {
                 if (result == true){
-                  print("splashDataModel   ${_splashController.splashDataModel.employeeDetails}"),
                   if(_splashController.splashDataModel.employeeDetails!=null){
                     _navigateToSelectedScreen(index),
                   }
                     else{
                       _homeController.checkSplashMasterData().then((value){
-                        print("splashDataModel   $value");
                         _navigateToSelectedScreen(index);
                       })
                   }
 
-
                   }else{
-
                   Get.snackbar(
                       "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
                       colorText: Colors.white,
                       backgroundColor: Colors.red,
                       snackPosition: SnackPosition.BOTTOM),
-
                 }
               });
 
@@ -799,8 +797,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Image.asset(
                         list[index].imgURL,
-                        width: 30,
-                        height: 30,
+                        width: SizeConfig.screenWidth*.08,
+                        height:  SizeConfig.screenWidth*.08,
                       ),
                     ),
                     SizedBox(
@@ -811,7 +809,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         list[index].value,
                         overflow: TextOverflow.clip,
                         style: TextStyle(
-                            fontSize: SizeConfig.safeBlockHorizontal*3.9,
+                            fontSize: SizeConfig.safeBlockHorizontal*3.8,
                             fontFamily: "Muli",
                             fontWeight: FontWeight.bold),
                       ),
