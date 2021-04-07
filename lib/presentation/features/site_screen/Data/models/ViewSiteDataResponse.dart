@@ -322,7 +322,7 @@ class SitesModal {
     leadId = json['leadId'];
     noOfFloors = json['noOfFloors'];
     siteAddress = json['siteAddress'].toString() ?? "";
-    siteBuiltArea = json['siteBuiltArea'].toString() ?? "";
+    siteBuiltArea = json['siteBuiltArea'];
     siteClosureReasonText = json['siteClosureReasonText'].toString() ?? "";
     siteCompetitionId = json['siteCompetitionId'];
     siteConstructionId = json['siteConstructionId'];
@@ -338,10 +338,10 @@ class SitesModal {
     siteOppertunityId = json['siteOppertunityId'];
     siteOwnerContactNumber = json['siteOwnerContactNumber'].toString() ?? "";
     siteOwnerName = json['siteOwnerName'].toString() ?? "";
-    sitePincode = json['sitePincode'].toString() ?? "";
-    sitePlotNumber = json['sitePlotNumber'].toString() ?? "";
+    sitePincode = json['sitePincode'];
+    sitePlotNumber = json['sitePlotNumber'];
     siteProbabilityWinningId = json['siteProbabilityWinningId'];
-    siteProductDemo = json['siteProductDemo'].toString() ?? "";
+    siteProductDemo = json['siteProductDemo'];
     siteProductOralBriefing = json['siteProductOralBriefing'].toString() ?? "";
     siteReraNumber = json['siteRera_number'].toString() ?? "";
     siteScore = json['siteScore'];
