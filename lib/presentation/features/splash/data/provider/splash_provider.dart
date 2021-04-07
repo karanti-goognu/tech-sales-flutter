@@ -76,6 +76,7 @@ class MyApiClientSplash {
       print('Response body for refresh Api is : ${(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        print("data['employee-details']   $data");
         print(data['employee-details']);
         SplashDataModel splashDataModel = SplashDataModel.fromJson(data);
         print(splashDataModel.employeeDetails);

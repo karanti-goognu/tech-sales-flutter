@@ -84,7 +84,8 @@ class SplashScreenPageState extends State<SplashScreen> {
         Get.offNamed(Routes.LOGIN);
       } else {
         print("on splash_screen.dart");
-       // _splashController.getSecretKey(RequestIds.REFRESH_DATA);
+
+
         internetChecking().then((result){
           if(result)
             _splashController.getSecretKey(RequestIds.REFRESH_DATA);

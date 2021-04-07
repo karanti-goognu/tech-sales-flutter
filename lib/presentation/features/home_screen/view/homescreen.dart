@@ -167,16 +167,19 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: AppBar(
             // titleSpacing: 50,
             backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: 100,
+
+            //toolbarHeight: 100,
+            toolbarHeight: SizeConfig.screenHeight*.12,
             title: Image.asset(
               "assets/images/Logo(Bluebg).png",
-              height: 48,
+              height: (SizeConfig.screenHeight*.12)*.45,
             ),
             automaticallyImplyLeading: false,
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 25.0, top: 20),
+                padding:   EdgeInsets.only(right: SizeConfig.screenWidth*.1,top: (SizeConfig.screenHeight*.12)*.2),
                 child: Column(
+
                   children: [
                     GestureDetector(
                       onTap: () {
@@ -195,8 +198,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         });
                       },
                       child: Container(
-                        height: 40,
-                        width: 40,
+                        height: (SizeConfig.screenHeight*.12)*.43,
+                        width: (SizeConfig.screenHeight*.12)*.43,
                         padding: EdgeInsets.all(4),
                         // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                         decoration: new BoxDecoration(
@@ -208,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Icon(
                           Icons.calendar_today_sharp,
                           color: HexColor("#FFCD00"),
-                          size: 18,
+                          size: (SizeConfig.screenHeight*.12)*.2,
                         ),
                       ),
                     ),
@@ -217,13 +220,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Text(
                       "My Calendar",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                      style: TextStyle(color: Colors.white, fontSize: SizeConfig.safeBlockHorizontal*3),
                     )
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 25.0, top: 20),
+                padding:   EdgeInsets.only(right: SizeConfig.screenWidth*.1,top: (SizeConfig.screenHeight*.12)*.2),
                 child: Column(
                   children: [
                     Stack(
@@ -235,8 +238,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               Get.toNamed(Routes.NOTIFICATION);
                             },
                             child: Container(
-                              height: 40,
-                              width: 40,
+                              height: (SizeConfig.screenHeight*.12)*.43,
+                              width: (SizeConfig.screenHeight*.12)*.43,
                               // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                               decoration: new BoxDecoration(
                                 color: Colors.white,
@@ -248,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Icon(
                                 Icons.notifications_none_outlined,
                                 color: HexColor("#FFCD00"),
-                                size: 30,
+                                size: (SizeConfig.screenHeight*.12)*.3,
                               ),
                             ),
                           ),
@@ -273,7 +276,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 12,
+                                  fontSize:  SizeConfig.safeBlockHorizontal*3,
                                   fontWeight: FontWeight.normal),
                             ),
                           ),
@@ -285,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Text(
                       "Notifications",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                      style: TextStyle(color: Colors.white, fontSize: SizeConfig.safeBlockHorizontal*3),
                     )
                   ],
                 ),
@@ -336,39 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 10.0, top: 20, bottom: 10),
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     // mainAxisAlignment: MainAxisAlignment.start,
-                  //     children: [
-                  //       Obx(
-                  //         () => Text(
-                  //           "Hello , ${_homeController.employeeName}",
-                  //           style: TextStyle(
-                  //               // color: Colors.white,
-                  //               fontSize: 24,
-                  //               fontWeight: FontWeight.normal,
-                  //               fontFamily: "Muli"),
-                  //         ),
-                  //       ),
-                  //       Text("Here are today's",
-                  //           textAlign: TextAlign.start,
-                  //           style: TextStyle(
-                  //               //  color: Colors.white.withOpacity(0.7),
-                  //               fontSize: 15,
-                  //               fontFamily: "Muli")),
-                  //       Text("recommended actions for you",
-                  //           style: TextStyle(
-                  //               // color: Colors.white.withOpacity(0.7),
-                  //               fontSize: 15,
-                  //               fontFamily: "Muli")),
-                  //     ],
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 15,
-                  // ),
+
 
                   Obx(() {
                     if (_homeController.disableSlider != true) {
@@ -389,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Card(
                     clipBehavior: Clip.antiAlias,
                     borderOnForeground: true,
-                    //shadowColor: colornew,
+
                     elevation: 20,
                     margin: EdgeInsets.symmetric(horizontal: 12.0),
                     color: Colors.white,
@@ -781,97 +752,35 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              switch (index) {
-                case 0:
-                  internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                      Get.toNamed(Routes.LEADS_SCREEN),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
-                  break;
-                case 1:
-                  internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                      Get.toNamed(Routes.SITES_SCREEN),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
-                  break;
-                case 2:
-                  internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                        Get.toNamed(Routes.DASHBOARD),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
-                  break;
-                case 3:
-                  internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                      Get.toNamed(Routes.ADD_MWP_SCREEN),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
-                  break;
-                case 4:
-                  internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                      Get.toNamed(Routes.SERVICE_REQUESTS),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
-                  break;
-                case 5:
-                  internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                        Get.toNamed(Routes.VIDEO_TUTORIAL),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                    }
-                  });
-                  break;
-              }
+
+              internetChecking().then((result) => {
+                if (result == true){
+                  print("splashDataModel   ${_splashController.splashDataModel.employeeDetails}"),
+                  if(_splashController.splashDataModel.employeeDetails!=null){
+                    _navigateToSelectedScreen(index),
+                  }
+                    else{
+                      _homeController.checkSplashMasterData().then((value){
+                        print("splashDataModel   $value");
+                        _navigateToSelectedScreen(index);
+                      })
+                  }
+
+
+                  }else{
+
+                  Get.snackbar(
+                      "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                      colorText: Colors.white,
+                      backgroundColor: Colors.red,
+                      snackPosition: SnackPosition.BOTTOM),
+
+                }
+              });
+
+
+
+
             },
             child: Card(
               clipBehavior: Clip.antiAlias,
@@ -914,6 +823,31 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         });
   }
+
+
+  /*Navigate to the selected screen*/
+   _navigateToSelectedScreen(int selectedIndex){
+     switch (selectedIndex) {
+       case 0:
+         Get.toNamed(Routes.LEADS_SCREEN);
+         break;
+       case 1:
+         Get.toNamed(Routes.SITES_SCREEN);
+         break;
+       case 2:
+         Get.toNamed(Routes.DASHBOARD);
+         break;
+       case 3:
+         Get.toNamed(Routes.ADD_MWP_SCREEN);
+         break;
+       case 4:
+         Get.toNamed(Routes.SERVICE_REQUESTS);
+         break;
+       case 5:
+         Get.toNamed(Routes.VIDEO_TUTORIAL);
+         break;
+     }
+   }
 }
 
 class MenuDetailsModel {
