@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -78,8 +79,20 @@ class SplashScreenPageState extends State<SplashScreen> {
       if (isUserLoggedIn == "false") {
         Get.offNamed(Routes.LOGIN);
       } else {
-        _splashController.getSecretKey(RequestIds.REFRESH_DATA);
-      }
+ print("on splash_screen.dart");
+       // _splashController.getSecretKey(RequestIds.REFRESH_DATA);
+        internetChecking().then((result){
+          if(result)
+            _splashController.getSecretKey(RequestIds.REFRESH_DATA);
+          else{
+            Future.delayed(const Duration(seconds: 3), () {
+              _splashController.openNextPage();
+
+            });
+
+          }
+
+        });      }
     });
     _initializeFlutterFireFuture = _initializeFlutterFire();
   }

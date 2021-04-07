@@ -19,6 +19,8 @@ abstract class StringConstants {
   static String employeeName = '_employeeName';
   static String employeeId = '_employeeId';
   static String mobileNumber = '_mobileNumber';
+  static const String JOURNEY_DATE = '_journeyDate';
+  static const String JOURNEY_END_DATE = '_journeyEndTime';
 
   //App constants
   static String appName = 'TSO';

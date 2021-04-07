@@ -1,5 +1,6 @@
 import 'package:flutter_tech_sales/network/network_calls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 
 
 
@@ -34,4 +35,10 @@ class MySharedPreferences {
       country.deaths,
     ]);
   }*/
+}
+
+Future<bool> internetChecking() async {
+  // do something here
+  bool result = await DataConnectionChecker().hasConnection;
+  return result;
 }

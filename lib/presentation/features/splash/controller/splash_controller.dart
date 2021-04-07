@@ -124,8 +124,15 @@ class SplashController extends GetxController {
           debugPrint('Leads Data Response is null');
         } else {
           this.splashDataModel = data;
+          var journeyDate= splashDataModel.journeyDetails.journeyDate;
+          var journeyEndTime= splashDataModel.journeyDetails.journeyEndTime;
+          print("Opportunity journeyDate $journeyDate     $journeyEndTime");
+          prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+          prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+
           print("Opportunity Model ${this.splashDataModel.siteOpportunityStatusRepository}");
-          print("Opportunity Model ${this.splashDataModel.siteSubTypeEntity}");
+//          print("Opportunity Model ${this.splashDataModel.siteSubTypeEntity}");
+          print("on splash_controller.dart ::: before openNextPage()");
           openNextPage();
           /*if (splashDataModel.respCode == "LD2006") {
             Get.dialog(CustomDialogs().errorDialog(splashDataModel.respMsg));
