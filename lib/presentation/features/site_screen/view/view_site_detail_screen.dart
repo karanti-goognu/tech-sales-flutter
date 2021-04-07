@@ -33,8 +33,9 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 
 class ViewSiteScreen extends StatefulWidget {
   int siteId;
+  final tabIndex;
 
-  ViewSiteScreen(this.siteId);
+  ViewSiteScreen({this.siteId, this.tabIndex});
 
   @override
   _ViewSiteScreenState createState() => _ViewSiteScreenState();
@@ -181,7 +182,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length: 4, initialIndex: widget.tabIndex);
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
     getSiteData();

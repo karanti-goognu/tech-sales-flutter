@@ -21,7 +21,6 @@ class DashboardController extends GetxController {
   final DashboardRepository repository;
 
   DashboardController({@required this.repository}) : assert(repository != null);
-
   final _accessKeyResponse = AccessKeyModel().obs;
   final _mtdGeneratedVolumeSiteList = SitesListModel().obs;
   final _mtdConvertedVolumeList = DashboardMtdConvertedVolumeList().obs;
