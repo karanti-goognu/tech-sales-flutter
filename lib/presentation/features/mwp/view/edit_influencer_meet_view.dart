@@ -109,7 +109,9 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                     'CONTRACTOR MEET',
                                     'ENGINEER MEET',
                                     'CONSUMER MEET',
-                                    'MINI CONTRACTOR MEET'
+                                    'MINI CONTRACTOR MEET',
+                                    'TECHNOCRAT MEET',
+                                    'BLOCK LEVEL MEET'
                                   ].map<DropdownMenuItem<String>>(
                                       (String value) {
                                     return DropdownMenuItem<String>(
@@ -206,6 +208,29 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                 keyboardType: TextInputType.number,
                                 decoration: _inputDecoration(
                                     "Non-Dalmia Influencers", false))),
+                            _spaceBetweenFields(),
+                            Obx(() => TextFormField(
+                                validator: (value) {
+                                  if(_addEventController.selectedEventTypeMeet=="MINI CONTRACTOR MEET") {
+                                    if (value.isEmpty) {
+                                      print('called validator');
+                                      return "Meet Initiator Name can't be empty ";
+                                    }
+                                    return null;
+                                  }else{
+                                    return null;
+                                  }
+
+                                },
+                                initialValue: _addEventController
+                                    .meetInitiatorName,
+                                onChanged: (_) {
+                                  _addEventController.meetInitiatorName = _.toString();
+                                },
+                                style: _myFormFont(),
+                                keyboardType: TextInputType.text,
+                                decoration: _inputDecoration(
+                                    "Meet Initiator Name", false))),
                             _spaceBetweenFields(),
                             Text('Total Participants'),
                             Obx(() => Container(
