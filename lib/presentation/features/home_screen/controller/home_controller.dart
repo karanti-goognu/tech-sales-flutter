@@ -132,6 +132,7 @@ class HomeController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('$empId $userSecurityKey');
      await repository.getHomeDashboardDetails(empId).then((_) {
+       Get.back();
         DashboardModel data = _;
         print(data.dashBoardViewModal.dspSlabsConverted);
         this.sitesConverted = data.dashBoardViewModal.sitesConverted;

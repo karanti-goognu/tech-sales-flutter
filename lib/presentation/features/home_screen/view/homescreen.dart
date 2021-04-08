@@ -98,8 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
     //     _homeController.checkInStatus = StringConstants.journeyEnded;
     //   }
     // }
-//    _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
 
+    _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       _homeController.checkInStatus = StringConstants.journeyEnded;
@@ -473,7 +473,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               shape: BoxShape.circle),
                                         ),
                                         Flexible(
-                                            child: Text('Volume Converted (MT)',
+                                            child: Text('Volume Generated (MT)',
                                               style: TextStyle(
                                                   fontSize: SizeConfig.safeBlockHorizontal*3.5,
 
