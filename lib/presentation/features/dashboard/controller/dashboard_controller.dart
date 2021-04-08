@@ -21,7 +21,6 @@ class DashboardController extends GetxController {
   final DashboardRepository repository;
 
   DashboardController({@required this.repository}) : assert(repository != null);
-
   final _accessKeyResponse = AccessKeyModel().obs;
   final _mtdGeneratedVolumeSiteList = SitesListModel().obs;
   final _mtdConvertedVolumeList = DashboardMtdConvertedVolumeList().obs;
@@ -281,7 +280,7 @@ class DashboardController extends GetxController {
               : month.toString());
     }
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
+    _prefs.then((SharedPreferences prefs) async {
       print("Before prefs: $empId");
       if (empId == 'empty')
         empId = prefs.getString(StringConstants.employeeId) ?? "empty";
@@ -289,10 +288,9 @@ class DashboardController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print("After prefs: $empId");
 
-      repository.getDashboardMtdConvertedVolumeList(empId, yearMonth).then((_) {
+      var _=await repository.getDashboardMtdConvertedVolumeList(empId, yearMonth);
         DashboardMtdConvertedVolumeList data = _;
         this.mtdConvertedVolumeList = data;
-      });
     }).catchError((e) => print(e));
   }
 

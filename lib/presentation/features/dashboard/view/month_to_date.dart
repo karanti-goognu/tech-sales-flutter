@@ -1,12 +1,9 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -16,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:screenshot/screenshot.dart';
 
 class MonthToDate extends StatefulWidget {
   final empID, yearMonth;
@@ -32,30 +30,32 @@ class MonthToDateState extends State<MonthToDate> {
   bool _currentMothDetailsVolume = false;
   bool _currentMothDspSlabVolume = false;
   DashboardController _dashboardController = Get.find();
-  static GlobalKey previewContainer = new GlobalKey();
+  ScreenshotController screenshotController = ScreenshotController();
+//   GlobalKey previewContainer = new GlobalKey();
   File imgFile;
   String empID, _currentMonth, _previousMonth;
   String yearMonthForFileName;
   Random random = Random();
-  Future<Uint8List> _capturePng() async {
-    RenderRepaintBoundary boundary =
-        previewContainer.currentContext.findRenderObject();
-    if (boundary.debugNeedsPaint) {
-      print("Waiting for boundary to be painted.");
-      await Future.delayed(const Duration(milliseconds: 20));
-      return _capturePng();
-    }
 
-    var image = await boundary.toImage();
-    var byteData = await image.toByteData(format: ImageByteFormat.png);
-    return byteData.buffer.asUint8List();
-  }
+//  Future<Uint8List> _capturePng() async {
+//    RenderRepaintBoundary boundary =  previewContainer.currentContext.findRenderObject();
+//    if (boundary.debugNeedsPaint) {
+//      print("Waiting for boundary to be painted.");
+//      await Future.delayed(const Duration(milliseconds: 20));
+//      return _capturePng();
+//    }
+//    var image = await boundary.toImage();
+//    var byteData = await image.toByteData(format: ImageByteFormat.png);
+//    return byteData.buffer.asUint8List();
+//  }
 
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
     String empIdForFileName= _dashboardController.empId;
     print(_dashboardController.empId);
-    var pngBytes = await _capturePng();
+//    var pngBytes = await _capturePng();
+    var pngBytes = await  screenshotController.capture(pixelRatio: 5);
+    print(pngBytes);
     final directory = (await getExternalStorageDirectory()).path;
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile = new File('$directory/$empIdForFileName-$yearMonthForFileName.png');
@@ -96,8 +96,9 @@ class MonthToDateState extends State<MonthToDate> {
         padding: const EdgeInsets.only(left: 4.0, right: 4.0),
         child: ListView(
           children: [
-            RepaintBoundary(
-              key: previewContainer,
+            Screenshot(
+              controller: screenshotController,
+//              key: previewContainer,
               child: Column(
                 children: [
                   SizedBox(
@@ -406,7 +407,7 @@ class DspColumnChild extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                                 text:
-                                    "${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString()))}%\n",
+                                    "${(int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString())).toInt()}%\n",
                                 style: TextStyle(
                                     fontSize: 24,
                                     color: HexColor('#002A64'),
@@ -581,7 +582,7 @@ class ConvertedColumnChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.dspSlabConvertedCount.toString())}%\n");
+//    print((int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).toInt());
     return Expanded(
         child: _currentMothDetailsVolume == false
             ? Obx(() => SfCircularChart(
@@ -596,7 +597,9 @@ class ConvertedColumnChild extends StatelessWidget {
                       child: Text.rich(
                         TextSpan(
                             text:
-                                "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%\n",
+                                "${((int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN)
+                                    ? 0 :
+                                (int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).toInt()}%\n",
                             style: TextStyle(
                                 fontSize: 24,
                                 color: HexColor('#002A64'),
