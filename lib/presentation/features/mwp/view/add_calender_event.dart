@@ -46,6 +46,9 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
         {
         _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS),
         _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL),
+          _calendarEventController.selectedDate = "${_currentDate2.year}-${_currentDate2.month}-${_currentDate2.day}",
+          // print('${_calendarEventController.selectedDate}');
+          _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS_OF_DAY),
         }else{
         Get.snackbar(
             "No internet connection.", "Make sure that your wifi or mobile data is turned on.",

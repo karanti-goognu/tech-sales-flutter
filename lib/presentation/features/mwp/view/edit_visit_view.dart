@@ -140,7 +140,11 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                     } else if (_addEventController
                                             .visitSubType ==
                                         "TECHNOCRAT") {
-                                      siteIdText = "Technocrat ID";
+                                      siteIdText = "Influencer Contact";
+                                    }else if (_addEventController
+                                        .visitSubType ==
+                                        "CONTRACTOR") {
+                                      siteIdText = "Influencer Contact";
                                     }
                                   },
                                   items: <String>[
@@ -646,7 +650,10 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     } else if (_addEventController.visitSubType == "COUNTER") {
       visitSubTypeText = "COUNTER Code";
     } else if (_addEventController.visitSubType == "TECHNOCRAT") {
-      visitSubTypeText = "Technocrat ID";
+      visitSubTypeText = "Influencer Contact";
+    }else if (_addEventController.visitSubType ==
+        "CONTRACTOR") {
+      visitSubTypeText = "Influencer Contact";
     }
     return visitSubTypeText;
   }
