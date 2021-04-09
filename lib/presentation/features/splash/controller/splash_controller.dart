@@ -62,7 +62,7 @@ class SplashController extends GetxController {
             switch (requestId) {
               case RequestIds.REFRESH_DATA:
                 print("on splash_controller.dart :::: getAccessKey");
-                getRefreshData(this.accessKeyResponse.accessKey);
+                getRefreshData(this.accessKeyResponse.accessKey,RequestIds.GET_MASTER_DATA_FOR_SPLASH);
                 break;
             }
           }
@@ -89,11 +89,10 @@ class SplashController extends GetxController {
       String mobileNumberEncrypted =
           encryptString(mobileNumber, StringConstants.encryptedKey);
       print('$empIdEncrypted \n$mobileNumberEncrypted');
-      repository
-          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
-          .then((data) {
+      repository.getSecretKey(empIdEncrypted, mobileNumberEncrypted).then((data) {
         Get.back();
         this.secretKeyResponse = data;
+
         print(data);
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
@@ -106,41 +105,31 @@ class SplashController extends GetxController {
     });
   }
 
-  getRefreshData(String accessKey) {
+   getRefreshData(String accessKey, int reqId ) async {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
+    await _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      userSecurityKey =
-          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId =
-          encryptString(empId, StringConstants.encryptedKey).toString();
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      String encryptedEmpId = encryptString(empId, StringConstants.encryptedKey).toString();
 
       //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.refreshSplashData}$empId";
       debugPrint('Url is : $url');
-      repository.getRefreshData(url, accessKey, userSecurityKey).then((data) {
+    await  repository.getRefreshData(url, accessKey, userSecurityKey).then((data) {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
           this.splashDataModel = data;
           var journeyDate= splashDataModel.journeyDetails.journeyDate;
           var journeyEndTime= splashDataModel.journeyDetails.journeyEndTime;
-          print("Opportunity journeyDate $journeyDate     $journeyEndTime");
           prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
           prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
 
-          print("Opportunity Model ${this.splashDataModel.siteOpportunityStatusRepository}");
-//          print("Opportunity Model ${this.splashDataModel.siteSubTypeEntity}");
-          print("Reporting TSO List Model ${this.splashDataModel.reportingTsoListModel }");
-          print("on splash_controller.dart ::: before openNextPage()");
+          if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
           openNextPage();
-          /*if (splashDataModel.respCode == "LD2006") {
-            Get.dialog(CustomDialogs().errorDialog(splashDataModel.respMsg));
-          } else {
-            Get.dialog(CustomDialogs().errorDialog(splashDataModel.respMsg));
-          }*/
+
         }
       });
     });

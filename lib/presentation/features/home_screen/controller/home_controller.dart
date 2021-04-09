@@ -132,6 +132,7 @@ class HomeController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('$empId $userSecurityKey');
      await repository.getHomeDashboardDetails(empId).then((_) {
+       Get.back();
         DashboardModel data = _;
         print(data.dashBoardViewModal.dspSlabsConverted);
         this.sitesConverted = data.dashBoardViewModal.sitesConverted;
@@ -285,4 +286,22 @@ class HomeController extends GetxController {
   openHomeScreen() {
     Get.toNamed(Routes.HOME_SCREEN);
   }
+
+/*call refresh data api for get master data if splash model have no data*/
+ Future<bool> checkSplashMasterData() async {
+   Future.delayed(
+       Duration.zero,
+           () => Get.dialog(Center(child: CircularProgressIndicator()),
+           barrierDismissible: false));
+  await repository.getAccessKey().then((data) async {
+
+   await  _splashController.getRefreshData(this.accessKeyResponse.accessKey,RequestIds.GET_MASTER_DATA_FOR_HOME);
+
+   });
+
+   return true;
+ }
+
+
+
 }

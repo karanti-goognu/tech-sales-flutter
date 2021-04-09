@@ -182,8 +182,9 @@ class DashboardController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       print("Before prefs: $empId");
-      if (empId == 'empty')
+      if (empId == 'empty'||empId == '_empty'){
         empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      }
       print("empId    $empId");
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
