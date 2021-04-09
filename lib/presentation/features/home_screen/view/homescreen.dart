@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
- import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
- import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    print("homescreen.dart :::::: initState()");
+//    print("homescreen.dart :::::: initState()");
     super.initState();
     initPlatformState();
     _moengagePlugin.initialise();
@@ -106,15 +106,15 @@ class _HomeScreenState extends State<HomeScreen> {
       var journeyDate= prefs.getString(StringConstants.JOURNEY_DATE);
       var journeyEndDate = prefs.getString(StringConstants.JOURNEY_END_DATE);
       if (journeyDate == null) {
-        print('Check In');
+//        print('Check In');
         _homeController.checkInStatus = StringConstants.checkIn;
       } else {
         if (journeyEndDate ==
             null) {
-          print('Check Out');
+//          print('Check Out');
           _homeController.checkInStatus = StringConstants.checkOut;
         } else {
-          print('Journey Ended');
+//          print('Journey Ended');
           _homeController.checkInStatus = StringConstants.journeyEnded;
         }
       }
