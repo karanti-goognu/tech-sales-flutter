@@ -5,10 +5,10 @@ import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerListResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/MeetResponseModel.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/MwpVisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
@@ -510,14 +510,17 @@ class AddEventController extends GetxController {
             0.0,
             this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
           this.visitOutcomes,
-          this.visitRemarks
+          this.visitRemarks,
+          this.visitSubType,
+          this.visitSiteId
         );
-        print('&&&&&&');
+        print('&&&&&&'+url);
+        print('visitId'+this.visitId.toString());
         print(json.encode(mwpVisitModelUpdate));
         // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
         repository
             .updateVisitPlan(accessKey, userSecurityKey, url,
-                new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
+                new UpdateVisitResponseModel(mwpVisitModel: mwpVisitModelUpdate,mwpMeetModel: null))
             .then((data) {
           // this.isLoadingVisitView = false;
           Get.back();
@@ -560,11 +563,13 @@ class AddEventController extends GetxController {
               0.0,
               this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
               this.visitOutcomes,
-              this.visitRemarks);
+              this.visitRemarks,
+              this.visitSubType,
+              this.visitSiteId);
           // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
-                  new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
+                  new UpdateVisitResponseModel(mwpVisitModel: mwpVisitModelUpdate,mwpMeetModel: null))
               .then((data) {
             this.isLoadingVisitView = false;
             if (data == null) {
@@ -607,11 +612,13 @@ class AddEventController extends GetxController {
               journeyEndLong,
               this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
               this.visitOutcomes,
-              this.visitRemarks);
+              this.visitRemarks,
+              this.visitSubType,
+              this.visitSiteId);
           // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
           repository
               .updateVisitPlan(accessKey, userSecurityKey, url,
-                  new UpdateVisitRequest(mwpVisitModel: mwpVisitModelUpdate))
+                  new UpdateVisitResponseModel(mwpVisitModel: mwpVisitModelUpdate))
               .then((data) {
             this.isLoadingVisitView = false;
             if (data == null) {
@@ -645,7 +652,9 @@ class AddEventController extends GetxController {
             0.0,
             this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
             this.visitOutcomes,
-            this.visitRemarks);
+            this.visitRemarks,
+            this.visitSubType,
+            this.visitSiteId);
       }
     });
   }
