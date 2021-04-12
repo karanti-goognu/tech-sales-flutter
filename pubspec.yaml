@@ -19,8 +19,29 @@ version: 2.1.0+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
-#dependency_overrides:
-#  intl: ^0.16.0
+
+dependency_overrides:
+  intl: 0.17.0-nullsafety.2
+  path: ^1.8.0
+  #flutter_svg: ^0.20.0-nullsafety.3
+  #http: ^0.13.0
+  #provider: ^5.0.0
+  #connectivity: ^3.0.3
+  #google_fonts: ^2.0.0
+  #geolocator: ^7.0.1
+  #google_maps_flutter: ^2.0.3
+  #google_map_location_picker: ^4.1.0
+  #firebase_core: ^1.0.3
+  #firebase_crashlytics: ^2.0.0
+  #firebase_messaging: ^9.1.1
+  #encrypt: ^5.0.0
+  #device_info: ^2.0.0
+  #pointycastle: ^3.0.1
+  #image_picker: ^0.7.4
+  #url_launcher: ^6.0.3
+  #path_provider: ^2.0.1
+  #permission_handler: 6.1.1
+  #intl_utils: ^1.6.3
 
 dependencies:
   flutter:
@@ -44,11 +65,13 @@ dependencies:
   google_maps_flutter: ^0.5.30
   google_map_location_picker: ^3.3.4
   firebase_core: ^0.5.2
+
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^5.0.2
   firebase_crashlytics: ^0.2.3
   firebase_messaging: ^6.0.9
   #  this will at end
+
   jwt_decoder: ^1.0.4
   dartz: ^0.9.1
   get_it: ^5.0.6
