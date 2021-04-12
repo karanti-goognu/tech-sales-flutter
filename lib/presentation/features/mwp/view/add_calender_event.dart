@@ -280,8 +280,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                   height: 12,
                 ),
                 returnRow(),
-                Expanded(
-                  child: Container(
+                Container(
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -291,7 +290,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                           returnEventsList(),
                         ],
                       ),
-                    ),
+
                   ),
                 ),
               ],
