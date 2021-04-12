@@ -403,7 +403,7 @@ class DspColumnChild extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                                 text:
-                                    "${(int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString())).toInt()}%\n",
+                                    "${(int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString())).isNaN ? 0 : ((int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString()))*100).round()}%\n",
                                 style: TextStyle(
                                     fontSize: 24,
                                     color: HexColor('#002A64'),
@@ -471,13 +471,7 @@ class DspColumnChild extends StatelessWidget {
                         ranges: <GaugeRange>[
                           GaugeRange(
                               startValue: 0,
-                              endValue: int.parse(_dashboardController
-                                  .dspTotalOpperVolume
-                                  .toString())
-                                  .toDouble() ==
-                                  0.0
-                                  ? 100
-                                  : int.parse(_dashboardController
+                              endValue:  int.parse(_dashboardController
                                   .dspTotalOpperVolume
                                   .toString())
                                   .toDouble(),
@@ -486,20 +480,10 @@ class DspColumnChild extends StatelessWidget {
                               endWidth: 15),
                           GaugeRange(
                               startValue: 0,
-                              endValue: (int.parse(_dashboardController
-                                  .convTargetCount
-                                  .toString()) /
-                                  int.parse(_dashboardController
-                                      .dspTotalOpperVolume
-                                      .toString()))
-                                  .isNaN
-                                  ? 0
-                                  : int.parse(_dashboardController
-                                  .convTargetCount
-                                  .toString()) /
-                                  int.parse(_dashboardController
-                                      .dspTotalOpperVolume
-                                      .toString()),
+                              endValue :int.parse(_dashboardController
+                                  .dspSlabConvertedVolume
+                                  .toString())
+                                  .toDouble(),
                               color: HexColor('39B54A'),
                               startWidth: 15,
                               endWidth: 15),
@@ -515,11 +499,8 @@ class DspColumnChild extends StatelessWidget {
                                 .isNaN
                                 ? 0
                                 : int.parse(_dashboardController
-                                .convTargetCount
-                                .toString()) /
-                                int.parse(_dashboardController
-                                    .dspTotalOpperVolume
-                                    .toString()),
+                                .dspSlabConvertedVolume
+                                .toString()).toDouble() ,
                             needleColor: Colors.black12,
                           )
                         ],
@@ -527,7 +508,7 @@ class DspColumnChild extends StatelessWidget {
                           GaugeAnnotation(
                               widget: Container(
                                   child: Text(
-                                      '${(int.parse(_dashboardController.dspSlabConvertedVolume.toString()) / int.parse(_dashboardController.dspTotalOpperVolume.toString())).isNaN ? 0 : int.parse(_dashboardController.dspSlabConvertedVolume.toString()) / int.parse(_dashboardController.dspTotalOpperVolume.toString())}%',
+                                      '${(int.parse(_dashboardController.dspSlabConvertedVolume.toString()) / int.parse(_dashboardController.dspTotalOpperVolume.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspSlabConvertedVolume.toString()) / int.parse(_dashboardController.dspTotalOpperVolume.toString())*100).round()}%',
                                       style: TextStyle(
 //                                                                    fontSize: 25,
                                           fontWeight: FontWeight.bold))),
@@ -597,7 +578,7 @@ class ConvertedColumnChild extends StatelessWidget {
                                 text:
                                     "${((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN)
                                         ? 0 :
-                                    (int.parse(_dashboardController.convertedCount.toString()) ~/ int.parse(_dashboardController.generatedCount.toString()))}%\n",
+                                    ((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.generatedCount.toString()))*100).round()}%\n",
                                 style: TextStyle(
                                     fontSize: 24,
                                     color: HexColor('#002A64'),
@@ -689,20 +670,9 @@ class ConvertedColumnChild extends StatelessWidget {
                               endWidth: 15),
                           GaugeRange(
                               startValue: 0,
-                              endValue: (int.parse(_dashboardController
-                                  .convertedCount
-                                  .toString()) /
-                                  int.parse(_dashboardController
-                                      .generatedCount
-                                      .toString()))
-                                  .isNaN
-                                  ? 0
-                                  : int.parse(_dashboardController
-                                  .convertedCount
-                                  .toString()) /
-                                  int.parse(_dashboardController
-                                      .generatedCount
-                                      .toString()),
+                              endValue:  int.parse(_dashboardController
+                                  .convertedVolume
+                                  .toString()).toDouble(),
                               color: HexColor('39B54A'),
                               startWidth: 15,
                               endWidth: 15),
@@ -717,12 +687,9 @@ class ConvertedColumnChild extends StatelessWidget {
                                     .toString()))
                                 .isNaN
                                 ? 0
-                                : int.parse(_dashboardController
-                                .convTargetCount
-                                .toString()) /
-                                int.parse(_dashboardController
-                                    .generatedCount
-                                    .toString()),
+                                :   int.parse(_dashboardController
+                                    .convertedVolume
+                                    .toString()).toDouble(),
                             needleColor: Colors.black12,
                           )
                         ],
@@ -730,9 +697,9 @@ class ConvertedColumnChild extends StatelessWidget {
                           GaugeAnnotation(
                               widget: Container(
                                   child: Text(
-                                      "${(int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : (int.parse(_dashboardController.convertedCount.toString()) ~/ int.parse(_dashboardController.generatedCount.toString()))}%",
+                                      "${(int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.generatedVolume.toString())).isNaN ? 0 : ((int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.generatedVolume.toString()))*100).round()}%",
                                       style: TextStyle(
-//                                                                    fontSize: 25,
+//                                           fontSize: 25,
                                           fontWeight: FontWeight.bold))),
                               angle: 190,
                               positionFactor: 0.3)

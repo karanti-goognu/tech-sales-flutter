@@ -9,7 +9,6 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetReques
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -40,7 +39,7 @@ class AddEventController extends GetxController {
   final _dealerListSelected = List<DealerModelSelected>().obs;
   final _selectedView = "Visit".obs;
   final _visitOutcomes = ''.obs;
-  final _selectedEventTypeMeet = "MASOON MEET".obs;
+  final _selectedEventTypeMeet = "MASON MEET".obs;
   final _selectedVenueTypeMeet = "BOOKED".obs;
   final _selectedMonth = "January".obs;
   final _phoneNumber = "8860080067".obs;

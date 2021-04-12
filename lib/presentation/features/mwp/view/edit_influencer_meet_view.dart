@@ -104,7 +104,7 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
                                     });
                                   },
                                   items: <String>[
-                                    'MASOON MEET',
+                                    'MASON MEET',
                                     'DEALER MEET',
                                     'CONTRACTOR MEET',
                                     'ENGINEER MEET',

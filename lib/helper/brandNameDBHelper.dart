@@ -14,10 +14,10 @@ class BrandNameDBHelper extends ChangeNotifier{
 
   Future<Database> get db async {
     if (_database != null) {
-      print("mko 1");
+//      print("mko 1");
       return _database;
     }
-    print("mko 2");
+//    print("mko 2");
     _database = await init();
 
     return _database;
@@ -40,14 +40,14 @@ class BrandNameDBHelper extends ChangeNotifier{
 
 
   Future<int> addBrandName(BrandModelforDB brandModelforDB) async {
-    print(brandModelforDB.brandName);
+//    print(brandModelforDB.brandName);
     var client = await db;
     return client.insert('brandName', brandModelforDB.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<int> addDealer(DealerForDb dealerForDb) async {
-    print("ADDING: "+ dealerForDb.toMapForDb().toString());
+//    print("ADDING: "+ dealerForDb.toMapForDb().toString());
     var client = await db;
     return client.insert('counterListDealers', dealerForDb.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -92,7 +92,7 @@ class BrandNameDBHelper extends ChangeNotifier{
 
     if (res.isNotEmpty) {
       var brandNames = res.map((leadMap) => BrandModelforDB.fromDb(leadMap)).toList();
-      print(brandNames.length);
+//      print(brandNames.length);
       return brandNames;
     }
     return [];
@@ -104,7 +104,7 @@ class BrandNameDBHelper extends ChangeNotifier{
 
     if (res.isNotEmpty) {
       var dealerNames = res.map((dealerMap) => DealerForDb.fromDb(dealerMap)).toList();
-      print("res FROM DB   $res");
+//      print("res FROM DB   $res");
       return dealerNames;
     }
     return [];
