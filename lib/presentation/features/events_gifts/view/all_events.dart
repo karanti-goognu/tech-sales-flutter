@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -10,6 +11,7 @@ class AllEvents extends StatefulWidget {
 class _AllEventsState extends State<AllEvents> {
   ScrollController _scrollController;
   int option = 1;
+  String hexColor;
 
   @override
   void initState() {
@@ -19,164 +21,173 @@ class _AllEventsState extends State<AllEvents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: [
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 8,
-                  ),
-                  // Obx(() => (
-                  //     '' ==
-                  //     StringConstants.empty)
-                  //     ? Container()
-                  //     :
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        option = 1;
-                      });
-                    },
-                    child: Chip(
-                      label: Text('Archive'),
-                      backgroundColor: option == 1
-                          ? Colors.blue.withOpacity(0.2)
-                          : Colors.white,
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                            color: option == 1
-                                ? Colors.blue
-                                : Colors.black12),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 8,
+                    ),
+                    // Obx(() => (
+                    //     '' ==
+                    //     StringConstants.empty)
+                    //     ? Container()
+                    //     :
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          option = 1;
+                        });
+                      },
+                      child: Chip(
+                        label: Text('Archive'),
+                        backgroundColor: option == 1
+                            ? Colors.blue.withOpacity(0.2)
+                            : Colors.white,
+                        shape: StadiumBorder(
+                          side: BorderSide(
+                              color: option == 1
+                                  ? Colors.blue
+                                  : Colors.black12),
+                        ),
                       ),
                     ),
-                  ),
-                  //),
-                  SizedBox(
-                    width: 8,
-                  ),
+                    //),
+                    SizedBox(
+                      width: 8,
+                    ),
 
-                  // Obx(() => (
-                  //     '' ==
-                  //     StringConstants.empty)
-                  //     ? Container()
-                  //     :
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        option = 2;
-                      });
-                    },
-                    child: Chip(
-                      label: Text('Not Submitted'),
-                      backgroundColor: option == 2
-                          ? Colors.blue.withOpacity(0.2)
-                          : Colors.white,
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                            color: option == 2
-                                ? Colors.blue
-                                : Colors.black12),
+                    // Obx(() => (
+                    //     '' ==
+                    //     StringConstants.empty)
+                    //     ? Container()
+                    //     :
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          option = 2;
+                        });
+                      },
+                      child: Chip(
+                        label: Text('Not Submitted'),
+                        backgroundColor: option == 2
+                            ? Colors.blue.withOpacity(0.2)
+                            : Colors.white,
+                        shape: StadiumBorder(
+                          side: BorderSide(
+                              color: option == 2
+                                  ? Colors.blue
+                                  : Colors.black12),
+                        ),
                       ),
                     ),
-                  ),
-                  //),
+                    //),
 
-                  SizedBox(
-                    width: 8,
-                  ),
-                  // Obx(() => (
-                  //     '' ==
-                  //     StringConstants.empty)
-                  //     ? Container()
-                  //     :
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        option = 3;
-                      });
-                    },
-                    child: Chip(
-                      label: Text('Pending Approval'),
-                      backgroundColor: option == 3
-                          ? Colors.blue.withOpacity(0.2)
-                          : Colors.white,
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                            color: option == 3
-                                ? Colors.blue
-                                : Colors.black12),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    // Obx(() => (
+                    //     '' ==
+                    //     StringConstants.empty)
+                    //     ? Container()
+                    //     :
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          option = 3;
+                        });
+                      },
+                      child: Chip(
+                        label: Text('Pending Approval'),
+                        backgroundColor: option == 3
+                            ? Colors.blue.withOpacity(0.2)
+                            : Colors.white,
+                        shape: StadiumBorder(
+                          side: BorderSide(
+                              color: option == 3
+                                  ? Colors.blue
+                                  : Colors.black12),
+                        ),
                       ),
                     ),
-                  ),
-                  //),
-                  SizedBox(
-                    width: 8,
-                  ),
+                    //),
+                    SizedBox(
+                      width: 8,
+                    ),
 
 
 
 
-                  // Obx(() => (
-                  //     '' ==
-                  //     StringConstants.empty)
-                  //     ? Container()
-                  //     :
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        option = 4;
-                      });
-                    },
-                    child: Chip(
-                      label: Text('Cancelled'),
-                      backgroundColor: option == 4
-                          ? Colors.blue.withOpacity(0.2)
-                          : Colors.white,
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                            color: option == 4
-                                ? Colors.blue
-                                : Colors.black12),
+                    // Obx(() => (
+                    //     '' ==
+                    //     StringConstants.empty)
+                    //     ? Container()
+                    //     :
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          option = 4;
+                        });
+                      },
+                      child: Chip(
+                        label: Text('Cancelled'),
+                        backgroundColor: option == 4
+                            ? Colors.blue.withOpacity(0.2)
+                            : Colors.white,
+                        shape: StadiumBorder(
+                          side: BorderSide(
+                              color: option == 4
+                                  ? Colors.blue
+                                  : Colors.black12),
+                        ),
                       ),
                     ),
-                  ),
-                  // Obx(() => (
-                  //     '' ==
-                  //     StringConstants.empty)
-                  //     ? Container()
-                  //     :
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        option = 5;
-                      });
-                    },
-                    child: Chip(
-                      label: Text('Request Rejected'),
-                      backgroundColor: option == 5
-                          ? Colors.blue.withOpacity(0.2)
-                          : Colors.white,
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                            color: option == 5
-                                ? Colors.blue
-                                : Colors.black12),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    // Obx(() => (
+                    //     '' ==
+                    //     StringConstants.empty)
+                    //     ? Container()
+                    //     :
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          option = 5;
+                        });
+                      },
+                      child: Chip(
+                        label: Text('Request Rejected'),
+                        backgroundColor: option == 5
+                            ? Colors.blue.withOpacity(0.2)
+                            : Colors.white,
+                        shape: StadiumBorder(
+                          side: BorderSide(
+                              color: option == 5
+                                  ? Colors.blue
+                                  : Colors.black12),
+                        ),
                       ),
                     ),
-                  ),
-                  //),
-                  SizedBox(
-                    width: 8,
-                  ),
+                    //),
+                    SizedBox(
+                      width: 8,
+                    ),
 
-                  SizedBox(
-                    width: 8,
-                  ),
-                ],
+
+                  ],
+                ),
               )),
-         // getList(bColor),
+          (option == 1) ? getList(HexColor('#39B54A'), 'Planned'):
+          (option == 2) ? getList(HexColor('#808080'), 'Not Submitted'):
+          (option == 3) ? getList(HexColor('#F9A61A'), 'Pending Approval'):
+          (option == 4) ? getList(HexColor('#808080'), 'Cancelled'):
+          (option == 5) ? getList(HexColor('#B00020'), 'Request Rejected'):
+          getList(HexColor('#39B54A'), 'Planned')
         ],
       ),
     );
@@ -189,8 +200,13 @@ class _AllEventsState extends State<AllEvents> {
 //    super.dispose();
 //  }
   }
-  Widget getList(Color borderColor) {
+
+
+  Widget getList(Color borderColor, String status) {
     return ListView.builder(
+      shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+
         controller: _scrollController,
         itemCount: 5,
         padding: const EdgeInsets.only(left: 6.0, right: 6, bottom: 10),
@@ -243,9 +259,9 @@ class _AllEventsState extends State<AllEvents> {
                         ),
                         Chip(
                           shape: StadiumBorder(
-                              side: BorderSide(color: HexColor("#39B54A"))),
-                          backgroundColor: HexColor("#39B54A").withOpacity(0.1),
-                          label: Text('Status: Planned'),
+                              side: BorderSide(color: borderColor)),
+                          backgroundColor: borderColor.withOpacity(0.1),
+                          label: Text('Status: $status'),
                           // Obx(
                           //       () => Text(
                           //     (_splashController

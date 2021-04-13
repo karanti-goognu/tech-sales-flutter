@@ -22,47 +22,64 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: [
-          // ExpansionTile(
-          //   title: Row(
-          //     children: [
-          //       Image.asset('assets/images/sr.png'),
-          //      Text('Current Events'),
-          //     ],
-          //   ),
-          //   children: [
-          //     getList()
-          //   ],
-          // ),
-          // ExpansionTile(
-          //   title: Row(
-          //     children: [
-          //       Image.asset('assets/images/sr.png'),
-          //       Text('Upcoming Events'),
-          //     ],
-          //   ),
-          //   children: [
-          //     getList(),
-          //   ],
-          // ),
-          ExpansionTile(
-            title: Row(
+          Card(
+            margin: EdgeInsets.all(10),
+            elevation: 3,
+            child: ExpansionTile(
+              title: Row(
+                children: [
+                  Container(
+                      height: 20,
+                      width: 20,
+                      child: Image.asset('assets/images/calendar.png')),
+                  SizedBox(width: 10,),
+                  Text('Current Events'),
+                ],
+              ),
               children: [
-                Container(
-                  height: 20,
-                    width: 20,
-                    child: Image.asset('assets/images/sr.png')),
-                Text('Past Events'),
+                getList(),
               ],
             ),
-            children: [
-
-              Container(color: Colors.pinkAccent,height: 50,),
-              Container(color: Colors.amber,height: 50,),
-
-
-            ],
+          ),
+          Card(
+            margin: EdgeInsets.all(10),
+            elevation: 3,
+            child: ExpansionTile(
+              title: Row(
+                children: [
+                  Container(
+                      height: 20,
+                      width: 20,
+                      child: Image.asset('assets/images/calendar.png')),
+                  SizedBox(width: 10,),
+                  Text('Upcoming Events'),
+                ],
+              ),
+              children: [
+                getList(),
+              ],
+            ),
+          ),
+          Card(
+            margin: EdgeInsets.all(10),
+            elevation: 3,
+            child: ExpansionTile(
+              title: Row(
+                children: [
+                  Container(
+                    height: 20,
+                      width: 20,
+                      child: Image.asset('assets/images/calendar.png')),
+                  SizedBox(width: 10,),
+                  Text('Past Events'),
+                ],
+              ),
+              children: [
+                getList(),
+              ],
+            ),
           ),
 
         ],
@@ -73,8 +90,10 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
 
   Widget getList() {
     return ListView.builder(
+      shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         controller: _scrollController,
-        itemCount: 5,
+        itemCount: 2,
         padding: const EdgeInsets.only(left: 6.0, right: 6, bottom: 10),
         itemBuilder: (context, index) {
           return Card(
