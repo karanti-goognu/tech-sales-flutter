@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
     new MenuDetailsModel("Sites", "assets/images/img3.png"),
-    new MenuDetailsModel("Dashboard", "assets/images/img4.png"),
+    new MenuDetailsModel("Dashboard", "assets/images/speedometer.png"),
     new MenuDetailsModel("MWP", "assets/images/mwp.png"),
     new MenuDetailsModel("SR & Complaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video Tutorial", "assets/images/tutorial.png"),

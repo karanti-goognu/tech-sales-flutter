@@ -26,13 +26,13 @@ class YearToDate extends StatefulWidget {
 
 
 class _YearToDateState extends State<YearToDate> {
-  final DataGridController _controller = DataGridController();
+//  final DataGridController _controller = DataGridController();
   DashboardController _dashboardController = Get.find();
   String actualOrAverage = 'Actual';
   bool _ytdIsVolume = false;
   String yearMonth;
   List<dynamic> _yearMonthList = [];
-  static GlobalKey previewContainer = new GlobalKey();
+//  static GlobalKey previewContainer = new GlobalKey();
   File imgFile;
   Random random = Random();
   List<DashboardYearlyModels> _thisYearData;
@@ -45,7 +45,7 @@ class _YearToDateState extends State<YearToDate> {
 
 
   getCountAndActualDataForBarGraph() {
-    print("Count and Actual $_thisYearData");
+//    print("Count and Actual $_thisYearData");
     _barGraphGeneratedField = [];
     _barGraphFieldConverted = [];
     _dashboardController.barGraphLegend1 = 'Leads Generated';
@@ -62,7 +62,7 @@ class _YearToDateState extends State<YearToDate> {
   }
 
   getVolumeAndActualDataForBarGraph() {
-    print("Volume and Actual $_thisYearData");
+//    print("Volume and Actual $_thisYearData");
     _barGraphGeneratedField = [];
     _barGraphFieldConverted = [];
     _dashboardController.barGraphLegend1 = 'Volume Generated';
@@ -79,7 +79,7 @@ class _YearToDateState extends State<YearToDate> {
   }
 
   getVolumeAndAverageDataForLineChart() {
-    print("Volume and Average $_thisYearData");
+//    print("Volume and Average $_thisYearData");
     _lineChartGenerated = [];
     _lineChartConverted = [];
     _dashboardController.lineChartLegend1 = 'Avg Generated Volume ';
@@ -96,7 +96,7 @@ class _YearToDateState extends State<YearToDate> {
   }
 
   getCountAndAverageDataForLineChart() {
-    print("Count and Average $_thisYearData");
+//    print("Count and Average $_thisYearData");
     _lineChartGenerated = [];
     _lineChartConverted = [];
     _dashboardController.lineChartLegend1 = 'Avg Lead Generated ';
@@ -113,7 +113,7 @@ class _YearToDateState extends State<YearToDate> {
   }
 
 getYearlyData()async{
-    print(widget.empID);
+//    print(widget.empID);
   await _dashboardController.getYearlyViewDetails(widget.empID).then((value) {
     print("::::::$value ::::::");
     print("IN VIEW");
@@ -427,7 +427,7 @@ getYearlyData()async{
     print(pngBytes);
     final directory = (await getExternalStorageDirectory()).path;
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
-    imgFile = new File('$directory/$empIdForFileName $yearMonth.png');
+    imgFile = new File('$directory/$empIdForFileName-YTD-${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);

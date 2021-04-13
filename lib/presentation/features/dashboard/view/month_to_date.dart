@@ -58,7 +58,7 @@ class MonthToDateState extends State<MonthToDate> {
     print(pngBytes);
     final directory = (await getExternalStorageDirectory()).path;
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
-    imgFile = new File('$directory/$empIdForFileName-$yearMonthForFileName.png');
+    imgFile = new File('$directory/$empIdForFileName-MTD-${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
@@ -518,12 +518,12 @@ class DspColumnChild extends StatelessWidget {
                   ]),
             ),
             Expanded(
-                flex: 5,
+                flex: 3,
                 child: GridView.count(
                   crossAxisCount: 2,
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  childAspectRatio: 5,
+                  childAspectRatio: 7,
                   children: [
                     Container(
                       child: Text(
@@ -707,12 +707,12 @@ class ConvertedColumnChild extends StatelessWidget {
                   ]),
             ),
             Expanded(
-                flex: 5,
+                flex: 3,
                 child: GridView.count(
                   crossAxisCount: 2,
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  childAspectRatio: 5,
+                  childAspectRatio: 7,
                   children: [
                     GestureDetector(
                       onTap:  () =>
