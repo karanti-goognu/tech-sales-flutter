@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("MWP", "assets/images/mwp.png"),
     new MenuDetailsModel("SR & Complaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video Tutorial", "assets/images/tutorial.png"),
-    new MenuDetailsModel("Events & Gifts", "assets/images/sr.png")
+    new MenuDetailsModel("Events & Gifts", "assets/images/calendar.png")
   ];
 
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();

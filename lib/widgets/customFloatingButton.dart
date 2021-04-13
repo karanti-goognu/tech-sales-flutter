@@ -14,7 +14,7 @@ class SpeedDialDetailsModel {
 }
 
 List<SpeedDialDetailsModel> speedDial = [
-  new SpeedDialDetailsModel("Add Events", "assets/images/img2.png", Routes.ADD_EVENTS),
+  new SpeedDialDetailsModel("Add Events", "assets/images/calendar.png", Routes.ADD_EVENTS),
   new SpeedDialDetailsModel("Add SR / Complaint", "assets/images/sr.png",
       Routes.SERVICE_REQUEST_CREATION),
   new SpeedDialDetailsModel("Add Influencer", "assets/images/img4.png",
