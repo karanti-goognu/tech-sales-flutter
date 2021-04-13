@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -35,6 +36,10 @@ class AddEventInfluencerMeetScreenPageState
     _addEventController.dealerList.clear();
     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
     _addEventController.isLoading = true;
+    _addEventController.visitDateTime = "Visit Date";
+    _addEventController.selectedEventTypeMeet = "MASON MEET";
+    _addEventController.dealerListSelected = List<DealerModelSelected>();
+
     super.initState();
   }
 
@@ -69,7 +74,7 @@ class AddEventInfluencerMeetScreenPageState
                               });
                             },
                             items: <String>[
-                              'MASOON MEET',
+                              'MASON MEET',
                               'DEALER MEET',
                               'CONTRACTOR MEET',
                               'ENGINEER MEET',

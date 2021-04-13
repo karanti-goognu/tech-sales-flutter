@@ -15,6 +15,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetReques
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/TargetVsActualModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
@@ -148,7 +149,7 @@ class MyApiClientApp {
   }
 
   updateVisitPlan(String accessKey, String userSecurityKey, String url,
-      UpdateVisitRequest updateVisitRequest) async {
+      UpdateVisitResponseModel updateVisitRequest) async {
     try {
       var body = jsonEncode(updateVisitRequest);
      // print('body is  :: $body');
