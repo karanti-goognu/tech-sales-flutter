@@ -49,6 +49,8 @@ class MyApiClientDashboard {
       var multipartFileSign =new http.MultipartFile('file', stream, length, filename: fileName);
       request.files.add(multipartFileSign);
       request.fields['shareReportWithFileModel '] =json.encode({"shareWith": "S",  "repotName":empID});
+      print(request.fields);
+      print(request.files);
       request.send().then((result) async{http.Response.fromStream(result).then((response) {
            data = json.decode(response.body);
               print(data);

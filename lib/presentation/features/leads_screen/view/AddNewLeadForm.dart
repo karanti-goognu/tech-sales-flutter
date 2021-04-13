@@ -2767,7 +2767,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   _getAddressFromLatLng() async {
     try {
-      print("from lat long ");
+      print("from lat long ${await geolocator.placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude)}");
       List<Placemark> p = await geolocator.placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
 
@@ -2780,14 +2781,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         _pincode.text = place.postalCode;
         _taluk.text = place.locality;
         //txt.text = place.postalCode;
-        _currentAddress =
-            "${place.locality}, ${place.postalCode}, ${place.country}";
-
-        print(
-            "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
+        print("........ selected ${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, "
+            "${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, "
+            "${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
     } catch (e) {
-      print(e);
+      print("ex.....   $e");
     }
   }
 
@@ -2847,6 +2847,10 @@ List<Item> generateItems(int numberOfItems) {
     );
   });
 }
+
+
+
+
 //
 // List<Item> addItems(Item item){
 //   _data.add

@@ -33,8 +33,9 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 
 class ViewSiteScreen extends StatefulWidget {
   int siteId;
+  final tabIndex;
 
-  ViewSiteScreen(this.siteId);
+  ViewSiteScreen({this.siteId, this.tabIndex});
 
   @override
   _ViewSiteScreenState createState() => _ViewSiteScreenState();
@@ -181,7 +182,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length: 4, initialIndex: widget.tabIndex);
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
     getSiteData();
@@ -2550,9 +2551,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                     if(listLength>0){
                     SiteVisitHistoryEntity latestRecordData=siteVisitHistoryEntity.elementAt(0);
-                    if(latestRecordData.soldToParty != value)
-                      if(latestRecordData.isAuthorised=="N"){
 
+                    if(latestRecordData.soldToParty != value){
+                      if(latestRecordData.isAuthorised=="N"){
                         dealerEntityForDb.map((e) => DropdownMenuItem(
                           value: e.id,
                           child: SizedBox(
@@ -2563,7 +2564,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ));
                         return Get.dialog(CustomDialogs().errorDialog("Your previous supplier not authorised."));
 
-                      }
+                      }else
+                        sitesModal.isDealerConfirmedChangedBySo="N";
+                    }
+
                   }
 
                     selectedSubDealer = null;
@@ -2575,7 +2579,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         .toList();
                     selectedSubDealer = subDealerList[0];
                     visitDataSubDealer = subDealerList[0].shipToParty;
-                    sitesModal.isDealerConfirmedChangedBySo="N";
+
                   });
 
                 }: null,

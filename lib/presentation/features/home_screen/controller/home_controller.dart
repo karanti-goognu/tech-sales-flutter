@@ -100,7 +100,7 @@ class HomeController extends GetxController {
   }
 
   getAccessKey(int requestId) {
-    print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
+//    print('EmpId :: ${this.empId} Phone Number :: ${this.phoneNumber} ');
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -130,10 +130,11 @@ class HomeController extends GetxController {
        empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('$empId $userSecurityKey');
+//      print('$empId $userSecurityKey');
      await repository.getHomeDashboardDetails(empId).then((_) {
+       Get.back();
         DashboardModel data = _;
-        print(data.dashBoardViewModal.dspSlabsConverted);
+//        print(data.dashBoardViewModal.dspSlabsConverted);
         this.sitesConverted = data.dashBoardViewModal.sitesConverted;
         this.dspSlabsConverted = data.dashBoardViewModal.dspSlabsConverted;
         this.sitesConverted = data.dashBoardViewModal.sitesConverted;
@@ -151,7 +152,7 @@ class HomeController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
+//      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
@@ -165,9 +166,8 @@ class HomeController extends GetxController {
         debugPrint('Url is : $url');
         var date = DateTime.now();
         var formattedDate = "${date.year}-${date.month}-${(date.day)}";
-        print(
-            'Date is ${date.toString()} Formatted Date :: $formattedDate Latitude $journeyStartLat Longitude $journeyStartLong');
-        print('Disable the button');
+//        print('Date is ${date.toString()} Formatted Date :: $formattedDate Latitude $journeyStartLat Longitude $journeyStartLong');
+//        print('Disable the button');
         this.disableSlider = true;
         repository
             .getCheckInDetails(
@@ -196,8 +196,8 @@ class HomeController extends GetxController {
                 this.checkInResponse.journeyEntity.journeyDate;
             _splashController.splashDataModel.journeyDetails.journeyStartTime =
                 this.checkInResponse.journeyEntity.journeyStartTime;
-            print("${this.checkInResponse}");
-            print('Enable the button');
+//            print("${this.checkInResponse}");
+//            print('Enable the button');
             this.disableSlider = false;
           }
           Get.back();
@@ -234,7 +234,7 @@ class HomeController extends GetxController {
         journeyEndLong = position.longitude.toString();
         //debugPrint('request without encryption: $body');
         String url = "${UrlConstants.getCheckInDetails}";
-        debugPrint('Url is : $url');
+//        debugPrint('Url is : $url');
         var date = DateTime.now();
         var formattedDate = "${date.year}-${date.month}-${date.day}";
 
@@ -243,8 +243,7 @@ class HomeController extends GetxController {
         String journeyStartTime =
             _splashController.splashDataModel.journeyDetails.journeyStartTime;
 
-        print(
-            'Date is ${date.toString()} Formatted Date :: $formattedDate Latitude $journeyStartLat Longitude $journeyStartLong');
+//        print('Date is ${date.toString()} Formatted Date :: $formattedDate Latitude $journeyStartLat Longitude $journeyStartLong');
 
         repository
             .getCheckInDetails(
@@ -265,7 +264,7 @@ class HomeController extends GetxController {
           } else {
             this.checkInResponse = data;
             checkInStatus = StringConstants.journeyEnded;
-            print("${this.checkInResponse}");
+//            print("${this.checkInResponse}");
           }
         });
         Get.back();
@@ -282,7 +281,23 @@ class HomeController extends GetxController {
     Get.toNamed(Routes.VERIFY_OTP);
   }
 
-  openHomeScreen() {
+  openHomeScreen(){
     Get.toNamed(Routes.HOME_SCREEN);
   }
+
+/*call refresh data api for get master data if splash model have no data*/
+ Future<bool> checkSplashMasterData() async {
+   Future.delayed(
+       Duration.zero,
+           () => Get.dialog(Center(child: CircularProgressIndicator()),
+           barrierDismissible: false));
+  await repository.getAccessKey().then((data) async {
+   await  _splashController.getRefreshData(this.accessKeyResponse.accessKey,RequestIds.GET_MASTER_DATA_FOR_HOME);
+   });
+
+   return true;
+ }
+
+
+
 }

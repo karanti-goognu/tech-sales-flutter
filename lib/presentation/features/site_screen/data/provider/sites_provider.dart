@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
@@ -159,8 +158,7 @@ class MyApiClientSites {
         var data = json.decode(response.body);
         // print('@@@@');
         // print(data);
-        ViewSiteDataResponse viewSiteDataResponse =
-            ViewSiteDataResponse.fromJson(data);
+        ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse.fromJson(data);
         // print('@@@@');
         // print(viewSiteDataResponse.counterListModel[0].soldToParty);
         if (viewSiteDataResponse.respCode == "ST2010") {

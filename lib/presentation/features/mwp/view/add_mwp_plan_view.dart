@@ -232,14 +232,17 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
         ),
         SizedBox(height: 16,),
         Obx(() => (_mwpPlanController.getMWPResponse.mwpplanModel == null)
+            ? returnSaveRow(): (_mwpPlanController.getMWPResponse.mwpplanModel.status =="SAVE")
             ? returnSaveRow()
-            : (_mwpPlanController.getMWPResponse.mwpplanModel.status =="SUBMIT")
+            : (_mwpPlanController.getMWPResponse.mwpplanModel.status == "APPROVE")
+            ? returnApprovedRow() : returnSubmitRow()
+            /*: (_mwpPlanController.getMWPResponse.mwpplanModel.status =="SUBMIT")
                 ? returnSubmitRow()
                 : (_mwpPlanController.getMWPResponse.mwpplanModel.status == "APPROVE")
                     ?
-        // Text(_mwpPlanController.getMWPResponse.mwpplanModel.status)
-        returnApprovedRow()
-                    : returnSaveRow()),
+                 returnApprovedRow() : returnSaveRow()*/
+
+        ),
         SizedBox(height: 30),
       ],
     );
@@ -274,8 +277,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                     // Validate returns true if the form is valid, or false
                     // otherwise.
               internetChecking().then((result) => {
-                if (result == true)
-                  {
+                if (result == true){
                   _mwpPlanController.action = "SAVE",
                   _appController.getAccessKey(RequestIds.SAVE_MWP_PLAN),
                   }else{

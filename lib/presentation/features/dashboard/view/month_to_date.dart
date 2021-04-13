@@ -1,12 +1,9 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
-import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -16,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:screenshot/screenshot.dart';
 
 class MonthToDate extends StatefulWidget {
   final empID, yearMonth;
@@ -32,30 +30,32 @@ class MonthToDateState extends State<MonthToDate> {
   bool _currentMothDetailsVolume = false;
   bool _currentMothDspSlabVolume = false;
   DashboardController _dashboardController = Get.find();
-  static GlobalKey previewContainer = new GlobalKey();
+  ScreenshotController screenshotController = ScreenshotController();
+//   GlobalKey previewContainer = new GlobalKey();
   File imgFile;
   String empID, _currentMonth, _previousMonth;
   String yearMonthForFileName;
   Random random = Random();
-  Future<Uint8List> _capturePng() async {
-    RenderRepaintBoundary boundary =
-        previewContainer.currentContext.findRenderObject();
-    if (boundary.debugNeedsPaint) {
-      print("Waiting for boundary to be painted.");
-      await Future.delayed(const Duration(milliseconds: 20));
-      return _capturePng();
-    }
 
-    var image = await boundary.toImage();
-    var byteData = await image.toByteData(format: ImageByteFormat.png);
-    return byteData.buffer.asUint8List();
-  }
+//  Future<Uint8List> _capturePng() async {
+//    RenderRepaintBoundary boundary =  previewContainer.currentContext.findRenderObject();
+//    if (boundary.debugNeedsPaint) {
+//      print("Waiting for boundary to be painted.");
+//      await Future.delayed(const Duration(milliseconds: 20));
+//      return _capturePng();
+//    }
+//    var image = await boundary.toImage();
+//    var byteData = await image.toByteData(format: ImageByteFormat.png);
+//    return byteData.buffer.asUint8List();
+//  }
 
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
     String empIdForFileName= _dashboardController.empId;
     print(_dashboardController.empId);
-    var pngBytes = await _capturePng();
+//    var pngBytes = await _capturePng();
+    var pngBytes = await  screenshotController.capture(pixelRatio: 5);
+    print(pngBytes);
     final directory = (await getExternalStorageDirectory()).path;
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile = new File('$directory/$empIdForFileName-$yearMonthForFileName.png');
@@ -82,10 +82,6 @@ class MonthToDateState extends State<MonthToDate> {
     _previousMonth = formatter
         .format(DateTime(DateTime.now().year, DateTime.now().month - 1));
 
-//    print("Generated Volume: ${_dashboardController.generatedVolume}");
-//    print("Converted Volume: ${_dashboardController.convertedVolume}");
-//    print("DSP Oppourtunity: ${_dashboardController.dspTotalOpperVolume}");
-//    print("DSP Converted: ${_dashboardController.dspSlabConvertedVolume}");
     super.initState();
   }
 
@@ -96,8 +92,9 @@ class MonthToDateState extends State<MonthToDate> {
         padding: const EdgeInsets.only(left: 4.0, right: 4.0),
         child: ListView(
           children: [
-            RepaintBoundary(
-              key: previewContainer,
+            Screenshot(
+              controller: screenshotController,
+//              key: previewContainer,
               child: Column(
                 children: [
                   SizedBox(
@@ -406,7 +403,7 @@ class DspColumnChild extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                                 text:
-                                    "${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString()))}%\n",
+                                    "${(int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString())).isNaN ? 0 : ((int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString()))*100).round()}%\n",
                                 style: TextStyle(
                                     fontSize: 24,
                                     color: HexColor('#002A64'),
@@ -474,13 +471,7 @@ class DspColumnChild extends StatelessWidget {
                         ranges: <GaugeRange>[
                           GaugeRange(
                               startValue: 0,
-                              endValue: int.parse(_dashboardController
-                                  .dspTotalOpperVolume
-                                  .toString())
-                                  .toDouble() ==
-                                  0.0
-                                  ? 100
-                                  : int.parse(_dashboardController
+                              endValue:  int.parse(_dashboardController
                                   .dspTotalOpperVolume
                                   .toString())
                                   .toDouble(),
@@ -489,20 +480,10 @@ class DspColumnChild extends StatelessWidget {
                               endWidth: 15),
                           GaugeRange(
                               startValue: 0,
-                              endValue: (int.parse(_dashboardController
-                                  .convTargetCount
-                                  .toString()) /
-                                  int.parse(_dashboardController
-                                      .generatedCount
-                                      .toString()))
-                                  .isNaN
-                                  ? 0
-                                  : int.parse(_dashboardController
-                                  .convTargetCount
-                                  .toString()) /
-                                  int.parse(_dashboardController
-                                      .generatedCount
-                                      .toString()),
+                              endValue :int.parse(_dashboardController
+                                  .dspSlabConvertedVolume
+                                  .toString())
+                                  .toDouble(),
                               color: HexColor('39B54A'),
                               startWidth: 15,
                               endWidth: 15),
@@ -513,16 +494,13 @@ class DspColumnChild extends StatelessWidget {
                                 .convTargetCount
                                 .toString()) /
                                 int.parse(_dashboardController
-                                    .generatedCount
+                                    .dspTotalOpperVolume
                                     .toString()))
                                 .isNaN
                                 ? 0
                                 : int.parse(_dashboardController
-                                .convTargetCount
-                                .toString()) /
-                                int.parse(_dashboardController
-                                    .generatedCount
-                                    .toString()),
+                                .dspSlabConvertedVolume
+                                .toString()).toDouble() ,
                             needleColor: Colors.black12,
                           )
                         ],
@@ -530,7 +508,7 @@ class DspColumnChild extends StatelessWidget {
                           GaugeAnnotation(
                               widget: Container(
                                   child: Text(
-                                      '${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%',
+                                      '${(int.parse(_dashboardController.dspSlabConvertedVolume.toString()) / int.parse(_dashboardController.dspTotalOpperVolume.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspSlabConvertedVolume.toString()) / int.parse(_dashboardController.dspTotalOpperVolume.toString())*100).round()}%',
                                       style: TextStyle(
 //                                                                    fontSize: 25,
                                           fontWeight: FontWeight.bold))),
@@ -581,73 +559,84 @@ class ConvertedColumnChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("${(int.parse(_dashboardController.dspTotalOpperVolume.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.dspSlabConvertedCount.toString())}%\n");
+//    print((int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).toInt());
     return Expanded(
         child: _currentMothDetailsVolume == false
-            ? Obx(() => SfCircularChart(
-                margin: EdgeInsets.zero,
-                // backgroundColor: Colors.yellow,
-                annotations: <CircularChartAnnotation>[
-                  CircularChartAnnotation(
-                    widget: Container(
-                      alignment: Alignment.center,
-                      height: 77,
-                      width: 77,
-                      child: Text.rich(
-                        TextSpan(
-                            text:
-                                "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%\n",
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: HexColor('#002A64'),
-                                fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                text: "Site conversion efficiency",
-                                style: TextStyle(fontSize: 10),
-                              )
-                            ]),
-                        textAlign: TextAlign.center,
+            ? Obx(() => Stack(
+              children: [
+                SfCircularChart(
+                    margin: EdgeInsets.zero,
+                    // backgroundColor: Colors.yellow,
+                    annotations: <CircularChartAnnotation>[
+                      CircularChartAnnotation(
+                        widget: Container(
+                          alignment: Alignment.center,
+                          height: 77,
+                          width: 77,
+                          child: Text.rich(
+                            TextSpan(
+                                text:
+                                    "${((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN)
+                                        ? 0 :
+                                    ((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.generatedCount.toString()))*100).round()}%\n",
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: HexColor('#002A64'),
+                                    fontWeight: FontWeight.bold),
+                                children: [
+                                  TextSpan(
+                                    text: "Site conversion efficiency",
+                                    style: TextStyle(fontSize: 10),
+                                  )
+                                ]),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        horizontalAlignment: ChartAlignment.center,
+                        verticalAlignment: ChartAlignment.center,
                       ),
+                    ],
+                    legend: Legend(
+                      isVisible: true,
+                      position: LegendPosition.right,
+                      backgroundColor: Colors.white,
+                      width: (MediaQuery.of(context).size.width / 2).toString(),
+                      title: LegendTitle(),
                     ),
-                    horizontalAlignment: ChartAlignment.center,
-                    verticalAlignment: ChartAlignment.center,
-                  ),
-                ],
-                legend: Legend(
-                  isVisible: true,
-                  position: LegendPosition.right,
-                  backgroundColor: Colors.white,
-                  width: (MediaQuery.of(context).size.width / 2).toString(),
-                  title: LegendTitle(),
-                ),
-                series: <CircularSeries>[
-                  DoughnutSeries<ChartData, String>(
-                      dataSource: [
-                        ChartData(
-                            'Converted-${_dashboardController.convertedCount}',
-                            _dashboardController.convertedCount.toDouble(),
-                            Color(0xff39B54A)),
-                        ChartData(
-                            'Generated-${_dashboardController.generatedCount}',
-                            _dashboardController.generatedCount.toDouble(),
+                    series: <CircularSeries>[
+                      DoughnutSeries<ChartData, String>(
+                          dataSource: [
+                            ChartData(
+                                'Converted-${_dashboardController.convertedCount}',
+                                _dashboardController.convertedCount.toDouble(),
+                                Color(0xff39B54A)),
+                            ChartData(
+                                'Generated-${_dashboardController.generatedCount}',
+                                _dashboardController.generatedCount.toDouble(),
 //                            (int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString()),
-                            Color(0xff00ADEE)),
-                        ChartData(
-                            'Conv. Target-${_dashboardController.convTargetCount}',
-                            _dashboardController.convTargetCount.toDouble(),
-                            Color(0xff007CBF)),
-                        ChartData(
-                            'Remaining Tgt-${_dashboardController.remainingTargetCount}',
-                            _dashboardController.remainingTargetCount.toDouble(),
-                            Color(0xffFFCD00)),
-                      ],
-                      innerRadius: '65.0',
-                      pointColorMapper: (ChartData data, _) => data.color,
-                      strokeColor: Colors.red,
-                      xValueMapper: (ChartData data, _) => data.x,
-                      yValueMapper: (ChartData data, _) => data.y)
-                ]))
+                                Color(0xff00ADEE)),
+                            ChartData(
+                                'Conv. Target-${_dashboardController.convTargetCount}',
+                                _dashboardController.convTargetCount.toDouble(),
+                                Color(0xff007CBF)),
+                            ChartData(
+                                'Remaining Tgt-${_dashboardController.remainingTargetCount}',
+                                _dashboardController.remainingTargetCount.toDouble(),
+                                Color(0xffFFCD00)),
+                          ],
+                          innerRadius: '65.0',
+                          pointColorMapper: (ChartData data, _) => data.color,
+                          strokeColor: Colors.red,
+                          xValueMapper: (ChartData data, _) => data.x,
+                          yValueMapper: (ChartData data, _) => data.y)
+                    ]),
+                Positioned(
+                    bottom: 0,right: 0,
+                    child:
+                    _dashboardController.mwpPlanApproveStatus.toString()!="APPROVE"?
+                    Text("MWP plan not approved", style: TextStyle(color: Colors.red),):Container())
+              ],
+            ))
             : Obx(()=>Column(
           children: [
             Expanded(
@@ -681,20 +670,9 @@ class ConvertedColumnChild extends StatelessWidget {
                               endWidth: 15),
                           GaugeRange(
                               startValue: 0,
-                              endValue: (int.parse(_dashboardController
-                                  .convTargetCount
-                                  .toString()) /
-                                  int.parse(_dashboardController
-                                      .generatedCount
-                                      .toString()))
-                                  .isNaN
-                                  ? 0
-                                  : int.parse(_dashboardController
-                                  .convTargetCount
-                                  .toString()) /
-                                  int.parse(_dashboardController
-                                      .generatedCount
-                                      .toString()),
+                              endValue:  int.parse(_dashboardController
+                                  .convertedVolume
+                                  .toString()).toDouble(),
                               color: HexColor('39B54A'),
                               startWidth: 15,
                               endWidth: 15),
@@ -702,19 +680,16 @@ class ConvertedColumnChild extends StatelessWidget {
                         pointers: <GaugePointer>[
                           NeedlePointer(
                             value: (int.parse(_dashboardController
-                                .convTargetCount
+                                .convertedCount
                                 .toString()) /
                                 int.parse(_dashboardController
                                     .generatedCount
                                     .toString()))
                                 .isNaN
                                 ? 0
-                                : int.parse(_dashboardController
-                                .convTargetCount
-                                .toString()) /
-                                int.parse(_dashboardController
-                                    .generatedCount
-                                    .toString()),
+                                :   int.parse(_dashboardController
+                                    .convertedVolume
+                                    .toString()).toDouble(),
                             needleColor: Colors.black12,
                           )
                         ],
@@ -722,9 +697,9 @@ class ConvertedColumnChild extends StatelessWidget {
                           GaugeAnnotation(
                               widget: Container(
                                   child: Text(
-                                      "${(int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())}%",
+                                      "${(int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.generatedVolume.toString())).isNaN ? 0 : ((int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.generatedVolume.toString()))*100).round()}%",
                                       style: TextStyle(
-//                                                                    fontSize: 25,
+//                                           fontSize: 25,
                                           fontWeight: FontWeight.bold))),
                               angle: 190,
                               positionFactor: 0.3)

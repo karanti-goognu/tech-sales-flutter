@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
@@ -26,7 +25,7 @@ class MyApiClient {
       print('$requestHeaders');
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
-      print('Response body is : ${json.decode(response.body)}');
+//      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -76,22 +75,20 @@ class MyApiClient {
 
       };
 
-      print('request with encryption: $bodyEncrypted');
-      print(
-          'decrypted EmpId :: $decryptedEmpId   Encrypted MobileNumber :: $decryptedMobileNumber');
+//      print('request with encryption: $bodyEncrypted');
+//      print('decrypted EmpId :: $decryptedEmpId   Encrypted MobileNumber :: $decryptedMobileNumber');
       //debugPrint('request without encryption: $body');
-      print(
-          'request with encryption: ${requestHeadersWithAccessKey(accessKey)}');
-      print('Url is : ${UrlConstants.loginCheck}');
+//      print('request with encryption: ${requestHeadersWithAccessKey(accessKey)}');
+//      print('Url is : ${UrlConstants.loginCheck}');
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await post(Uri.parse(UrlConstants.loginCheck),
           headers: requestHeadersWithAccessKey(accessKey),
           body: json.encode(bodyEncrypted),
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
-      print('response is :  ${response.body}');
+//      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-        print('success');
+//        print('success');
         var data = json.decode(response.body);
         LoginModel loginModel = LoginModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
@@ -106,7 +103,7 @@ class MyApiClient {
   retryOtp(String empId, String mobileNumber, String accessKey,
       String otpTokenId) async {
     try {
-      print('Token Id :: $otpTokenId');
+//      print('Token Id :: $otpTokenId');
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
 
@@ -143,12 +140,12 @@ class MyApiClient {
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
-      print('response is :  ${response.body}');
+//      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-        print('success');
+//        print('success');
         var data = json.decode(response.body);
         RetryOtpModel retryOtpModel = RetryOtpModel.fromJson(data);
-        print('Retry Model key Object is :: ${json.encode(retryOtpModel)}');
+//        print('Retry Model key Object is :: ${json.encode(retryOtpModel)}');
         return retryOtpModel;
       } else
         print('error in else');
@@ -171,7 +168,7 @@ class MyApiClient {
     String decryptedOtp =
         decryptString(encryptedOtp, StringConstants.encryptedKey).toString();
 
-    print('$encryptedOtp  -----Decrypt String :: $decryptedOtp');
+//    print('$encryptedOtp  -----Decrypt String :: $decryptedOtp');
     try {
       var deviceId, deviceType;
 
@@ -194,15 +191,15 @@ class MyApiClient {
         "otp-code": encryptedOtp,
       };
 
-      debugPrint('request without encryption: $body');
-      debugPrint('request headers: ${requestHeadersWithAccessKey(accessKey)}');
+//      debugPrint('request without encryption: $body');
+//      debugPrint('request headers: ${requestHeadersWithAccessKey(accessKey)}');
       final response = await post(Uri.parse(UrlConstants.validateOtp),
           headers: requestHeadersWithAccessKey(accessKey),
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
-      print('response is :  ${response.body}');
+//      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-        print('success');
+//        print('success');
         var data = json.decode(response.body);
         print(data);
         ValidateOtpModel validateOtpModel = ValidateOtpModel.fromJson(data);

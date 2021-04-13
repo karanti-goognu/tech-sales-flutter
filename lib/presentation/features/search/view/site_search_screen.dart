@@ -141,10 +141,11 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                   context,
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
-                                          ViewSiteScreen(_siteController
+                                          ViewSiteScreen(siteId: _siteController
                                               .sitesListResponse
                                               .sitesEntity[index]
-                                              .siteId)));
+                                              .siteId,
+                                          tabIndex: 0,)));
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,
