@@ -14,6 +14,7 @@ class SpeedDialDetailsModel {
 }
 
 List<SpeedDialDetailsModel> speedDial = [
+  new SpeedDialDetailsModel("Add Events", "assets/images/img2.png", Routes.ADD_EVENTS),
   new SpeedDialDetailsModel("Add SR / Complaint", "assets/images/sr.png",
       Routes.SERVICE_REQUEST_CREATION),
   new SpeedDialDetailsModel("Add Influencer", "assets/images/img4.png",
@@ -22,6 +23,7 @@ List<SpeedDialDetailsModel> speedDial = [
       "Add MWP", "assets/images/mwp.png", Routes.ADD_MWP_SCREEN),
   new SpeedDialDetailsModel(
       "Add Lead", "assets/images/img2.png", Routes.ADD_LEADS_SCREEN),
+
 ];
 final TextStyle customStyle =
     TextStyle(inherit: false, color: Colors.black, fontSize: 12);

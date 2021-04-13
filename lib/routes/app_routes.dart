@@ -30,5 +30,8 @@ abstract class Routes {
   static const DASHBOARD_SITE_LIST = '/dashboard_site_list';
   static const DASHBOARD_VOLUME_CONVERTED= '/dashboard_volume_converted';
 
+  static const EVENTS_GIFTS = '/events';
+  static const ADD_EVENTS = '/form_add_event';
+
 
 }

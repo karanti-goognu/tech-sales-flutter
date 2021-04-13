@@ -45,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("MWP", "assets/images/mwp.png"),
     new MenuDetailsModel("SR & Complaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video Tutorial", "assets/images/tutorial.png"),
+    new MenuDetailsModel("Events & Gifts", "assets/images/sr.png")
   ];
 
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
@@ -868,6 +869,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           colorText: Colors.white,
                           backgroundColor: Colors.red,
                           snackPosition: SnackPosition.BOTTOM),
+                    }
+                  });
+                  break;
+                case 6:
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                        Get.toNamed(Routes.EVENTS_GIFTS),
+                      }else{
+                      Get.snackbar(
+                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM),
+                      // fetchSiteList()
                     }
                   });
                   break;
