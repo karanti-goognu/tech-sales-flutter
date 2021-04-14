@@ -72,7 +72,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
         },
         child: Scaffold(
             resizeToAvoidBottomInset: false,
-            //resizeToAvoidBottomInset: true,
             extendBody: true,
             appBar: new AppBar(
               backgroundColor: ColorConstants.backgroundColorBlue,

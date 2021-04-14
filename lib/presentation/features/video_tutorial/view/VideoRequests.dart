@@ -66,7 +66,7 @@ class _VideoRequestsState extends State<VideoRequests> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: 120,
+        toolbarHeight: 90,
         centerTitle: false,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,

@@ -53,6 +53,7 @@ class _RequestUpdationState extends State<RequestUpdation> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomPadding: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         height: 68.0,

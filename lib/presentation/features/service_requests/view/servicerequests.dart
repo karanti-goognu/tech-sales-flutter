@@ -87,7 +87,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: 120,
+        toolbarHeight: 80,
         centerTitle: false,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,

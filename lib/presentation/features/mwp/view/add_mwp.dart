@@ -50,8 +50,6 @@ class AddMWPScreenPageState extends State<AddMWP> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      //
       backgroundColor: ColorConstants.backgroundColor,
       resizeToAvoidBottomPadding: false,
       body: _buildAddEventInterface(context),

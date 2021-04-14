@@ -162,6 +162,7 @@ getYearlyData()async{
         child: Container(
           color: ThemeData.light().scaffoldBackgroundColor,
           padding: const EdgeInsets.all(16.0),
+//          padding: const EdgeInsets.all(36.0),
           child: Column(
             children: [
               Row(
@@ -254,12 +255,15 @@ getYearlyData()async{
                   ),
                 ],
               ),
+              SizedBox(height: 15,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Transform.scale(
-                    scale: 0.7,
+//                    scale: 0.7,
+                  scale: 1,
                     child: Container(
+                      height: 28,
                       padding:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                       decoration: BoxDecoration(
@@ -277,7 +281,11 @@ getYearlyData()async{
                                   items: _yearMonthList
                                       .map<DropdownMenuItem>(
                                           (e) => DropdownMenuItem(
-                                        child: Text(e),
+                                        child: Text(e,
+                                          style: TextStyle(
+                                              fontSize: SizeConfig.safeBlockHorizontal*3.0,
+                                              color: ColorConstants.blackColor,
+                                              fontFamily: "Muli"),                                        ),
                                         value: e,
                                       ))
                                       .toList(),
@@ -316,13 +324,15 @@ getYearlyData()async{
                     ),
                   ),
                   Transform.scale(
-                    scale: 0.7,
+                    scale: 1,
                     child: Container(
+                      height: 28,
+//                      width: 100,
                       padding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black38),
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
@@ -332,7 +342,7 @@ getYearlyData()async{
                                 .map((e) => DropdownMenuItem(
                                       child: Text(e,
                                         style: TextStyle(
-                                            fontSize: SizeConfig.safeBlockHorizontal*3.3,
+                                            fontSize: SizeConfig.safeBlockHorizontal*3,
                                             color: ColorConstants.blackColor,
                                             fontFamily: "Muli"),
                                       ),
@@ -372,7 +382,8 @@ getYearlyData()async{
                       child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Container(
-                            width: SizeConfig.screenWidth * 1.4,
+                            width: SizeConfig.screenWidth * 1.0,
+//                            width: SizeConfig.screenWidth * 1.4,
                             height: SizeConfig.screenHeight /2.5,
                             child: BarGraphForYTD(
                               chartData: _barGraphGeneratedField,

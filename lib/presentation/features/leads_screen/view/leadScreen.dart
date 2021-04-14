@@ -111,7 +111,7 @@ class _LeadScreenState extends State<LeadScreen> {
             // titleSpacing: 50,
             // leading: new Container(),
             backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: 120,
+            toolbarHeight: 100,
             centerTitle: false,
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,

@@ -28,6 +28,7 @@ class AddEventScreenPageState extends State<AddEvent> {
         },
         child: Scaffold(
           extendBody: true,
+          resizeToAvoidBottomPadding: false,
           backgroundColor: ColorConstants.backgroundColor,
           body: SingleChildScrollView(
             child: _buildAddEventInterface(context),

@@ -51,6 +51,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         floatingActionButton: BackFloatingButton(),
         bottomNavigationBar: BottomNavigator(),
         backgroundColor: ColorConstants.backgroundColor,
+
         body: SingleChildScrollView(
           child: _buildAddEventInterface(context),
         ),
