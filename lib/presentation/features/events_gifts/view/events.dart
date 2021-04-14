@@ -8,6 +8,8 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts.dart';
+
 
 class Events extends StatefulWidget {
   @override
@@ -101,6 +103,7 @@ class _EventsState extends State<Events> {
                   ),
                   FlatButton(
                     onPressed: () {
+                      Get.to(()=>GiftsView());
                       // _settingModalBottomSheet(context);
                     },
                     shape: RoundedRectangleBorder(
@@ -111,13 +114,10 @@ class _EventsState extends State<Events> {
                       padding: const EdgeInsets.only(bottom: 5),
                       child: Row(
                         children: [
-                          //  Icon(Icons.exposure_zero_outlined),
                           Container(
                               height: 18,
                               width: 18,
-                              // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                               decoration: new BoxDecoration(
-                                //color: Colors.white,
                                 border:
                                     Border.all(color: Colors.black, width: 0.0),
                                 borderRadius:
@@ -125,16 +125,6 @@ class _EventsState extends State<Events> {
                               ),
                               child: Center(
                                   child:Icon(Icons.card_giftcard, color: Colors.orange,)
-                                 // Obx(() =>
-
-                                      //Text('',
-                                      // "${_leadsFilterController.selectedFilterCount}",
-                                      // style: TextStyle(
-                                      //     color: Colors.black,
-                                      //     //fontFamily: 'Raleway',
-                                      //     fontSize: 12,
-                                      //     fontWeight: FontWeight.normal))
-                                 // )
                               )),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
