@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:get/get.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gift_type.dart';
 
 
 class GiftsView extends StatelessWidget {
@@ -61,7 +62,7 @@ class GiftsView extends StatelessWidget {
             }, itemCount: _giftsCategoriesList.length),
           ),
           RaisedButton(
-            onPressed: (){},
+            onPressed: ()=>Get.bottomSheet(GiftType()),
             color: HexColor("#1C99D4"),
             child: Text(
               "Update Inventory",
