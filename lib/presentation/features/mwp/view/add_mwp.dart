@@ -53,6 +53,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
       resizeToAvoidBottomInset: true,
       //
       backgroundColor: ColorConstants.backgroundColor,
+      resizeToAvoidBottomPadding: false,
       body: _buildAddEventInterface(context),
       floatingActionButton: Container(
         height: 68.0,

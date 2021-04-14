@@ -86,14 +86,27 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
           print(srDataToBeAdded.srComplaintListModal.length);
           srListData.srComplaintListModal
               .addAll(srDataToBeAdded.srComplaintListModal);
-          Get.snackbar("Note", "Loading more ..",
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Color(0xffffffff),
-              duration: Duration(milliseconds: 2000));}
+          Get.rawSnackbar(
+            titleText: Text("Note"),
+            messageText: Text(
+                "Loading more .."),
+            backgroundColor: Colors.white,
+          );
+//          Get.snackbar("Note", "Loading more ..",
+//              snackPosition: SnackPosition.BOTTOM,
+//              backgroundColor: Color(0xffffffff),
+//              duration: Duration(milliseconds: 2000));
+        }
         else{
           print('---------------------------');
           print('When empty');
-          Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
+          Get.rawSnackbar(
+            titleText: Text("Note"),
+            messageText: Text(
+                "No more leads .."),
+            backgroundColor: Colors.white,
+          );
+//          Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
         }}
     });
     return srListData;

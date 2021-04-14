@@ -132,6 +132,7 @@ class _RequestCreationState extends State<RequestCreation> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigatorWithoutDraftsAndSearch(),
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       body: Stack(
         children: [
