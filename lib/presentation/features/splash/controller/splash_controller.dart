@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashController extends GetxController {
@@ -138,5 +139,35 @@ class SplashController extends GetxController {
   openNextPage() {
     print("on splash_controller.dart openNextPage()");
     Get.offNamed(Routes.HOME_SCREEN);
+  }
+
+  checkAppVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    var prefs = await SharedPreferences.getInstance();
+    String version=prefs.getString(StringConstants.appVersionForSharedPref);
+//    print("version: $version");
+    String v = packageInfo.version;
+//    print("v : $v");
+
+    if (version == null){
+      prefs.setString(StringConstants.appVersionForSharedPref, v);
+    } else{
+      if (version==v){
+//        print(version);
+//        print(v);
+        print("Not updated recently");
+      }else{
+//        print(version);
+//        print(v);
+        print("App has been updated! Logging out");
+        prefs.setString(StringConstants.appVersionForSharedPref, v);
+        prefs.setString(StringConstants.userSecurityKey, '');
+        prefs.setString(StringConstants.isUserLoggedIn, "false");
+        prefs.setString(StringConstants.employeeName, '');
+        prefs.setString(StringConstants.employeeId, '');
+        prefs.setString(StringConstants.mobileNumber, '');
+
+      }
+    }
   }
 }

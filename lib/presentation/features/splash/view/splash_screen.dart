@@ -75,6 +75,8 @@ class SplashScreenPageState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _splashController.checkAppVersion();
+
 
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {

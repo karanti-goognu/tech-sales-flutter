@@ -139,7 +139,8 @@ class _SiteScreenState extends State<SiteScreen> {
             // titleSpacing: 50,
             // leading: new Container(),
             backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: 120,
+            toolbarHeight: SizeConfig.screenHeight*.14,
+//            toolbarHeight: 120,
             centerTitle: false,
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
