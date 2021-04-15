@@ -839,25 +839,27 @@ class _LeadScreenState extends State<LeadScreen> {
                                                             color: HexColor(
                                                                 "#8DC63F"),
                                                           ),
-                                                          Text(
-                                                            "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                            //" Call Contractor",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: SizeConfig
-                                                                        .safeBlockHorizontal *
-                                                                    3.8,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .italic
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
+                                                          Flexible(
+                                                            child: Text(
+                                                              "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                                              //" Call Contractor",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: SizeConfig
+                                                                          .safeBlockHorizontal *
+                                                                      3.8,
+                                                                  fontFamily:
+                                                                      "Muli",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .italic
+                                                                  //fontWeight: FontWeight.normal
+                                                                  ),
+                                                            ),
                                                           ),
                                                         ],
                                                       ),

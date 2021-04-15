@@ -151,6 +151,12 @@ class SplashController extends GetxController {
 
     if (version == null){
       prefs.setString(StringConstants.appVersionForSharedPref, v);
+      prefs.setString(StringConstants.userSecurityKey, '');
+      prefs.setString(StringConstants.isUserLoggedIn, "false");
+      prefs.setString(StringConstants.employeeName, '');
+      prefs.setString(StringConstants.employeeId, '');
+      prefs.setString(StringConstants.mobileNumber, '');
+      prefs.setString(StringConstants.appVersionForSharedPref, v);
     } else{
       if (version==v){
 //        print(version);
