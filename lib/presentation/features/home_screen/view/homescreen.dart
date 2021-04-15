@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -49,13 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
-  MoEngageInbox _moEngageInbox;
-  int unReadMessageCount = 0;
 
-  Future<int> unReadMessageCoun() async {
-    int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
-    return unReadMessageCount;
-  }
+  // notification section start here
+  // MoEngageInbox _moEngageInbox;
+  int unReadMessageCount = 0;
+  //
+  // Future<int> unReadMessageCoun() async {
+  //   int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
+  //   return unReadMessageCount;
+  // }
 
   Future<bool> internetChecking() async {
     // do something here
@@ -133,14 +134,15 @@ class _HomeScreenState extends State<HomeScreen> {
           .setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
     });
 
-    _moEngageInbox = MoEngageInbox();
-    WidgetsBinding.instance.addPostFrameCallback((_) => {
-      unReadMessageCoun().then((value) => {
-        setState(() {
-          unReadMessageCount = value;
-        }),
-      })
-    });
+    //   notification section starts here
+    // _moEngageInbox = MoEngageInbox();
+    // WidgetsBinding.instance.addPostFrameCallback((_) => {
+    //   unReadMessageCoun().then((value) => {
+    //     setState(() {
+    //       unReadMessageCount = value;
+    //     }),
+    //   })
+    // });
 
   }
 
@@ -235,7 +237,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: EdgeInsets.only(top: 0.0, right: 3),
                           child: GestureDetector(
                             onTap: () {
-                              Get.toNamed(Routes.NOTIFICATION);
+                              // Get.toNamed(Routes.NOTIFICATION);
+                              Get.dialog(CustomDialogs()
+                                  .errorDialog("Coming Soon !!"));
                             },
                             child: Container(
                               height: (SizeConfig.screenHeight*.12)*.43,
