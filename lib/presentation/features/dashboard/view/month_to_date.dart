@@ -723,10 +723,12 @@ class ConvertedColumnChild extends StatelessWidget {
                           children: [
                             Text(
                                 "Generated-${_dashboardController.generatedVolume} MT"),
-                            IconButton(
-                              icon: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
+                            Expanded(
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 14,
+                                ),
                               ),
                             )
                           ],
