@@ -185,6 +185,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                         StringConstants.empty;
                     _siteController.assignToDate = StringConstants.empty;
                     _siteController.assignFromDate = StringConstants.empty;
+                    _siteController.selectedSitePincode = StringConstants.empty;
                     _siteController.selectedFilterCount = 0;
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                   },

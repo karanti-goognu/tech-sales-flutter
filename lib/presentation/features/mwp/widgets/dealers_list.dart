@@ -136,6 +136,7 @@ class _DealersListWidgetState extends State<DealersListWidget> {
                     :_searchList.length!=0?
                      ListView.builder(
                         shrinkWrap: true,
+                         physics: NeverScrollableScrollPhysics(),
                         itemCount: _searchList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return new Container(
@@ -156,6 +157,7 @@ class _DealersListWidgetState extends State<DealersListWidget> {
                           );
                         }):ListView.builder(
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: _addEventController
                     .dealerList.length,
                 itemBuilder: (BuildContext context, int index) {
