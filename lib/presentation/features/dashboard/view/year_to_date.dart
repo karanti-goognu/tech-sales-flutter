@@ -373,6 +373,52 @@ getYearlyData()async{
                   ),
                 ],
               ),
+              SizedBox(height: 15,),
+              actualOrAverage == "Actual"?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    width: 14,
+                    height: 14,
+                    color: HexColor('00ADEE'),
+                  ),
+                  Text(_dashboardController.barGraphLegend1.toString(), style: TextStyle(fontSize: 12),),
+                  Expanded(child: Container(),),
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    width: 14,
+                    height: 14,
+                    color: HexColor('39B54A'),
+                  ),
+                  Text(_dashboardController.barGraphLegend2.toString(), style: TextStyle(fontSize: 12),),
+
+                ],
+              ):Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    width: 14,
+                    height: 14,
+                    color: HexColor('F15A22'),
+                  ),
+                  Text(_dashboardController.lineChartLegend1.toString(), style: TextStyle(fontSize: 12),),
+                  Expanded(child: Container(),),
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    width: 14,
+                    height: 14,
+                    color: HexColor('9E3A0D'),
+                  ),
+                  Text(_dashboardController.lineChartLegend2.toString(), style: TextStyle(fontSize: 12),),
+
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
               actualOrAverage == "Actual"
                   ? Theme(
                 data: ThemeData(highlightColor: Colors.amberAccent,),
@@ -382,9 +428,8 @@ getYearlyData()async{
                       child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Container(
-                            width: SizeConfig.screenWidth * 1.0,
-//                            width: SizeConfig.screenWidth * 1.4,
-                            height: SizeConfig.screenHeight /2.5,
+                            width: SizeConfig.screenWidth * 1.7,
+                            height: SizeConfig.screenHeight /2.8,
                             child: BarGraphForYTD(
                               chartData: _barGraphGeneratedField,
                               chartData2: _barGraphFieldConverted,
@@ -406,7 +451,7 @@ getYearlyData()async{
               _dashboardController.dashboardYearlyViewModel.mtdVolume==null?Center(child: CircularProgressIndicator(),):
               _ytdIsVolume? _returnDataGridForVolume(_dashboardController.dashboardYearlyViewModel.mtdVolume):_returnDataGridForCount(_dashboardController.dashboardYearlyViewModel.mtdCount),
               SizedBox(
-                height: 20,
+                height: 50,
               ),
             ],
           ),
