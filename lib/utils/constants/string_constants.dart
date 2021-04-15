@@ -55,4 +55,8 @@ abstract class StringConstants {
   static String visits = 'VISITS';
   static String influencersMeet = 'INFLUENCERS MEET';
   static String services = 'SERVICES';
+
+  ///Events & Gifts
+  static String cancelAlertMsg = 'Please add your comment to complete this cancellation';
+  static String influencerDoesNotExist = 'Influencer Does not exists.';
 }

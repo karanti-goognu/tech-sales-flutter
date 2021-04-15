@@ -13,8 +13,12 @@ import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/start_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_event.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencerView.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
@@ -166,6 +170,26 @@ class AppPages {
     GetPage(
       name: Routes.ADD_EVENTS,
       page: () => FormAddEvent(),
+      //binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: Routes.DETAIL_EVENT,
+      page: () => DetailViewEvent(),
+      //binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: Routes.CANCEL_EVENT,
+      page: () => CancelEvent(),
+      //binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: Routes.START_EVENT,
+      page: () => StartEvent(),
+      //binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: Routes.UPDATE_EVENT,
+      page: () => UpdateEvent(),
       //binding: DashboardBinding(),
     ),
   ];

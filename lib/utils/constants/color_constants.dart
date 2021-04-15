@@ -12,6 +12,10 @@ abstract class ColorConstants {
   static Color blackColor = HexColor("#2B2828");
   static Color lightBlackBorderColor = HexColor("#00001F");
   static Color checkinColor = HexColor("#8DC63F");
+  static Color darkBlue = HexColor('#0054A6');
+  static Color cancelRed = HexColor('#B00020');
+  static Color btnBlue = HexColor('#1C99D4');
+  static Color greenTitle = HexColor('#006838');
 
 
 

@@ -1,34 +1,26 @@
-import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
-class FormAddEvent extends StatefulWidget {
+class UpdateEvent extends StatefulWidget {
   @override
-  _FormAddEventState createState() => _FormAddEventState();
+  _UpdateEventState createState() => _UpdateEventState();
 }
 
-class _FormAddEventState extends State<FormAddEvent> {
+class _UpdateEventState extends State<UpdateEvent> {
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
   TextEditingController _requestSubType = TextEditingController();
   TextEditingController _query = TextEditingController();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  LocationResult _pickedLocation;
-  Position _currentPosition = new Position();
   var _fromDate = 'Select Date';
   TimeOfDay _time;
   String geoTagType;
@@ -293,35 +285,38 @@ class _FormAddEventState extends State<FormAddEvent> {
                     color: HexColor('#F9A61A'),
                   )),
             ),
-            child: Container(
-              height: 30,
-              child: Text('Add Dealer(s)'),
-              // ListView(
-              //   scrollDirection:
-              //   Axis.horizontal,
-              //   children:
-              //   selectedRequestSubtypeObjectList
-              //       .map(
-              //           (e) =>
-              //           Padding(
-              //             padding:
-              //             const EdgeInsets.symmetric(horizontal: 4.0),
-              //             child:
-              //             Chip(
-              //               label:
-              //               Text(
-              //                 e.serviceRequestTypeText,
-              //                 style:
-              //                 TextStyle(fontSize: 10),
-              //               ),
-              //               backgroundColor: Colors
-              //                   .lightGreen
-              //                   .withOpacity(0.2),
-              //             ),
-              //           )
-              //   )
-              //       .toList(),
-              // ),
+            child:Container(
+              height: ScreenUtil().setSp(30),
+              child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children: ['Chip1', 'Chip1Chip1']
+                // selectedRequestSubtypeObjectList
+                    .map((e) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Chip(
+                    deleteIcon: Icon(Icons.close, size: ScreenUtil().setSp(20),),
+                    deleteIconColor: Colors.black,
+                    onDeleted: (){},
+                    label: Text(
+                      e,
+                      // e.serviceRequestTypeText,
+                      style: TextStyles.formfieldLabelTextDark,
+                    ),
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                      side: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ))
+                    .toList(),
+              ),
             ),
           );
         },
@@ -530,33 +525,20 @@ class _FormAddEventState extends State<FormAddEvent> {
     );
 
     final btns = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        FlatButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-              side: BorderSide(color: Colors.black26)),
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-            child: Text(
-              "SAVE AS DRAFT",
-              style: TextStyles.btnBlue,
-            ),
-          ),
-          onPressed: () {},
-        ),
+
         RaisedButton(
           color: ColorConstants.btnBlue,
           child: Text(
-            "SUBMIT",
-            style: 
-            //TextStyles.btnWhite,
-            TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
-                fontSize: ScreenUtil().setSp(15)),
+            "UPDATE",
+            style:
+                //TextStyles.btnWhite,
+                TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    // letterSpacing: 2,
+                    fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {},
         ),
@@ -622,26 +604,12 @@ class _FormAddEventState extends State<FormAddEvent> {
                   //srComplaintModel != null ?
                   ListView(
             children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                height: 56,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Add Event',
-                      style: TextStyles.titleGreenStyle,
-                    ),
-                    Chip(
-                      shape: StadiumBorder(
-                          side: BorderSide(color: HexColor("#39B54A"))),
-                      backgroundColor: HexColor("#39B54A").withOpacity(0.1),
-                      label: Text('Status: Not Submitted'),
-                    ),
-                  ],
+              Padding(
+                padding: EdgeInsets.only(left:ScreenUtil().setSp(16), top:ScreenUtil().setSp(16) ),
+                child: Text(
+                  'Update Event Details',
+                  style: TextStyles.titleGreenStyle,
                 ),
-                // decoration: BoxDecoration(
-                //     border: Border(bottom: BorderSide(width: 0.3))),
               ),
               SizedBox(height: 16),
               Padding(
@@ -686,104 +654,6 @@ class _FormAddEventState extends State<FormAddEvent> {
                           SizedBox(height: 16),
                           btns,
                           SizedBox(height: 16),
-//                           Row(
-//                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                             crossAxisAlignment: CrossAxisAlignment.center,
-//                             mainAxisSize: MainAxisSize.max,
-//                             children: [
-//                               FlatButton.icon(
-//                                 shape: RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.circular(0),
-//                                     side: BorderSide(color: Colors.black26)),
-//                                 color: Colors.transparent,
-//                                 icon: Padding(
-//                                   padding: const EdgeInsets.all(5.0),
-//                                   child: Icon(
-//                                     Icons.location_searching,
-//                                     color: HexColor("#F9A61A"),
-//                                     size: 18,
-//                                   ),
-//                                 ),
-//                                 label: Padding(
-//                                   padding: const EdgeInsets.only(
-//                                       right: 5, bottom: 8, top: 5),
-//                                   child: Text(
-//                                     "DETECT",
-//                                     style: TextStyle(
-//                                         color: HexColor("#F9A61A"),
-//                                         fontWeight: FontWeight.bold,
-//                                         // letterSpacing: 2,
-//                                         fontSize: 17),
-//                                   ),
-//                                 ),
-//                                 onPressed: () {
-//                                   setState(() {
-//                                     geoTagType = "A";
-//                                   });
-//                                   Get.dialog(Center(
-//                                     child: CircularProgressIndicator(),
-//                                   ));
-//                                   _getCurrentLocation();
-//                                 },
-//                               ),
-//                               Text(
-//                                 "Or",
-//                                 style: TextStyle(
-//                                     fontFamily: "Muli",
-//                                     //color: HexColor("#F9A61A"),
-//                                     // fontWeight: FontWeight.bold,
-//                                     // letterSpacing: 2,
-//                                     fontSize: 17),
-//                               ),
-//                               FlatButton(
-//                                 shape: RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.circular(0),
-//                                     side: BorderSide(color: Colors.black26)),
-//                                 color: Colors.transparent,
-//                                 child: Padding(
-//                                   padding: const EdgeInsets.only(
-//                                       right: 5, bottom: 8, top: 5),
-//                                   child: Text(
-//                                     "MANUAL",
-//                                     style: TextStyle(
-//                                         color: HexColor("#F9A61A"),
-//                                         fontWeight: FontWeight.bold,
-//                                         // letterSpacing: 2,
-//                                         fontSize: 17),
-//                                   ),
-//                                 ),
-//                                 onPressed: () async {
-//                                   setState(() {
-//                                     geoTagType = "M";
-//                                   });
-//                                   LocationResult result = await showLocationPicker(
-//                                     context,
-//                                     StringConstants.API_Key,
-//                                     initialCenter: LatLng(28.644800, 77.216721),
-//                                     automaticallyAnimateToCurrentLocation: true,
-// //                      mapStylePath: 'assets/mapStyle.json',
-//                                     myLocationButtonEnabled: true,
-//                                     // requiredGPS: true,
-//                                     layersButtonEnabled: false,
-//                                     // countries: ['AE', 'NG']
-//
-// //                      resultCardAlignment: Alignment.bottomCenter,
-//                                     // desiredAccuracy: LocationAccuracy.best,
-//                                   );
-//                                   print("result = $result");
-//                                   setState(() {
-//                                     _pickedLocation = result;
-//                                     _currentPosition = new Position(
-//
-//                                         latitude: _pickedLocation.latLng.latitude,
-//                                         longitude: _pickedLocation.latLng.longitude);
-// //                              print(_currentPosition);
-//                                     _getAddressFromLatLng();
-//                                   });
-//                                 },
-//                               ),
-//                             ],
-//                           ),
                         ]),
                   )),
             ],
@@ -1047,7 +917,6 @@ class _FormAddEventState extends State<FormAddEvent> {
             SizedBox(
               height: 20,
             ),
-
             CheckboxListTile(
               title: Text("9939 - 0077059321"),
               value: false,
@@ -1058,80 +927,6 @@ class _FormAddEventState extends State<FormAddEvent> {
             SizedBox(
               height: 20,
             ),
-
-            //       Expanded(
-            //         child: ListView.separated(
-            //           padding: EdgeInsets.symmetric(horizontal: 10),
-            //           itemCount:5,
-            //           //requestSubtype.length,
-            //           itemBuilder: (context, index) {
-            //             return
-            //            // requestId == requestSubtype[index].requestId
-            //            //     ?
-            // CheckboxListTile(
-            //               activeColor: Colors.black,
-            //               dense: true,
-            //               title: Text(''),
-            //                   //requestSubtype[index].serviceRequestTypeText),
-            //               value: true,
-            //                   //selectedRequestSubtype.contains(
-            //                   //requestSubtype[index].serviceRequestTypeText),
-            //               onChanged: (newValue) {
-            //                 // if (!checkedValues.contains(true) ||
-            //                 //     checkedValues[index] == true) {
-            //                 // setState(() {
-            //                 //   selectedRequestSubtype.contains(
-            //                 //       requestSubtype[index]
-            //                 //           .serviceRequestTypeText)
-            //                 //       ? selectedRequestSubtype.remove(
-            //                 //       requestSubtype[index]
-            //                 //           .serviceRequestTypeText)
-            //                 //       : selectedRequestSubtype.add(
-            //                 //       requestSubtype[index]
-            //                 //           .serviceRequestTypeText);
-            //                 //
-            //                 //   selectedRequestSubtypeObjectList
-            //                 //       .contains(requestSubtype[index])
-            //                 //       ? selectedRequestSubtypeObjectList
-            //                 //       .remove(requestSubtype[index])
-            //                 //       : selectedRequestSubtypeObjectList
-            //                 //       .add(requestSubtype[index]);
-            //                 //
-            //                 //   selectedRequestSubtypeSeverity = [];
-            //                 //   selectedRequestSubtypeObjectList
-            //                 //       .forEach((element) {
-            //                 //     setState(() {
-            //                 //       selectedRequestSubtypeSeverity
-            //                 //           .add(element.complaintSeverity);
-            //                 //     });
-            //                 //   });
-            //                   //   print(selectedRequestSubtypeSeverity);
-            //
-            //                   //checkedValues[index] = newValue;
-            //                   // dataToBeSentBack = requestSubtype[index];
-            //                 });
-            //                 // } else {
-            //                 //   Get.snackbar(
-            //                 //     'Please uncheck the previous option',
-            //                 //     '',
-            //                 //     snackPosition: SnackPosition.BOTTOM,
-            //                 //   );
-            //                 // }
-            //               //},
-            //              // controlAffinity: ListTileControlAffinity.leading,
-            //            // )
-            //                 //: Container();
-            //           },
-            //           // separatorBuilder: (context, index) {
-            //           //   return requestId == requestSubtype[index].requestId
-            //           //       ? Padding(
-            //           //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            //           //     child: Divider(),
-            //           //   )
-            //           //       : Container();
-            //          // },
-            //         ),
-            //       ),
             Container(
               decoration:
                   BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
@@ -1178,52 +973,5 @@ class _FormAddEventState extends State<FormAddEvent> {
       addDealerBottomSheetWidget(),
       isScrollControlled: true,
     ).then((value) => setState(() {}));
-  }
-
-  _getCurrentLocation() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
-    } else {
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-        });
-
-        _getAddressFromLatLng();
-        Get.back();
-      }).catchError((e) {
-        print(e);
-      });
-    }
-  }
-
-  _getAddressFromLatLng() async {
-    try {
-      print(
-          "from lat long ${await geolocator.placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude)}");
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
-
-      Placemark place = p[0];
-      setState(() {
-        // _siteAddress.text =
-        //     place.name + "," + place.thoroughfare + "," + place.subLocality;
-        // _district.text = place.subAdministrativeArea;
-        // _state.text = place.administrativeArea;
-        // _pincode.text = place.postalCode;
-        // _taluk.text = place.locality;
-        // //txt.text = place.postalCode;
-        // _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
-        print(
-            "........ selected ${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, "
-            "${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, "
-            "${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
-      });
-    } catch (e) {
-      print("ex.....   $e");
-    }
   }
 }

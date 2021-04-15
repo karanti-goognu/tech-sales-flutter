@@ -251,6 +251,122 @@ class CustomDialogs {
     );
   }
 
+  Widget showCancelEventDialog(String heading, String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(heading,
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                height: 1.4,
+                letterSpacing: .25,
+                fontWeight: FontWeight.bold,
+                color: ColorConstants.inputBoxHintColorDark),),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'NO',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            Get.toNamed(Routes.CANCEL_EVENT);
+            //Get.toNamed(Routes.HOME_SCREEN);
+          },
+        ),
+        TextButton(
+          child: Text(
+            'YES',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            //Get.toNamed(Routes.HOME_SCREEN);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget showStartEventDialog(String heading, String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(heading,
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontWeight: FontWeight.bold,
+                  color: ColorConstants.inputBoxHintColorDark),),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'NO',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+           // Get.toNamed(Routes.CANCEL_EVENT);
+            //Get.toNamed(Routes.HOME_SCREEN);
+          },
+        ),
+        TextButton(
+          child: Text(
+            'YES',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            Get.toNamed(Routes.START_EVENT);
+          },
+        ),
+      ],
+    );
+  }
+
   Widget showExistingLeadDialog(String message, BuildContext context,
       SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
     return AlertDialog(
