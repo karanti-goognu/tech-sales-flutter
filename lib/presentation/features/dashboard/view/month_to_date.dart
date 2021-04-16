@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/controller/da
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -37,17 +38,6 @@ class MonthToDateState extends State<MonthToDate> {
   String yearMonthForFileName;
   Random random = Random();
 
-//  Future<Uint8List> _capturePng() async {
-//    RenderRepaintBoundary boundary =  previewContainer.currentContext.findRenderObject();
-//    if (boundary.debugNeedsPaint) {
-//      print("Waiting for boundary to be painted.");
-//      await Future.delayed(const Duration(milliseconds: 20));
-//      return _capturePng();
-//    }
-//    var image = await boundary.toImage();
-//    var byteData = await image.toByteData(format: ImageByteFormat.png);
-//    return byteData.buffer.asUint8List();
-//  }
 
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
@@ -94,7 +84,6 @@ class MonthToDateState extends State<MonthToDate> {
           children: [
             Screenshot(
               controller: screenshotController,
-//              key: previewContainer,
               child: Column(
                 children: [
                   SizedBox(
@@ -220,7 +209,7 @@ class MonthToDateState extends State<MonthToDate> {
                               Row(
                                 children: [
                                   Text(
-                                    'DSP Slab Coversion',
+                                    'DSP Slab Conversion',
                                     style: TextStyle(fontSize: 18),
                                   ),
                                   Expanded(child: Container())
@@ -304,6 +293,8 @@ class MonthToDateState extends State<MonthToDate> {
                                           yearMonth: yearMonth);
                                     }
                                     _dashboardController.isPrev = true;
+                                    _dashboardController.yearMonth= yearMonth;
+
                                   },
                                   child: Text(
                                     'Show $_previousMonth (Prev.) Data',
@@ -340,7 +331,7 @@ class MonthToDateState extends State<MonthToDate> {
                                           empID: widget.empID,
                                           yearMonth: yearMonth);
                                     }
-
+                                    _dashboardController.yearMonth= yearMonth;
                                     _dashboardController.isPrev = false;
                                   },
                                   child: Text(
@@ -405,13 +396,13 @@ class DspColumnChild extends StatelessWidget {
                                 text:
                                     "${(int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString())).isNaN ? 0 : ((int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString()))*100).round()}%\n",
                                 style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: SizeConfig.safeBlockHorizontal*6,
                                     color: HexColor('#002A64'),
                                     fontWeight: FontWeight.bold),
                                 children: [
                                   TextSpan(
                                     text: "Site conversion efficiency on Count",
-                                    style: TextStyle(fontSize: 10),
+                                    style: TextStyle(fontSize: SizeConfig.safeBlockHorizontal*2.5),
                                   )
                                 ]),
                             textAlign: TextAlign.center,
@@ -519,27 +510,45 @@ class DspColumnChild extends StatelessWidget {
             ),
             Expanded(
                 flex: 3,
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  childAspectRatio: 7,
-                  children: [
-                    Container(
-                      child: Text(
-                          "Opportunity-${_dashboardController
-                              .dspTotalOpperVolume} MT"),
-                      alignment: Alignment.center,
-                      color: Colors.blue,
-                    ),
-                    Container(
-                      child: Text(
-                          "Converted-${_dashboardController.dspSlabConvertedVolume} MT"),
-                      alignment: Alignment.center,
-                      color: Colors.green,
-                    )
-                  ],
+                child:
+//                GridView.count(
+//                  crossAxisCount: 2,
+//                  physics: NeverScrollableScrollPhysics(),
+//                  shrinkWrap: true,
+//                  childAspectRatio: 7,
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 6),
+                  width: SizeConfig.screenWidth,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: Text(
+                              "Opportunity-${_dashboardController
+                                  .dspTotalOpperVolume} MT",textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: SizeConfig.safeBlockHorizontal*3.6
+                            ),),
+                          alignment: Alignment.center,
+                          color: Colors.blue.withOpacity(0.3),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: Text(
+                              "Converted-${_dashboardController.dspSlabConvertedVolume} MT",
+                              textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: SizeConfig.safeBlockHorizontal*3.6
+                            ),),
+                          alignment: Alignment.center,
+                          color: Colors.green.withOpacity(0.3),
+                        ),
+                      )
+                    ],
+                  ),
                 )),
+            SizedBox(height: 5,)
           ],
         )));
   }
@@ -576,17 +585,17 @@ class ConvertedColumnChild extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                                 text:
-                                    "${((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN)
+                                    "${((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString())).isNaN)
                                         ? 0 :
-                                    ((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.generatedCount.toString()))*100).round()}%\n",
+                                    ((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString()))*100).round()}%\n",
                                 style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: SizeConfig.safeBlockHorizontal*6,
                                     color: HexColor('#002A64'),
                                     fontWeight: FontWeight.bold),
                                 children: [
                                   TextSpan(
                                     text: "Site conversion efficiency",
-                                    style: TextStyle(fontSize: 10),
+                                    style: TextStyle(fontSize: SizeConfig.safeBlockHorizontal*2.5),
                                   )
                                 ]),
                             textAlign: TextAlign.center,
@@ -679,15 +688,15 @@ class ConvertedColumnChild extends StatelessWidget {
                         ],
                         pointers: <GaugePointer>[
                           NeedlePointer(
-                            value: (int.parse(_dashboardController
-                                .convertedCount
-                                .toString()) /
-                                int.parse(_dashboardController
-                                    .generatedCount
-                                    .toString()))
-                                .isNaN
-                                ? 0
-                                :   int.parse(_dashboardController
+                            value:
+//                            (int.parse(_dashboardController
+//                                .convertedCount
+//                                .toString()) /
+//                                int.parse(_dashboardController
+//                                    .generatedCount
+//                                    .toString()))
+//                                .isNaN ? 0 :
+                            int.parse(_dashboardController
                                     .convertedVolume
                                     .toString()).toDouble(),
                             needleColor: Colors.black12,
@@ -697,7 +706,7 @@ class ConvertedColumnChild extends StatelessWidget {
                           GaugeAnnotation(
                               widget: Container(
                                   child: Text(
-                                      "${(int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.generatedVolume.toString())).isNaN ? 0 : ((int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.generatedVolume.toString()))*100).round()}%",
+                                      "${(int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.convTargetVolume.toString())).isNaN ? 0 : ((int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.convTargetVolume.toString()))*100).round()}%",
                                       style: TextStyle(
 //                                           fontSize: 25,
                                           fontWeight: FontWeight.bold))),
@@ -707,68 +716,110 @@ class ConvertedColumnChild extends StatelessWidget {
                   ]),
             ),
             Expanded(
-                flex: 3,
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  childAspectRatio: 7,
+                flex: 4,
+                child:
+                    Column(
+//                GridView.count(
+//                  crossAxisCount: 2,
+//                  physics: NeverScrollableScrollPhysics(),
+//                  shrinkWrap: true,
+//                  childAspectRatio: 7,
                   children: [
-                    GestureDetector(
-                      onTap:  () =>
-                          Get.toNamed(Routes.DASHBOARD_SITE_LIST),
+                    Expanded(
                       child: Container(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(
-                                "Generated-${_dashboardController.generatedVolume} MT"),
                             Expanded(
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 14,
+                              child: GestureDetector(
+                                onTap:  () =>
+                                    Get.toNamed(Routes.DASHBOARD_SITE_LIST,),
+                                child: Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                            "Generated-${_dashboardController.generatedVolume} MT",
+                                            style: TextStyle(
+                                              fontSize: SizeConfig.safeBlockHorizontal*3.6
+                                            ),
+                                            textAlign: TextAlign.center),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 14,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  alignment: Alignment.center,
+                                  color: Colors.blue.withOpacity(0.3),
                                 ),
                               ),
-                            )
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => Get.toNamed(
+                                    Routes.DASHBOARD_VOLUME_CONVERTED),
+                                child: Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                          "Converted-${_dashboardController.convertedVolume} MT",
+                                          style: TextStyle(
+                                              fontSize: SizeConfig.safeBlockHorizontal*3.6
+                                          ),
+                                          textAlign: TextAlign.center),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 14,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  alignment: Alignment.center,
+                                  color: Colors.green.withOpacity(0.3),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                        alignment: Alignment.center,
-                        color: Colors.blue.withOpacity(0.3),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () => Get.toNamed(
-                          Routes.DASHBOARD_VOLUME_CONVERTED),
+                    Expanded(
                       child: Container(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(
-                                "Converted-${_dashboardController.convertedVolume} MT"),
-                            IconButton(
-                              icon: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
+                            Expanded(
+                              child: Container(
+                                child: Text(
+                                    "Remaining Tgt-${_dashboardController.remainingTargetVolume} MT",
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.safeBlockHorizontal*3.6
+                                    ),
+                                    textAlign: TextAlign.center),
+                                color: Colors.yellow.withOpacity(0.3),
+                                alignment: Alignment.center,
                               ),
-                            )
+                            ),
+                            Expanded(
+                              child: Container(
+                                child: Text(
+                                    "Conv. Target-${_dashboardController.convTargetVolume} MT",
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.safeBlockHorizontal*3.6
+                                    ),
+                                    textAlign: TextAlign.center),
+                                color: Colors.indigo.withOpacity(0.3),
+                                alignment: Alignment.center,
+                              ),
+                            ),
                           ],
                         ),
-                        alignment: Alignment.center,
-                        color: Colors.green.withOpacity(0.3),
                       ),
-                    ),
-                    Container(
-                      child: Text(
-                          "Remaining Tgt-${_dashboardController.remainingTargetVolume} MT"),
-                      color: Colors.yellow.withOpacity(0.3),
-                      alignment: Alignment.center,
-                    ),
-                    Container(
-                      child: Text(
-                          "Conv. Target-${_dashboardController.convTargetVolume} MT"),
-                      color: Colors.indigo.withOpacity(0.3),
-                      alignment: Alignment.center,
                     )
                   ],
                 )),

@@ -765,7 +765,9 @@ class _LeadScreenState extends State<LeadScreen> {
                                               ],
                                             ),
                                           ),
+                                          Expanded(child: Container(),),
                                           Expanded(
+                                            flex: 2,
                                             child: Padding(
                                               padding: const EdgeInsets.only(
                                                   right: 5.0, bottom: 10),
@@ -798,20 +800,22 @@ class _LeadScreenState extends State<LeadScreen> {
                                                               ),
                                                         ),
                                                         Obx(
-                                                          () => Text(
-                                                            "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
-                                                            style: TextStyle(
-                                                                // color: Colors.black38,
-                                                                fontSize: SizeConfig
-                                                                        .safeBlockHorizontal *
-                                                                    3.7,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
+                                                          () => Flexible(
+                                                            child: Text(
+                                                              "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
+                                                              style: TextStyle(
+                                                                  // color: Colors.black38,
+                                                                  fontSize: SizeConfig
+                                                                          .safeBlockHorizontal *
+                                                                      3.7,
+                                                                  fontFamily:
+                                                                      "Muli",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold
+                                                                  //fontWeight: FontWeight.normal
+                                                                  ),
+                                                            ),
                                                           ),
                                                         )
                                                       ],
