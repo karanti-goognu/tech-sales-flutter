@@ -48,9 +48,18 @@ class LeadsFilterController extends GetxController {
 
   final _phoneNumber = "8860080067".obs;
   final _offset = 0.obs;
+  final _isFilterApplied = false.obs;
+
+  get isFilterApplied => _isFilterApplied;
+
+  set isFilterApplied(value) {
+    _isFilterApplied.value = value;
+  }
+
   get offset => this._offset.value;
 
   set offset(value) => this._offset.value = value;
+
 
 
   final _selectedPosition = 0.obs;
@@ -325,12 +334,20 @@ class LeadsFilterController extends GetxController {
               );
 //              Get.snackbar("Note", "Loading more ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xffffffff),duration: Duration(milliseconds: 2000));
             } else{
-              Get.rawSnackbar(
-                titleText: Text("Note"),
-                messageText: Text(
-                    "No more leads .."),
-                backgroundColor: Colors.white,
-              );
+              print("Is Filter Applied: ${this.isFilterApplied}");
+              if(this.isFilterApplied==true){
+                print("Filter will be implemented here");
+                this.leadsListResponse= data;
+              }
+              else{
+                Get.rawSnackbar(
+                  titleText: Text("Note"),
+                  messageText: Text(
+                      "No more leads .."),
+                  backgroundColor: Colors.white,
+                );
+              }
+
 //              Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
             }
           }

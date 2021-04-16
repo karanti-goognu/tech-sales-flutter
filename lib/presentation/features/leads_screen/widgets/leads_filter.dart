@@ -155,6 +155,8 @@ class _FilterWidgetState extends State<FilterWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    _leadsFilterController.isFilterApplied=false;
+
                     //Navigator.pop(context);
                     setState(() {
                       _leadsFilterController.selectedLeadStage =
@@ -188,6 +190,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 RaisedButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    _leadsFilterController.isFilterApplied=true;
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST);
                   },
