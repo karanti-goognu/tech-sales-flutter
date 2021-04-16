@@ -314,7 +314,7 @@ class LeadsFilterController extends GetxController {
             // this.leadsListResponse = data;
             LeadsListModel leadListResponseServer = data;
             if(leadListResponseServer.leadsEntity.isNotEmpty){
-              leadListResponseServer.leadsEntity=[];
+//              leadListResponseServer.leadsEntity=[];
               leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
               Get.rawSnackbar(

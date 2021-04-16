@@ -378,30 +378,29 @@ class _SiteScreenState extends State<SiteScreen> {
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 10.0, left: 15.0, bottom: 5, right: 15.0),
-                  child: FittedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(
-                          () => Text(
-                            "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Obx(
+                        () => Text(
+                          "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            fontSize: SizeConfig.safeBlockHorizontal*3.5,
+                            // color: HexColor("#FFFFFF99"),
+                          ),
+                        ),
+                      ),
+                      Obx(() => Text(
+                            "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : double.parse(_siteController.sitesListResponse.totalSitePotential).toStringAsFixed(2)}",
                             style: TextStyle(
                               fontFamily: "Muli",
                               fontSize: SizeConfig.safeBlockHorizontal*3.5,
                               // color: HexColor("#FFFFFF99"),
                             ),
-                          ),
-                        ),
-                        Obx(() => Text(
-                              "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : double.parse(_siteController.sitesListResponse.totalSitePotential).toStringAsFixed(2)}",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                fontSize: SizeConfig.safeBlockHorizontal*3.5,
-                                // color: HexColor("#FFFFFF99"),
-                              ),
-                            )),
-                      ],
-                    ),
+                        overflow: TextOverflow.ellipsis,
+                          )),
+                    ],
                   ),
                 ),
                 Expanded(child: leadsDetailWidget()),

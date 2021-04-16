@@ -402,30 +402,29 @@ class _LeadScreenState extends State<LeadScreen> {
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 10.0, left: 15.0, bottom: 5, right: 15.0),
-                  child: FittedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(
-                          () => Text(
-                            "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
-                            style: TextStyle(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Obx(
+                        () => Text(
+                          "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            fontSize: SizeConfig.safeBlockHorizontal * 3.7,
+                            // color: HexColor("#FFFFFF99"),
+                          ),
+                        ),
+                      ),
+                      Obx(() => Text(
+                            "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
                               fontFamily: "Muli",
                               fontSize: SizeConfig.safeBlockHorizontal * 3.7,
                               // color: HexColor("#FFFFFF99"),
                             ),
-                          ),
-                        ),
-                        Obx(() => Text(
-                              "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                fontSize: SizeConfig.safeBlockHorizontal * 3.7,
-                                // color: HexColor("#FFFFFF99"),
-                              ),
-                            )),
-                      ],
-                    ),
+                          )),
+                    ],
                   ),
                 ),
                 Padding(
