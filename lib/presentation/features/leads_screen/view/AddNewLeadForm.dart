@@ -1032,92 +1032,94 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     // mainAxisAlignment:
                                     // MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          (index == 0)
-                                              ? Text(
-                                                  "Influencer Details",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                )
-                                              : Text(
-                                                  "Influencer Details ${(index + 1)} ",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                ),
-                                          _listInfluencerDetail[index]
-                                                  .isExpanded
-                                              ? FlatButton.icon(
-                                                  // shape: RoundedRectangleBorder(
-                                                  //     borderRadius: BorderRadius.circular(0),
-                                                  //     side: BorderSide(color: Colors.black26)),
-                                                  color: Colors.transparent,
-                                                  icon: Icon(
-                                                    Icons.remove,
-                                                    color: HexColor("#F9A61A"),
-                                                    size: 18,
-                                                  ),
-                                                  label: Text(
-                                                    "COLLAPSE",
+                                      FittedBox(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            (index == 0)
+                                                ? Text(
+                                                    "Influencer Details",
                                                     style: TextStyle(
-                                                        color:
-                                                            HexColor("#F9A61A"),
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        // letterSpacing: 2,
-                                                        fontSize: 17),
-                                                  ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .isExpanded =
-                                                          !_listInfluencerDetail[
-                                                                  index]
-                                                              .isExpanded;
-                                                    });
-                                                    // _getCurrentLocation();
-                                                  },
-                                                )
-                                              : FlatButton.icon(
-                                                  // shape: RoundedRectangleBorder(
-                                                  //     borderRadius: BorderRadius.circular(0),
-                                                  //     side: BorderSide(color: Colors.black26)),
-                                                  color: Colors.transparent,
-                                                  icon: Icon(
-                                                    Icons.add,
-                                                    color: HexColor("#F9A61A"),
-                                                    size: 18,
-                                                  ),
-                                                  label: Text(
-                                                    "EXPAND",
+                                                        fontSize: 18),
+                                                  )
+                                                : Text(
+                                                    "Influencer Details ${(index + 1)} ",
                                                     style: TextStyle(
-                                                        color:
-                                                            HexColor("#F9A61A"),
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        // letterSpacing: 2,
-                                                        fontSize: 17),
+                                                        fontSize: 18),
                                                   ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .isExpanded =
-                                                          !_listInfluencerDetail[
-                                                                  index]
-                                                              .isExpanded;
-                                                    });
-                                                    // _getCurrentLocation();
-                                                  },
-                                                ),
-                                        ],
+                                            _listInfluencerDetail[index]
+                                                    .isExpanded
+                                                ? FlatButton.icon(
+                                                    // shape: RoundedRectangleBorder(
+                                                    //     borderRadius: BorderRadius.circular(0),
+                                                    //     side: BorderSide(color: Colors.black26)),
+                                                    color: Colors.transparent,
+                                                    icon: Icon(
+                                                      Icons.remove,
+                                                      color: HexColor("#F9A61A"),
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "COLLAPSE",
+                                                      style: TextStyle(
+                                                          color:
+                                                              HexColor("#F9A61A"),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          // letterSpacing: 2,
+                                                          fontSize: 17),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded =
+                                                            !_listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  )
+                                                : FlatButton.icon(
+                                                    // shape: RoundedRectangleBorder(
+                                                    //     borderRadius: BorderRadius.circular(0),
+                                                    //     side: BorderSide(color: Colors.black26)),
+                                                    color: Colors.transparent,
+                                                    icon: Icon(
+                                                      Icons.add,
+                                                      color: HexColor("#F9A61A"),
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "EXPAND",
+                                                      style: TextStyle(
+                                                          color:
+                                                              HexColor("#F9A61A"),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          // letterSpacing: 2,
+                                                          fontSize: 17),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded =
+                                                            !_listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  ),
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(height: 10),
                                       Row(

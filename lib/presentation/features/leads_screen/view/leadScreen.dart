@@ -785,30 +785,15 @@ class _LeadScreenState extends State<LeadScreen> {
                                                     padding:
                                                         const EdgeInsets.only(
                                                             top: 8.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          "Site-Pt: ",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black38,
-                                                              fontSize: 14,
-                                                              fontFamily:
-                                                                  "Muli",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold
-                                                              //fontWeight: FontWeight.normal
-                                                              ),
-                                                        ),
-                                                        Obx(
-                                                          () => Text(
-                                                            "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
+                                                    child: FittedBox(
+                                                      child: Row(
+                                                        children: [
+                                                          Text(
+                                                            "Site-Pt: ",
                                                             style: TextStyle(
-                                                                // color: Colors.black38,
-                                                                fontSize: SizeConfig
-                                                                        .safeBlockHorizontal *
-                                                                    3.7,
+                                                                color: Colors
+                                                                    .black38,
+                                                                fontSize: 14,
                                                                 fontFamily:
                                                                     "Muli",
                                                                 fontWeight:
@@ -817,8 +802,25 @@ class _LeadScreenState extends State<LeadScreen> {
                                                                 //fontWeight: FontWeight.normal
                                                                 ),
                                                           ),
-                                                        )
-                                                      ],
+                                                          Obx(
+                                                            () => Text(
+                                                              "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
+                                                              style: TextStyle(
+                                                                  // color: Colors.black38,
+                                                                  fontSize: SizeConfig
+                                                                          .safeBlockHorizontal *
+                                                                      3.7,
+                                                                  fontFamily:
+                                                                      "Muli",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold
+                                                                  //fontWeight: FontWeight.normal
+                                                                  ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -836,34 +838,36 @@ class _LeadScreenState extends State<LeadScreen> {
                                                   // ),
                                                   Obx(
                                                     () => GestureDetector(
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.call,
-                                                            color: HexColor(
-                                                                "#8DC63F"),
-                                                          ),
-                                                          Text(
-                                                            "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                            //" Call Contractor",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: SizeConfig
-                                                                        .safeBlockHorizontal *
-                                                                    3.8,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .italic
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
-                                                          ),
-                                                        ],
+                                                      child: FittedBox(
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.call,
+                                                              color: HexColor(
+                                                                  "#8DC63F"),
+                                                            ),
+                                                            Text(
+                                                              "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                                              //" Call Contractor",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: SizeConfig
+                                                                          .safeBlockHorizontal *
+                                                                      3.8,
+                                                                  fontFamily:
+                                                                      "Muli",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .italic
+                                                                  //fontWeight: FontWeight.normal
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                       onTap: () {
                                                         String num =
