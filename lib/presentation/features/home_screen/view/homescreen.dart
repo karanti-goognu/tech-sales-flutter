@@ -466,7 +466,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           padding: const EdgeInsets.all(6.0),
                                           child:
                                           Obx(()=>Text(
-                                            _homeController.volumeConverted,
+                                          _homeController.volumeConverted,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           ),),

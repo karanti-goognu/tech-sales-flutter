@@ -77,6 +77,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     eventController.dispose();
     eventController.offset = 0;
     print(eventController.offset);
+    print("dispose");
     super.dispose();
   }
 
