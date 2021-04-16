@@ -229,8 +229,9 @@ class LeadsFilterController extends GetxController {
   }
 
   getFilterData() {
-    debugPrint('Access Key Response :: ');
     repository.getFilterData(this.accessKeyResponse.accessKey).then((data) {
+      debugPrint('Access Key Response :: ');
+      print(json.encode(data));
       if (data == null) {
         debugPrint('Filter Data Response is null');
       } else {
@@ -319,9 +320,11 @@ class LeadsFilterController extends GetxController {
             print(json.encode(data));
             // this._leadsListResponse.value.leadsEntity.addAll(data.leadsEntity);
             // this.leadsListResponseAddLeads = data.leadsEntity;
-            print(leadsListResponse.leadsEntity.length);
+            print(data.leadsEntity.length);
             // this.leadsListResponse = data;
             LeadsListModel leadListResponseServer = data;
+
+            print(json.encode(leadListResponseServer));
             if(leadListResponseServer.leadsEntity.isNotEmpty){
 //              leadListResponseServer.leadsEntity=[];
               leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );

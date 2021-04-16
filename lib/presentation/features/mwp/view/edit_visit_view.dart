@@ -460,7 +460,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                   .mwpVisitModel.visitEndTime ==
                                               null)
                                       ? TextFormField(
-                                         key: Key(_addEventController.visitRemarks),
+                                          key: Key(_addEventController.visitRemarks),
                                           initialValue: _addEventController.visitRemarks,
                                           onChanged: (_) {
                                             _addEventController.visitRemarks =
