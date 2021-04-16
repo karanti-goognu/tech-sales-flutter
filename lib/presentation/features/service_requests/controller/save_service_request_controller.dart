@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SaveServiceRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,7 +56,7 @@ class SaveServiceRequestController extends GetxController {
                 title: "Message",
                 middleText: value['resp-msg'].toString(),
                 confirm: MaterialButton(
-                  onPressed: () => Get.back(),
+                  onPressed: () =>         Get.toNamed(Routes.HOME_SCREEN),
                   child: Text('OK'),
                 ),
                 barrierDismissible: false);

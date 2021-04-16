@@ -134,10 +134,9 @@ class HomeController extends GetxController {
      await repository.getHomeDashboardDetails(empId).then((_) {
        Get.back();
         DashboardModel data = _;
-//        print(data.dashBoardViewModal.dspSlabsConverted);
         this.sitesConverted = data.dashBoardViewModal.sitesConverted;
         this.dspSlabsConverted = data.dashBoardViewModal.dspSlabsConverted;
-        this.sitesConverted = data.dashBoardViewModal.sitesConverted;
+        this.volumeConverted = data.dashBoardViewModal.volumeConverted;
         this.newInfl = data.dashBoardViewModal.newInfl;
       });
     }).catchError((e) => print(e));

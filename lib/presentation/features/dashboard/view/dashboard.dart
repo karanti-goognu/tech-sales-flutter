@@ -44,6 +44,7 @@ class _DashboardState extends State<Dashboard> {
               ? '0' + month.toString()
               : month.toString());
     }
+    _dashboardController.yearMonth=yearMonth;
     _employeeDropDownData = _splashController.splashDataModel.reportingTsoListModel;
 
     empID = _employeeDropDownData.isEmpty ? _dashboardController.empId: _employeeDropDownData[0].tsoId;
