@@ -13,8 +13,8 @@ class LineSeriesForYTD extends StatefulWidget {
     @required this.chartData2,
   }) : super(key: key);
 
-  final List<ChartData> chartData;
-  final List<ChartData> chartData2;
+  final List<ChartDataForYTD> chartData;
+  final List<ChartDataForYTD> chartData2;
 
   @override
   _LineSeriesForYTDState createState() => _LineSeriesForYTDState();
@@ -37,22 +37,22 @@ class _LineSeriesForYTDState extends State<LineSeriesForYTD> {
         // title: ChartTitle(text: 'Half yearly sales analysis'),
 //        legend: Legend(isVisible: true, position: LegendPosition.top),
         tooltipBehavior: TooltipBehavior(enable: true),
-        series: <ChartSeries<ChartData, String>>[
-          LineSeries<ChartData, String>(
+        series: <ChartSeries<ChartDataForYTD, String>>[
+          LineSeries<ChartDataForYTD, String>(
             color: HexColor('F15A22'),
             dataSource: widget.chartData,
             markerSettings: MarkerSettings(isVisible: true),
-            xValueMapper: (ChartData data, _) => data.month,
-            yValueMapper: (ChartData data, _) => data.count,
+            xValueMapper: (ChartDataForYTD data, _) => data.month,
+            yValueMapper: (ChartDataForYTD data, _) => data.count,
             name: _dashboardController.lineChartLegend1.toString(),
             dataLabelSettings: DataLabelSettings(isVisible: true,),
           ),
-          LineSeries<ChartData, String>(
+          LineSeries<ChartDataForYTD, String>(
             color: HexColor('9E3A0D'),
             dataSource: widget.chartData2,
             markerSettings: MarkerSettings(isVisible: true),
-            xValueMapper: (ChartData data, _) => data.month,
-            yValueMapper: (ChartData data, _) => data.count,
+            xValueMapper: (ChartDataForYTD data, _) => data.month,
+            yValueMapper: (ChartDataForYTD data, _) => data.count,
             name: _dashboardController.lineChartLegend2.toString(),
             dataLabelSettings: DataLabelSettings(isVisible: true),
           )

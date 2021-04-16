@@ -378,28 +378,30 @@ class _SiteScreenState extends State<SiteScreen> {
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 10.0, left: 15.0, bottom: 5, right: 15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Obx(
-                        () => Text(
-                          "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
-                          style: TextStyle(
-                            fontFamily: "Muli",
-                            fontSize: SizeConfig.safeBlockHorizontal*3.5,
-                            // color: HexColor("#FFFFFF99"),
-                          ),
-                        ),
-                      ),
-                      Obx(() => Text(
-                            "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : double.parse(_siteController.sitesListResponse.totalSitePotential).toStringAsFixed(2)}",
+                  child: FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Obx(
+                          () => Text(
+                            "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
                             style: TextStyle(
                               fontFamily: "Muli",
                               fontSize: SizeConfig.safeBlockHorizontal*3.5,
                               // color: HexColor("#FFFFFF99"),
                             ),
-                          )),
-                    ],
+                          ),
+                        ),
+                        Obx(() => Text(
+                              "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : double.parse(_siteController.sitesListResponse.totalSitePotential).toStringAsFixed(2)}",
+                              style: TextStyle(
+                                fontFamily: "Muli",
+                                fontSize: SizeConfig.safeBlockHorizontal*3.5,
+                                // color: HexColor("#FFFFFF99"),
+                              ),
+                            )),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(child: leadsDetailWidget()),
@@ -879,56 +881,58 @@ class _SiteScreenState extends State<SiteScreen> {
                                                         ),
                                                   ),
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 1.0),
-                                                      child: Chip(
-                                                        shape: StadiumBorder(
-                                                            side: BorderSide(
-                                                                color: HexColor(
-                                                                    "#39B54A"))),
-                                                        backgroundColor:
-                                                            HexColor("#39B54A")
-                                                                .withOpacity(
-                                                                    0.1),
-                                                        label: Text(
-                                                            (printSiteStage(
-                                                                _siteController.sitesListResponse.sitesEntity[index]
-                                                                    .siteStageId)),
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#39B54A"),
-                                                                fontSize: 11,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
+                                                FittedBox(
+                                                  child: Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(
+                                                                left: 1.0),
+                                                        child: Chip(
+                                                          shape: StadiumBorder(
+                                                              side: BorderSide(
+                                                                  color: HexColor(
+                                                                      "#39B54A"))),
+                                                          backgroundColor:
+                                                              HexColor("#39B54A")
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                          label: Text(
+                                                              (printSiteStage(
+                                                                  _siteController.sitesListResponse.sitesEntity[index]
+                                                                      .siteStageId)),
+                                                              style: TextStyle(
+                                                                  color: HexColor(
+                                                                      "#39B54A"),
+                                                                  fontSize: 11,
+                                                                  fontFamily:
+                                                                      "Muli",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold
+                                                                  //fontWeight: FontWeight.normal
+                                                                  ),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 8.0),
-                                                      child: Text(
-                                                        " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
-                                                        //  textAlign: TextAlign.start,
-                                                        style: TextStyle(
-                                                          fontSize: 9,
-                                                          fontFamily: "Muli",
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                      Padding(
+                                                        padding: EdgeInsets.only(
+                                                            left: 8.0),
+                                                        child: Text(
+                                                          " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
+                                                          //  textAlign: TextAlign.start,
+                                                          style: TextStyle(
+                                                            fontSize: 9,
+                                                            fontFamily: "Muli",
+                                                            fontWeight:
+                                                                FontWeight.bold,
 
-                                                          //fontWeight: FontWeight.normal
+                                                            //fontWeight: FontWeight.normal
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 )
                                               ],
                                             ),

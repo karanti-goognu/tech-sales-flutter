@@ -12,8 +12,8 @@ class BarGraphForYTD extends StatefulWidget {
     @required this.chartData2,
   }) : super(key: key);
 
-  final List<ChartData> chartData;
-  final List<ChartData> chartData2;
+  final List<ChartDataForYTD> chartData;
+  final List<ChartDataForYTD> chartData2;
 
   @override
   _BarGraphForYTDState createState() => _BarGraphForYTDState();
@@ -43,21 +43,21 @@ class _BarGraphForYTDState extends State<BarGraphForYTD> {
           canShowMarker: true,
         ),
         series: <CartesianSeries>[
-          ColumnSeries<ChartData, String>(
+          ColumnSeries<ChartDataForYTD, String>(
             color: HexColor('00ADEE'),
             dataSource: widget.chartData,
             name: _dashboardController.barGraphLegend1.toString(),
-            xValueMapper: (ChartData data, _) => data.month,
-            yValueMapper: (ChartData data, _) => data.count,
+            xValueMapper: (ChartDataForYTD data, _) => data.month,
+            yValueMapper: (ChartDataForYTD data, _) => data.count,
             dataLabelSettings: DataLabelSettings(
                 isVisible: true, textStyle: const TextStyle(fontSize: 10)),
           ),
-          ColumnSeries<ChartData, String>(
+          ColumnSeries<ChartDataForYTD, String>(
             color: HexColor('39B54A'),
             dataSource: widget.chartData2,
             name: _dashboardController.barGraphLegend2.toString(),
-            xValueMapper: (ChartData data, _) => data.month,
-            yValueMapper: (ChartData data, _) => data.count,
+            xValueMapper: (ChartDataForYTD data, _) => data.month,
+            yValueMapper: (ChartDataForYTD data, _) => data.count,
             dataLabelSettings: DataLabelSettings(
                 isVisible: true, textStyle: const TextStyle(fontSize: 10)),
           ),

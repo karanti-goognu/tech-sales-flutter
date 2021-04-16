@@ -402,28 +402,30 @@ class _LeadScreenState extends State<LeadScreen> {
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 10.0, left: 15.0, bottom: 5, right: 15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Obx(
-                        () => Text(
-                          "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
-                          style: TextStyle(
-                            fontFamily: "Muli",
-                            fontSize: SizeConfig.safeBlockHorizontal * 3.7,
-                            // color: HexColor("#FFFFFF99"),
-                          ),
-                        ),
-                      ),
-                      Obx(() => Text(
-                            "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
+                  child: FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Obx(
+                          () => Text(
+                            "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
                             style: TextStyle(
                               fontFamily: "Muli",
                               fontSize: SizeConfig.safeBlockHorizontal * 3.7,
                               // color: HexColor("#FFFFFF99"),
                             ),
-                          )),
-                    ],
+                          ),
+                        ),
+                        Obx(() => Text(
+                              "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
+                              style: TextStyle(
+                                fontFamily: "Muli",
+                                fontSize: SizeConfig.safeBlockHorizontal * 3.7,
+                                // color: HexColor("#FFFFFF99"),
+                              ),
+                            )),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -800,22 +802,20 @@ class _LeadScreenState extends State<LeadScreen> {
                                                               ),
                                                         ),
                                                         Obx(
-                                                          () => Flexible(
-                                                            child: Text(
-                                                              "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
-                                                              style: TextStyle(
-                                                                  // color: Colors.black38,
-                                                                  fontSize: SizeConfig
-                                                                          .safeBlockHorizontal *
-                                                                      3.7,
-                                                                  fontFamily:
-                                                                      "Muli",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold
-                                                                  //fontWeight: FontWeight.normal
-                                                                  ),
-                                                            ),
+                                                          () => Text(
+                                                            "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
+                                                            style: TextStyle(
+                                                                // color: Colors.black38,
+                                                                fontSize: SizeConfig
+                                                                        .safeBlockHorizontal *
+                                                                    3.7,
+                                                                fontFamily:
+                                                                    "Muli",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold
+                                                                //fontWeight: FontWeight.normal
+                                                                ),
                                                           ),
                                                         )
                                                       ],
@@ -843,27 +843,25 @@ class _LeadScreenState extends State<LeadScreen> {
                                                             color: HexColor(
                                                                 "#8DC63F"),
                                                           ),
-                                                          Flexible(
-                                                            child: Text(
-                                                              "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                              //" Call Contractor",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: SizeConfig
-                                                                          .safeBlockHorizontal *
-                                                                      3.8,
-                                                                  fontFamily:
-                                                                      "Muli",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .italic
-                                                                  //fontWeight: FontWeight.normal
-                                                                  ),
-                                                            ),
+                                                          Text(
+                                                            "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                                            //" Call Contractor",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: SizeConfig
+                                                                        .safeBlockHorizontal *
+                                                                    3.8,
+                                                                fontFamily:
+                                                                    "Muli",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .italic
+                                                                //fontWeight: FontWeight.normal
+                                                                ),
                                                           ),
                                                         ],
                                                       ),

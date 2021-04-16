@@ -36,10 +36,10 @@ class _YearToDateState extends State<YearToDate> {
   File imgFile;
   Random random = Random();
   List<DashboardYearlyModels> _thisYearData;
-  List<ChartData> _barGraphGeneratedField = [];
-  List<ChartData> _barGraphFieldConverted = [];
-  List<ChartData> _lineChartGenerated = [];
-  List<ChartData> _lineChartConverted = [];
+  List<ChartDataForYTD> _barGraphGeneratedField = [];
+  List<ChartDataForYTD> _barGraphFieldConverted = [];
+  List<ChartDataForYTD> _lineChartGenerated = [];
+  List<ChartDataForYTD> _lineChartConverted = [];
   var _dataForDataGrid;
   ScreenshotController screenshotController = ScreenshotController();
 
@@ -51,11 +51,11 @@ class _YearToDateState extends State<YearToDate> {
     _dashboardController.barGraphLegend1 = 'Leads Generated';
     _dashboardController.barGraphLegend2 = 'Leads Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
-      _barGraphGeneratedField.add(ChartData(
+      _barGraphGeneratedField.add(ChartDataForYTD(
           _thisYearData[i].leadGenerated.toDouble(),
           _dashboardController.monthList[i]));
 
-      _barGraphFieldConverted.add(ChartData(
+      _barGraphFieldConverted.add(ChartDataForYTD(
           _thisYearData[i].leadConverted.toDouble(),
           _dashboardController.monthList[i]));
     }
@@ -68,11 +68,11 @@ class _YearToDateState extends State<YearToDate> {
     _dashboardController.barGraphLegend1 = 'Volume Generated';
     _dashboardController.barGraphLegend2 = 'Volume Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
-      _barGraphGeneratedField.add(ChartData(
+      _barGraphGeneratedField.add(ChartDataForYTD(
           _thisYearData[i].generatedVolume.toDouble(),
           _dashboardController.monthList[i]));
 
-      _barGraphFieldConverted.add(ChartData(
+      _barGraphFieldConverted.add(ChartDataForYTD(
           _thisYearData[i].convertedVolume.toDouble(),
           _dashboardController.monthList[i]));
     }
@@ -85,11 +85,11 @@ class _YearToDateState extends State<YearToDate> {
     _dashboardController.lineChartLegend1 = 'Avg Generated Volume ';
     _dashboardController.lineChartLegend2 = 'Avg Converted Volume';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
-      _lineChartGenerated.add(ChartData(
+      _lineChartGenerated.add(ChartDataForYTD(
           _thisYearData[i].avgGeneratedVolume.toDouble(),
           _dashboardController.monthList[i]));
 
-      _lineChartConverted.add(ChartData(
+      _lineChartConverted.add(ChartDataForYTD(
           _thisYearData[i].avgConvertedVolume.toDouble(),
           _dashboardController.monthList[i]));
     }
@@ -102,11 +102,11 @@ class _YearToDateState extends State<YearToDate> {
     _dashboardController.lineChartLegend1 = 'Avg Lead Generated ';
     _dashboardController.lineChartLegend2 = 'Avg Lead Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
-      _lineChartGenerated.add(ChartData(
+      _lineChartGenerated.add(ChartDataForYTD(
           _thisYearData[i].avgLeadGenerated.toDouble(),
           _dashboardController.monthList[i]));
 
-      _lineChartConverted.add(ChartData(
+      _lineChartConverted.add(ChartDataForYTD(
           _thisYearData[i].avgLeadConverted.toDouble(),
           _dashboardController.monthList[i]));
     }
@@ -691,8 +691,8 @@ getYearlyData()async{
   }
 }
 
-class ChartData {
-  ChartData(this.count, this.month);
+class ChartDataForYTD {
+  ChartDataForYTD(this.count, this.month);
   final double count;
   final String month;
 }
