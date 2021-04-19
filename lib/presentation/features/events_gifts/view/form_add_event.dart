@@ -68,14 +68,15 @@ class _FormAddEventState extends State<FormAddEvent> {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 
     final eventDropDwn =
-    //Obx(()=> addEventModel != null ?
         DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
           //requestDepartmentId = value;
         });
       },
-      items: addEventModel.eventTypeModels
+      items:
+      addEventModel==null?[]:
+      addEventModel.eventTypeModels
           //['Event 1', 'Event 2', 'Event 3', 'Event 4']
           .map((e) => DropdownMenuItem(
                 value: e.eventTypeId,
