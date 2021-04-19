@@ -145,7 +145,7 @@ class _EventsState extends State<Events> {
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(50),
                 child: Container(
-                  color: ColorConstants.backgroundColorBlue,
+                  color: ColorConstants.appBarColor,
                   child: Column(
                     children: [
                       TabBar(
