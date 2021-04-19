@@ -675,8 +675,9 @@ class _FormAddEventState extends State<FormAddEvent> {
           Stack(
         children: [
           Positioned.fill(
-            child: addEventModel != null
-                ? ListView(
+            child:
+//            addEventModel != null ?
+            ListView(
                     children: [
                       Container(
                         padding: EdgeInsets.all(12),
@@ -847,9 +848,9 @@ class _FormAddEventState extends State<FormAddEvent> {
                           )),
                     ],
                   )
-                : Center(
-                    child: CircularProgressIndicator(),
-                  ),
+//                : Center(
+//                    child: CircularProgressIndicator(),
+//                  ),
           ),
         ],
       ),

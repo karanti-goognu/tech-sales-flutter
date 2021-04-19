@@ -28,58 +28,73 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
           Card(
             margin: EdgeInsets.all(10),
             elevation: 3,
-            child: ExpansionTile(
-              title: Row(
+            child: Theme(
+              data: ThemeData(
+                splashColor: Colors.transparent
+              ),
+              child: ExpansionTile(
+                title: Row(
+                  children: [
+                    Container(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset('assets/images/calendar.png')),
+                    SizedBox(width: 10,),
+                    Text('Current Events'),
+                  ],
+                ),
                 children: [
-                  Container(
-                      height: 20,
-                      width: 20,
-                      child: Image.asset('assets/images/calendar.png')),
-                  SizedBox(width: 10,),
-                  Text('Current Events'),
+                  getList(),
                 ],
               ),
-              children: [
-                getList(),
-              ],
             ),
           ),
           Card(
             margin: EdgeInsets.all(10),
             elevation: 3,
-            child: ExpansionTile(
-              title: Row(
+            child: Theme(
+              data: ThemeData(
+                  splashColor: Colors.transparent
+              ),
+              child: ExpansionTile(
+                title: Row(
+                  children: [
+                    Container(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset('assets/images/calendar.png')),
+                    SizedBox(width: 10,),
+                    Text('Upcoming Events'),
+                  ],
+                ),
                 children: [
-                  Container(
-                      height: 20,
-                      width: 20,
-                      child: Image.asset('assets/images/calendar.png')),
-                  SizedBox(width: 10,),
-                  Text('Upcoming Events'),
+                  getList(),
                 ],
               ),
-              children: [
-                getList(),
-              ],
             ),
           ),
           Card(
             margin: EdgeInsets.all(10),
             elevation: 3,
-            child: ExpansionTile(
-              title: Row(
+            child: Theme(
+              data: ThemeData(
+                  splashColor: Colors.transparent
+              ),
+              child: ExpansionTile(
+                title: Row(
+                  children: [
+                    Container(
+                      height: 20,
+                        width: 20,
+                        child: Image.asset('assets/images/calendar.png')),
+                    SizedBox(width: 10,),
+                    Text('Past Events'),
+                  ],
+                ),
                 children: [
-                  Container(
-                    height: 20,
-                      width: 20,
-                      child: Image.asset('assets/images/calendar.png')),
-                  SizedBox(width: 10,),
-                  Text('Past Events'),
+                  getList(),
                 ],
               ),
-              children: [
-                getList(),
-              ],
             ),
           ),
 
