@@ -18,6 +18,7 @@ import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
+
 class FormAddEvent extends StatefulWidget {
   @override
   _FormAddEventState createState() => _FormAddEventState();
@@ -29,29 +30,29 @@ class _FormAddEventState extends State<FormAddEvent> {
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
   TextEditingController _requestSubType = TextEditingController();
-  TextEditingController _query = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   LocationResult _pickedLocation;
   Position _currentPosition = new Position();
   var _fromDate = 'Select Date';
   TimeOfDay _time;
   String geoTagType;
+  int dealerId;
 
   @override
   void initState() {
     getDropdownData();
     super.initState();
-
   }
 
   getDropdownData() async {
     await eventController.getAccessKey().then((value) async {
-       print(value.accessKey);
+      print(value.accessKey);
       await eventController.getEventType(value.accessKey).then((data) {
         setState(() {
           addEventModel = data;
         });
-           print('RESPONSE, ${data.toJson()}');
+        print('RESPONSE, ${data}');
       });
     });
   }
@@ -63,14 +64,19 @@ class _FormAddEventState extends State<FormAddEvent> {
 
   @override
   Widget build(BuildContext context) {
-    final eventDropDwn = DropdownButtonFormField(
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+
+    final eventDropDwn =
+    //Obx(()=> addEventModel != null ?
+        DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
           //requestDepartmentId = value;
         });
       },
       items: addEventModel.eventTypeModels
-      //['Event 1', 'Event 2', 'Event 3', 'Event 4']
+          //['Event 1', 'Event 2', 'Event 3', 'Event 4']
           .map((e) => DropdownMenuItem(
                 value: e.eventTypeId,
                 child: Text(e.eventTypeText),
@@ -80,6 +86,8 @@ class _FormAddEventState extends State<FormAddEvent> {
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Event Type"),
       validator: (value) =>
           value == null ? 'Please select the event type' : null,
+   // )
+    //:Container(),
     );
 
     final date = Container(
@@ -303,45 +311,50 @@ class _FormAddEventState extends State<FormAddEvent> {
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
+              labelText: 'Add Dealer(s)',
               suffixIcon: Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 12),
-                  child: Icon(
-                    Icons.add,
-                    size: 20,
-                    color: HexColor('#F9A61A'),
-                  )),
+                  child:
+                  //Row(
+                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   // children: [
+                     // Text('Add Dealer(s)'),
+                      Icon(
+                        Icons.add,
+                        size: 20,
+                        color: HexColor('#F9A61A'),
+                      ),
+                  //  ],
+               //   )
             ),
-            child: Container(
-              height: 30,
-              child: Text('Add Dealer(s)'),
-              // ListView(
-              //   scrollDirection:
-              //   Axis.horizontal,
-              //   children:
-              //   selectedRequestSubtypeObjectList
-              //       .map(
-              //           (e) =>
-              //           Padding(
-              //             padding:
-              //             const EdgeInsets.symmetric(horizontal: 4.0),
-              //             child:
-              //             Chip(
-              //               label:
-              //               Text(
-              //                 e.serviceRequestTypeText,
-              //                 style:
-              //                 TextStyle(fontSize: 10),
-              //               ),
-              //               backgroundColor: Colors
-              //                   .lightGreen
-              //                   .withOpacity(0.2),
-              //             ),
-              //           )
-              //   )
-              //       .toList(),
-              // ),
             ),
+            child:
+            //selectedDealersModels.isEmpty
+              //  ? Text('')
+               // :
+            Container(
+                    height: 30,
+                    child:
+                        //Text('Add Dealer(s)'),
+                        ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: selectedDealersModels
+                          .map((e) => Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4.0),
+                                child: Chip(
+                                  label: Text(
+                                    e.dealerName,
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                  backgroundColor:
+                                      Colors.lightGreen.withOpacity(0.2),
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                  ),
           );
         },
       ),
@@ -569,13 +582,13 @@ class _FormAddEventState extends State<FormAddEvent> {
           color: ColorConstants.btnBlue,
           child: Text(
             "SUBMIT",
-            style: 
-            //TextStyles.btnWhite,
-            TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
-                fontSize: ScreenUtil().setSp(15)),
+            style:
+                //TextStyles.btnWhite,
+                TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    // letterSpacing: 2,
+                    fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {},
         ),
@@ -629,82 +642,108 @@ class _FormAddEventState extends State<FormAddEvent> {
       ),
     );
 
+    final location = TextField(
+      controller: _locationController,
+      onTap: () async {
+        // placeholder for our places search later
+      },
+      // with some styling
+      decoration: InputDecoration(
+        icon: Container(
+          margin: EdgeInsets.only(left: 20),
+          width: 10,
+          height: 10,
+          child: Icon(
+            Icons.home,
+            color: Colors.black,
+          ),
+        ),
+        hintText: "Enter your shipping address",
+        border: InputBorder.none,
+        contentPadding: EdgeInsets.only(left: 8.0, top: 16.0),
+      ),
+    );
+
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: Stack(
+      body:
+          //Container(child: Text('Hi'),),
+          Stack(
         children: [
           Positioned.fill(
-              child:
-              addEventModel != null ?
-                  ListView(
-            children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                height: 56,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Add Event',
-                      style: TextStyles.titleGreenStyle,
-                    ),
-                    Chip(
-                      shape: StadiumBorder(
-                          side: BorderSide(color: HexColor("#39B54A"))),
-                      backgroundColor: HexColor("#39B54A").withOpacity(0.1),
-                      label: Text('Status: Not Submitted'),
-                    ),
-                  ],
-                ),
-                // decoration: BoxDecoration(
-                //     border: Border(bottom: BorderSide(width: 0.3))),
-              ),
-              SizedBox(height: 16),
-              Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Form(
-                    key: _addEventFormKey,
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        //mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          eventDropDwn,
-                          SizedBox(height: 16),
-                          date,
-                          SizedBox(height: 16),
-                          time,
-                          SizedBox(height: 16),
-                          Text(
-                            "Tentative Members",
-                            style: TextStyles.welcomeMsgTextStyle20,
-                          ),
-                          SizedBox(height: 16),
-                          dalmiaInfluencer,
-                          SizedBox(height: 16),
-                          nondalmia,
-                          SizedBox(height: 16),
-                          total,
-                          SizedBox(height: 16),
-                          venueDropDwn,
-                          SizedBox(height: 16),
-                          venueAddress,
-                          SizedBox(height: 16),
-                          dealer,
-                          SizedBox(height: 16),
-                          influencer,
-                          SizedBox(height: 16),
-                          expectedLeads,
-                          SizedBox(height: 16),
-                          giftDistribution,
-                          SizedBox(height: 16),
-                          giftType,
-                          SizedBox(height: 16),
-                          comment,
-                          SizedBox(height: 16),
-                          btns,
-                          SizedBox(height: 16),
+            child: addEventModel != null
+                ? ListView(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        height: 56,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Add Event',
+                              style: TextStyles.titleGreenStyle,
+                            ),
+                            Chip(
+                              shape: StadiumBorder(
+                                  side: BorderSide(color: HexColor("#39B54A"))),
+                              backgroundColor:
+                                  HexColor("#39B54A").withOpacity(0.1),
+                              label: Text('Status: Not Submitted'),
+                            ),
+                          ],
+                        ),
+                        // decoration: BoxDecoration(
+                        //     border: Border(bottom: BorderSide(width: 0.3))),
+                      ),
+                      SizedBox(height: 16),
+                      Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Form(
+                            key: _addEventFormKey,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                //mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                 // Obx(() => eventDropDwn),
+                                  eventDropDwn,
+                                  SizedBox(height: 16),
+                                  date,
+                                  SizedBox(height: 16),
+                                  time,
+                                  SizedBox(height: 16),
+                                  Text(
+                                    "Tentative Members",
+                                    style: TextStyles.welcomeMsgTextStyle20,
+                                  ),
+                                  SizedBox(height: 16),
+                                  dalmiaInfluencer,
+                                  SizedBox(height: 16),
+                                  nondalmia,
+                                  SizedBox(height: 16),
+                                  total,
+                                  SizedBox(height: 16),
+                                  venueDropDwn,
+                                  SizedBox(height: 16),
+                                  venueAddress,
+                                  SizedBox(height: 16),
+                                  dealer,
+                                  SizedBox(height: 16),
+                                  //influencer,
+                                  //SizedBox(height: 16),
+                                  expectedLeads,
+                                  SizedBox(height: 16),
+                                  giftDistribution,
+                                  SizedBox(height: 16),
+                                  // giftType,
+                                  //SizedBox(height: 16),
+                                  comment,
+                                  SizedBox(height: 16),
+                                  btns,
+                                  SizedBox(height: 16),
 //                           Row(
 //                             mainAxisAlignment: MainAxisAlignment.spaceAround,
 //                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -803,15 +842,14 @@ class _FormAddEventState extends State<FormAddEvent> {
 //                               ),
 //                             ],
 //                           ),
-                        ]),
-                  )),
-            ],
-          )
-
-                  : Center(
-                child: CircularProgressIndicator(),
-              ),
-              ),
+                                ]),
+                          )),
+                    ],
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  ),
+          ),
         ],
       ),
     );
@@ -1012,12 +1050,17 @@ class _FormAddEventState extends State<FormAddEvent> {
     });
   }
 
+  List<bool> checkedValues;
+  List<String> selectedDealer = [];
+  List<DealersModels> selectedDealersModels = [];
+
+  //List<String> selectedDealerList = [];
+  TextEditingController _query = TextEditingController();
+
   addDealerBottomSheetWidget() {
-    // List<ServiceRequestComplaintTypeEntity> requestSubtype =
-    //     srComplaintModel.serviceRequestComplaintTypeEntity;
-    // checkedValues = List.generate(
-    //     srComplaintModel.serviceRequestComplaintTypeEntity.length,
-    //        (index) => false);
+    List<DealersModels> dealers = addEventModel.dealersModels;
+    checkedValues =
+        List.generate(addEventModel.dealersModels.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -1044,17 +1087,14 @@ class _FormAddEventState extends State<FormAddEvent> {
               child: TextFormField(
                 controller: _query,
                 onChanged: (value) {
-                  //setState(() {
-                  //requestSubtype = srComplaintModel
-                  //   .serviceRequestComplaintTypeEntity
-                  //   .where((element) {
-                  // return element.serviceRequestTypeText
-                  //     .toString()
-                  //     .toLowerCase()
-                  //     .contains(value);
-                  // }
-                  // ).toList();
-                  // });
+                  setState(() {
+                    dealers = addEventModel.dealersModels.where((element) {
+                      return element.dealerName
+                          .toString()
+                          .toLowerCase()
+                          .contains(value);
+                    }).toList();
+                  });
                 },
                 decoration: FormFieldStyle.buildInputDecoration(
                     prefixIcon: Icon(
@@ -1068,90 +1108,65 @@ class _FormAddEventState extends State<FormAddEvent> {
               height: 20,
             ),
 
-            CheckboxListTile(
-              title: Text("9939 - 0077059321"),
-              value: false,
-              onChanged: (newValue) {},
-              controlAffinity:
-                  ListTileControlAffinity.leading, //  <-- leading Checkbox
-            ),
-            SizedBox(
-              height: 20,
-            ),
-
-            //       Expanded(
-            //         child: ListView.separated(
-            //           padding: EdgeInsets.symmetric(horizontal: 10),
-            //           itemCount:5,
-            //           //requestSubtype.length,
-            //           itemBuilder: (context, index) {
-            //             return
-            //            // requestId == requestSubtype[index].requestId
-            //            //     ?
             // CheckboxListTile(
-            //               activeColor: Colors.black,
-            //               dense: true,
-            //               title: Text(''),
-            //                   //requestSubtype[index].serviceRequestTypeText),
-            //               value: true,
-            //                   //selectedRequestSubtype.contains(
-            //                   //requestSubtype[index].serviceRequestTypeText),
-            //               onChanged: (newValue) {
-            //                 // if (!checkedValues.contains(true) ||
-            //                 //     checkedValues[index] == true) {
-            //                 // setState(() {
-            //                 //   selectedRequestSubtype.contains(
-            //                 //       requestSubtype[index]
-            //                 //           .serviceRequestTypeText)
-            //                 //       ? selectedRequestSubtype.remove(
-            //                 //       requestSubtype[index]
-            //                 //           .serviceRequestTypeText)
-            //                 //       : selectedRequestSubtype.add(
-            //                 //       requestSubtype[index]
-            //                 //           .serviceRequestTypeText);
-            //                 //
-            //                 //   selectedRequestSubtypeObjectList
-            //                 //       .contains(requestSubtype[index])
-            //                 //       ? selectedRequestSubtypeObjectList
-            //                 //       .remove(requestSubtype[index])
-            //                 //       : selectedRequestSubtypeObjectList
-            //                 //       .add(requestSubtype[index]);
-            //                 //
-            //                 //   selectedRequestSubtypeSeverity = [];
-            //                 //   selectedRequestSubtypeObjectList
-            //                 //       .forEach((element) {
-            //                 //     setState(() {
-            //                 //       selectedRequestSubtypeSeverity
-            //                 //           .add(element.complaintSeverity);
-            //                 //     });
-            //                 //   });
-            //                   //   print(selectedRequestSubtypeSeverity);
-            //
-            //                   //checkedValues[index] = newValue;
-            //                   // dataToBeSentBack = requestSubtype[index];
-            //                 });
-            //                 // } else {
-            //                 //   Get.snackbar(
-            //                 //     'Please uncheck the previous option',
-            //                 //     '',
-            //                 //     snackPosition: SnackPosition.BOTTOM,
-            //                 //   );
-            //                 // }
-            //               //},
-            //              // controlAffinity: ListTileControlAffinity.leading,
-            //            // )
-            //                 //: Container();
-            //           },
-            //           // separatorBuilder: (context, index) {
-            //           //   return requestId == requestSubtype[index].requestId
-            //           //       ? Padding(
-            //           //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            //           //     child: Divider(),
-            //           //   )
-            //           //       : Container();
-            //          // },
-            //         ),
-            //       ),
+            //   title: Text("9939 - 0077059321"),
+            //   value: false,
+            //   onChanged: (newValue) {},
+            //   controlAffinity:
+            //       ListTileControlAffinity.leading, //  <-- leading Checkbox
+            // ),
+            // SizedBox(
+            //   height: 20,
+            // ),
+
+            Expanded(
+              child: ListView.separated(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                itemCount: dealers.length,
+                itemBuilder: (context, index) {
+                  return
+                      // dealerId == dealers[index].dealerId
+                      //   ?
+                      CheckboxListTile(
+                    activeColor: Colors.black,
+                    dense: true,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(dealers[index].dealerId),
+                        Text('( ${dealers[index].dealerName} )'),
+                      ],
+                    ),
+                    value: selectedDealer.contains(dealers[index].dealerName),
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedDealer.contains(dealers[index].dealerName)
+                            ? selectedDealer.remove(dealers[index].dealerName)
+                            : selectedDealer.add(dealers[index].dealerName);
+
+                        selectedDealersModels.contains(dealers[index])
+                            ? selectedDealersModels.remove(dealers[index])
+                            : selectedDealersModels.add(dealers[index]);
+
+
+                        checkedValues[index] = newValue;
+                        //dataToBeSentBack = requestSubtype[index];
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  );
+                  //  : Container();
+                },
+                separatorBuilder: (context, index) {
+                  return dealerId == dealers[index].dealerId
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Divider(),
+                        )
+                      : Container();
+                },
+              ),
+            ),
             Container(
               decoration:
                   BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
@@ -1159,18 +1174,27 @@ class _FormAddEventState extends State<FormAddEvent> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Clear All',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: HexColor('#F6A902'),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedDealer.clear();
+                      });
+                    },
+                    child: Text(
+                      'Clear All',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: HexColor('#F6A902'),
+                      ),
                     ),
                   ),
                   MaterialButton(
                     color: HexColor('#1C99D4'),
                     onPressed: () {
+
                       Get.back();
+
                     },
                     child: Text(
                       'OK',

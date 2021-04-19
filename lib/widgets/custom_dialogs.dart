@@ -17,6 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class CustomDialogs {
+
   Widget errorDialog(String message) {
     print(message);
     return AlertDialog(

@@ -14,6 +14,8 @@ class _DealersListWidgetState extends State<DealersListWidget> {
   AddEventController _addEventController = Get.find();
   TextEditingController controller = new TextEditingController();
 
+  final _searchList = List<DealerModel>();
+
   @override
   void initState() {
     super.initState();
@@ -131,29 +133,52 @@ class _DealersListWidgetState extends State<DealersListWidget> {
                 : (_addEventController.dealerListResponse.dealerList.length ==
                         0)
                     ? Container()
-                    : ListView.builder(
+                    :_searchList.length!=0?
+                     ListView.builder(
                         shrinkWrap: true,
-                        itemCount: _addEventController
-                            .dealerList.length,
+                         physics: NeverScrollableScrollPhysics(),
+                        itemCount: _searchList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return new Container(
                             padding: new EdgeInsets.all(8.0),
                             child: new Column(
                               children: <Widget>[
                                 new CheckboxListTile(
-                                    value: _addEventController
-                                        .dealerList[index].isSelected,
+                                    value: _searchList[index].isSelected,
                                     title: new Text(
-                                        '${_addEventController.dealerList[index].dealerName}'),
+                                        '${_searchList[index].dealerName}'),
                                     controlAffinity:
                                         ListTileControlAffinity.leading,
                                     onChanged: (bool val) {
-                                      itemChange(val, index);
+                                      itemChange1(val, _searchList[index].dealerName,index);
                                     })
                               ],
                             ),
                           );
-                        })),
+                        }):ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: _addEventController
+                    .dealerList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return new Container(
+                    padding: new EdgeInsets.all(8.0),
+                    child: new Column(
+                      children: <Widget>[
+                        new CheckboxListTile(
+                            value: _addEventController
+                                .dealerList[index].isSelected,
+                            title: new Text(
+                                '${_addEventController.dealerList[index].dealerName}'),
+                            controlAffinity:
+                            ListTileControlAffinity.leading,
+                            onChanged: (bool val) {
+                              itemChange(val, index);
+                            })
+                      ],
+                    ),
+                  );
+                })),
           ],
         ),
       ),
@@ -161,12 +186,25 @@ class _DealersListWidgetState extends State<DealersListWidget> {
   }
 
   onSearchTextChanged(String text) async {
-    /* LeadsFilterController _leadsFilterController = Get.find();
-    if (controller.text.length >= 3) {
-      print('Hello');
-      _leadsFilterController.searchKey = text;
-      _leadsFilterController.getAccessKey(RequestIds.SEARCH_LEADS);
-    }*/
+    _searchList.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+      print('Hello'+text);
+      for(int i=0;i<_addEventController.dealerList.length;i++){
+        if(_addEventController.dealerList[i].dealerName.toUpperCase().contains(text)||_addEventController.dealerList[i].dealerName.toLowerCase().contains(text)||
+            _addEventController.dealerList[i].dealerName.contains(text)){
+
+          setState(() {
+            _searchList.add(_addEventController.dealerList[i]);
+          });
+          print("FilterList-->"+_searchList.length.toString());
+        }
+      }
+
+    setState(() {});
+
   }
 
   void itemChange(bool val, int index) {
@@ -187,4 +225,31 @@ class _DealersListWidgetState extends State<DealersListWidget> {
       }
     });
   }
+
+  void itemChange1(bool val, String dealerName,int index1) {
+    /*else{
+      _addEventController.dealerListSelected.remove(index);
+    }*/
+    var index;
+    for(int i=0;i<_addEventController.dealerList.length;i++){
+      if(_addEventController.dealerList[i].dealerName==dealerName) {
+         index = i;
+      }
+    }
+
+    setState(() {
+      _addEventController.dealerList[index].isSelected = val;
+      if (val) {
+        _searchList[index1].isSelected = true;
+        _addEventController.dealerListSelected.add(new DealerModelSelected(
+            _addEventController.dealerList[index].dealerId,
+            _addEventController.dealerList[index].dealerName));
+      } else {
+        _searchList[index1].isSelected = false;
+        _addEventController.dealerListSelected.removeWhere((item) =>
+        item.dealerId == _addEventController.dealerList[index].dealerId);
+      }
+    });
+  }
+
 }

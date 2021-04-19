@@ -76,6 +76,10 @@ class SplashScreenPageState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
 
+    //below function will logout the user on app update
+//    _splashController.checkAppVersion();
+
+
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       String isUserLoggedIn = prefs.getString(StringConstants.isUserLoggedIn) ?? "false";

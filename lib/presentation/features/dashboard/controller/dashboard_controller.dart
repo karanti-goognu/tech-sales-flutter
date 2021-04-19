@@ -226,22 +226,8 @@ class DashboardController extends GetxController {
     print("EMP ID inside controller volume site list: $empID");
     String empId = empID ?? "empty";
     String userSecurityKey = "empty";
-    int year = DateTime.now().year;
-    int month = DateTime.now().month;
-    String yearMonth;
-    if (month >= 3) {
-      yearMonth = year.toString() +
-          '-' +
-          (month.toString().length == 1
-              ? '0' + month.toString()
-              : month.toString());
-    } else {
-      yearMonth = (year - 1).toString() +
-          '-' +
-          (month.toString().length == 1
-              ? '0' + month.toString()
-              : month.toString());
-    }
+    print("YearMonth from controller: : ${this.yearMonth}");
+
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       if (empId == 'empty')
@@ -249,7 +235,7 @@ class DashboardController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       repository
-          .getDashboardMtdGeneratedVolumeSiteList(empId, yearMonth)
+          .getDashboardMtdGeneratedVolumeSiteList(empId, this.yearMonth.toString())
           .then((_) {
         SitesListModel data = _;
 //        print(data);
@@ -264,22 +250,7 @@ class DashboardController extends GetxController {
   getDashboardMtdConvertedVolumeList({String empID}) {
     String empId = empID ?? "empty";
     String userSecurityKey = "empty";
-    int year = DateTime.now().year;
-    int month = DateTime.now().month;
-    String yearMonth;
-    if (month >= 3) {
-      yearMonth = year.toString() +
-          '-' +
-          (month.toString().length == 1
-              ? '0' + month.toString()
-              : month.toString());
-    } else {
-      yearMonth = (year - 1).toString() +
-          '-' +
-          (month.toString().length == 1
-              ? '0' + month.toString()
-              : month.toString());
-    }
+
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       print("Before prefs: $empId");
@@ -289,7 +260,7 @@ class DashboardController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print("After prefs: $empId");
 
-      var _=await repository.getDashboardMtdConvertedVolumeList(empId, yearMonth);
+      var _=await repository.getDashboardMtdConvertedVolumeList(empId, this.yearMonth.toString());
         DashboardMtdConvertedVolumeList data = _;
         this.mtdConvertedVolumeList = data;
     }).catchError((e) => print(e));

@@ -2,7 +2,7 @@ class AddEventModel {
   String respCode;
   String respMsg;
   List<EventTypeModels> eventTypeModels;
-  List<Null> dealersModels;
+  List<DealersModels> dealersModels;
 
   AddEventModel(
       {this.respCode, this.respMsg, this.eventTypeModels, this.dealersModels});
@@ -17,9 +17,9 @@ class AddEventModel {
       });
     }
     if (json['dealersModels'] != null) {
-      dealersModels = new List<Null>();
+      dealersModels = new List<DealersModels>();
       json['dealersModels'].forEach((v) {
-       // dealersModels.add(new Null.fromJson(v));
+        dealersModels.add(new DealersModels.fromJson(v));
       });
     }
   }
@@ -33,8 +33,8 @@ class AddEventModel {
           this.eventTypeModels.map((v) => v.toJson()).toList();
     }
     if (this.dealersModels != null) {
-      // data['dealersModels'] =
-      //     this.dealersModels.map((v) => v.toJson()).toList();
+      data['dealersModels'] =
+          this.dealersModels.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -55,6 +55,25 @@ class EventTypeModels {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['eventTypeId'] = this.eventTypeId;
     data['eventTypeText'] = this.eventTypeText;
+    return data;
+  }
+}
+
+class DealersModels {
+  String dealerId;
+  String dealerName;
+
+  DealersModels({this.dealerId, this.dealerName});
+
+  DealersModels.fromJson(Map<String, dynamic> json) {
+    dealerId = json['dealerId'];
+    dealerName = json['dealerName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['dealerId'] = this.dealerId;
+    data['dealerName'] = this.dealerName;
     return data;
   }
 }

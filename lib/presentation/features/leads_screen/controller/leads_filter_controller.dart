@@ -48,9 +48,18 @@ class LeadsFilterController extends GetxController {
 
   final _phoneNumber = "8860080067".obs;
   final _offset = 0.obs;
+  final _isFilterApplied = false.obs;
+
+  get isFilterApplied => _isFilterApplied;
+
+  set isFilterApplied(value) {
+    _isFilterApplied.value = value;
+  }
+
   get offset => this._offset.value;
 
   set offset(value) => this._offset.value = value;
+
 
 
   final _selectedPosition = 0.obs;
@@ -220,8 +229,9 @@ class LeadsFilterController extends GetxController {
   }
 
   getFilterData() {
-    debugPrint('Access Key Response :: ');
     repository.getFilterData(this.accessKeyResponse.accessKey).then((data) {
+      debugPrint('Access Key Response :: ');
+      print(json.encode(data));
       if (data == null) {
         debugPrint('Filter Data Response is null');
       } else {
@@ -296,7 +306,7 @@ class LeadsFilterController extends GetxController {
           "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=10&offset=${this.offset}";
 
       var encodedUrl = Uri.encodeFull(url);
-//      debugPrint('Url is : $encodedUrl');
+      debugPrint('Url is : $encodedUrl');
       repository
           .getLeadsData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
@@ -310,16 +320,38 @@ class LeadsFilterController extends GetxController {
             print(json.encode(data));
             // this._leadsListResponse.value.leadsEntity.addAll(data.leadsEntity);
             // this.leadsListResponseAddLeads = data.leadsEntity;
-            print(leadsListResponse.leadsEntity.length);
+            print(data.leadsEntity.length);
             // this.leadsListResponse = data;
             LeadsListModel leadListResponseServer = data;
+
+            print(json.encode(leadListResponseServer));
             if(leadListResponseServer.leadsEntity.isNotEmpty){
-              leadListResponseServer.leadsEntity=[];
+//              leadListResponseServer.leadsEntity=[];
               leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
-              Get.snackbar("Note", "Loading more ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xffffffff),duration: Duration(milliseconds: 2000));
+              Get.rawSnackbar(
+                titleText: Text("Note"),
+                messageText: Text(
+                    "Loading more .."),
+                backgroundColor: Colors.white,
+              );
+//              Get.snackbar("Note", "Loading more ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xffffffff),duration: Duration(milliseconds: 2000));
             } else{
-              Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
+              print("Is Filter Applied: ${this.isFilterApplied}");
+              if(this.isFilterApplied==true){
+                print("Filter will be implemented here");
+                this.leadsListResponse= data;
+              }
+              else{
+                Get.rawSnackbar(
+                  titleText: Text("Note"),
+                  messageText: Text(
+                      "No more leads .."),
+                  backgroundColor: Colors.white,
+                );
+              }
+
+//              Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
             }
           }
           //this.fullLeadsList= this.fullLeadsList.arrdd(this.leadsListResponse);

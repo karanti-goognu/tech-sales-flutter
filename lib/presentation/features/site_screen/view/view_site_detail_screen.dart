@@ -482,8 +482,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           initialIndex: _initialIndex,
           length: 4,
           child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            // resizeToAvoidBottomPadding: false,
+//            resizeToAvoidBottomInset: true,
+             resizeToAvoidBottomPadding: false,
             backgroundColor: Colors.white,
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -2527,7 +2527,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               onTap: (){
                 if(!isAllowSelectDealer)
                   Get.dialog(CustomDialogs()
-                      .errorDialog("This dealer not Confirmed by so."));
+                      .errorDialog("This dealer not Confirmed by Sales Officer."));
                  // Get.dialog(new ConformationDialog(message:"This dealer not conformed by so."));
 
               },
@@ -2884,56 +2884,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   color: ColorConstants.inputBoxHintColor,
                   fontFamily: "Muli"),
               keyboardType: TextInputType.text,
-              // decoration: InputDecoration(
-              //   focusedBorder: OutlineInputBorder(
-              //     borderSide: BorderSide(
-              //         color: ColorConstants.backgroundColorBlue,
-              //         //color: HexColor("#0000001F"),
-              //         width: 1.0),
-              //   ),
-              //   disabledBorder: OutlineInputBorder(
-              //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
-              //   ),
-              //   enabledBorder: OutlineInputBorder(
-              //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
-              //   ),
-              //   errorBorder: OutlineInputBorder(
-              //     borderSide: BorderSide(color: Colors.red, width: 1.0),
-              //   ),
-              //   labelText: "Date of construction",
-              //   suffixIcon: IconButton(
-              //     icon: Icon(
-              //       Icons.date_range_rounded,
-              //       size: 22,
-              //       color: ColorConstants.clearAllTextColor,
-              //     ),
-              //     onPressed: () async {
-              //       print("here");
-              //       final DateTime picked = await showDatePicker(
-              //         context: context,
-              //         initialDate: DateTime.now(),
-              //         firstDate: DateTime(2001),
-              //         lastDate: DateTime.now(),
-              //       );
-              //
-              //       setState(() {
-              //         final DateFormat formatter = DateFormat("yyyy-MM-dd");
-              //         final String formattedDate = formatter.format(picked);
-              //
-              //         _dateofConstruction.text = formattedDate;
-              //       });
-              //     },
-              //   ),
-              //   filled: false,
-              //   focusColor: Colors.black,
-              //   isDense: false,
-              //   labelStyle: TextStyle(
-              //       fontFamily: "Muli",
-              //       color: ColorConstants.inputBoxHintColorDark,
-              //       fontWeight: FontWeight.normal,
-              //       fontSize: 16.0),
-              //   fillColor: ColorConstants.backgroundColor,
-              // ),
               decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Date of construction",
                 suffixIcon: IconButton(
@@ -3142,13 +3092,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             SizedBox(height: 16),
             TextFormField(
               controller: _nextVisitDate,
-              // validator: (value) {
-              //   if (value.isEmpty) {
-              //     return "Contact Name can't be empty";
-              //   }
-              //   //leagueSize = int.parse(value);
-              //   return null;
-              // },
               readOnly: true,
               onChanged: (data) {
                 // setState(() {

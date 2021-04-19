@@ -34,7 +34,8 @@ class EventTypeController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       // print(userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      egTypeDaa = await repository.getEventTypeData(accessKey, userSecurityKey);
+      print('EMP: ${empID}');
+      egTypeDaa = await repository.getEventTypeData(accessKey, userSecurityKey, empID);
     });
     return egTypeDaa;
   }

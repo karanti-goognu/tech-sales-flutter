@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -41,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
     new MenuDetailsModel("Sites", "assets/images/img3.png"),
-    new MenuDetailsModel("Dashboard", "assets/images/img4.png"),
+    new MenuDetailsModel("Dashboard", "assets/images/speedometer.png"),
     new MenuDetailsModel("MWP", "assets/images/mwp.png"),
     new MenuDetailsModel("SR & Complaint", "assets/images/sr.png"),
     new MenuDetailsModel("Video Tutorial", "assets/images/tutorial.png"),
@@ -50,13 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
-  MoEngageInbox _moEngageInbox;
-  int unReadMessageCount = 0;
 
-  Future<int> unReadMessageCoun() async {
-    int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
-    return unReadMessageCount;
-  }
+  // notification section start here
+  // MoEngageInbox _moEngageInbox;
+  int unReadMessageCount = 0;
+  //
+  // Future<int> unReadMessageCoun() async {
+  //   int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
+  //   return unReadMessageCount;
+  // }
 
   Future<bool> internetChecking() async {
     // do something here
@@ -134,14 +135,15 @@ class _HomeScreenState extends State<HomeScreen> {
           .setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
     });
 
-    _moEngageInbox = MoEngageInbox();
-    WidgetsBinding.instance.addPostFrameCallback((_) => {
-      unReadMessageCoun().then((value) => {
-        setState(() {
-          unReadMessageCount = value;
-        }),
-      })
-    });
+    //   notification section starts here
+    // _moEngageInbox = MoEngageInbox();
+    // WidgetsBinding.instance.addPostFrameCallback((_) => {
+    //   unReadMessageCoun().then((value) => {
+    //     setState(() {
+    //       unReadMessageCount = value;
+    //     }),
+    //   })
+    // });
 
   }
 
@@ -236,7 +238,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: EdgeInsets.only(top: 0.0, right: 3),
                           child: GestureDetector(
                             onTap: () {
-                              Get.toNamed(Routes.NOTIFICATION);
+                              // Get.toNamed(Routes.NOTIFICATION);
+                              Get.dialog(CustomDialogs()
+                                  .errorDialog("Coming Soon !!"));
                             },
                             child: Container(
                               height: (SizeConfig.screenHeight*.12)*.43,
@@ -463,7 +467,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           padding: const EdgeInsets.all(6.0),
                                           child:
                                           Obx(()=>Text(
-                                            _homeController.volumeConverted,
+                                          _homeController.volumeConverted,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           ),),

@@ -132,6 +132,7 @@ class _RequestCreationState extends State<RequestCreation> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigatorWithoutDraftsAndSearch(),
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -870,8 +871,8 @@ class _RequestCreationState extends State<RequestCreation> {
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),
                         )
-                      : Container();
-                },
+                     : Container();
+               },
               ),
             ),
             Container(

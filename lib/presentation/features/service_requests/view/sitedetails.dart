@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
@@ -60,7 +61,7 @@ class _SiteDetailsState extends State<SiteDetails> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: 120,
+        toolbarHeight: SizeConfig.screenHeight*.14,
         centerTitle: false,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,

@@ -3,7 +3,6 @@ import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_even
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
-import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 
 class DealersListViewWidget extends StatefulWidget {
@@ -14,6 +13,7 @@ class DealersListViewWidget extends StatefulWidget {
 class _DealersListViewWidgetState extends State<DealersListViewWidget> {
   AddEventController _addEventController = Get.find();
   TextEditingController controller = new TextEditingController();
+  final _searchList = List<DealerModel>();
 
   @override
   void initState() {
@@ -88,93 +88,123 @@ class _DealersListViewWidgetState extends State<DealersListViewWidget> {
   }
 
   Widget showDealerListBody() {
-    return Obx(() => (_addEventController.isLoading == false)
-        ? (_addEventController.dealerList == null)
-            ? Container(child: Text('List is null'))
-            : (_addEventController.dealerList.length == 0)
-                ? Container(
-                    child: Text(
-                    'List size is 0',
-                    style: TextStyles.mulliBold18,
-                  ))
-                : Container(
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          new Container(
-                            color: Colors.transparent,
-                            child: new Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: new Card(
-                                elevation: 8,
-                                child: new ListTile(
-                                  leading: new Icon(Icons.search),
-                                  title: new TextField(
-                                    controller: controller,
-                                    decoration: new InputDecoration(
-                                        hintText: 'Search',
-                                        border: InputBorder.none),
-                                    onChanged: onSearchTextChanged,
-                                  ),
-                                  trailing: new IconButton(
-                                    icon: new Icon(Icons.cancel),
-                                    onPressed: () {
-                                      controller.clear();
-                                      onSearchTextChanged('');
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              itemCount:
-                                  5 /*_addEventController.dealerList.length*/,
-                              itemBuilder: (BuildContext context, int index) {
-                                print(
-                                    '${_addEventController.dealerList.length}');
-                                return new Container(
-                                  padding: new EdgeInsets.all(8.0),
-                                  child: new Column(
-                                    children: <Widget>[
-                                      new CheckboxListTile(
-                                          value: _addEventController
-                                              .dealerList[index].isSelected,
-                                          title: new Text(
-                                              '${_addEventController.dealerList[index].dealerName}'),
-                                          controlAffinity:
-                                              ListTileControlAffinity.leading,
-                                          onChanged: (bool val) {
-                                            itemChange(val, index);
-                                          })
-                                    ],
-                                  ),
-                                );
-                              }),
-                        ],
-                      ),
+    return Container(
+      /*height: SizeConfig.safeBlockVertical * 50,
+      width: SizeConfig.screenWidth,*/
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            new Container(
+              color: Colors.transparent,
+              child: new Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Card(
+                  elevation: 8,
+                  child: new ListTile(
+                    leading: new Icon(Icons.search),
+                    title: new TextField(
+                      controller: controller,
+                      decoration: new InputDecoration(
+                          hintText: 'Search', border: InputBorder.none),
+                      onChanged: onSearchTextChanged,
                     ),
-                  )
-        : Container(
-            child: Text("Error"),
-          ));
+                    trailing: new IconButton(
+                      icon: new Icon(Icons.cancel),
+                      onPressed: () {
+                        controller.clear();
+                        onSearchTextChanged('');
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Obx(() => (_addEventController.dealerListResponse.dealerList ==
+                null)
+                ? Container()
+                : (_addEventController.dealerListResponse.dealerList.length ==
+                0)
+                ? Container()
+                :_searchList.length!=0?
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: _searchList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return new Container(
+                    padding: new EdgeInsets.all(8.0),
+                    child: new Column(
+                      children: <Widget>[
+                        new CheckboxListTile(
+                            value: _searchList[index].isSelected,
+                            title: new Text(
+                                '${_searchList[index].dealerName}'),
+                            controlAffinity:
+                            ListTileControlAffinity.leading,
+                            onChanged: (bool val) {
+                              itemChange1(val, _searchList[index].dealerName,index);
+                            })
+                      ],
+                    ),
+                  );
+                }):ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: _addEventController
+                    .dealerList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return new Container(
+                    padding: new EdgeInsets.all(8.0),
+                    child: new Column(
+                      children: <Widget>[
+                        new CheckboxListTile(
+                            value: _addEventController
+                                .dealerList[index].isSelected,
+                            title: new Text(
+                                '${_addEventController.dealerList[index].dealerName}'),
+                            controlAffinity:
+                            ListTileControlAffinity.leading,
+                            onChanged: (bool val) {
+                              itemChange(val, index);
+                            })
+                      ],
+                    ),
+                  );
+                })),
+          ],
+        ),
+      ),
+    );
   }
 
+
   onSearchTextChanged(String text) async {
-    /* LeadsFilterController _leadsFilterController = Get.find();
-    if (controller.text.length >= 3) {
-      print('Hello');
-      _leadsFilterController.searchKey = text;
-      _leadsFilterController.getAccessKey(RequestIds.SEARCH_LEADS);
-    }*/
+    _searchList.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+    print('Hello'+text);
+    for(int i=0;i<_addEventController.dealerList.length;i++){
+      if(_addEventController.dealerList[i].dealerName.toUpperCase().contains(text)||_addEventController.dealerList[i].dealerName.toLowerCase().contains(text)||
+          _addEventController.dealerList[i].dealerName.contains(text)){
+
+        setState(() {
+          _searchList.add(_addEventController.dealerList[i]);
+        });
+        print("FilterList-->"+_searchList.length.toString());
+      }
+    }
+
+    setState(() {});
+
   }
 
   void itemChange(bool val, int index) {
@@ -191,7 +221,33 @@ class _DealersListViewWidgetState extends State<DealersListViewWidget> {
       } else {
         print('false');
         _addEventController.dealerListSelected.removeWhere((item) =>
-            item.dealerId == _addEventController.dealerList[index].dealerId);
+        item.dealerId == _addEventController.dealerList[index].dealerId);
+      }
+    });
+  }
+
+  void itemChange1(bool val, String dealerName,int index1) {
+    /*else{
+      _addEventController.dealerListSelected.remove(index);
+    }*/
+    var index;
+    for(int i=0;i<_addEventController.dealerList.length;i++){
+      if(_addEventController.dealerList[i].dealerName==dealerName) {
+        index = i;
+      }
+    }
+
+    setState(() {
+      _addEventController.dealerList[index].isSelected = val;
+      if (val) {
+        _searchList[index1].isSelected = true;
+        _addEventController.dealerListSelected.add(new DealerModelSelected(
+            _addEventController.dealerList[index].dealerId,
+            _addEventController.dealerList[index].dealerName));
+      } else {
+        _searchList[index1].isSelected = false;
+        _addEventController.dealerListSelected.removeWhere((item) =>
+        item.dealerId == _addEventController.dealerList[index].dealerId);
       }
     });
   }

@@ -19,6 +19,7 @@ abstract class StringConstants {
   static String employeeName = '_employeeName';
   static String employeeId = '_employeeId';
   static String mobileNumber = '_mobileNumber';
+  static String appVersionForSharedPref='_appVersion';
   static const String JOURNEY_DATE = '_journeyDate';
   static const String JOURNEY_END_DATE = '_journeyEndTime';
 

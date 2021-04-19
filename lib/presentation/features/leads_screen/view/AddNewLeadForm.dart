@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -282,118 +282,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+//      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      floatingActionButton: Container(
-        height: 68.0,
-        width: 68.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: ColorConstants.checkinColor,
-            child: Icon(
-              Icons.keyboard_backspace,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-      ),
+      floatingActionButton: BackFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: ColorConstants.appBarColor,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Get.toNamed(Routes.HOME_SCREEN);
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: Colors.white60,
-                        ),
-                        Text(
-                          'Home',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              // Right Tab bar icons
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          new CupertinoPageRoute(
-                              builder: (BuildContext context) =>
-                                  DraftLeadListScreen()));
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.drafts,
-                          color: Colors.white60,
-                        ),
-                        Text(
-                          'Drafts',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Get.toNamed(Routes.SEARCH_SCREEN);
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.search,
-                          color: Colors.white60,
-                        ),
-                        Text(
-                          'Search',
-                          style: TextStyle(
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+      resizeToAvoidBottomPadding: false,
+      bottomNavigationBar: BottomNavigator(),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -1138,92 +1032,94 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     // mainAxisAlignment:
                                     // MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          (index == 0)
-                                              ? Text(
-                                                  "Influencer Details",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                )
-                                              : Text(
-                                                  "Influencer Details ${(index + 1)} ",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                ),
-                                          _listInfluencerDetail[index]
-                                                  .isExpanded
-                                              ? FlatButton.icon(
-                                                  // shape: RoundedRectangleBorder(
-                                                  //     borderRadius: BorderRadius.circular(0),
-                                                  //     side: BorderSide(color: Colors.black26)),
-                                                  color: Colors.transparent,
-                                                  icon: Icon(
-                                                    Icons.remove,
-                                                    color: HexColor("#F9A61A"),
-                                                    size: 18,
-                                                  ),
-                                                  label: Text(
-                                                    "COLLAPSE",
+                                      FittedBox(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            (index == 0)
+                                                ? Text(
+                                                    "Influencer Details",
                                                     style: TextStyle(
-                                                        color:
-                                                            HexColor("#F9A61A"),
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        // letterSpacing: 2,
-                                                        fontSize: 17),
-                                                  ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .isExpanded =
-                                                          !_listInfluencerDetail[
-                                                                  index]
-                                                              .isExpanded;
-                                                    });
-                                                    // _getCurrentLocation();
-                                                  },
-                                                )
-                                              : FlatButton.icon(
-                                                  // shape: RoundedRectangleBorder(
-                                                  //     borderRadius: BorderRadius.circular(0),
-                                                  //     side: BorderSide(color: Colors.black26)),
-                                                  color: Colors.transparent,
-                                                  icon: Icon(
-                                                    Icons.add,
-                                                    color: HexColor("#F9A61A"),
-                                                    size: 18,
-                                                  ),
-                                                  label: Text(
-                                                    "EXPAND",
+                                                        fontSize: 18),
+                                                  )
+                                                : Text(
+                                                    "Influencer Details ${(index + 1)} ",
                                                     style: TextStyle(
-                                                        color:
-                                                            HexColor("#F9A61A"),
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        // letterSpacing: 2,
-                                                        fontSize: 17),
+                                                        fontSize: 18),
                                                   ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      _listInfluencerDetail[
-                                                                  index]
-                                                              .isExpanded =
-                                                          !_listInfluencerDetail[
-                                                                  index]
-                                                              .isExpanded;
-                                                    });
-                                                    // _getCurrentLocation();
-                                                  },
-                                                ),
-                                        ],
+                                            _listInfluencerDetail[index]
+                                                    .isExpanded
+                                                ? FlatButton.icon(
+                                                    // shape: RoundedRectangleBorder(
+                                                    //     borderRadius: BorderRadius.circular(0),
+                                                    //     side: BorderSide(color: Colors.black26)),
+                                                    color: Colors.transparent,
+                                                    icon: Icon(
+                                                      Icons.remove,
+                                                      color: HexColor("#F9A61A"),
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "COLLAPSE",
+                                                      style: TextStyle(
+                                                          color:
+                                                              HexColor("#F9A61A"),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          // letterSpacing: 2,
+                                                          fontSize: 17),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded =
+                                                            !_listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  )
+                                                : FlatButton.icon(
+                                                    // shape: RoundedRectangleBorder(
+                                                    //     borderRadius: BorderRadius.circular(0),
+                                                    //     side: BorderSide(color: Colors.black26)),
+                                                    color: Colors.transparent,
+                                                    icon: Icon(
+                                                      Icons.add,
+                                                      color: HexColor("#F9A61A"),
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "EXPAND",
+                                                      style: TextStyle(
+                                                          color:
+                                                              HexColor("#F9A61A"),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          // letterSpacing: 2,
+                                                          fontSize: 17),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded =
+                                                            !_listInfluencerDetail[
+                                                                    index]
+                                                                .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  ),
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(height: 10),
                                       Row(

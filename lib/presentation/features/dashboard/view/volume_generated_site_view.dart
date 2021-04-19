@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/splash/controller/splas
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
@@ -38,7 +39,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: 120,
+        toolbarHeight: SizeConfig.screenHeight*.10,
         centerTitle: false,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,

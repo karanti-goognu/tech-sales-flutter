@@ -26,9 +26,6 @@ abstract class UrlConstants {
  static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
 
 
- // static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
- // static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
- // static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
 
 
   //End points
@@ -78,7 +75,7 @@ abstract class UrlConstants {
 
 
   ///Events and Gifts
-  static const String getAddEvent = '$baseUrl/event/add-event';
+  static const String getAddEvent = '$baseUrl/event/add-event?referenceID=';
 
 
 }

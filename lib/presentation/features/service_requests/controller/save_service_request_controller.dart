@@ -60,6 +60,7 @@ class SaveServiceRequestController extends GetxController {
                 ),
                 barrierDismissible: false);
           } else {
+            Get.back();
             Get.dialog(
                 CustomDialogs().messageDialogMWP(value['resp-msg'].toString()),
                 barrierDismissible: false);

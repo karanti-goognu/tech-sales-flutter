@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMWPModel.d
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:meta/meta.dart';
 
@@ -37,7 +38,7 @@ class MyRepositoryApp {
   }
 
   updateVisitPlan(String accessKey, String userSecurityKey, String url,
-      UpdateVisitRequest updateVisitRequest) {
+      UpdateVisitResponseModel updateVisitRequest) {
     return apiClient.updateVisitPlan(
         accessKey, userSecurityKey, url, updateVisitRequest);
   }

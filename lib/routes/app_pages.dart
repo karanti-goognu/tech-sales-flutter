@@ -159,10 +159,7 @@ class AppPages {
       page: () => VolumeConvertedTable(),
       binding: SRBinding(),
     ),
-    GetPage(
-      name: Routes.NOTIFICATION,
-      page: () => NotificationScreen(),
-    ),
+
     GetPage(
       name: Routes.EVENTS_GIFTS,
       page: () => Events(),
@@ -193,5 +190,9 @@ class AppPages {
       page: () => UpdateEvent(),
       //binding: DashboardBinding(),
     ),
+    // GetPage(
+    //   name: Routes.NOTIFICATION,
+    //   page: () => NotificationScreen(),
+    // ),
   ];
 }

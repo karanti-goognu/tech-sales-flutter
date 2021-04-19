@@ -77,6 +77,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     eventController.dispose();
     eventController.offset = 0;
     print(eventController.offset);
+    print("dispose");
     super.dispose();
   }
 
@@ -87,7 +88,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: 120,
+        toolbarHeight: 80,
         centerTitle: false,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -259,24 +260,37 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         margin: EdgeInsets.all(5.0),
                         color: Colors.white,
                         child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(left: BorderSide(
+                              width: 5,
+                              color: serviceRequestComplaintListModel
+                                  .srComplaintListModal[
+                              index]
+                                  .request !=
+                                  'SERVICE REQUEST'
+                                  ? HexColor('#9E3A0D')
+                                  : HexColor('#F9A61A'),
+                            )),
+
+                          ),
                           padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
                           child: Row(
                             mainAxisAlignment:
                             MainAxisAlignment.start,
                             children: [
-                              Flexible(
-                                flex: 1,
-                                child: Container(
-                                  color: serviceRequestComplaintListModel
-                                      .srComplaintListModal[
-                                  index]
-                                      .request !=
-                                      'SERVICE REQUEST'
-                                      ? HexColor('#9E3A0D')
-                                      : HexColor('#F9A61A'),
-                                  height: 175,
-                                ),
-                              ),
+//                              Flexible(
+//                                flex: 1,
+//                                child: Container(
+//                                  color: serviceRequestComplaintListModel
+//                                      .srComplaintListModal[
+//                                  index]
+//                                      .request !=
+//                                      'SERVICE REQUEST'
+//                                      ? HexColor('#9E3A0D')
+//                                      : HexColor('#F9A61A'),
+//                                  height: 175,
+//                                ),
+//                              ),
                               Expanded(
                                 flex: 50,
                                 child: Column(

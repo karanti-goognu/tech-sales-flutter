@@ -51,6 +51,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         floatingActionButton: BackFloatingButton(),
         bottomNavigationBar: BottomNavigator(),
         backgroundColor: ColorConstants.backgroundColor,
+
         body: SingleChildScrollView(
           child: _buildAddEventInterface(context),
         ),
@@ -459,7 +460,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                   .mwpVisitModel.visitEndTime ==
                                               null)
                                       ? TextFormField(
-                                         key: Key(_addEventController.visitRemarks),
+                                          key: Key(_addEventController.visitRemarks),
                                           initialValue: _addEventController.visitRemarks,
                                           onChanged: (_) {
                                             _addEventController.visitRemarks =

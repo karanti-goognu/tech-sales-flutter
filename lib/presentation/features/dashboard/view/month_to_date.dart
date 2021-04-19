@@ -4,15 +4,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/dsp_for_mtd.dart';
+import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/top_row_for_mtd.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:screenshot/screenshot.dart';
 
 class MonthToDate extends StatefulWidget {
@@ -37,17 +36,6 @@ class MonthToDateState extends State<MonthToDate> {
   String yearMonthForFileName;
   Random random = Random();
 
-//  Future<Uint8List> _capturePng() async {
-//    RenderRepaintBoundary boundary =  previewContainer.currentContext.findRenderObject();
-//    if (boundary.debugNeedsPaint) {
-//      print("Waiting for boundary to be painted.");
-//      await Future.delayed(const Duration(milliseconds: 20));
-//      return _capturePng();
-//    }
-//    var image = await boundary.toImage();
-//    var byteData = await image.toByteData(format: ImageByteFormat.png);
-//    return byteData.buffer.asUint8List();
-//  }
 
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
@@ -58,7 +46,7 @@ class MonthToDateState extends State<MonthToDate> {
     print(pngBytes);
     final directory = (await getExternalStorageDirectory()).path;
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
-    imgFile = new File('$directory/$empIdForFileName-$yearMonthForFileName.png');
+    imgFile = new File('$directory/$empIdForFileName-MTD-${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
@@ -94,7 +82,6 @@ class MonthToDateState extends State<MonthToDate> {
           children: [
             Screenshot(
               controller: screenshotController,
-//              key: previewContainer,
               child: Column(
                 children: [
                   SizedBox(
@@ -171,7 +158,7 @@ class MonthToDateState extends State<MonthToDate> {
                                 children: [
                                   Text(
                                     'All target achievement are shown on Pro rata basis',
-                                    style: TextStyle(fontSize: 12),
+                                    style: TextStyle(fontSize: SizeConfig.safeBlockHorizontal*2.5),
                                   ),
                                   Expanded(child: Container())
                                 ],
@@ -201,7 +188,7 @@ class MonthToDateState extends State<MonthToDate> {
                               SizedBox(
                                 height: 5,
                               ),
-                              ConvertedColumnChild(
+                              TopRowForMTD(
                                   currentMothDetailsVolume:
                                       _currentMothDetailsVolume,
                                   dashboardController: _dashboardController),
@@ -220,7 +207,7 @@ class MonthToDateState extends State<MonthToDate> {
                               Row(
                                 children: [
                                   Text(
-                                    'DSP Slab Coversion',
+                                    'DSP Slab Conversion',
                                     style: TextStyle(fontSize: 18),
                                   ),
                                   Expanded(child: Container())
@@ -233,7 +220,7 @@ class MonthToDateState extends State<MonthToDate> {
                                 children: [
                                   Text(
                                     'Total Slab Opportunities',
-                                    style: TextStyle(fontSize: 11),
+                                    style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal*2.5),
                                   ),
                                   Expanded(child: Container())
                                 ],
@@ -304,6 +291,8 @@ class MonthToDateState extends State<MonthToDate> {
                                           yearMonth: yearMonth);
                                     }
                                     _dashboardController.isPrev = true;
+                                    _dashboardController.yearMonth= yearMonth;
+
                                   },
                                   child: Text(
                                     'Show $_previousMonth (Prev.) Data',
@@ -340,7 +329,7 @@ class MonthToDateState extends State<MonthToDate> {
                                           empID: widget.empID,
                                           yearMonth: yearMonth);
                                     }
-
+                                    _dashboardController.yearMonth= yearMonth;
                                     _dashboardController.isPrev = false;
                                   },
                                   child: Text(
@@ -364,419 +353,10 @@ class MonthToDateState extends State<MonthToDate> {
       ),
     );
   }
-
-
 }
 
-class DspColumnChild extends StatelessWidget {
-  const DspColumnChild({
-    Key key,
-    @required bool currentMothDspSlabVolume,
-    @required DashboardController dashboardController,
-  })  : _currentMothDspSlabVolume = currentMothDspSlabVolume,
-        _dashboardController = dashboardController,
-        super(key: key);
-
-  final bool _currentMothDspSlabVolume;
-  final DashboardController _dashboardController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        child: _currentMothDspSlabVolume == false
-            ? Obx(() => SfCircularChart(
-                    margin: EdgeInsets.zero,
-                    legend: Legend(
-                      isVisible: true,
-                      position: LegendPosition.right,
-                      backgroundColor: Colors.white,
-                      width: (MediaQuery.of(context).size.width / 2).toString(),
-                      title: LegendTitle(),
-                    ),
-                    annotations: <CircularChartAnnotation>[
-                      CircularChartAnnotation(
-                        // height: '45.0',
-                        widget: Container(
-                          alignment: Alignment.center,
-                          height: 77,
-                          width: 77,
-                          child: Text.rich(
-                            TextSpan(
-                                text:
-                                    "${(int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString())).isNaN ? 0 : ((int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString()))*100).round()}%\n",
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    color: HexColor('#002A64'),
-                                    fontWeight: FontWeight.bold),
-                                children: [
-                                  TextSpan(
-                                    text: "Site conversion efficiency on Count",
-                                    style: TextStyle(fontSize: 10),
-                                  )
-                                ]),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        horizontalAlignment: ChartAlignment.center,
-                        verticalAlignment: ChartAlignment.center,
-                      ),
-                    ],
-                    series: <CircularSeries>[
-                      DoughnutSeries<ChartData, String>(
-                          dataSource: [
-                            ChartData(
-                                'Total Opp\'ty-${_dashboardController.dspTotalOpperCount}',
-                                _dashboardController.dspTotalOpperCount.toDouble(),
-                                Color(0xff39B54A)),
-                            ChartData(
-                                'DSP Target-${_dashboardController.dspTargetCount}',
-                                _dashboardController.dspTargetCount.toDouble(),
-                                Color(0xff00ADEE)),
-                            ChartData(
-                                'Slab Converted-${_dashboardController.dspSlabConvertedCount}',
-                                _dashboardController.dspSlabConvertedCount.toDouble(),
-                                Color(0xff007CBF)),
-                            ChartData(
-                                'Remaining Tgt-${_dashboardController.dspRemaingTargetCount}',
-                                _dashboardController.dspRemaingTargetCount.toDouble(),
-                                Color(0xffFFCD00)),
-                          ],
-                          innerRadius: '65.0',
-                          pointColorMapper: (ChartData data, _) => data.color,
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y)
-                    ]))
-            : Obx(()=>Column(
-          children: [
-            Expanded(
-              flex: 9,
-              child:
-              _dashboardController
-                  .dspTotalOpperVolume==0?
-              Center(child: Text("Target is not yet set"),)
-                  :
-              SfRadialGauge(
-                  enableLoadingAnimation: true,
-                  axes: <RadialAxis>[
-                    RadialAxis(
-                        radiusFactor: 1.3,
-                        startAngle: 180,
-                        endAngle: 0,
-                        canScaleToFit: true,
-                        minimum: 0,
-                        maximum: int.parse(_dashboardController
-                            .dspTotalOpperVolume
-                            .toString())
-                            .toDouble(),
-                        ranges: <GaugeRange>[
-                          GaugeRange(
-                              startValue: 0,
-                              endValue:  int.parse(_dashboardController
-                                  .dspTotalOpperVolume
-                                  .toString())
-                                  .toDouble(),
-                              color: HexColor('00ADEE'),
-                              startWidth: 15,
-                              endWidth: 15),
-                          GaugeRange(
-                              startValue: 0,
-                              endValue :int.parse(_dashboardController
-                                  .dspSlabConvertedVolume
-                                  .toString())
-                                  .toDouble(),
-                              color: HexColor('39B54A'),
-                              startWidth: 15,
-                              endWidth: 15),
-                        ],
-                        pointers: <GaugePointer>[
-                          NeedlePointer(
-                            value: (int.parse(_dashboardController
-                                .convTargetCount
-                                .toString()) /
-                                int.parse(_dashboardController
-                                    .dspTotalOpperVolume
-                                    .toString()))
-                                .isNaN
-                                ? 0
-                                : int.parse(_dashboardController
-                                .dspSlabConvertedVolume
-                                .toString()).toDouble() ,
-                            needleColor: Colors.black12,
-                          )
-                        ],
-                        annotations: <GaugeAnnotation>[
-                          GaugeAnnotation(
-                              widget: Container(
-                                  child: Text(
-                                      '${(int.parse(_dashboardController.dspSlabConvertedVolume.toString()) / int.parse(_dashboardController.dspTotalOpperVolume.toString())).isNaN ? 0 : (int.parse(_dashboardController.dspSlabConvertedVolume.toString()) / int.parse(_dashboardController.dspTotalOpperVolume.toString())*100).round()}%',
-                                      style: TextStyle(
-//                                                                    fontSize: 25,
-                                          fontWeight: FontWeight.bold))),
-                              angle: 190,
-                              positionFactor: 0.3)
-                        ])
-                  ]),
-            ),
-            Expanded(
-                flex: 5,
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  childAspectRatio: 5,
-                  children: [
-                    Container(
-                      child: Text(
-                          "Opportunity-${_dashboardController
-                              .dspTotalOpperVolume} MT"),
-                      alignment: Alignment.center,
-                      color: Colors.blue,
-                    ),
-                    Container(
-                      child: Text(
-                          "Converted-${_dashboardController.dspSlabConvertedVolume} MT"),
-                      alignment: Alignment.center,
-                      color: Colors.green,
-                    )
-                  ],
-                )),
-          ],
-        )));
-  }
-}
-
-class ConvertedColumnChild extends StatelessWidget {
-  const ConvertedColumnChild({
-    Key key,
-    @required bool currentMothDetailsVolume,
-    @required DashboardController dashboardController,
-  })  : _currentMothDetailsVolume = currentMothDetailsVolume,
-        _dashboardController = dashboardController,
-        super(key: key);
-
-  final bool _currentMothDetailsVolume;
-  final DashboardController _dashboardController;
-
-  @override
-  Widget build(BuildContext context) {
-//    print((int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).toInt());
-    return Expanded(
-        child: _currentMothDetailsVolume == false
-            ? Obx(() => Stack(
-              children: [
-                SfCircularChart(
-                    margin: EdgeInsets.zero,
-                    // backgroundColor: Colors.yellow,
-                    annotations: <CircularChartAnnotation>[
-                      CircularChartAnnotation(
-                        widget: Container(
-                          alignment: Alignment.center,
-                          height: 77,
-                          width: 77,
-                          child: Text.rich(
-                            TextSpan(
-                                text:
-                                    "${((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN)
-                                        ? 0 :
-                                    ((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.generatedCount.toString()))*100).round()}%\n",
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    color: HexColor('#002A64'),
-                                    fontWeight: FontWeight.bold),
-                                children: [
-                                  TextSpan(
-                                    text: "Site conversion efficiency",
-                                    style: TextStyle(fontSize: 10),
-                                  )
-                                ]),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        horizontalAlignment: ChartAlignment.center,
-                        verticalAlignment: ChartAlignment.center,
-                      ),
-                    ],
-                    legend: Legend(
-                      isVisible: true,
-                      position: LegendPosition.right,
-                      backgroundColor: Colors.white,
-                      width: (MediaQuery.of(context).size.width / 2).toString(),
-                      title: LegendTitle(),
-                    ),
-                    series: <CircularSeries>[
-                      DoughnutSeries<ChartData, String>(
-                          dataSource: [
-                            ChartData(
-                                'Converted-${_dashboardController.convertedCount}',
-                                _dashboardController.convertedCount.toDouble(),
-                                Color(0xff39B54A)),
-                            ChartData(
-                                'Generated-${_dashboardController.generatedCount}',
-                                _dashboardController.generatedCount.toDouble(),
-//                            (int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString()),
-                                Color(0xff00ADEE)),
-                            ChartData(
-                                'Conv. Target-${_dashboardController.convTargetCount}',
-                                _dashboardController.convTargetCount.toDouble(),
-                                Color(0xff007CBF)),
-                            ChartData(
-                                'Remaining Tgt-${_dashboardController.remainingTargetCount}',
-                                _dashboardController.remainingTargetCount.toDouble(),
-                                Color(0xffFFCD00)),
-                          ],
-                          innerRadius: '65.0',
-                          pointColorMapper: (ChartData data, _) => data.color,
-                          strokeColor: Colors.red,
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y)
-                    ]),
-                Positioned(
-                    bottom: 0,right: 0,
-                    child:
-                    _dashboardController.mwpPlanApproveStatus.toString()!="APPROVE"?
-                    Text("MWP plan not approved", style: TextStyle(color: Colors.red),):Container())
-              ],
-            ))
-            : Obx(()=>Column(
-          children: [
-            Expanded(
-              flex: 9,
-              child:
-              _dashboardController
-                  .generatedVolume==0?
-              Center(child: Text("Target is not yet set"),)
-                  :SfRadialGauge(
-                  enableLoadingAnimation: true,
-                  axes: <RadialAxis>[
-                    RadialAxis(
-                        radiusFactor: 1.3,
-                        startAngle: 180,
-                        endAngle: 0,
-                        canScaleToFit: true,
-                        minimum: 0,
-                        maximum: int.parse(_dashboardController
-                            .generatedVolume
-                            .toString())
-                            .toDouble(),
-                        ranges: <GaugeRange>[
-                          GaugeRange(
-                              startValue: 0,
-                              endValue: int.parse(_dashboardController
-                                  .generatedVolume
-                                  .toString())
-                                  .toDouble(),
-                              color: HexColor('00ADEE'),
-                              startWidth: 15,
-                              endWidth: 15),
-                          GaugeRange(
-                              startValue: 0,
-                              endValue:  int.parse(_dashboardController
-                                  .convertedVolume
-                                  .toString()).toDouble(),
-                              color: HexColor('39B54A'),
-                              startWidth: 15,
-                              endWidth: 15),
-                        ],
-                        pointers: <GaugePointer>[
-                          NeedlePointer(
-                            value: (int.parse(_dashboardController
-                                .convertedCount
-                                .toString()) /
-                                int.parse(_dashboardController
-                                    .generatedCount
-                                    .toString()))
-                                .isNaN
-                                ? 0
-                                :   int.parse(_dashboardController
-                                    .convertedVolume
-                                    .toString()).toDouble(),
-                            needleColor: Colors.black12,
-                          )
-                        ],
-                        annotations: <GaugeAnnotation>[
-                          GaugeAnnotation(
-                              widget: Container(
-                                  child: Text(
-                                      "${(int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.generatedVolume.toString())).isNaN ? 0 : ((int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.generatedVolume.toString()))*100).round()}%",
-                                      style: TextStyle(
-//                                           fontSize: 25,
-                                          fontWeight: FontWeight.bold))),
-                              angle: 190,
-                              positionFactor: 0.3)
-                        ])
-                  ]),
-            ),
-            Expanded(
-                flex: 5,
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  childAspectRatio: 5,
-                  children: [
-                    GestureDetector(
-                      onTap:  () =>
-                          Get.toNamed(Routes.DASHBOARD_SITE_LIST),
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                                "Generated-${_dashboardController.generatedVolume} MT"),
-                            IconButton(
-                              icon: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
-                              ),
-                            )
-                          ],
-                        ),
-                        alignment: Alignment.center,
-                        color: Colors.blue.withOpacity(0.3),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => Get.toNamed(
-                          Routes.DASHBOARD_VOLUME_CONVERTED),
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                                "Converted-${_dashboardController.convertedVolume} MT"),
-                            IconButton(
-                              icon: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
-                              ),
-                            )
-                          ],
-                        ),
-                        alignment: Alignment.center,
-                        color: Colors.green.withOpacity(0.3),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                          "Remaining Tgt-${_dashboardController.remainingTargetVolume} MT"),
-                      color: Colors.yellow.withOpacity(0.3),
-                      alignment: Alignment.center,
-                    ),
-                    Container(
-                      child: Text(
-                          "Conv. Target-${_dashboardController.convTargetVolume} MT"),
-                      color: Colors.indigo.withOpacity(0.3),
-                      alignment: Alignment.center,
-                    )
-                  ],
-                )),
-          ],
-        )));
-  }
-}
-
-class ChartData {
-  ChartData(this.x, this.y, [this.color]);
+class ChartDataForMTD {
+  ChartDataForMTD(this.x, this.y, [this.color]);
   final String x;
   final double y;
   final Color color;

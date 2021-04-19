@@ -32,14 +32,14 @@ class MyApiClientEvent{
     }
   }
 
-  Future<AddEventModel> getEventTypeData(String accessKey, String userSecretKey) async{
+  Future<AddEventModel> getEventTypeData(String accessKey, String userSecretKey, String empID) async{
     AddEventModel addEventModel;
     try{
       // print(accessKey);
       // print(userSecretKey);
+     print('DDDD: ${UrlConstants.getAddEvent}');
 
-
-      var response = await http.get(Uri.parse(UrlConstants.getAddEvent),
+      var response = await http.get(Uri.parse(UrlConstants.getAddEvent+empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
       addEventModel = AddEventModel.fromJson(json.decode(response.body));
       // print(response.body);

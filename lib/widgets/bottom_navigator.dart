@@ -85,7 +85,7 @@ class BottomNavigator extends StatelessWidget {
                 MaterialButton(
                   minWidth: 40,
                   onPressed: () {
-                    Get.back();
+                    // Get.back();
                     Get.toNamed(Routes.SEARCH_SCREEN);
                   },
                   child: Column(

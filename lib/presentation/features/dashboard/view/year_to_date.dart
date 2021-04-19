@@ -26,94 +26,94 @@ class YearToDate extends StatefulWidget {
 
 
 class _YearToDateState extends State<YearToDate> {
-  final DataGridController _controller = DataGridController();
+//  final DataGridController _controller = DataGridController();
   DashboardController _dashboardController = Get.find();
   String actualOrAverage = 'Actual';
   bool _ytdIsVolume = false;
   String yearMonth;
   List<dynamic> _yearMonthList = [];
-  static GlobalKey previewContainer = new GlobalKey();
+//  static GlobalKey previewContainer = new GlobalKey();
   File imgFile;
   Random random = Random();
   List<DashboardYearlyModels> _thisYearData;
-  List<ChartData> _barGraphGeneratedField = [];
-  List<ChartData> _barGraphFieldConverted = [];
-  List<ChartData> _lineChartGenerated = [];
-  List<ChartData> _lineChartConverted = [];
+  List<ChartDataForYTD> _barGraphGeneratedField = [];
+  List<ChartDataForYTD> _barGraphFieldConverted = [];
+  List<ChartDataForYTD> _lineChartGenerated = [];
+  List<ChartDataForYTD> _lineChartConverted = [];
   var _dataForDataGrid;
   ScreenshotController screenshotController = ScreenshotController();
 
 
   getCountAndActualDataForBarGraph() {
-    print("Count and Actual $_thisYearData");
+//    print("Count and Actual $_thisYearData");
     _barGraphGeneratedField = [];
     _barGraphFieldConverted = [];
     _dashboardController.barGraphLegend1 = 'Leads Generated';
     _dashboardController.barGraphLegend2 = 'Leads Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
-      _barGraphGeneratedField.add(ChartData(
+      _barGraphGeneratedField.add(ChartDataForYTD(
           _thisYearData[i].leadGenerated.toDouble(),
           _dashboardController.monthList[i]));
 
-      _barGraphFieldConverted.add(ChartData(
+      _barGraphFieldConverted.add(ChartDataForYTD(
           _thisYearData[i].leadConverted.toDouble(),
           _dashboardController.monthList[i]));
     }
   }
 
   getVolumeAndActualDataForBarGraph() {
-    print("Volume and Actual $_thisYearData");
+//    print("Volume and Actual $_thisYearData");
     _barGraphGeneratedField = [];
     _barGraphFieldConverted = [];
     _dashboardController.barGraphLegend1 = 'Volume Generated';
     _dashboardController.barGraphLegend2 = 'Volume Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
-      _barGraphGeneratedField.add(ChartData(
+      _barGraphGeneratedField.add(ChartDataForYTD(
           _thisYearData[i].generatedVolume.toDouble(),
           _dashboardController.monthList[i]));
 
-      _barGraphFieldConverted.add(ChartData(
+      _barGraphFieldConverted.add(ChartDataForYTD(
           _thisYearData[i].convertedVolume.toDouble(),
           _dashboardController.monthList[i]));
     }
   }
 
   getVolumeAndAverageDataForLineChart() {
-    print("Volume and Average $_thisYearData");
+//    print("Volume and Average $_thisYearData");
     _lineChartGenerated = [];
     _lineChartConverted = [];
     _dashboardController.lineChartLegend1 = 'Avg Generated Volume ';
     _dashboardController.lineChartLegend2 = 'Avg Converted Volume';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
-      _lineChartGenerated.add(ChartData(
+      _lineChartGenerated.add(ChartDataForYTD(
           _thisYearData[i].avgGeneratedVolume.toDouble(),
           _dashboardController.monthList[i]));
 
-      _lineChartConverted.add(ChartData(
+      _lineChartConverted.add(ChartDataForYTD(
           _thisYearData[i].avgConvertedVolume.toDouble(),
           _dashboardController.monthList[i]));
     }
   }
 
   getCountAndAverageDataForLineChart() {
-    print("Count and Average $_thisYearData");
+//    print("Count and Average $_thisYearData");
     _lineChartGenerated = [];
     _lineChartConverted = [];
     _dashboardController.lineChartLegend1 = 'Avg Lead Generated ';
     _dashboardController.lineChartLegend2 = 'Avg Lead Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
-      _lineChartGenerated.add(ChartData(
+      _lineChartGenerated.add(ChartDataForYTD(
           _thisYearData[i].avgLeadGenerated.toDouble(),
           _dashboardController.monthList[i]));
 
-      _lineChartConverted.add(ChartData(
+      _lineChartConverted.add(ChartDataForYTD(
           _thisYearData[i].avgLeadConverted.toDouble(),
           _dashboardController.monthList[i]));
     }
   }
 
 getYearlyData()async{
-    print(widget.empID);
+//    print(widget.empID);
   await _dashboardController.getYearlyViewDetails(widget.empID).then((value) {
     print("::::::$value ::::::");
     print("IN VIEW");
@@ -162,6 +162,7 @@ getYearlyData()async{
         child: Container(
           color: ThemeData.light().scaffoldBackgroundColor,
           padding: const EdgeInsets.all(16.0),
+//          padding: const EdgeInsets.all(36.0),
           child: Column(
             children: [
               Row(
@@ -254,12 +255,15 @@ getYearlyData()async{
                   ),
                 ],
               ),
+              SizedBox(height: 15,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Transform.scale(
-                    scale: 0.7,
+//                    scale: 0.7,
+                  scale: 1,
                     child: Container(
+                      height: 28,
                       padding:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                       decoration: BoxDecoration(
@@ -277,7 +281,11 @@ getYearlyData()async{
                                   items: _yearMonthList
                                       .map<DropdownMenuItem>(
                                           (e) => DropdownMenuItem(
-                                        child: Text(e),
+                                        child: Text(e,
+                                          style: TextStyle(
+                                              fontSize: SizeConfig.safeBlockHorizontal*3.0,
+                                              color: ColorConstants.blackColor,
+                                              fontFamily: "Muli"),                                        ),
                                         value: e,
                                       ))
                                       .toList(),
@@ -316,13 +324,15 @@ getYearlyData()async{
                     ),
                   ),
                   Transform.scale(
-                    scale: 0.7,
+                    scale: 1,
                     child: Container(
+                      height: 28,
+//                      width: 100,
                       padding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black38),
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
@@ -332,7 +342,7 @@ getYearlyData()async{
                                 .map((e) => DropdownMenuItem(
                                       child: Text(e,
                                         style: TextStyle(
-                                            fontSize: SizeConfig.safeBlockHorizontal*3.3,
+                                            fontSize: SizeConfig.safeBlockHorizontal*3,
                                             color: ColorConstants.blackColor,
                                             fontFamily: "Muli"),
                                       ),
@@ -363,6 +373,52 @@ getYearlyData()async{
                   ),
                 ],
               ),
+              SizedBox(height: 15,),
+              actualOrAverage == "Actual"?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    width: 14,
+                    height: 14,
+                    color: HexColor('00ADEE'),
+                  ),
+                  Text(_dashboardController.barGraphLegend1.toString(), style: TextStyle(fontSize: 12),),
+                  Expanded(child: Container(),),
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    width: 14,
+                    height: 14,
+                    color: HexColor('39B54A'),
+                  ),
+                  Text(_dashboardController.barGraphLegend2.toString(), style: TextStyle(fontSize: 12),),
+
+                ],
+              ):Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    width: 14,
+                    height: 14,
+                    color: HexColor('F15A22'),
+                  ),
+                  Text(_dashboardController.lineChartLegend1.toString(), style: TextStyle(fontSize: 12),),
+                  Expanded(child: Container(),),
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    width: 14,
+                    height: 14,
+                    color: HexColor('9E3A0D'),
+                  ),
+                  Text(_dashboardController.lineChartLegend2.toString(), style: TextStyle(fontSize: 12),),
+
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
               actualOrAverage == "Actual"
                   ? Theme(
                 data: ThemeData(highlightColor: Colors.amberAccent,),
@@ -372,8 +428,8 @@ getYearlyData()async{
                       child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Container(
-                            width: SizeConfig.screenWidth * 1.4,
-                            height: SizeConfig.screenHeight /2.5,
+                            width: SizeConfig.screenWidth * 1.7,
+                            height: SizeConfig.screenHeight /2.8,
                             child: BarGraphForYTD(
                               chartData: _barGraphGeneratedField,
                               chartData2: _barGraphFieldConverted,
@@ -395,7 +451,7 @@ getYearlyData()async{
               _dashboardController.dashboardYearlyViewModel.mtdVolume==null?Center(child: CircularProgressIndicator(),):
               _ytdIsVolume? _returnDataGridForVolume(_dashboardController.dashboardYearlyViewModel.mtdVolume):_returnDataGridForCount(_dashboardController.dashboardYearlyViewModel.mtdCount),
               SizedBox(
-                height: 20,
+                height: 50,
               ),
             ],
           ),
@@ -427,7 +483,7 @@ getYearlyData()async{
     print(pngBytes);
     final directory = (await getExternalStorageDirectory()).path;
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
-    imgFile = new File('$directory/$empIdForFileName $yearMonth.png');
+    imgFile = new File('$directory/$empIdForFileName-YTD-${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
@@ -635,8 +691,8 @@ getYearlyData()async{
   }
 }
 
-class ChartData {
-  ChartData(this.count, this.month);
+class ChartDataForYTD {
+  ChartDataForYTD(this.count, this.month);
   final double count;
   final String month;
 }
