@@ -1,5 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -22,6 +24,8 @@ class FormAddEvent extends StatefulWidget {
 }
 
 class _FormAddEventState extends State<FormAddEvent> {
+  AddEventModel addEventModel;
+  EventTypeController eventController = Get.find();
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
   TextEditingController _requestSubType = TextEditingController();
@@ -35,7 +39,21 @@ class _FormAddEventState extends State<FormAddEvent> {
 
   @override
   void initState() {
+    getDropdownData();
     super.initState();
+
+  }
+
+  getDropdownData() async {
+    await eventController.getAccessKey().then((value) async {
+       print(value.accessKey);
+      await eventController.getEventType(value.accessKey).then((data) {
+        setState(() {
+          addEventModel = data;
+        });
+           print('RESPONSE, ${data.toJson()}');
+      });
+    });
   }
 
   @override
@@ -51,10 +69,11 @@ class _FormAddEventState extends State<FormAddEvent> {
           //requestDepartmentId = value;
         });
       },
-      items: ['Event 1', 'Event 2', 'Event 3', 'Event 4']
+      items: addEventModel.eventTypeModels
+      //['Event 1', 'Event 2', 'Event 3', 'Event 4']
           .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(e),
+                value: e.eventTypeId,
+                child: Text(e.eventTypeText),
               ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -619,7 +638,7 @@ class _FormAddEventState extends State<FormAddEvent> {
         children: [
           Positioned.fill(
               child:
-                  //srComplaintModel != null ?
+              addEventModel != null ?
                   ListView(
             children: [
               Container(
@@ -788,9 +807,10 @@ class _FormAddEventState extends State<FormAddEvent> {
                   )),
             ],
           )
-              //     : Center(
-              //   child: CircularProgressIndicator(),
-              // ),
+
+                  : Center(
+                child: CircularProgressIndicator(),
+              ),
               ),
         ],
       ),
