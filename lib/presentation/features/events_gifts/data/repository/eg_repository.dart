@@ -1,5 +1,6 @@
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/influencerViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/provider/eg_provider.dart';
 
 class EgRepository{
@@ -14,8 +15,8 @@ class EgRepository{
     return apiClient.getEventTypeData(accessKey, userSecretKey, empID);
   }
 
-  // Future<AddEventModel> getEventTypeData(String referenceID) async{
-  //   return apiClient.getEventTypeData(referenceID);
-  // }
+  Future<InfluencerViewModel> getInfluenceType(String accessKey, String userSecretKey,String mobileNumber) async{
+    return apiClient.getInfluenceType(accessKey, userSecretKey, mobileNumber);
+  }
 
 }

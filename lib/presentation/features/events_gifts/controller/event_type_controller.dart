@@ -43,4 +43,21 @@ class EventTypeController extends GetxController {
 //    Get.back();
     return egTypeDaa;
   }
+
+
+  Future<AddEventModel> getInfluencerType(String accessKey, String mobileNo) async {
+    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
+    //It is working fine without the progress indicator
+//    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      // print(userSecurityKey);
+      egTypeDaa = await repository.getEventTypeData(accessKey, userSecurityKey, mobileNo);
+    });
+//    Get.back();
+    return egTypeDaa;
+  }
 }

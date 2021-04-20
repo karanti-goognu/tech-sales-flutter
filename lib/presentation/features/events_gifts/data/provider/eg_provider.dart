@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/influencerViewModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
@@ -48,6 +49,20 @@ class MyApiClientEvent{
       print("Exception at EG Repo $e");
     }
     return addEventModel;
+  }
+
+  Future<InfluencerViewModel> getInfluenceType(String accessKey, String userSecretKey, String mobileNo) async{
+    InfluencerViewModel influencerViewModel;
+    try{
+      var response = await http.get(Uri.parse(UrlConstants.getInfluencer+mobileNo),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+      influencerViewModel = InfluencerViewModel.fromJson(json.decode(response.body));
+      // print(response.body);
+    }
+    catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return influencerViewModel;
   }
 
 }

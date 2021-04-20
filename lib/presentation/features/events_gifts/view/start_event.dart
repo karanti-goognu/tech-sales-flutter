@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -42,7 +43,7 @@ class _StartEventState extends State<StartEvent> {
                     side: BorderSide(color: Colors.white)),
                 color: Colors.transparent,
                 child: Text(
-                  'ADD A LEAD',
+                  'ADD DRAFT LEAD',
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               )
@@ -70,7 +71,8 @@ class _StartEventState extends State<StartEvent> {
                   ),
                   FlatButton(
                       onPressed: () {
-                        getBottomSheet();
+                        //getBottomSheet();
+                        Get.toNamed(Routes.UPDATE_DLR_INF);
                       },
                       child: Row(
                         children: [
@@ -80,7 +82,7 @@ class _StartEventState extends State<StartEvent> {
                           SizedBox(
                             width: ScreenUtil().setSp(5),
                           ),
-                          Text('UPDATE INFLUENCERS',
+                          Text('UPDATE DLR & INF.',
                               style: TextStyles.robotoBtn14),
                         ],
                       ))
