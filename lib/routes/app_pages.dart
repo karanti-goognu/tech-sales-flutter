@@ -164,7 +164,7 @@ class AppPages {
     GetPage(
       name: Routes.EVENTS_GIFTS,
       page: () => Events(),
-      //binding: DashboardBinding(),
+      binding: EGBinding(),
     ),
     GetPage(
       name: Routes.ADD_EVENTS,

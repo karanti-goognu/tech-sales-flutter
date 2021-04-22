@@ -33,9 +33,11 @@ class PlaceApiProvider {
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=$lang&components=country:IN&key=$apiKey&sessiontoken=$sessionToken';
     final response = await client.get(request);
 
+
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
       if (result['status'] == 'OK') {
+        print(result);
         // compose suggestions in a list
         return result['predictions']
             .map<Suggestion>((p) => Suggestion(p['place_id'], p['description']))

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:get/get.dart';
 
 class AllEvents extends StatefulWidget {
   @override
@@ -8,13 +11,28 @@ class AllEvents extends StatefulWidget {
 }
 
 class _AllEventsState extends State<AllEvents> {
+  AllEventsModel allEventsModel;
+  AllEventController allEventController = Get.find();
   ScrollController _scrollController;
   int option = 1;
   String hexColor;
 
   @override
   void initState() {
+    getAllEventsData();
     super.initState();
+  }
+
+  getAllEventsData() async {
+    await allEventController.getAccessKey().then((value) async {
+      print(value.accessKey);
+      await allEventController.getAllEventData(value.accessKey).then((data) {
+        setState(() {
+          allEventsModel = data;
+        });
+        print('RESPONSE, ${data}');
+      });
+    });
   }
 
   @override
@@ -49,9 +67,8 @@ class _AllEventsState extends State<AllEvents> {
                             : Colors.white,
                         shape: StadiumBorder(
                           side: BorderSide(
-                              color: option == 1
-                                  ? Colors.blue
-                                  : Colors.black12),
+                              color:
+                                  option == 1 ? Colors.blue : Colors.black12),
                         ),
                       ),
                     ),
@@ -78,9 +95,8 @@ class _AllEventsState extends State<AllEvents> {
                             : Colors.white,
                         shape: StadiumBorder(
                           side: BorderSide(
-                              color: option == 2
-                                  ? Colors.blue
-                                  : Colors.black12),
+                              color:
+                                  option == 2 ? Colors.blue : Colors.black12),
                         ),
                       ),
                     ),
@@ -107,9 +123,8 @@ class _AllEventsState extends State<AllEvents> {
                             : Colors.white,
                         shape: StadiumBorder(
                           side: BorderSide(
-                              color: option == 3
-                                  ? Colors.blue
-                                  : Colors.black12),
+                              color:
+                                  option == 3 ? Colors.blue : Colors.black12),
                         ),
                       ),
                     ),
@@ -117,9 +132,6 @@ class _AllEventsState extends State<AllEvents> {
                     SizedBox(
                       width: 8,
                     ),
-
-
-
 
                     // Obx(() => (
                     //     '' ==
@@ -139,9 +151,8 @@ class _AllEventsState extends State<AllEvents> {
                             : Colors.white,
                         shape: StadiumBorder(
                           side: BorderSide(
-                              color: option == 4
-                                  ? Colors.blue
-                                  : Colors.black12),
+                              color:
+                                  option == 4 ? Colors.blue : Colors.black12),
                         ),
                       ),
                     ),
@@ -166,9 +177,8 @@ class _AllEventsState extends State<AllEvents> {
                             : Colors.white,
                         shape: StadiumBorder(
                           side: BorderSide(
-                              color: option == 5
-                                  ? Colors.blue
-                                  : Colors.black12),
+                              color:
+                                  option == 5 ? Colors.blue : Colors.black12),
                         ),
                       ),
                     ),
@@ -176,22 +186,23 @@ class _AllEventsState extends State<AllEvents> {
                     SizedBox(
                       width: 8,
                     ),
-
-
                   ],
                 ),
               )),
-          (option == 1) ? getList(HexColor('#39B54A'), 'Planned'):
-          (option == 2) ? getList(HexColor('#808080'), 'Not Submitted'):
-          (option == 3) ? getList(HexColor('#F9A61A'), 'Pending Approval'):
-          (option == 4) ? getList(HexColor('#808080'), 'Cancelled'):
-          (option == 5) ? getList(HexColor('#B00020'), 'Request Rejected'):
-          getList(HexColor('#39B54A'), 'Planned')
+          (option == 1)
+              ? getList(HexColor('#39B54A'), 'Planned')
+              : (option == 2)
+                  ? getList(HexColor('#808080'), 'Not Submitted')
+                  : (option == 3)
+                      ? getList(HexColor('#F9A61A'), 'Pending Approval')
+                      : (option == 4)
+                          ? getList(HexColor('#808080'), 'Cancelled')
+                          : (option == 5)
+                              ? getList(HexColor('#B00020'), 'Request Rejected')
+                              : getList(HexColor('#39B54A'), 'Planned')
         ],
       ),
     );
-
-
 
 //  @override
 //  void dispose() {
@@ -200,14 +211,13 @@ class _AllEventsState extends State<AllEvents> {
 //  }
   }
 
-
   Widget getList(Color borderColor, String status) {
-    return ListView.builder(
-      shrinkWrap: true,
+    return (allEventsModel.eventListModels != null && allEventsModel.eventListModels.length > 0)?
+      ListView.builder(
+        shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-
         controller: _scrollController,
-        itemCount: 5,
+        itemCount: allEventsModel.eventStatusEntities.length,
         padding: const EdgeInsets.only(left: 6.0, right: 6, bottom: 10),
         itemBuilder: (context, index) {
           return Card(
@@ -220,24 +230,27 @@ class _AllEventsState extends State<AllEvents> {
               decoration: BoxDecoration(
                 border: Border(
                     left: BorderSide(
-                      color: borderColor,
-                      //(
-                      // _leadsFilterController
-                      // .leadsListResponse
-                      // .leadsEntity[index]
-                      // .leadStageId ==
-                      // 1)
-                      // ? HexColor("#F9A61A")
-                      // : (_leadsFilterController
-                      // .leadsListResponse
-                      // .leadsEntity[index]
-                      // .leadStageId ==
-                      // 2)
-                      // ? HexColor("#007CBF")
-                      // :
-                      //HexColor("#39B54A"),
-                      width: 6,
-                    )),
+                  color:
+                  borderColor,
+                  //(
+                  //allEventsModel.eventStatusEntities[index].eventStatusId == 1)
+                  //    ? HexColor(hexColor)?
+                  // _leadsFilterController
+                  // .leadsListResponse
+                  // .leadsEntity[index]
+                  // .leadStageId ==
+                  // 1)
+                  // ? HexColor("#F9A61A")
+                  // : (_leadsFilterController
+                  // .leadsListResponse
+                  // .leadsEntity[index]
+                  // .leadStageId ==
+                  // 2)
+                  // ? HexColor("#007CBF")
+                  // :
+                  // HexColor("#39B54A"),
+                   width: 6,
+                )),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -247,7 +260,8 @@ class _AllEventsState extends State<AllEvents> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "24-Mar-21",
+                          allEventsModel.eventListModels[index].eventDate,
+                          //"24-Mar-21",
                           style: TextStyle(
                               fontSize: 15,
                               fontFamily: "Muli",
@@ -260,7 +274,7 @@ class _AllEventsState extends State<AllEvents> {
                           shape: StadiumBorder(
                               side: BorderSide(color: borderColor)),
                           backgroundColor: borderColor.withOpacity(0.1),
-                          label: Text('Status: $status'),
+                          label: Text('Status: ${allEventsModel.eventListModels[index].eventStatusText}'),
                           // Obx(
                           //       () => Text(
                           //     (_splashController
@@ -295,7 +309,8 @@ class _AllEventsState extends State<AllEvents> {
                           // () =>
 
                           Text(
-                            "Mason Meet",
+                            allEventsModel.eventListModels[index].eventTypeText,
+                            //"Mason Meet",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "Muli",
@@ -305,7 +320,7 @@ class _AllEventsState extends State<AllEvents> {
                           //Obx(
                           // () =>
                           Text(
-                            "Planned : 25",
+                            "Inf. Planned : ${allEventsModel.eventListModels[index].actualEventInflCount}",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "Muli",
@@ -320,7 +335,7 @@ class _AllEventsState extends State<AllEvents> {
                           // () =>
 
                           Text(
-                            "Venue:",
+                            "Venue: ${allEventsModel.eventListModels[index].eventVenue}",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "Muli",
@@ -330,7 +345,7 @@ class _AllEventsState extends State<AllEvents> {
                           //Obx(
                           // () =>
                           Text(
-                            "Dealer(s) : 25",
+                            "Dealer(s) : ${allEventsModel.eventListModels[index].dealerName}",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "Muli",
@@ -352,7 +367,7 @@ class _AllEventsState extends State<AllEvents> {
                           // () =>
 
                           Text(
-                            "EVENT ID:",
+                            "EVENT ID: ${allEventsModel.eventListModels[index].eventId}",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "Muli",
@@ -362,7 +377,7 @@ class _AllEventsState extends State<AllEvents> {
                           //Obx(
                           // () =>
                           Text(
-                            "LEADS EXPECTED : 25",
+                            "LEADS EXPECTED : ${allEventsModel.eventListModels[index].expectedLeadsCount}",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "Muli",
@@ -375,6 +390,10 @@ class _AllEventsState extends State<AllEvents> {
               ),
             ),
           );
-        });
+        }):Container(
+      child: Center(
+        child: Text("No data!!"),
+      ),
+    );
   }
 }

@@ -33,7 +33,7 @@ class _FormAddEventState extends State<FormAddEvent> {
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   LocationResult _pickedLocation;
   Position _currentPosition = new Position();
-  var _fromDate = 'Select Date';
+  var _date = 'Select Date';
   TimeOfDay _time;
   String geoTagType;
   int dealerId;
@@ -43,7 +43,11 @@ class _FormAddEventState extends State<FormAddEvent> {
   TextEditingController _locationController = TextEditingController();
   TextEditingController _dalmiaInflController = TextEditingController();
   TextEditingController _nonDalmiaInflController = TextEditingController();
-  TextEditingController _venueController = TextEditingController();
+  TextEditingController _venueAddController = TextEditingController();
+  TextEditingController _expectedLeadsController = TextEditingController();
+  TextEditingController _giftsDistributionController = TextEditingController();
+  TextEditingController _commentController = TextEditingController();
+
 
   ///DropDown Values
   int _eventTypeId;
@@ -110,7 +114,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(_fromDate)),
+                Expanded(child: Text(_date)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -205,6 +209,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     );
 
     final venueAddress = TextFormField(
+      controller: _venueAddController,
       // validator: (value) {
       //   if (value.isEmpty) {
       //     return "Contact Name can't be empty";
@@ -212,11 +217,6 @@ class _FormAddEventState extends State<FormAddEvent> {
       //   //leagueSize = int.parse(value);
       //   return null;
       // },
-      onChanged: (data) {
-        setState(() {
-          //_contactName = data;
-        });
-      },
       maxLines: null,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.text,
@@ -268,6 +268,7 @@ class _FormAddEventState extends State<FormAddEvent> {
 
 
     final expectedLeads = TextFormField(
+      controller: _expectedLeadsController,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
       decoration:
@@ -275,6 +276,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     );
 
     final giftDistribution = TextFormField(
+      controller: _giftsDistributionController,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -282,6 +284,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     );
 
     final comment = TextFormField(
+      controller: _commentController,
       maxLines: null,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.text,
@@ -317,7 +320,21 @@ class _FormAddEventState extends State<FormAddEvent> {
                     // letterSpacing: 2,
                     fontSize: ScreenUtil().setSp(15)),
           ),
-          onPressed: () {},
+          onPressed: () {
+            print('Event Type: $_eventTypeId');
+            print('date: $_date');
+            print('time: $_time');
+            print('Dalmia inf : ${_dalmiaInflController.text}');
+            print('Non dalmia inf: ${_nonDalmiaInflController.text}');
+            print('total: ${_totalParticipantsController.text}');
+            print('Venue: $_selectedValue');
+            print('Venue address: ${_venueAddController.text}');
+            print('Expected lead: ${_expectedLeadsController.text}');
+            print('gift distribution: ${_giftsDistributionController.text}');
+            print('Event location: ${_locationController.text}');
+            print('comment: ${_commentController.text}');
+
+          },
         ),
       ],
     );
@@ -348,6 +365,12 @@ class _FormAddEventState extends State<FormAddEvent> {
         if (result != null) {
           setState(() {
             _locationController.text = result.description;
+            var p = result.placeId;
+
+            _currentPosition = new Position(
+
+                latitude: _pickedLocation.latLng.latitude,
+                longitude: _pickedLocation.latLng.longitude);
           });
         }
       },
@@ -458,7 +481,7 @@ class _FormAddEventState extends State<FormAddEvent> {
         ),
         lastDate: new DateTime(2025));
     setState(() {
-      _fromDate = new DateFormat('yyyy-MM-dd').format(_picked);
+      _date = new DateFormat('yyyy-MM-dd').format(_picked);
     });
   }
 
@@ -643,3 +666,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     ).then((value) => setState(() {}));
   }
 }
+
+
+
+///dd-MM-yyyy HH:mm:ss

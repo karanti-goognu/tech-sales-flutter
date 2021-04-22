@@ -1,3 +1,4 @@
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/provider/eg_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
@@ -17,5 +18,16 @@ class EGBinding implements Bindings {
         ),
       );
     });
+
+    Get.lazyPut<AllEventController>(() {
+      return AllEventController(
+        repository: EgRepository(
+          apiClient: MyApiClientEvent(
+            httpClient: http.Client(),
+          ),
+        ),
+      );
+    });
   }
+
 }
