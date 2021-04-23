@@ -1,16 +1,16 @@
-class AllEventsModel {
+class ApprovedEventsModel {
   String respCode;
   String respMsg;
   List<EventListModels> eventListModels;
   List<EventStatusEntities> eventStatusEntities;
 
-  AllEventsModel(
+  ApprovedEventsModel(
       {this.respCode,
         this.respMsg,
         this.eventListModels,
         this.eventStatusEntities});
 
-  AllEventsModel.fromJson(Map<String, dynamic> json) {
+  ApprovedEventsModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['eventListModels'] != null) {

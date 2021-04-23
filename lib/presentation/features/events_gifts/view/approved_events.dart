@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 
 class ApprovedEvents extends StatefulWidget {
@@ -13,11 +13,30 @@ class ApprovedEvents extends StatefulWidget {
 }
 
 class _ApprovedEventsState extends State<ApprovedEvents> {
+  ApprovedEventsModel approvedEventsModel;
+  EventListModels _eventListModels;
   ScrollController _scrollController;
+  EventsFilterController eventsFilterController = Get.find();
+  List<EventListModels> current = [];
+  List<EventListModels> upcoming = [];
+  List<EventListModels> past = [];
+
 
   @override
   void initState() {
     super.initState();
+    getApprovedEventsData();
+  }
+
+  getApprovedEventsData() async {
+    await eventsFilterController.getAccessKey().then((value) async {
+      print(value.accessKey);
+      await eventsFilterController.getAllEventData(value.accessKey).then((data) {
+        setState(() {
+          approvedEventsModel = data;
+        });
+      });
+    });
   }
 
   @override
