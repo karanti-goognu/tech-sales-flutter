@@ -34,7 +34,7 @@ abstract class Routes {
   ///Gifts & Events
   static const EVENTS_GIFTS = '/events';
   static const ADD_EVENTS = '/form_add_event';
-  static const DETAIL_EVENT = '/detail_view_event';
+  //static const DETAIL_EVENT = '/detail_view_event';
   static const CANCEL_EVENT = '/cancel_event';
   static const START_EVENT = '/start_event';
   static const UPDATE_EVENT = '/update_event';

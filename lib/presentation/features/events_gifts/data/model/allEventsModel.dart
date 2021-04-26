@@ -54,7 +54,7 @@ class EventListModels {
   int eventInflCount;
   int actualEventInflCount;
   int expectedLeadsCount;
-  Null dealerName;
+  String dealerName;
   int count;
   String eventTypeText;
 

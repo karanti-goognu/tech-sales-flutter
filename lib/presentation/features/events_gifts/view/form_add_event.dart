@@ -365,12 +365,6 @@ class _FormAddEventState extends State<FormAddEvent> {
         if (result != null) {
           setState(() {
             _locationController.text = result.description;
-            var p = result.placeId;
-
-            _currentPosition = new Position(
-
-                latitude: _pickedLocation.latLng.latitude,
-                longitude: _pickedLocation.latLng.longitude);
           });
         }
       },

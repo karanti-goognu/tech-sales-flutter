@@ -5,6 +5,7 @@ import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/influencerViewModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -95,6 +96,22 @@ class MyApiClientEvent{
       print("Exception at EG Repo $e");
     }
     return approvedEventsModel;
+  }
+
+  Future<DetailEventModel> getDetailEventData(String accessKey, String userSecretKey, String empID, int eventId) async{
+    DetailEventModel detailEventModel;
+    try{
+
+      var response = await http.get(Uri.parse(UrlConstants.getDetailEvent+empID+"&eventId=$eventId"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+      detailEventModel = DetailEventModel.fromJson(json.decode(response.body));
+      print('RESP : ${response.body}');
+     print('UURL ${UrlConstants.getDetailEvent+empID+"&eventId=$eventId"}');
+    }
+    catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return detailEventModel;
   }
 
 

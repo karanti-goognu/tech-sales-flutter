@@ -47,8 +47,34 @@ class _AllEventsState extends State<AllEvents> {
 
   getSortedData() {
     if (allEventsModel != null && allEventsModel.eventListModels != null) {
+      // allEventsModel.eventListModels.forEach((element) {
+      //   if (element.eventStatusId == 1) {
+      //     pending.add(element);
+      //   }
+        // else if (element.eventStatusId == 2) {
+        //   approved.add(element);
+        // }
+        // else if (element.eventStatusId == 3) {
+        //   rejected.add(element);
+        // }else
+        // if (element.eventStatusId == 4) {
+        //   completed.add(element);
+        // }else
+        // if (element.eventStatusId == 5) {
+        //   cancelled.add(element);
+        // }else
+        // if (element.eventStatusId == 6) {
+        //   eventRejected.add(element);
+        // }else
+        // if (element.eventStatusId == 7) {
+        //   notSubmitted.add(element);
+        // }else{}
+
+    //   });
+    // }
       for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
         if (allEventsModel.eventListModels[i].eventStatusId == 1) {
+       //   pending.add(allEventsModel.eventListModels[i]);
           pending = allEventsModel.eventListModels;
           print('PENDING : $pending');
         } else if (allEventsModel.eventListModels[i].eventStatusId == 2) {
@@ -82,159 +108,6 @@ class _AllEventsState extends State<AllEvents> {
       body: ListView(
         children: [
           getStatusList(),
-          // SingleChildScrollView(
-          //     scrollDirection: Axis.horizontal,
-          //     child: Padding(
-          //       padding: const EdgeInsets.all(8.0),
-          //       child: Row(
-          //         children: [
-          //           SizedBox(
-          //             width: 8,
-          //           ),
-          //           // Obx(() => (
-          //           //     '' ==
-          //           //     StringConstants.empty)
-          //           //     ? Container()
-          //           //     :
-          //           GestureDetector(
-          //             onTap: () {
-          //               setState(() {
-          //                 option = 1;
-          //               });
-          //             },
-          //             child: Chip(
-          //               label: Text('Archive'),
-          //               backgroundColor: option == 1
-          //                   ? Colors.blue.withOpacity(0.2)
-          //                   : Colors.white,
-          //               shape: StadiumBorder(
-          //                 side: BorderSide(
-          //                     color:
-          //                         option == 1 ? Colors.blue : Colors.black12),
-          //               ),
-          //             ),
-          //           ),
-          //           // ),
-          //           SizedBox(
-          //             width: 8,
-          //           ),
-          //
-          //           // Obx(() => (
-          //           //     '' ==
-          //           //     StringConstants.empty)
-          //           //     ? Container()
-          //           //     :
-          //           GestureDetector(
-          //             onTap: () {
-          //               setState(() {
-          //                 option = 2;
-          //                 getSortedData();
-          //                 // print('PENDING : $pending');
-          //                 // print('APPROVED: $approved');
-          //               });
-          //             },
-          //             child: Chip(
-          //               label: Text('Not Submitted'),
-          //               backgroundColor: option == 2
-          //                   ? Colors.blue.withOpacity(0.2)
-          //                   : Colors.white,
-          //               shape: StadiumBorder(
-          //                 side: BorderSide(
-          //                     color:
-          //                         option == 2 ? Colors.blue : Colors.black12),
-          //               ),
-          //             ),
-          //           ),
-          //           //),
-          //
-          //           SizedBox(
-          //             width: 8,
-          //           ),
-          //           // Obx(() => (
-          //           //     '' ==
-          //           //     StringConstants.empty)
-          //           //     ? Container()
-          //           //     :
-          //           GestureDetector(
-          //             onTap: () {
-          //               setState(() {
-          //                 option = 3;
-          //               });
-          //             },
-          //             child: Chip(
-          //               label: Text('Pending Approval'),
-          //               backgroundColor: option == 3
-          //                   ? Colors.blue.withOpacity(0.2)
-          //                   : Colors.white,
-          //               shape: StadiumBorder(
-          //                 side: BorderSide(
-          //                     color:
-          //                         option == 3 ? Colors.blue : Colors.black12),
-          //               ),
-          //             ),
-          //           ),
-          //           //),
-          //           SizedBox(
-          //             width: 8,
-          //           ),
-          //
-          //           // Obx(() => (
-          //           //     '' ==
-          //           //     StringConstants.empty)
-          //           //     ? Container()
-          //           //     :
-          //           GestureDetector(
-          //             onTap: () {
-          //               setState(() {
-          //                 option = 4;
-          //               });
-          //             },
-          //             child: Chip(
-          //               label: Text('Cancelled'),
-          //               backgroundColor: option == 4
-          //                   ? Colors.blue.withOpacity(0.2)
-          //                   : Colors.white,
-          //               shape: StadiumBorder(
-          //                 side: BorderSide(
-          //                     color:
-          //                         option == 4 ? Colors.blue : Colors.black12),
-          //               ),
-          //             ),
-          //           ),
-          //           SizedBox(
-          //             width: 8,
-          //           ),
-          //           // Obx(() => (
-          //           //     '' ==
-          //           //     StringConstants.empty)
-          //           //     ? Container()
-          //           //     :
-          //           GestureDetector(
-          //             onTap: () {
-          //               setState(() {
-          //                 option = 5;
-          //               });
-          //             },
-          //             child: Chip(
-          //               label: Text('Request Rejected'),
-          //               backgroundColor: option == 5
-          //                   ? Colors.blue.withOpacity(0.2)
-          //                   : Colors.white,
-          //               shape: StadiumBorder(
-          //                 side: BorderSide(
-          //                     color:
-          //                         option == 5 ? Colors.blue : Colors.black12),
-          //               ),
-          //             ),
-          //           ),
-          //           //),
-          //           SizedBox(
-          //             width: 8,
-          //           ),
-          //         ],
-          //       ),
-          //     )),
-
           (option == 1)
               ? getList(HexColor('#F9A61A'), pending)
               : (option == 2)
@@ -255,11 +128,7 @@ class _AllEventsState extends State<AllEvents> {
       ),
     );
 
-//  @override
-//  void dispose() {
-//    _dashboardController.dispose();
-//    super.dispose();
-//  }
+
   }
 
   Widget getStatusList() {
