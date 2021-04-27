@@ -80,7 +80,7 @@ dependencies:
   syncfusion_flutter_gauges: ^18.4.47
   flutter_screenutil: ^0.7.0
   package_info:
-
+  uuid: ^2.0.4
 
 
   #  autocomplete_textfield: ^1.7.3

@@ -77,6 +77,9 @@ abstract class UrlConstants {
 
   ///Events and Gifts
   static const String getAddEvent = '$baseUrl/event/add-event?referenceID=';
-
+  static const String getInfluencer = '$baseUrl/event/view-influencer?mobileNumber=';
+  static const String getAllEvents = '$baseUrl/event/event-all-list?referenceID=';
+  static const String getApproveEvents = '$baseUrl/event/event-approved-list?referenceID=';
+  static const String getDetailEvent = '$baseUrl/event/getEventDetail?referenceID=';
 
 }

@@ -19,6 +19,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detai
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/start_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_event.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencerView.dart';
@@ -163,18 +164,18 @@ class AppPages {
     GetPage(
       name: Routes.EVENTS_GIFTS,
       page: () => Events(),
-      //binding: DashboardBinding(),
+      binding: EGBinding(),
     ),
     GetPage(
       name: Routes.ADD_EVENTS,
       page: () => FormAddEvent(),
       binding: EGBinding(),
     ),
-    GetPage(
-      name: Routes.DETAIL_EVENT,
-      page: () => DetailViewEvent(),
-      //binding: DashboardBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.DETAIL_EVENT,
+    //   page: () => DetailViewEvent(),
+    //   binding: EGBinding(),
+    // ),
     GetPage(
       name: Routes.CANCEL_EVENT,
       page: () => CancelEvent(),
@@ -189,6 +190,11 @@ class AppPages {
       name: Routes.UPDATE_EVENT,
       page: () => UpdateEvent(),
       //binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: Routes.UPDATE_DLR_INF,
+      page: () => UpdateDlrInf(),
+      binding: EGBinding(),
     ),
     // GetPage(
     //   name: Routes.NOTIFICATION,

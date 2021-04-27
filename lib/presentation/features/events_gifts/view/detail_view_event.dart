@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -11,11 +13,40 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailViewEvent extends StatefulWidget {
+  int eventId;
+
+  DetailViewEvent(this.eventId);
+
   @override
   _DetailViewEventState createState() => _DetailViewEventState();
 }
 
 class _DetailViewEventState extends State<DetailViewEvent> {
+  DetailEventModel detailEventModel;
+  DetailEventController detailEventController = Get.find();
+  int total;
+
+  @override
+  void initState() {
+    super.initState();
+    getDetailEventsData();
+  }
+
+  getDetailEventsData() async {
+    await detailEventController.getAccessKey().then((value) async {
+      print(value.accessKey);
+      await detailEventController.getDetailEventData(value.accessKey, widget.eventId)
+          .then((data) {
+        setState(() {
+          detailEventModel = data;
+        });
+        print('DDDD: $data');
+      });
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
@@ -94,7 +125,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: ListView(
+      body:(
+          //detailEventModel != null && detailEventModel.mwpEventModel != null && detailEventModel.dealersModelList != null)?
+      ListView(
         children: [
           Padding(
             padding: EdgeInsets.only(
@@ -104,23 +137,27 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               bottom: ScreenUtil().setSp(20),
             ),
             child: Text(
-              '24-Mar-2021 | 12 PM',
+              detailEventModel.mwpEventModel.eventDate,
+             // '24-Mar-2021 | 12 PM',
               style: TextStyles.mulliBoldBlue,
             ),
           ),
-          displayInfo('Event Type', 'Mason meet'),
-          displayInfo('Dalmia Influencers', '15'),
-          displayInfo('Non-Dalmia Influencers', '15'),
-          displayInfo('Total Participants', '15'),
-          // displayInfo('Venue', 'Booked'),
-          displayInfo('Venue Address', 'XYZ'),
+          displayInfo('Event Type', detailEventModel.mwpEventModel.eventTypeText ?? ''),
+          displayInfo('Dalmia Influencers', '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0'),
+          displayInfo('Non-Dalmia Influencers', '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ?? '0'),
+          displayInfo('Total Participants', '${(detailEventModel.mwpEventModel.dalmiaInflCount) + (detailEventModel.mwpEventModel.nonDalmiaInflCount)}' ?? '0'),
+          displayInfo('Venue Address', detailEventModel.mwpEventModel.venueAddress),
           displayChip('Dealer(s) Detail'),
-          displayChip('New Influencer(s) Detail'),
-          displayInfo('Expected Leads', 'Mason meet'),
-          // displayInfo('Gift distribution', 'Mason meet'),
-          //displayInfo('Event location', 'Mason meet'),
+          displayInfo('Expected Leads', '${detailEventModel.mwpEventModel.expectedLeadsCount}' ?? '0'),
+          displayInfo('Gift distribution', '${detailEventModel.mwpEventModel.giftDistributionCount}' ?? '0'),
+          displayInfo('Event location', detailEventModel.mwpEventModel.eventLocation ?? ''),
         ],
-      ),
+      )
+      //         : Container(
+      //   child: Center(
+      //     child: Text("No data!!"),
+      //   ),
+       ),
     );
   }
 
@@ -144,6 +181,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               Text(
                 value,
                 style: TextStyles.mulliBold16,
+                maxLines: null,
               )
             ],
           ),
@@ -179,17 +217,17 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             ),
             Container(
               height: ScreenUtil().setSp(30),
-              child: ListView(
+              child:
+              (detailEventModel != null && detailEventModel.dealersModelList != null && detailEventModel.dealersModelList.length > 0)?
+              ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                children: ['Chip1', 'Chip1Chip1']
-                    // selectedRequestSubtypeObjectList
-                    .map((e) => Padding(
+                children:
+                     detailEventModel.dealersModelList.map((e) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Chip(
                             label: Text(
-                              e,
-                              // e.serviceRequestTypeText,
+                              e.dealerName,
                               style: TextStyle(
                                   fontFamily: "Muli",
                                   color: Colors.black,
@@ -208,9 +246,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                               ),
                             ),
                           ),
-                        ))
-                    .toList(),
-              ),
+                        )).toList(),
+              ):Container()
             ),
             Padding(
               padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
@@ -222,6 +259,4 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           ],
         ));
   }
-
-
 }

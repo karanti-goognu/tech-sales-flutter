@@ -4,6 +4,10 @@ import 'dart:convert';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/influencerViewModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
@@ -69,5 +73,66 @@ class MyApiClientEvent{
 
 
   }
+
+  Future<InfluencerViewModel> getInfluenceType(String accessKey, String userSecretKey, String mobileNo) async{
+    InfluencerViewModel influencerViewModel;
+    try{
+      var response = await http.get(Uri.parse(UrlConstants.getInfluencer+mobileNo),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+      influencerViewModel = InfluencerViewModel.fromJson(json.decode(response.body));
+      // print(response.body);
+    }
+    catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return influencerViewModel;
+  }
+
+
+  Future<AllEventsModel> getAllEventData(String accessKey, String userSecretKey, String empID) async{
+    AllEventsModel allEventsModel;
+    try{
+      var response = await http.get(Uri.parse(UrlConstants.getAllEvents+empID),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+      allEventsModel = AllEventsModel.fromJson(json.decode(response.body));
+      // print(response.body);
+    }
+    catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return allEventsModel;
+  }
+
+  Future<ApprovedEventsModel> getApprovedEventData(String accessKey, String userSecretKey, String empID) async{
+    ApprovedEventsModel approvedEventsModel;
+    try{
+
+      var response = await http.get(Uri.parse(UrlConstants.getApproveEvents+empID),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+      approvedEventsModel = ApprovedEventsModel.fromJson(json.decode(response.body));
+      // print(response.body);
+    }
+    catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return approvedEventsModel;
+  }
+
+  Future<DetailEventModel> getDetailEventData(String accessKey, String userSecretKey, String empID, int eventId) async{
+    DetailEventModel detailEventModel;
+    try{
+
+      var response = await http.get(Uri.parse(UrlConstants.getDetailEvent+empID+"&eventId=$eventId"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+      detailEventModel = DetailEventModel.fromJson(json.decode(response.body));
+      print('RESP : ${response.body}');
+     print('UURL ${UrlConstants.getDetailEvent+empID+"&eventId=$eventId"}');
+    }
+    catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return detailEventModel;
+  }
+
 
 }

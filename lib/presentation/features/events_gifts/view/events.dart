@@ -55,7 +55,7 @@ class _EventsState extends State<Events> {
                     children: [
                       FlatButton(
                         onPressed: () {
-                          // _settingModalBottomSheet(context);
+                           _settingModalBottomSheet(context);
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
@@ -187,6 +187,16 @@ class _EventsState extends State<Events> {
         // ),
       ),
     );
+  }
+
+  void _settingModalBottomSheet(context) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext bc) {
+         // return FilterWidget();
+        });
   }
 
 //  @override

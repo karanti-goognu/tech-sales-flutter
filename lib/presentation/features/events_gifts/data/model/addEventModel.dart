@@ -1,11 +1,16 @@
 class AddEventModel {
   String respCode;
-  String respMsg;
+  Null respMsg;
   List<EventTypeModels> eventTypeModels;
   List<DealersModels> dealersModels;
+  List<StatusEntitieList> statusEntitieList;
 
   AddEventModel(
-      {this.respCode, this.respMsg, this.eventTypeModels, this.dealersModels});
+      {this.respCode,
+        this.respMsg,
+        this.eventTypeModels,
+        this.dealersModels,
+        this.statusEntitieList});
 
   AddEventModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -22,6 +27,12 @@ class AddEventModel {
         dealersModels.add(new DealersModels.fromJson(v));
       });
     }
+    if (json['statusEntitieList'] != null) {
+      statusEntitieList = new List<StatusEntitieList>();
+      json['statusEntitieList'].forEach((v) {
+        statusEntitieList.add(new StatusEntitieList.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +46,10 @@ class AddEventModel {
     if (this.dealersModels != null) {
       data['dealersModels'] =
           this.dealersModels.map((v) => v.toJson()).toList();
+    }
+    if (this.statusEntitieList != null) {
+      data['statusEntitieList'] =
+          this.statusEntitieList.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -74,6 +89,25 @@ class DealersModels {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['dealerId'] = this.dealerId;
     data['dealerName'] = this.dealerName;
+    return data;
+  }
+}
+
+class StatusEntitieList {
+  int eventStatusId;
+  String eventStatusText;
+
+  StatusEntitieList({this.eventStatusId, this.eventStatusText});
+
+  StatusEntitieList.fromJson(Map<String, dynamic> json) {
+    eventStatusId = json['eventStatusId'];
+    eventStatusText = json['eventStatusText'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['eventStatusId'] = this.eventStatusId;
+    data['eventStatusText'] = this.eventStatusText;
     return data;
   }
 }
