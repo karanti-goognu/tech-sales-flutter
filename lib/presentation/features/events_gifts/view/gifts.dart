@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gift_
 
 
 class GiftsView extends StatelessWidget {
+
   final List _giftsCategoriesList=[
     GiftsCategories('Gift in Hand', 0),
     GiftsCategories('Inwarded', 0),

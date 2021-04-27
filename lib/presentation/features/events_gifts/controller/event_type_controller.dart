@@ -20,13 +20,7 @@ class EventTypeController extends GetxController {
   final _egTypeData = AddEventModel().obs;
   get egTypeDaa => _egTypeData.value;
   set egTypeDaa(value) => _egTypeData.value = value;
-  final _giftStockModel = GetGiftStockModel().obs;
 
-  get giftStockModel => _giftStockModel;
-
-  set giftStockModel(value) {
-    _giftStockModel.value = value;
-  }
 
   Future<AccessKeyModel> getAccessKey() {
     // print(repository.getAccessKey().then((value) => value.accessKey));
@@ -52,18 +46,7 @@ class EventTypeController extends GetxController {
     return egTypeDaa;
   }
 
-  Future<GetGiftStockModel> getGiftStockData() async {
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) async {
-    String empID= prefs.getString(StringConstants.employeeId);
-      giftStockModel = await repository.getGiftStockData(empID);
 
-    });
-    print(giftStockModel);
-    Get.back();
-    return giftStockModel;
-  }
 
 
 

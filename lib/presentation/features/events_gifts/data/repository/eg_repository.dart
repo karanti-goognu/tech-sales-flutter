@@ -19,9 +19,7 @@ class EgRepository{
     return apiClient.getEventTypeData(accessKey, userSecretKey, empID);
   }
 
-   Future<GetGiftStockModel> getGiftStockData(String referenceID) async{
-     return apiClient.getGiftStockData(referenceID);
-   }
+
   Future<InfluencerViewModel> getInfluenceType(String accessKey, String userSecretKey,String mobileNumber) async{
     return apiClient.getInfluenceType(accessKey, userSecretKey, mobileNumber);
   }
