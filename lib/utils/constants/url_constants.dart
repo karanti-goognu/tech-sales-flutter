@@ -80,5 +80,6 @@ abstract class UrlConstants {
   static const String getAllEvents = '$baseUrl/event/event-all-list?referenceID=';
   static const String getApproveEvents = '$baseUrl/event/event-approved-list?referenceID=';
   static const String getDetailEvent = '$baseUrl/event/getEventDetail?referenceID=';
+  static const String saveEvent = '$baseUrl/event/saveEeventForm';
 
 }
