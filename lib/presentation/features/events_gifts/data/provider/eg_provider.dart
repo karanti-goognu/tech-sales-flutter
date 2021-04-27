@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
@@ -60,8 +61,7 @@ class MyApiClientEvent {
     return addEventModel;
   }
 
-  Future<InfluencerViewModel> getInfluenceType(String accessKey,
-      String userSecretKey, String mobileNo) async {
+  Future<InfluencerViewModel> getInfluenceType(String accessKey, String userSecretKey, String mobileNo) async{
     InfluencerViewModel influencerViewModel;
     try {
       var response = await http.get(

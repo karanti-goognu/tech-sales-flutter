@@ -9,6 +9,7 @@ class SaveLeadRequestModel {
   SaveLeadRequestModel(
       {
       //this.leadSegmane,
+        this.eventId,
       this.siteSubTypeId,
       this.assignedTo,
       this.leadStatusId,
@@ -34,6 +35,7 @@ class SaveLeadRequestModel {
       this.leadBags});
 
   // String leadSegmane;
+  int eventId;
   String siteSubTypeId;
   String assignedTo;
   String leadStatusId;
@@ -62,6 +64,7 @@ class SaveLeadRequestModel {
     siteSubTypeId = json['siteSubTypeId'];
     assignedTo = json['assignedTo'];
     leadStatusId = json['leadStatusId'];
+    eventId = json['eventId'];
     leadStage = json['leadStage'];
     contactName = json['contactName'];
     contactNumber = json['contactNumber'];
@@ -105,6 +108,7 @@ class SaveLeadRequestModel {
     //data['leadSegmane']=this.leadSegmane;
     data['siteSubTypeId'] = this.siteSubTypeId;
     data['assignedTo'] = this.assignedTo;
+    data['eventId'] = this.eventId;
     data['leadStatusId'] = this.leadStatusId;
     data['leadStage'] = this.leadStage;
     data['contactName'] = this.contactName;

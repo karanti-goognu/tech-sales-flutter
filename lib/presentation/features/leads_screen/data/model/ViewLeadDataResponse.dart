@@ -473,6 +473,7 @@ class DealerList {
 
 class LeadsEntity {
   int leadId;
+  int eventId;
   String leadSegment;
   String assignedTo;
   Null siteSubTypeId;
@@ -513,6 +514,7 @@ class LeadsEntity {
 
   LeadsEntity(
       {this.leadId,
+        this.eventId,
       this.leadSegment,
       this.assignedTo,
       this.siteSubTypeId,
@@ -549,6 +551,7 @@ class LeadsEntity {
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
     leadId = json['leadId'];
+    eventId = json['eventId'];
     leadSegment = json['leadSegment'];
     assignedTo = json['assignedTo'];
     siteSubTypeId = json['siteSubTypeId'];
@@ -586,6 +589,7 @@ class LeadsEntity {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['leadId'] = this.leadId;
+    data['eventId'] = this.eventId;
     data['leadSegment'] = this.leadSegment;
     data['assignedTo'] = this.assignedTo;
     data['siteSubTypeId'] = this.siteSubTypeId;

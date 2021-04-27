@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -19,6 +20,7 @@ class EventTypeController extends GetxController {
   final _egTypeData = AddEventModel().obs;
   get egTypeDaa => _egTypeData.value;
   set egTypeDaa(value) => _egTypeData.value = value;
+
 
   Future<AccessKeyModel> getAccessKey() {
     // print(repository.getAccessKey().then((value) => value.accessKey));
@@ -43,6 +45,9 @@ class EventTypeController extends GetxController {
 //    Get.back();
     return egTypeDaa;
   }
+
+
+
 
 
   Future<AddEventModel> getInfluencerType(String accessKey, String mobileNo) async {

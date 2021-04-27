@@ -16,9 +16,9 @@ abstract class UrlConstants {
 
   // QA
 
-  // static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
-  // static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
-  // static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
+//   static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+//   static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
+//   static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
   //Development
  static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
@@ -71,6 +71,7 @@ abstract class UrlConstants {
   static const String dashboardMtdConvertedVolumeList = '$baseUrl/dashboard/dashboardMtdConvertedVolumeList?referenceID=';
   static const String dashboardMtdGeneratedVolumeSiteList = '$baseUrl/dashboard/dashboardMtdGeneratedVolumeSiteList?referenceID=';
   static const String dashboardYearlyView = '$baseUrl/dashboard/dashboardYearlyView?referenceID=';
+  static const String getGiftStock = '$baseUrl//tech_sales_server/gift/view-By-ReferenceId?referenceID=';
 
 
 

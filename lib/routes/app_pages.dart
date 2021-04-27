@@ -2,6 +2,7 @@ import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/app_binding.dart';
 import 'package:flutter_tech_sales/bindings/dashboard_binding.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
+import 'package:flutter_tech_sales/bindings/gifts_binding.dart';
 import 'package:flutter_tech_sales/bindings/home_binding.dart';
 import 'package:flutter_tech_sales/bindings/leads__filter_binding.dart';
 import 'package:flutter_tech_sales/bindings/login_binding.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cance
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/start_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_event.dart';
@@ -195,6 +197,11 @@ class AppPages {
       name: Routes.UPDATE_DLR_INF,
       page: () => UpdateDlrInf(),
       binding: EGBinding(),
+    ),
+    GetPage(
+      name: Routes.GIFTS_VIEW,
+      page: () => GiftsView(),
+      binding: GiftsBinding(),
     ),
     // GetPage(
     //   name: Routes.NOTIFICATION,
