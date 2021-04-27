@@ -40,6 +40,7 @@ class LeadsListModel {
 
 class LeadsEntity {
   int leadId;
+  int eventId;
   String leadSegment;
   String assignedTo;
   Null siteSubTypeId;
@@ -104,6 +105,7 @@ class LeadsEntity {
       this.leadscol,
       this.nextDateCconstruction,
       this.nextStageConstruction,
+        this.eventId,
       this.siteDealerId});
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
@@ -139,6 +141,7 @@ class LeadsEntity {
     nextDateCconstruction = json['nextDateCconstruction'];
     nextStageConstruction = json['nextStageConstruction'];
     siteDealerId = json['siteDealerId'];
+    eventId = json['eventId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -175,6 +178,7 @@ class LeadsEntity {
     data['nextDateCconstruction'] = this.nextDateCconstruction;
     data['nextStageConstruction'] = this.nextStageConstruction;
     data['siteDealerId'] = this.siteDealerId;
+    data['eventId'] = this.eventId;
     return data;
   }
 }

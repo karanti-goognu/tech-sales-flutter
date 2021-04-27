@@ -182,7 +182,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       print(data);
       viewLeadDataResponse = data;
 
-      print(viewLeadDataResponse);
       // myFocusNode.requestFocus();
       counterListModel = viewLeadDataResponse.counterListModel;
       int listLength = counterListModel.length;

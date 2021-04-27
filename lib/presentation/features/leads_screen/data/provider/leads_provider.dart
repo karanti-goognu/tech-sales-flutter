@@ -118,13 +118,14 @@ class MyApiClientLeads {
       if (response.statusCode == 200) {
 //        print('success');
         var data = json.decode(response.body);
+//        print(response.body);
         LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
         return leadsListModel;
       } else
         print('error in else');
     } catch (_) {
-      print('error in catch ${_.toString()}');
+      print('error in catch--> ${_.toString()}');
     }
   }
 
@@ -249,6 +250,8 @@ class MyApiClientLeads {
         'assignedTo': empId,
         'leadStatusId': 1,
         'leadStage': 1,
+        'eventId': saveLeadRequestModel.eventId ?? 'null',
+
         'contactName': saveLeadRequestModel.contactName,
         'contactNumber': saveLeadRequestModel.contactNumber ?? '0',
         'geotagType': saveLeadRequestModel.geotagType ?? 'M',
