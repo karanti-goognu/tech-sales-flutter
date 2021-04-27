@@ -1,4 +1,5 @@
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/provider/eg_provider.dart';
 
@@ -14,8 +15,8 @@ class EgRepository{
     return apiClient.getEventTypeData(accessKey, userSecretKey, empID);
   }
 
-  // Future<AddEventModel> getEventTypeData(String referenceID) async{
-  //   return apiClient.getEventTypeData(referenceID);
-  // }
+   Future<GetGiftStockModel> getGiftStockData(String referenceID) async{
+     return apiClient.getGiftStockData(referenceID);
+   }
 
 }

@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -35,8 +36,6 @@ class MyApiClientEvent{
   Future<AddEventModel> getEventTypeData(String accessKey, String userSecretKey, String empID) async{
     AddEventModel addEventModel;
     try{
-      // print(accessKey);
-      // print(userSecretKey);
      print('DDDD: ${UrlConstants.getAddEvent}');
 
       var response = await http.get(Uri.parse(UrlConstants.getAddEvent+empID),
@@ -48,6 +47,27 @@ class MyApiClientEvent{
       print("Exception at EG Repo $e");
     }
     return addEventModel;
+  }
+
+  Future getGiftStockData(String empID)async{
+    try{
+      var url=UrlConstants.getGiftStock +empID;
+      print(url);
+      var response = await httpClient.get(url,headers: requestHeaders);
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        GetGiftStockModel getGiftStockModel;
+        getGiftStockModel = GetGiftStockModel.fromJson(data);
+        return getGiftStockModel;
+      } else
+        print('error');
+
+    }catch(_){
+      print('Exception at Dashboard Repo : Yearly View ${_.toString()}');
+    }
+
+
   }
 
 }

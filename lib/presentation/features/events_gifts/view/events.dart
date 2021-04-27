@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/all_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/approved_events.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -19,9 +20,10 @@ class Events extends StatefulWidget {
 class _EventsState extends State<Events> {
   String empID;
   int _tabNumber = 0;
-
+  EventTypeController _eventTypeController = Get.find();
   @override
   void initState() {
+    _eventTypeController.getGiftStockData();
     super.initState();
   }
 
