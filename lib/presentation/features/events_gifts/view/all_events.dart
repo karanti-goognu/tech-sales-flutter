@@ -34,6 +34,7 @@ class _AllEventsState extends State<AllEvents> {
   void initState() {
     getAllEventsData();
 
+
     super.initState();
   }
 
@@ -51,32 +52,39 @@ class _AllEventsState extends State<AllEvents> {
 
   getSortedData() {
     if (allEventsModel != null && allEventsModel.eventListModels != null) {
+
       for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
-        print(
-            "All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
+        print("All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
         if (allEventsModel.eventListModels[i].eventStatusId == 1) {
           pending.add(allEventsModel.eventListModels[i]);
           print('PENDING : $pending');
+
           print(allEventsModel.eventListModels[i].eventId);
         } else if (allEventsModel.eventListModels[i].eventStatusId == 2) {
           approved.add(allEventsModel.eventListModels[i]);
           print('APPROVED : $approved');
         } else if (allEventsModel.eventListModels[i].eventStatusId == 3) {
           rejected.add(allEventsModel.eventListModels[i]);
+
         } else if (allEventsModel.eventListModels[i].eventStatusId == 4) {
           completed.add(allEventsModel.eventListModels[i]);
+
         } else if (allEventsModel.eventListModels[i].eventStatusId == 5) {
           cancelled.add(allEventsModel.eventListModels[i]);
+
         } else if (allEventsModel.eventListModels[i].eventStatusId == 6) {
           eventRejected.add(allEventsModel.eventListModels[i]);
+
         } else if (allEventsModel.eventListModels[i].eventStatusId == 7) {
           notSubmitted.add(allEventsModel.eventListModels[i]);
+
         }
+
       }
-      // print("Pending : ${pending.map((e) => e.eventId).toList()}");
-      // print("approved : ${approved.map((e) => e.eventId).toList()}");
-      // print("rejected : ${rejected.map((e) => e.eventId).toList()}");
-      // print("completed : ${completed.map((e) => e.eventId).toList()}");
+      print("Pending : ${pending.map((e) => e.eventId).toList()}");
+      print("approved : ${approved.map((e) => e.eventId).toList()}");
+      print("rejected : ${rejected.map((e) => e.eventId).toList()}");
+      print("completed : ${completed.map((e) => e.eventId).toList()}");
     } else {}
   }
 
@@ -139,6 +147,7 @@ class _AllEventsState extends State<AllEvents> {
                           option = allEventsModel
                               .eventStatusEntities[index].eventStatusId;
                         });
+                        print("OPTION:::$option");
                       },
                       selectedColor: Colors.blue.withOpacity(0.2),
                       label: Text(allEventsModel
