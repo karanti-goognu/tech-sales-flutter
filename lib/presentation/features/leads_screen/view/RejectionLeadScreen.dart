@@ -222,6 +222,7 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                                 viewLeadDataResponse.leadsEntity.leadSegment,
                             'assignedTo':
                                 viewLeadDataResponse.leadsEntity.assignedTo,
+                            'eventId': viewLeadDataResponse.leadsEntity.eventId,
                             'leadStatusId': 2,
                             'leadStage':
                                 viewLeadDataResponse.leadsEntity.leadStageId,

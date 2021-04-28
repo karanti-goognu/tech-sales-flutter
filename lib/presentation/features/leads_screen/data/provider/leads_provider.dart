@@ -250,8 +250,7 @@ class MyApiClientLeads {
         'assignedTo': empId,
         'leadStatusId': 1,
         'leadStage': 1,
-        'eventId': saveLeadRequestModel.eventId ?? 'null',
-
+        'eventId': saveLeadRequestModel.eventId ?? null,
         'contactName': saveLeadRequestModel.contactName,
         'contactNumber': saveLeadRequestModel.contactNumber ?? '0',
         'geotagType': saveLeadRequestModel.geotagType ?? 'M',
@@ -278,18 +277,24 @@ class MyApiClientLeads {
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
 //      print("Request headers :: " + request.headers.toString());
-//      print("Request Body/Fields :: " + request.fields.toString());
+      print("Request Body/Fields :: " + request.fields.toString());
 //      print("Files:: " + request.files.toString());
       try {
         request
             .send()
             .then((result) async {
-              http.Response.fromStream(result).then((response) async {
+          print("RESPONSE.BODY: ${result.statusCode}");
+          print("RESPONSE.BODY: ${result.headers}");
+          print("RESPONSE.BODY: ${result.statusCode}");
+          print("RESPONSE.BODY: ${result.stream}");
+
+          http.Response.fromStream(result).then((response) async {
+            print(response.body);
                 var data = json.decode(response.body);
                 SaveLeadResponse saveLeadResponse =
                     SaveLeadResponse.fromJson(data);
 
-//                print(response.body);
+                print(response.body);
 
                 if (saveLeadResponse.respCode == "LD2008") {
                   Get.back();

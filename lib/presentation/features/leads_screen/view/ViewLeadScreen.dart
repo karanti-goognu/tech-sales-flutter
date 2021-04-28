@@ -1227,7 +1227,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                     "") {
                                                               var updateRequestModel =
                                                                   {
-                                                                'leadId':
+                                                                    'eventId': viewLeadDataResponse.leadsEntity.eventId,
+                                                                    'leadId':
                                                                     viewLeadDataResponse
                                                                         .leadsEntity
                                                                         .leadId,
@@ -3652,6 +3653,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         _SelectedDealer = new DealerList();
       }
       var updateRequestModel = {
+        'eventId': viewLeadDataResponse.leadsEntity.eventId,
         'leadId': viewLeadDataResponse.leadsEntity.leadId,
         'leadSegment': viewLeadDataResponse.leadsEntity.leadSegment,
         'assignedTo': viewLeadDataResponse.leadsEntity.assignedTo,
@@ -3931,6 +3933,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       var updateRequestModel = {
                                         'leadId': viewLeadDataResponse
                                             .leadsEntity.leadId,
+                                        'eventId': viewLeadDataResponse.leadsEntity.eventId,
                                         'leadSegment': viewLeadDataResponse
                                             .leadsEntity.leadSegment,
                                         'assignedTo': viewLeadDataResponse

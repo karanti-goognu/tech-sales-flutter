@@ -71,7 +71,6 @@ abstract class UrlConstants {
   static const String dashboardMtdConvertedVolumeList = '$baseUrl/dashboard/dashboardMtdConvertedVolumeList?referenceID=';
   static const String dashboardMtdGeneratedVolumeSiteList = '$baseUrl/dashboard/dashboardMtdGeneratedVolumeSiteList?referenceID=';
   static const String dashboardYearlyView = '$baseUrl/dashboard/dashboardYearlyView?referenceID=';
-  static const String getGiftStock = '$baseUrl//tech_sales_server/gift/view-By-ReferenceId?referenceID=';
 
 
 
@@ -82,5 +81,8 @@ abstract class UrlConstants {
   static const String getApproveEvents = '$baseUrl/event/event-approved-list?referenceID=';
   static const String getDetailEvent = '$baseUrl/event/getEventDetail?referenceID=';
   static const String saveEvent = '$baseUrl/event/saveEeventForm';
+ static const String getGiftStock = '$baseUrl/gift/view-gift-stock?referenceID=';
+ static const String addGiftStock = '$baseUrl/gift/add-GiftStock?referenceID=';
+
 
 }

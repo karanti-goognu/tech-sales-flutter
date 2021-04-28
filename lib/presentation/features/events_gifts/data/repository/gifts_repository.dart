@@ -10,7 +10,15 @@ class GiftsRepository {
   Future<AccessKeyModel> getAccessKey() {
     return apiClient.getAccessKey();
   }
-  Future<GetGiftStockModel> getGiftStockData(String referenceID) async{
+  Future getGiftStockData(String referenceID) async{
     return apiClient.getGiftStockData(referenceID);
   }
+
+  Future addGiftStockData(String referenceID) async{
+    return apiClient.addGiftStockData(referenceID);
+  }
+
+
+
 }
+
