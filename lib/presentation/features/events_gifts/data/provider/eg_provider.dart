@@ -145,7 +145,7 @@ class MyApiClientEvent {
       print('RESP: ${response.body}');
       print('RESPONSE : ${json.encode(saveEventFormModel)}');
 
-     // saveEventResponse = SaveEventResponse.fromJson(json.decode(response.body));
+      saveEventResponse = SaveEventResponse.fromJson(json.decode(response.body));
     }
     catch(e){
       print("Exception at EG Repo $e");

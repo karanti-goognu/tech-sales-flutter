@@ -28,7 +28,7 @@ class SaveEventController extends GetxController {
   }
 
   getAccessKeyAndSaveRequest(
-       SaveEventFormModel saveEventFormModel) {
+      SaveEventFormModel saveEventFormModel, ) {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -43,23 +43,24 @@ class SaveEventController extends GetxController {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         saveEventRequest(data.accessKey, userSecurityKey, saveEventFormModel)
             .then((value) {
-          Get.back();
-          // if (value.respCode == 'DM1002') {
-          //   Get.defaultDialog(
-          //       title: "Message",
-          //       middleText: value.respMsg.toString(),
-          //       confirm: MaterialButton(
-          //         onPressed: () => Get.back(),
-          //         child: Text('OK'),
-          //       ),
-          //       barrierDismissible: false);
-          // } else {
-          //   Get.back();
-          //   Get.dialog(
-          //       CustomDialogs().messageDialogMWP(value.respMsg.toString()),
-          //       barrierDismissible: false);
-          // }
-        });
+          //Get.back();
+          if (value.respMsg == 'DM1002') {
+            Get.back();
+            Get.defaultDialog(
+                title: "Message",
+                middleText: value.respMsg.toString(),
+                confirm: MaterialButton(
+                  onPressed: () => Get.back(),
+                  child: Text('OK'),
+                ),
+                barrierDismissible: false);
+          } else {
+            Get.back();
+            Get.dialog(
+                CustomDialogs().messageDialogMWP(value.respMsg.toString()),
+                barrierDismissible: false);
+          }
+         });
       });
     });
   }

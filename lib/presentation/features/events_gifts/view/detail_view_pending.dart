@@ -1,8 +1,10 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
@@ -24,25 +26,29 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-class FormAddEvent extends StatefulWidget {
+class DetailPending extends StatefulWidget {
+  int eventId;
+  DetailPending(this.eventId);
+
   @override
-  _FormAddEventState createState() => _FormAddEventState();
+  _DetailPendingState createState() => _DetailPendingState();
 }
 
-class _FormAddEventState extends State<FormAddEvent> {
+class _DetailPendingState extends State<DetailPending> {
   AddEventModel addEventModel;
   EventTypeController eventController = Get.find();
   SaveEventController saveEventController = Get.find();
+  DetailEventModel detailEventModel;
+  DetailEventController detailEventController = Get.find();
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
 
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  LocationResult _pickedLocation;
-  Position _currentPosition = new Position();
   var _date = 'Select Date';
   TimeOfDay _time;
-  String geoTagType, timeString, dateString;
+  String geoTagType, timeString, dateString, displayTime = 'Select Time', venueLbl;
   int dealerId;
+
 
   ///textfield controllers
   TextEditingController _totalParticipantsController = TextEditingController();
@@ -53,18 +59,76 @@ class _FormAddEventState extends State<FormAddEvent> {
   TextEditingController _expectedLeadsController = TextEditingController();
   TextEditingController _giftsDistributionController = TextEditingController();
   TextEditingController _commentController = TextEditingController();
+  TextEditingController _eventTypeController = TextEditingController();
 
   ///DropDown Values
-  int _eventTypeId;
   String _selectedVenue;
   double locatinLat;
   double locationLong;
 
   @override
   void initState() {
-    getDropdownData();
+    getDealerData();
     getEmpId();
+    getDetailEventsData();
     super.initState();
+  }
+
+  setText(){
+    if (detailEventModel != null && detailEventModel.mwpEventModel != null){
+      int _total = detailEventModel.mwpEventModel.dalmiaInflCount + detailEventModel.mwpEventModel.nonDalmiaInflCount;
+      venueLbl = detailEventModel.mwpEventModel.venue;
+      _eventTypeController.text = detailEventModel.mwpEventModel.eventTypeText ?? '';
+      _totalParticipantsController = TextEditingController(text: '$_total');
+      _selectedVenue = detailEventModel.mwpEventModel.venue ?? '';
+      _date = detailEventModel.mwpEventModel.eventDate;
+      displayTime = detailEventModel.mwpEventModel.eventTime ?? '';
+      _locationController = TextEditingController(
+          text: detailEventModel.mwpEventModel.eventLocation ?? '');
+      _dalmiaInflController = TextEditingController(
+          text: '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0');
+      _nonDalmiaInflController = TextEditingController(
+          text: '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ?? '0');
+      _venueAddController = TextEditingController(
+          text: detailEventModel.mwpEventModel.venueAddress ?? '');
+      _expectedLeadsController = TextEditingController(
+          text: '${detailEventModel.mwpEventModel.expectedLeadsCount}' ?? '0');
+      _giftsDistributionController = TextEditingController(
+          text: '${detailEventModel.mwpEventModel.giftDistributionCount}' ??
+              '0');
+      _commentController = TextEditingController(
+          text: detailEventModel.mwpEventModel.eventComment ?? '');
+      if(detailEventModel.eventDealersModelList != null && detailEventModel.eventDealersModelList.length > 0) {
+
+        // detailEventModel.eventDealersModelList.forEach((e) {
+        //   setState(() {
+        //     selectedDealersModels.add({
+        //       //'eventStage': 'PLAN',
+        //       //'eventId': null,
+        //       'dealerId': e.dealerId,
+        //       //'createdBy': empId,
+        //       'dealerName' : e.dealerName
+        //     });
+        //   });
+        // });
+
+      }
+
+    }
+  }
+
+  getDetailEventsData() async {
+    await detailEventController.getAccessKey().then((value) async {
+      print(value.accessKey);
+      await detailEventController.getDetailEventData(value.accessKey, widget.eventId)
+          .then((data) {
+        setState(() {
+          detailEventModel = data;
+        });
+        print('DDDD: $data');
+        setText();
+      });
+    });
   }
 
   Future getEmpId() async {
@@ -76,7 +140,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     return empID;
   }
 
-  getDropdownData() async {
+  getDealerData() async {
     await eventController.getAccessKey().then((value) async {
       print(value.accessKey);
       await eventController.getEventType(value.accessKey).then((data) {
@@ -97,25 +161,14 @@ class _FormAddEventState extends State<FormAddEvent> {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
-
-    final eventDropDwn = DropdownButtonFormField(
-      onChanged: (value) {
-        setState(() {
-          _eventTypeId = value;
-        });
-      },
-      items: addEventModel == null
-          ? []
-          : addEventModel.eventTypeModels
-              .map((e) => DropdownMenuItem(
-                    value: e.eventTypeId,
-                    child: Text(e.eventTypeText),
-                  ))
-              .toList(),
+    final eventType = TextFormField(
+      controller: _eventTypeController,
       style: FormFieldStyle.formFieldTextStyle,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: "Event Type"),
-      validator: (value) =>
-          value == null ? 'Please select the event type' : null,
+      keyboardType: TextInputType.number,
+      readOnly: true,
+      enableInteractiveSelection: false,
+      decoration:
+      FormFieldStyle.buildInputDecoration(),
     );
 
     final date = Container(
@@ -158,9 +211,7 @@ class _FormAddEventState extends State<FormAddEvent> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(
-                    child: Text((_time != null
-                        ? '${_time.hour}:${_time.minute}'
-                        : 'Select time'))),
+                    child: Text(displayTime)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -184,7 +235,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
       decoration:
-          FormFieldStyle.buildInputDecoration(labelText: "Dalmia influencers"),
+      FormFieldStyle.buildInputDecoration(labelText: "Dalmia influencers"),
     );
 
     final nondalmia = TextFormField(
@@ -214,7 +265,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       keyboardType: TextInputType.number,
       readOnly: true,
       decoration:
-          FormFieldStyle.buildInputDecoration(labelText: "Total participants"),
+      FormFieldStyle.buildInputDecoration(labelText: "Total participants"),
     );
 
     final venueDropDwn = DropdownButtonFormField(
@@ -225,12 +276,12 @@ class _FormAddEventState extends State<FormAddEvent> {
       },
       items: ['Booked', 'Not Booked']
           .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(e),
-              ))
+        value: e,
+        child: Text(e),
+      ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: "Venue"),
+      decoration: FormFieldStyle.buildInputDecoration(labelText: venueLbl),
       validator: (value) => value == null ? 'Please select the venue' : null,
     );
 
@@ -252,19 +303,13 @@ class _FormAddEventState extends State<FormAddEvent> {
     final dealer = GestureDetector(
       onTap: () => getBottomSheetForDealer(),
       child: FormField(
-        // validator: (value) {
-        //   if (value.isEmpty) {
-        //     return "Please add dealers";
-        //   }
-        //   return null;
-        // },
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
               labelText: 'Add Dealer(s)',
               suffixIcon: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
                 child: Icon(
                   Icons.add,
                   size: 20,
@@ -278,15 +323,19 @@ class _FormAddEventState extends State<FormAddEvent> {
                 scrollDirection: Axis.horizontal,
                 children: selectedDealersModels
                     .map((e) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Chip(
-                            label: Text(
-                              e.dealerName,
-                              style: TextStyle(fontSize: 10),
-                            ),
-                            backgroundColor: Colors.lightGreen.withOpacity(0.2),
-                          ),
-                        ))
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Chip(
+                    deleteIcon: Icon(Icons.close),
+                    onDeleted: (){
+                         // eventSelectedDealersModels.remove(e);
+                    },
+                    label: Text(
+                      e.dealerName,
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    backgroundColor: Colors.lightGreen.withOpacity(0.2),
+                  ),
+                ))
                     .toList(),
               ),
             ),
@@ -306,7 +355,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
       decoration:
-          FormFieldStyle.buildInputDecoration(labelText: "Expected Leads"),
+      FormFieldStyle.buildInputDecoration(labelText: "Expected Leads"),
     );
 
     final giftDistribution = TextFormField(
@@ -355,12 +404,12 @@ class _FormAddEventState extends State<FormAddEvent> {
           child: Text(
             "SUBMIT",
             style:
-                //TextStyles.btnWhite,
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+            //TextStyles.btnWhite,
+            TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                // letterSpacing: 2,
+                fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
             btnPresssed(1);
@@ -375,7 +424,7 @@ class _FormAddEventState extends State<FormAddEvent> {
         style: TextStyles.formfieldLabelText,
         keyboardType: TextInputType.number,
         decoration:
-            FormFieldStyle.buildInputDecoration(labelText: "Contact No."),
+        FormFieldStyle.buildInputDecoration(labelText: "Contact No."),
       ),
     );
 
@@ -397,7 +446,7 @@ class _FormAddEventState extends State<FormAddEvent> {
 
         if (result != null) {
           final placeDetails =
-              await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
+          await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
           setState(() {
             _locationController.text = result.description;
             locatinLat = placeDetails.lat;
@@ -423,79 +472,81 @@ class _FormAddEventState extends State<FormAddEvent> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: addEventModel != null
-                ? ListView(
+            child:
+          (detailEventModel != null && detailEventModel.mwpEventModel != null)
+               ?
+      ListView(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(12),
+                  height: 56,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(12),
-                        height: 56,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Add Event',
-                              style: TextStyles.titleGreenStyle,
-                            ),
-                            Chip(
-                              shape: StadiumBorder(
-                                  side: BorderSide(color: HexColor("#39B54A"))),
-                              backgroundColor:
-                                  HexColor("#39B54A").withOpacity(0.1),
-                              label: Text('Status: Not Submitted'),
-                            ),
-                          ],
-                        ),
-                        // decoration: BoxDecoration(
-                        //     border: Border(bottom: BorderSide(width: 0.3))),
+                      Text(
+                        'Add Event',
+                        style: TextStyles.titleGreenStyle,
                       ),
-                      SizedBox(height: 16),
-                      Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Form(
-                            key: _addEventFormKey,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  eventDropDwn,
-                                  SizedBox(height: 16),
-                                  date,
-                                  SizedBox(height: 16),
-                                  time,
-                                  SizedBox(height: 16),
-                                  Text(
-                                    "Tentative Members",
-                                    style: TextStyles.welcomeMsgTextStyle20,
-                                  ),
-                                  SizedBox(height: 16),
-                                  dalmiaInfluencer,
-                                  SizedBox(height: 16),
-                                  nondalmia,
-                                  SizedBox(height: 16),
-                                  total,
-                                  SizedBox(height: 16),
-                                  venueDropDwn,
-                                  SizedBox(height: 16),
-                                  venueAddress,
-                                  SizedBox(height: 16),
-                                  dealer,
-                                  SizedBox(height: 16),
-                                  expectedLeads,
-                                  SizedBox(height: 16),
-                                  giftDistribution,
-                                  SizedBox(height: 16),
-                                  location,
-                                  SizedBox(height: 16),
-                                  comment,
-                                  SizedBox(height: 16),
-                                  btns,
-                                  SizedBox(height: 16),
-                                ]),
-                          )),
+                      Chip(
+                        shape: StadiumBorder(
+                            side: BorderSide(color: HexColor("#39B54A"))),
+                        backgroundColor:
+                        HexColor("#39B54A").withOpacity(0.1),
+                        label: Text('Status: Not Submitted'),
+                      ),
                     ],
-                  )
-                : Center(
-                    child: CircularProgressIndicator(),
                   ),
+                  // decoration: BoxDecoration(
+                  //     border: Border(bottom: BorderSide(width: 0.3))),
+                ),
+                SizedBox(height: 16),
+                Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Form(
+                      key: _addEventFormKey,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            eventType,
+                            SizedBox(height: 16),
+                            date,
+                            SizedBox(height: 16),
+                            time,
+                            SizedBox(height: 16),
+                            Text(
+                              "Tentative Members",
+                              style: TextStyles.welcomeMsgTextStyle20,
+                            ),
+                            SizedBox(height: 16),
+                            dalmiaInfluencer,
+                            SizedBox(height: 16),
+                            nondalmia,
+                            SizedBox(height: 16),
+                            total,
+                            SizedBox(height: 16),
+                            venueDropDwn,
+                            SizedBox(height: 16),
+                            venueAddress,
+                            SizedBox(height: 16),
+                            dealer,
+                            SizedBox(height: 16),
+                            expectedLeads,
+                            SizedBox(height: 16),
+                            giftDistribution,
+                            SizedBox(height: 16),
+                            location,
+                            SizedBox(height: 16),
+                            comment,
+                            SizedBox(height: 16),
+                            btns,
+                            SizedBox(height: 16),
+                          ]),
+                    )),
+              ],
+            )
+                : Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
         ],
       ),
@@ -530,6 +581,8 @@ class _FormAddEventState extends State<FormAddEvent> {
       },
     );
     setState(() {
+      displayTime = '${_time.hour}:${_time.minute}';
+
       timeString = ('$_date ${_time.hour}:${_time.minute}:00');
       print(timeString);
     });
@@ -538,12 +591,14 @@ class _FormAddEventState extends State<FormAddEvent> {
   List<bool> checkedValues;
   List<String> selectedDealer = [];
   List<DealersModels> selectedDealersModels = [];
+  List<EventDealersModelList> eventSelectedDealersModels = [];
 
   //List<String> selectedDealerList = [];
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
     List<DealersModels> dealers = addEventModel.dealersModels;
+    List<EventDealersModelList> eventDealers = detailEventModel.eventDealersModelList;
     checkedValues =
         List.generate(addEventModel.dealersModels.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
@@ -593,67 +648,61 @@ class _FormAddEventState extends State<FormAddEvent> {
               height: 20,
             ),
 
-            // CheckboxListTile(
-            //   title: Text("9939 - 0077059321"),
-            //   value: false,
-            //   onChanged: (newValue) {},
-            //   controlAffinity:
-            //       ListTileControlAffinity.leading, //  <-- leading Checkbox
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: dealers.length,
                 itemBuilder: (context, index) {
                   return
-                      // dealerId == dealers[index].dealerId
-                      //   ?
-                      CheckboxListTile(
-                    activeColor: Colors.black,
-                    dense: true,
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(dealers[index].dealerId),
-                        Text('( ${dealers[index].dealerName} )'),
-                      ],
-                    ),
-                    value: selectedDealer.contains(dealers[index].dealerName),
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedDealer.contains(dealers[index].dealerName)
-                            ? selectedDealer.remove(dealers[index].dealerName)
-                            : selectedDealer.add(dealers[index].dealerName);
+                    // dealerId == dealers[index].dealerId
+                    //   ?
+                    CheckboxListTile(
+                      activeColor: Colors.black,
+                      dense: true,
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
 
-                        selectedDealersModels.contains(dealers[index])
-                            ? selectedDealersModels.remove(dealers[index])
-                            : selectedDealersModels.add(dealers[index]);
+                          Text(dealers[index].dealerName),
+                          Text('( ${dealers[index].dealerId} )'),
+                        ],
+                      ),
+                      value: selectedDealer.contains(dealers[index].dealerName),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedDealer.contains(dealers[index].dealerName)
+                              ? selectedDealer.remove(dealers[index].dealerName)
+                              : selectedDealer.add(dealers[index].dealerName);
 
-                        checkedValues[index] = newValue;
-                        //dataToBeSentBack = requestSubtype[index];
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
-                  );
+                          selectedDealersModels.contains(dealers[index])
+                              ? selectedDealersModels.remove(dealers[index])
+                              : selectedDealersModels.add(dealers[index]);
+
+                          // eventSelectedDealersModels.contains(eventDealers[index])
+                          //     ? eventSelectedDealersModels.remove(eventDealers[index])
+                          //     : eventSelectedDealersModels.add(eventDealers[index]);
+
+                          checkedValues[index] = newValue;
+                          //dataToBeSentBack = requestSubtype[index];
+                        });
+                      },
+                      controlAffinity: ListTileControlAffinity.leading,
+                    );
                   //  : Container();
                 },
                 separatorBuilder: (context, index) {
                   return dealerId == dealers[index].dealerId
                       ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Divider(),
-                        )
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Divider(),
+                  )
                       : Container();
                 },
               ),
             ),
             Container(
               decoration:
-                  BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
+              BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
               padding: EdgeInsets.only(top: 24, bottom: 9, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -734,7 +783,7 @@ class _FormAddEventState extends State<FormAddEvent> {
           setState(() {
             dealersList.add({
               'eventStage': 'PLAN',
-              'eventId': null,
+              'eventId': widget.eventId,
               'dealerId': e.dealerId,
               'createdBy': empId,
               'eventDealerId' : 'null'
@@ -743,7 +792,7 @@ class _FormAddEventState extends State<FormAddEvent> {
         });
         print('DEALERS: $dealersList');
         MwpeventFormRequest _mwpeventFormRequest =
-            MwpeventFormRequest.fromJson({
+        MwpeventFormRequest.fromJson({
           'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ?? 0,
           'eventComment': _commentController.text,
           'eventDate': dateString,
@@ -753,10 +802,10 @@ class _FormAddEventState extends State<FormAddEvent> {
           'eventLocationLong': locationLong,
           'eventStatusId': eventStatusId,
           'eventTime': timeString,
-          'eventTypeId': _eventTypeId,
+          'eventTypeId': detailEventModel.mwpEventModel.eventTypeId,
           'expectedLeadsCount': int.tryParse('${_expectedLeadsController.text}') ?? 0,
           'giftDistributionCount':
-              int.tryParse('${_giftsDistributionController.text}') ?? 0,
+          int.tryParse('${_giftsDistributionController.text}') ?? 0,
           'nondalmiaInflCount': int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
           'referenceId': empId,
           'venue': _selectedVenue,
@@ -771,23 +820,23 @@ class _FormAddEventState extends State<FormAddEvent> {
         SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
             mwpeventFormRequest: _mwpeventFormRequest,
             eventDealerRequestsList: _save.eventDealerRequestsList
-          );
+        );
 
         internetChecking().then((result) => {
-              if (result == true)
-                {
-                  saveEventController
-                      .getAccessKeyAndSaveRequest(_saveEventFormModel)
-                }
-              else
-                {
-                  Get.snackbar("No internet connection.",
-                      "Make sure that your wifi or mobile data is turned on.",
-                      colorText: Colors.white,
-                      backgroundColor: Colors.red,
-                      snackPosition: SnackPosition.BOTTOM),
-                }
-            });
+          if (result == true)
+            {
+              // saveEventController
+              //     .getAccessKeyAndSaveRequest(_saveEventFormModel)
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
       }
     }
   }
