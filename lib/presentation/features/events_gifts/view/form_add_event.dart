@@ -1,10 +1,14 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -17,6 +21,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class FormAddEvent extends StatefulWidget {
@@ -27,6 +32,7 @@ class FormAddEvent extends StatefulWidget {
 class _FormAddEventState extends State<FormAddEvent> {
   AddEventModel addEventModel;
   EventTypeController eventController = Get.find();
+  SaveEventController saveEventController = Get.find();
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
 
@@ -35,7 +41,7 @@ class _FormAddEventState extends State<FormAddEvent> {
   Position _currentPosition = new Position();
   var _date = 'Select Date';
   TimeOfDay _time;
-  String geoTagType;
+  String geoTagType, timeString;
   int dealerId;
 
   ///textfield controllers
@@ -48,15 +54,26 @@ class _FormAddEventState extends State<FormAddEvent> {
   TextEditingController _giftsDistributionController = TextEditingController();
   TextEditingController _commentController = TextEditingController();
 
-
   ///DropDown Values
   int _eventTypeId;
-  String _selectedValue;
+  String _selectedVenue;
+  double locatinLat;
+  double locationLong;
 
   @override
   void initState() {
     getDropdownData();
+    getEmpId();
     super.initState();
+  }
+
+  Future getEmpId() async {
+    String empID = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+    return empID;
   }
 
   getDropdownData() async {
@@ -157,9 +174,11 @@ class _FormAddEventState extends State<FormAddEvent> {
         ));
 
     final dalmiaInfluencer = TextFormField(
-      onChanged: (data){
-        int total = (int.parse('$_dalmiaInflController')) + (int.parse('$_nonDalmiaInflController'));
-        _totalParticipantsController.text = total.toString();
+      onChanged: (data) {
+        setState(() {
+          calculateTotal(
+              _dalmiaInflController.text, _nonDalmiaInflController.text);
+        });
       },
       controller: _dalmiaInflController,
       style: TextStyles.formfieldLabelText,
@@ -170,12 +189,19 @@ class _FormAddEventState extends State<FormAddEvent> {
 
     final nondalmia = TextFormField(
       controller: _nonDalmiaInflController,
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return "Non Dalmia can't be empty";
+      //   }
+      //   return null;
+      // },
       onChanged: (data) {
         setState(() {
-          int total = (int.parse('$_dalmiaInflController')) + (int.parse('$_nonDalmiaInflController'));
-          _totalParticipantsController.text = total.toString();
+          calculateTotal(
+              _dalmiaInflController.text, _nonDalmiaInflController.text);
         });
       },
+
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -194,7 +220,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     final venueDropDwn = DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
-          _selectedValue = value;
+          _selectedVenue = value;
         });
       },
       items: ['Booked', 'Not Booked']
@@ -210,13 +236,12 @@ class _FormAddEventState extends State<FormAddEvent> {
 
     final venueAddress = TextFormField(
       controller: _venueAddController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return "Contact Name can't be empty";
-      //   }
-      //   //leagueSize = int.parse(value);
-      //   return null;
-      // },
+      validator: (value) {
+        if (value.isEmpty && _selectedVenue == 'Booked') {
+          return "Venue address can't be empty if Booked";
+        }
+        return null;
+      },
       maxLines: null,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.text,
@@ -227,7 +252,12 @@ class _FormAddEventState extends State<FormAddEvent> {
     final dealer = GestureDetector(
       onTap: () => getBottomSheetForDealer(),
       child: FormField(
-        validator: (value) => value,
+        // validator: (value) {
+        //   if (value.isEmpty) {
+        //     return "Please add dealers";
+        //   }
+        //   return null;
+        // },
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
@@ -265,9 +295,13 @@ class _FormAddEventState extends State<FormAddEvent> {
       ),
     );
 
-
-
     final expectedLeads = TextFormField(
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return "Expected Leads can't be empty";
+      //   }
+      //   return null;
+      // },
       controller: _expectedLeadsController,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
@@ -276,6 +310,12 @@ class _FormAddEventState extends State<FormAddEvent> {
     );
 
     final giftDistribution = TextFormField(
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return "Gift Distribution can't be empty";
+      //   }
+      //   return null;
+      // },
       controller: _giftsDistributionController,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
@@ -306,7 +346,76 @@ class _FormAddEventState extends State<FormAddEvent> {
               style: TextStyles.btnBlue,
             ),
           ),
-          onPressed: () {},
+          onPressed: ()  {
+            btnPresssed(7);
+            // if (_addEventFormKey.currentState.validate()) {
+            //   _addEventFormKey.currentState.save();
+            //   if (timeString.isEmpty) {
+            //     Get.snackbar("", "Select Time",
+            //         colorText: Colors.white,
+            //         backgroundColor: Colors.red,
+            //         snackPosition: SnackPosition.BOTTOM);
+            //   } else if (_date.isEmpty) {
+            //     Get.snackbar("", "Select Date",
+            //         colorText: Colors.white,
+            //         backgroundColor: Colors.red,
+            //         snackPosition: SnackPosition.BOTTOM);
+            //   }
+            //   //  print("Error");
+            //   // Get.dialog(CustomDialogs()
+            //   //     .errorDialog('Please enter the mandatory details'));
+            // } else {
+            //   String empId = await getEmpId();
+            //   List dealersList = List();
+            //   selectedDealersModels.forEach((e) {
+            //     setState(() {
+            //       dealersList.add({
+            //         'eventStage': 'planned',
+            //         'eventId': null,
+            //         'dealerId': e.dealerId,
+            //         'createdBy': empId
+            //       });
+            //     });
+            //   });
+            //   print('DEALERS: $dealersList');
+            //   SaveEventFormModel _saveEventFormModel =
+            //       SaveEventFormModel.fromJson({
+            //     'venueAddress': _venueAddController.text,
+            //     'venue': _selectedVenue,
+            //     'referenceId': empId,
+            //     'nonDalmiaInflCount': int.parse(_nonDalmiaInflController.text) ?? 0,
+            //     'giftDistributionCount':
+            //         int.parse(_giftsDistributionController.text) ?? 0,
+            //     'expectedLeadsCount': int.parse(_expectedLeadsController.text) ?? 0,
+            //     'eventTypeId': _eventTypeId,
+            //     'eventTime': timeString,
+            //     'eventStatusId': 7,
+            //     'eventLocationLong': locationLong,
+            //     'eventLocationLat': locatinLat,
+            //     'eventLocation': _locationController.text,
+            //     'eventDate': '$_date',
+            //     'eventComment': _commentController.text ?? '',
+            //     'dalmiaInflCount': int.parse(_dalmiaInflController.text) ?? 0,
+            //     'eventDealerRequestsList': dealersList ?? [],
+            //   });
+            //   internetChecking().then((result) => {
+            //         if (result == true)
+            //           {
+            //             saveEventController
+            //                 .getAccessKeyAndSaveRequest(_saveEventFormModel)
+            //           }
+            //         else
+            //           {
+            //             Get.snackbar("No internet connection.",
+            //                 "Make sure that your wifi or mobile data is turned on.",
+            //                 colorText: Colors.white,
+            //                 backgroundColor: Colors.red,
+            //                 snackPosition: SnackPosition.BOTTOM),
+            //             // fetchSiteList()
+            //           }
+            //       });
+            // }
+          },
         ),
         RaisedButton(
           color: ColorConstants.btnBlue,
@@ -321,19 +430,8 @@ class _FormAddEventState extends State<FormAddEvent> {
                     fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
-            print('Event Type: $_eventTypeId');
-            print('date: $_date');
-            print('time: $_time');
-            print('Dalmia inf : ${_dalmiaInflController.text}');
-            print('Non dalmia inf: ${_nonDalmiaInflController.text}');
-            print('total: ${_totalParticipantsController.text}');
-            print('Venue: $_selectedValue');
-            print('Venue address: ${_venueAddController.text}');
-            print('Expected lead: ${_expectedLeadsController.text}');
-            print('gift distribution: ${_giftsDistributionController.text}');
-            print('Event location: ${_locationController.text}');
-            print('comment: ${_commentController.text}');
 
+           btnPresssed(1);
           },
         ),
       ],
@@ -342,18 +440,20 @@ class _FormAddEventState extends State<FormAddEvent> {
     final contact = Padding(
       padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16, top: 16),
       child: TextFormField(
-
-
-        style:TextStyles.formfieldLabelText,
+        style: TextStyles.formfieldLabelText,
         keyboardType: TextInputType.number,
-        decoration: FormFieldStyle.buildInputDecoration(
-            labelText: "Contact No."),
-
+        decoration:
+            FormFieldStyle.buildInputDecoration(labelText: "Contact No."),
       ),
     );
 
     final location = TextFormField(
-      validator: (value){},
+      validator: (value) {
+        if (value.isEmpty) {
+          return "Select location";
+        }
+        return null;
+      },
       controller: _locationController,
       maxLines: null,
       onTap: () async {
@@ -362,21 +462,25 @@ class _FormAddEventState extends State<FormAddEvent> {
           context: context,
           delegate: AddressSearch(sessionToken),
         );
+
         if (result != null) {
+          final placeDetails =
+              await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
           setState(() {
             _locationController.text = result.description;
+            locatinLat = placeDetails.lat;
+            locationLong = placeDetails.lng;
           });
         }
       },
       readOnly: true,
       decoration: FormFieldStyle.buildInputDecoration(
-          labelText: "Event Location",
-          suffixIcon: Icon(
-            Icons.location_pin,
-            color: ColorConstants.clearAllTextColor,
-          ),
+        labelText: "Event Location",
+        suffixIcon: Icon(
+          Icons.location_pin,
+          color: ColorConstants.clearAllTextColor,
+        ),
       ),
-
     );
 
     return Scaffold(
@@ -475,7 +579,7 @@ class _FormAddEventState extends State<FormAddEvent> {
         ),
         lastDate: new DateTime(2025));
     setState(() {
-      _date = new DateFormat('yyyy-MM-dd').format(_picked);
+      _date = new DateFormat('dd-MM-yyyy').format(_picked);
     });
   }
 
@@ -485,14 +589,17 @@ class _FormAddEventState extends State<FormAddEvent> {
       initialTime: TimeOfDay(hour: 10, minute: 47),
       builder: (BuildContext context, Widget child) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          data: MediaQuery.of(context),
+          //data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
           child: child,
         );
       },
     );
+    setState(() {
+      timeString = ('$_date ${_time.hour}:${_time.minute}:00');
+      print(timeString);
+    });
   }
-
-
 
   List<bool> checkedValues;
   List<String> selectedDealer = [];
@@ -651,7 +758,19 @@ class _FormAddEventState extends State<FormAddEvent> {
     });
   }
 
+  String total = '0';
+  calculateTotal(String dalmia, String nonDalmia) {
+    total = '';
+    int dal = int.parse(dalmia);
+    int non = int.parse(nonDalmia);
 
+    int tot = dal + non;
+
+    total = tot.toString();
+    setState(() {
+      _totalParticipantsController.text = total;
+    });
+  }
 
   getBottomSheetForDealer() {
     Get.bottomSheet(
@@ -659,8 +778,79 @@ class _FormAddEventState extends State<FormAddEvent> {
       isScrollControlled: true,
     ).then((value) => setState(() {}));
   }
+
+  btnPresssed(int eventStatusId)async{
+
+    print('bbb');
+    if (_addEventFormKey.currentState.validate()) {
+      _addEventFormKey.currentState.save();
+      if (timeString == null) {
+        Get.snackbar("", "Select Time",
+            colorText: Colors.white,
+            backgroundColor: Colors.white,
+            snackPosition: SnackPosition.BOTTOM);
+      } else if (_date == null) {
+        Get.snackbar("", "Select Date",
+            colorText: Colors.white,
+            backgroundColor: Colors.white,
+            snackPosition: SnackPosition.BOTTOM);
+        // }
+        //  print("Error");
+        // Get.dialog(CustomDialogs()
+        //     .errorDialog('Please enter the mandatory details'));
+      } else {
+        String empId = await getEmpId();
+        List dealersList = List();
+        selectedDealersModels.forEach((e) {
+          setState(() {
+            dealersList.add({
+              'eventStage': 'planned',
+              'eventId': null,
+              'dealerId': e.dealerId,
+              'createdBy': empId
+            });
+          });
+        });
+        print('DEALERS: $dealersList');
+        SaveEventFormModel _saveEventFormModel =
+        SaveEventFormModel.fromJson({
+          'venueAddress': _venueAddController.text,
+          'venue': _selectedVenue,
+          'referenceId': empId,
+          'nonDalmiaInflCount': int.parse(_nonDalmiaInflController.text) ?? 0,
+          'giftDistributionCount': int.parse(_giftsDistributionController.text) ?? 0,
+          'expectedLeadsCount': int.parse(_expectedLeadsController.text) ?? 0,
+          'eventTypeId': _eventTypeId,
+          'eventTime': timeString,
+          'eventStatusId': eventStatusId,
+          'eventLocationLong': locationLong,
+          'eventLocationLat': locatinLat,
+          'eventLocation': _locationController.text,
+          'eventDate': '$_date',
+          'eventComment': _commentController.text ?? '',
+          'dalmiaInflCount': int.parse(_dalmiaInflController.text) ?? 0,
+          'eventDealerRequestsList': dealersList ?? [],
+        });
+        internetChecking().then((result) =>
+        {
+          if (result == true)
+            {
+              saveEventController
+                  .getAccessKeyAndSaveRequest(_saveEventFormModel)
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+              // fetchSiteList()
+            }
+        });
+      }
+    }
+  }
 }
-
-
 
 ///dd-MM-yyyy HH:mm:ss

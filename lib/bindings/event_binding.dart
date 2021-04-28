@@ -2,6 +2,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/controller
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/provider/eg_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:get/get.dart';
@@ -42,6 +43,16 @@ class EGBinding implements Bindings {
 
     Get.lazyPut<DetailEventController>(() {
       return DetailEventController(
+        repository: EgRepository(
+          apiClient: MyApiClientEvent(
+            httpClient: http.Client(),
+          ),
+        ),
+      );
+    });
+
+    Get.lazyPut<SaveEventController>(() {
+      return SaveEventController(
         repository: EgRepository(
           apiClient: MyApiClientEvent(
             httpClient: http.Client(),
