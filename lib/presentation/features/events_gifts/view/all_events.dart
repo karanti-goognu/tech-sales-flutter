@@ -31,6 +31,7 @@ class _AllEventsState extends State<AllEvents> {
   void initState() {
     getAllEventsData();
 
+
     super.initState();
   }
 
@@ -41,6 +42,7 @@ class _AllEventsState extends State<AllEvents> {
         setState(() {
           allEventsModel = data;
         });
+        getSortedData();
       });
     });
   }
@@ -73,30 +75,45 @@ class _AllEventsState extends State<AllEvents> {
     //   });
     // }
       for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
+//        pending=[];
+        print("All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
         if (allEventsModel.eventListModels[i].eventStatusId == 1) {
-       //   pending.add(allEventsModel.eventListModels[i]);
-          pending = allEventsModel.eventListModels;
+//          pending.add(allEventsModel.eventListModels[i]);
+//          pending = allEventsModel.eventListModels;
+          pending.add(allEventsModel.eventListModels[i]);
           print('PENDING : $pending');
+
+          print(allEventsModel.eventListModels[i].eventId);
         } else if (allEventsModel.eventListModels[i].eventStatusId == 2) {
-          approved = allEventsModel.eventListModels;
+          approved.add(allEventsModel.eventListModels[i]);
           print('APPROVED : $approved');
         } else if (allEventsModel.eventListModels[i].eventStatusId == 3) {
-          rejected = allEventsModel.eventListModels;
-          print('rejected : $_eventListModels');
+          rejected.add(allEventsModel.eventListModels[i]);
+
+//          print('rejected : $_eventListModels');
         } else if (allEventsModel.eventListModels[i].eventStatusId == 4) {
-          completed = allEventsModel.eventListModels;
-          print('completed : $_eventListModels');
+          completed.add(allEventsModel.eventListModels[i]);
+
+//          print('completed : $_eventListModels');
         } else if (allEventsModel.eventListModels[i].eventStatusId == 5) {
-          cancelled = allEventsModel.eventListModels;
-          print('Cancelled : $_eventListModels');
+          cancelled.add(allEventsModel.eventListModels[i]);
+
+//          print('Cancelled : $_eventListModels');
         } else if (allEventsModel.eventListModels[i].eventStatusId == 6) {
-          eventRejected = allEventsModel.eventListModels;
-          print('Event Rejected : $_eventListModels');
+          eventRejected.add(allEventsModel.eventListModels[i]);
+
+//          print('Event Rejected : $_eventListModels');
         } else if (allEventsModel.eventListModels[i].eventStatusId == 7) {
-          notSubmitted = allEventsModel.eventListModels;
-          print('Not Submitted : $_eventListModels');
+          notSubmitted.add(allEventsModel.eventListModels[i]);
+
+//          print('Not Submitted : $_eventListModels');
         }
+
       }
+      print("Pending : ${pending.map((e) => e.eventId).toList()}");
+      print("approved : ${approved.map((e) => e.eventId).toList()}");
+      print("rejected : ${rejected.map((e) => e.eventId).toList()}");
+      print("completed : ${completed.map((e) => e.eventId).toList()}");
     } else {}
   }
 
@@ -154,6 +171,7 @@ class _AllEventsState extends State<AllEvents> {
                           option = allEventsModel
                               .eventStatusEntities[index].eventStatusId;
                         });
+                        print("OPTION:::$option");
                       },
                       child: Chip(
                         label: Text(allEventsModel
@@ -179,7 +197,7 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   Widget getList(Color borderColor, List<EventListModels> list) {
-    getSortedData();
+    print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
     return (allEventsModel != null &&
             allEventsModel.eventListModels != null &&
             allEventsModel.eventListModels.length > 0 &&
