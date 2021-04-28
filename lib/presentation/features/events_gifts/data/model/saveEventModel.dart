@@ -33,17 +33,20 @@ class SaveEventFormModel {
 class EventDealerRequestsList {
   String createdBy;
   String dealerId;
-  Null eventId;
+  int eventId;
   String eventStage;
+  String eventDealerId;
+
 
   EventDealerRequestsList(
-      {this.createdBy, this.dealerId, this.eventId, this.eventStage});
+      {this.createdBy, this.dealerId, this.eventId, this.eventStage, this.eventDealerId});
 
   EventDealerRequestsList.fromJson(Map<String, dynamic> json) {
     createdBy = json['createdBy'];
     dealerId = json['dealerId'];
     eventId = json['eventId'];
     eventStage = json['eventStage'];
+    eventDealerId = json['eventDealerId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +55,7 @@ class EventDealerRequestsList {
     data['dealerId'] = this.dealerId;
     data['eventId'] = this.eventId;
     data['eventStage'] = this.eventStage;
+    data['eventDealerId'] = this.eventDealerId;
     return data;
   }
 }
@@ -60,7 +64,7 @@ class MwpeventFormRequest {
   int dalmiaInflCount;
   String eventComment;
   String eventDate;
-  int eventId;
+  Null eventId;
   String eventLocation;
   double eventLocationLat;
   double eventLocationLong;

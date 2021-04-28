@@ -84,5 +84,4 @@ abstract class UrlConstants {
  static const String getGiftStock = '$baseUrl/gift/view-gift-stock?referenceID=';
  static const String addGiftStock = '$baseUrl/gift/add-GiftStock?referenceID=';
 
-
 }

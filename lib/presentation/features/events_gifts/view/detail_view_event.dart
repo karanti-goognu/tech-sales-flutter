@@ -218,12 +218,12 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             Container(
               height: ScreenUtil().setSp(30),
               child:
-              (detailEventModel != null && detailEventModel.dealersModelList != null && detailEventModel.dealersModelList.length > 0)?
+              (detailEventModel != null && detailEventModel.eventDealersModelList != null && detailEventModel.eventDealersModelList.length > 0)?
               ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 children:
-                     detailEventModel.dealersModelList.map((e) => Padding(
+                     detailEventModel.eventDealersModelList.map((e) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Chip(
                             label: Text(
