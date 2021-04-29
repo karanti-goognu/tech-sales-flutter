@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
@@ -18,10 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -35,7 +31,6 @@ class DetailPending extends StatefulWidget {
 }
 
 class _DetailPendingState extends State<DetailPending> {
-  AddEventModel addEventModel;
   EventTypeController eventController = Get.find();
   SaveEventController saveEventController = Get.find();
   DetailEventModel detailEventModel;
@@ -43,7 +38,6 @@ class _DetailPendingState extends State<DetailPending> {
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
 
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   var _date = 'Select Date';
   TimeOfDay _time;
   String geoTagType, timeString, dateString, displayTime = 'Select Time', venueLbl;
@@ -68,7 +62,6 @@ class _DetailPendingState extends State<DetailPending> {
 
   @override
   void initState() {
-    getDealerData();
     getEmpId();
     getDetailEventsData();
     super.initState();
@@ -79,39 +72,31 @@ class _DetailPendingState extends State<DetailPending> {
       int _total = detailEventModel.mwpEventModel.dalmiaInflCount + detailEventModel.mwpEventModel.nonDalmiaInflCount;
       venueLbl = detailEventModel.mwpEventModel.venue;
       _eventTypeController.text = detailEventModel.mwpEventModel.eventTypeText ?? '';
-      _totalParticipantsController = TextEditingController(text: '$_total');
+      _totalParticipantsController.text = '${_total}';
       _selectedVenue = detailEventModel.mwpEventModel.venue ?? '';
       _date = detailEventModel.mwpEventModel.eventDate;
       displayTime = detailEventModel.mwpEventModel.eventTime ?? '';
-      _locationController = TextEditingController(
-          text: detailEventModel.mwpEventModel.eventLocation ?? '');
-      _dalmiaInflController = TextEditingController(
-          text: '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0');
-      _nonDalmiaInflController = TextEditingController(
-          text: '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ?? '0');
-      _venueAddController = TextEditingController(
-          text: detailEventModel.mwpEventModel.venueAddress ?? '');
-      _expectedLeadsController = TextEditingController(
-          text: '${detailEventModel.mwpEventModel.expectedLeadsCount}' ?? '0');
-      _giftsDistributionController = TextEditingController(
-          text: '${detailEventModel.mwpEventModel.giftDistributionCount}' ??
-              '0');
-      _commentController = TextEditingController(
-          text: detailEventModel.mwpEventModel.eventComment ?? '');
-      if(detailEventModel.eventDealersModelList != null && detailEventModel.eventDealersModelList.length > 0) {
+      _locationController.text = detailEventModel.mwpEventModel.eventLocation ?? '';
+      _dalmiaInflController.text = '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0';
+      _nonDalmiaInflController.text = '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ?? '0';
+      _venueAddController.text = detailEventModel.mwpEventModel.venueAddress ?? '';
+      _expectedLeadsController.text = '${detailEventModel.mwpEventModel.expectedLeadsCount}' ?? '0';
+      _giftsDistributionController.text = '${detailEventModel.mwpEventModel.giftDistributionCount}' ?? '0';
+      _commentController.text = detailEventModel.mwpEventModel.eventComment ?? '';
+      timeString = detailEventModel.mwpEventModel.eventTime;
+      dateString = detailEventModel.mwpEventModel.eventDate;
+      locatinLat = double.parse('${detailEventModel.mwpEventModel.eventLocationLat}');
+      locationLong = double.parse('${detailEventModel.mwpEventModel.eventLocationLong}');
 
-        // detailEventModel.eventDealersModelList.forEach((e) {
-        //   setState(() {
-        //     selectedDealersModels.add({
-        //       //'eventStage': 'PLAN',
-        //       //'eventId': null,
-        //       'dealerId': e.dealerId,
-        //       //'createdBy': empId,
-        //       'dealerName' : e.dealerName
-        //     });
-        //   });
-        // });
 
+
+      if(detailEventModel.eventDealersModelList != null && detailEventModel.eventDealersModelList.length != 0) {
+        for(int i = 0; i < detailEventModel.eventDealersModelList.length; i++){
+          selectedDealersModels.add(DealersModels(
+            dealerId: detailEventModel.eventDealersModelList[i].dealerId,
+            dealerName: detailEventModel.eventDealersModelList[i].dealerName
+          ));
+        }
       }
 
     }
@@ -138,18 +123,6 @@ class _DetailPendingState extends State<DetailPending> {
       empID = prefs.getString(StringConstants.employeeId);
     });
     return empID;
-  }
-
-  getDealerData() async {
-    await eventController.getAccessKey().then((value) async {
-      print(value.accessKey);
-      await eventController.getEventType(value.accessKey).then((data) {
-        setState(() {
-          addEventModel = data;
-        });
-        print('RESPONSE, ${data}');
-      });
-    });
   }
 
   @override
@@ -282,7 +255,7 @@ class _DetailPendingState extends State<DetailPending> {
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: venueLbl),
-      validator: (value) => value == null ? 'Please select the venue' : null,
+      //validator: (value) => (value == null || _selectedVenue == null) ? 'Please select the venue' : null,
     );
 
     final venueAddress = TextFormField(
@@ -327,7 +300,9 @@ class _DetailPendingState extends State<DetailPending> {
                   child: Chip(
                     deleteIcon: Icon(Icons.close),
                     onDeleted: (){
-                         // eventSelectedDealersModels.remove(e);
+                      setState(() {
+                        selectedDealersModels.remove(e);
+                      });
                     },
                     label: Text(
                       e.dealerName,
@@ -582,7 +557,6 @@ class _DetailPendingState extends State<DetailPending> {
     );
     setState(() {
       displayTime = '${_time.hour}:${_time.minute}';
-
       timeString = ('$_date ${_time.hour}:${_time.minute}:00');
       print(timeString);
     });
@@ -591,16 +565,15 @@ class _DetailPendingState extends State<DetailPending> {
   List<bool> checkedValues;
   List<String> selectedDealer = [];
   List<DealersModels> selectedDealersModels = [];
-  List<EventDealersModelList> eventSelectedDealersModels = [];
+  //List<EventDealersModelList> eventSelectedDealersModels = [];
 
   //List<String> selectedDealerList = [];
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
-    List<DealersModels> dealers = addEventModel.dealersModels;
-    List<EventDealersModelList> eventDealers = detailEventModel.eventDealersModelList;
+    List<DealersModels> dealers = detailEventModel.dealersModels;
     checkedValues =
-        List.generate(addEventModel.dealersModels.length, (index) => false);
+        List.generate(detailEventModel.dealersModels.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -628,7 +601,7 @@ class _DetailPendingState extends State<DetailPending> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dealers = addEventModel.dealersModels.where((element) {
+                    dealers = detailEventModel.dealersModels.where((element) {
                       return element.dealerName
                           .toString()
                           .toLowerCase()
@@ -662,7 +635,6 @@ class _DetailPendingState extends State<DetailPending> {
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
                           Text(dealers[index].dealerName),
                           Text('( ${dealers[index].dealerId} )'),
                         ],
@@ -678,13 +650,8 @@ class _DetailPendingState extends State<DetailPending> {
                               ? selectedDealersModels.remove(dealers[index])
                               : selectedDealersModels.add(dealers[index]);
 
-                          // eventSelectedDealersModels.contains(eventDealers[index])
-                          //     ? eventSelectedDealersModels.remove(eventDealers[index])
-                          //     : eventSelectedDealersModels.add(eventDealers[index]);
-
                           checkedValues[index] = newValue;
-                          //dataToBeSentBack = requestSubtype[index];
-                        });
+                         });
                       },
                       controlAffinity: ListTileControlAffinity.leading,
                     );
@@ -766,7 +733,7 @@ class _DetailPendingState extends State<DetailPending> {
     print('bbb');
     if (_addEventFormKey.currentState.validate()) {
       _addEventFormKey.currentState.save();
-      if (timeString == null) {
+      if (timeString == null || displayTime == null) {
         Get.snackbar("", "Select Time",
             colorText: Colors.black,
             backgroundColor: Colors.white,
@@ -784,9 +751,11 @@ class _DetailPendingState extends State<DetailPending> {
             dealersList.add({
               'eventStage': 'PLAN',
               'eventId': widget.eventId,
+              'dealerName' : e.dealerName,
               'dealerId': e.dealerId,
               'createdBy': empId,
-              'eventDealerId' : 'null'
+              'eventDealerId' : null,
+              'isActive' : 'Y'
             });
           });
         });
@@ -796,7 +765,7 @@ class _DetailPendingState extends State<DetailPending> {
           'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ?? 0,
           'eventComment': _commentController.text,
           'eventDate': dateString,
-          'eventId': null,
+          'eventId': widget.eventId,
           'eventLocation': _locationController.text,
           'eventLocationLat': locatinLat,
           'eventLocationLong': locationLong,
@@ -813,20 +782,21 @@ class _DetailPendingState extends State<DetailPending> {
         });
 
         SaveEventFormModel _save = SaveEventFormModel.fromJson({
-          'eventDealerRequestsList' : dealersList
+          'eventDealersModelList' : dealersList
         }
 
         );
         SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
             mwpeventFormRequest: _mwpeventFormRequest,
-            eventDealerRequestsList: _save.eventDealerRequestsList
+            eventDealersModelList: _save.eventDealersModelList
         );
+
+        print('PARAMS: $_saveEventFormModel');
 
         internetChecking().then((result) => {
           if (result == true)
             {
-              // saveEventController
-              //     .getAccessKeyAndSaveRequest(_saveEventFormModel)
+               saveEventController.getAccessKeyAndSaveRequest(_saveEventFormModel)
             }
           else
             {

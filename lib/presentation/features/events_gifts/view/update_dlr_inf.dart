@@ -24,21 +24,21 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 
   @override
   void initState() {
-    getDropdownData();
+    //getDropdownData();
     super.initState();
   }
 
-  getDropdownData() async {
-    await eventController.getAccessKey().then((value) async {
-      print(value.accessKey);
-      await eventController.getEventType(value.accessKey).then((data) {
-        setState(() {
-          addEventModel = data;
-        });
-        print('RESPONSE, ${data}');
-      });
-    });
-  }
+  // getDropdownData() async {
+  //   await eventController.getAccessKey().then((value) async {
+  //     print(value.accessKey);
+  //     await eventController.getEventType(value.accessKey).then((data) {
+  //       setState(() {
+  //         addEventModel = data;
+  //       });
+  //       print('RESPONSE, ${data}');
+  //     });
+  //   });
+  //}
 
   @override
   void dispose() {

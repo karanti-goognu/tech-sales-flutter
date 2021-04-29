@@ -1,12 +1,15 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -31,6 +34,7 @@ class FormAddEvent extends StatefulWidget {
 
 class _FormAddEventState extends State<FormAddEvent> {
   AddEventModel addEventModel;
+  //AppController _appController = Get.find();
   EventTypeController eventController = Get.find();
   SaveEventController saveEventController = Get.find();
   List<String> suggestions = [];
@@ -59,9 +63,12 @@ class _FormAddEventState extends State<FormAddEvent> {
   String _selectedVenue;
   double locatinLat;
   double locationLong;
+  int _value = 0;
 
   @override
   void initState() {
+    //eventController.dealerList.clear();
+    //_appController.getAccessKey(RequestIds.GET_DEALER_TYPE);
     getDropdownData();
     getEmpId();
     super.initState();
@@ -249,7 +256,9 @@ class _FormAddEventState extends State<FormAddEvent> {
           labelText: "Venue address (if booked)"),
     );
 
-    final dealer = GestureDetector(
+    final dealer =
+
+    GestureDetector(
       onTap: () => getBottomSheetForDealer(),
       child: FormField(
         // validator: (value) {
@@ -276,8 +285,7 @@ class _FormAddEventState extends State<FormAddEvent> {
               height: 30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: selectedDealersModels
-                    .map((e) => Padding(
+                children: selectedDealersModels.map((e) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Chip(
                             label: Text(
@@ -593,21 +601,10 @@ class _FormAddEventState extends State<FormAddEvent> {
               height: 20,
             ),
 
-            // CheckboxListTile(
-            //   title: Text("9939 - 0077059321"),
-            //   value: false,
-            //   onChanged: (newValue) {},
-            //   controlAffinity:
-            //       ListTileControlAffinity.leading, //  <-- leading Checkbox
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: dealers.length,
+                itemCount:  dealers.length,
                 itemBuilder: (context, index) {
                   return
                       // dealerId == dealers[index].dealerId
@@ -618,8 +615,8 @@ class _FormAddEventState extends State<FormAddEvent> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(dealers[index].dealerId),
-                        Text('( ${dealers[index].dealerName} )'),
+                        Text(dealers[index].dealerName),
+                        Text('( ${dealers[index].dealerId} )'),
                       ],
                     ),
                     value: selectedDealer.contains(dealers[index].dealerName),
@@ -634,7 +631,8 @@ class _FormAddEventState extends State<FormAddEvent> {
                             : selectedDealersModels.add(dealers[index]);
 
                         checkedValues[index] = newValue;
-                        //dataToBeSentBack = requestSubtype[index];
+
+
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
@@ -729,15 +727,26 @@ class _FormAddEventState extends State<FormAddEvent> {
             snackPosition: SnackPosition.BOTTOM);
       } else {
         String empId = await getEmpId();
+
+        // List<MwpMeetDealers> list = new List();
+        // for (int i = 0; i < this.dealerListSelected.length; i++) {
+        //   list.add(new MwpMeetDealers(dealerId: dealerListSelected[i].dealerId));
+        // }
+
+
+
+
         List dealersList = List();
         selectedDealersModels.forEach((e) {
           setState(() {
             dealersList.add({
-              'eventStage': 'PLAN',
+              'eventDealerId' : null,
               'eventId': null,
               'dealerId': e.dealerId,
+              'dealerName' : e.dealerName,
+              'eventStage': 'PLAN',
+              'isActive' : 'Y',
               'createdBy': empId,
-              'eventDealerId' : 'null'
             });
           });
         });
@@ -764,13 +773,13 @@ class _FormAddEventState extends State<FormAddEvent> {
         });
 
         SaveEventFormModel _save = SaveEventFormModel.fromJson({
-          'eventDealerRequestsList' : dealersList
+          'eventDealersModelList' : dealersList
         }
 
         );
         SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
             mwpeventFormRequest: _mwpeventFormRequest,
-            eventDealerRequestsList: _save.eventDealerRequestsList
+            eventDealersModelList: _save.eventDealersModelList
           );
 
         internetChecking().then((result) => {
