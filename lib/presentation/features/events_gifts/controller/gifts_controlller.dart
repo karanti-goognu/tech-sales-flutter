@@ -16,8 +16,29 @@ class GiftController extends GetxController {
   GiftController({@required this.repository}) : assert(repository != null);
 
   final _giftStockModel = GetGiftStockModel().obs;
+  final _giftStockModelList= List<GiftStockModelList>().obs;
+  final _giftTypeModelList= List<GiftTypeModelList>().obs;
+  final _selectedDropdown =0.obs;
 
-  get giftStockModel => _giftStockModel;
+  get selectedDropdown => _selectedDropdown.value;
+
+  set selectedDropdown(value) {
+    _selectedDropdown.value = value;
+  }
+
+  get giftTypeModelList => _giftTypeModelList;
+
+  set giftTypeModelList(value) {
+    _giftTypeModelList.value = value;
+  }
+
+  get giftStockModelList => _giftStockModelList;
+
+  set giftStockModelList(value) {
+    _giftStockModelList.value = value;
+  }
+
+  get giftStockModel => _giftStockModel.value;
 
   set giftStockModel(value) {
     _giftStockModel.value = value;
@@ -27,17 +48,33 @@ class GiftController extends GetxController {
     return repository.getAccessKey();
   }
 
-  Future<GetGiftStockModel> getGiftStockData() async {
+  Future getGiftStockData() async {
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       String empID= prefs.getString(StringConstants.employeeId);
       giftStockModel = await repository.getGiftStockData(empID);
+      giftStockModelList= giftStockModel.giftStockModelList;
+      giftTypeModelList= giftStockModel.giftTypeModelList;
+      print(giftTypeModelList);
+
+
 
     });
-    print(giftStockModel);
     Get.back();
     return giftStockModel;
+  }
+
+  Future addGiftStock() async {
+    var response;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      String empID= prefs.getString(StringConstants.employeeId);
+       response = await repository.addGiftStockData(empID);
+    });
+    Get.back();
+    return response;
   }
 
 }

@@ -47,4 +47,27 @@ class MyApiClientEvent {
 
 
   }
+
+  Future addGiftStockData(String empID)async{
+    try{
+      var url=UrlConstants.addGiftStock +empID;
+      print(url);
+      var response = await httpClient.post(url,headers: requestHeaders);
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+
+        return data;
+      } else
+        print('error');
+
+    }catch(_){
+      print('Exception at Dashboard Repo : Yearly View ${_.toString()}');
+    }
+
+
+  }
+
+
+
 }

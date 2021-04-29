@@ -1,90 +1,103 @@
 class GetGiftStockModel {
-  List<GiftStockModelList> giftStockModelList;
   String respCode;
   String respMsg;
+  List<GiftStockModelList> giftStockModelList;
+  List<GiftTypeModelList> giftTypeModelList;
 
-  GetGiftStockModel({this.giftStockModelList, this.respCode, this.respMsg});
+  GetGiftStockModel(
+      {this.respCode,
+        this.respMsg,
+        this.giftStockModelList,
+        this.giftTypeModelList});
 
   GetGiftStockModel.fromJson(Map<String, dynamic> json) {
+    respCode = json['respCode'];
+    respMsg = json['respMsg'];
     if (json['giftStockModelList'] != null) {
       giftStockModelList = new List<GiftStockModelList>();
       json['giftStockModelList'].forEach((v) {
         giftStockModelList.add(new GiftStockModelList.fromJson(v));
       });
     }
-    respCode = json['respCode'];
-    respMsg = json['respMsg'];
+    if (json['giftTypeModelList'] != null) {
+      giftTypeModelList = new List<GiftTypeModelList>();
+      json['giftTypeModelList'].forEach((v) {
+        giftTypeModelList.add(new GiftTypeModelList.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['respCode'] = this.respCode;
+    data['respMsg'] = this.respMsg;
     if (this.giftStockModelList != null) {
       data['giftStockModelList'] =
           this.giftStockModelList.map((v) => v.toJson()).toList();
     }
-    data['respCode'] = this.respCode;
-    data['respMsg'] = this.respMsg;
+    if (this.giftTypeModelList != null) {
+      data['giftTypeModelList'] =
+          this.giftTypeModelList.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
 
 class GiftStockModelList {
-  String eventDate;
-  int eventId;
-  String giftAddDate;
-  int giftInHandQty;
-  int giftOpeningStockQty;
-  int giftQty;
-  int giftStockId;
   int giftTypeId;
   String giftTypeText;
-  int giftUtilisedQty;
   String referenceId;
-  int tsoId;
+  int giftOpeningStockQty;
+  int giftInHandQty;
+  int giftUtilisedQty;
 
   GiftStockModelList(
-      {this.eventDate,
-        this.eventId,
-        this.giftAddDate,
-        this.giftInHandQty,
-        this.giftOpeningStockQty,
-        this.giftQty,
-        this.giftStockId,
-        this.giftTypeId,
+      {this.giftTypeId,
         this.giftTypeText,
-        this.giftUtilisedQty,
         this.referenceId,
-        this.tsoId});
+        this.giftOpeningStockQty,
+        this.giftInHandQty,
+        this.giftUtilisedQty});
 
   GiftStockModelList.fromJson(Map<String, dynamic> json) {
-    eventDate = json['eventDate'];
-    eventId = json['eventId'];
-    giftAddDate = json['giftAddDate'];
-    giftInHandQty = json['giftInHandQty'];
-    giftOpeningStockQty = json['giftOpeningStockQty'];
-    giftQty = json['giftQty'];
-    giftStockId = json['giftStockId'];
     giftTypeId = json['giftTypeId'];
     giftTypeText = json['giftTypeText'];
-    giftUtilisedQty = json['giftUtilisedQty'];
     referenceId = json['referenceId'];
-    tsoId = json['tsoId'];
+    giftOpeningStockQty = json['giftOpeningStockQty'];
+    giftInHandQty = json['giftInHandQty'];
+    giftUtilisedQty = json['giftUtilisedQty'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['eventDate'] = this.eventDate;
-    data['eventId'] = this.eventId;
-    data['giftAddDate'] = this.giftAddDate;
-    data['giftInHandQty'] = this.giftInHandQty;
-    data['giftOpeningStockQty'] = this.giftOpeningStockQty;
-    data['giftQty'] = this.giftQty;
-    data['giftStockId'] = this.giftStockId;
     data['giftTypeId'] = this.giftTypeId;
     data['giftTypeText'] = this.giftTypeText;
-    data['giftUtilisedQty'] = this.giftUtilisedQty;
     data['referenceId'] = this.referenceId;
-    data['tsoId'] = this.tsoId;
+    data['giftOpeningStockQty'] = this.giftOpeningStockQty;
+    data['giftInHandQty'] = this.giftInHandQty;
+    data['giftUtilisedQty'] = this.giftUtilisedQty;
+    return data;
+  }
+}
+
+class GiftTypeModelList {
+  int giftTypeId;
+  String giftTypeText;
+  int giftStockInHand;
+
+  GiftTypeModelList({this.giftTypeId, this.giftTypeText, this.giftStockInHand});
+
+  GiftTypeModelList.fromJson(Map<String, dynamic> json) {
+    giftTypeId = json['giftTypeId'];
+    giftTypeText = json['giftTypeText'];
+    giftStockInHand = json['giftStockInHand'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['giftTypeId'] = this.giftTypeId;
+    data['giftTypeText'] = this.giftTypeText;
+    data['giftStockInHand'] = this.giftStockInHand;
     return data;
   }
 }
