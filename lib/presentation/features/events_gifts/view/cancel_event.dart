@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -11,31 +13,58 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 
 class CancelEvent extends StatefulWidget {
+  int eventId;
+  CancelEvent(this.eventId);
   @override
   _CancelEventtState createState() => _CancelEventtState();
 }
 
 class _CancelEventtState extends State<CancelEvent> {
+  DetailEventModel detailEventModel;
+  DetailEventController detailEventController = Get.find();
+  int _reasonId;
+
+  @override
+  void initState() {
+    super.initState();
+    getDetailEventsData();
+  }
+
+  getDetailEventsData() async {
+    await detailEventController.getAccessKey().then((value) async {
+      print(value.accessKey);
+      await detailEventController
+          .getDetailEventData(value.accessKey, widget.eventId)
+          .then((data) {
+        setState(() {
+          detailEventModel = data;
+        });
+        print('DDDD: $data');
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 
-    final dropDwnDealer = DropdownButtonFormField(
+    final dropDwnReason = DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
-          //requestDepartmentId = value;
+          _reasonId = value;
         });
       },
-      items: ['Venue 1', 'Venue 2', 'Venue 3', 'Venue 4']
+      items: detailEventModel == null
+          ? []
+          :detailEventModel.cancelReasonList
           .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(e),
+                value: e.eventCancelReasonId,
+                child: Text(e.eventCancelReason),
               ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: "Venue"),
-      validator: (value) => value == null ? 'Please select the venue' : null,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "No Dalmia Dealer in Vicinity"),
+      validator: (value) => value == null ? 'Please select cancel reason' : null,
     );
 
     final comment = Container(
@@ -150,7 +179,7 @@ class _CancelEventtState extends State<CancelEvent> {
                   SizedBox(
                     height: ScreenUtil().setSp(20),
                   ),
-                  dropDwnDealer,
+                  dropDwnReason,
                   SizedBox(
                     height: ScreenUtil().setSp(10),
                   ),

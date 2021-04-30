@@ -108,16 +108,16 @@ class MwpEventModel {
   String eventCreatedBy;
   String eventCreatedOn;
   String eventSubmittedOn;
-  Null eventApprovedBy;
+  String eventApprovedBy;
   String eventApprovedOn;
   String eventRejectedOn;
-  Null eventRejectedBy;
+  String eventRejectedBy;
   String eventCancelledOn;
-  Null eventCancelReasonId;
-  Null eventCancelReasonText;
-  Null eventCancelComment;
+  int eventCancelReasonId;
+  String eventCancelReasonText;
+  String eventCancelComment;
   String eventCompletedOn;
-  Null eventCompleteRejectedBy;
+  String eventCompleteRejectedBy;
   String eventCompleteRejectedOn;
   String eventStartOn;
   String eventEndOn;
@@ -126,6 +126,7 @@ class MwpEventModel {
   String eventStartUserLong;
   String eventEndUserLat;
   String eventEndUserLong;
+  String isEventStarted;
 
   MwpEventModel(
       {this.eventId,
@@ -177,7 +178,8 @@ class MwpEventModel {
         this.eventStartUserLat,
         this.eventStartUserLong,
         this.eventEndUserLat,
-        this.eventEndUserLong});
+        this.eventEndUserLong,
+        this.isEventStarted});
 
   MwpEventModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -230,6 +232,7 @@ class MwpEventModel {
     eventStartUserLong = json['eventStartUserLong'];
     eventEndUserLat = json['eventEndUserLat'];
     eventEndUserLong = json['eventEndUserLong'];
+    isEventStarted = json['isEventStarted'];
   }
 
   Map<String, dynamic> toJson() {
@@ -284,6 +287,7 @@ class MwpEventModel {
     data['eventStartUserLong'] = this.eventStartUserLong;
     data['eventEndUserLat'] = this.eventEndUserLat;
     data['eventEndUserLong'] = this.eventEndUserLong;
+    data['isEventStarted'] = this.isEventStarted;
     return data;
   }
 }

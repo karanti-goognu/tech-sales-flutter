@@ -134,5 +134,7 @@ abstract class TextStyles {
       fontSize: ScreenUtil().setSp(15)
   );
 
+
+
 }
 

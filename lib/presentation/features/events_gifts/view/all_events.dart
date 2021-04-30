@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/controller
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_rejected.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +17,6 @@ class AllEvents extends StatefulWidget {
 
 class _AllEventsState extends State<AllEvents> {
   AllEventsModel allEventsModel;
-  EventListModels _eventListModels;
   AllEventController allEventController = Get.find();
   List<EventListModels> pending = [];
   List<EventListModels> approved = [];
@@ -45,6 +45,7 @@ class _AllEventsState extends State<AllEvents> {
         setState(() {
           allEventsModel = data;
         });
+        print("response : ");
         getSortedData();
       });
     });
@@ -101,7 +102,7 @@ class _AllEventsState extends State<AllEvents> {
               : (option == 2)
                   ? getList(HexColor('#39B54A'), approved)
                   : (option == 3)
-                      ? getList(HexColor('#B00020'), rejected)
+                      ? getListForPending(HexColor('#B00020'), rejected)
                       : (option == 4)
                           ? getList(HexColor('#808080'), completed)
                           : (option == 5)
@@ -189,136 +190,7 @@ class _AllEventsState extends State<AllEvents> {
                   Get.to(() => DetailViewEvent(list[index].eventId),
                       binding: EGBinding());
                 },
-                child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  borderOnForeground: true,
-                  elevation: 6,
-                  margin: EdgeInsets.all(4.0),
-                  color: Colors.white,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                          left: BorderSide(
-                        color: borderColor,
-                        width: 6,
-                      )),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                list[index].eventDate,
-                                //"24-Mar-21",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: "Muli",
-                                    //fontWeight:
-                                    // FontWeight.bold
-                                    fontWeight: FontWeight.normal),
-                                // ),
-                              ),
-                              Chip(
-                                shape: StadiumBorder(
-                                    side: BorderSide(color: borderColor)),
-                                backgroundColor: borderColor.withOpacity(0.1),
-                                label: Text(
-                                    'Status: ${list[index].eventStatusText}'),
-                              ),
-                            ],
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                //Obx(
-                                // () =>
-
-                                Text(
-                                  list[index].eventTypeText,
-                                  //"Mason Meet",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                // ),
-                                //Obx(
-                                // () =>
-                                Text(
-                                  "Inf. Planned : ${list[index].actualEventInflCount}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                  // ),
-                                ),
-                              ]),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                //Obx(
-                                // () =>
-
-                                Text(
-                                  "Venue: ${list[index].eventVenue}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                // ),
-                                //Obx(
-                                // () =>
-                                Text(
-                                  "Dealer(s) : ${list[index].dealerName} ?? ''",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                  // ),
-                                ),
-                              ]),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                            child: Divider(
-                              height: 1,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                //Obx(
-                                // () =>
-
-                                Text(
-                                  "EVENT ID: ${list[index].eventId}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                // ),
-                                //Obx(
-                                // () =>
-                                Text(
-                                  "LEADS EXPECTED : ${list[index].expectedLeadsCount}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                  // ),
-                                ),
-                              ]),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                child: evenCard(index, list, borderColor),
               );
             })
         : Container(
@@ -345,136 +217,7 @@ class _AllEventsState extends State<AllEvents> {
                 onTap: () {
                   Get.to(() => DetailPending(list[index].eventId), binding: EGBinding());
                 },
-                child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  borderOnForeground: true,
-                  elevation: 6,
-                  margin: EdgeInsets.all(4.0),
-                  color: Colors.white,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                          left: BorderSide(
-                        color: borderColor,
-                        width: 6,
-                      )),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                list[index].eventDate,
-                                //"24-Mar-21",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: "Muli",
-                                    //fontWeight:
-                                    // FontWeight.bold
-                                    fontWeight: FontWeight.normal),
-                                // ),
-                              ),
-                              Chip(
-                                shape: StadiumBorder(
-                                    side: BorderSide(color: borderColor)),
-                                backgroundColor: borderColor.withOpacity(0.1),
-                                label: Text(
-                                    'Status: ${list[index].eventStatusText}'),
-                              ),
-                            ],
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                //Obx(
-                                // () =>
-
-                                Text(
-                                  list[index].eventTypeText,
-                                  //"Mason Meet",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                // ),
-                                //Obx(
-                                // () =>
-                                Text(
-                                  "Inf. Planned : ${list[index].actualEventInflCount}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                  // ),
-                                ),
-                              ]),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                //Obx(
-                                // () =>
-
-                                Text(
-                                  "Venue: ${list[index].eventVenue}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                // ),
-                                //Obx(
-                                // () =>
-                                Text(
-                                  "Dealer(s) : ${list[index].dealerName}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                  // ),
-                                ),
-                              ]),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                            child: Divider(
-                              height: 1,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                //Obx(
-                                // () =>
-
-                                Text(
-                                  "EVENT ID: ${list[index].eventId}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                // ),
-                                //Obx(
-                                // () =>
-                                Text(
-                                  "LEADS EXPECTED : ${list[index].expectedLeadsCount}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                  // ),
-                                ),
-                              ]),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                child: evenCard(index, list, borderColor),
               );
             })
         : Container(
@@ -484,4 +227,184 @@ class _AllEventsState extends State<AllEvents> {
             ),
           );
   }
+
+  // Widget getListForRejected(Color borderColor, List<EventListModels> list) {
+  //   print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
+  //   return (allEventsModel != null &&
+  //       allEventsModel.eventListModels != null &&
+  //       allEventsModel.eventListModels.length > 0 &&
+  //       list != null)
+  //       ? ListView.builder(
+  //       shrinkWrap: true,
+  //       physics: NeverScrollableScrollPhysics(),
+  //       controller: _scrollController,
+  //       itemCount: list.length,
+  //       padding: const EdgeInsets.only(left: 6.0, right: 6, bottom: 10),
+  //       itemBuilder: (context, index) {
+  //         return GestureDetector(
+  //           onTap: () {
+  //             Get.to(() => DetailRejected(list[index].eventId), binding: EGBinding());
+  //           },
+  //           child: evenCard(index, list, borderColor),
+  //         );
+  //       })
+  //       : Container(
+  //     height: 100,
+  //     child: Center(
+  //       child: Text("No Events!!"),
+  //     ),
+  //   );
+  // }
+
+  Widget evenCard(int index, List<EventListModels> list, Color borderColor,){
+    return  Card(
+      clipBehavior: Clip.antiAlias,
+      borderOnForeground: true,
+      elevation: 6,
+      margin: EdgeInsets.all(4.0),
+      color: Colors.white,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+              left: BorderSide(
+                color: borderColor,
+                width: 6,
+              )),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    list[index].eventDate,
+                    //"24-Mar-21",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Muli",
+                        //fontWeight:
+                        // FontWeight.bold
+                        fontWeight: FontWeight.normal),
+                    // ),
+                  ),
+                  Chip(
+                    shape: StadiumBorder(
+                        side: BorderSide(color: borderColor)),
+                    backgroundColor: borderColor.withOpacity(0.1),
+                    label: Text(
+                        'Status: ${list[index].eventStatusText}'),
+                  ),
+                ],
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //Obx(
+                    // () =>
+
+                    Text(
+                      list[index].eventTypeText,
+                      //"Mason Meet",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: "Muli",
+                          fontWeight: FontWeight.bold),
+                    ),
+                    // ),
+                    //Obx(
+                    // () =>
+                    Text(
+                      "Inf. Planned : ${list[index].actualEventInflCount}",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: "Muli",
+                          fontWeight: FontWeight.normal),
+                      // ),
+                    ),
+                  ]),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //Obx(
+                    // () =>
+
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                        "Venue: ${list[index].eventVenue}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: "Muli",
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                    // ),
+                    //Obx(
+                    // () =>
+                    Flexible(
+                      flex: 3,
+                      child: Text(
+                        "Dealer(s) : ${list[index].dealerName}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: "Muli",
+                            fontWeight: FontWeight.normal),
+                        // ),
+                      ),
+                    ),
+                  ]),
+              Padding(
+                padding:
+                const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Divider(
+                  height: 1,
+                  color: Colors.grey,
+                ),
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //Obx(
+                    // () =>
+
+                    Text(
+                      "EVENT ID: ${list[index].eventId}",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: "Muli",
+                          fontWeight: FontWeight.normal),
+                    ),
+                    // ),
+                    //Obx(
+                    // () =>
+                    Text(
+                      "LEADS EXPECTED : ${list[index].expectedLeadsCount}",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: "Muli",
+                          fontWeight: FontWeight.normal),
+                      // ),
+                    ),
+                  ]),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
+}
+enum Status {
+  PendingApproval,
+  Approved,
+  Rejected,
+  Completed,
+  Cancelled,
+  EventRejected,
+  NotSubmitted
 }

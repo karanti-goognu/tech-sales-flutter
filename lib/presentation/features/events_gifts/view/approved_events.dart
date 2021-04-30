@@ -28,7 +28,6 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   void initState() {
     super.initState();
     getApprovedEventsData();
-    getSortedData();
   }
 
   getApprovedEventsData() async {
@@ -40,6 +39,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
         setState(() {
           approvedEventsModel = data;
         });
+        getSortedData();
         print('DDDD: $data');
       });
     });
@@ -48,23 +48,29 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
 
 
   getSortedData() {
+    print('In getSortedData');
     DateTime now = DateTime.now();
 
-    if (approvedEventsModel != null &&
-        approvedEventsModel.eventListModels != null) {
+    if (approvedEventsModel != null && approvedEventsModel.eventListModels != null) {
       for (int i = 0; i < approvedEventsModel.eventListModels.length; i++) {
         String date = approvedEventsModel.eventListModels[i].eventDate;
         DateTime eventDt = DateTime.parse(date);
-        print('EE $date');
-        print('EVENT DATE: $eventDt');
-        if (eventDt.compareTo(now) == 0 || eventDt.compareTo(now) == 1) {
-          current = approvedEventsModel.eventListModels;
+        print("All data: ${approvedEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
+
+        if (eventDt.compareTo(now) == 0 && eventDt.compareTo(now) == 1) {
+       // if (now.difference(eventDt).inDays == 0 && now.difference(eventDt).inDays == 1) {
+          current.add(approvedEventsModel.eventListModels[i]);
+          //current = approvedEventsModel.eventListModels;
           print('Current : $current');
-        } else if (eventDt.compareTo(now) < 0) {
-          past = approvedEventsModel.eventListModels;
+        } else if (eventDt.isBefore(now)) {
+        //} else if (now.difference(eventDt).inDays.isNegative) {
+          past.add(approvedEventsModel.eventListModels[i]);
+          //past = approvedEventsModel.eventListModels;
           print('Past : $past');
-        } else if (eventDt.compareTo(now) > 1) {
-          upcoming = approvedEventsModel.eventListModels;
+        } else if (eventDt.compareTo(now) < 1) {
+        //} else if (now.difference(eventDt).inDays > 1) {
+          upcoming.add(approvedEventsModel.eventListModels[i]);
+          //upcoming = approvedEventsModel.eventListModels;
           print('Upcoming : $upcoming');
         } else {}
       }
@@ -186,10 +192,10 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  print('EVENT ID: ${list[index].eventId}');
-                  Get.to(
-                          () => DetailViewEvent(list[index].eventId),
-                      binding: EGBinding());
+                  // print('EVENT ID: ${list[index].eventId}');
+                  // Get.to(
+                  //         () => DetailViewEvent(list[index].eventId),
+                  //     binding: EGBinding());
                  // Get.toNamed(Routes.DETAIL_EVENT);
                 },
                 child: Card(
