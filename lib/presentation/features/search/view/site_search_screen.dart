@@ -58,7 +58,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   @override
   void initState() {
     super.initState();
-    print(_siteController.sitesListResponse.sitesEntity[0]);
     // getUserDetails();
   }
 
