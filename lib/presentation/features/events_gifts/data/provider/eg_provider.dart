@@ -88,7 +88,7 @@ class MyApiClientEvent {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey));
       allEventsModel = AllEventsModel.fromJson(json.decode(response.body));
-      // print(response.body);
+       print(response.body);
     }
     catch (e) {
       print("Exception at EG Repo $e");

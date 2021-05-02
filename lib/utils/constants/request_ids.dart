@@ -31,4 +31,8 @@ abstract class RequestIds {
 
   static const int GET_MASTER_DATA_FOR_SPLASH = 30;
   static const int GET_MASTER_DATA_FOR_HOME = 31;
+
+
+  // static const int GET_DEALER_TYPE = 32;
+  // static const int GET_EVENT_TYPE = 33;
 }

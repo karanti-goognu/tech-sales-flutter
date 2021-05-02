@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
@@ -26,6 +27,8 @@ class AppController extends GetxController {
   final MWPPlanController _mwpPlanController = Get.find();
   final CalendarEventController _calendarEventController = Get.find();
   final AddEventController _addEventController = Get.find();
+
+  //final EventTypeController _eventTypeController = Get.find();
   // final UpdateServiceRequestController _updateServiceRequestController = Get.find();
 
   AppController({@required this.repository}) : assert(repository != null);
@@ -159,6 +162,12 @@ class AppController extends GetxController {
                 _addEventController
                     .updateMeet(this.accessKeyResponse.accessKey);
                 break;
+              // case RequestIds.GET_DEALER_TYPE:
+              //   _eventTypeController.getDealerList(this.accessKeyResponse.accessKey);
+              //   break;
+              // case RequestIds.GET_EVENT_TYPE:
+              //   _eventTypeController.getEventType(this.accessKeyResponse.accessKey);
+              //   break;
               // case RequestIds.UPDATE_SR_REQUEST:
               //   _addEventController
               //       .updateMeet(this.accessKeyResponse.accessKey);

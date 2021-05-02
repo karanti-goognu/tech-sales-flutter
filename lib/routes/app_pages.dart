@@ -178,11 +178,11 @@ class AppPages {
     //   page: () => DetailViewEvent(),
     //   binding: EGBinding(),
     // ),
-    GetPage(
-      name: Routes.CANCEL_EVENT,
-      page: () => CancelEvent(),
-      //binding: DashboardBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.CANCEL_EVENT,
+    //   page: () => CancelEvent(),
+    //   //binding: DashboardBinding(),
+    // ),
     GetPage(
       name: Routes.START_EVENT,
       page: () => StartEvent(),

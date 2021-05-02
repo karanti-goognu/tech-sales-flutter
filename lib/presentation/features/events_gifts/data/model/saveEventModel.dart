@@ -1,15 +1,16 @@
 
 class SaveEventFormModel {
-  List<EventDealerRequestsList> eventDealerRequestsList;
+  List<EventDealersModelList> eventDealersModelList;
+  //List<EventDealerRequestsList> eventDealerRequestsList;
   MwpeventFormRequest mwpeventFormRequest;
 
-  SaveEventFormModel({this.eventDealerRequestsList, this.mwpeventFormRequest});
+  SaveEventFormModel({this.eventDealersModelList, this.mwpeventFormRequest});
 
   SaveEventFormModel.fromJson(Map<String, dynamic> json) {
-    if (json['eventDealerRequestsList'] != null) {
-      eventDealerRequestsList = new List<EventDealerRequestsList>();
-      json['eventDealerRequestsList'].forEach((v) {
-        eventDealerRequestsList.add(new EventDealerRequestsList.fromJson(v));
+    if (json['eventDealersModelList'] != null) {
+      eventDealersModelList = new List<EventDealersModelList>();
+      json['eventDealersModelList'].forEach((v) {
+        eventDealersModelList.add(new EventDealersModelList.fromJson(v));
       });
     }
     mwpeventFormRequest = json['mwpeventFormRequest'] != null
@@ -19,9 +20,9 @@ class SaveEventFormModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.eventDealerRequestsList != null) {
-      data['eventDealerRequestsList'] =
-          this.eventDealerRequestsList.map((v) => v.toJson()).toList();
+    if (this.eventDealersModelList != null) {
+      data['eventDealersModelList'] =
+          this.eventDealersModelList.map((v) => v.toJson()).toList();
     }
     if (this.mwpeventFormRequest != null) {
       data['mwpeventFormRequest'] = this.mwpeventFormRequest.toJson();
@@ -30,32 +31,39 @@ class SaveEventFormModel {
   }
 }
 
-class EventDealerRequestsList {
-  String createdBy;
-  String dealerId;
+class EventDealersModelList {
+  int eventDealerId;
   int eventId;
+  String dealerId;
+  String dealerName;
   String eventStage;
-  String eventDealerId;
+  String isActive;
 
+  EventDealersModelList(
+      {this.eventDealerId,
+        this.eventId,
+        this.dealerId,
+        this.dealerName,
+        this.eventStage,
+        this.isActive});
 
-  EventDealerRequestsList(
-      {this.createdBy, this.dealerId, this.eventId, this.eventStage, this.eventDealerId});
-
-  EventDealerRequestsList.fromJson(Map<String, dynamic> json) {
-    createdBy = json['createdBy'];
-    dealerId = json['dealerId'];
-    eventId = json['eventId'];
-    eventStage = json['eventStage'];
+  EventDealersModelList.fromJson(Map<String, dynamic> json) {
     eventDealerId = json['eventDealerId'];
+    eventId = json['eventId'];
+    dealerId = json['dealerId'];
+    dealerName = json['dealerName'];
+    eventStage = json['eventStage'];
+    isActive = json['isActive'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['createdBy'] = this.createdBy;
-    data['dealerId'] = this.dealerId;
-    data['eventId'] = this.eventId;
-    data['eventStage'] = this.eventStage;
     data['eventDealerId'] = this.eventDealerId;
+    data['eventId'] = this.eventId;
+    data['dealerId'] = this.dealerId;
+    data['dealerName'] = this.dealerName;
+    data['eventStage'] = this.eventStage;
+    data['isActive'] = this.isActive;
     return data;
   }
 }
@@ -64,7 +72,7 @@ class MwpeventFormRequest {
   int dalmiaInflCount;
   String eventComment;
   String eventDate;
-  Null eventId;
+  int eventId;
   String eventLocation;
   double eventLocationLat;
   double eventLocationLong;

@@ -80,7 +80,7 @@ abstract class UrlConstants {
   static const String getAllEvents = '$baseUrl/event/event-all-list?referenceID=';
   static const String getApproveEvents = '$baseUrl/event/event-approved-list?referenceID=';
   static const String getDetailEvent = '$baseUrl/event/getEventDetail?referenceID=';
-  static const String saveEvent = '$baseUrl/event/saveEeventForm';
+  static const String saveEvent = '$baseUrl/event/saveEventForm';
  static const String getGiftStock = '$baseUrl/gift/view-gift-stock?referenceID=';
  static const String addGiftStock = '$baseUrl/gift/add-GiftStock';
  static const String getViewLogs = '$baseUrl/gift/gift-log?referenceID=';

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
@@ -18,16 +17,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class DetailPending extends StatefulWidget {
   int eventId;
+  //int eventStatusId;
+  //String eventStatusText;
+
   DetailPending(this.eventId);
 
   @override
@@ -35,7 +34,6 @@ class DetailPending extends StatefulWidget {
 }
 
 class _DetailPendingState extends State<DetailPending> {
-  AddEventModel addEventModel;
   EventTypeController eventController = Get.find();
   SaveEventController saveEventController = Get.find();
   DetailEventModel detailEventModel;
@@ -43,12 +41,14 @@ class _DetailPendingState extends State<DetailPending> {
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
 
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   var _date = 'Select Date';
   TimeOfDay _time;
-  String geoTagType, timeString, dateString, displayTime = 'Select Time', venueLbl;
+  String geoTagType,
+      timeString,
+      dateString,
+      displayTime = 'Select Time',
+      venueLbl;
   int dealerId;
-
 
   ///textfield controllers
   TextEditingController _totalParticipantsController = TextEditingController();
@@ -65,67 +65,89 @@ class _DetailPendingState extends State<DetailPending> {
   String _selectedVenue;
   double locatinLat;
   double locationLong;
-
+  bool isVisible = false;
+  bool saveBtnVisible = false;
   @override
   void initState() {
-    getDealerData();
     getEmpId();
     getDetailEventsData();
     super.initState();
   }
 
-  setText(){
-    if (detailEventModel != null && detailEventModel.mwpEventModel != null){
-      int _total = detailEventModel.mwpEventModel.dalmiaInflCount + detailEventModel.mwpEventModel.nonDalmiaInflCount;
+  setVisibility() {
+    if (detailEventModel.mwpEventModel.eventStatusId == 3) {
+      isVisible = true;
+    } else {
+      isVisible = false;
+    }
+  }
+
+  setSaveDraft() {
+    if (detailEventModel.mwpEventModel.eventStatusId == 1) {
+      saveBtnVisible = true;
+    } else {
+      saveBtnVisible = false;
+    }
+  }
+
+  setText() {
+    if (detailEventModel != null && detailEventModel.mwpEventModel != null) {
+      int _total = detailEventModel.mwpEventModel.dalmiaInflCount +
+          detailEventModel.mwpEventModel.nonDalmiaInflCount;
       venueLbl = detailEventModel.mwpEventModel.venue;
-      _eventTypeController.text = detailEventModel.mwpEventModel.eventTypeText ?? '';
-      _totalParticipantsController = TextEditingController(text: '$_total');
+      _eventTypeController.text =
+          detailEventModel.mwpEventModel.eventTypeText ?? '';
+      _totalParticipantsController.text = '${_total}';
       _selectedVenue = detailEventModel.mwpEventModel.venue ?? '';
       _date = detailEventModel.mwpEventModel.eventDate;
       displayTime = detailEventModel.mwpEventModel.eventTime ?? '';
-      _locationController = TextEditingController(
-          text: detailEventModel.mwpEventModel.eventLocation ?? '');
-      _dalmiaInflController = TextEditingController(
-          text: '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0');
-      _nonDalmiaInflController = TextEditingController(
-          text: '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ?? '0');
-      _venueAddController = TextEditingController(
-          text: detailEventModel.mwpEventModel.venueAddress ?? '');
-      _expectedLeadsController = TextEditingController(
-          text: '${detailEventModel.mwpEventModel.expectedLeadsCount}' ?? '0');
-      _giftsDistributionController = TextEditingController(
-          text: '${detailEventModel.mwpEventModel.giftDistributionCount}' ??
-              '0');
-      _commentController = TextEditingController(
-          text: detailEventModel.mwpEventModel.eventComment ?? '');
-      if(detailEventModel.eventDealersModelList != null && detailEventModel.eventDealersModelList.length > 0) {
+      _locationController.text =
+          detailEventModel.mwpEventModel.eventLocation ?? '';
+      _dalmiaInflController.text =
+          '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0';
+      _nonDalmiaInflController.text =
+          '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ?? '0';
+      _venueAddController.text =
+          detailEventModel.mwpEventModel.venueAddress ?? '';
+      _expectedLeadsController.text =
+          '${detailEventModel.mwpEventModel.expectedLeadsCount}' ?? '0';
+      _giftsDistributionController.text =
+          '${detailEventModel.mwpEventModel.giftDistributionCount}' ?? '0';
+      _commentController.text =
+          detailEventModel.mwpEventModel.eventComment ?? '';
+      timeString = detailEventModel.mwpEventModel.eventTime;
+      dateString = detailEventModel.mwpEventModel.eventDate;
+      locatinLat =
+          double.parse('${detailEventModel.mwpEventModel.eventLocationLat}');
+      locationLong =
+          double.parse('${detailEventModel.mwpEventModel.eventLocationLong}');
 
-        // detailEventModel.eventDealersModelList.forEach((e) {
-        //   setState(() {
-        //     selectedDealersModels.add({
-        //       //'eventStage': 'PLAN',
-        //       //'eventId': null,
-        //       'dealerId': e.dealerId,
-        //       //'createdBy': empId,
-        //       'dealerName' : e.dealerName
-        //     });
-        //   });
-        // });
-
+      if (detailEventModel.eventDealersModelList != null &&
+          detailEventModel.eventDealersModelList.length != 0) {
+        for (int i = 0;
+            i < detailEventModel.eventDealersModelList.length;
+            i++) {
+          selectedDealersModels.add(DealersModels(
+              dealerId: detailEventModel.eventDealersModelList[i].dealerId,
+              dealerName:
+                  detailEventModel.eventDealersModelList[i].dealerName));
+        }
       }
-
     }
   }
 
   getDetailEventsData() async {
     await detailEventController.getAccessKey().then((value) async {
       print(value.accessKey);
-      await detailEventController.getDetailEventData(value.accessKey, widget.eventId)
+      await detailEventController
+          .getDetailEventData(value.accessKey, widget.eventId)
           .then((data) {
         setState(() {
           detailEventModel = data;
         });
         print('DDDD: $data');
+        setVisibility();
+        setSaveDraft();
         setText();
       });
     });
@@ -138,18 +160,6 @@ class _DetailPendingState extends State<DetailPending> {
       empID = prefs.getString(StringConstants.employeeId);
     });
     return empID;
-  }
-
-  getDealerData() async {
-    await eventController.getAccessKey().then((value) async {
-      print(value.accessKey);
-      await eventController.getEventType(value.accessKey).then((data) {
-        setState(() {
-          addEventModel = data;
-        });
-        print('RESPONSE, ${data}');
-      });
-    });
   }
 
   @override
@@ -167,8 +177,7 @@ class _DetailPendingState extends State<DetailPending> {
       keyboardType: TextInputType.number,
       readOnly: true,
       enableInteractiveSelection: false,
-      decoration:
-      FormFieldStyle.buildInputDecoration(),
+      decoration: FormFieldStyle.buildInputDecoration(),
     );
 
     final date = Container(
@@ -210,8 +219,7 @@ class _DetailPendingState extends State<DetailPending> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(
-                    child: Text(displayTime)),
+                Expanded(child: Text(displayTime)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -235,7 +243,7 @@ class _DetailPendingState extends State<DetailPending> {
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
       decoration:
-      FormFieldStyle.buildInputDecoration(labelText: "Dalmia influencers"),
+          FormFieldStyle.buildInputDecoration(labelText: "Dalmia influencers"),
     );
 
     final nondalmia = TextFormField(
@@ -265,7 +273,7 @@ class _DetailPendingState extends State<DetailPending> {
       keyboardType: TextInputType.number,
       readOnly: true,
       decoration:
-      FormFieldStyle.buildInputDecoration(labelText: "Total participants"),
+          FormFieldStyle.buildInputDecoration(labelText: "Total participants"),
     );
 
     final venueDropDwn = DropdownButtonFormField(
@@ -276,13 +284,13 @@ class _DetailPendingState extends State<DetailPending> {
       },
       items: ['Booked', 'Not Booked']
           .map((e) => DropdownMenuItem(
-        value: e,
-        child: Text(e),
-      ))
+                value: e,
+                child: Text(e),
+              ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: venueLbl),
-      validator: (value) => value == null ? 'Please select the venue' : null,
+      //validator: (value) => (value == null || _selectedVenue == null) ? 'Please select the venue' : null,
     );
 
     final venueAddress = TextFormField(
@@ -309,7 +317,7 @@ class _DetailPendingState extends State<DetailPending> {
               labelText: 'Add Dealer(s)',
               suffixIcon: Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
                 child: Icon(
                   Icons.add,
                   size: 20,
@@ -323,19 +331,21 @@ class _DetailPendingState extends State<DetailPending> {
                 scrollDirection: Axis.horizontal,
                 children: selectedDealersModels
                     .map((e) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Chip(
-                    deleteIcon: Icon(Icons.close),
-                    onDeleted: (){
-                         // eventSelectedDealersModels.remove(e);
-                    },
-                    label: Text(
-                      e.dealerName,
-                      style: TextStyle(fontSize: 10),
-                    ),
-                    backgroundColor: Colors.lightGreen.withOpacity(0.2),
-                  ),
-                ))
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: Chip(
+                            deleteIcon: Icon(Icons.close),
+                            onDeleted: () {
+                              setState(() {
+                                selectedDealersModels.remove(e);
+                              });
+                            },
+                            label: Text(
+                              e.dealerName,
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            backgroundColor: Colors.lightGreen.withOpacity(0.2),
+                          ),
+                        ))
                     .toList(),
               ),
             ),
@@ -355,7 +365,7 @@ class _DetailPendingState extends State<DetailPending> {
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
       decoration:
-      FormFieldStyle.buildInputDecoration(labelText: "Expected Leads"),
+          FormFieldStyle.buildInputDecoration(labelText: "Expected Leads"),
     );
 
     final giftDistribution = TextFormField(
@@ -383,49 +393,48 @@ class _DetailPendingState extends State<DetailPending> {
     final btns = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        FlatButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-              side: BorderSide(color: Colors.black26)),
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-            child: Text(
-              "SAVE AS DRAFT",
-              style: TextStyles.btnBlue,
+        Visibility(
+          visible: saveBtnVisible,
+          child: FlatButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+                side: BorderSide(color: Colors.black26)),
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
+              child: Text(
+                "SAVE AS DRAFT",
+                style: TextStyles.btnBlue,
+              ),
             ),
+            onPressed: () {
+              btnPresssed(7);
+            },
           ),
-          onPressed: () {
-            btnPresssed(7);
-          },
         ),
         RaisedButton(
           color: ColorConstants.btnBlue,
           child: Text(
             "SUBMIT",
             style:
-            //TextStyles.btnWhite,
-            TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
-                fontSize: ScreenUtil().setSp(15)),
+                //TextStyles.btnWhite,
+                TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    // letterSpacing: 2,
+                    fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
-            btnPresssed(1);
+            if (detailEventModel.mwpEventModel.eventStatusId == 1) {
+              btnPresssed(1);
+            } else if (detailEventModel.mwpEventModel.eventStatusId == 3) {
+              btnPresssed(3);
+            } else if (detailEventModel.mwpEventModel.eventStatusId == 7) {
+              btnPresssed(7);
+            }
           },
         ),
       ],
-    );
-
-    final contact = Padding(
-      padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16, top: 16),
-      child: TextFormField(
-        style: TextStyles.formfieldLabelText,
-        keyboardType: TextInputType.number,
-        decoration:
-        FormFieldStyle.buildInputDecoration(labelText: "Contact No."),
-      ),
     );
 
     final location = TextFormField(
@@ -446,7 +455,7 @@ class _DetailPendingState extends State<DetailPending> {
 
         if (result != null) {
           final placeDetails =
-          await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
+              await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
           setState(() {
             _locationController.text = result.description;
             locatinLat = placeDetails.lat;
@@ -472,81 +481,108 @@ class _DetailPendingState extends State<DetailPending> {
       body: Stack(
         children: [
           Positioned.fill(
-            child:
-          (detailEventModel != null && detailEventModel.mwpEventModel != null)
-               ?
-      ListView(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(12),
-                  height: 56,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: (detailEventModel != null &&
+                    detailEventModel.mwpEventModel != null)
+                ? ListView(
                     children: [
-                      Text(
-                        'Add Event',
-                        style: TextStyles.titleGreenStyle,
+                      Visibility(
+                        visible: isVisible,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.only(left: ScreenUtil().setSp(12)),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FlatButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                    side: BorderSide(color: Colors.black26)),
+                                color: ColorConstants.cancelRed,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 5, bottom: 8, top: 5),
+                                  child: Text(
+                                    "DELETE EVENT",
+                                    style: TextStyles.btnWhite,
+                                  ),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      Chip(
-                        shape: StadiumBorder(
-                            side: BorderSide(color: HexColor("#39B54A"))),
-                        backgroundColor:
-                        HexColor("#39B54A").withOpacity(0.1),
-                        label: Text('Status: Not Submitted'),
-                      ),
-                    ],
-                  ),
-                  // decoration: BoxDecoration(
-                  //     border: Border(bottom: BorderSide(width: 0.3))),
-                ),
-                SizedBox(height: 16),
-                Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Form(
-                      key: _addEventFormKey,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      Container(
+                        padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                        height: 56,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            eventType,
-                            SizedBox(height: 16),
-                            date,
-                            SizedBox(height: 16),
-                            time,
-                            SizedBox(height: 16),
                             Text(
-                              "Tentative Members",
-                              style: TextStyles.welcomeMsgTextStyle20,
+                              'Add Event',
+                              style: TextStyles.titleGreenStyle,
                             ),
-                            SizedBox(height: 16),
-                            dalmiaInfluencer,
-                            SizedBox(height: 16),
-                            nondalmia,
-                            SizedBox(height: 16),
-                            total,
-                            SizedBox(height: 16),
-                            venueDropDwn,
-                            SizedBox(height: 16),
-                            venueAddress,
-                            SizedBox(height: 16),
-                            dealer,
-                            SizedBox(height: 16),
-                            expectedLeads,
-                            SizedBox(height: 16),
-                            giftDistribution,
-                            SizedBox(height: 16),
-                            location,
-                            SizedBox(height: 16),
-                            comment,
-                            SizedBox(height: 16),
-                            btns,
-                            SizedBox(height: 16),
-                          ]),
-                    )),
-              ],
-            )
+                            Chip(
+                              shape: StadiumBorder(
+                                  side: BorderSide(color: HexColor("#39B54A"))),
+                              backgroundColor:
+                                  HexColor("#39B54A").withOpacity(0.1),
+                              label: Text(
+                                  'Status: ${detailEventModel.mwpEventModel.eventStatusText}'),
+                            ),
+                          ],
+                        ),
+                        // decoration: BoxDecoration(
+                        //     border: Border(bottom: BorderSide(width: 0.3))),
+                      ),
+                      SizedBox(height: 16),
+                      Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Form(
+                            key: _addEventFormKey,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  eventType,
+                                  SizedBox(height: 16),
+                                  date,
+                                  SizedBox(height: 16),
+                                  time,
+                                  SizedBox(height: 16),
+                                  Text(
+                                    "Tentative Members",
+                                    style: TextStyles.welcomeMsgTextStyle20,
+                                  ),
+                                  SizedBox(height: 16),
+                                  dalmiaInfluencer,
+                                  SizedBox(height: 16),
+                                  nondalmia,
+                                  SizedBox(height: 16),
+                                  total,
+                                  SizedBox(height: 16),
+                                  venueDropDwn,
+                                  SizedBox(height: 16),
+                                  venueAddress,
+                                  SizedBox(height: 16),
+                                  dealer,
+                                  SizedBox(height: 16),
+                                  expectedLeads,
+                                  SizedBox(height: 16),
+                                  giftDistribution,
+                                  SizedBox(height: 16),
+                                  location,
+                                  SizedBox(height: 16),
+                                  comment,
+                                  SizedBox(height: 16),
+                                  btns,
+                                  SizedBox(height: 16),
+                                ]),
+                          )),
+                    ],
+                  )
                 : Center(
-              child: CircularProgressIndicator(),
-            ),
+                    child: CircularProgressIndicator(),
+                  ),
           ),
         ],
       ),
@@ -582,7 +618,6 @@ class _DetailPendingState extends State<DetailPending> {
     );
     setState(() {
       displayTime = '${_time.hour}:${_time.minute}';
-
       timeString = ('$_date ${_time.hour}:${_time.minute}:00');
       print(timeString);
     });
@@ -591,16 +626,15 @@ class _DetailPendingState extends State<DetailPending> {
   List<bool> checkedValues;
   List<String> selectedDealer = [];
   List<DealersModels> selectedDealersModels = [];
-  List<EventDealersModelList> eventSelectedDealersModels = [];
+  //List<EventDealersModelList> eventSelectedDealersModels = [];
 
   //List<String> selectedDealerList = [];
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
-    List<DealersModels> dealers = addEventModel.dealersModels;
-    List<EventDealersModelList> eventDealers = detailEventModel.eventDealersModelList;
+    List<DealersModels> dealers = detailEventModel.dealersModels;
     checkedValues =
-        List.generate(addEventModel.dealersModels.length, (index) => false);
+        List.generate(detailEventModel.dealersModels.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -628,7 +662,7 @@ class _DetailPendingState extends State<DetailPending> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dealers = addEventModel.dealersModels.where((element) {
+                    dealers = detailEventModel.dealersModels.where((element) {
                       return element.dealerName
                           .toString()
                           .toLowerCase()
@@ -647,62 +681,55 @@ class _DetailPendingState extends State<DetailPending> {
             SizedBox(
               height: 20,
             ),
-
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: dealers.length,
                 itemBuilder: (context, index) {
                   return
-                    // dealerId == dealers[index].dealerId
-                    //   ?
-                    CheckboxListTile(
-                      activeColor: Colors.black,
-                      dense: true,
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                      // dealerId == dealers[index].dealerId
+                      //   ?
+                      CheckboxListTile(
+                    activeColor: Colors.black,
+                    dense: true,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(dealers[index].dealerName),
+                        Text('( ${dealers[index].dealerId} )'),
+                      ],
+                    ),
+                    value: selectedDealer.contains(dealers[index].dealerName),
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedDealer.contains(dealers[index].dealerName)
+                            ? selectedDealer.remove(dealers[index].dealerName)
+                            : selectedDealer.add(dealers[index].dealerName);
 
-                          Text(dealers[index].dealerName),
-                          Text('( ${dealers[index].dealerId} )'),
-                        ],
-                      ),
-                      value: selectedDealer.contains(dealers[index].dealerName),
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedDealer.contains(dealers[index].dealerName)
-                              ? selectedDealer.remove(dealers[index].dealerName)
-                              : selectedDealer.add(dealers[index].dealerName);
+                        selectedDealersModels.contains(dealers[index])
+                            ? selectedDealersModels.remove(dealers[index])
+                            : selectedDealersModels.add(dealers[index]);
 
-                          selectedDealersModels.contains(dealers[index])
-                              ? selectedDealersModels.remove(dealers[index])
-                              : selectedDealersModels.add(dealers[index]);
-
-                          // eventSelectedDealersModels.contains(eventDealers[index])
-                          //     ? eventSelectedDealersModels.remove(eventDealers[index])
-                          //     : eventSelectedDealersModels.add(eventDealers[index]);
-
-                          checkedValues[index] = newValue;
-                          //dataToBeSentBack = requestSubtype[index];
-                        });
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
-                    );
+                        checkedValues[index] = newValue;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  );
                   //  : Container();
                 },
                 separatorBuilder: (context, index) {
                   return dealerId == dealers[index].dealerId
                       ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Divider(),
-                  )
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Divider(),
+                        )
                       : Container();
                 },
               ),
             ),
             Container(
               decoration:
-              BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
+                  BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
               padding: EdgeInsets.only(top: 24, bottom: 9, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -766,7 +793,7 @@ class _DetailPendingState extends State<DetailPending> {
     print('bbb');
     if (_addEventFormKey.currentState.validate()) {
       _addEventFormKey.currentState.save();
-      if (timeString == null) {
+      if (timeString == null || displayTime == null) {
         Get.snackbar("", "Select Time",
             colorText: Colors.black,
             backgroundColor: Colors.white,
@@ -784,59 +811,61 @@ class _DetailPendingState extends State<DetailPending> {
             dealersList.add({
               'eventStage': 'PLAN',
               'eventId': widget.eventId,
+              'dealerName': e.dealerName,
               'dealerId': e.dealerId,
               'createdBy': empId,
-              'eventDealerId' : 'null'
+              'eventDealerId': null,
+              'isActive': 'Y'
             });
           });
         });
         print('DEALERS: $dealersList');
         MwpeventFormRequest _mwpeventFormRequest =
-        MwpeventFormRequest.fromJson({
+            MwpeventFormRequest.fromJson({
           'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ?? 0,
           'eventComment': _commentController.text,
           'eventDate': dateString,
-          'eventId': null,
+          'eventId': widget.eventId,
           'eventLocation': _locationController.text,
           'eventLocationLat': locatinLat,
           'eventLocationLong': locationLong,
           'eventStatusId': eventStatusId,
           'eventTime': timeString,
           'eventTypeId': detailEventModel.mwpEventModel.eventTypeId,
-          'expectedLeadsCount': int.tryParse('${_expectedLeadsController.text}') ?? 0,
+          'expectedLeadsCount':
+              int.tryParse('${_expectedLeadsController.text}') ?? 0,
           'giftDistributionCount':
-          int.tryParse('${_giftsDistributionController.text}') ?? 0,
-          'nondalmiaInflCount': int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
+              int.tryParse('${_giftsDistributionController.text}') ?? 0,
+          'nondalmiaInflCount':
+              int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
           'referenceId': empId,
           'venue': _selectedVenue,
           'venueAddress': _venueAddController.text,
         });
 
-        SaveEventFormModel _save = SaveEventFormModel.fromJson({
-          'eventDealerRequestsList' : dealersList
-        }
-
-        );
+        SaveEventFormModel _save =
+            SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
         SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
             mwpeventFormRequest: _mwpeventFormRequest,
-            eventDealerRequestsList: _save.eventDealerRequestsList
-        );
+            eventDealersModelList: _save.eventDealersModelList);
+
+        print('PARAMS: $_saveEventFormModel');
 
         internetChecking().then((result) => {
-          if (result == true)
-            {
-              // saveEventController
-              //     .getAccessKeyAndSaveRequest(_saveEventFormModel)
-            }
-          else
-            {
-              Get.snackbar("No internet connection.",
-                  "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-            }
-        });
+              if (result == true)
+                {
+                  saveEventController
+                      .getAccessKeyAndSaveRequest(_saveEventFormModel)
+                }
+              else
+                {
+                  Get.snackbar("No internet connection.",
+                      "Make sure that your wifi or mobile data is turned on.",
+                      colorText: Colors.white,
+                      backgroundColor: Colors.red,
+                      snackPosition: SnackPosition.BOTTOM),
+                }
+            });
       }
     }
   }
