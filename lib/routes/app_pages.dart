@@ -19,7 +19,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cance
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts.dart';
+import 'file:///D:/Development/db_changes_TSO/tech-sales-flutter-1/lib/presentation/features/events_gifts/view/gifts/gifts.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/start_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_event.dart';

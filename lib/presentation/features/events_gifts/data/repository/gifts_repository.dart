@@ -7,15 +7,17 @@ class GiftsRepository {
 
   GiftsRepository({this.apiClient});
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future<String> getAccessKey() {
     return apiClient.getAccessKey();
   }
-  Future getGiftStockData(String referenceID) async{
-    return apiClient.getGiftStockData(referenceID);
+  Future getGiftStockData(String referenceID,String accessKey, String userSecurityKey) async{
+    return apiClient.getGiftStockData(referenceID,accessKey,userSecurityKey);
   }
-
-  Future addGiftStockData(String referenceID) async{
-    return apiClient.addGiftStockData(referenceID);
+  Future getViewLogsData(String accessKey, String userSecurityKey, String empID, String monthYear )async{
+    return apiClient.getViewLogsData(accessKey,userSecurityKey,empID,monthYear );
+  }
+  Future addGiftStockData(String referenceID, String userSecurityKey, String accessKey,String comment, String giftTypeId, String giftTypeText,String giftInHandQty,String giftInHandQtyNew ) async{
+    return apiClient.addGiftStockData(referenceID, userSecurityKey, accessKey, comment,giftTypeId,giftTypeText, giftInHandQty,giftInHandQtyNew);
   }
 
 

@@ -9,7 +9,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts.dart';
+import 'file:///D:/Development/db_changes_TSO/tech-sales-flutter-1/lib/presentation/features/events_gifts/view/gifts/gifts.dart';
 
 
 class Events extends StatefulWidget {

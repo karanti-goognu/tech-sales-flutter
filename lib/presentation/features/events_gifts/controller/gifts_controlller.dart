@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/gifts_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/LogsModel.dart';
+
 
 class GiftController extends GetxController {
   @override
@@ -19,6 +21,35 @@ class GiftController extends GetxController {
   final _giftStockModelList= List<GiftStockModelList>().obs;
   final _giftTypeModelList= List<GiftTypeModelList>().obs;
   final _selectedDropdown =0.obs;
+  final _itemFromBottomSheetTapped = false.obs;
+  final _logsModel = LogsModel().obs;
+  final _dataForViewLog = List<GiftStockList>().obs;
+  final _monthYear = ''.obs;
+
+  get monthYear => _monthYear;
+
+  set monthYear(value) {
+    _monthYear.value = value;
+  }
+
+  get dataForViewLog => _dataForViewLog;
+
+  set dataForViewLog(value) {
+    _dataForViewLog.value = value;
+  }
+
+  get logsModel => _logsModel.value;
+
+  set logsModel(value) {
+    _logsModel.value = value;
+  }
+
+  get itemFromBottomSheetTapped => _itemFromBottomSheetTapped;
+
+  set itemFromBottomSheetTapped(value) {
+    _itemFromBottomSheetTapped.value = value;
+    print(_itemFromBottomSheetTapped.value );
+  }
 
   get selectedDropdown => _selectedDropdown.value;
 
@@ -44,37 +75,58 @@ class GiftController extends GetxController {
     _giftStockModel.value = value;
   }
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future<String> getAccessKey() {
     return repository.getAccessKey();
   }
 
   Future getGiftStockData() async {
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKey();
     await _prefs.then((SharedPreferences prefs) async {
       String empID= prefs.getString(StringConstants.employeeId);
-      giftStockModel = await repository.getGiftStockData(empID);
+      String securityKey = prefs.getString(StringConstants.userSecurityKey);
+      giftStockModel = await repository.getGiftStockData(empID, accessKey, securityKey);
       giftStockModelList= giftStockModel.giftStockModelList;
       giftTypeModelList= giftStockModel.giftTypeModelList;
-      print(giftTypeModelList);
-
-
-
     });
     Get.back();
     return giftStockModel;
   }
 
-  Future addGiftStock() async {
+  Future addGiftStock({String comment, String giftTypeId, String giftTypeText,String giftInHandQty,String giftInHandQtyNew}) async {
     var response;
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKey();
     await _prefs.then((SharedPreferences prefs) async {
       String empID= prefs.getString(StringConstants.employeeId);
-       response = await repository.addGiftStockData(empID);
+      String securityKey = prefs.getString(StringConstants.userSecurityKey);
+       response = await repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew);
     });
     Get.back();
     return response;
+  }
+  Future getViewLogsData(String monthYear) async {
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKey();
+    await _prefs.then((SharedPreferences prefs) async {
+      String empID= prefs.getString(StringConstants.employeeId);
+      String securityKey = prefs.getString(StringConstants.userSecurityKey);
+      logsModel = await repository.getViewLogsData(accessKey, securityKey,empID, monthYear);
+      if(logsModel.respCode=="DM1006"){
+        print("Good going");
+        Get.dialog(CustomDialogs().errorDialog(logsModel.respMsg));
+
+      }
+      else{
+        dataForViewLog=logsModel.giftStockModelList;
+      }
+
+    });
+    Get.back();
+    return logsModel;
   }
 
 }
