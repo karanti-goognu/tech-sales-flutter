@@ -41,16 +41,17 @@ class ViewLogs extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),
                         color: Colors.white,
-                        boxShadow: [
-                          new BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 8.0,
-                          ),
-                        ],
+//                        boxShadow: [
+//                          new BoxShadow(
+//                            color: Colors.grey,
+//                            blurRadius: 8.0,
+//                          ),
+//                        ],
                       ),
                       child: FlatButton(
                         padding: EdgeInsets.zero,
                         splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -87,12 +88,12 @@ class ViewLogs extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           color: Colors.white,
-                          boxShadow: [
-                            new BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 2.0,
-                            ),
-                          ],
+//                          boxShadow: [
+//                            new BoxShadow(
+//                              color: Colors.grey,
+//                              blurRadius: 2.0,
+//                            ),
+//                          ],
                         ),
                         child: DropdownButtonHideUnderline(
                             child: DropdownButton(
@@ -127,9 +128,11 @@ class ViewLogs extends StatelessWidget {
                     itemCount: giftController.dataForViewLog.length,
                     itemBuilder: (context,index){
                   return Card(
-                    elevation: 3,
+//                    elevation: 3,
                     child: Theme(
-                      data: ThemeData(splashColor: Colors.transparent),
+                      data: ThemeData(splashColor: Colors.transparent,
+                          accentColor: Colors.amber, unselectedWidgetColor:  Colors.amber
+                      ),
                       child: ExpansionTile(
                         title: Text(giftController.dataForViewLog[index].giftAddDate.toString()),
                         children: [
@@ -140,21 +143,24 @@ class ViewLogs extends StatelessWidget {
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(12.0),
+                                      return
+                                        index==0?
+                                        Container():
+                                        Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal:18.0,vertical: 8),
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              giftsCategoriesNameList[index],
+                                              giftsCategoriesNameList[index-1],
                                               style: TextStyle(
                                                   fontSize: 16, fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               index==0?
-                                              giftController.dataForViewLog[index].giftOpeningStockQty.toString():
-                                              index==1?giftController.dataForViewLog[index].giftInHandQty.toString():
-                                              giftController.dataForViewLog[index].giftUtilisedQty.toString(),
+                                              giftController.dataForViewLog[index-1].giftOpeningStockQty.toString():
+                                              index==1?giftController.dataForViewLog[index-1].giftInHandQty.toString():
+                                              giftController.dataForViewLog[index-1].giftUtilisedQty.toString(),
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -169,7 +175,7 @@ class ViewLogs extends StatelessWidget {
                                         child: Divider(),
                                       );
                                     },
-                                    itemCount: 3)),
+                                    itemCount: 4)),
                           ),
                         ],
                       ),
