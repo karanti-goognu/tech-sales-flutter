@@ -135,6 +135,14 @@ abstract class TextStyles {
   );
 
 
+  static TextStyle mulliRegular14Italic = TextStyle(
+      color: Colors.blueAccent,
+      fontFamily: "Muli.ttf",
+      fontSize: 14,
+      fontStyle: FontStyle.italic,
+      fontWeight: FontWeight.normal);
+
+
 
 }
 
