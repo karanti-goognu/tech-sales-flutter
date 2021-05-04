@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
@@ -15,8 +15,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -195,7 +194,7 @@ class MyApiClientEvent {
   Future<StartEventResponse>startEvent(String accessKey, String userSecretKey, StartEventModel startEventModel) async {
     StartEventResponse startEventResponse;
     try{
-      var response = await http.post(Uri.parse(UrlConstants.saveEvent),
+      var response = await http.post(Uri.parse(UrlConstants.startEvent),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey),
         body: json.encode(startEventModel),
       );
@@ -209,6 +208,26 @@ class MyApiClientEvent {
       print("Exception at EG Repo $e");
     }
     return startEventResponse;
+  }
+
+
+  Future<DealerInfModel> getDealerInfList(String accessKey,
+      String userSecretKey, String empID, int eventId) async {
+    DealerInfModel dealerInfModel;
+    try {
+      var response = await http.get(
+          Uri.parse(UrlConstants.getDealerInfList + empID + "&eventId=$eventId"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecretKey));
+      dealerInfModel = DealerInfModel.fromJson(json.decode(response.body));
+      print('RESP : ${response.body}');
+      print(
+          'UURL ${UrlConstants.getDetailEvent + empID + "&eventId=$eventId"}');
+    }
+    catch (e) {
+      print("Exception at EG Repo $e");
+    }
+    return dealerInfModel;
   }
 }
 

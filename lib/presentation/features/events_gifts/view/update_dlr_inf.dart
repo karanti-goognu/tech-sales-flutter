@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -12,33 +14,48 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 
 class UpdateDlrInf extends StatefulWidget {
+  int eventId;
+  UpdateDlrInf(this.eventId);
+
   @override
   _UpdateDlrInfState createState() => _UpdateDlrInfState();
 }
 
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
-  AddEventModel addEventModel;
-  EventTypeController eventController = Get.find();
+  DealerInfModel _dealerInfModel;
+  EventsFilterController _eventsFilterController = Get.find();
   int dealerId;
   bool _isVisible = false;
 
   @override
   void initState() {
-    //getDropdownData();
+    getData();
     super.initState();
   }
 
-  // getDropdownData() async {
-  //   await eventController.getAccessKey().then((value) async {
-  //     print(value.accessKey);
-  //     await eventController.getEventType(value.accessKey).then((data) {
-  //       setState(() {
-  //         addEventModel = data;
-  //       });
-  //       print('RESPONSE, ${data}');
-  //     });
-  //   });
-  //}
+  getData() async {
+      await _eventsFilterController.getDealerInfList(widget.eventId).then((data) {
+        setState(() {
+          _dealerInfModel = data;
+        });
+        print('RESPONSE, ${data}');
+        setData();
+      });
+  }
+
+  setData(){
+    if (_dealerInfModel.eventDealersModelList != null &&
+        _dealerInfModel.eventDealersModelList.length != 0) {
+      for (int i = 0;
+      i < _dealerInfModel.eventDealersModelList.length;
+      i++) {
+        selectedDealersModels.add(DealersModel(
+            dealerId: _dealerInfModel.eventDealersModelList[i].dealerId,
+            dealerName:
+            _dealerInfModel.eventDealersModelList[i].dealerName));
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -155,6 +172,42 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       ),
     );
 
+    final btns = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        RaisedButton(
+          color: ColorConstants.btnBlue,
+          child: Text(
+            "UPDATE",
+            style:
+            //TextStyles.btnWhite,
+            TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                // letterSpacing: 2,
+                fontSize: ScreenUtil().setSp(15)),
+          ),
+          onPressed: () {
+          },
+        ),
+        RaisedButton(
+          color: ColorConstants.btnBlue,
+          child: Text(
+            "ADD LEAD",
+            style:
+            //TextStyles.btnWhite,
+            TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                // letterSpacing: 2,
+                fontSize: ScreenUtil().setSp(15)),
+          ),
+          onPressed: () {
+          },
+        ),
+      ],
+    );
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -195,6 +248,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 
                             ]),
                       ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: btns,
+                  )
                 ],
               )
             //     : Center(
@@ -464,15 +521,16 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 
   List<bool> checkedValues;
   List<String> selectedDealer = [];
-  List<DealersModels> selectedDealersModels = [];
+  List<DealersModel> selectedDealersModels = [];
+  //List<EventDealersModelList> eventSelectedDealersModels = [];
 
   //List<String> selectedDealerList = [];
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
-    List<DealersModels> dealers = addEventModel.dealersModels;
+    List<DealersModel> dealers = _dealerInfModel.dealersModel;
     checkedValues =
-        List.generate(addEventModel.dealersModels.length, (index) => false);
+        List.generate(_dealerInfModel.dealersModel.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -500,7 +558,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dealers = addEventModel.dealersModels.where((element) {
+                    dealers = _dealerInfModel.dealersModel.where((element) {
                       return element.dealerName
                           .toString()
                           .toLowerCase()
@@ -519,7 +577,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             SizedBox(
               height: 20,
             ),
-
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -529,14 +586,13 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     // dealerId == dealers[index].dealerId
                     //   ?
                     CheckboxListTile(
-
                       activeColor: Colors.black,
                       dense: true,
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(dealers[index].dealerId),
-                          Text('( ${dealers[index].dealerName} )'),
+                          Text(dealers[index].dealerName),
+                          Text('( ${dealers[index].dealerId} )'),
                         ],
                       ),
                       value: selectedDealer.contains(dealers[index].dealerName),
@@ -551,7 +607,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                               : selectedDealersModels.add(dealers[index]);
 
                           checkedValues[index] = newValue;
-                          //dataToBeSentBack = requestSubtype[index];
                         });
                       },
                       controlAffinity: ListTileControlAffinity.leading,

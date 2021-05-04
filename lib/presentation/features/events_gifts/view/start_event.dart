@@ -72,7 +72,7 @@ class _StartEventState extends State<StartEvent> {
                   FlatButton(
                       onPressed: () {
                         //getBottomSheet();
-                        Get.toNamed(Routes.UPDATE_DLR_INF);
+                        //Get.toNamed(Routes.UPDATE_DLR_INF);
                       },
                       child: Row(
                         children: [

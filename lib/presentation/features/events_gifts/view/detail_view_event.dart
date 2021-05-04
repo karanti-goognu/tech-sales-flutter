@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -131,10 +132,14 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                 )),
             FlatButton(
                 onPressed: () {
+                  // Get.to(
+                  //     () => DetailPending(
+                  //         detailEventModel.mwpEventModel.eventId,
+                  //         ColorConstants.eventApproved),
+                  //     binding: EGBinding());
                   Get.to(
-                      () => DetailPending(
-                          detailEventModel.mwpEventModel.eventId,
-                          ColorConstants.eventApproved),
+                          () => UpdateDlrInf(
+                        detailEventModel.mwpEventModel.eventId,),
                       binding: EGBinding());
                 },
                 child: Row(
@@ -173,7 +178,12 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               ),
             ),
             FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(
+                          () => UpdateDlrInf(
+                          detailEventModel.mwpEventModel.eventId,),
+                      binding: EGBinding());
+                },
                 child: Row(
                   children: [
                     Icon(Icons.edit,
@@ -225,55 +235,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   detailEventModel.mwpEventModel.eventStatusText ==
                       StringConstants.approved)
               ?
-              // PreferredSize(
-              //   preferredSize: Size.fromHeight(50),
-              //   child: Container(
-              //     height: 50,
-              //     color: ColorConstants.appBarColor,
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         FlatButton(
-              //             onPressed: () {
-              //               Get.dialog(showCancelEventDialog('Confirmation',
-              //                   "You will not be able to undo this action, are you sure you want to Cancel this event?"));
-              //             },
-              //             child: Row(
-              //               children: [
-              //                 Icon(
-              //                   Icons.close,
-              //                   color: ColorConstants.clearAllTextColor,
-              //                   size: ScreenUtil().setSp(20),
-              //                 ),
-              //                 SizedBox(
-              //                   width: ScreenUtil().setSp(5),
-              //                 ),
-              //                 Text('CANCEL', style: TextStyles.robotoBtn14),
-              //               ],
-              //             )),
-              //         FlatButton(
-              //             onPressed: () {
-              //               Get.to(
-              //                       () => DetailPending(
-              //                       detailEventModel.mwpEventModel.eventId,
-              //                       ColorConstants.eventApproved),
-              //                   binding: EGBinding());
-              //             },
-              //             child: Row(
-              //               children: [
-              //                 Icon(Icons.edit,
-              //                     color: ColorConstants.clearAllTextColor,
-              //                     size: ScreenUtil().setSp(20)),
-              //                 SizedBox(
-              //                   width: ScreenUtil().setSp(5),
-              //                 ),
-              //                 Text('EDIT', style: TextStyles.robotoBtn14),
-              //               ],
-              //             ))
-              //       ],
-              //     ),
-              //   ),
-              // ):
+
               editRow
               : (isEventStarted == "Y" &&
                       detailEventModel.mwpEventModel.eventStatusText ==
@@ -554,7 +516,6 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   startEvent() async {
     StartEventModel _startEventModel = StartEventModel.fromJson({
       'eventID': widget.eventId,
-      'eventStartOn': '',
       'eventStartUserLat': _currentPosition.latitude,
       'eventStartUserLong': _currentPosition.longitude,
       'isEventStarted': 'Y',
