@@ -15,8 +15,6 @@ import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gifts.dart';
@@ -39,7 +37,6 @@ import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_visit_vie
 import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list_view.dart';
-import 'package:flutter_tech_sales/presentation/features/notification/view/NotificationScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/site_search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_creation.dart';

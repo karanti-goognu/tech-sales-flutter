@@ -84,14 +84,21 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   getDropdownData() async {
-    await eventController.getAccessKey().then((value) async {
-      print(value.accessKey);
-      await eventController.getEventType(value.accessKey).then((data) {
-        setState(() {
-          addEventModel = data;
-        });
-        print('RESPONSE, ${data}');
+    // await eventController.getAccessKey().then((value) async {
+    //   print(value);
+    //   await eventController.getEventType().then((data) {
+    //     setState(() {
+    //       addEventModel = data;
+    //     });
+    //     print('RESPONSE, ${data}');
+    //   });
+    // });
+
+    await eventController.getEventType().then((data) {
+      setState(() {
+        addEventModel = data;
       });
+      print('RESPONSE, ${data}');
     });
   }
 

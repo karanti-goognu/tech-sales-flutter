@@ -34,17 +34,17 @@ class EventTypeController extends GetxController {
 
 
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future<String> getAccessKey() {
     // print(repository.getAccessKey().then((value) => value.accessKey));
     return repository.getAccessKey();
   }
 
 
-  Future<AddEventModel>getEventType(String accessKey) async {
+  Future<AddEventModel>getEventType() async {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
+    String accessKey = await repository.getAccessKey();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
