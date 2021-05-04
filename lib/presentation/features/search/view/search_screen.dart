@@ -17,39 +17,11 @@ class _SearchScreenState extends State<SearchScreen> {
   LeadsFilterController _leadsFilterController = Get.find();
   SplashController _splashController = Get.find();
 
-  List<leadDetailsModel> list = [
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-  ];
+
 
   @override
   void initState() {
     super.initState();
-
     // getUserDetails();
   }
 

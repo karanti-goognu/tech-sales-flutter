@@ -369,8 +369,7 @@ class _SiteScreenState extends State<SiteScreen> {
           //     ),
           //   ),
           // ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator(),
           body: Container(
             child: Column(
