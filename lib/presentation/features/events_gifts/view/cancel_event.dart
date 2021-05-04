@@ -48,10 +48,10 @@ class _CancelEventtState extends State<CancelEvent> {
   }
 
   getDetailEventsData() async {
-    await detailEventController.getAccessKey().then((value) async {
-      print(value.accessKey);
+    // await detailEventController.getAccessKey().then((value) async {
+    //  // print(value.accessKey);
       await detailEventController
-          .getDetailEventData(value.accessKey, widget.eventId)
+          .getDetailEventData(widget.eventId)
           .then((data) {
         setState(() {
           detailEventModel = data;
@@ -59,7 +59,7 @@ class _CancelEventtState extends State<CancelEvent> {
         });
         print('DDDD: $data');
       });
-    });
+   // });
   }
 
   @override

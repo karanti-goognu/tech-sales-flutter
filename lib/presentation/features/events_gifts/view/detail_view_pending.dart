@@ -137,10 +137,10 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   getDetailEventsData() async {
-    await detailEventController.getAccessKey().then((value) async {
-      print(value.accessKey);
+    // await detailEventController.getAccessKey().then((value) async {
+    //   print(value.accessKey);
       await detailEventController
-          .getDetailEventData(value.accessKey, widget.eventId)
+          .getDetailEventData(widget.eventId)
           .then((data) {
         setState(() {
           detailEventModel = data;
@@ -150,7 +150,7 @@ class _DetailPendingState extends State<DetailPending> {
         setSaveDraft();
         setText();
       });
-    });
+   // });
   }
 
   Future getEmpId() async {
@@ -507,15 +507,15 @@ class _DetailPendingState extends State<DetailPending> {
                                   ),
                                 ),
                                 onPressed: () async{
-                                  await detailEventController.getAccessKey().then((value) async {
-                                    print(value.accessKey);
-                                    await detailEventController.deleteEvent(value.accessKey, widget.eventId).then((data) {
+                                  // await detailEventController.getAccessKey().then((value) async {
+                                  //   print(value.accessKey);
+                                    await detailEventController.deleteEvent(widget.eventId).then((data) {
                                       setState(() {
                                         _deleteEventModel = data;
                                       });
                                       print("response : ");
                                     });
-                                  });
+                                 // });
                                 },
                               ),
                             ],

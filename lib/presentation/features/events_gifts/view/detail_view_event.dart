@@ -47,10 +47,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   }
 
   getDetailEventsData() async {
-    await detailEventController.getAccessKey().then((value) async {
-      print(value.accessKey);
+    // await detailEventController.getAccessKey().then((value) async {
+    //   print(value.accessKey);
       await detailEventController
-          .getDetailEventData(value.accessKey, widget.eventId)
+          .getDetailEventData(widget.eventId)
           .then((data) {
         setState(() {
           detailEventModel = data;
@@ -60,7 +60,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
         setVisibility();
         print('DDDD: $data');
       });
-    });
+    //});
   }
 
   @override
