@@ -55,6 +55,17 @@ class AllEventController extends GetxController {
     _selectedFilterCount.value = value;
   }
 
+  get assignFromDate => _assignFromDate.value;
+
+  set assignFromDate(value) {
+    _assignFromDate.value = value;
+  }
+
+  get eventStatusValue => _eventStatusValue.value;
+
+  set eventStatusValue(value) {
+    _eventStatusValue.value = value;
+  }
   get assignToDate => _assignToDate;
 
   set assignToDate(value) {
@@ -76,8 +87,16 @@ class AllEventController extends GetxController {
     _eventType.value = value;
   }
 
-  Future<AccessKeyModel> getAccessKey() {
-    return repository.getAccessKey();
+  Future eventSearch() async{
+    String userSecurityKey = "";
+    String empID = "";
+    String accessKey = await repository.getAccessKey();
+    Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+    var data = repository.eventSearch(accessKey, userSecurityKey, empID);
   }
 
   Future<AllEventsModel> getAllEventData() async {
@@ -123,15 +142,5 @@ class AllEventController extends GetxController {
     return egAllEventDaa;
   }
 
-  get assignFromDate => _assignFromDate.value;
 
-  set assignFromDate(value) {
-    _assignFromDate.value = value;
-  }
-
-  get eventStatusValue => _eventStatusValue.value;
-
-  set eventStatusValue(value) {
-    _eventStatusValue.value = value;
-  }
 }

@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventSearchModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
@@ -34,6 +35,25 @@ class MyApiClientEvent {
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel.accessKey;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception at EG repo ${_.toString()}');
+    }
+  }
+
+
+
+  Future eventSearch(String accessKey, String userSecurityKey, String empID) async {
+    try {
+      String url = UrlConstants.eventSearch+empID;
+      var response = await httpClient.get(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+      // print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        EventSearchModel eventSearchModel = EventSearchModel.fromJson(data);
+        return eventSearchModel;
       } else
         print('error');
     } catch (_) {

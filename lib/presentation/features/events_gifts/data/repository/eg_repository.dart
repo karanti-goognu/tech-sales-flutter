@@ -17,6 +17,11 @@ class EgRepository{
     return apiClient.getAccessKey();
   }
 
+
+  Future eventSearch(String accessKey, String userSecurityKey, String empID){
+    return apiClient.eventSearch(accessKey, userSecurityKey, empID);
+  }
+
   Future<AddEventModel> getEventTypeData(String accessKey, String userSecretKey, String empID) async{
     return apiClient.getEventTypeData(accessKey, userSecretKey, empID);
   }
