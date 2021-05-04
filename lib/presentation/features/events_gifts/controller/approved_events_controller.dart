@@ -38,17 +38,18 @@ class EventsFilterController extends GetxController {
 
   set egApprovedEventDaa(value) => _egApprovedEventData.value = value;
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future getAccessKey() {
     return repository.getAccessKey();
   }
 
-  Future<ApprovedEventsModel> getApprovedEventData(String accessKey) async {
+  Future<ApprovedEventsModel> getApprovedEventData() async {
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
 //    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    var accessKey = await repository.getAccessKey();
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);

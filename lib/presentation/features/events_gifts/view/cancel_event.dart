@@ -98,7 +98,9 @@ class _CancelEventtState extends State<CancelEvent> {
       padding: EdgeInsets.only(top: 24, bottom: 9, left: 30, right: 30),
       child: MaterialButton(
         color: HexColor('#1C99D4'),
-        onPressed: () {},
+        onPressed: () {
+
+        },
         child: Text(
           'SUBMIT',
           style: TextStyle(color: Colors.white),

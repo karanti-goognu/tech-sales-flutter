@@ -31,10 +31,9 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   }
 
   getApprovedEventsData() async {
-    await eventsFilterController.getAccessKey().then((value) async {
-      print(value.accessKey);
+
       await eventsFilterController
-          .getApprovedEventData(value.accessKey)
+          .getApprovedEventData()
           .then((data) {
         setState(() {
           approvedEventsModel = data;
@@ -42,7 +41,6 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
         getSortedData();
         print('DDDD: $data');
       });
-    });
   }
 
 
