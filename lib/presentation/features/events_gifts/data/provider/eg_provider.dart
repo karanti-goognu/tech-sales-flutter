@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventSearchModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
@@ -29,14 +28,11 @@ class MyApiClientEvent {
 
   Future getAccessKey() async {
     try {
-      // print('$requestHeaders');
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders);
-      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel.accessKey;
       } else
         print('error');
@@ -47,7 +43,7 @@ class MyApiClientEvent {
 
 
 
-  Future eventSearch(String accessKey, String userSecurityKey, String empID, String searchText) async {
+  Future<AllEventsModel> eventSearch(String accessKey, String userSecurityKey, String empID, String searchText) async {
     try {
       String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
       print(url);
@@ -56,7 +52,7 @@ class MyApiClientEvent {
        print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        EventSearchModel eventSearchModel = EventSearchModel.fromJson(data);
+        AllEventsModel eventSearchModel = AllEventsModel.fromJson(data);
         return eventSearchModel;
       } else
         print('error');
