@@ -7,6 +7,9 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_rejected.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/enums/event_status.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
 
@@ -27,7 +30,7 @@ class _AllEventsState extends State<AllEvents> {
   List<EventListModels> notSubmitted = [];
 
   ScrollController _scrollController;
-  int option = 1;
+  String option = StringConstants.pendingApproval;
   String hexColor;
 
   @override
@@ -45,36 +48,36 @@ class _AllEventsState extends State<AllEvents> {
           allEventsModel = data;
         });
         print("response : ");
+
         getSortedData();
       });
   }
 
   getSortedData() {
     if (allEventsModel != null && allEventsModel.eventListModels != null) {
-
       for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
         print("All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
-        if (allEventsModel.eventListModels[i].eventStatusId == 1) {
+        if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.pendingApproval) {
           pending.add(allEventsModel.eventListModels[i]);
           print('PENDING : $pending');
 
           print(allEventsModel.eventListModels[i].eventId);
-        } else if (allEventsModel.eventListModels[i].eventStatusId == 2) {
+        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.approved) {
           approved.add(allEventsModel.eventListModels[i]);
           print('APPROVED : $approved');
-        } else if (allEventsModel.eventListModels[i].eventStatusId == 3) {
+        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.rejected) {
           rejected.add(allEventsModel.eventListModels[i]);
 
-        } else if (allEventsModel.eventListModels[i].eventStatusId == 4) {
+        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.completed) {
           completed.add(allEventsModel.eventListModels[i]);
 
-        } else if (allEventsModel.eventListModels[i].eventStatusId == 5) {
+        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.cancelled) {
           cancelled.add(allEventsModel.eventListModels[i]);
 
-        } else if (allEventsModel.eventListModels[i].eventStatusId == 6) {
-          eventRejected.add(allEventsModel.eventListModels[i]);
+        // } else if (allEventsModel.eventListModels[i].eventStatusId == 6) {
+        //   eventRejected.add(allEventsModel.eventListModels[i]);
 
-        } else if (allEventsModel.eventListModels[i].eventStatusId == 7) {
+        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.notSubmitted) {
           notSubmitted.add(allEventsModel.eventListModels[i]);
 
         }
@@ -95,19 +98,19 @@ class _AllEventsState extends State<AllEvents> {
       body: ListView(
         children: [
           getStatusList(),
-          (option == 1)
-              ? getListForPending(HexColor('#F9A61A'), pending)
-              : (option == 2)
-                  ? getList(HexColor('#39B54A'), approved)
-                  : (option == 3)
-                      ? getListForPending(HexColor('#B00020'), rejected)
-                      : (option == 4)
-                          ? getList(HexColor('#808080'), completed)
-                          : (option == 5)
-                              ? getList(HexColor('#808080'), cancelled)
-                              : (option == 6)
-                                  ? getList(HexColor('#B00020'), eventRejected)
-                                  : (option == 7)
+          (option == StringConstants.pendingApproval)
+              ? getListForPending(ColorConstants.eventPending, pending)
+              : (option == StringConstants.approved)
+                  ? getList(ColorConstants.eventApproved, approved)
+                  : (option == StringConstants.rejected)
+                      ? getListForPending(ColorConstants.eventRejected, rejected)
+                      : (option == StringConstants.completed)
+                          ? getList(ColorConstants.eventCompleted, completed)
+                          : (option == StringConstants.cancelled)
+                              ? getList(ColorConstants.eventCancelled, cancelled)
+                              // : (option == 6)
+                              //      ? getList(HexColor('#B00020'), eventRejected)
+                                   : (option == StringConstants.notSubmitted)
                                       ? getListForPending(
                                           HexColor('#808080'), notSubmitted)
                                       : getList(HexColor('#F9A61A'), pending)
@@ -133,18 +136,12 @@ class _AllEventsState extends State<AllEvents> {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(4.0),
-                    // child: GestureDetector(
-                    //   onTap: () {
-                    //     setState(() {
-                    //       option = allEventsModel
-                    //           .eventStatusEntities[index].eventStatusId;
-                    //     });
-                    //   },
                     child: FilterChip(
                       onSelected: (bool selected) {
                         setState(() {
+
                           option = allEventsModel
-                              .eventStatusEntities[index].eventStatusId;
+                              .eventStatusEntities[index].eventStatusText;
                         });
                         print("OPTION:::$option");
                       },
@@ -154,10 +151,10 @@ class _AllEventsState extends State<AllEvents> {
                       // backgroundColor: option == 1
                       //     ? Colors.blue.withOpacity(0.2)
                       //     : Colors.white,
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                            color: option == 5 ? Colors.blue : Colors.black12),
-                      ),
+                      // shape: StadiumBorder(
+                      //   side: BorderSide(
+                      //       color: option == 5 ? Colors.blue : Colors.black12),
+                      // ),
                     ),
                     //),
                   );
@@ -188,7 +185,7 @@ class _AllEventsState extends State<AllEvents> {
                   Get.to(() => DetailViewEvent(list[index].eventId),
                       binding: EGBinding());
                 },
-                child: evenCard(index, list, borderColor),
+                child: eventCard(index, list, borderColor),
               );
             })
         : Container(
@@ -213,9 +210,9 @@ class _AllEventsState extends State<AllEvents> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Get.to(() => DetailPending(list[index].eventId), binding: EGBinding());
+                  Get.to(() => DetailPending(list[index].eventId, borderColor), binding: EGBinding());
                 },
-                child: evenCard(index, list, borderColor),
+                child: eventCard(index, list, borderColor),
               );
             })
         : Container(
@@ -254,7 +251,7 @@ class _AllEventsState extends State<AllEvents> {
   //   );
   // }
 
-  Widget evenCard(int index, List<EventListModels> list, Color borderColor,){
+  Widget eventCard(int index, List<EventListModels> list, Color borderColor,){
     return  Card(
       clipBehavior: Clip.antiAlias,
       borderOnForeground: true,
@@ -395,14 +392,33 @@ class _AllEventsState extends State<AllEvents> {
     );
   }
 
+  // EventStatus _getStatusFromResult(EventListModels eventStatusText) {
+  //   switch (eventStatusText.eventStatusText) {
+  //     case  'Pending Approval':
+  //       return EventStatus.PendingApproval;
+  //     case  'Approved':
+  //       return EventStatus.Approved;
+  //     case  'Rejected':
+  //       return EventStatus.Rejected;
+  //     case  'Completed':
+  //       return EventStatus.Completed;
+  //     case  'Cancelled':
+  //       return EventStatus.Cancelled;
+  //     case  'Not Submitted':
+  //       return EventStatus.Notsubmitted;
+  //     default:
+  //       return EventStatus.PendingApproval;
+  //   }
+  // }
+
 
 }
-enum Status {
-  PendingApproval,
-  Approved,
-  Rejected,
-  Completed,
-  Cancelled,
-  EventRejected,
-  NotSubmitted
-}
+// enum Status {
+//   PendingApproval,
+//   Approved,
+//   Rejected,
+//   Completed,
+//   Cancelled,
+//   EventRejected,
+//   NotSubmitted
+// }

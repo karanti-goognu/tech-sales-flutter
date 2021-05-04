@@ -55,18 +55,19 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
         DateTime eventDt = DateTime.parse(date);
         print("All data: ${approvedEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
 
-        if (eventDt.compareTo(now) == 0 && eventDt.compareTo(now) == 1) {
-       // if (now.difference(eventDt).inDays == 0 && now.difference(eventDt).inDays == 1) {
+       // if (eventDt.compareTo(now) == 0 && eventDt.compareTo(now) == 1) {
+        //if (now.difference(eventDt).inDays == 0 && now.difference(eventDt).inDays == 1) {
+        if (now.difference(eventDt).inDays < 1) {
           current.add(approvedEventsModel.eventListModels[i]);
           //current = approvedEventsModel.eventListModels;
           print('Current : $current');
-        } else if (eventDt.isBefore(now)) {
-        //} else if (now.difference(eventDt).inDays.isNegative) {
+        //} else if (eventDt.isBefore(now)) {
+        } else if (now.difference(eventDt).inDays > 1) {
           past.add(approvedEventsModel.eventListModels[i]);
           //past = approvedEventsModel.eventListModels;
           print('Past : $past');
-        } else if (eventDt.compareTo(now) < 1) {
-        //} else if (now.difference(eventDt).inDays > 1) {
+        //} else if (eventDt.compareTo(now) < 1) {
+        } else if (now.difference(eventDt).inDays < 2) {
           upcoming.add(approvedEventsModel.eventListModels[i]);
           //upcoming = approvedEventsModel.eventListModels;
           print('Upcoming : $upcoming');
@@ -176,7 +177,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   }
 
   Widget getList(List<EventListModels> list) {
-    getSortedData();
+  //  getSortedData();
     return (approvedEventsModel != null &&
             approvedEventsModel.eventListModels != null &&
             approvedEventsModel.eventListModels.length > 0 &&

@@ -61,4 +61,11 @@ abstract class StringConstants {
   ///Events & Gifts
   static String cancelAlertMsg = 'Please add your comment to complete this cancellation';
   static String influencerDoesNotExist = 'Influencer Does not exists.';
+
+  static String pendingApproval = 'Pending Approval';
+  static String approved = 'Approved';
+  static String rejectedEvent = 'Rejected';
+  static String completed = 'Completed';
+  static String cancelled = 'Cancelled';
+  static String notSubmitted = 'Not Submitted';
 }

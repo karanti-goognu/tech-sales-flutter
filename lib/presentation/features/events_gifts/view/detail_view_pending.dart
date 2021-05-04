@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/deleteEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
@@ -24,10 +25,8 @@ import 'package:uuid/uuid.dart';
 
 class DetailPending extends StatefulWidget {
   int eventId;
-  //int eventStatusId;
-  //String eventStatusText;
-
-  DetailPending(this.eventId);
+  Color statusColor;
+  DetailPending(this.eventId, this.statusColor);
 
   @override
   _DetailPendingState createState() => _DetailPendingState();
@@ -38,6 +37,7 @@ class _DetailPendingState extends State<DetailPending> {
   SaveEventController saveEventController = Get.find();
   DetailEventModel detailEventModel;
   DetailEventController detailEventController = Get.find();
+  DeleteEventModel _deleteEventModel;
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
 
@@ -75,7 +75,7 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   setVisibility() {
-    if (detailEventModel.mwpEventModel.eventStatusId == 3) {
+    if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.rejected) {
       isVisible = true;
     } else {
       isVisible = false;
@@ -83,7 +83,7 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   setSaveDraft() {
-    if (detailEventModel.mwpEventModel.eventStatusId == 1) {
+    if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.pendingApproval) {
       saveBtnVisible = true;
     } else {
       saveBtnVisible = false;
@@ -137,10 +137,10 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   getDetailEventsData() async {
-    await detailEventController.getAccessKey().then((value) async {
-      print(value.accessKey);
+    // await detailEventController.getAccessKey().then((value) async {
+    //   print(value.accessKey);
       await detailEventController
-          .getDetailEventData(value.accessKey, widget.eventId)
+          .getDetailEventData(widget.eventId)
           .then((data) {
         setState(() {
           detailEventModel = data;
@@ -150,7 +150,7 @@ class _DetailPendingState extends State<DetailPending> {
         setSaveDraft();
         setText();
       });
-    });
+   // });
   }
 
   Future getEmpId() async {
@@ -425,11 +425,11 @@ class _DetailPendingState extends State<DetailPending> {
                     fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
-            if (detailEventModel.mwpEventModel.eventStatusId == 1) {
+            if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.pendingApproval) {
               btnPresssed(1);
-            } else if (detailEventModel.mwpEventModel.eventStatusId == 3) {
+            } else if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.rejected) {
               btnPresssed(3);
-            } else if (detailEventModel.mwpEventModel.eventStatusId == 7) {
+            } else if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.notSubmitted) {
               btnPresssed(7);
             }
           },
@@ -506,7 +506,17 @@ class _DetailPendingState extends State<DetailPending> {
                                     style: TextStyles.btnWhite,
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () async{
+                                  // await detailEventController.getAccessKey().then((value) async {
+                                  //   print(value.accessKey);
+                                    await detailEventController.deleteEvent(widget.eventId).then((data) {
+                                      setState(() {
+                                        _deleteEventModel = data;
+                                      });
+                                      print("response : ");
+                                    });
+                                 // });
+                                },
                               ),
                             ],
                           ),
@@ -524,9 +534,9 @@ class _DetailPendingState extends State<DetailPending> {
                             ),
                             Chip(
                               shape: StadiumBorder(
-                                  side: BorderSide(color: HexColor("#39B54A"))),
+                                  side: BorderSide(color: widget.statusColor)),
                               backgroundColor:
-                                  HexColor("#39B54A").withOpacity(0.1),
+                                  widget.statusColor.withOpacity(0.1),
                               label: Text(
                                   'Status: ${detailEventModel.mwpEventModel.eventStatusText}'),
                             ),

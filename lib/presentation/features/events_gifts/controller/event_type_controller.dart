@@ -39,41 +39,6 @@ class EventTypeController extends GetxController {
     return repository.getAccessKey();
   }
 
-//   getDealerList(String accessKey) async {
-//     Future.delayed(
-//         Duration.zero,
-//             () => Get.dialog(Center(child: CircularProgressIndicator()),
-//             barrierDismissible: false));
-//     // this.isLoading = true;
-//     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-//     _prefs.then((SharedPreferences prefs) {
-//       String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-//       String empId = prefs.getString(StringConstants.employeeId);
-//       String url = UrlConstants.getAddEvent + "$empId";
-//
-//       repository.getEventTypeData(accessKey, userSecurityKey, empId);
-//       //     .then((data){
-//       //   if (data == null) {
-//       //     debugPrint('Dealer List Response is null');
-//       //   } else {
-//       //     debugPrint('Dealer List Response is not null');
-//       //     this.addEventResponse = data;
-//       //     if (data.dealersModels.length != 0) {
-//       //       for (int i = 0;
-//       //       i < data.dealersModels.length ;
-//       //       i++) {
-//       //         this.dealerList.add(new DealerModel(
-//       //           data.dealersModels[i].dealerId,
-//       //             data.dealersModels[i].dealerName,
-//       //             false));
-//       //       }
-//       //     }
-//       //   }
-//       // });
-//     });
-// //    Get.back();
-//     return egTypeDaa;
-//   }
 
   Future<AddEventModel>getEventType(String accessKey) async {
     String userSecurityKey = "";
