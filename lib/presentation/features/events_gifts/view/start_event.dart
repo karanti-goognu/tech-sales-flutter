@@ -43,7 +43,7 @@ class _StartEventState extends State<StartEvent> {
                     side: BorderSide(color: Colors.white)),
                 color: Colors.transparent,
                 child: Text(
-                  'ADD DRAFT LEAD',
+                  'ADD LEAD',
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               )

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventSearchModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
@@ -191,6 +193,25 @@ class MyApiClientEvent {
       print("Exception at EG Repo $e");
     }
     return deleteEventModel;
+  }
+
+  Future<StartEventResponse>startEvent(String accessKey, String userSecretKey, StartEventModel startEventModel) async {
+    StartEventResponse startEventResponse;
+    try{
+      var response = await http.post(Uri.parse(UrlConstants.saveEvent),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey),
+        body: json.encode(startEventModel),
+      );
+      print('URL : ${response.request}');
+      print('RESP: ${response.body}');
+      print('RESPONSE : ${json.encode(startEventModel)}');
+
+      startEventResponse = StartEventResponse.fromJson(json.decode(response.body));
+    }
+    catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return startEventResponse;
   }
 }
 

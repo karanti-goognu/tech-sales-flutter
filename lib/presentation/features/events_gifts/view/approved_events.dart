@@ -191,11 +191,11 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  // print('EVENT ID: ${list[index].eventId}');
-                  // Get.to(
-                  //         () => DetailViewEvent(list[index].eventId),
-                  //     binding: EGBinding());
-                 // Get.toNamed(Routes.DETAIL_EVENT);
+                  print('EVENT ID: ${list[index].eventId}');
+                  Get.to(
+                          () => DetailViewEvent(list[index].eventId),
+                      binding: EGBinding());
+                // Get.toNamed(Routes.DETAIL_EVENT);
                 },
                 child: Card(
                   clipBehavior: Clip.antiAlias,

@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,6 +63,44 @@ class EventsFilterController extends GetxController {
     });
 //    Get.back();
     return egApprovedEventDaa;
+  }
+
+
+  getAccessKeyAndStartEvent(StartEventModel startEventModel) {
+    String userSecurityKey = "";
+    String empID = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    repository.getAccessKey().then((data) async {
+
+      await _prefs.then((SharedPreferences prefs) async {
+        userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+        repository.startEvent(data.accessKey, userSecurityKey, startEventModel)
+            .then((value) {
+          //Get.back();
+          if (value.respMsg == 'DM1002') {
+            Get.back();
+            Get.defaultDialog(
+                title: "Message",
+                middleText: value.respMsg.toString(),
+                confirm: MaterialButton(
+                  onPressed: () => Get.back(),
+                  child: Text('OK'),
+                ),
+                barrierDismissible: false);
+          } else {
+            Get.back();
+            Get.dialog(
+                CustomDialogs().messageDialogMWP(value.respMsg.toString()),
+                barrierDismissible: false);
+          }
+        });
+      });
+    });
   }
 }
 

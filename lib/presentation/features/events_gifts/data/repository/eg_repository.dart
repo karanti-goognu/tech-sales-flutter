@@ -1,5 +1,7 @@
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
@@ -50,6 +52,10 @@ class EgRepository{
 
   Future<DeleteEventModel> deleteEvent(String accessKey, String userSecretKey, String empID, int eventID) async{
     return apiClient.deleteEvent(accessKey, userSecretKey, empID, eventID);
+  }
+
+  Future<StartEventResponse> startEvent(String accessKey, String userSecretKey, StartEventModel startEventModel) async{
+    return apiClient.startEvent(accessKey, userSecretKey, startEventModel);
   }
 
 }

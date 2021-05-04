@@ -346,8 +346,6 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-           // Get.toNamed(Routes.CANCEL_EVENT);
-            //Get.toNamed(Routes.HOME_SCREEN);
           },
         ),
         TextButton(
