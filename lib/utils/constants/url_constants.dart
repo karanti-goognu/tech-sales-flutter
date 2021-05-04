@@ -83,5 +83,5 @@ abstract class UrlConstants {
   static const String saveEvent = '$baseUrl/event/saveEventForm';
  static const String getGiftStock = '$baseUrl/gift/view-gift-stock?referenceID=';
  static const String addGiftStock = '$baseUrl/gift/add-GiftStock?referenceID=';
-
+  static const String deleteEvent = '$baseUrl/event/event-delete?referenceID=';
 }

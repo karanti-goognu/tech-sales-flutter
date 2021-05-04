@@ -8,6 +8,8 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cance
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -38,10 +40,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   }
 
   setVisibility(){
-    if(detailEventModel.mwpEventModel.eventStatusId == 2){
+    if(detailEventModel.mwpEventModel.eventStatusText == StringConstants.approved && isEventStarted == 'N'){
       isVisible = true;
-    }else{
-      isEventStarted = 'Y';
+    }else {
       isVisible = false;
     }
   }
@@ -55,8 +56,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
         setState(() {
           detailEventModel = data;
         });
-        setVisibility();
+
         isEventStarted = detailEventModel.mwpEventModel.isEventStarted;
+        setVisibility();
         print('DDDD: $data');
       });
     });
@@ -95,56 +97,63 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               )
             ],
           ),
-          bottom: (isEventStarted == "N")?
+          bottom:
+          (isEventStarted == "N" && detailEventModel.mwpEventModel.eventStatusText == StringConstants.approved )?
           PreferredSize(
             preferredSize: Size.fromHeight(50),
-            child: Container(
-              color: ColorConstants.appBarColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FlatButton(
-                      onPressed: () {
-                        Get.dialog(showCancelEventDialog(
-                            'Confirmation',
-                            "You will not be able to undo this action, are you sure you want to Cancel this event?"));
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.close,
-                            color: ColorConstants.clearAllTextColor,
-                            size: ScreenUtil().setSp(20),
-                          ),
-                          SizedBox(
-                            width: ScreenUtil().setSp(5),
-                          ),
-                          Text('CANCEL', style: TextStyles.robotoBtn14),
-                        ],
-                      )),
-                  FlatButton(
-                      onPressed: () {
-                        //Get.toNamed(Routes.UPDATE_EVENT);
-                        Get.to(() => DetailPending(detailEventModel.mwpEventModel.eventId),
-                            //widget.eventId, widget.eventStatusId, widget.eventStatusString),
-                            binding: EGBinding());
-                        //list[index].eventStatusId
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.edit,
+            // child:
+            // Visibility(
+            //   visible: isVisible,
+              child: Container(
+                height: 50,
+                color: ColorConstants.appBarColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FlatButton(
+                        onPressed: () {
+                          Get.dialog(showCancelEventDialog(
+                              'Confirmation',
+                              "You will not be able to undo this action, are you sure you want to Cancel this event?"));
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.close,
                               color: ColorConstants.clearAllTextColor,
-                              size: ScreenUtil().setSp(20)),
-                          SizedBox(
-                            width: ScreenUtil().setSp(5),
-                          ),
-                          Text('EDIT', style: TextStyles.robotoBtn14),
-                        ],
-                      ))
-                ],
+                              size: ScreenUtil().setSp(20),
+                            ),
+                            SizedBox(
+                              width: ScreenUtil().setSp(5),
+                            ),
+                            Text('CANCEL', style: TextStyles.robotoBtn14),
+                          ],
+                        )),
+                    FlatButton(
+                        onPressed: () {
+                          //Get.toNamed(Routes.UPDATE_EVENT);
+                          Get.to(() => DetailPending(detailEventModel.mwpEventModel.eventId, HexColor('#39B54A')),
+                              //widget.eventId, widget.eventStatusId, widget.eventStatusString),
+                              binding: EGBinding());
+                          //list[index].eventStatusId
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit,
+                                color: ColorConstants.clearAllTextColor,
+                                size: ScreenUtil().setSp(20)),
+                            SizedBox(
+                              width: ScreenUtil().setSp(5),
+                            ),
+                            Text('EDIT', style: TextStyles.robotoBtn14),
+                          ],
+                        ))
+                  ],
+                ),
               ),
-            ),
-          ):PreferredSize(
+           // ),
+          )
+              :PreferredSize(
             preferredSize: Size.fromHeight(0),
             child: Container(),
           )
@@ -154,8 +163,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
       body: (detailEventModel != null &&
-              detailEventModel.mwpEventModel != null &&
-              detailEventModel.eventDealersModelList != null)
+              detailEventModel.mwpEventModel != null )
+         // && detailEventModel.eventDealersModelList != null)
           ? ListView(
               children: [
                 Padding(

@@ -18,6 +18,15 @@ abstract class ColorConstants {
   static Color greenTitle = HexColor('#006838');
 
 
+  ///events and gifts
+  static Color eventApproved = HexColor('#39B54A');
+  static Color eventPending = HexColor('#F9A61A');
+  static Color eventRejected = HexColor('#B00020');
+  static Color eventCancelled = HexColor('#B00020');
+  static Color eventCompleted = HexColor('#808080');
+  static Color eventNotSubmited = HexColor('#808080');
+
+
 
   //Color Constants
   static Color inputBoxHintColor = const Color(0x00000000).withOpacity(0.8);

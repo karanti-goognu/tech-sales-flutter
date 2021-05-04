@@ -127,7 +127,6 @@ class MwpEventModel {
   String eventEndUserLat;
   String eventEndUserLong;
   String isEventStarted;
-
   MwpEventModel(
       {this.eventId,
         this.tsoId,
@@ -179,7 +178,8 @@ class MwpEventModel {
         this.eventStartUserLong,
         this.eventEndUserLat,
         this.eventEndUserLong,
-        this.isEventStarted});
+        this.isEventStarted,
+      });
 
   MwpEventModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -233,6 +233,7 @@ class MwpEventModel {
     eventEndUserLat = json['eventEndUserLat'];
     eventEndUserLong = json['eventEndUserLong'];
     isEventStarted = json['isEventStarted'];
+
   }
 
   Map<String, dynamic> toJson() {

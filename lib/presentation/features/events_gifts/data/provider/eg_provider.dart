@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/deleteEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/influencerViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
@@ -151,6 +152,26 @@ class MyApiClientEvent {
       print("Exception at EG Repo $e");
     }
     return saveEventResponse;
+  }
+
+
+  Future<DeleteEventModel> deleteEvent(String accessKey,
+      String userSecretKey, String empID, int eventId) async {
+    DeleteEventModel deleteEventModel;
+    try {
+      var response = await http.get(
+          Uri.parse(UrlConstants.deleteEvent + empID + "&eventId=$eventId"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecretKey));
+      deleteEventModel = DeleteEventModel.fromJson(json.decode(response.body));
+      print('RESP : ${response.body}');
+      print(
+          'UURL ${UrlConstants.getDetailEvent + empID + "&eventId=$eventId"}');
+    }
+    catch (e) {
+      print("Exception at EG Repo $e");
+    }
+    return deleteEventModel;
   }
 }
 

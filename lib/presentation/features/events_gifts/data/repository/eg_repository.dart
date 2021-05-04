@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/deleteEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/influencerViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
@@ -40,6 +41,10 @@ class EgRepository{
 
   Future<SaveEventResponse> saveEventForm(String accessKey, String userSecretKey, SaveEventFormModel saveEventFormModel) async{
     return apiClient.saveEventRequest(accessKey, userSecretKey,  saveEventFormModel);
+  }
+
+  Future<DeleteEventModel> deleteEvent(String accessKey, String userSecretKey, String empID, int eventID) async{
+    return apiClient.deleteEvent(accessKey, userSecretKey, empID, eventID);
   }
 
 }
