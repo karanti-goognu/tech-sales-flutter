@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/all_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/approved_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/widgets/events_filter.dart';
@@ -20,7 +21,7 @@ class Events extends StatefulWidget {
 class _EventsState extends State<Events> {
   String empID;
   int _tabNumber = 0;
-
+AllEventController _eventController=Get.find();
 
   @override
   void initState() {
@@ -50,7 +51,7 @@ class _EventsState extends State<Events> {
                         color: Colors.white,
                         fontFamily: "Muli"),
                   ),
-                  Row(
+                  _tabNumber==0?Container(): Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FlatButton(
@@ -80,8 +81,8 @@ class _EventsState extends State<Events> {
                                   child: Center(
                                       child:
                                      // Obx(() =>
-                                          Text('0',
-                                          // "${_leadsFilterController.selectedFilterCount}",
+                                          Text(
+                                          "${_eventController.selectedFilterCount}",
                                           style: TextStyle(
                                               color: Colors.black,
                                               //fontFamily: 'Raleway',
@@ -162,7 +163,9 @@ class _EventsState extends State<Events> {
                         ],
                         indicatorColor: Colors.white,
                         onTap: (i) {
-                          _tabNumber = i;
+                          setState(() {
+                            _tabNumber = i;
+                          });
                         },
                       ),
                     ],

@@ -126,12 +126,12 @@ class AllEventController extends GetxController {
 
       String eventType = "";
       if (this.eventType != StringConstants.empty) {
-        eventType = "&eventType=${this.eventType}";
+        eventType = "&eventType=${this.eventTypeValue}";
       }
 
       String eventStatus = "";
       if (this.eventStatus != StringConstants.empty) {
-        eventStatus = "&eventStatus=${this.eventStatus}";
+        eventStatus = "&eventStatus=${this.eventStatusValue}";
       }
 
       var url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
