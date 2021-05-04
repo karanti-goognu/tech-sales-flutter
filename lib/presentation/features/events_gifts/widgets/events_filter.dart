@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -15,15 +14,15 @@ class EventsFilterWidget extends StatefulWidget {
 }
 
 class _EventsFilterWidgetState extends State<EventsFilterWidget> {
-  LeadsFilterController _leadsFilterController = Get.find();
   SplashController _splashController = Get.find();
+  AllEventController _eventController = Get.find();
 
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
 
   @override
   Widget build(BuildContext context) {
-    _leadsFilterController.getSecretKey(10);
+//    _leadsFilterController.getSecretKey(10);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
@@ -39,6 +38,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
       ),
       child: Stack(children: [
         SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -102,24 +102,19 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
               children: [
                 GestureDetector(
                     onTap: () {
-                      _leadsFilterController.selectedPosition = 0;
+                      _eventController.selectedPosition = 0;
                     },
-                    child: returnSelectedWidget("Assign Date", 0)),
+                    child: returnSelectedWidget("Date Range", 0)),
                 GestureDetector(
                     onTap: () {
-                      _leadsFilterController.selectedPosition = 1;
+                      _eventController.selectedPosition = 1;
                     },
-                    child: returnSelectedWidget("Lead Stage", 1)),
+                    child: returnSelectedWidget("Event Status", 1)),
                 GestureDetector(
                     onTap: () {
-                      _leadsFilterController.selectedPosition = 2;
+                      _eventController.selectedPosition = 2;
                     },
-                    child: returnSelectedWidget("Lead Status", 2)),
-                GestureDetector(
-                    onTap: () {
-                      _leadsFilterController.selectedPosition = 3;
-                    },
-                    child: returnSelectedWidget("Lead Potential", 3)),
+                    child: returnSelectedWidget("Event Type", 2)),
               ],
             ),
           ),
@@ -131,7 +126,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
           new Expanded(
               flex: 2,
               child: returnSelectedWidgetBody(
-                  _leadsFilterController.selectedPosition)),
+                  _eventController.selectedPosition)),
         ],
       ),
     );
@@ -155,30 +150,25 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _leadsFilterController.isFilterApplied=false;
+                    _eventController.isFilterApplied=false;
 
                     //Navigator.pop(context);
                     setState(() {
-                      _leadsFilterController.selectedLeadStage =
+                      _eventController.eventStatus =
                           StringConstants.empty;
-                      _leadsFilterController.selectedLeadStageValue =
+                      _eventController.eventStatusValue =
                           StringConstants.empty;
-                      _leadsFilterController.selectedLeadStatus =
+                      _eventController.eventType =
                           StringConstants.empty;
-                      _leadsFilterController.selectedLeadStatusValue =
+                      _eventController.eventTypeValue =
                           StringConstants.empty;
-                      _leadsFilterController.assignToDate =
+                      _eventController.assignToDate =
                           StringConstants.empty;
-                      _leadsFilterController.assignFromDate =
+                      _eventController.assignFromDate =
                           StringConstants.empty;
-                      _leadsFilterController.selectedLeadPotential =
-                          StringConstants.empty;
-                      _leadsFilterController.selectedLeadPotentialValue =
-                          StringConstants.empty;
-                      _leadsFilterController.selectedFilterCount = 0;
+                      _eventController.selectedFilterCount = 0;
                       Navigator.pop(context);
-                      _leadsFilterController
-                          .getAccessKey(RequestIds.GET_LEADS_LIST);
+//                      _eventController.getAccessKey(RequestIds.GET_LEADS_LIST);
                     });
                   },
                   child: Text(
@@ -190,9 +180,8 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                 RaisedButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    _leadsFilterController.isFilterApplied=true;
-                    _leadsFilterController
-                        .getAccessKey(RequestIds.GET_LEADS_LIST);
+                    _eventController.isFilterApplied=true;
+                    _eventController.getAllEventData();
                   },
                   color: ColorConstants.buttonNormalColor,
                   child: Text(
@@ -211,13 +200,13 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
   Widget returnSelectedWidget(String text, int position) {
     return Obx(() => Container(
       // height: 50,
-      color: (_leadsFilterController.selectedPosition == position)
+      color: (_eventController.selectedPosition == position)
           ? Colors.white
           : Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          (_leadsFilterController.selectedPosition == position)
+          (_eventController.selectedPosition == position)
               ? Container(
             width: 5,
             height: 50,
@@ -229,7 +218,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
               padding: const EdgeInsets.fromLTRB(16,8.0,8,8),
               child: Text(
                 text,
-                style: (_leadsFilterController.selectedPosition == position)
+                style: (_eventController.selectedPosition == position)
                     ? TextStyles.mulliBold14
                     : TextStyle(color: Colors.black
                 ),
@@ -246,13 +235,11 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
           () => Container(
         height: double.maxFinite,
         color: Colors.white,
-        child: (_leadsFilterController.selectedPosition == 0)
+        child: (_eventController.selectedPosition == 0)
             ? returnAssignDateBody()
-            : (_leadsFilterController.selectedPosition == 1)
-            ? returnLeadStageBody()
-            : (_leadsFilterController.selectedPosition == 2)
-            ? returnLeadStatusBody()
-            : returnLeadPotentialBody(),
+            : (_eventController.selectedPosition == 1)
+            ? returnEventStatusBody()
+            :  returnEventTypeBody()
       ),
     );
   }
@@ -281,7 +268,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Obx(() => Text(
-                      "${_leadsFilterController.assignFromDate}",
+                      "${_eventController.assignFromDate}",
                       style: TextStyles.robotoBold16,
                     )),
                     Align(
@@ -315,19 +302,19 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Obx(() => Text(
-                      "${_leadsFilterController.assignToDate}",
+                      "${_eventController.assignToDate}",
                       style: TextStyles.robotoBold16,
                     )),
                     Align(
                       alignment: Alignment.centerRight,
                       child: GestureDetector(
                           onTap: () {
-                            if (_leadsFilterController.assignFromDate ==
+                            if (_eventController.assignFromDate ==
                                 StringConstants.empty) {
                               print('From date is empty');
                             } else {
                               String fromDate =
-                                  _leadsFilterController.assignFromDate;
+                                  _eventController.assignFromDate;
                               List<String> toDate = fromDate.split("-");
                               int intYear = int.parse(toDate[0]);
                               int intMonth = int.parse(toDate[1]);
@@ -348,7 +335,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
         ));
   }
 
-  Widget returnLeadStageBody() {
+  Widget returnEventStatusBody() {
     return Container(
         height: MediaQuery.of(context).size.height,
         color: Colors.white,
@@ -356,42 +343,43 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: _splashController.splashDataModel.leadStageEntity.length,
+            itemCount: _splashController.splashDataModel.statusEntitieList.length,
             itemExtent: 50,
             itemBuilder: (context, index) {
-              return leadStageListTile(
+              return eventStatusListTile(
                   _splashController
-                      .splashDataModel.leadStageEntity[index].leadStageDesc,
-                  _splashController.splashDataModel.leadStageEntity[index].id
+                      .splashDataModel.statusEntitieList[index].eventStatusText,
+                  _splashController.splashDataModel.statusEntitieList[index].eventStatusId
                       .toString());
             }));
   }
 
-  Widget leadStageListTile(String stageValue, String leadStageValue) {
+  Widget eventStatusListTile(String eventStatus, String leadStageValue) {
     return Container(
       height: 40,
       child: ListTile(
-          title: Text(stageValue),
+          title: Text(eventStatus),
           leading: Obx(
                 () => Radio(
-              value: stageValue,
-              groupValue: _leadsFilterController.selectedLeadStage as String,
+              value: eventStatus,
+              groupValue: _eventController.eventStatus as String,
               onChanged: (String value) {
-                if (_leadsFilterController.selectedLeadStage ==
+                if (_eventController.eventStatus ==
                     StringConstants.empty) {
-                  _leadsFilterController.selectedFilterCount =
-                      _leadsFilterController.selectedFilterCount + 1;
+                  _eventController.selectedFilterCount =
+                      _eventController.selectedFilterCount + 1;
                 }
-                _leadsFilterController.selectedLeadStage = value;
-                _leadsFilterController.selectedLeadStageValue = leadStageValue;
-                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+                _eventController.eventStatus = value;
+
+                _eventController.eventStatusValue = leadStageValue;
+//                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
     );
   }
 
-  Widget returnLeadStatusBody() {
+  Widget returnEventTypeBody() {
     SplashController _splashController = Get.find();
     return Container(
         height: (SizeConfig.blockSizeVertical),
@@ -400,88 +388,51 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount:
-            _splashController.splashDataModel.leadStatusEntity.length,
+            _splashController.splashDataModel.eventTypeModels.length,
             itemExtent: 50,
             itemBuilder: (context, index) {
-              return leadStatusListTile(
+              return eventTypeListTile(
                   _splashController
-                      .splashDataModel.leadStatusEntity[index].leadStatusDesc,
-                  _splashController.splashDataModel.leadStatusEntity[index].id
+                      .splashDataModel.eventTypeModels[index].eventTypeText,
+                  _splashController.splashDataModel.eventTypeModels[index].eventTypeId
                       .toString());
             }));
   }
 
-  Widget leadStatusListTile(String statusValue, String leadStatusValue) {
+  Widget eventTypeListTile(String eventTypeText, String eventTypeId) {
     return Container(
       height: 40,
       child: ListTile(
           title: Text(
-            statusValue,
+            eventTypeText,
             style: TextStyle(fontSize: 14),
           ),
           leading: Obx(
                 () => Radio(
-              value: statusValue,
-              groupValue: _leadsFilterController.selectedLeadStatus as String,
+              value: eventTypeText,
+              groupValue: _eventController.eventType as String,
               onChanged: (String value) {
-                if (_leadsFilterController.selectedLeadStatus ==
+                print(value);
+                if (_eventController.eventType ==
                     StringConstants.empty) {
-                  _leadsFilterController.selectedFilterCount =
-                      _leadsFilterController.selectedFilterCount + 1;
+                  _eventController.selectedFilterCount =
+                      _eventController.selectedFilterCount + 1;
                 }
-                _leadsFilterController.selectedLeadStatus = value;
-                _leadsFilterController.selectedLeadStatusValue =
-                    leadStatusValue;
-                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+                _eventController.eventType = value;
+                _eventController.eventTypeValue = eventTypeId;
+//                _leadsFilterController.selectedLeadStatus = value;
+//                _leadsFilterController.selectedLeadStatusValue =
+//                    leadStatusValue;
+//                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
     );
   }
 
-  Widget returnLeadPotentialBody() {
-    List<String> leadPotentialLead = ["1-200", "201-500", "Above 500+"];
-    return Container(
-        height: MediaQuery.of(context).size.height,
-        color: Colors.white,
-        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-        child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: leadPotentialLead.length,
-            itemExtent: 50,
-            itemBuilder: (context, index) {
-              return leadPotentialListTile(
-                  leadPotentialLead[index], (index).toString());
-            }));
-  }
 
-  Widget leadPotentialListTile(
-      String potentialValue, String leadPotentialValue) {
-    return Container(
-      height: 40,
-      child: ListTile(
-          title: Text(potentialValue),
-          leading: Obx(
-                () => Radio(
-              value: potentialValue,
-              groupValue:
-              _leadsFilterController.selectedLeadPotential as String,
-              onChanged: (String value) {
-                if (_leadsFilterController.selectedLeadPotential ==
-                    StringConstants.empty) {
-                  _leadsFilterController.selectedFilterCount =
-                      _leadsFilterController.selectedFilterCount + 1;
-                }
-                _leadsFilterController.selectedLeadPotential = value;
-                _leadsFilterController.selectedLeadPotentialValue =
-                    leadPotentialValue;
-                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
-              },
-            ),
-          )),
-    );
-  }
+
+
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(
@@ -491,6 +442,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
 
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
+    print(type);
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
@@ -501,9 +453,9 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);
         if (type == "to") {
-          _leadsFilterController.assignToDate = formattedDate;
+          _eventController.assignToDate = formattedDate;
         } else {
-          _leadsFilterController.assignFromDate = formattedDate;
+          _eventController.assignFromDate = formattedDate;
         }
         selectedDateString = formattedDate;
       });

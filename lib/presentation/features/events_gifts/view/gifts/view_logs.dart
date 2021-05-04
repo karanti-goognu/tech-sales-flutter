@@ -16,6 +16,7 @@ class ViewLogs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _currentMonth;
+    String giftTypeText;
     return Scaffold(
       appBar: AppBar(
         title: Text("View Logs".toUpperCase()),
@@ -62,7 +63,7 @@ class ViewLogs extends StatelessWidget {
                         onPressed: (){
                           showMonthPicker(
                             context: context,
-                            firstDate: DateTime(DateTime.now().year - 1, 1),
+                            firstDate: DateTime(DateTime.now().year - 5, 1),
                             lastDate: DateTime(DateTime.now().year , DateTime.now().month),
                             initialDate: DateTime.now(),
                             locale: Locale("en"),
@@ -96,94 +97,108 @@ class ViewLogs extends StatelessWidget {
 //                          ],
                         ),
                         child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              onChanged: (newValue) {
-                                print(newValue);
-                              },
-                              value: giftController.selectedDropdown,
-                              items: giftController.giftStockModelList
-                                  .map<DropdownMenuItem>((value) {
-                                return DropdownMenuItem(
-                                  value: value.giftTypeId,
-                                  child: SizedBox(
-                                    width: 120,
-                                    child: Text(
-                                      value.giftTypeText.toString(),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ))
+                            child: GetBuilder<GiftController>(
+
+                                  builder:(cc)=>
+                                DropdownButton(
+                                  onChanged: (newValue) {
+                                    giftController.selectedDropdown = newValue;
+                                    cc.update();
+                                  },
+                                  value: giftController.selectedDropdown,
+                                  items: giftController.giftStockModelList
+                                      .map<DropdownMenuItem>((value) {
+                                    return DropdownMenuItem(
+                                      value: value.giftTypeId,
+                                      child: SizedBox(
+                                        width: 120,
+                                        child: Text(
+                                          value.giftTypeText.toString(),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),),)
                         )),
               ],
             ),
             SizedBox(height: 20,),
 
-            Flexible(
-              child: Container(
+            Obx(
+
+                    (){
+            print(giftController.selectedDropdown.toString() + "shabash");
+              return  Expanded(
                 child: ListView.separated(
-                  separatorBuilder: (context,index){
-                    return SizedBox(height: 5,);
-                  },
-                    itemCount: giftController.dataForViewLog.length,
-                    itemBuilder: (context,index){
-                  return Card(
-//                    elevation: 3,
-                    child: Theme(
-                      data: ThemeData(splashColor: Colors.transparent,
-                          accentColor: Colors.amber, unselectedWidgetColor:  Colors.amber
-                      ),
-                      child: ExpansionTile(
-                        title: Text(giftController.dataForViewLog[index].giftAddDate.toString()),
-                        children: [
-                          Container(
-                            height:200,
-                            child: Flexible(
-                                child:  ListView.separated(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return
-                                        index==0?
-                                        Container():
-                                        Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal:18.0,vertical: 8),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              giftsCategoriesNameList[index-1],
-                                              style: TextStyle(
-                                                  fontSize: 16, fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              index==0?
-                                              giftController.dataForViewLog[index-1].giftOpeningStockQty.toString():
-                                              index==1?giftController.dataForViewLog[index-1].giftInHandQty.toString():
-                                              giftController.dataForViewLog[index-1].giftUtilisedQty.toString(),
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                        child: Divider(),
-                                      );
-                                    },
-                                    itemCount: 4)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            )
+                  shrinkWrap: true,
+                      physics: AlwaysScrollableScrollPhysics(),
+                      separatorBuilder: (context,index){
+                        return
+                          giftController.dataForViewLog[index].giftTypeId!=giftController.selectedDropdown?Container():
+
+                          SizedBox(height: 15,);
+                      },
+                      itemCount: giftController.dataForViewLog.length,
+                      itemBuilder: (context,i){
+                        return
+                         giftController.dataForViewLog[i].giftTypeId!=giftController.selectedDropdown?Container():
+                         Container(
+                           color: Colors.white,
+                           child: Theme(
+                             data: ThemeData(splashColor: Colors.transparent,
+                                 accentColor: Colors.amber, unselectedWidgetColor:  Colors.amber
+                             ),
+                             child: ExpansionTile(
+                               title: Text(giftController.dataForViewLog[i].giftAddDate.toString()),
+                               children: [
+                                 Container(
+                                   height:200,
+                                   child: ListView.separated(
+                                       shrinkWrap: true,
+                                       physics: NeverScrollableScrollPhysics(),
+                                       itemBuilder: (context, index) {
+                                         return
+                                           index==0?
+                                           Container(
+                                           ):
+                                           Padding(
+                                             padding: const EdgeInsets.symmetric(horizontal:18.0,vertical: 8),
+                                             child: Row(
+                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                               children: [
+
+                                                 Text(
+                                                   index==2?"Stock Added":giftsCategoriesNameList[index-1],
+                                                   style: TextStyle(
+                                                       fontSize: 16, fontWeight: FontWeight.bold),
+                                                 ),
+                                                 Text(
+                                                   index==1?
+                                                   giftController.dataForViewLog[i].giftOpeningStockQty.toString():
+                                                   index==2?giftController.dataForViewLog[i].stockAddedQty.toString():
+                                                   index==3?giftController.dataForViewLog[i].giftUtilisedQty.toString():null,
+                                                   style: TextStyle(
+                                                     fontWeight: FontWeight.bold,
+                                                   ),
+                                                 ),
+                                               ],
+                                             ),
+                                           );
+                                       },
+                                       separatorBuilder: (context, index) {
+                                         return Padding(
+                                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                           child: Divider(),
+                                         );
+                                       },
+                                       itemCount: 4),
+                                 ),
+                               ],
+                             ),
+                           ),
+                         );
+                      }),
+              ); })
           ],
         ),
       ),

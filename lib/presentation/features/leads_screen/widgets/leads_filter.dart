@@ -40,6 +40,7 @@ class _FilterWidgetState extends State<FilterWidget> {
       child: Stack(children: [
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
+          physics: NeverScrollableScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -429,6 +430,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   _leadsFilterController.selectedFilterCount =
                       _leadsFilterController.selectedFilterCount + 1;
                 }
+
                 _leadsFilterController.selectedLeadStatus = value;
                 _leadsFilterController.selectedLeadStatusValue =
                     leadStatusValue;

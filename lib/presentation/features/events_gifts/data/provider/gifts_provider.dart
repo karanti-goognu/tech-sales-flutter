@@ -59,7 +59,7 @@ class MyApiClientEvent {
         var data = json.decode(response.body);
         LogsModel logsModel;
         logsModel = LogsModel.fromJson(data);
-        print(logsModel.giftStockModelList);
+        print("Logs model : $logsModel ${logsModel.giftStockModelList}");
 
         return logsModel;
       } else

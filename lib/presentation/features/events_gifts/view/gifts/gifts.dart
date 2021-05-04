@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'file:///D:/Development/db_changes_TSO/tech-sales-flutter-1/lib/presentation/features/events_gifts/view/gifts/gift_type.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
+import 'package:intl/intl.dart';
 
 class GiftsView extends StatefulWidget {
   @override
@@ -57,7 +58,11 @@ class _GiftsViewState extends State<GiftsView> {
     _giftController
         .getGiftStockData()
         .whenComplete(() => addDateForGiftsView());
-    _giftController.getViewLogsData('April-21');
+    final DateFormat formatter = DateFormat("MMMM");
+    DateTime date = DateTime.now();
+    var currentMonth = formatter.format(date);
+    _giftController.monthYear='$currentMonth-${date.year.toString().substring(2)}';
+    _giftController.getViewLogsData("April-21");
     super.initState();
   }
 

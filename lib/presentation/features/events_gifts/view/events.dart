@@ -1,15 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_tech_sales/bindings/gifts_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/all_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/approved_events.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/widgets/events_filter.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
-import 'file:///D:/Development/db_changes_TSO/tech-sales-flutter-1/lib/presentation/features/events_gifts/view/gifts/gifts.dart';
 
 
 class Events extends StatefulWidget {
@@ -196,7 +195,7 @@ class _EventsState extends State<Events> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext bc) {
-         // return FilterWidget();
+          return EventsFilterWidget();
         });
   }
 

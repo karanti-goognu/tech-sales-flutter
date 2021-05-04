@@ -23,7 +23,7 @@ class MyApiClientEvent {
 
   MyApiClientEvent({@required this.httpClient});
 
-  Future<AccessKeyModel> getAccessKey() async {
+  Future getAccessKey() async {
     try {
       // print('$requestHeaders');
       var response = await httpClient.get(UrlConstants.getAccessKey,
@@ -33,7 +33,7 @@ class MyApiClientEvent {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
-        return accessKeyModel;
+        return accessKeyModel.accessKey;
       } else
         print('error');
     } catch (_) {
@@ -79,12 +79,11 @@ class MyApiClientEvent {
   }
 
 
-  Future<AllEventsModel> getAllEventData(String accessKey, String userSecretKey,
-      String empID) async {
+  Future<AllEventsModel> getAllEventData(String accessKey, String userSecretKey, String url) async {
     AllEventsModel allEventsModel;
     try {
       var response = await http.get(
-          Uri.parse(UrlConstants.getAllEvents + empID),
+          Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey));
       allEventsModel = AllEventsModel.fromJson(json.decode(response.body));

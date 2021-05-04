@@ -26,6 +26,7 @@ class GiftController extends GetxController {
   final _dataForViewLog = List<GiftStockList>().obs;
   final _monthYear = ''.obs;
 
+
   get monthYear => _monthYear;
 
   set monthYear(value) {
@@ -54,6 +55,7 @@ class GiftController extends GetxController {
   get selectedDropdown => _selectedDropdown.value;
 
   set selectedDropdown(value) {
+    print(selectedDropdown);
     _selectedDropdown.value = value;
   }
 
@@ -108,6 +110,7 @@ class GiftController extends GetxController {
     return response;
   }
   Future getViewLogsData(String monthYear) async {
+    print(monthYear);
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKey();
@@ -115,9 +118,13 @@ class GiftController extends GetxController {
       String empID= prefs.getString(StringConstants.employeeId);
       String securityKey = prefs.getString(StringConstants.userSecurityKey);
       logsModel = await repository.getViewLogsData(accessKey, securityKey,empID, monthYear);
+      print(logsModel.giftStockModelList);
+      Get.back();
       if(logsModel.respCode=="DM1006"){
         print("Good going");
+        Get.back();
         Get.dialog(CustomDialogs().errorDialog(logsModel.respMsg));
+        dataForViewLog=<GiftStockList>[];
 
       }
       else{
@@ -125,7 +132,6 @@ class GiftController extends GetxController {
       }
 
     });
-    Get.back();
     return logsModel;
   }
 

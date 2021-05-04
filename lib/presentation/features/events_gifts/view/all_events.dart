@@ -39,16 +39,14 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   getAllEventsData() async {
-    await allEventController.getAccessKey().then((value) async {
-      print(value.accessKey);
-      await allEventController.getAllEventData(value.accessKey).then((data) {
+
+      await allEventController.getAllEventData().then((data) {
         setState(() {
           allEventsModel = data;
         });
         print("response : ");
         getSortedData();
       });
-    });
   }
 
   getSortedData() {
