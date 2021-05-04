@@ -47,12 +47,13 @@ class MyApiClientEvent {
 
 
 
-  Future eventSearch(String accessKey, String userSecurityKey, String empID) async {
+  Future eventSearch(String accessKey, String userSecurityKey, String empID, String searchText) async {
     try {
-      String url = UrlConstants.eventSearch+empID;
+      String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
+      print(url);
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
-      // print('Response body is : ${json.decode(response.body)}');
+       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         EventSearchModel eventSearchModel = EventSearchModel.fromJson(data);

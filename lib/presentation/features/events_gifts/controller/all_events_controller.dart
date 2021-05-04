@@ -85,6 +85,11 @@ class AllEventController extends GetxController {
     _eventTypeText.value = value;
   }
 
+//  final _searchKey=''.obs;
+//  get searchKey => _searchKey;
+//  set searchKey(value) {
+//    _searchKey.value = value;
+//  }
 
   get isFilterApplied => _isFilterApplied;
 
@@ -154,7 +159,7 @@ class AllEventController extends GetxController {
 
 
 
-  Future eventSearch() async{
+  Future eventSearch(String searchText) async{
     String userSecurityKey = "";
     String empID = "";
     String accessKey = await repository.getAccessKey();
@@ -163,7 +168,7 @@ class AllEventController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
     });
-    var data = repository.eventSearch(accessKey, userSecurityKey, empID);
+    var data = repository.eventSearch(accessKey, userSecurityKey, empID, searchText);
   }
 
   //Future<AllEventsModel>

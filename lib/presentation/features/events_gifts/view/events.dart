@@ -177,11 +177,7 @@ AllEventController _eventController=Get.find();
             SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
             floatingActionButtonLocation:
             FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomNavigator(),
-            // bottomNavigationBar: BottomNavigator(),
-            // floatingActionButton: BackFloatingButton(),
-            // floatingActionButtonLocation:
-            //     FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomNavigator(searchType: "event",),
             body: TabBarView(
               children: [
                 ApprovedEvents(),
