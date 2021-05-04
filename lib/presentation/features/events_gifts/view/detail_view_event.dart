@@ -2,35 +2,42 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class DetailViewEvent extends StatefulWidget {
-   int eventId;
-   DetailViewEvent(this.eventId);
+  int eventId;
+  DetailViewEvent(this.eventId);
 
   @override
   _DetailViewEventState createState() => _DetailViewEventState();
 }
 
 class _DetailViewEventState extends State<DetailViewEvent> {
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  Position _currentPosition = new Position();
   DetailEventModel detailEventModel;
   DetailEventController detailEventController = Get.find();
+  EventsFilterController _eventsFilterController = Get.find();
   int total;
   bool isVisible = false;
   String isEventStarted;
+  String referenceID;
 
   @override
   void initState() {
@@ -38,10 +45,12 @@ class _DetailViewEventState extends State<DetailViewEvent> {
     getDetailEventsData();
   }
 
-  setVisibility(){
-    if(detailEventModel.mwpEventModel.eventStatusText == StringConstants.approved && isEventStarted == 'N'){
+  setVisibility() {
+    if (detailEventModel.mwpEventModel.eventStatusText ==
+            StringConstants.approved &&
+        isEventStarted == 'N') {
       isVisible = true;
-    }else {
+    } else {
       isVisible = false;
     }
   }
@@ -49,17 +58,15 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   getDetailEventsData() async {
     // await detailEventController.getAccessKey().then((value) async {
     //   print(value.accessKey);
-      await detailEventController
-          .getDetailEventData(widget.eventId)
-          .then((data) {
-        setState(() {
-          detailEventModel = data;
-        });
-
-        isEventStarted = detailEventModel.mwpEventModel.isEventStarted;
-        setVisibility();
-        print('DDDD: $data');
+    await detailEventController.getDetailEventData(widget.eventId).then((data) {
+      setState(() {
+        detailEventModel = data;
       });
+      referenceID = detailEventModel.mwpEventModel.referenceId;
+      isEventStarted = detailEventModel.mwpEventModel.isEventStarted;
+      setVisibility();
+      print('DDDD: $data');
+    });
     //});
   }
 
@@ -67,6 +74,121 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+
+    final btnStartEvent = FlatButton(
+      onPressed: () {
+        _getCurrentLocation();
+        // Get.dialog(CustomDialogs().showStartEventDialog(
+        //     'Confirmation', "Do you want to start event?"));
+      },
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(28.0),
+          side: BorderSide(color: Colors.white)),
+      color: Colors.transparent,
+      child: Text(
+        'START EVENT',
+        style: TextStyle(color: Colors.white, fontSize: 15),
+      ),
+    );
+
+    final btnAddLead = FlatButton(
+      onPressed: () {},
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(28.0),
+          side: BorderSide(color: Colors.white)),
+      color: Colors.transparent,
+      child: Text(
+        'ADD LEAD',
+        style: TextStyle(color: Colors.white, fontSize: 15),
+      ),
+    );
+
+    final editRow = PreferredSize(
+      preferredSize: Size.fromHeight(50),
+      child: Container(
+        height: 50,
+        color: ColorConstants.appBarColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FlatButton(
+                onPressed: () {
+                  Get.dialog(showCancelEventDialog('Confirmation',
+                      "You will not be able to undo this action, are you sure you want to Cancel this event?"));
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.close,
+                      color: ColorConstants.clearAllTextColor,
+                      size: ScreenUtil().setSp(20),
+                    ),
+                    SizedBox(
+                      width: ScreenUtil().setSp(5),
+                    ),
+                    Text('CANCEL', style: TextStyles.robotoBtn14),
+                  ],
+                )),
+            FlatButton(
+                onPressed: () {
+                  Get.to(
+                      () => DetailPending(
+                          detailEventModel.mwpEventModel.eventId,
+                          ColorConstants.eventApproved),
+                      binding: EGBinding());
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.edit,
+                        color: ColorConstants.clearAllTextColor,
+                        size: ScreenUtil().setSp(20)),
+                    SizedBox(
+                      width: ScreenUtil().setSp(5),
+                    ),
+                    Text('EDIT', style: TextStyles.robotoBtn14),
+                  ],
+                ))
+          ],
+        ),
+      ),
+    );
+
+    final endRow = PreferredSize(
+      preferredSize: Size.fromHeight(50),
+      child: Container(
+        height: 50,
+        color: ColorConstants.appBarColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FlatButton(
+              onPressed: () {},
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28.0),
+                  side: BorderSide(color: Colors.white)),
+              color: Colors.transparent,
+              child: Text(
+                'END TIME',
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+            ),
+            FlatButton(
+                onPressed: () {},
+                child: Row(
+                  children: [
+                    Icon(Icons.edit,
+                        color: ColorConstants.clearAllTextColor,
+                        size: ScreenUtil().setSp(20)),
+                    SizedBox(
+                      width: ScreenUtil().setSp(5),
+                    ),
+                    Text('UPDATE DLR & INF.', style: TextStyles.robotoBtn14),
+                  ],
+                ))
+          ],
+        ),
+      ),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -77,93 +199,100 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             children: [
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
               Visibility(
-                visible: isVisible,
-                child: FlatButton(
-                  onPressed: () {
-                    Get.dialog(CustomDialogs().showStartEventDialog(
-                        'Confirmation', "Do you want to start event?"));
-                    // Get.toNamed(Routes.START_EVENT);
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28.0),
-                      side: BorderSide(color: Colors.white)),
-                  color: Colors.transparent,
-                  child: Text(
-                    'START EVENT',
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ),
-              )
+                  visible: isVisible,
+                  // child: FlatButton(
+                  //   onPressed: () {
+                  //     Get.dialog(CustomDialogs().showStartEventDialog(
+                  //         'Confirmation', "Do you want to start event?"));
+                  //   },
+                  //   shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(28.0),
+                  //       side: BorderSide(color: Colors.white)),
+                  //   color: Colors.transparent,
+                  //   child: Text(
+                  //     'START EVENT',
+                  //     style: TextStyle(color: Colors.white, fontSize: 15),
+                  //   ),
+                  // )),
+                  child: (detailEventModel.mwpEventModel.eventStatusText ==
+                              StringConstants.approved &&
+                          isEventStarted == 'Y')
+                      ? btnAddLead
+                      : btnStartEvent)
             ],
           ),
-          bottom:
-          (isEventStarted == "N" && detailEventModel.mwpEventModel.eventStatusText == StringConstants.approved )?
-          PreferredSize(
-            preferredSize: Size.fromHeight(50),
-            // child:
-            // Visibility(
-            //   visible: isVisible,
-              child: Container(
-                height: 50,
-                color: ColorConstants.appBarColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FlatButton(
-                        onPressed: () {
-                          Get.dialog(showCancelEventDialog(
-                              'Confirmation',
-                              "You will not be able to undo this action, are you sure you want to Cancel this event?"));
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.close,
-                              color: ColorConstants.clearAllTextColor,
-                              size: ScreenUtil().setSp(20),
-                            ),
-                            SizedBox(
-                              width: ScreenUtil().setSp(5),
-                            ),
-                            Text('CANCEL', style: TextStyles.robotoBtn14),
-                          ],
-                        )),
-                    FlatButton(
-                        onPressed: () {
-                          //Get.toNamed(Routes.UPDATE_EVENT);
-                          Get.to(() => DetailPending(detailEventModel.mwpEventModel.eventId, HexColor('#39B54A')),
-                              //widget.eventId, widget.eventStatusId, widget.eventStatusString),
-                              binding: EGBinding());
-                          //list[index].eventStatusId
-                        },
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit,
-                                color: ColorConstants.clearAllTextColor,
-                                size: ScreenUtil().setSp(20)),
-                            SizedBox(
-                              width: ScreenUtil().setSp(5),
-                            ),
-                            Text('EDIT', style: TextStyles.robotoBtn14),
-                          ],
-                        ))
-                  ],
-                ),
-              ),
-           // ),
-          )
-              :PreferredSize(
-            preferredSize: Size.fromHeight(0),
-            child: Container(),
-          )
-      ),
+          bottom: (isEventStarted == "N" &&
+                  detailEventModel.mwpEventModel.eventStatusText ==
+                      StringConstants.approved)
+              ?
+              // PreferredSize(
+              //   preferredSize: Size.fromHeight(50),
+              //   child: Container(
+              //     height: 50,
+              //     color: ColorConstants.appBarColor,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         FlatButton(
+              //             onPressed: () {
+              //               Get.dialog(showCancelEventDialog('Confirmation',
+              //                   "You will not be able to undo this action, are you sure you want to Cancel this event?"));
+              //             },
+              //             child: Row(
+              //               children: [
+              //                 Icon(
+              //                   Icons.close,
+              //                   color: ColorConstants.clearAllTextColor,
+              //                   size: ScreenUtil().setSp(20),
+              //                 ),
+              //                 SizedBox(
+              //                   width: ScreenUtil().setSp(5),
+              //                 ),
+              //                 Text('CANCEL', style: TextStyles.robotoBtn14),
+              //               ],
+              //             )),
+              //         FlatButton(
+              //             onPressed: () {
+              //               Get.to(
+              //                       () => DetailPending(
+              //                       detailEventModel.mwpEventModel.eventId,
+              //                       ColorConstants.eventApproved),
+              //                   binding: EGBinding());
+              //             },
+              //             child: Row(
+              //               children: [
+              //                 Icon(Icons.edit,
+              //                     color: ColorConstants.clearAllTextColor,
+              //                     size: ScreenUtil().setSp(20)),
+              //                 SizedBox(
+              //                   width: ScreenUtil().setSp(5),
+              //                 ),
+              //                 Text('EDIT', style: TextStyles.robotoBtn14),
+              //               ],
+              //             ))
+              //       ],
+              //     ),
+              //   ),
+              // ):
+              editRow
+              : (isEventStarted == "Y" &&
+                      detailEventModel.mwpEventModel.eventStatusText ==
+                          StringConstants.approved)
+                  ? endRow
+                  :
+                  // (detailEventModel.mwpEventModel.eventStatusText !=
+                  //         StringConstants.approved)
+                  // ?
+                  PreferredSize(
+                      preferredSize: Size.fromHeight(0),
+                      child: Container(),
+                    )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: (detailEventModel != null &&
-              detailEventModel.mwpEventModel != null )
-         // && detailEventModel.eventDealersModelList != null)
+      body: (detailEventModel != null && detailEventModel.mwpEventModel != null)
+          // && detailEventModel.eventDealersModelList != null)
           ? ListView(
               children: [
                 Padding(
@@ -173,8 +302,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                     top: ScreenUtil().setSp(20),
                     bottom: ScreenUtil().setSp(20),
                   ),
-                  child: Text('${detailEventModel.mwpEventModel.eventDate}' ,
-                  //Text('${detailEventModel.mwpEventModel.eventDate}  | ${detailEventModel.mwpEventModel.eventTime}',
+                  child: Text(
+                    '${detailEventModel.mwpEventModel.eventDate}',
+                    //Text('${detailEventModel.mwpEventModel.eventDate}  | ${detailEventModel.mwpEventModel.eventTime}',
                     //'24-Mar-2021 | 12 PM',
                     style: TextStyles.mulliBoldBlue,
                   ),
@@ -217,8 +347,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                         'Comment',
                         style: TextStyles.formfieldLabelTextDark,
                       ),
-                      Text(detailEventModel.mwpEventModel.eventComment,
-                      maxLines: null,),
+                      Text(
+                        detailEventModel.mwpEventModel.eventComment,
+                        maxLines: null,
+                      ),
                     ],
                   ),
                 )
@@ -346,13 +478,15 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Text(heading,
+            Text(
+              heading,
               style: GoogleFonts.roboto(
                   fontSize: 20,
                   height: 1.4,
                   letterSpacing: .25,
                   fontWeight: FontWeight.bold,
-                  color: ColorConstants.inputBoxHintColorDark),),
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
             Text(
               message,
               style: GoogleFonts.roboto(
@@ -396,5 +530,51 @@ class _DetailViewEventState extends State<DetailViewEvent> {
         ),
       ],
     );
+  }
+
+  _getCurrentLocation() async {
+    if (!(await Geolocator().isLocationServiceEnabled())) {
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please enable your location service from device settings"));
+    } else {
+      geolocator
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .then((Position position) {
+        setState(() {
+          _currentPosition = position;
+          startEvent();
+        });
+        Get.back();
+      }).catchError((e) {
+        print(e);
+      });
+    }
+  }
+
+  startEvent() async {
+    StartEventModel _startEventModel = StartEventModel.fromJson({
+      'eventID': widget.eventId,
+      'eventStartOn': '',
+      'eventStartUserLat': _currentPosition.latitude,
+      'eventStartUserLong': _currentPosition.longitude,
+      'isEventStarted': 'Y',
+      'referenceID': referenceID,
+    });
+
+    internetChecking().then((result) => {
+          if (result == true)
+            {
+              _eventsFilterController
+                  .getAccessKeyAndStartEvent(_startEventModel)
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 }
