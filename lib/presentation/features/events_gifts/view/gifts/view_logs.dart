@@ -16,7 +16,7 @@ class ViewLogs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _currentMonth;
-    String giftTypeText;
+    giftController.getViewLogsData("${giftController.monthYear}");
     return Scaffold(
       appBar: AppBar(
         title: Text("View Logs".toUpperCase()),
@@ -42,12 +42,11 @@ class ViewLogs extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),
                         color: Colors.white,
-//                        boxShadow: [
-//                          new BoxShadow(
-//                            color: Colors.grey,
-//                            blurRadius: 8.0,
-//                          ),
-//                        ],
+                        boxShadow: [
+                          new BoxShadow(
+                            color: Colors.grey,
+                          ),
+                        ],
                       ),
                       child: FlatButton(
                         padding: EdgeInsets.zero,
@@ -89,12 +88,11 @@ class ViewLogs extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           color: Colors.white,
-//                          boxShadow: [
-//                            new BoxShadow(
-//                              color: Colors.grey,
-//                              blurRadius: 2.0,
-//                            ),
-//                          ],
+                          boxShadow: [
+                            new BoxShadow(
+                              color: Colors.grey,
+                            ),
+                          ],
                         ),
                         child: DropdownButtonHideUnderline(
                             child: GetBuilder<GiftController>(
@@ -124,10 +122,7 @@ class ViewLogs extends StatelessWidget {
             ),
             SizedBox(height: 20,),
 
-            Obx(
-
-                    (){
-            print(giftController.selectedDropdown.toString() + "shabash");
+            Obx( (){
               return  Expanded(
                 child: ListView.separated(
                   shrinkWrap: true,
@@ -143,7 +138,17 @@ class ViewLogs extends StatelessWidget {
                         return
                          giftController.dataForViewLog[i].giftTypeId!=giftController.selectedDropdown?Container():
                          Container(
-                           color: Colors.white,
+                           decoration: BoxDecoration(
+                             color: Colors.white,
+                             borderRadius: BorderRadius.circular(4),
+                             boxShadow: [
+                               BoxShadow(
+                                 color: Colors.black12,
+                                 blurRadius: 2
+                               )
+                             ]
+
+                           ),
                            child: Theme(
                              data: ThemeData(splashColor: Colors.transparent,
                                  accentColor: Colors.amber, unselectedWidgetColor:  Colors.amber

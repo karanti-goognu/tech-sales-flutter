@@ -119,15 +119,18 @@ class GiftController extends GetxController {
       String securityKey = prefs.getString(StringConstants.userSecurityKey);
       logsModel = await repository.getViewLogsData(accessKey, securityKey,empID, monthYear);
       print(logsModel.giftStockModelList);
+      print("1");
       Get.back();
       if(logsModel.respCode=="DM1006"){
+        print("2");
         print("Good going");
-        Get.back();
+//        Get.back();
         Get.dialog(CustomDialogs().errorDialog(logsModel.respMsg));
         dataForViewLog=<GiftStockList>[];
 
       }
       else{
+        Get.dialog(CustomDialogs().errorDialog(logsModel.respMsg));
         dataForViewLog=logsModel.giftStockModelList;
       }
 

@@ -32,6 +32,8 @@ import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddNewLeadForm extends StatefulWidget {
+  AddNewLeadForm({this.eventId});
+  final eventId;
   @override
   _AddNewLeadFormState createState() => _AddNewLeadFormState();
 }
@@ -328,6 +330,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             color: HexColor("#006838"),
                             fontFamily: "Muli"),
                       ),
+                    ),
+                    Container(
+                      child:
+                      widget.eventId!=null?
+                      Text('Event ID: ${widget.eventId}'):null  ,
                     ),
 
                     SizedBox(height: 16),
@@ -2516,6 +2523,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   // print(_listInfluencerDetail[1].toJson());
                                   SaveLeadRequestModel saveLeadRequestModel =
                                       new SaveLeadRequestModel(
+                                        eventId: widget.eventId,
                                           siteSubTypeId: "2",
                                           contactName: _contactName,
                                           contactNumber: _contactNumber,

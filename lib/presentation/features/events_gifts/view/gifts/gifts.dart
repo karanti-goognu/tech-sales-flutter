@@ -62,7 +62,7 @@ class _GiftsViewState extends State<GiftsView> {
     DateTime date = DateTime.now();
     var currentMonth = formatter.format(date);
     _giftController.monthYear='$currentMonth-${date.year.toString().substring(2)}';
-    _giftController.getViewLogsData("April-21");
+//    _giftController.getViewLogsData("${_giftController.monthYear}");
     super.initState();
   }
 
@@ -107,6 +107,7 @@ class _GiftsViewState extends State<GiftsView> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 color: Colors.white,
+                boxShadow: [BoxShadow(color: Colors.black12)]
               ),
               child: DropdownButtonHideUnderline(
                   child: Obx(() => _giftController.giftStockModelList.isEmpty ||
@@ -195,19 +196,25 @@ class _GiftsViewState extends State<GiftsView> {
             Obx(
               () => _giftController.selectedDropdown == 0
                   ? Container()
-                  : TextFormField(
-                      controller: _comments,
-                      maxLength: 100,
-                      onChanged: (value) async {},
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                      keyboardType: TextInputType.text,
-                      maxLines: 3,
-                      decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "Comments"),
-                    ),
+                  : Container(
+                color: Colors.white,
+                    child: TextFormField(
+                        controller: _comments,
+//                        maxLength: 100,
+                        onChanged: (value) async {},
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.text,
+                        maxLines: 3,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Comments"),
+                      ),
+                  ),
+            ),
+            SizedBox(
+              height: 24,
             ),
             RaisedButton(
               onPressed: () => _giftController.selectedDropdown == 0
