@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,14 +22,69 @@ class AllEventController extends GetxController {
   AllEventController({@required this.repository})
       : assert(repository != null);
   final _egAllEventData = AllEventsModel().obs;
-  get egAllEventDaa => _egAllEventData.value;
-  set egAllEventDaa(value) => _egAllEventData.value = value;
+  get egAllEventData => this._egAllEventData.value;
+  set egAllEventData(value) => this._egAllEventData.value = value;
   final _eventType = ''.obs;
   final _eventTypeValue = ''.obs;
   final _eventStatus = ''.obs;
   final _eventStatusValue = ''.obs;
   final _selectedPosition = 0.obs;
   final _isFilterApplied = false.obs;
+
+  // final _eventListModels = EventListModels().obs;
+  // final _eventStatusEntities = EventStatusEntities().obs;
+
+  final _eventDate = StringConstants.empty.obs;
+  final _eventStatusText = StringConstants.empty.obs;
+  final _eventVenue = StringConstants.empty.obs;
+  final _eventInflCount = StringConstants.empty.obs;
+  final _expectedLeadsCount = StringConstants.empty.obs;
+  final _dealerName = StringConstants.empty.obs;
+  final _eventTypeText = StringConstants.empty.obs;
+
+
+  get eventDate => _eventDate.value;
+
+  set eventDate(value) {
+    _eventDate.value = value;
+  }
+
+  get eventStatusText => _eventStatusText.value;
+
+  set eventStatusText(value) {
+    _eventStatusText.value = value;
+  }
+
+  get eventVenue => _eventVenue.value;
+
+  set eventVenue(value) {
+    _eventVenue.value = value;
+  }
+
+  get eventInflCount => _eventInflCount.value;
+
+  set eventInflCount(value) {
+    _eventInflCount.value = value;
+  }
+
+  get expectedLeadsCount => _expectedLeadsCount.value;
+
+  set expectedLeadsCount(value) {
+    _expectedLeadsCount.value = value;
+  }
+
+  get dealerName => _dealerName.value;
+
+  set dealerName(value) {
+    _dealerName.value = value;
+  }
+
+  get eventTypeText => _eventTypeText.value;
+
+  set eventTypeText(value) {
+    _eventTypeText.value = value;
+  }
+
 
   get isFilterApplied => _isFilterApplied;
 
@@ -88,6 +146,14 @@ class AllEventController extends GetxController {
     _eventType.value = value;
   }
 
+  // get eventListModels => this._eventListModels.value;
+  // set eventListModels(value) => this._eventListModels.value = value;
+  //
+  // get eventStatusEntities => this._eventStatusEntities.value;
+  // set eventStatusEntities(value) => this._eventStatusEntities.value = value;
+
+
+
   Future eventSearch() async{
     String userSecurityKey = "";
     String empID = "";
@@ -100,7 +166,8 @@ class AllEventController extends GetxController {
     var data = repository.eventSearch(accessKey, userSecurityKey, empID);
   }
 
-  Future<AllEventsModel> getAllEventData() async {
+  //Future<AllEventsModel>
+  getAllEventData() async {
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
 //    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
@@ -137,10 +204,27 @@ class AllEventController extends GetxController {
       var url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
       print(url);
 
-      egAllEventDaa = await repository.getAllEvents(accessKey, userSecurityKey, url);
+     // egAllEventDaa = await
+      repository.getAllEvents(accessKey, userSecurityKey, url).then((data) {
+        if (data == null) {
+          debugPrint('Events Data Response is null');
+        } else {
+          if(this.egAllEventData.eventListModels == null|| this.egAllEventData.eventListModels.isEmpty){
+            this.egAllEventData = data;
+            //this.eventListModels = data.eventListModels;
+          }else{
+            this.egAllEventData.eventListModels = data.eventListModels;
+          }
+
+          if (egAllEventData.respCode == "DM1002") {
+          } else {
+            Get.dialog(CustomDialogs().errorDialog(egAllEventData.respMsg));
+          }
+        }
+      });
     });
 //    Get.back();
-    return egAllEventDaa;
+    //return egAllEventDaa;
   }
 
 

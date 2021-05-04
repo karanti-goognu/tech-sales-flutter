@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,12 +33,12 @@ class _AllEventsState extends State<AllEvents> {
 
   ScrollController _scrollController;
   String option = StringConstants.pendingApproval;
-  String hexColor;
 
   @override
   void initState() {
-    getAllEventsData();
-
+    allEventController.getAllEventData();
+    //getAllEventsData();
+    getSortedData();
 
     super.initState();
   }
@@ -49,36 +51,68 @@ class _AllEventsState extends State<AllEvents> {
         });
         print("response : ");
 
-        getSortedData();
+        //getSortedData();
       });
   }
 
+
+
+  // getSortedData() {
+  //   if (allEventsModel != null && allEventsModel.eventListModels != null) {
+  //     for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
+  //       print("All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
+  //       if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.pendingApproval) {
+  //         pending.add(allEventsModel.eventListModels[i]);
+  //         print('PENDING : $pending');
+  //
+  //         print(allEventsModel.eventListModels[i].eventId);
+  //       } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.approved) {
+  //         approved.add(allEventsModel.eventListModels[i]);
+  //         print('APPROVED : $approved');
+  //       } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.rejected) {
+  //         rejected.add(allEventsModel.eventListModels[i]);
+  //
+  //       } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.completed) {
+  //         completed.add(allEventsModel.eventListModels[i]);
+  //
+  //       } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.cancelled) {
+  //         cancelled.add(allEventsModel.eventListModels[i]);
+  //
+  //       } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.notSubmitted) {
+  //         notSubmitted.add(allEventsModel.eventListModels[i]);
+  //
+  //       }
+  //
+  //     }
+  //     print("Pending : ${pending.map((e) => e.eventId).toList()}");
+  //     print("approved : ${approved.map((e) => e.eventId).toList()}");
+  //     print("rejected : ${rejected.map((e) => e.eventId).toList()}");
+  //     print("completed : ${completed.map((e) => e.eventId).toList()}");
+  //   } else {}
+  // }
+
   getSortedData() {
-    if (allEventsModel != null && allEventsModel.eventListModels != null) {
-      for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
-        print("All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
-        if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.pendingApproval) {
-          pending.add(allEventsModel.eventListModels[i]);
+    if (allEventController != null && allEventController.egAllEventData != null) {
+      for (int i = 0; i < allEventController.egAllEventData.eventListModels.length; i++) {
+        //print("All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
+        if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.pendingApproval) {
+          pending.add(allEventController.egAllEventData.eventListModels[i]);
           print('PENDING : $pending');
 
-          print(allEventsModel.eventListModels[i].eventId);
-        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.approved) {
-          approved.add(allEventsModel.eventListModels[i]);
+        } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.approved) {
+          approved.add(allEventController.egAllEventData.eventListModels[i]);
           print('APPROVED : $approved');
-        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.rejected) {
-          rejected.add(allEventsModel.eventListModels[i]);
+        } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.rejected) {
+          rejected.add(allEventController.egAllEventData.eventListModels[i]);
 
-        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.completed) {
-          completed.add(allEventsModel.eventListModels[i]);
+        } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.completed) {
+          completed.add(allEventController.egAllEventData.eventListModels[i]);
 
-        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.cancelled) {
-          cancelled.add(allEventsModel.eventListModels[i]);
+        } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.cancelled) {
+          cancelled.add(allEventController.egAllEventData.eventListModels[i]);
 
-        // } else if (allEventsModel.eventListModels[i].eventStatusId == 6) {
-        //   eventRejected.add(allEventsModel.eventListModels[i]);
-
-        } else if (allEventsModel.eventListModels[i].eventStatusText == StringConstants.notSubmitted) {
-          notSubmitted.add(allEventsModel.eventListModels[i]);
+        } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.notSubmitted) {
+          notSubmitted.add(allEventController.egAllEventData.eventListModels[i]);
 
         }
 
@@ -120,9 +154,9 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   Widget getStatusList() {
-    return (allEventsModel != null &&
-            allEventsModel.eventStatusEntities != null &&
-            allEventsModel.eventStatusEntities.length > 0)
+    return (allEventController != null &&
+        allEventController.egAllEventData.eventStatusEntities != null &&
+        allEventController.egAllEventData.eventStatusEntities.length > 0)
         ? Container(
             padding: EdgeInsets.only(
               top: ScreenUtil().setSp(5),
@@ -132,7 +166,7 @@ class _AllEventsState extends State<AllEvents> {
                 shrinkWrap: true,
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
-                itemCount: allEventsModel.eventStatusEntities.length,
+                itemCount: allEventController.egAllEventData.eventStatusEntities.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -140,14 +174,13 @@ class _AllEventsState extends State<AllEvents> {
                       onSelected: (bool selected) {
                         setState(() {
 
-                          option = allEventsModel
-                              .eventStatusEntities[index].eventStatusText;
+                          option = allEventController.egAllEventData.eventStatusEntities[index].eventStatusText;
+                              //allEventsModel.eventStatusEntities[index].eventStatusText;
                         });
                         print("OPTION:::$option");
                       },
                       selectedColor: Colors.blue.withOpacity(0.2),
-                      label: Text(allEventsModel
-                          .eventStatusEntities[index].eventStatusText),
+                      label: Text(allEventController.egAllEventData.eventStatusEntities[index].eventStatusText),
                       // backgroundColor: option == 1
                       //     ? Colors.blue.withOpacity(0.2)
                       //     : Colors.white,
@@ -169,11 +202,61 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getList(Color borderColor, List<EventListModels> list) {
     print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
-    return (allEventsModel != null &&
-            allEventsModel.eventListModels != null &&
-            allEventsModel.eventListModels.length > 0 &&
-            list != null)
-        ? ListView.builder(
+    return
+        // allEventsModel != null &&
+        //     allEventsModel.eventListModels != null &&
+        //     allEventsModel.eventListModels.length > 0 &&
+        //     list != null)
+        // allEventController != null &&
+        //     allEventController.egAllEventData.eventListModels != null &&
+        //     allEventController.egAllEventData.eventListModels.length > 0 )
+          //  && list != null)
+       // ?
+        Obx(
+                () => (allEventController == null)
+                ? Container(
+              child: Center(
+                child: Text("event controller  is empty!!"),
+              ),
+            )
+                : (allEventController.egAllEventData == null)
+                ? Container(
+              child: Center(
+                child: Text("event list response  is empty!!"),
+              ),
+            )
+                : (allEventController.egAllEventData.eventListModels == null)
+                ? Container(
+              child: Center(
+                child: Text("Leads list is empty!!"),
+              ),
+            )
+                : (allEventController.egAllEventData.eventListModels.length ==
+                0)
+                ? Container(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("You don't have any events..!!"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        allEventController.getAllEventData();
+                      },
+                      color: ColorConstants.buttonNormalColor,
+                      child: Text(
+                        "TRY AGAIN",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+                : ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             controller: _scrollController,
@@ -188,20 +271,71 @@ class _AllEventsState extends State<AllEvents> {
                 child: eventCard(index, list, borderColor),
               );
             })
-        : Container(
-            child: Center(
-              child: Text("No data!!"),
-            ),
-          );
+        );
+        // : Container(
+        //     child: Center(
+        //       child: Text("No data!!"),
+        //     ),
+        //   );
   }
 
   Widget getListForPending(Color borderColor, List<EventListModels> list) {
     print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
-    return (allEventsModel != null &&
-            allEventsModel.eventListModels != null &&
-            allEventsModel.eventListModels.length > 0 &&
-            list != null)
-        ? ListView.builder(
+    //return
+        // (allEventsModel != null &&
+      //       allEventsModel.eventListModels != null &&
+      //       allEventsModel.eventListModels.length > 0 &&
+      //       list != null)
+      // (allEventController != null &&
+      //     allEventController.egAllEventData.eventListModels != null &&
+      //     allEventController.egAllEventData.eventListModels.length > 0 &&
+      //     list != null)
+    return Obx(
+            () => (allEventController == null)
+            ? Container(
+          child: Center(
+            child: Text("event controller  is empty!!"),
+          ),
+        )
+            : (allEventController.egAllEventData == null)
+            ? Container(
+          child: Center(
+            child: Text("event list response  is empty!!"),
+          ),
+        )
+            : (allEventController.egAllEventData.eventListModels == null)
+            ? Container(
+          child: Center(
+            child: Text("Leads list is empty!!"),
+          ),
+        )
+            : (allEventController.egAllEventData.eventListModels.length ==
+            0)
+            ? Container(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("You don't have any events..!!"),
+                SizedBox(
+                  height: 10,
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    allEventController.getAllEventData();
+                  },
+                  color: ColorConstants.buttonNormalColor,
+                  child: Text(
+                    "TRY AGAIN",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+            :
+         ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             controller: _scrollController,
@@ -215,41 +349,14 @@ class _AllEventsState extends State<AllEvents> {
                 child: eventCard(index, list, borderColor),
               );
             })
-        : Container(
-            height: 100,
-            child: Center(
-              child: Text("No Events!!"),
-            ),
-          );
+    );
+        // : Container(
+        //     height: 100,
+        //     child: Center(
+        //       child: Text("No Events!!"),
+        //     ),
+        //   );
   }
-
-  // Widget getListForRejected(Color borderColor, List<EventListModels> list) {
-  //   print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
-  //   return (allEventsModel != null &&
-  //       allEventsModel.eventListModels != null &&
-  //       allEventsModel.eventListModels.length > 0 &&
-  //       list != null)
-  //       ? ListView.builder(
-  //       shrinkWrap: true,
-  //       physics: NeverScrollableScrollPhysics(),
-  //       controller: _scrollController,
-  //       itemCount: list.length,
-  //       padding: const EdgeInsets.only(left: 6.0, right: 6, bottom: 10),
-  //       itemBuilder: (context, index) {
-  //         return GestureDetector(
-  //           onTap: () {
-  //             Get.to(() => DetailRejected(list[index].eventId), binding: EGBinding());
-  //           },
-  //           child: evenCard(index, list, borderColor),
-  //         );
-  //       })
-  //       : Container(
-  //     height: 100,
-  //     child: Center(
-  //       child: Text("No Events!!"),
-  //     ),
-  //   );
-  // }
 
   Widget eventCard(int index, List<EventListModels> list, Color borderColor,){
     return  Card(
@@ -273,8 +380,10 @@ class _AllEventsState extends State<AllEvents> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Obx(
+                        () =>
                   Text(
-                    list[index].eventDate,
+                    allEventController.egAllEventData.eventListModels[index].eventDate,
                     //"24-Mar-21",
                     style: TextStyle(
                         fontSize: 15,
@@ -282,53 +391,58 @@ class _AllEventsState extends State<AllEvents> {
                         //fontWeight:
                         // FontWeight.bold
                         fontWeight: FontWeight.normal),
-                    // ),
+                     ),
                   ),
+                  Obx(
+                        () =>
                   Chip(
                     shape: StadiumBorder(
                         side: BorderSide(color: borderColor)),
                     backgroundColor: borderColor.withOpacity(0.1),
                     label: Text(
-                        'Status: ${list[index].eventStatusText}'),
+                        'Status: ${allEventController.egAllEventData.eventListModels[index].eventStatusText}'),
                   ),
+                  )
                 ],
               ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //Obx(
-                    // () =>
+                    Obx(
+                    () =>
 
-                    Text(
-                      list[index].eventTypeText,
+                    Text(allEventController.egAllEventData.eventListModels[index].eventTypeText,
+                      //list[index].eventTypeText,
                       //"Mason Meet",
                       style: TextStyle(
                           fontSize: 15,
                           fontFamily: "Muli",
                           fontWeight: FontWeight.bold),
                     ),
-                    // ),
-                    //Obx(
-                    // () =>
+                     ),
+                    Obx(
+                    () =>
                     Text(
-                      "Inf. Planned : ${list[index].actualEventInflCount}",
+                      "Inf. Planned : ${allEventController.egAllEventData.eventListModels[index].actualEventInflCount}",
+                     // "Inf. Planned : ${list[index].actualEventInflCount}",
                       style: TextStyle(
                           fontSize: 15,
                           fontFamily: "Muli",
                           fontWeight: FontWeight.normal),
-                      // ),
+                       ),
                     ),
                   ]),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //Obx(
-                    // () =>
+                    Obx(
+                    () =>
 
                     Flexible(
                       flex: 2,
                       child: Text(
-                        "Venue: ${list[index].eventVenue}",
+                        "Venue: ${allEventController.egAllEventData.eventListModels[index].eventVenue}",
+                       // "Venue: ${list[index].eventVenue}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: 15,
@@ -336,19 +450,20 @@ class _AllEventsState extends State<AllEvents> {
                             fontWeight: FontWeight.normal),
                       ),
                     ),
-                    // ),
-                    //Obx(
-                    // () =>
+                    ),
+                    Obx(
+                    () =>
                     Flexible(
                       flex: 3,
                       child: Text(
-                        "Dealer(s) : ${list[index].dealerName}",
+                        "Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
+                        // "Dealer(s) : ${list[index].dealerName}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: 15,
                             fontFamily: "Muli",
                             fontWeight: FontWeight.normal),
-                        // ),
+                         ),
                       ),
                     ),
                   ]),
@@ -363,26 +478,28 @@ class _AllEventsState extends State<AllEvents> {
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //Obx(
-                    // () =>
+                    Obx(
+                    () =>
 
                     Text(
-                      "EVENT ID: ${list[index].eventId}",
+                      "EVENT ID: ${allEventController.egAllEventData.eventListModels[index].eventId}",
+                     // "EVENT ID: ${list[index].eventId}",
                       style: TextStyle(
                           fontSize: 15,
                           fontFamily: "Muli",
                           fontWeight: FontWeight.normal),
                     ),
-                    // ),
-                    //Obx(
-                    // () =>
+                    ),
+                    Obx(
+                    () =>
                     Text(
-                      "LEADS EXPECTED : ${list[index].expectedLeadsCount}",
+                      "LEADS EXPECTED : ${allEventController.egAllEventData.eventListModels[index].expectedLeadsCount}",
+                      //"LEADS EXPECTED : ${list[index].expectedLeadsCount}",
                       style: TextStyle(
                           fontSize: 15,
                           fontFamily: "Muli",
                           fontWeight: FontWeight.normal),
-                      // ),
+                       ),
                     ),
                   ]),
             ],

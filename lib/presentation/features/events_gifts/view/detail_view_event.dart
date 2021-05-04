@@ -225,55 +225,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   detailEventModel.mwpEventModel.eventStatusText ==
                       StringConstants.approved)
               ?
-              // PreferredSize(
-              //   preferredSize: Size.fromHeight(50),
-              //   child: Container(
-              //     height: 50,
-              //     color: ColorConstants.appBarColor,
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         FlatButton(
-              //             onPressed: () {
-              //               Get.dialog(showCancelEventDialog('Confirmation',
-              //                   "You will not be able to undo this action, are you sure you want to Cancel this event?"));
-              //             },
-              //             child: Row(
-              //               children: [
-              //                 Icon(
-              //                   Icons.close,
-              //                   color: ColorConstants.clearAllTextColor,
-              //                   size: ScreenUtil().setSp(20),
-              //                 ),
-              //                 SizedBox(
-              //                   width: ScreenUtil().setSp(5),
-              //                 ),
-              //                 Text('CANCEL', style: TextStyles.robotoBtn14),
-              //               ],
-              //             )),
-              //         FlatButton(
-              //             onPressed: () {
-              //               Get.to(
-              //                       () => DetailPending(
-              //                       detailEventModel.mwpEventModel.eventId,
-              //                       ColorConstants.eventApproved),
-              //                   binding: EGBinding());
-              //             },
-              //             child: Row(
-              //               children: [
-              //                 Icon(Icons.edit,
-              //                     color: ColorConstants.clearAllTextColor,
-              //                     size: ScreenUtil().setSp(20)),
-              //                 SizedBox(
-              //                   width: ScreenUtil().setSp(5),
-              //                 ),
-              //                 Text('EDIT', style: TextStyles.robotoBtn14),
-              //               ],
-              //             ))
-              //       ],
-              //     ),
-              //   ),
-              // ):
+
               editRow
               : (isEventStarted == "Y" &&
                       detailEventModel.mwpEventModel.eventStatusText ==
