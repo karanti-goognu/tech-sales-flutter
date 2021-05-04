@@ -180,8 +180,8 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   //  getSortedData();
     return (approvedEventsModel != null &&
             approvedEventsModel.eventListModels != null &&
-            approvedEventsModel.eventListModels.length > 0 &&
-            list != null)
+            approvedEventsModel.eventListModels.length > 0 )
+        //&& list != null)
         ? ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),

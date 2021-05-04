@@ -1,8 +1,8 @@
 class StartEventModel {
   int eventID;
   String eventStartOn;
-  int eventStartUserLat;
-  int eventStartUserLong;
+  double eventStartUserLat;
+  double eventStartUserLong;
   String isEventStarted;
   String referenceID;
 

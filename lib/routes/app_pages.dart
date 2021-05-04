@@ -190,11 +190,11 @@ class AppPages {
       page: () => UpdateEvent(),
       //binding: DashboardBinding(),
     ),
-    GetPage(
-      name: Routes.UPDATE_DLR_INF,
-      page: () => UpdateDlrInf(),
-      binding: EGBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.UPDATE_DLR_INF,
+    //   page: () => UpdateDlrInf(),
+    //   binding: EGBinding(),
+    // ),
     GetPage(
       name: Routes.GIFTS_VIEW,
       page: () => GiftsView(),

@@ -83,6 +83,8 @@ abstract class UrlConstants {
  static const String getViewLogs = '$baseUrl/gift/gift-log?referenceID=';
  static const String eventSearch = '$baseUrl/gift/event-search?referenceID=';
  static const String deleteEvent = '$baseUrl/event/event-delete?referenceID=';
+ static const String getDealerInfList = '$baseUrl/event/get-event-dealers-influencers-list?referenceID=';
+ static const String startEvent = '$baseUrl/event/start-event';
 
 }
 

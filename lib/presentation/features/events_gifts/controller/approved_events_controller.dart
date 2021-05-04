@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
@@ -40,7 +41,7 @@ class EventsFilterController extends GetxController {
 
   set egApprovedEventDaa(value) => _egApprovedEventData.value = value;
 
-  Future getAccessKey() {
+  Future<String> getAccessKey() {
     return repository.getAccessKey();
   }
 
@@ -51,7 +52,7 @@ class EventsFilterController extends GetxController {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    var accessKey = await repository.getAccessKey();
+    String accessKey = await repository.getAccessKey();
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -76,13 +77,13 @@ class EventsFilterController extends GetxController {
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) async {
-
+      String accessKey = await repository.getAccessKey();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        repository.startEvent(data.accessKey, userSecurityKey, startEventModel)
+        repository.startEvent(accessKey, userSecurityKey, startEventModel)
             .then((value) {
           //Get.back();
-          if (value.respMsg == 'DM1002') {
+          if (value.respMsg == 'DM2043') {
             Get.back();
             Get.defaultDialog(
                 title: "Message",
@@ -101,6 +102,25 @@ class EventsFilterController extends GetxController {
         });
       });
     });
+  }
+
+
+  Future<DealerInfModel> getDealerInfList(int eventId) async {
+    DealerInfModel _dealerInfModel;
+    String userSecurityKey = "";
+    String empID = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    var accessKey = await repository.getAccessKey();
+
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+      print('EMP: $empID');
+      _dealerInfModel =
+      await repository.getDealerInfList(accessKey, userSecurityKey, empID, eventId);
+    });
+//    Get.back();
+    return _dealerInfModel;
   }
 }
 

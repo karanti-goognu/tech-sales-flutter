@@ -1,38 +1,36 @@
-
-
 class StartEventResponse {
-  String eventDate;
+  String respCode;
+  String respMsg;
   int eventID;
   int eventTypeId;
   String eventTypeText;
-  String respCode;
-  String respMsg;
+  int eventDate;
 
   StartEventResponse(
-      {this.eventDate,
+      {this.respCode,
+        this.respMsg,
         this.eventID,
         this.eventTypeId,
         this.eventTypeText,
-        this.respCode,
-        this.respMsg});
+        this.eventDate});
 
   StartEventResponse.fromJson(Map<String, dynamic> json) {
-    eventDate = json['eventDate'];
+    respCode = json['respCode'];
+    respMsg = json['respMsg'];
     eventID = json['eventID'];
     eventTypeId = json['eventTypeId'];
     eventTypeText = json['eventTypeText'];
-    respCode = json['respCode'];
-    respMsg = json['respMsg'];
+    eventDate = json['eventDate'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['eventDate'] = this.eventDate;
+    data['respCode'] = this.respCode;
+    data['respMsg'] = this.respMsg;
     data['eventID'] = this.eventID;
     data['eventTypeId'] = this.eventTypeId;
     data['eventTypeText'] = this.eventTypeText;
-    data['respCode'] = this.respCode;
-    data['respMsg'] = this.respMsg;
+    data['eventDate'] = this.eventDate;
     return data;
   }
 }
