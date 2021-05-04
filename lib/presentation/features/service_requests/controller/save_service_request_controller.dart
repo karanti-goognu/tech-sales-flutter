@@ -55,7 +55,8 @@ class SaveServiceRequestController extends GetxController {
                 title: "Message",
                 middleText: value['resp-msg'].toString(),
                 confirm: MaterialButton(
-                  onPressed: () => Get.back(),
+                  onPressed: () =>
+                      Get.back(),
                   child: Text('OK'),
                 ),
                 barrierDismissible: false);

@@ -21,8 +21,17 @@ class SplashDataModel {
   List<UserMenu> userMenu;
   JourneyDetails journeyDetails;
 
+
+  List<EventTypeModels> eventTypeModels;
+  List<StatusEntitieList> statusEntitieList;
+
+
   SplashDataModel(
-      {this.leadStatusEntity,
+      {
+      this.eventTypeModels,
+      this.statusEntitieList,
+
+      this.leadStatusEntity,
       this.leadStageEntity,
       this.siteStageEntity,
       this.siteStatusEntity,
@@ -53,6 +62,12 @@ class SplashDataModel {
       leadStageEntity = new List<LeadStageEntity>();
       json['leadStageEntity'].forEach((v) {
         leadStageEntity.add(new LeadStageEntity.fromJson(v));
+      });
+    }
+    if (json['eventTypeModels'] != null) {
+      eventTypeModels = new List<EventTypeModels>();
+      json['eventTypeModels'].forEach((v) {
+        eventTypeModels.add(new EventTypeModels.fromJson(v));
       });
     }
 
@@ -120,6 +135,12 @@ class SplashDataModel {
         reportingTsoListModel.add(new ReportingTsoListModel.fromJson(v));
       });
     }
+    if (json['statusEntitieList'] != null) {
+      statusEntitieList = new List<StatusEntitieList>();
+      json['statusEntitieList'].forEach((v) {
+        statusEntitieList.add(new StatusEntitieList.fromJson(v));
+      });
+    }
     severity = json['severity'].cast<String>();
     userSecurityKey = json['user-security-key'];
     respCode = json['resp-code'];
@@ -151,6 +172,10 @@ class SplashDataModel {
     if (this.siteStageEntity != null) {
       data['siteStageEntity'] =
           this.siteStageEntity.map((v) => v.toJson()).toList();
+    }
+    if (this.eventTypeModels != null) {
+      data['eventTypeModels'] =
+          this.eventTypeModels.map((v) => v.toJson()).toList();
     }
     if (this.siteStatusEntity != null) {
       data['siteStatusEntity'] =
@@ -188,6 +213,10 @@ class SplashDataModel {
     if (this.reportingTsoListModel != null) {
       data['reportingTsoListModel'] =
           this.reportingTsoListModel.map((v) => v.toJson()).toList();
+    }
+    if (this.statusEntitieList != null) {
+      data['statusEntitieList'] =
+          this.statusEntitieList.map((v) => v.toJson()).toList();
     }
     data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
@@ -510,6 +539,44 @@ class ReportingTsoListModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['tsoId'] = this.tsoId;
     data['tsoName'] = this.tsoName;
+    return data;
+  }
+}
+
+class EventTypeModels {
+  int eventTypeId;
+  String eventTypeText;
+
+  EventTypeModels({this.eventTypeId, this.eventTypeText});
+
+  EventTypeModels.fromJson(Map<String, dynamic> json) {
+    eventTypeId = json['eventTypeId'];
+    eventTypeText = json['eventTypeText'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['eventTypeId'] = this.eventTypeId;
+    data['eventTypeText'] = this.eventTypeText;
+    return data;
+  }
+}
+
+class StatusEntitieList {
+  int eventStatusId;
+  String eventStatusText;
+
+  StatusEntitieList({this.eventStatusId, this.eventStatusText});
+
+  StatusEntitieList.fromJson(Map<String, dynamic> json) {
+    eventStatusId = json['eventStatusId'];
+    eventStatusText = json['eventStatusText'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['eventStatusId'] = this.eventStatusId;
+    data['eventStatusText'] = this.eventStatusText;
     return data;
   }
 }

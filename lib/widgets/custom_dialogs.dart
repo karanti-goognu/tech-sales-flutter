@@ -21,7 +21,6 @@ import 'package:http/http.dart' as http;
 class CustomDialogs {
 
   Widget errorDialog(String message) {
-    print(message);
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(

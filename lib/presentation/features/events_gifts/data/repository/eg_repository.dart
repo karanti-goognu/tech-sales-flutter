@@ -14,8 +14,13 @@ class EgRepository{
   final MyApiClientEvent apiClient;
   EgRepository({this.apiClient});
 
-  Future<AccessKeyModel> getAccessKey(){
+  Future getAccessKey(){
     return apiClient.getAccessKey();
+  }
+
+
+  Future eventSearch(String accessKey, String userSecurityKey, String empID){
+    return apiClient.eventSearch(accessKey, userSecurityKey, empID);
   }
 
   Future<AddEventModel> getEventTypeData(String accessKey, String userSecretKey, String empID) async{
@@ -27,8 +32,8 @@ class EgRepository{
     return apiClient.getInfluenceType(accessKey, userSecretKey, mobileNumber);
   }
 
-  Future<AllEventsModel> getAllEvents(String accessKey, String userSecretKey,String empID) async{
-    return apiClient.getAllEventData(accessKey, userSecretKey, empID);
+  Future<AllEventsModel> getAllEvents(String accessKey, String userSecretKey,String url) async{
+    return apiClient.getAllEventData(accessKey, userSecretKey, url);
   }
 
   Future<ApprovedEventsModel> getApprovedEvents(String accessKey, String userSecretKey,String empID) async{

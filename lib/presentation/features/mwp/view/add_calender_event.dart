@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
+import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -363,10 +365,14 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                     onTap: () {
                       // print('${_calendarEventController.listOfEvents[index].eventType}');
                       if (_calendarEventController
-                              .listOfEvents[index].eventType ==
-                          'VISIT') {
+                              .listOfEvents[index].eventType == 'VISIT') {
                         _addEventController.visitId = _calendarEventController.listOfEvents[index].id;
                         Get.toNamed(Routes.VISIT_VIEW_SCREEN);
+                      }else if (_calendarEventController.listOfEvents[index].eventType == 'EVENT'){
+                        _addEventController.visitId =
+                            _calendarEventController.listOfEvents[index].id;
+                        Get.to(() => DetailViewEvent(_calendarEventController.listOfEvents[index].id),
+                            binding: EGBinding());
                       } else {
                         _addEventController.visitId =
                             _calendarEventController.listOfEvents[index].id;
@@ -457,7 +463,9 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                                 padding: const EdgeInsets.all(4.0),
                                 child: Text(
                                   "${_calendarEventController.listOfEvents[index].displayMessage1}",
-                                  style: TextStyles.mulliRegular14,
+
+                                  style: _calendarEventController.listOfEvents[index].displayMessage1=="Not Submitted"|| _calendarEventController.listOfEvents[index].displayMessage1=="Draft"?TextStyles.mulliRegular14Italic : TextStyles.mulliRegular14,
+
                                 ),
                               ),
                             ],
@@ -681,7 +689,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                   fontSize: 18),
             ),
             returnContainer(StringConstants.visits),
-            returnContainer(StringConstants.influencersMeet),
+            returnContainer(StringConstants.influencersEvents),
             returnContainer(StringConstants.services),
           ],
         ),
@@ -699,6 +707,9 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
         } else if (title == StringConstants.influencersMeet) {
           _addEventController.selectedView = 'Influencers meet';
           Get.offNamed(Routes.ADD_EVENT_SCREEN);
+        }  else if (title == StringConstants.influencersEvents) {
+          _addEventController.selectedView = 'Influencers Events';
+          Get.offNamed(Routes.ADD_EVENTS);
         } else if (title == StringConstants.services) {
           Get.toNamed(Routes.SERVICE_REQUEST_CREATION);
         }

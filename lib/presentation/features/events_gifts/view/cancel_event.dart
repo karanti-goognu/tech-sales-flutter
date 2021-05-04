@@ -128,7 +128,7 @@ class _CancelEventtState extends State<CancelEvent> {
         color: HexColor('#1C99D4'),
         onPressed: () {
           btnPresssed();
-        },
+          },
         child: Text(
           'SUBMIT',
           style: TextStyle(color: Colors.white),
