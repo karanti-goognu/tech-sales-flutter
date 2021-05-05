@@ -24,18 +24,20 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:package_info/package_info.dart';
 
 class MyApiClientApp {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-
+String version;
   MyApiClientApp({@required this.httpClient});
 
   getAccessKey() async {
     try {
-      // print("dsacsdcc" + requestHeaders.toString());
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
       var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders);
+          headers: requestHeaders(version));
       // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -82,7 +84,7 @@ class MyApiClientApp {
     //  print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveMWPData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey),
+              accessKey, userSecurityKey,version),
           body: body,
           // encoding: Encoding.getByName("utf-8")
       );
@@ -107,7 +109,7 @@ class MyApiClientApp {
      // print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey),
+              accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
      // print('Response body is : ${json.decode(response.body)}');
@@ -131,7 +133,7 @@ class MyApiClientApp {
      print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey),
+              accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
      // print('Response body is : ${json.decode(response.body)}');
@@ -154,7 +156,8 @@ class MyApiClientApp {
       var body = jsonEncode(updateVisitRequest);
      // print('body is  :: $body');
     //  print(url);
-      var response = await httpClient.post(url, headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey),          body: body,
+      var response = await httpClient.post(url, headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey,version),
+          body: body,
           encoding: Encoding.getByName("utf-8"));
     //  print(response.body);
      // print('Response body is : ${json.decode(response.body)}');
@@ -179,7 +182,7 @@ class MyApiClientApp {
     //  print('body is  :: $body');
       var response = await httpClient.post(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey),
+              accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
      // print('Response body is : ${json.decode(response.body)}');
@@ -200,7 +203,7 @@ class MyApiClientApp {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey));
+              accessKey, userSecurityKey,version));
       // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -220,7 +223,7 @@ class MyApiClientApp {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey));
+              accessKey, userSecurityKey,version));
     //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -237,7 +240,7 @@ class MyApiClientApp {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey));
+              accessKey, userSecurityKey,version));
     //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -254,7 +257,7 @@ class MyApiClientApp {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey));
+              accessKey, userSecurityKey,version));
      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -271,7 +274,7 @@ class MyApiClientApp {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey));
+              accessKey, userSecurityKey,version));
       // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -289,7 +292,7 @@ class MyApiClientApp {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey));
+              accessKey, userSecurityKey,version));
       // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -307,7 +310,7 @@ class MyApiClientApp {
     try {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey));
+              accessKey, userSecurityKey,version));
       // print('Response body for Target Vs Actual is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

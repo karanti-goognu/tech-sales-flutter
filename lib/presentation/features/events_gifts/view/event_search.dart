@@ -20,9 +20,7 @@ class _EventSearchState extends State<EventSearch> {
       case 4:return HexColor('#F9A61A');
       case 5:return HexColor('#F9A61A');
       case 6:return HexColor('#000000');
-      case 7:
-        return HexColor('#000000');
-
+      case 7:return HexColor('#000000');
     }
   }
 

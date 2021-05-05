@@ -14,17 +14,21 @@ import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'dart:io';
 
+import 'package:package_info/package_info.dart';
+
 class MyApiClient {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  String version;
 
   MyApiClient({@required this.httpClient});
 
   getAccessKey() async {
     try {
-      print('$requestHeaders');
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
       var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders);
+          headers: requestHeaders(version));
 //      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -82,7 +86,7 @@ class MyApiClient {
 //      print('Url is : ${UrlConstants.loginCheck}');
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await post(Uri.parse(UrlConstants.loginCheck),
-          headers: requestHeadersWithAccessKey(accessKey),
+          headers: requestHeadersWithAccessKey(accessKey,version),
           body: json.encode(bodyEncrypted),
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
@@ -134,9 +138,8 @@ class MyApiClient {
 
       debugPrint('request without encryption: $body');
       debugPrint('request without encryption: ${json.encode(body)}');
-      debugPrint('request headers : ${requestHeadersWithAccessKey(accessKey)}');
       final response = await post(Uri.parse(UrlConstants.retryOtp),
-          headers: requestHeadersWithAccessKey(accessKey),
+          headers: requestHeadersWithAccessKey(accessKey,version),
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
@@ -194,7 +197,7 @@ class MyApiClient {
 //      debugPrint('request without encryption: $body');
 //      debugPrint('request headers: ${requestHeadersWithAccessKey(accessKey)}');
       final response = await post(Uri.parse(UrlConstants.validateOtp),
-          headers: requestHeadersWithAccessKey(accessKey),
+          headers: requestHeadersWithAccessKey(accessKey,version),
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
 //      print('response is :  ${response.body}');

@@ -13,23 +13,23 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClient {
   final http.Client httpClient;
-
+  String version;
   MyApiClient({@required this.httpClient});
 
   Future<AccessKeyModel> getAccessKey() async {
     try {
-      // print('$requestHeaders');
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version=packageInfo.version;
       var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders);
-      // print('Response body is : ${json.decode(response.body)}');
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -50,7 +50,7 @@ class MyApiClient {
 
 
       var response = await http.get(Uri.parse(UrlConstants.getServiceRequestFormData),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       complaintModel = SrComplaintModel.fromJson(json.decode(response.body));
       // print(response.body);
     }
@@ -64,7 +64,7 @@ class MyApiClient {
     RequestorDetailsModel requestorDetailsModel;
     try{
       var response = await http.get(Uri.parse(UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType),
-          headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey));
+          headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey, version));
       requestorDetailsModel = RequestorDetailsModel.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -79,7 +79,7 @@ class MyApiClient {
     try{
       //$offset
       var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10'),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
         serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
         print(serviceRequestComplaintListModel.srComplaintListModal.length);
       print(response.body);
@@ -105,7 +105,7 @@ class MyApiClient {
       }
       // print(url);
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -120,7 +120,7 @@ class MyApiClient {
       var url=UrlConstants.getComplaintListData+empID+'&siteId='+siteID;
       // print(url);
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -134,7 +134,7 @@ class MyApiClient {
     try{
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.addServiceRequest));
       request.headers.addAll(
-          requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey));
+          requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
       print("Request Body/Fields :: " + request.fields.toString());
       for (var file in imageList) {
@@ -166,7 +166,7 @@ class MyApiClient {
     http.Response response;
     try{
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateServiceRequest));
-      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey));
+      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       // print("Request Body/Fields :: " + request.fields.toString());
       // print("Headers"+ request.headers.toString());
@@ -202,7 +202,7 @@ class MyApiClient {
       var url=UrlConstants.srComplaintView+empID+'&id='+id;
       // print(userSecretKey);
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
       print(data);
       complaintViewModel =  ComplaintViewModel.fromJson(data);
@@ -227,7 +227,7 @@ class MyApiClient {
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(UrlConstants.getFilterData,
             headers: requestHeadersWithAccessKeyAndSecretKey(
-                accessKey, userSecurityKey));
+                accessKey, userSecurityKey, version));
         // print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
@@ -250,7 +250,7 @@ class MyApiClient {
       var url=UrlConstants.getSiteAreaDetails+empID+'&siteId='+siteID;
       // print(url);
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       print(response.body);
       siteAreaDetailsModel = SiteAreaModel.fromJson(json.decode(response.body));
       return siteAreaDetailsModel;
