@@ -196,6 +196,32 @@ class EventsFilterController extends GetxController {
 //    Get.back();
     return _infDetailModel;
   }
+
+  Future<AddInfluencerModel> getInfDataInfo(String contact) async {
+    AddInfluencerModel _infDetailModel;
+
+    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
+    //It is working fine without the progress indicator
+//    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKey();
+
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      _infDetailModel = await repository.getInfDataInfo(accessKey, userSecurityKey, contact);
+      //     .then((value) {
+      //   if(value.respCode == "DM1002"){
+      //         return _infDetailModel;
+      //   }else if(value.respCode == "NUM404") {
+      //     return _infDetailsModel;
+      //   }
+      // });
+    });
+//    Get.back();
+    return _infDetailModel;
+  }
+
 }
 
 

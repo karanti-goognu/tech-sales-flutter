@@ -30,6 +30,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   DealerInfModel _dealerInfModel;
   InfDetailModel _infDetailModel;
   InfDetailsModel _infDetailsModel;
+  AddInfluencerModel _addInfluencerModel;
   EventsFilterController _eventsFilterController = Get.find();
   int dealerId, _infTypeId;
   bool _isUpdate = false;
@@ -337,7 +338,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 controller: _contactController,
                 maxLength: 10,
                 onEditingComplete: (){
-                  getInfluencerData(_contactController.text);
+                  // getInfluencerData(_contactController.text);
+                  getInfluencerDataInfo(_contactController.text);
                   //Get.back();
                 },
                 // validator: (value) {
@@ -729,6 +731,36 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
        print("response : ");
      });
   }
+
+  getInfluencerDataInfo(String contact)async{
+    await _eventsFilterController.getInfDataInfo(contact).then((data) {
+      _addInfluencerModel = data;
+      setState(() {
+        print(data);
+        if(data != null){
+          if(_addInfluencerModel.respCode=="DM1002" && _addInfluencerModel.influencerModel!=null){
+            _infNameController.text = _addInfluencerModel.influencerModel.inflName;
+            _infTypeController.text = '${_addInfluencerModel.influencerModel.influencerTypeText}';
+          }else{
+            print("response : "+_addInfluencerModel.respMsg);
+            print("response : "+_addInfluencerModel.influencerCategoryEntitiesList[0].inflCatDesc);
+          }
+
+        }
+
+        //     //if(data.respCode == "DM1002"){
+        //       _infDetailModel = data;
+        //       _infNameController.text = _infDetailModel.influencerModel.inflName;
+        //       _infTypeController.text = '${_infDetailModel.influencerModel.influencerTypeText}';
+        //     // }else if(data.respCode == "NUM404"){
+        //     //   _infDetailsModel = data;
+        //     //   getBottomSheetInf();
+        //     // }
+      });
+      print("response : ");
+    });
+  }
+
 
   updateBtnPressed()async{
     List dealersList = List();

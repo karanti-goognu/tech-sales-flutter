@@ -254,15 +254,24 @@ String version;
   }
 
 
-Future<InfDetailModel> getInfdata(String accessKey,
+ Future<InfDetailModel> getInfdata(String accessKey,
     String userSecretKey, String contact) async {
   InfDetailModel infDetailModel;
   InfDetailsModel infDetailsModel;
+  print("print-->"+contact);
   try {
-    var response = await http.get(
-        Uri.parse(UrlConstants.getInfDetails + "$contact"),
-        headers: requestHeadersWithAccessKeyAndSecretKey(
-            accessKey, userSecretKey,version));
+    var response = await http.get(Uri.parse(UrlConstants.getInfDetails + "$contact"),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+
+    print("print-->"+json.decode(response.body).toString());
+
+    var respCode = json.decode(response.body);
+
+    if(respCode["respCode"]=="DM1002"){
+      print("respCode DM1002");
+    }else{
+      print("respCode NUM404");
+    }
 
     infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
 
@@ -292,6 +301,38 @@ Future<InfDetailModel> getInfdata(String accessKey,
   
   return infDetailModel;
 }
+
+Future<AddInfluencerModel> getInfdataInfo(String accessKey,
+    String userSecretKey, String contact) async {
+  AddInfluencerModel infDetailModel;
+  try {
+    var response = await http.get(Uri.parse(UrlConstants.getInfDetails + "$contact"),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+
+    print("print-->"+json.decode(response.body).toString());
+
+    var respCode = json.decode(response.body);
+
+    // if(respCode["respCode"]=="DM1002"){
+    //   print("respCode DM1002");
+    //   infDetailModel = AddInfluencerModel.fromJson(json.decode(response.body));
+    // }else{
+    //   print("respCode NUM404");
+    // }
+
+    infDetailModel = AddInfluencerModel.fromJson(json.decode(response.body));
+
+    print('RESP : ${response.body}');
+    print(
+        'UURL:::: ${UrlConstants.getInfDetails + "$contact"}');
+  }
+  catch (e) {
+    print("Exception at EG Repo $e");
+  }
+
+  return infDetailModel;
+}
+
 }
 
 
