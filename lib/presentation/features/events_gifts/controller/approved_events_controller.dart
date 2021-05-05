@@ -47,9 +47,7 @@ class EventsFilterController extends GetxController {
   get infDetailModel => _infDetailModel.value;
   set infDetailModel(value) => _infDetailModel.value = value;
 
-  final _infDetailsModel = InfDetailsModel().obs;
-  get infDetailsModel => _infDetailsModel.value;
-  set infDetailsModel(value) => _infDetailsModel.value = value;
+
 
   Future<String> getAccessKey() {
     return repository.getAccessKey();
@@ -173,7 +171,7 @@ class EventsFilterController extends GetxController {
 
   Future<InfDetailModel> getInfData(String contact) async {
     InfDetailModel _infDetailModel;
-    InfDetailsModel _infDetailsModel;
+   // InfDetailsModel _infDetailsModel;
 
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator

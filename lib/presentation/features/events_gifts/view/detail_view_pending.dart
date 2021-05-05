@@ -94,6 +94,8 @@ class _DetailPendingState extends State<DetailPending> {
 
   setText() {
     if (detailEventModel != null && detailEventModel.mwpEventModel != null) {
+      // DateTime t = DateTime.parse('${detailEventModel.mwpEventModel.eventTime}');
+      // displayTime = '${t.hour}:${t.minute}';
       int _total = detailEventModel.mwpEventModel.dalmiaInflCount +
           detailEventModel.mwpEventModel.nonDalmiaInflCount;
       venueLbl = detailEventModel.mwpEventModel.venue;

@@ -257,7 +257,7 @@ String version;
 Future<InfDetailModel> getInfdata(String accessKey,
     String userSecretKey, String contact) async {
   InfDetailModel infDetailModel;
-  InfDetailsModel infDetailsModel;
+ // InfDetailsModel infDetailsModel;
   try {
     var response = await http.get(
         Uri.parse(UrlConstants.getInfDetails + "$contact"),
@@ -265,21 +265,15 @@ Future<InfDetailModel> getInfdata(String accessKey,
             accessKey, userSecretKey,version));
 
     infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
+    //infDetailsModel = InfDetailsModel.fromJson(json.decode(response.body));
 
-    // if(response.body.contains("respCode") == "DM1002"){
-    //   return infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
-    // }
-    //
-    // else if(response.body.contains("respCode") == "NUM404"){
-    //   return infDetailsModel = InfDetailsModel.fromJson(json.decode(response.body));
-    // }
+
     // if(response.statusCode == 200 ){
     //   var data = json.decode(response.body);
     //   if(data["respCode"] == "NUM404") {
-    //     return infDetailsModel =
-    //         InfDetailsModel.fromJson(data);
+    //     return infDetailModel;
     //   }else if(data["respCode"] == "DM1002"){
-    //     return infDetailModel = InfDetailModel.fromJson(data);
+    //     return infDetailModel;
     //   }
     // }
     print('RESP : ${response.body}');

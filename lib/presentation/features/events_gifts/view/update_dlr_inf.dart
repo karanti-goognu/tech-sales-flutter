@@ -29,14 +29,16 @@ class UpdateDlrInf extends StatefulWidget {
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
   DealerInfModel _dealerInfModel;
   InfDetailModel _infDetailModel;
-  InfDetailsModel _infDetailsModel;
   EventsFilterController _eventsFilterController = Get.find();
-  int dealerId, _infTypeId;
+  int dealerId, _infTypeId, _infCatId;
   bool _isUpdate = false;
   TextEditingController _infTypeController = TextEditingController();
   TextEditingController _infNameController = TextEditingController();
   TextEditingController _newInfNameController = TextEditingController();
   TextEditingController _contactController = TextEditingController();
+  TextEditingController _newContactController = TextEditingController();
+
+
 
 
   List<EventInfluencerModelList> selectedInfModels = [];
@@ -416,7 +418,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   addNewInfluencerBottomSheetWidget() {
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.4,
+        height: SizeConfig.screenHeight / 1.3,
         color: Colors.white,
         child: Column(
           children: [
@@ -439,7 +441,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               padding: const EdgeInsets.only(
                   right: 16, left: 16, bottom: 8, top: 12),
               child: TextFormField(
-                // maxLength: 10,
+                controller: _newContactController,
+                 maxLength: 10,
                 // onEditingComplete: (){
                 //   getInfluencerData(_contactController.text);
                 // },
@@ -464,7 +467,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       FormFieldStyle.buildInputDecoration(labelText: "Name"),
                 )),
             Padding(
-                padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                padding: const EdgeInsets.only(
+                    right: 16, left: 16, bottom: 12),
                 child: DropdownButtonFormField(
                   onChanged: (value) {
                     setState(() {
@@ -472,22 +476,48 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     });
                   },
                   items:
-                      // addEventModel == null
-                      //     ? []
-                      //     : addEventModel.eventTypeModels
-                      ['Type1', 'Type1']
-                          .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e),
-                              ))
-                          .toList(),
+                  _infDetailModel == null
+                      ? []
+                      : _infDetailModel.influencerTypeEntitiesList
+                      .map((e) => DropdownMenuItem(
+                    value: e.inflTypeId,
+                    child: Text('${e.inflTypeId}', maxLines: null,),
+                  ))
+                      .toList(),
                   style: FormFieldStyle.formFieldTextStyle,
                   decoration: FormFieldStyle.buildInputDecoration(
                       labelText: "Influencer Type"),
                   validator: (value) => value == null
-                      ? 'Please select the Influencer type'
+                      ? 'Please select the Influencer Category'
                       : null,
                 )),
+            // Padding(
+            //     padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+            //     child: Expanded(
+            //       flex: 1,
+            //       child: DropdownButtonFormField(
+            //         onChanged: (value) {
+            //           setState(() {
+            //             _infTypeId = value;
+            //           });
+            //         },
+            //         items:
+            //             _infDetailsModel == null
+            //                 ? []
+            //                 : _infDetailsModel.influencerTypeEntitiesList
+            //                 .map((e) => DropdownMenuItem(
+            //                       value: e.inflTypeId,
+            //                       child: Text(e.inflTypeDesc, maxLines: null,),
+            //                     ))
+            //                 .toList(),
+            //         style: FormFieldStyle.formFieldTextStyle,
+            //         decoration: FormFieldStyle.buildInputDecoration(
+            //             labelText: "Influencer Type"),
+            //         validator: (value) => value == null
+            //             ? 'Please select the Influencer type'
+            //             : null,
+            //       ),
+            //     )),
             SizedBox(height: 12),
 
             Container(
@@ -511,17 +541,16 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       child: DropdownButtonFormField(
                         onChanged: (value) {
                           setState(() {
-                           // _infTypeId = value;
+                            _infCatId = value;
                           });
                         },
                         items:
-                            // addEventModel == null
-                            //     ? []
-                            //     : addEventModel.eventTypeModels
-                            ['Type1', 'Type1']
+      _infDetailModel == null
+      ? []
+          : _infDetailModel.influencerCategoryEntitiesList
                                 .map((e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Text(e),
+                                      value: e.inflCatId,
+                                      child: Text(e.inflCatDesc, maxLines: null,),
                                     ))
                                 .toList(),
                         style: FormFieldStyle.formFieldTextStyle,
@@ -712,19 +741,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       _infDetailModel = data;
        setState(() {
          print(data);
-         if(data != null){
+         if(_infDetailModel.influencerModel != null){
            _infNameController.text = _infDetailModel.influencerModel.inflName;
-           _infTypeController.text = '${_infDetailModel.influencerModel.influencerTypeText}';
+           _infTypeController.text = _infDetailModel.influencerModel.influencerTypeText;
+         }else {
+           getBottomSheetInf();
          }
-
-    //     //if(data.respCode == "DM1002"){
-    //       _infDetailModel = data;
-    //       _infNameController.text = _infDetailModel.influencerModel.inflName;
-    //       _infTypeController.text = '${_infDetailModel.influencerModel.influencerTypeText}';
-    //     // }else if(data.respCode == "NUM404"){
-    //     //   _infDetailsModel = data;
-    //     //   getBottomSheetInf();
-    //     // }
       });
        print("response : ");
      });

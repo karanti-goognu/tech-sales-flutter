@@ -2,8 +2,11 @@ class InfDetailModel {
   String respCode;
   String respMsg;
   InfluencerModel influencerModel;
+  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList;
+  List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList;
 
-  InfDetailModel({this.respCode, this.respMsg, this.influencerModel});
+  InfDetailModel({this.respCode, this.respMsg, this.influencerModel,this.influencerTypeEntitiesList,
+    this.influencerCategoryEntitiesList});
 
   InfDetailModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -11,6 +14,22 @@ class InfDetailModel {
     influencerModel = json['influencer_model'] != null
         ? new InfluencerModel.fromJson(json['influencer_model'])
         : null;
+
+    if (json['influencer_type_entities_list'] != null) {
+      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>();
+      json['influencer_type_entities_list'].forEach((v) {
+        influencerTypeEntitiesList
+            .add(new InfluencerTypeEntitiesList.fromJson(v));
+      });
+    }
+    if (json['influencer_category_entities_list'] != null) {
+      influencerCategoryEntitiesList =
+      new List<InfluencerCategoryEntitiesList>();
+      json['influencer_category_entities_list'].forEach((v) {
+        influencerCategoryEntitiesList
+            .add(new InfluencerCategoryEntitiesList.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -19,6 +38,15 @@ class InfDetailModel {
     data['respMsg'] = this.respMsg;
     if (this.influencerModel != null) {
       data['influencer_model'] = this.influencerModel.toJson();
+    }
+
+    if (this.influencerTypeEntitiesList != null) {
+      data['influencer_type_entities_list'] =
+          this.influencerTypeEntitiesList.map((v) => v.toJson()).toList();
+    }
+    if (this.influencerCategoryEntitiesList != null) {
+      data['influencer_category_entities_list'] =
+          this.influencerCategoryEntitiesList.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -65,53 +93,53 @@ class InfluencerModel {
   }
 }
 
-class InfDetailsModel {
-  String respCode;
-  String respMsg;
-  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList;
-  List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList;
-
-  InfDetailsModel(
-      {this.respCode,
-        this.respMsg,
-        this.influencerTypeEntitiesList,
-        this.influencerCategoryEntitiesList});
-
-  InfDetailsModel.fromJson(Map<String, dynamic> json) {
-    respCode = json['respCode'];
-    respMsg = json['respMsg'];
-    if (json['influencer_type_entities_list'] != null) {
-      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>();
-      json['influencer_type_entities_list'].forEach((v) {
-        influencerTypeEntitiesList
-            .add(new InfluencerTypeEntitiesList.fromJson(v));
-      });
-    }
-    if (json['influencer_category_entities_list'] != null) {
-      influencerCategoryEntitiesList =
-      new List<InfluencerCategoryEntitiesList>();
-      json['influencer_category_entities_list'].forEach((v) {
-        influencerCategoryEntitiesList
-            .add(new InfluencerCategoryEntitiesList.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['respCode'] = this.respCode;
-    data['respMsg'] = this.respMsg;
-    if (this.influencerTypeEntitiesList != null) {
-      data['influencer_type_entities_list'] =
-          this.influencerTypeEntitiesList.map((v) => v.toJson()).toList();
-    }
-    if (this.influencerCategoryEntitiesList != null) {
-      data['influencer_category_entities_list'] =
-          this.influencerCategoryEntitiesList.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
+// class InfDetailsModel {
+//   String respCode;
+//   String respMsg;
+//   List<InfluencerTypeEntitiesList> influencerTypeEntitiesList;
+//   List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList;
+//
+//   InfDetailsModel(
+//       {this.respCode,
+//         this.respMsg,
+//         this.influencerTypeEntitiesList,
+//         this.influencerCategoryEntitiesList});
+//
+//   InfDetailsModel.fromJson(Map<String, dynamic> json) {
+//     respCode = json['respCode'];
+//     respMsg = json['respMsg'];
+//     if (json['influencer_type_entities_list'] != null) {
+//       influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>();
+//       json['influencer_type_entities_list'].forEach((v) {
+//         influencerTypeEntitiesList
+//             .add(new InfluencerTypeEntitiesList.fromJson(v));
+//       });
+//     }
+//     if (json['influencer_category_entities_list'] != null) {
+//       influencerCategoryEntitiesList =
+//       new List<InfluencerCategoryEntitiesList>();
+//       json['influencer_category_entities_list'].forEach((v) {
+//         influencerCategoryEntitiesList
+//             .add(new InfluencerCategoryEntitiesList.fromJson(v));
+//       });
+//     }
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['respCode'] = this.respCode;
+//     data['respMsg'] = this.respMsg;
+//     if (this.influencerTypeEntitiesList != null) {
+//       data['influencer_type_entities_list'] =
+//           this.influencerTypeEntitiesList.map((v) => v.toJson()).toList();
+//     }
+//     if (this.influencerCategoryEntitiesList != null) {
+//       data['influencer_category_entities_list'] =
+//           this.influencerCategoryEntitiesList.map((v) => v.toJson()).toList();
+//     }
+//     return data;
+//   }
+// }
 
 class InfluencerTypeEntitiesList {
   int inflTypeId;
