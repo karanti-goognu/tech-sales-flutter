@@ -1,6 +1,4 @@
-
 import 'dart:convert';
-
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
@@ -17,20 +15,22 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 
 class MyApiClientEvent {
-
+String version;
   final http.Client httpClient;
 
   MyApiClientEvent({@required this.httpClient});
 
   Future getAccessKey() async {
     try {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
       var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders);
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -49,7 +49,7 @@ class MyApiClientEvent {
       String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
       print(url);
       var response = await httpClient.get(url,
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
        print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -72,7 +72,7 @@ class MyApiClientEvent {
 
       var response = await http.get(Uri.parse(UrlConstants.getAddEvent + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey));
+              accessKey, userSecretKey,version));
       addEventModel = AddEventModel.fromJson(json.decode(response.body));
       // print(response.body);
     }
@@ -88,7 +88,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.getInfluencer + mobileNo),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey));
+              accessKey, userSecretKey,version));
       influencerViewModel =
           InfluencerViewModel.fromJson(json.decode(response.body));
       // print(response.body);
@@ -106,7 +106,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey));
+              accessKey, userSecretKey,version));
       allEventsModel = AllEventsModel.fromJson(json.decode(response.body));
        print(response.body);
     }
@@ -123,7 +123,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.getApproveEvents + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey));
+              accessKey, userSecretKey,version));
       approvedEventsModel =
           ApprovedEventsModel.fromJson(json.decode(response.body));
       // print(response.body);
@@ -141,7 +141,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.getDetailEvent + empID + "&eventId=$eventId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey));
+              accessKey, userSecretKey,version));
       detailEventModel = DetailEventModel.fromJson(json.decode(response.body));
       print('RESP : ${response.body}');
       print(
@@ -158,7 +158,7 @@ class MyApiClientEvent {
     SaveEventResponse saveEventResponse;
     try{
       var response = await http.post(Uri.parse(UrlConstants.saveEvent),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
           body: json.encode(saveEventFormModel),
       );
       print('URL : ${response.request}');
@@ -181,7 +181,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.deleteEvent + empID + "&eventId=$eventId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey));
+              accessKey, userSecretKey,version));
       deleteEventModel = DeleteEventModel.fromJson(json.decode(response.body));
       print('RESP : ${response.body}');
       print(
@@ -197,7 +197,7 @@ class MyApiClientEvent {
     StartEventResponse startEventResponse;
     try{
       var response = await http.post(Uri.parse(UrlConstants.startEvent),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(startEventModel),
       );
       print('URL : ${response.request}');
@@ -220,7 +220,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.getDealerInfList + empID + "&eventId=$eventId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey));
+              accessKey, userSecretKey,version));
       dealerInfModel = DealerInfModel.fromJson(json.decode(response.body));
       print('RESP : ${response.body}');
       print(

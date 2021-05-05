@@ -12,17 +12,19 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
 
 class MyApiClientDashboard {
   final http.Client httpClient;
-
+  String version;
   MyApiClientDashboard({this.httpClient});
 
   getAccessKey() async {
     try {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
       var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders);
-//      print('Response body is : ${json.decode(response.body)}');
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel;
@@ -42,7 +44,7 @@ class MyApiClientDashboard {
       var data;
       String url = UrlConstants.shareReport+empID;
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(url));
-      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey));
+      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey,version));
       String fileName = image.path.split("/").last;
       var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
       var length = await image.length();
@@ -62,11 +64,11 @@ class MyApiClientDashboard {
     }
   }
 
-  Future getMonthViewDetails(String empID, String yearMonth)async{
+  Future getMonthViewDetails(String empID, String yearMonth, String accessKey, String userSecurityKey, )async{
     try{
       var url=UrlConstants.dashboadrMonthlyView+empID+'&yearMonth='+yearMonth;
       print(url);
-      var response = await httpClient.get(url,headers: requestHeaders);
+      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -84,12 +86,12 @@ class MyApiClientDashboard {
 
   }
 
-  Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth) async{
+  Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth, String accessKey, String userSecurityKey, ) async{
     print('$empID $yearMonth');
     try{
       var url=UrlConstants.dashboardMtdGeneratedVolumeSiteList+empID+'&yearMonth='+yearMonth;
       print(url);
-      var response = await httpClient.get(url,headers: requestHeaders);
+      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -105,12 +107,12 @@ class MyApiClientDashboard {
 
   }
 
-  Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth) async{
+  Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth, String accessKey, String userSecurityKey, ) async{
     print('$empID $yearMonth');
     try{
       var url=UrlConstants.dashboardMtdConvertedVolumeList+empID+'&yearMonth='+yearMonth;
       print(url);
-      var response = await httpClient.get(url,headers: requestHeaders);
+      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -126,11 +128,11 @@ class MyApiClientDashboard {
 
   }
 
-  Future getYearlyViewDetails(String empID)async{
+  Future getYearlyViewDetails(String empID,  String accessKey, String userSecurityKey, )async{
     try{
       var url=UrlConstants.dashboardYearlyView+empID;
       print(url);
-      var response = await httpClient.get(url,headers: requestHeaders);
+      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

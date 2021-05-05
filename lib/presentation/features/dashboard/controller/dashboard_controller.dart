@@ -105,16 +105,18 @@ class DashboardController extends GetxController {
               child: CircularProgressIndicator(),
             ),
             barrierDismissible: false));
-//    String userSecurityCode;
+    String userSecurityCode;
     var value= await repository.getAccessKey();
       this.accessKeyResponse = value;
      var prefs = await SharedPreferences.getInstance();
 //    String empID;
 //        empID = prefs.getString(StringConstants.employeeId);
+    userSecurityCode = prefs.getString(StringConstants.userSecurityKey);
+
     empID=empID=='_empty'?prefs.getString(StringConstants.employeeId):empID;
     print(empID);
 
-    var data= await repository.getYearlyViewDetails(empID);
+    var data= await repository.getYearlyViewDetails(empID, this.accessKeyResponse.accessKey,userSecurityCode );
           this.dashboardYearlyViewModel = data;
 //          print(":::: $data ::::");
           List tempMonthList = this.dashboardYearlyViewModel.dashboardYearlyModels
@@ -181,19 +183,20 @@ class DashboardController extends GetxController {
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
+
       print("Before prefs: $empId");
       if (empId == 'empty'||empId == '_empty'){
         empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+
       }
       print("empId    $empId");
-      userSecurityKey =
-          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      userSecurityKey =  prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print("After prefs: $empId");
       print('Controller empID: ${this.empId}');
       this.empId = empId;
       print('Controller empID after month details: ${this.empId}');
       isProcessComplete = true;
-      repository.getMonthViewDetails(empId, yearMonth).then((_) {
+      repository.getMonthViewDetails(empId, yearMonth,this.accessKeyResponse.accessKey,userSecurityKey ).then((_) {
         print(_.generatedCount);
 
         DashboardMonthlyViewModel data = _;
@@ -235,7 +238,7 @@ class DashboardController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       repository
-          .getDashboardMtdGeneratedVolumeSiteList(empId, this.yearMonth.toString())
+          .getDashboardMtdGeneratedVolumeSiteList(empId, this.yearMonth.toString(),this.accessKeyResponse.accessKey,userSecurityKey )
           .then((_) {
         SitesListModel data = _;
 //        print(data);
@@ -260,7 +263,7 @@ class DashboardController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print("After prefs: $empId");
 
-      var _=await repository.getDashboardMtdConvertedVolumeList(empId, this.yearMonth.toString());
+      var _=await repository.getDashboardMtdConvertedVolumeList(empId, this.yearMonth.toString(),this.accessKeyResponse.accessKey,userSecurityKey );
         DashboardMtdConvertedVolumeList data = _;
         this.mtdConvertedVolumeList = data;
     }).catchError((e) => print(e));

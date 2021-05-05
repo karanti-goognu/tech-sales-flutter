@@ -9,19 +9,23 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:package_info/package_info.dart';
 
 class MyApiClientHome {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  String version;
 
   MyApiClientHome({@required this.httpClient});
 
   getAccessKey() async {
     try {
-      // print("dsacsdcc" + requestHeaders.toString());
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
+
+      print("Inside Access Key::::::::$version");
       var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders);
-      print('Response body is : ${json.decode(response.body)}');
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -63,7 +67,7 @@ class MyApiClientHome {
 //      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
 
       var response = await httpClient.post(UrlConstants.getCheckInDetails,
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey,version),
           body: jsonEncode(requestBody));
 
       print('Response body is : ${json.decode(response.body)}');
@@ -85,7 +89,7 @@ class MyApiClientHome {
     try {
       String url = UrlConstants.homepageDashboardData + empId;
       print(url);
-      var response = await httpClient.get(url, headers: requestHeaders);
+      var response = await httpClient.get(url, headers: requestHeaders(version));
       print('Response body is : Homepage Dashboard ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

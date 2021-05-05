@@ -18,19 +18,22 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClientSites {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  String version;
 
   MyApiClientSites({@required this.httpClient});
 
   getAccessKey() async {
     try {
-      // print("dsacsdcc" + requestHeaders.toString());
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
       var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders);
+          headers: requestHeaders(version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -49,7 +52,7 @@ class MyApiClientSites {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': StringConstants.appVersion,
+        'app-version': version,
         'reference-id': empId,
         'mobile-number': mobile,
       };
@@ -82,7 +85,7 @@ class MyApiClientSites {
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(UrlConstants.getFilterData,
             headers: requestHeadersWithAccessKeyAndSecretKey(
-                accessKey, userSecurityKey));
+                accessKey, userSecurityKey, version));
         print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
@@ -104,7 +107,7 @@ class MyApiClientSites {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await get(Uri.parse(url),
           headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
+              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey, version));
       //var response = await httpClient.post(UrlConstants.loginCheck);
       // print('response is :  ${response.body}');
       if (response.statusCode == 200) {
@@ -125,7 +128,7 @@ class MyApiClientSites {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await get(Uri.parse(url),
           headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
+              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey, version));
       //var response = await httpClient.post(UrlConstants.loginCheck);
       print('response is :  ${response.body}');
       if (response.statusCode == 200) {
@@ -150,7 +153,7 @@ class MyApiClientSites {
       String url= UrlConstants.getSiteData + "$siteId&referenceID=$empID";
       print(url);
       final response = await get(Uri.parse(UrlConstants.getSiteData + "$siteId&referenceID=$empID"),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version),
       );
 
       print('Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
@@ -184,7 +187,7 @@ class MyApiClientSites {
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateSiteData));
     print(UrlConstants.updateSiteData);
-    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey));
+    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey, version));
     print(json.encode(updateDataRequest));
     updateDataRequest['siteVisitHistoryEntity'].forEach((e)=>print(e));
 

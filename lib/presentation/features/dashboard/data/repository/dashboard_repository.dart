@@ -16,20 +16,20 @@ class DashboardRepository {
    return apiClient.shareReport(image, userSecurityKey, accessKey, empID);
  }
 
- Future getMonthViewDetails(String empID, String yearMonth){
-    return apiClient.getMonthViewDetails(empID,yearMonth);
+ Future getMonthViewDetails(String empID, String yearMonth, String accessKey, String userSecurityKey){
+    return apiClient.getMonthViewDetails(empID,yearMonth,accessKey, userSecurityKey, );
  }
 
- Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth){
-    return apiClient.getDashboardMtdGeneratedVolumeSiteList(empID,yearMonth);
+ Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth, String accessKey, String userSecurityKey){
+    return apiClient.getDashboardMtdGeneratedVolumeSiteList(empID,yearMonth,accessKey, userSecurityKey, );
   }
 
-  Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth){
-    return apiClient.getDashboardMtdConvertedVolumeList(empID,yearMonth);
+  Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth, String accessKey, String userSecurityKey){
+    return apiClient.getDashboardMtdConvertedVolumeList(empID,yearMonth,accessKey, userSecurityKey, );
   }
 
-  Future getYearlyViewDetails(String empID){
-    return apiClient.getYearlyViewDetails(empID);
+  Future getYearlyViewDetails(String empID, String accessKey, String userSecurityKey){
+    return apiClient.getYearlyViewDetails(empID,accessKey, userSecurityKey, );
   }
 
 

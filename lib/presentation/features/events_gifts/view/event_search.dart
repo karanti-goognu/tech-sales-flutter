@@ -12,6 +12,18 @@ class _EventSearchState extends State<EventSearch> {
   TextEditingController controller = new TextEditingController();
   AllEventController _eventController = Get.find();
 
+  HexColor _color(int id){
+    switch(id){
+      case 1:return HexColor('#F9A61A');
+      case 2:return HexColor('#39B54A');
+      case 3:return HexColor('#B00020');
+      case 4:return HexColor('#F9A61A');
+      case 5:return HexColor('#F9A61A');
+      case 6:return HexColor('#000000');
+      case 7:return HexColor('#000000');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +62,7 @@ class _EventSearchState extends State<EventSearch> {
         ));
   }
 Widget eventsDetailWidget(){
-    return
-     Obx(()=>
+    return Obx(()=>
      _eventController.dataForSearchResult.eventListModels==null?Container():
      ListView.builder(
        padding:  const EdgeInsets.only(
@@ -69,7 +80,7 @@ Widget eventsDetailWidget(){
                  decoration: BoxDecoration(
                    border: Border(
                        left: BorderSide(
-                         color: HexColor('#808080'),
+                         color: _color(_eventController.dataForSearchResult.eventListModels[index].eventStatusId),
                          width: 6,
                        )),
                  ),
@@ -89,8 +100,8 @@ Widget eventsDetailWidget(){
                            ),
                            Chip(
                              shape: StadiumBorder(
-                                 side: BorderSide(color: HexColor('#808080'))),
-                             backgroundColor: HexColor('#808080').withOpacity(0.1),
+                                 side: BorderSide(color: _color(_eventController.dataForSearchResult.eventListModels[index].eventStatusId))),
+                             backgroundColor: _color(_eventController.dataForSearchResult.eventListModels[index].eventStatusId).withOpacity(0.2),
                              label: Text(
                                  'Status: ${_eventController.dataForSearchResult.eventListModels[index].eventStatusText}'),
                            ),

@@ -24,21 +24,24 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClientLeads {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   final db = DraftLeadDBHelper();
+  String version;
+
 
   MyApiClientLeads({@required this.httpClient});
 
   getAccessKey() async {
     try {
-      // print("dsacsdcc" + requestHeaders.toString());
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
       var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders);
-//      print('Response body is : ${json.decode(response.body)}');
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -90,7 +93,7 @@ class MyApiClientLeads {
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(UrlConstants.getFilterData,
             headers: requestHeadersWithAccessKeyAndSecretKey(
-                accessKey, userSecurityKey));
+                accessKey, userSecurityKey,version));
 //        print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
@@ -112,7 +115,7 @@ class MyApiClientLeads {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await get(Uri.parse(url),
           headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
+              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version));
       //var response = await httpClient.post(UrlConstants.loginCheck);
 //      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
@@ -134,7 +137,7 @@ class MyApiClientLeads {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await get(Uri.parse(url),
           headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey));
+              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version));
       //var response = await httpClient.post(UrlConstants.loginCheck);
 //      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
@@ -152,13 +155,9 @@ class MyApiClientLeads {
 
   getAddLeadsData(String accessKey, String userSecurityKey) async {
     try {
-      print(
-          requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var response = await httpClient.get(UrlConstants.addLeadsData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey));
-//      print('Response body is  : ${json.decode(response.body)}');
-
+              accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AddLeadInitialModel addLeadInitialModel =
@@ -178,7 +177,6 @@ class MyApiClientLeads {
     phoneNumber,
   ) async {
     try {
-      //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var bodyEncrypted = {"inflContact": phoneNumber};
       // print('Request body is  : ${json.encode(bodyEncrypted)}');
       // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
@@ -186,7 +184,7 @@ class MyApiClientLeads {
       final response = await get(
         Uri.parse(UrlConstants.getInflData + "/$phoneNumber"),
         headers:
-            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
       );
 //      print('Response body is  : ${json.decode(response.body)}');
       // print('Response body is  : ${json.decode(response.body)}');
@@ -195,8 +193,6 @@ class MyApiClientLeads {
         var data = json.decode(response.body);
         InfluencerDetail influencerDetailModel =
             InfluencerDetail.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');\
-        //  print(influencerDetailModel.inflName);
         return influencerDetailModel;
       } else
         print('error');
@@ -216,7 +212,7 @@ class MyApiClientLeads {
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.saveLeadsData));
     request.headers.addAll(
-        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
 
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
@@ -351,16 +347,10 @@ class MyApiClientLeads {
      try {
       //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var bodyEncrypted = {"leadId": leadId};
-
-      print("Request Header :: " +
-          json.encode(requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey)));
-
-
-      final response = await get(
+       final response = await get(
         Uri.parse(UrlConstants.getLeadData + "$leadId"+"&referenceID=$empID"),
          headers:
-         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
       );
 //      print('Response body is  : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
@@ -383,7 +373,7 @@ class MyApiClientLeads {
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateLeadsData));
     request.headers.addAll(
-        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
 
     for (var file in imageList) {
       String fileName = file.path.split("/").last;

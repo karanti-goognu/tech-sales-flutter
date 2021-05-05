@@ -7,17 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
+import 'package:package_info/package_info.dart';
 
 class MyApiClientEvent {
 
   final http.Client httpClient;
-
+String version;
   MyApiClientEvent({@required this.httpClient});
 
   Future<String> getAccessKey() async {
     try {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
       var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders);
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -33,7 +36,7 @@ class MyApiClientEvent {
     try{
       var url=UrlConstants.getGiftStock +empID;
       print(url);
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -54,7 +57,7 @@ class MyApiClientEvent {
     try{
       var url=UrlConstants.getViewLogs +empID+ "&monthYear="+monthYear;
       print(url);
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
+      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         LogsModel logsModel;
@@ -75,7 +78,7 @@ class MyApiClientEvent {
       var url=UrlConstants.addGiftStock ;
       print(empID);
       var response = await httpClient.post(url,
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
 
           body: jsonEncode({
             "comment": comment,
