@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -29,7 +27,6 @@ class UpdateDlrInf extends StatefulWidget {
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
   DealerInfModel _dealerInfModel;
   InfDetailModel _infDetailModel;
-  AddInfluencerModel _addInfluencerModel;
   EventsFilterController _eventsFilterController = Get.find();
   int dealerId, _infTypeId, _infCatId;
   bool _isUpdate = false;
@@ -340,8 +337,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 controller: _contactController,
                 maxLength: 10,
                 onEditingComplete: (){
-                  // getInfluencerData(_contactController.text);
-                  getInfluencerDataInfo(_contactController.text);
+                   getInfluencerData(_contactController.text);
                   //Get.back();
                 },
                 // validator: (value) {
@@ -742,47 +738,21 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     await _eventsFilterController.getInfData(contact).then((data) {
       _infDetailModel = data;
        setState(() {
-         print(data);
-         if(_infDetailModel.influencerModel != null){
-           _infNameController.text = _infDetailModel.influencerModel.inflName;
-           _infTypeController.text = _infDetailModel.influencerModel.influencerTypeText;
-         }else {
-           getBottomSheetInf();
+         if(data != null) {
+           if (_infDetailModel.respCode == "DM1002" &&
+               _infDetailModel.influencerModel != null) {
+             _infNameController.text =
+                 _infDetailModel.influencerModel.inflName;
+             _infTypeController.text =
+             '${_infDetailModel.influencerModel.influencerTypeText}';
+           } else {
+             getBottomSheetInf();
+           }
          }
       });
        print("response : ");
      });
   }
-
-  getInfluencerDataInfo(String contact)async{
-    await _eventsFilterController.getInfDataInfo(contact).then((data) {
-      _addInfluencerModel = data;
-      setState(() {
-        print(data);
-        if(data != null){
-          if(_addInfluencerModel.respCode=="DM1002" && _addInfluencerModel.influencerModel!=null){
-            _infNameController.text = _addInfluencerModel.influencerModel.inflName;
-            _infTypeController.text = '${_addInfluencerModel.influencerModel.influencerTypeText}';
-          }else{
-            print("response : "+_addInfluencerModel.respMsg);
-            print("response : "+_addInfluencerModel.influencerCategoryEntitiesList[0].inflCatDesc);
-          }
-
-        }
-
-        //     //if(data.respCode == "DM1002"){
-        //       _infDetailModel = data;
-        //       _infNameController.text = _infDetailModel.influencerModel.inflName;
-        //       _infTypeController.text = '${_infDetailModel.influencerModel.influencerTypeText}';
-        //     // }else if(data.respCode == "NUM404"){
-        //     //   _infDetailsModel = data;
-        //     //   getBottomSheetInf();
-        //     // }
-      });
-      print("response : ");
-    });
-  }
-
 
   updateBtnPressed()async{
     List dealersList = List();

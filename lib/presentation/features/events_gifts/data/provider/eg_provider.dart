@@ -273,17 +273,6 @@ String version;
     }
 
     infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
-    //infDetailsModel = InfDetailsModel.fromJson(json.decode(response.body));
-
-
-    // if(response.statusCode == 200 ){
-    //   var data = json.decode(response.body);
-    //   if(data["respCode"] == "NUM404") {
-    //     return infDetailModel;
-    //   }else if(data["respCode"] == "DM1002"){
-    //     return infDetailModel;
-    //   }
-    // }
     print('RESP : ${response.body}');
     print(
         'UURL:::: ${UrlConstants.getInfDetails + "$contact"}');
@@ -292,37 +281,6 @@ String version;
     print("Exception at EG Repo $e");
   }
   
-  return infDetailModel;
-}
-
-Future<AddInfluencerModel> getInfdataInfo(String accessKey,
-    String userSecretKey, String contact) async {
-  AddInfluencerModel infDetailModel;
-  try {
-    var response = await http.get(Uri.parse(UrlConstants.getInfDetails + "$contact"),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
-
-    print("print-->"+json.decode(response.body).toString());
-
-    var respCode = json.decode(response.body);
-
-    // if(respCode["respCode"]=="DM1002"){
-    //   print("respCode DM1002");
-    //   infDetailModel = AddInfluencerModel.fromJson(json.decode(response.body));
-    // }else{
-    //   print("respCode NUM404");
-    // }
-
-    infDetailModel = AddInfluencerModel.fromJson(json.decode(response.body));
-
-    print('RESP : ${response.body}');
-    print(
-        'UURL:::: ${UrlConstants.getInfDetails + "$contact"}');
-  }
-  catch (e) {
-    print("Exception at EG Repo $e");
-  }
-
   return infDetailModel;
 }
 
