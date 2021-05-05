@@ -15,6 +15,7 @@ import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gifts.dart';
@@ -183,6 +184,11 @@ class AppPages {
     GetPage(
       name: Routes.START_EVENT,
       page: () => StartEvent(),
+      //binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: Routes.END_EVENT,
+      page: () => EndEvent(),
       //binding: DashboardBinding(),
     ),
     GetPage(

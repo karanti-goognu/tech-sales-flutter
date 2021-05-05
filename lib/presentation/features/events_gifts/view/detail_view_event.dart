@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
@@ -167,7 +168,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(Routes.END_EVENT);
+              },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(28.0),
                   side: BorderSide(color: Colors.white)),

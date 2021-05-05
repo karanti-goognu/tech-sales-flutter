@@ -59,7 +59,8 @@ class _StartEventState extends State<StartEvent> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                    },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(28.0),
                         side: BorderSide(color: Colors.white)),
