@@ -241,6 +241,20 @@ class AllEventController extends GetxController {
     return egAllEventData;
   }
 
+  getEndEventDetail( String eventId)async{
+    String userSecurityKey = "";
+    String empID = "";
+    String accessKey = await repository.getAccessKey();
+    Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+
+    var data = await repository.getEndEventDetail(accessKey, userSecurityKey, empID, eventId);
+
+
+  }
 
 
 }

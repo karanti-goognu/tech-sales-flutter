@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +31,7 @@ class MyApiClientSites {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       version= packageInfo.version;
+      print("$version 1");
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       print('Response body is : ${json.decode(response.body)}');
@@ -48,6 +48,8 @@ class MyApiClientSites {
   }
 
   getSecretKey(String empId, String mobile) async {
+    print("$version 2");
+
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
@@ -75,6 +77,8 @@ class MyApiClientSites {
 
   getFilterData(String accessKey) async {
     try {
+      print("$version 3");
+
       String userSecurityKey = "empty";
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
@@ -104,10 +108,13 @@ class MyApiClientSites {
 
   getSitesData(String accessKey, String securityKey, String url) async {
     try {
+      print("$version 4");
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
+
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await get(Uri.parse(url),
-          headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey, version));
+          headers:  requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey, version));
       //var response = await httpClient.post(UrlConstants.loginCheck);
       // print('response is :  ${response.body}');
       if (response.statusCode == 200) {
@@ -125,10 +132,11 @@ class MyApiClientSites {
 
   getSearchData(String accessKey, String securityKey, String url) async {
     try {
+      print("$version 5");
+
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await get(Uri.parse(url),
-          headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey, version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey, version));
       //var response = await httpClient.post(UrlConstants.loginCheck);
       print('response is :  ${response.body}');
       if (response.statusCode == 200) {
@@ -146,6 +154,8 @@ class MyApiClientSites {
 
   getSiteDetailsData(String accessKey, String userSecurityKey, int siteId, String empID) async {
     try {
+      print("$version 6");
+
       //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
       var bodyEncrypted = {"SiteId": siteId};
       // print('Request body is  : ${json.encode(bodyEncrypted)}');

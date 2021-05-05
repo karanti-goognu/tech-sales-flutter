@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
@@ -159,10 +160,6 @@ String version;
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
           body: json.encode(saveEventFormModel),
       );
-      print('URL : ${response.request}');
-      print('RESP: ${response.body}');
-      print('RESPONSE : ${json.encode(saveEventFormModel)}');
-
       saveEventResponse = SaveEventResponse.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -191,6 +188,8 @@ String version;
     return deleteEventModel;
   }
 
+
+
   Future<StartEventResponse>startEvent(String accessKey, String userSecretKey, StartEventModel startEventModel) async {
     StartEventResponse startEventResponse;
     try{
@@ -198,10 +197,6 @@ String version;
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(startEventModel),
       );
-      print('URL : ${response.request}');
-      print('RESP: ${response.body}');
-      print('RESPONSE : ${json.encode(startEventModel)}');
-
       startEventResponse = StartEventResponse.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -209,6 +204,19 @@ String version;
     }
     return startEventResponse;
   }
+
+Future<EndEventModel> getEndEventDetail(String accessKey,String userSecretKey, String empId, String eventId) async{
+  EndEventModel endEventModel;
+  try{
+    var url = UrlConstants.endEvent +empId + "eventId=$eventId";
+    var response = await http.get(url, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
+    print(response.body);
+    endEventModel = EndEventModel.fromJson(json.decode(response.body));
+  }catch(e){
+    print("Exception at EG Repo $e");
+  }
+  return endEventModel;
+}
 
 
   Future<DealerInfModel> getDealerInfList(String accessKey,

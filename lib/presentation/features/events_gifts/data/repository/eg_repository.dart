@@ -1,5 +1,6 @@
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
@@ -63,5 +64,7 @@ class EgRepository{
     return apiClient.getDealerInfList(accessKey, userSecretKey, empID, eventID);
   }
 
-
+  Future<EndEventModel> getEndEventDetail(String accessKey,String userSecretKey, String empId, String eventId) async {
+    return apiClient.getEndEventDetail(accessKey, userSecretKey, empId, eventId);
+  }
 }
