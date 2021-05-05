@@ -3,15 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateDlrInf extends StatefulWidget {
   int eventId;
@@ -24,38 +28,48 @@ class UpdateDlrInf extends StatefulWidget {
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
   DealerInfModel _dealerInfModel;
   EventsFilterController _eventsFilterController = Get.find();
-  int dealerId;
-  bool _isVisible = false;
+  int dealerId, _infTypeId;
+  bool _isUpdate = false;
+  TextEditingController _infTypeController = TextEditingController();
+  TextEditingController _infNameController = TextEditingController();
+  TextEditingController _newInfNameController = TextEditingController();
+  List<EventInfluencerModelList> selectedInfModels = [];
 
   @override
   void initState() {
-    getData();
     super.initState();
+    getEmpId();
+    getData();
+  }
+
+  Future getEmpId() async {
+    String empID = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+    return empID;
   }
 
   getData() async {
-      await _eventsFilterController.getDealerInfList(widget.eventId).then((data) {
-        setState(() {
-          _dealerInfModel = data;
-        });
-        print('RESPONSE, ${data}');
-        setData();
+    await _eventsFilterController.getDealerInfList(widget.eventId).then((data) {
+      setState(() {
+        _dealerInfModel = data;
       });
+      print('RESPONSE, ${data}');
+      setData();
+    });
   }
 
-  setData(){
+  setData() {
     if (_dealerInfModel.eventDealersModelList != null &&
         _dealerInfModel.eventDealersModelList.length != 0) {
-      for (int i = 0;
-      i < _dealerInfModel.eventDealersModelList.length;
-      i++) {
+      for (int i = 0; i < _dealerInfModel.eventDealersModelList.length; i++) {
         selectedDealersModels.add(DealersModel(
             dealerId: _dealerInfModel.eventDealersModelList[i].dealerId,
-            dealerName:
-            _dealerInfModel.eventDealersModelList[i].dealerName));
+            dealerName: _dealerInfModel.eventDealersModelList[i].dealerName));
 
         selectedDealer.add(_dealerInfModel.eventDealersModelList[i].dealerName);
-
       }
     }
   }
@@ -64,12 +78,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   void dispose() {
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()
-      ..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)
-      ..init(context);
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 
     final influencer = GestureDetector(
       onTap: () => getBottomSheet(),
@@ -81,7 +94,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               labelText: 'Add Influencer(s)',
               suffixIcon: Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
                 child: Icon(
                   Icons.add,
                   size: 20,
@@ -91,33 +104,24 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             ),
             child: Container(
               height: 30,
-              child: Text('Add Influencer(s)'),
-              // ListView(
-              //   scrollDirection:
-              //   Axis.horizontal,
-              //   children:
-              //   selectedRequestSubtypeObjectList
-              //       .map(
-              //           (e) =>
-              //           Padding(
-              //             padding:
-              //             const EdgeInsets.symmetric(horizontal: 4.0),
-              //             child:
-              //             Chip(
-              //               label:
-              //               Text(
-              //                 e.serviceRequestTypeText,
-              //                 style:
-              //                 TextStyle(fontSize: 10),
-              //               ),
-              //               backgroundColor: Colors
-              //                   .lightGreen
-              //                   .withOpacity(0.2),
-              //             ),
-              //           )
-              //   )
-              //       .toList(),
-              // ),
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: _dealerInfModel == null
+                    ? []
+                    :
+                _dealerInfModel.eventInfluencerModelList
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: Chip(
+                            label: Text(
+                              e.inflName,
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            backgroundColor: Colors.lightGreen.withOpacity(0.2),
+                          ),
+                        ))
+                    .toList(),
+              ),
             ),
           );
         },
@@ -134,7 +138,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               labelText: 'Add Dealer(s)',
               suffixIcon: Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
                 child: Icon(
                   Icons.add,
                   size: 20,
@@ -148,25 +152,27 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 scrollDirection: Axis.horizontal,
                 children: selectedDealersModels
                     .map((e) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                  child: Chip(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        side: BorderSide(color: Colors.grey)),
-                    deleteIcon: Icon(Icons.close, size: ScreenUtil().setSp(15),),
-                    onDeleted: (){
-                      setState(() {
-                        selectedDealersModels.remove(e);
-                      });
-
-                    },
-                    label: Text(
-                      e.dealerName,
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    backgroundColor: Colors.white,
-                  ),
-                ))
+                          padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                          child: Chip(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                side: BorderSide(color: Colors.grey)),
+                            deleteIcon: Icon(
+                              Icons.close,
+                              size: ScreenUtil().setSp(15),
+                            ),
+                            onDeleted: () {
+                              setState(() {
+                                selectedDealersModels.remove(e);
+                              });
+                            },
+                            label: Text(
+                              e.dealerName,
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            backgroundColor: Colors.white,
+                          ),
+                        ))
                     .toList(),
               ),
             ),
@@ -183,14 +189,15 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
           child: Text(
             "UPDATE",
             style:
-            //TextStyles.btnWhite,
-            TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
-                fontSize: ScreenUtil().setSp(15)),
+                //TextStyles.btnWhite,
+                TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    // letterSpacing: 2,
+                    fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
+            updateBtnPressed();
           },
         ),
         RaisedButton(
@@ -198,19 +205,17 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
           child: Text(
             "ADD LEAD",
             style:
-            //TextStyles.btnWhite,
-            TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
-                fontSize: ScreenUtil().setSp(15)),
+                //TextStyles.btnWhite,
+                TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    // letterSpacing: 2,
+                    fontSize: ScreenUtil().setSp(15)),
           ),
-          onPressed: () {
-          },
+          onPressed: () {},
         ),
       ],
     );
-
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -218,61 +223,74 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         children: [
           Positioned.fill(
               child:
-              //srComplaintModel != null ?
-              ListView(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: ScreenUtil().setSp(16),
-                        top: ScreenUtil().setSp(16), right: ScreenUtil().setSp(16)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'update Dealers & Influencers',
-                          style: TextStyles.titleGreenStyle,
-                        ),
-                        IconButton(icon: Icon(Icons.close), onPressed: (){
-                          Get.back();
-                        })
-                      ],
+                  //srComplaintModel != null ?
+                  ListView(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    left: ScreenUtil().setSp(16),
+                    top: ScreenUtil().setSp(16),
+                    right: ScreenUtil().setSp(16)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'update Dealers & Influencers',
+                      style: TextStyles.titleGreenStyle,
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () {
+                          if(_isUpdate == true){
+                            Get.dialog(CustomDialogs().showSaveChangesDialog(
+                                "Do you want to save changes?"));
+                          }else{
+                            Get.back();
+                          }
 
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-
-                              influencer,
-                              SizedBox(height: 16),
-                              dealer
-
-                            ]),
-                      ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: btns,
-                  )
-                ],
+                        })
+                  ],
+                ),
+              ),
+              SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [influencer, SizedBox(height: 16), dealer]),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: btns,
               )
-            //     : Center(
-            //   child: CircularProgressIndicator(),
-            // ),
-          ),
+            ],
+          )
+              //     : Center(
+              //   child: CircularProgressIndicator(),
+              // ),
+              ),
         ],
       ),
     );
   }
 
   getBottomSheet() {
+    _isUpdate = true;
     Get.bottomSheet(
       addInfluencerBottomSheetWidget(),
       isScrollControlled: true,
     ).then((value) => setState(() {}));
   }
+
+  getBottomSheetInf() {
+    Get.bottomSheet(
+      addNewInfluencerBottomSheetWidget(),
+      isScrollControlled: true,
+    ).then((value) => setState(() {}));
+  }
+
   getBottomSheetForDealer() {
+    _isUpdate = true;
     Get.bottomSheet(
       addDealerBottomSheetWidget(),
       isScrollControlled: true,
@@ -282,7 +300,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   addInfluencerBottomSheetWidget() {
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.3,
+        height: SizeConfig.screenHeight / 1.5,
         color: Colors.white,
         child: Column(
           children: [
@@ -317,114 +335,35 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     //_contactName = data;
                   });
                 },
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorConstants.inputBoxHintColor,
-                    fontFamily: "Muli"),
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: 'Contact No.',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: ColorConstants.backgroundColorBlue,
-                        //color: HexColor("#0000001F"),
-                        width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 1.0),
-                  ),
-                  filled: false,
-                  focusColor: Colors.black,
-                  isDense: false,
-                  labelStyle: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.0),
-                  fillColor: ColorConstants.backgroundColor,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
-              child: TextFormField(
-                // validator: (value) {
-                //   if (value.isEmpty) {
-                //     return "Contact Name can't be empty";
-                //   }
-                //   //leagueSize = int.parse(value);
-                //   return null;
-                // },
-                onChanged: (data) {
-                  setState(() {
-                    //_contactName = data;
-                  });
-                },
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorConstants.inputBoxHintColor,
-                    fontFamily: "Muli"),
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: 'Name',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: ColorConstants.backgroundColorBlue,
-                        //color: HexColor("#0000001F"),
-                        width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 1.0),
-                  ),
-                  filled: false,
-                  focusColor: Colors.black,
-                  isDense: false,
-                  labelStyle: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.0),
-                  fillColor: ColorConstants.backgroundColor,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
-              child: DropdownButtonFormField(
-                onChanged: (value) {
-                  setState(() {
-                    //requestDepartmentId = value;
-                  });
-                },
-                items: [
-                  'Influencer 1',
-                  'Influencer 2',
-                  'Influencer 3',
-                  'Influencer 4'
-                ]
-                    .map((e) => DropdownMenuItem(
-                  value: e,
-                  child: Text(e),
-                ))
-                    .toList(),
                 style: FormFieldStyle.formFieldTextStyle,
+                keyboardType: TextInputType.number,
                 decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Influencer Type"),
-                validator: (value) =>
-                value == null ? 'Please select Influencer type ' : null,
+                    hintText: 'Contact No.'),
               ),
             ),
-            //SizedBox(height: 16),
+            Padding(
+                padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                child: TextFormField(
+                  controller: _infNameController,
+                  style: FormFieldStyle.formFieldTextStyle,
+                  readOnly: true,
+                  enableInteractiveSelection: false,
+                  decoration:
+                      FormFieldStyle.buildInputDecoration(hintText: 'Name'),
+                )),
+            Padding(
+                padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                child: TextFormField(
+                  controller: _infTypeController,
+                  style: FormFieldStyle.formFieldTextStyle,
+                  readOnly: true,
+                  enableInteractiveSelection: false,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                      hintText: "Influencer Type"),
+                )),
             Container(
-              // decoration:
-              //     BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
-              padding: EdgeInsets.only(top: 16, bottom: 20, left: 30, right: 30),
+              padding:
+                  EdgeInsets.only(top: 16, bottom: 20, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -432,9 +371,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     color: HexColor('#1C99D4'),
                     onPressed: () {
                       setState(() {
-                        _isVisible = true;
+                        Get.back();
+                        getBottomSheetInf();
+                        //_isVisible = true;
                       });
-
                     },
                     child: Text(
                       'ADD',
@@ -448,71 +388,150 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               ),
             ),
 
-            Visibility(
-              visible: _isVisible,
-              child: Container(
-                //height: 50,
-                color: ColorConstants.backgroundColorGrey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding:
-                      const EdgeInsets.only(left: 16, top: 12, bottom: 12),
-                      child: Text(
-                        StringConstants.influencerDoesNotExist,
-                        style: TextStyles.formfieldLabelTextDark,
-                        textAlign: TextAlign.left,
-                      ),
+          ],
+        ),
+      );
+    });
+  }
+
+  addNewInfluencerBottomSheetWidget() {
+    return StatefulBuilder(builder: (context, StateSetter setState) {
+      return Container(
+        height: SizeConfig.screenHeight / 1.4,
+        color: Colors.white,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  right: 16, left: 16, bottom: 8, top: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Add Influencer',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                      onPressed: () => Get.back(), icon: Icon(Icons.clear))
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  right: 16, left: 16, bottom: 8, top: 12),
+              child: TextFormField(
+                // validator: (value) {
+                //   if (value.isEmpty) {
+                //     return "Contact Name can't be empty";
+                //   }
+                //   //leagueSize = int.parse(value);
+                //   return null;
+                // },
+                onChanged: (data) {
+                  setState(() {
+                    //_contactName = data;
+                  });
+                },
+                style: FormFieldStyle.formFieldTextStyle,
+                keyboardType: TextInputType.number,
+                decoration: FormFieldStyle.buildInputDecoration(
+                    hintText: 'Contact No.'),
+              ),
+            ),
+            Padding(
+                padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                child: TextFormField(
+                  controller: _newInfNameController,
+                  style: TextStyles.formfieldLabelText,
+                  keyboardType: TextInputType.number,
+                  decoration:
+                      FormFieldStyle.buildInputDecoration(labelText: "Name"),
+                )),
+            Padding(
+                padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                child: DropdownButtonFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      _infTypeId = value;
+                    });
+                  },
+                  items:
+                      // addEventModel == null
+                      //     ? []
+                      //     : addEventModel.eventTypeModels
+                      ['Type1', 'Type1']
+                          .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e),
+                              ))
+                          .toList(),
+                  style: FormFieldStyle.formFieldTextStyle,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                      labelText: "Influencer Type"),
+                  validator: (value) => value == null
+                      ? 'Please select the Influencer type'
+                      : null,
+                )),
+            SizedBox(height: 12),
+
+            Container(
+              //height: 50,
+              color: ColorConstants.backgroundColorGrey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 16, top: 12, bottom: 12),
+                    child: Text(
+                      StringConstants.influencerDoesNotExist,
+                      style: TextStyles.formfieldLabelTextDark,
+                      textAlign: TextAlign.left,
                     ),
-                    Padding(
-                      padding:
-                      const EdgeInsets.only(right: 16, left: 16, bottom: 12),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(
+                          right: 16, left: 16, bottom: 12),
                       child: DropdownButtonFormField(
                         onChanged: (value) {
                           setState(() {
-                            //requestDepartmentId = value;
+                           // _infTypeId = value;
                           });
                         },
-                        items: [
-                          'Influencer 1',
-                          'Influencer 2',
-                          'Influencer 3',
-                          'Influencer 4'
-                        ]
-                            .map((e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e),
-                        ))
-                            .toList(),
+                        items:
+                            // addEventModel == null
+                            //     ? []
+                            //     : addEventModel.eventTypeModels
+                            ['Type1', 'Type1']
+                                .map((e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    ))
+                                .toList(),
                         style: FormFieldStyle.formFieldTextStyle,
                         decoration: FormFieldStyle.buildInputDecoration(
-                            labelText: "Influencer Type"),
+                            labelText: "Dalmia"),
                         validator: (value) => value == null
-                            ? 'Please select Influencer type '
+                            ? 'Please select the Influencer Category'
                             : null,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(1.0),
-                                side: BorderSide(color: Colors.black)),
-                            onPressed: () {},
-                            child: Text(
-                              'Add as a new influencer'.toUpperCase(),
-                              style: ButtonStyles.buttonStyleWhite,
-                            )),
-                      ],
-                    ),
-                    SizedBox(height: 12),
-
-                  ],
-                ),
+                      )),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(1.0),
+                              side: BorderSide(color: Colors.black)),
+                          onPressed: () {},
+                          child: Text(
+                            'Add as a new influencer'.toUpperCase(),
+                            style: ButtonStyles.buttonStyleWhite,
+                          )),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                ],
               ),
             ),
           ],
@@ -521,16 +540,19 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     });
   }
 
-
   List<bool> checkedValues;
   List<String> selectedDealer = [];
   List<DealersModel> selectedDealersModels = [];
-  //List<EventDealersModelList> eventSelectedDealersModels = [];
 
-  //List<String> selectedDealerList = [];
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
+    if (_dealerInfModel.eventDealersModelList != null &&
+        _dealerInfModel.eventDealersModelList.length != 0) {
+      for (int i = 0; i < _dealerInfModel.eventDealersModelList.length; i++) {
+        selectedDealer.add(_dealerInfModel.eventDealersModelList[i].dealerName);
+      }
+    }
     List<DealersModel> dealers = _dealerInfModel.dealersModel;
     checkedValues =
         List.generate(_dealerInfModel.dealersModel.length, (index) => false);
@@ -586,51 +608,49 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 itemCount: dealers.length,
                 itemBuilder: (context, index) {
                   return
-                    // dealerId == dealers[index].dealerId
-                    //   ?
-                    CheckboxListTile(
-                      activeColor: Colors.black,
-                      dense: true,
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(dealers[index].dealerName),
-                          Text('( ${dealers[index].dealerId} )'),
-                        ],
-                      ),
-                      value: selectedDealer.contains(dealers[index].dealerName),
-                     // selected: selectedDealersModels[index].dealerName,
+                      // dealerId == dealers[index].dealerId
+                      //   ?
+                      CheckboxListTile(
+                    activeColor: Colors.black,
+                    dense: true,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(dealers[index].dealerName),
+                        Text('( ${dealers[index].dealerId} )'),
+                      ],
+                    ),
+                    value: selectedDealer.contains(dealers[index].dealerName),
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedDealer.contains(dealers[index].dealerName)
+                            ? selectedDealer.remove(dealers[index].dealerName)
+                            : selectedDealer.add(dealers[index].dealerName);
 
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedDealer.contains(dealers[index].dealerName)
-                              ? selectedDealer.remove(dealers[index].dealerName)
-                              : selectedDealer.add(dealers[index].dealerName);
+                        selectedDealersModels.contains(dealers[index])
+                            ? selectedDealersModels.remove(dealers[index])
+                            : selectedDealersModels.add(dealers[index]);
 
-                          selectedDealersModels.contains(dealers[index])
-                              ? selectedDealersModels.remove(dealers[index])
-                              : selectedDealersModels.add(dealers[index]);
-
-                          checkedValues[index] = newValue;
-                        });
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
-                    );
+                        checkedValues[index] = newValue;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  );
                   //  : Container();
                 },
                 separatorBuilder: (context, index) {
                   return dealerId == dealers[index].dealerId
                       ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Divider(),
-                  )
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Divider(),
+                        )
                       : Container();
                 },
               ),
             ),
             Container(
               decoration:
-              BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
+                  BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
               padding: EdgeInsets.only(top: 24, bottom: 9, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -654,6 +674,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   MaterialButton(
                     color: HexColor('#1C99D4'),
                     onPressed: () {
+                      setState(() {});
                       Get.back();
                     },
                     child: Text(
@@ -670,8 +691,69 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     });
   }
 
+  updateBtnPressed()async{
+    List dealersList = List();
+    List infList = List();
+    String empId = await getEmpId();
+    selectedDealersModels.forEach((e) {
+      setState(() {
+        dealersList.add({
+          'createdBy': empId,
+          'createdOn' : '',
+          'dealerId': e.dealerId,
+          'dealerName' : e.dealerName,
+          'eventDealerId' : '',
+          'eventId': widget.eventId,
+          'eventStage': 'PLAN',
+          'isActive' : 'Y',
+          'modifiedBy' : '',
+          'modifiedOn' : '',
 
+        });
+      });
+    });
 
+    selectedInfModels.forEach((e) {
+      setState(() {
+        dealersList.add({
+          'eventId': widget.eventId,
+          'eventInflId' : e.eventInflId,
+          'inflContact' : e.inflContact,
+          'inflId': e.inflId,
+          'inflName' : e.inflName,
+          'inflTypeId': e.inflTypeId,
+          'isActive' : "Y",
+        });
+      });
+    });
 
+    UpdateDealerInfModel _update = UpdateDealerInfModel.fromJson({
+      'eventDealerRequestsList' : dealersList,
+      'eventInfluencerRequestsList' : infList,
+    }
+
+    );
+    UpdateDealerInfModel _updateDealerInfModel = UpdateDealerInfModel(
+        eventDealerRequestsList: _update.eventDealerRequestsList,
+        eventInfluencerRequestsList : _update.eventInfluencerRequestsList,
+        referenceID : empId
+    );
+
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          _eventsFilterController.getAccessKeyAndSaveDealerInf(_updateDealerInfModel)
+
+        }
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
   }
+}
 

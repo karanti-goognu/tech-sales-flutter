@@ -211,13 +211,15 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
               (detailEventModel != null &&
                       detailEventModel.mwpEventModel != null)
-                  ? Visibility(
-                      visible: isVisible,
-                      child: (detailEventModel.mwpEventModel.eventStatusText ==
+                  ?
+              (detailEventModel.mwpEventModel.eventStatusText ==
                                   StringConstants.approved &&
-                              isEventStarted == 'Y')
+                              isEventStarted == "Y")
                           ? btnAddLead
-                          : btnStartEvent)
+                          : Visibility(
+                  visible: isVisible,
+                  child: btnStartEvent
+              )
                   : Container(child: Text(''))
             ],
           ),

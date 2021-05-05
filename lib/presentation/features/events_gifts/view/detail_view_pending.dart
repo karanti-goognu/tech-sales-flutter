@@ -75,7 +75,8 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   setVisibility() {
-    if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.rejected) {
+    if (detailEventModel.mwpEventModel.eventStatusText ==
+        StringConstants.rejected) {
       isVisible = true;
     } else {
       isVisible = false;
@@ -83,7 +84,8 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   setSaveDraft() {
-    if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.pendingApproval) {
+    if (detailEventModel.mwpEventModel.eventStatusText ==
+        StringConstants.pendingApproval) {
       saveBtnVisible = true;
     } else {
       saveBtnVisible = false;
@@ -139,18 +141,16 @@ class _DetailPendingState extends State<DetailPending> {
   getDetailEventsData() async {
     // await detailEventController.getAccessKey().then((value) async {
     //   print(value.accessKey);
-      await detailEventController
-          .getDetailEventData(widget.eventId)
-          .then((data) {
-        setState(() {
-          detailEventModel = data;
-        });
-        print('DDDD: $data');
-        setVisibility();
-        setSaveDraft();
-        setText();
+    await detailEventController.getDetailEventData(widget.eventId).then((data) {
+      setState(() {
+        detailEventModel = data;
       });
-   // });
+      print('DDDD: $data');
+      setVisibility();
+      setSaveDraft();
+      setText();
+    });
+    // });
   }
 
   Future getEmpId() async {
@@ -425,11 +425,14 @@ class _DetailPendingState extends State<DetailPending> {
                     fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
-            if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.pendingApproval) {
+            if (detailEventModel.mwpEventModel.eventStatusText ==
+                StringConstants.pendingApproval) {
               btnPresssed(1);
-            } else if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.rejected) {
+            } else if (detailEventModel.mwpEventModel.eventStatusText ==
+                StringConstants.rejected) {
               btnPresssed(3);
-            } else if (detailEventModel.mwpEventModel.eventStatusText == StringConstants.notSubmitted) {
+            } else if (detailEventModel.mwpEventModel.eventStatusText ==
+                StringConstants.notSubmitted) {
               btnPresssed(7);
             }
           },
@@ -506,16 +509,18 @@ class _DetailPendingState extends State<DetailPending> {
                                     style: TextStyles.btnWhite,
                                   ),
                                 ),
-                                onPressed: () async{
+                                onPressed: () async {
                                   // await detailEventController.getAccessKey().then((value) async {
                                   //   print(value.accessKey);
-                                    await detailEventController.deleteEvent(widget.eventId).then((data) {
-                                      setState(() {
-                                        _deleteEventModel = data;
-                                      });
-                                      print("response : ");
+                                  await detailEventController
+                                      .deleteEvent(widget.eventId)
+                                      .then((data) {
+                                    setState(() {
+                                      _deleteEventModel = data;
                                     });
-                                 // });
+                                    print("response : ");
+                                  });
+                                  // });
                                 },
                               ),
                             ],
@@ -642,6 +647,13 @@ class _DetailPendingState extends State<DetailPending> {
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
+    if (detailEventModel.eventDealersModelList != null &&
+        detailEventModel.eventDealersModelList.length != 0) {
+      for (int i = 0; i < detailEventModel.eventDealersModelList.length; i++) {
+        selectedDealer
+            .add(detailEventModel.eventDealersModelList[i].dealerName);
+      }
+    }
     List<DealersModels> dealers = detailEventModel.dealersModels;
     checkedValues =
         List.generate(detailEventModel.dealersModels.length, (index) => false);
