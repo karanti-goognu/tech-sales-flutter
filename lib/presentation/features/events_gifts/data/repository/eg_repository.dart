@@ -74,4 +74,8 @@ class EgRepository{
     return apiClient.getInfdata(accessKey, userSecretKey, contact);
   }
 
+  Future<AddInfluencerModel> getInfDataInfo(String accessKey, String userSecretKey, String contact) async{
+    return apiClient.getInfdataInfo(accessKey, userSecretKey, contact);
+  }
+
 }
