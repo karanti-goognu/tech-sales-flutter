@@ -30,7 +30,7 @@ class AllEventController extends GetxController {
   final _eventStatusValue = ''.obs;
   final _selectedPosition = 0.obs;
   final _isFilterApplied = false.obs;
-
+/*
   // final _eventListModels = EventListModels().obs;
   // final _eventStatusEntities = EventStatusEntities().obs;
 
@@ -84,7 +84,7 @@ class AllEventController extends GetxController {
   set eventTypeText(value) {
     _eventTypeText.value = value;
   }
-
+*/
 //  final _searchKey=''.obs;
 //  get searchKey => _searchKey;
 //  set searchKey(value) {
@@ -171,8 +171,7 @@ class AllEventController extends GetxController {
     var data = repository.eventSearch(accessKey, userSecurityKey, empID, searchText);
   }
 
-  //Future<AllEventsModel>
-  getAllEventData() async {
+  Future<AllEventsModel> getAllEventData() async {
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
 //    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
@@ -209,27 +208,27 @@ class AllEventController extends GetxController {
       var url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
       print(url);
 
-     // egAllEventDaa = await
-      repository.getAllEvents(accessKey, userSecurityKey, url).then((data) {
-        if (data == null) {
-          debugPrint('Events Data Response is null');
-        } else {
-          if(this.egAllEventData.eventListModels == null|| this.egAllEventData.eventListModels.isEmpty){
-            this.egAllEventData = data;
-            //this.eventListModels = data.eventListModels;
-          }else{
-            this.egAllEventData.eventListModels = data.eventListModels;
-          }
-
-          if (egAllEventData.respCode == "DM1002") {
-          } else {
-            Get.dialog(CustomDialogs().errorDialog(egAllEventData.respMsg));
-          }
-        }
-      });
+      egAllEventData = await repository.getAllEvents(accessKey, userSecurityKey, url);
+      //     .then((data) {
+      //   if (data == null) {
+      //     debugPrint('Events Data Response is null');
+      //   } else {
+      //     if(this.egAllEventData.eventListModels == null|| this.egAllEventData.eventListModels.isEmpty){
+      //       this.egAllEventData = data;
+      //       //this.eventListModels = data.eventListModels;
+      //     }else{
+      //       this.egAllEventData.eventListModels = data.eventListModels;
+      //     }
+      //
+      //     if (egAllEventData.respCode == "DM1002") {
+      //     } else {
+      //       Get.dialog(CustomDialogs().errorDialog(egAllEventData.respMsg));
+      //     }
+      //   }
+      // });
     });
 //    Get.back();
-    //return egAllEventDaa;
+    return egAllEventData;
   }
 
 

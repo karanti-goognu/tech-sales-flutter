@@ -53,6 +53,9 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             dealerId: _dealerInfModel.eventDealersModelList[i].dealerId,
             dealerName:
             _dealerInfModel.eventDealersModelList[i].dealerName));
+
+        selectedDealer.add(_dealerInfModel.eventDealersModelList[i].dealerName);
+
       }
     }
   }
@@ -596,6 +599,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         ],
                       ),
                       value: selectedDealer.contains(dealers[index].dealerName),
+                     // selected: selectedDealersModels[index].dealerName,
+
                       onChanged: (newValue) {
                         setState(() {
                           selectedDealer.contains(dealers[index].dealerName)
@@ -634,6 +639,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     onTap: () {
                       setState(() {
                         selectedDealer.clear();
+                        selectedDealersModels.clear();
                       });
                     },
                     child: Text(

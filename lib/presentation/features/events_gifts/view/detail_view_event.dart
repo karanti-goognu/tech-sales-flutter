@@ -138,8 +138,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   //         ColorConstants.eventApproved),
                   //     binding: EGBinding());
                   Get.to(
-                          () => UpdateDlrInf(
-                        detailEventModel.mwpEventModel.eventId,),
+                      () => UpdateDlrInf(
+                            detailEventModel.mwpEventModel.eventId,
+                          ),
                       binding: EGBinding());
                 },
                 child: Row(
@@ -180,8 +181,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             FlatButton(
                 onPressed: () {
                   Get.to(
-                          () => UpdateDlrInf(
-                          detailEventModel.mwpEventModel.eventId,),
+                      () => UpdateDlrInf(
+                            detailEventModel.mwpEventModel.eventId,
+                          ),
                       binding: EGBinding());
                 },
                 child: Row(
@@ -208,44 +210,27 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
-              Visibility(
-                  visible: isVisible,
-                  // child: FlatButton(
-                  //   onPressed: () {
-                  //     Get.dialog(CustomDialogs().showStartEventDialog(
-                  //         'Confirmation', "Do you want to start event?"));
-                  //   },
-                  //   shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(28.0),
-                  //       side: BorderSide(color: Colors.white)),
-                  //   color: Colors.transparent,
-                  //   child: Text(
-                  //     'START EVENT',
-                  //     style: TextStyle(color: Colors.white, fontSize: 15),
-                  //   ),
-                  // )),
-                  child: (detailEventModel.mwpEventModel.eventStatusText ==
-                              StringConstants.approved &&
-                          isEventStarted == 'Y')
-                      ? btnAddLead
-                      : btnStartEvent)
+              (detailEventModel != null &&
+                      detailEventModel.mwpEventModel != null)
+                  ? Visibility(
+                      visible: isVisible,
+                      child: (detailEventModel.mwpEventModel.eventStatusText ==
+                                  StringConstants.approved &&
+                              isEventStarted == 'Y')
+                          ? btnAddLead
+                          : btnStartEvent)
+                  : Container(child: Text(''))
             ],
           ),
           bottom: (isEventStarted == "N" &&
                   detailEventModel.mwpEventModel.eventStatusText ==
                       StringConstants.approved)
-              ?
-
-              editRow
+              ? editRow
               : (isEventStarted == "Y" &&
                       detailEventModel.mwpEventModel.eventStatusText ==
                           StringConstants.approved)
                   ? endRow
-                  :
-                  // (detailEventModel.mwpEventModel.eventStatusText !=
-                  //         StringConstants.approved)
-                  // ?
-                  PreferredSize(
+                  : PreferredSize(
                       preferredSize: Size.fromHeight(0),
                       child: Container(),
                     )),
