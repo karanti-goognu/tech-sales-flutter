@@ -387,15 +387,3 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-class leadDetailsModel {
-  String leadID;
-  String district;
-  int sitePotential;
-  bool activeStatus;
-  bool verifiedStatus;
-  String date;
-  int ownerNumber;
-
-  leadDetailsModel(this.leadID, this.district, this.sitePotential,
-      this.activeStatus, this.verifiedStatus, this.date, this.ownerNumber);
-}

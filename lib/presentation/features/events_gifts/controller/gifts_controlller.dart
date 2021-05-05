@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/gifts_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
@@ -97,7 +98,7 @@ class GiftController extends GetxController {
   }
 
   Future addGiftStock({String comment, String giftTypeId, String giftTypeText,String giftInHandQty,String giftInHandQtyNew}) async {
-    var response;
+    SaveVisitResponse response;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKey();
@@ -105,8 +106,11 @@ class GiftController extends GetxController {
       String empID= prefs.getString(StringConstants.employeeId);
       String securityKey = prefs.getString(StringConstants.userSecurityKey);
        response = await repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew);
+       print(response.respMsg);
     });
     Get.back();
+    Get.rawSnackbar(title: "Message", message: response.respMsg);
+
     return response;
   }
   Future getViewLogsData(String monthYear) async {
@@ -118,16 +122,14 @@ class GiftController extends GetxController {
       String empID= prefs.getString(StringConstants.employeeId);
       String securityKey = prefs.getString(StringConstants.userSecurityKey);
       logsModel = await repository.getViewLogsData(accessKey, securityKey,empID, monthYear);
-      print(logsModel.giftStockModelList);
       Get.back();
       if(logsModel.respCode=="DM1006"){
-        print("Good going");
-        Get.back();
         Get.dialog(CustomDialogs().errorDialog(logsModel.respMsg));
         dataForViewLog=<GiftStockList>[];
 
       }
       else{
+        Get.dialog(CustomDialogs().errorDialog(logsModel.respMsg));
         dataForViewLog=logsModel.giftStockModelList;
       }
 

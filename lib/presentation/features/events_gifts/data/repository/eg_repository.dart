@@ -22,7 +22,7 @@ class EgRepository{
   }
 
 
-  Future eventSearch(String accessKey, String userSecurityKey, String empID, String searchText){
+  Future<AllEventsModel> eventSearch(String accessKey, String userSecurityKey, String empID, String searchText){
     return apiClient.eventSearch(accessKey, userSecurityKey, empID, searchText);
   }
 

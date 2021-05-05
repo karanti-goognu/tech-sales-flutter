@@ -37,11 +37,11 @@ class SaveEventController extends GetxController {
         Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    repository.getAccessKey().then((data) async {
 
-      await _prefs.then((SharedPreferences prefs) async {
+      _prefs.then((SharedPreferences prefs) async {
+        String accessKey = await repository.getAccessKey();
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        saveEventRequest(data.accessKey, userSecurityKey, saveEventFormModel)
+        saveEventRequest(accessKey, userSecurityKey, saveEventFormModel)
             .then((value) {
           //Get.back();
           if (value.respMsg == 'DM1002') {
@@ -61,7 +61,6 @@ class SaveEventController extends GetxController {
                 barrierDismissible: false);
           }
          });
-      });
     });
   }
 
