@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/LogsModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -51,16 +52,13 @@ class MyApiClientEvent {
 
   Future getViewLogsData(String accessKey, String userSecurityKey, String empID, String monthYear )async{
     try{
-      var url=UrlConstants.getViewLogs +'EMP0009889' + "&monthYear="+monthYear;
+      var url=UrlConstants.getViewLogs +empID+ "&monthYear="+monthYear;
       print(url);
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
-      print('Response body is :- ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         LogsModel logsModel;
         logsModel = LogsModel.fromJson(data);
-        print("Logs model : $logsModel ${logsModel.giftStockModelList}");
-
         return logsModel;
       } else
         print('error');
@@ -93,8 +91,9 @@ class MyApiClientEvent {
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-
-        return data;
+        SaveVisitResponse addGiftResponse;
+        addGiftResponse= SaveVisitResponse.fromJson(data);
+        return addGiftResponse;
       } else
         print('error');
 

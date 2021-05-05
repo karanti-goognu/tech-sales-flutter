@@ -123,6 +123,7 @@ class ViewLogs extends StatelessWidget {
             SizedBox(height: 20,),
 
             Obx( (){
+              print(giftController.selectedDropdown.toString() + "Do Not Remove This");
               return  Expanded(
                 child: ListView.separated(
                   shrinkWrap: true,
