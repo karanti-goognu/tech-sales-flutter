@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -27,12 +28,17 @@ class UpdateDlrInf extends StatefulWidget {
 
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
   DealerInfModel _dealerInfModel;
+  InfDetailModel _infDetailModel;
+  InfDetailsModel _infDetailsModel;
   EventsFilterController _eventsFilterController = Get.find();
   int dealerId, _infTypeId;
   bool _isUpdate = false;
   TextEditingController _infTypeController = TextEditingController();
   TextEditingController _infNameController = TextEditingController();
   TextEditingController _newInfNameController = TextEditingController();
+  TextEditingController _contactController = TextEditingController();
+
+
   List<EventInfluencerModelList> selectedInfModels = [];
 
   @override
@@ -300,7 +306,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   addInfluencerBottomSheetWidget() {
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.5,
+        height: SizeConfig.screenHeight / 1.8,
         color: Colors.white,
         child: Column(
           children: [
@@ -315,7 +321,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                      onPressed: () => Get.back(), icon: Icon(Icons.clear))
+                      onPressed: () {
+                        _contactController.text = '';
+                        _infNameController.text = '';
+                        _infTypeController.text = '';
+                        Get.back();
+                      }, icon: Icon(Icons.clear))
                 ],
               ),
             ),
@@ -323,18 +334,26 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               padding: const EdgeInsets.only(
                   right: 16, left: 16, bottom: 8, top: 12),
               child: TextFormField(
+                controller: _contactController,
+                maxLength: 10,
+                onEditingComplete: (){
+                  getInfluencerData(_contactController.text);
+                  //Get.back();
+                },
                 // validator: (value) {
                 //   if (value.isEmpty) {
                 //     return "Contact Name can't be empty";
                 //   }
-                //   //leagueSize = int.parse(value);
+                //   if(value.length != 10){
+                //     return "Enter valid Contact number";
+                //   }
                 //   return null;
                 // },
-                onChanged: (data) {
-                  setState(() {
-                    //_contactName = data;
-                  });
-                },
+                // onChanged: (data) {
+                //   setState(() {
+                //     //_contactName = data;
+                //   });
+                // },
                 style: FormFieldStyle.formFieldTextStyle,
                 keyboardType: TextInputType.number,
                 decoration: FormFieldStyle.buildInputDecoration(
@@ -361,32 +380,32 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   decoration: FormFieldStyle.buildInputDecoration(
                       hintText: "Influencer Type"),
                 )),
-            Container(
-              padding:
-                  EdgeInsets.only(top: 16, bottom: 20, left: 30, right: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MaterialButton(
-                    color: HexColor('#1C99D4'),
-                    onPressed: () {
-                      setState(() {
-                        Get.back();
-                        getBottomSheetInf();
-                        //_isVisible = true;
-                      });
-                    },
-                    child: Text(
-                      'ADD',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  Container(
-                    width: 40,
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   padding:
+            //       EdgeInsets.only(top: 16, bottom: 20, left: 30, right: 30),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       MaterialButton(
+            //         color: HexColor('#1C99D4'),
+            //         onPressed: () {
+            //           setState(() {
+            //             Get.back();
+            //             getBottomSheetInf();
+            //             //_isVisible = true;
+            //           });
+            //         },
+            //         child: Text(
+            //           'ADD',
+            //           style: TextStyle(color: Colors.white),
+            //         ),
+            //       ),
+            //       Container(
+            //         width: 40,
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
           ],
         ),
@@ -420,18 +439,15 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               padding: const EdgeInsets.only(
                   right: 16, left: 16, bottom: 8, top: 12),
               child: TextFormField(
-                // validator: (value) {
-                //   if (value.isEmpty) {
-                //     return "Contact Name can't be empty";
-                //   }
-                //   //leagueSize = int.parse(value);
-                //   return null;
+                // maxLength: 10,
+                // onEditingComplete: (){
+                //   getInfluencerData(_contactController.text);
                 // },
-                onChanged: (data) {
-                  setState(() {
-                    //_contactName = data;
-                  });
-                },
+                // onChanged: (data) {
+                //   setState(() {
+                //     //_contactName = data;
+                //   });
+                // },
                 style: FormFieldStyle.formFieldTextStyle,
                 keyboardType: TextInputType.number,
                 decoration: FormFieldStyle.buildInputDecoration(
@@ -689,6 +705,29 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         ),
       );
     });
+  }
+
+  getInfluencerData(String contact)async{
+    await _eventsFilterController.getInfData(contact).then((data) {
+      _infDetailModel = data;
+       setState(() {
+         print(data);
+         if(data != null){
+           _infNameController.text = _infDetailModel.influencerModel.inflName;
+           _infTypeController.text = '${_infDetailModel.influencerModel.influencerTypeText}';
+         }
+
+    //     //if(data.respCode == "DM1002"){
+    //       _infDetailModel = data;
+    //       _infNameController.text = _infDetailModel.influencerModel.inflName;
+    //       _infTypeController.text = '${_infDetailModel.influencerModel.influencerTypeText}';
+    //     // }else if(data.respCode == "NUM404"){
+    //     //   _infDetailsModel = data;
+    //     //   getBottomSheetInf();
+    //     // }
+      });
+       print("response : ");
+     });
   }
 
   updateBtnPressed()async{

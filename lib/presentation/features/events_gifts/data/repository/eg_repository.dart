@@ -1,6 +1,7 @@
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
@@ -67,6 +68,10 @@ class EgRepository{
 
   Future<UpdateDealerInfResponse> updateDealerInf(String accessKey, String userSecretKey, UpdateDealerInfModel updateDealerInfModel) async{
     return apiClient.updateDealerInf(accessKey, userSecretKey, updateDealerInfModel);
+  }
+
+  Future<InfDetailModel> getInfData(String accessKey, String userSecretKey, String contact) async{
+    return apiClient.getInfdata(accessKey, userSecretKey, contact);
   }
 
 }

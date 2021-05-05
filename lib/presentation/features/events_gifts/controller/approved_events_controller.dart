@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
@@ -41,6 +42,14 @@ class EventsFilterController extends GetxController {
   get egApprovedEventDaa => _egApprovedEventData.value;
 
   set egApprovedEventDaa(value) => _egApprovedEventData.value = value;
+
+  final _infDetailModel = InfDetailModel().obs;
+  get infDetailModel => _infDetailModel.value;
+  set infDetailModel(value) => _infDetailModel.value = value;
+
+  final _infDetailsModel = InfDetailsModel().obs;
+  get infDetailsModel => _infDetailsModel.value;
+  set infDetailsModel(value) => _infDetailsModel.value = value;
 
   Future<String> getAccessKey() {
     return repository.getAccessKey();
@@ -159,6 +168,33 @@ class EventsFilterController extends GetxController {
         });
       });
     });
+  }
+
+
+  Future<InfDetailModel> getInfData(String contact) async {
+    InfDetailModel _infDetailModel;
+    InfDetailsModel _infDetailsModel;
+
+    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
+    //It is working fine without the progress indicator
+//    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKey();
+
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      _infDetailModel = await repository.getInfData(accessKey, userSecurityKey, contact);
+      //     .then((value) {
+      //   if(value.respCode == "DM1002"){
+      //         return _infDetailModel;
+      //   }else if(value.respCode == "NUM404") {
+      //     return _infDetailsModel;
+      //   }
+      // });
+    });
+//    Get.back();
+    return _infDetailModel;
   }
 }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
@@ -237,7 +238,7 @@ String version;
     UpdateDealerInfResponse updateDealerInfResponse;
     try{
       var response = await http.post(Uri.parse(UrlConstants.saveEventDealersInfluencers),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(updateDealerInfModel),
       );
       print('URL : ${response.request}');
@@ -251,6 +252,46 @@ String version;
     }
     return updateDealerInfResponse;
   }
+
+
+Future<InfDetailModel> getInfdata(String accessKey,
+    String userSecretKey, String contact) async {
+  InfDetailModel infDetailModel;
+  InfDetailsModel infDetailsModel;
+  try {
+    var response = await http.get(
+        Uri.parse(UrlConstants.getInfDetails + "$contact"),
+        headers: requestHeadersWithAccessKeyAndSecretKey(
+            accessKey, userSecretKey,version));
+
+    infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
+
+    // if(response.body.contains("respCode") == "DM1002"){
+    //   return infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
+    // }
+    //
+    // else if(response.body.contains("respCode") == "NUM404"){
+    //   return infDetailsModel = InfDetailsModel.fromJson(json.decode(response.body));
+    // }
+    // if(response.statusCode == 200 ){
+    //   var data = json.decode(response.body);
+    //   if(data["respCode"] == "NUM404") {
+    //     return infDetailsModel =
+    //         InfDetailsModel.fromJson(data);
+    //   }else if(data["respCode"] == "DM1002"){
+    //     return infDetailModel = InfDetailModel.fromJson(data);
+    //   }
+    // }
+    print('RESP : ${response.body}');
+    print(
+        'UURL:::: ${UrlConstants.getInfDetails + "$contact"}');
+  }
+  catch (e) {
+    print("Exception at EG Repo $e");
+  }
+  
+  return infDetailModel;
+}
 }
 
 
