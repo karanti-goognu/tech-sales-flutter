@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
+import 'package:get/get.dart';
 
 class EndEvent extends StatefulWidget {
   @override
@@ -11,13 +13,12 @@ class EndEvent extends StatefulWidget {
 }
 
 class _EndEventState extends State<EndEvent> {
-  bool _isVisible = false;
-  List<String> comments = ["Testing Meet","Testing Meet2","Testing Meet3","Testing Meet4"];
   ScrollController _scrollController;
+  AllEventController _eventController = Get.find();
   @override
   void initState() {
+    _eventController.getEndEventDetail('47');
     super.initState();
-    //_isVisible = false;
   }
 
   @override
@@ -32,130 +33,82 @@ class _EndEventState extends State<EndEvent> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
-              FlatButton(
-                onPressed: () {},
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28.0),
-                    side: BorderSide(color: Colors.white)),
-                color: Colors.transparent,
-                child: Text(
-                  'ADD LEAD',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-              )
+
             ],
           ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(50),
-            child: Container(
-              padding: EdgeInsets.only(
-                  left: ScreenUtil().setSp(20), bottom: ScreenUtil().setSp(5)),
-              color: ColorConstants.appBarColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FlatButton(
-                    onPressed: () {},
-                    // shape: RoundedRectangleBorder(
-                    //     borderRadius: BorderRadius.circular(28.0),
-                    //     side: BorderSide(color: Colors.white)),
-                    color: Colors.transparent,
-                    // child: Text(
-                    //   'END TIME',
-                    //   style: TextStyle(color: Colors.white, fontSize: 15),
-                    // ),
-                    child: SizedBox(),
-                  ),
-                  FlatButton(
-                      onPressed: () {
-                        //getBottomSheet();
-                        //Get.toNamed(Routes.UPDATE_DLR_INF);
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.edit,
-                              color: ColorConstants.clearAllTextColor,
-                              size: ScreenUtil().setSp(20)),
-                          SizedBox(
-                            width: ScreenUtil().setSp(5),
-                          ),
-                          Text('UPDATE DLR & INF.',
-                              style: TextStyles.robotoBtn14),
-                        ],
-                      ))
-                ],
-              ),
-            ),
-          )),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: ListView(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: ScreenUtil().setSp(10),
-              right: ScreenUtil().setSp(10),
-              top: ScreenUtil().setSp(20),
-              bottom: ScreenUtil().setSp(20),
-            ),
-            child: Text(
-              '24-Mar-2021 | 12 PM',
-              style: TextStyles.mulliBoldBlue,
-            ),
-          ),
-          displayInfo('Event Type', 'Mason meet'),
-          displayInfo('Actual Event Type', 'Mason meet'),
-          displayInfo('Dalmia Influencers', '15'),
-          displayInfo('Actual Dalmia Influencers', '12'),
-          displayInfo('Non-Dalmia Influencers', '15'),
-          displayInfo('Actual Non-Dalmia Influencers', '10'),
-          displayInfo('Total Participants', '15'),
-          displayInfo('Actual Total Participants', '22'),
-          // displayInfo('Venue', 'Booked'),
-          displayInfo('Venue Address', 'XYZ'),
-          displayChip('Dealer(s) Detail'),
-          displayChip('Influencer(s) Detail'),
-          displayInfo('Expected Leads', 'Mason meet'),
-          displayInfo('Actual Leads', 'Mason meet'),
-          displayInfo('Gift distribution', 'Mason meet'),
-          displayInfo('Event location', 'Mason meet'),
-          Card(
-            margin: EdgeInsets.only(left: 10,right: 10,bottom: 20),
-            elevation: 0,
-            child: Theme(
-              data: ThemeData(splashColor: Colors.transparent),
-              child: ExpansionTile(
-                title: Row(
-                  children: [
-                    Container(
-                        height: 20,
-                        width: 20,
-                        child: Icon(Icons.insert_comment_outlined)),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Past Comments'),
-                  ],
+      body: Obx(()=>
+          ListView(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  left: ScreenUtil().setSp(10),
+                  right: ScreenUtil().setSp(10),
+                  top: ScreenUtil().setSp(20),
+                  bottom: ScreenUtil().setSp(20),
                 ),
-                children: [
-                  (comments != null && comments.length > 0)?
-                  getList(comments):Container(
-                    child: Center(child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('No Comments !!'),
-                    ),),)
-                ],
+                child: Text(
+                  '${_eventController.endEventModel.mwpEndEventModel.eventDate} | ${_eventController.endEventModel.mwpEndEventModel.eventTime}',
+                  style: TextStyles.mulliBoldBlue,
+                ),
               ),
-            ),
-          )
-        ],
-      ),
+              displayInfo('Event Type', _eventController.endEventModel.mwpEndEventModel.eventTypeText),
+              displayInfo('Dalmia Influencers', _eventController.endEventModel.mwpEndEventModel.dalmiaInflCount),
+              displayInfo('Actual Dalmia Influencers', _eventController.endEventModel.mwpEndEventModel.actualDalmiaInflCount),
+              displayInfo('Non-Dalmia Influencers', _eventController.endEventModel.mwpEndEventModel.nonDalmiaInflCount),
+              displayInfo('Actual Non-Dalmia Influencers', _eventController.endEventModel.mwpEndEventModel.actualNonDalmiaInflCount),
+              displayInfo('Total Participants', _eventController.endEventModel.mwpEndEventModel.totalParticipantsCount),
+              displayInfo('Actual Total Participants', _eventController.endEventModel.mwpEndEventModel.actualTotalParticipantsCount),
+              // displayInfo('Venue', 'Booked'),
+              displayInfo('Venue Address', _eventController.endEventModel.mwpEndEventModel.venueAddress),
+              displayInfo('Actual Venue Address', _eventController.endEventModel.mwpEndEventModel.actualVenueAddress),
+              displayChip('Dealer(s) Detail', _eventController.endEventModel.eventInfluencerModelsList),
+              displayChip('Influencer(s) Detail', _eventController.endEventModel.eventInfluencerModelsList),
+              displayInfo('Expected Leads', _eventController.endEventModel.mwpEndEventModel.expectedLeadsCount),
+              displayInfo('Actual Leads', _eventController.endEventModel.mwpEndEventModel.actualLeadsCount),
+              displayInfo('Gift distribution', _eventController.endEventModel.mwpEndEventModel.giftDistributionCount),
+              displayInfo('Actual Gift distribution', _eventController.endEventModel.mwpEndEventModel.actualGiftDistributionCount),
+              displayInfo('Event location', _eventController.endEventModel.mwpEndEventModel.eventLocation),
+              displayInfo('Actual Event location', _eventController.endEventModel.mwpEndEventModel.actualEventLocation),
+              Card(
+                margin: EdgeInsets.only(left: 10,right: 10,bottom: 20),
+                elevation: 0,
+                child: Theme(
+                  data: ThemeData(splashColor: Colors.transparent),
+                  child: ExpansionTile(
+                    title: Row(
+                      children: [
+                        Container(
+                            height: 20,
+                            width: 20,
+                            child: Icon(Icons.insert_comment_outlined)),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text('Past Comments'),
+                      ],
+                    ),
+                    children: [
+                      (_eventController.endEventModel.eventCcommentsList != null && _eventController.endEventModel.eventCcommentsList.length > 0)?
+                      getList(_eventController.endEventModel.eventCcommentsList):Container(
+                        child: Center(child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('No Comments !!'),
+                        ),),)
+                    ],
+                  ),
+                ),
+              )
+            ],
+          )),
     );
   }
 
-  Widget displayInfo(String title, String value) {
+  Widget displayInfo(String title, var value) {
     return Padding(
       padding: EdgeInsets.only(
         left: ScreenUtil().setSp(15),
@@ -172,9 +125,12 @@ class _EndEventState extends State<EndEvent> {
                 title,
                 style: TextStyles.formfieldLabelTextDark,
               ),
-              Text(
-                value,
-                style: TextStyles.mulliBold16,
+              SizedBox(width: 40,),
+              Flexible(
+                child: Text(
+                  value.toString(),
+                  style: TextStyles.mulliBold16,
+                ),
               )
             ],
           ),
@@ -190,7 +146,7 @@ class _EndEventState extends State<EndEvent> {
     );
   }
 
-  Widget displayChip(String title) {
+  Widget displayChip(String title, List list) {
     return Padding(
         padding: EdgeInsets.only(
           left: ScreenUtil().setSp(15),
@@ -213,33 +169,32 @@ class _EndEventState extends State<EndEvent> {
               child: ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                children: ['Chip1', 'Chip1Chip1']
-                    // selectedRequestSubtypeObjectList
+                children: list
                     .map((e) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Chip(
-                            label: Text(
-                              e,
-                              // e.serviceRequestTypeText,
-                              style: TextStyle(
-                                  fontFamily: "Muli",
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14.0),
-                            ),
-                            backgroundColor: Colors.white,
-                            // elevation: 3,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15),
-                              ),
-                              side: BorderSide(
-                                width: 1,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ))
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Chip(
+                    label: Text(
+                      e.inflName,
+                      // e.serviceRequestTypeText,
+                      style: TextStyle(
+                          fontFamily: "Muli",
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14.0),
+                    ),
+                    backgroundColor: Colors.white,
+                    // elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                      side: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ))
                     .toList(),
               ),
             ),
@@ -254,7 +209,7 @@ class _EndEventState extends State<EndEvent> {
         ));
   }
 
-  Widget getList(List<String> list) {
+  Widget getList(List list) {
     //  getSortedData();
     return (list != null && list.length > 0 )
     //&& list != null)
@@ -292,12 +247,10 @@ class _EndEventState extends State<EndEvent> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            list[index],
+                            list[index].comments,
                             style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "Muli",
-                                //fontWeight:
-                                // FontWeight.bold
                                 fontWeight: FontWeight.normal),
                             // ),
                           ),

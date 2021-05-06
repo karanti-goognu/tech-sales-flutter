@@ -1,6 +1,6 @@
-import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
@@ -17,67 +17,98 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/provider/eg_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
 
-class EgRepository{
+class EgRepository {
   final MyApiClientEvent apiClient;
+
   EgRepository({this.apiClient});
 
-  Future getAccessKey(){
+  Future getAccessKey() {
     return apiClient.getAccessKey();
   }
 
-
-  Future<AllEventsModel> eventSearch(String accessKey, String userSecurityKey, String empID, String searchText){
+  Future<AllEventsModel> eventSearch(String accessKey, String userSecurityKey,
+      String empID, String searchText) {
     return apiClient.eventSearch(accessKey, userSecurityKey, empID, searchText);
   }
 
-  Future<AddEventModel> getEventTypeData(String accessKey, String userSecretKey, String empID) async{
+  Future<AddEventModel> getEventTypeData(
+      String accessKey, String userSecretKey, String empID) async {
     return apiClient.getEventTypeData(accessKey, userSecretKey, empID);
   }
 
-
-  Future<InfluencerViewModel> getInfluenceType(String accessKey, String userSecretKey,String mobileNumber) async{
+  Future<InfluencerViewModel> getInfluenceType(
+      String accessKey, String userSecretKey, String mobileNumber) async {
     return apiClient.getInfluenceType(accessKey, userSecretKey, mobileNumber);
   }
 
-  Future<AllEventsModel> getAllEvents(String accessKey, String userSecretKey,String url) async{
+  Future<AllEventsModel> getAllEvents(
+      String accessKey, String userSecretKey, String url) async {
     return apiClient.getAllEventData(accessKey, userSecretKey, url);
   }
 
-  Future<ApprovedEventsModel> getApprovedEvents(String accessKey, String userSecretKey,String empID) async{
+  Future<ApprovedEventsModel> getApprovedEvents(
+      String accessKey, String userSecretKey, String empID) async {
     return apiClient.getApprovedEventData(accessKey, userSecretKey, empID);
   }
 
-  Future<DetailEventModel> getdetailEvents(String accessKey, String userSecretKey,String empID, int eventID) async{
-    return apiClient.getDetailEventData(accessKey, userSecretKey, empID, eventID);
+  Future<DetailEventModel> getdetailEvents(
+      String accessKey, String userSecretKey, String empID, int eventID) async {
+    return apiClient.getDetailEventData(
+        accessKey, userSecretKey, empID, eventID);
   }
 
-  Future<SaveEventResponse> saveEventForm(String accessKey, String userSecretKey, SaveEventFormModel saveEventFormModel) async{
-    return apiClient.saveEventRequest(accessKey, userSecretKey,  saveEventFormModel);
+  Future<SaveEventResponse> saveEventForm(String accessKey,
+      String userSecretKey, SaveEventFormModel saveEventFormModel) async {
+    return apiClient.saveEventRequest(
+        accessKey, userSecretKey, saveEventFormModel);
   }
 
-  Future<DeleteEventModel> deleteEvent(String accessKey, String userSecretKey, String empID, int eventID) async{
+  Future<DeleteEventModel> deleteEvent(
+      String accessKey, String userSecretKey, String empID, int eventID) async {
     return apiClient.deleteEvent(accessKey, userSecretKey, empID, eventID);
   }
 
-  Future<StartEventResponse> startEvent(String accessKey, String userSecretKey, StartEventModel startEventModel) async{
+  Future<StartEventResponse> startEvent(String accessKey, String userSecretKey,
+      StartEventModel startEventModel) async {
     return apiClient.startEvent(accessKey, userSecretKey, startEventModel);
   }
 
-  Future<DealerInfModel> getDealerInfList(String accessKey, String userSecretKey, String empID, int eventID) async{
+  Future<DealerInfModel> getDealerInfList(
+      String accessKey, String userSecretKey, String empID, int eventID) async {
     return apiClient.getDealerInfList(accessKey, userSecretKey, empID, eventID);
   }
 
-  Future<UpdateDealerInfResponse> updateDealerInf(String accessKey, String userSecretKey, UpdateDealerInfModel updateDealerInfModel) async{
-    return apiClient.updateDealerInf(accessKey, userSecretKey, updateDealerInfModel);
+  Future<EndEventModel> getEndEventDetail(String accessKey,
+      String userSecretKey, String empId, String eventId) async {
+    return apiClient.getEndEventDetail(
+        accessKey, userSecretKey, empId, eventId);
   }
 
-  Future<InfDetailModel> getInfData(String accessKey, String userSecretKey, String contact) async{
+  Future<EventResponse> submitEndEventDetail(String accessKey,
+      String userSecretKey, String empId, int eventId,
+      String eventComment,String eventDate,double eventEndLat,double eventEndLong) async {
+    return apiClient.submitEndEventDetail(
+        accessKey, userSecretKey, empId, eventId,eventComment,eventDate,eventEndLat,eventEndLong);
+  }
+
+
+  Future<UpdateDealerInfResponse> updateDealerInf(String accessKey,
+      String userSecretKey, UpdateDealerInfModel updateDealerInfModel) async {
+    return apiClient.updateDealerInf(
+        accessKey, userSecretKey, updateDealerInfModel);
+  }
+
+
+  Future<SaveNewInfluencerResponse> saveNewInfluencer(String accessKey, String userSecretKey, SaveNewInfluencerModel saveNewInfluencerModel) async {
+    return apiClient.saveNewInfluencer(
+        accessKey, userSecretKey, saveNewInfluencerModel);
+  }
+
+  Future<InfDetailModel> getInfData(
+      String accessKey, String userSecretKey, String contact) async {
     return apiClient.getInfdata(accessKey, userSecretKey, contact);
-  }
 
-  Future<SaveNewInfluencerResponse> saveNewInfluencer(String accessKey, String userSecretKey, SaveNewInfluencerModel saveNewInfluencerModel) async{
-    return apiClient.saveNewInfluencer(accessKey, userSecretKey, saveNewInfluencerModel);
   }
-
 }

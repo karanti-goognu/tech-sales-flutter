@@ -1,4 +1,3 @@
-
 import 'package:http/http.dart';
 
 final client = Client();
@@ -85,9 +84,12 @@ abstract class UrlConstants {
  static const String deleteEvent = '$baseUrl/event/event-delete?referenceID=';
  static const String getDealerInfList = '$baseUrl/event/get-event-dealers-influencers-list?referenceID=';
  static const String startEvent = '$baseUrl/event/start-event';
+ static const String endEvent = '$baseUrl/event/get_end_event_detail?referenceID=';
  static const String saveEventDealersInfluencers = '$baseUrl/event/save-event-dealers-influencers';
  static const String getInfDetails = '$baseUrl/influencer/get-influencer-detail?inflContact=';
  static const String saveInfluencer = '$baseUrl/influencer/save-influencer';
+ static const String submitEndEvent = '$baseUrl/event/end_event';
 }
+
 
 

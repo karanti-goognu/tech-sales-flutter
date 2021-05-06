@@ -239,8 +239,6 @@ class EventsFilterController extends GetxController {
       });
       //Get.back();
   }
-
-
 }
 
 

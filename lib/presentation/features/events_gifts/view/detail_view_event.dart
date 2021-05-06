@@ -7,10 +7,8 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/controller
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
@@ -170,7 +168,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           children: [
             FlatButton(
               onPressed: () {
-                Get.toNamed(Routes.END_EVENT);
+                Get.dialog(
+                    CustomDialogs().showCommentDialog("Please Enter Comment",context,detailEventModel.mwpEventModel.eventId),
+                    barrierDismissible: false);
+                // Get.toNamed(Routes.END_EVENT);
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(28.0),
