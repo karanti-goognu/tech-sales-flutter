@@ -197,7 +197,8 @@ class EventsFilterController extends GetxController {
     return _infDetailModel;
   }
 
-  Future<SaveNewInfluencerResponse>getAccessKeyAndSaveNewInfluencer(SaveNewInfluencerModel saveNewInfluencerModel) {
+  Future<SaveNewInfluencerResponse>getAccessKeyAndSaveNewInfluencer(SaveNewInfluencerModel saveNewInfluencerModel) async{
+    SaveNewInfluencerResponse saveNewInfluencerResponse;
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -205,39 +206,41 @@ class EventsFilterController extends GetxController {
         Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    repository.getAccessKey().then((data) async {
+   // repository.getAccessKey().then((data) async {
       String accessKey = await repository.getAccessKey();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-       repository.saveNewInfluencer(
-            accessKey, userSecurityKey, saveNewInfluencerModel)
-            .then((value) {
-          //Get.back();
-          if (value.respCode == 'DM1002') {
-            Get.back();
-            Get.dialog(
-                CustomDialogs().errorDialog(value.respMsg.toString()),
-                barrierDismissible: false);
-           // Get.back();
-           //  Get.defaultDialog(
-           //      title: "Message",
-           //      middleText: value.respMsg.toString(),
-           //      confirm: MaterialButton(
-           //        onPressed: () => Get.back(),
-           //        child: Text('OK'),
-           //      ),
-           //      barrierDismissible: false);
-          } else {
-            //Get.back();
-            Get.dialog(
-                CustomDialogs().messageDialogMWP(value.respMsg.toString()),
-                barrierDismissible: false);
-          }
-        });
-        });
+        saveNewInfluencerResponse = await repository.saveNewInfluencer(
+            accessKey, userSecurityKey, saveNewInfluencerModel);
+        //     .then((value) {
+        //   //Get.back();
+        //   if (value.respCode == 'DM1002') {
+        //     Get.back();
+        //     Get.dialog(
+        //         CustomDialogs().errorDialog(value.respMsg.toString()),
+        //         barrierDismissible: false);
+        //    // Get.back();
+        //    //  Get.defaultDialog(
+        //    //      title: "Message",
+        //    //      middleText: value.respMsg.toString(),
+        //    //      confirm: MaterialButton(
+        //    //        onPressed: () => Get.back(),
+        //    //        child: Text('OK'),
+        //    //      ),
+        //    //      barrierDismissible: false);
+        //   } else {
+        //     //Get.back();
+        //     Get.dialog(
+        //         CustomDialogs().messageDialogMWP(value.respMsg.toString()),
+        //         barrierDismissible: false);
+        //   }
+        // });
+        // });
 
       });
-      //Get.back();
+      Get.back();
+      return saveNewInfluencerResponse;
+   // });
   }
 
 

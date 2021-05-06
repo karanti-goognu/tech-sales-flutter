@@ -18,6 +18,7 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateDlrInf extends StatefulWidget {
@@ -31,6 +32,7 @@ class UpdateDlrInf extends StatefulWidget {
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
   DealerInfModel _dealerInfModel;
   InfDetailModel _infDetailModel;
+  SaveNewInfluencerResponse _saveNewInfluencerResponse;
   EventsFilterController _eventsFilterController = Get.find();
   int dealerId, _infTypeId, _infCatId;
   bool _isUpdate = false;
@@ -44,7 +46,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   TextEditingController _newContactController = TextEditingController();
 
   List<EventInfluencerModelList> selectedInfModels = [];
-
 
   @override
   void initState() {
@@ -86,11 +87,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 
     if (_dealerInfModel.eventInfluencerModelList != null &&
         _dealerInfModel.eventInfluencerModelList.length != 0) {
-      for (int i = 0; i < _dealerInfModel.eventInfluencerModelList.length; i++) {
+      for (int i = 0;
+          i < _dealerInfModel.eventInfluencerModelList.length;
+          i++) {
         selectedInfModels.add(EventInfluencerModelList(
             inflId: _dealerInfModel.eventInfluencerModelList[i].inflId,
             inflName: _dealerInfModel.eventInfluencerModelList[i].inflName));
-
       }
     }
   }
@@ -124,12 +126,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               ),
             ),
             child: Container(
-             // height: 30,
-              child:
-              Wrap(
+              // height: 30,
+              child: Wrap(
                 spacing: 6.0,
                 runSpacing: 6.0,
-                children: List<Widget>.generate(selectedInfModels.length, (int index) {
+                children: List<Widget>.generate(selectedInfModels.length,
+                    (int index) {
                   return Chip(
                     label: Text(selectedInfModels[index].inflName),
                     onDeleted: () {
@@ -184,12 +186,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             ),
             child: Container(
               //height: 30,
-              child:
-
-              Wrap(
+              child: Wrap(
                 spacing: 6.0,
                 runSpacing: 6.0,
-                children: List<Widget>.generate(selectedDealersModels.length, (int index) {
+                children: List<Widget>.generate(selectedDealersModels.length,
+                    (int index) {
                   return Chip(
                     label: Text(selectedDealersModels[index].dealerName),
                     onDeleted: () {
@@ -293,13 +294,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     IconButton(
                         icon: Icon(Icons.close),
                         onPressed: () {
-                          if(_isUpdate == true){
+                          if (_isUpdate == true) {
                             Get.dialog(CustomDialogs().showSaveChangesDialog(
                                 "Do you want to save changes?"));
-                          }else{
+                          } else {
                             Get.back();
                           }
-
                         })
                   ],
                 ),
@@ -351,7 +351,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   addInfluencerBottomSheetWidget() {
-    List<EventInfluencerModelList> inf = _dealerInfModel.eventInfluencerModelList;
+    List<EventInfluencerModelList> inf =
+        _dealerInfModel.eventInfluencerModelList;
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.7,
@@ -368,7 +369,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   children: [
                     Text(
                       'Add Influencer',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                         onPressed: () {
@@ -376,7 +378,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                           _infNameController.text = '';
                           _infTypeController.text = '';
                           Get.back();
-                        }, icon: Icon(Icons.clear))
+                        },
+                        icon: Icon(Icons.clear))
                   ],
                 ),
               ),
@@ -386,15 +389,15 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 child: TextFormField(
                   controller: _contactController,
                   maxLength: 10,
-                  onEditingComplete: (){
-                     getInfluencerData(_contactController.text);
+                  onEditingComplete: () {
+                    getInfluencerData(_contactController.text);
                     //Get.back();
                   },
                   validator: (value) {
                     if (value.isEmpty) {
                       return "Contact Name can't be empty";
                     }
-                    if(value.length != 10){
+                    if (value.length != 10) {
                       return "Enter valid Contact number";
                     }
                     return null;
@@ -411,7 +414,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                  padding:
+                      const EdgeInsets.only(right: 16, left: 16, bottom: 8),
                   child: TextFormField(
                     controller: _infNameController,
                     style: FormFieldStyle.formFieldTextStyle,
@@ -421,7 +425,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         FormFieldStyle.buildInputDecoration(hintText: 'Name'),
                   )),
               Padding(
-                  padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                  padding:
+                      const EdgeInsets.only(right: 16, left: 16, bottom: 8),
                   child: TextFormField(
                     maxLines: null,
                     controller: _infTypeController,
@@ -441,12 +446,14 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       color: HexColor('#1C99D4'),
                       onPressed: () {
                         setState(() {
-                            selectedInfModels.add(EventInfluencerModelList(
-                                inflContact: _infDetailModel.influencerModel.inflContact,
-                                inflTypeId: _infDetailModel.influencerModel.inflTypeId,
-                                inflId: _infDetailModel.influencerModel.infl_id,
-                                inflName: _infDetailModel.influencerModel.inflName
-                            ));
+                          selectedInfModels.add(EventInfluencerModelList(
+                              inflContact:
+                                  _infDetailModel.influencerModel.inflContact,
+                              inflTypeId:
+                                  _infDetailModel.influencerModel.inflTypeId,
+                              inflId: _infDetailModel.influencerModel.infl_id,
+                              inflName:
+                                  _infDetailModel.influencerModel.inflName));
 
                           Get.back();
                           _contactController.text = '';
@@ -465,7 +472,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   ],
                 ),
               ),
-
             ],
           ),
         ),
@@ -490,7 +496,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   children: [
                     Text(
                       'Add Influencer',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                         onPressed: () => Get.back(), icon: Icon(Icons.clear))
@@ -502,12 +509,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     right: 16, left: 16, bottom: 8, top: 12),
                 child: TextFormField(
                   controller: _newContactController,
-                   maxLength: 10,
+                  maxLength: 10,
                   validator: (value) {
                     if (value.isEmpty) {
                       return "Contact Name can't be empty";
                     }
-                    if(value.length != 10){
+                    if (value.length != 10) {
                       return "Enter valid Contact number";
                     }
                     return null;
@@ -519,9 +526,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                  padding:
+                      const EdgeInsets.only(right: 16, left: 16, bottom: 8),
                   child: TextFormField(
-                    validator: (value){
+                    validator: (value) {
                       if (value.isEmpty) {
                         return "Name can't be empty";
                       }
@@ -534,23 +542,25 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         FormFieldStyle.buildInputDecoration(labelText: "Name"),
                   )),
               Padding(
-                  padding: const EdgeInsets.only(
-                      right: 16, left: 16, bottom: 12),
+                  padding:
+                      const EdgeInsets.only(right: 16, left: 16, bottom: 12),
                   child: DropdownButtonFormField(
                     onChanged: (value) {
                       setState(() {
                         _infTypeId = value;
                       });
                     },
-                    items:
-                    _infDetailModel == null
+                    items: _infDetailModel == null
                         ? []
                         : _infDetailModel.influencerTypeEntitiesList
-                        .map((e) => DropdownMenuItem(
-                      value: e.inflTypeId,
-                      child: Text('${e.inflTypeId}', maxLines: null,),
-                    ))
-                        .toList(),
+                            .map((e) => DropdownMenuItem(
+                                  value: e.inflTypeId,
+                                  child: Text(
+                                    '${e.inflTypeId}',
+                                    maxLines: null,
+                                  ),
+                                ))
+                            .toList(),
                     style: FormFieldStyle.formFieldTextStyle,
                     decoration: FormFieldStyle.buildInputDecoration(
                         labelText: "Influencer Type"),
@@ -611,13 +621,15 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                               _infCatId = value;
                             });
                           },
-                          items:
-      _infDetailModel == null
-      ? []
-            : _infDetailModel.influencerCategoryEntitiesList
+                          items: _infDetailModel == null
+                              ? []
+                              : _infDetailModel.influencerCategoryEntitiesList
                                   .map((e) => DropdownMenuItem(
                                         value: e.inflCatId,
-                                        child: Text(e.inflCatDesc, maxLines: null,),
+                                        child: Text(
+                                          e.inflCatDesc,
+                                          maxLines: null,
+                                        ),
                                       ))
                                   .toList(),
                           style: FormFieldStyle.formFieldTextStyle,
@@ -806,8 +818,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     });
   }
 
-  getInfluencerData(String contact)async{
-    if(_formKey.currentState.validate()) {
+  getInfluencerData(String contact) async {
+    if (_formKey.currentState.validate()) {
       await _eventsFilterController.getInfData(contact).then((data) {
         _infDetailModel = data;
         setState(() {
@@ -817,9 +829,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               _infNameController.text =
                   _infDetailModel.influencerModel.inflName;
               _infTypeController.text =
-              '${_infDetailModel.influencerModel.influencerTypeText}';
+                  '${_infDetailModel.influencerModel.influencerTypeText}';
             } else {
-
               getBottomSheetInf();
             }
           }
@@ -829,7 +840,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     }
   }
 
-  updateBtnPressed()async{
+  updateBtnPressed() async {
     List _dealersList = List();
     List _infList = List();
     String empId = await getEmpId();
@@ -837,16 +848,15 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       setState(() {
         _dealersList.add({
           'createdBy': empId,
-          'createdOn' : '',
+          'createdOn': '',
           'dealerId': e.dealerId,
-          'dealerName' : e.dealerName,
-          'eventDealerId' : '',
+          'dealerName': e.dealerName,
+          'eventDealerId': 0,
           'eventId': widget.eventId,
           'eventStage': 'PLAN',
-          'isActive' : 'Y',
-          'modifiedBy' : empId,
-          'modifiedOn' : '',
-
+          'isActive': 'Y',
+          'modifiedBy': empId,
+          'modifiedOn': '',
         });
       });
     });
@@ -855,74 +865,127 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       setState(() {
         _infList.add({
           'eventId': widget.eventId,
-          'eventInflId' : e.eventInflId,
-          'inflContact' : e.inflContact,
+          'eventInflId': e.eventInflId,
+          'inflContact': e.inflContact,
           'inflId': e.inflId,
-          'inflName' : e.inflName,
+          'inflName': e.inflName,
           'inflTypeId': e.inflTypeId,
-          'isActive' : "Y",
+          'isActive': "Y",
         });
       });
     });
 
     UpdateDealerInfModel _update = UpdateDealerInfModel.fromJson({
-      'eventDealerRequestsList' : _dealersList,
-      'eventInfluencerRequestsList' : _infList,
-      //'referenceID' : empId
-    }
+      'eventDealerRequestsList': _dealersList,
+      'eventInfluencerRequestsList': _infList,
+      'referenceID' : empId
+    });
 
-    );
-
-    UpdateDealerInfModel _updateDealerInfModel = UpdateDealerInfModel(
-        eventDealerRequestsList: _update.eventDealerRequestsList,
-        eventInfluencerRequestsList : _update.eventInfluencerRequestsList,
-        referenceID : empId
-    );
+    // UpdateDealerInfModel _updateDealerInfModel = UpdateDealerInfModel(
+    //     eventDealerRequestsList: _update.eventDealerRequestsList,
+    //     eventInfluencerRequestsList: _update.eventInfluencerRequestsList,
+    //     referenceID: empId);
 
     print('DEALERS: $_dealersList');
     print('INF : $_infList');
-    print('JSON: $_updateDealerInfModel');
-    internetChecking().then((result) => {
-      if (result == true)
-        {
-          _eventsFilterController.getAccessKeyAndSaveDealerInf(_updateDealerInfModel)
+    print('PARAMS: ${json.encode(_update)}');
 
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+    internetChecking().then((result) => {
+          if (result == true)
+            {
+              _eventsFilterController
+                  .getAccessKeyAndSaveDealerInf(_update)
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
-  addNewInfluencerBtnPressed()async{
-    SaveNewInfluencerModel _save = SaveNewInfluencerModel(
-      ilpIntrested: '',
+  addNewInfluencerBtnPressed() async {
+    if(_newFormKey.currentState.validate()) {
+      SaveNewInfluencerModel _save = SaveNewInfluencerModel(
+        ilpIntrested: '',
         influencerCategoryId: _infCatId,
         influencerName: _newInfNameController.text,
         influencerTypeId: _infTypeId,
         mobileNumber: _newContactController.text,
+      );
+
+      internetChecking().then((result) =>
+      {
+        if (result == true)
+          {
+            _eventsFilterController
+                .getAccessKeyAndSaveNewInfluencer(_save)
+                .then((data) {
+              setState(() {
+                _saveNewInfluencerResponse = data;
+                print('DD: $_saveNewInfluencerResponse');
+                Get.dialog(
+                    successDialog(_saveNewInfluencerResponse.respMsg)
+                );
+              });
+            })
+          }
+        else
+          {
+            Get.snackbar("No internet connection.",
+                "Make sure that your wifi or mobile data is turned on.",
+                colorText: Colors.white,
+                backgroundColor: Colors.red,
+                snackPosition: SnackPosition.BOTTOM),
+          }
+      });
+    }
+  }
+
+  Widget successDialog(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            setState(() {
+              selectedInfModels.add(EventInfluencerModelList(
+                  inflContact: _saveNewInfluencerResponse.mobileNumber,
+                  inflTypeId: _saveNewInfluencerResponse.influencerTypeId,
+                  inflId: _saveNewInfluencerResponse.infl_id,
+                  inflName: _saveNewInfluencerResponse.influencerName));
+            });
+
+            Get.back();
+            Get.back();
+          },
+        ),
+      ],
     );
-
-    internetChecking().then((result) => {
-      if (result == true)
-        {
-          _eventsFilterController.getAccessKeyAndSaveNewInfluencer(_save)
-
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
   }
 }
-
