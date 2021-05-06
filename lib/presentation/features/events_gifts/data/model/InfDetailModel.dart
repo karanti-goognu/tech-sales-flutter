@@ -53,6 +53,7 @@ class InfDetailModel {
 }
 
 class InfluencerModel {
+  int infl_id;
   String inflName;
   String inflContact;
   int inflTypeId;
@@ -62,7 +63,8 @@ class InfluencerModel {
   String ilpIntrested;
 
   InfluencerModel(
-      {this.inflName,
+      { this.infl_id,
+        this.inflName,
         this.inflContact,
         this.inflTypeId,
         this.influencerTypeText,
@@ -71,6 +73,7 @@ class InfluencerModel {
         this.ilpIntrested});
 
   InfluencerModel.fromJson(Map<String, dynamic> json) {
+    infl_id = json['infl_id'];
     inflName = json['infl_name'];
     inflContact = json['infl_contact'];
     inflTypeId = json['infl_type_id'];
@@ -82,6 +85,7 @@ class InfluencerModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['infl_id'] = this.infl_id;
     data['infl_name'] = this.inflName;
     data['infl_contact'] = this.inflContact;
     data['infl_type_id'] = this.inflTypeId;

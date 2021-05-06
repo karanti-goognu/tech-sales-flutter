@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
@@ -282,6 +284,26 @@ String version;
   }
   
   return infDetailModel;
+}
+
+
+Future<SaveNewInfluencerResponse>saveNewInfluencer(String accessKey, String userSecretKey, SaveNewInfluencerModel saveNewInfluencerModel) async {
+  SaveNewInfluencerResponse saveNewInfluencerResponse;
+  try{
+    var response = await http.post(Uri.parse(UrlConstants.saveInfluencer),
+      headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+      body: json.encode(saveNewInfluencerModel),
+    );
+    print('URL : ${response.request}');
+    print('RESP: ${response.body}');
+    print('RESPONSE : ${json.encode(saveNewInfluencerModel)}');
+
+    saveNewInfluencerResponse = SaveNewInfluencerResponse.fromJson(json.decode(response.body));
+  }
+  catch(e){
+    print("Exception at EG Repo $e");
+  }
+  return saveNewInfluencerResponse;
 }
 
 }

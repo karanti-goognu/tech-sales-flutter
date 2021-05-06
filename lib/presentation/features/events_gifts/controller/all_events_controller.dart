@@ -184,7 +184,7 @@ class AllEventController extends GetxController {
   Future<AllEventsModel> getAllEventData() async {
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
-//    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String userSecurityKey = "";
     String empID = "";
     String accessKey = await repository.getAccessKey();
@@ -237,7 +237,7 @@ class AllEventController extends GetxController {
       //   }
       // });
     });
-//    Get.back();
+    Get.back();
     return egAllEventData;
   }
 

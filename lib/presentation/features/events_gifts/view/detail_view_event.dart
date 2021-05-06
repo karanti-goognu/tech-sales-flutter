@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/controller
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';

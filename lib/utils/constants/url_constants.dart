@@ -87,7 +87,7 @@ abstract class UrlConstants {
  static const String startEvent = '$baseUrl/event/start-event';
  static const String saveEventDealersInfluencers = '$baseUrl/event/save-event-dealers-influencers';
  static const String getInfDetails = '$baseUrl/influencer/get-influencer-detail?inflContact=';
-
+ static const String saveInfluencer = '$baseUrl/influencer/save-influencer';
 }
 
 

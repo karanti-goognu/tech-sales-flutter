@@ -100,6 +100,7 @@ class EventInfluencerModelList {
   int inflTypeId;
   String isActive;
 
+
   EventInfluencerModelList(
       {this.eventId,
         this.eventInflId,

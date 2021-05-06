@@ -2,6 +2,8 @@ import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
@@ -74,6 +76,8 @@ class EgRepository{
     return apiClient.getInfdata(accessKey, userSecretKey, contact);
   }
 
-
+  Future<SaveNewInfluencerResponse> saveNewInfluencer(String accessKey, String userSecretKey, SaveNewInfluencerModel saveNewInfluencerModel) async{
+    return apiClient.saveNewInfluencer(accessKey, userSecretKey, saveNewInfluencerModel);
+  }
 
 }

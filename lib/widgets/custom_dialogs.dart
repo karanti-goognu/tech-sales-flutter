@@ -50,12 +50,16 @@ class CustomDialogs {
           onPressed: () {
 
             Get.back();
+            Get.back();
 
           },
         ),
       ],
     );
   }
+
+
+
 
   Widget messageDialogMWP(String message) {
     return WillPopScope(
