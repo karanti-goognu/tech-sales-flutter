@@ -137,7 +137,6 @@ class EventsFilterController extends GetxController {
 
   getAccessKeyAndSaveDealerInf(UpdateDealerInfModel updateDealerInfModel) {
     String userSecurityKey = "";
-    String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     Future.delayed(
@@ -148,11 +147,10 @@ class EventsFilterController extends GetxController {
       String accessKey = await repository.getAccessKey();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        //repository.
-        updateDealerInfRequest(accessKey, userSecurityKey, updateDealerInfModel)
+        repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel)
             .then((value) {
-          //Get.back();
-          if (value.respCode == 'DM2043') {
+          Get.back();
+          if (value.respCode == 'DM1002') {
             Get.back();
             Get.defaultDialog(
                 title: "Message",
@@ -173,11 +171,11 @@ class EventsFilterController extends GetxController {
     });
   }
 
-  Future<UpdateDealerInfResponse> updateDealerInfRequest(String accessKey,
-      String userSecurityKey, UpdateDealerInfModel updateDealerInfModel) {
-    return repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel)
-        .whenComplete(() => responseForDialog = 'Test');
-  }
+  // Future<UpdateDealerInfResponse> updateDealerInfRequest(String accessKey,
+  //     String userSecurityKey, UpdateDealerInfModel updateDealerInfModel) {
+  //   return repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel)
+  //       .whenComplete(() => responseForDialog = 'Test');
+  // }
 
 
   Future<InfDetailModel> getInfData(String contact) async {

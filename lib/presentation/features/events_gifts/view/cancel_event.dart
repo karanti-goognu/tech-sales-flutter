@@ -265,7 +265,7 @@ class _CancelEventtState extends State<CancelEvent> {
         'eventLocation': detailEventModel.mwpEventModel.eventLocation,
         'eventLocationLat': double.tryParse('${detailEventModel.mwpEventModel.eventLocationLat}'),
         'eventLocationLong': double.tryParse('${detailEventModel.mwpEventModel.eventLocationLong}'),
-        'eventStatusId': detailEventModel.mwpEventModel.eventStatusId,
+        'eventStatusId': 5,
         'eventTime': detailEventModel.mwpEventModel.eventTime,
         'eventTypeId': detailEventModel.mwpEventModel.eventTypeId,
         'expectedLeadsCount': detailEventModel.mwpEventModel.expectedLeadsCount,

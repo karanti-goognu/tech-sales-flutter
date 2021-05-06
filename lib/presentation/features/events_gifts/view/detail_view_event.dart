@@ -133,16 +133,16 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                 )),
             FlatButton(
                 onPressed: () {
-                  // Get.to(
-                  //     () => DetailPending(
-                  //         detailEventModel.mwpEventModel.eventId,
-                  //         ColorConstants.eventApproved),
-                  //     binding: EGBinding());
                   Get.to(
-                      () => UpdateDlrInf(
-                            detailEventModel.mwpEventModel.eventId,
-                          ),
+                      () => DetailPending(
+                          detailEventModel.mwpEventModel.eventId,
+                          ColorConstants.eventApproved),
                       binding: EGBinding());
+                  // Get.to(
+                  //     () => UpdateDlrInf(
+                  //           detailEventModel.mwpEventModel.eventId,
+                  //         ),
+                  //     binding: EGBinding());
                 },
                 child: Row(
                   children: [

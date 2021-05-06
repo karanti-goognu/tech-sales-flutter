@@ -66,7 +66,7 @@ class _DetailPendingState extends State<DetailPending> {
   double locatinLat;
   double locationLong;
   bool isVisible = false;
-  bool saveBtnVisible = false;
+  //bool saveBtnVisible = false;
   @override
   void initState() {
     getEmpId();
@@ -83,14 +83,14 @@ class _DetailPendingState extends State<DetailPending> {
     }
   }
 
-  setSaveDraft() {
-    if (detailEventModel.mwpEventModel.eventStatusText ==
-        StringConstants.pendingApproval) {
-      saveBtnVisible = true;
-    } else {
-      saveBtnVisible = false;
-    }
-  }
+  // setSaveDraft() {
+  //   if (detailEventModel.mwpEventModel.eventStatusText ==
+  //       StringConstants.pendingApproval) {
+  //     saveBtnVisible = true;
+  //   } else {
+  //     saveBtnVisible = false;
+  //   }
+  // }
 
   setText() {
     if (detailEventModel != null && detailEventModel.mwpEventModel != null) {
@@ -147,7 +147,7 @@ class _DetailPendingState extends State<DetailPending> {
       });
       print('DDDD: $data');
       setVisibility();
-      setSaveDraft();
+      //setSaveDraft();
       setText();
     });
     // });
@@ -391,27 +391,27 @@ class _DetailPendingState extends State<DetailPending> {
     );
 
     final btns = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Visibility(
-          visible: saveBtnVisible,
-          child: FlatButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-                side: BorderSide(color: Colors.black26)),
-            color: Colors.transparent,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-              child: Text(
-                "SAVE AS DRAFT",
-                style: TextStyles.btnBlue,
-              ),
-            ),
-            onPressed: () {
-              btnPresssed(7);
-            },
-          ),
-        ),
+        // Visibility(
+        //   visible: saveBtnVisible,
+        //   child: FlatButton(
+        //     shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(0),
+        //         side: BorderSide(color: Colors.black26)),
+        //     color: Colors.transparent,
+        //     child: Padding(
+        //       padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
+        //       child: Text(
+        //         "SAVE AS DRAFT",
+        //         style: TextStyles.btnBlue,
+        //       ),
+        //     ),
+        //     onPressed: () {
+        //       btnPresssed(7);
+        //     },
+        //   ),
+        // ),
         RaisedButton(
           color: ColorConstants.btnBlue,
           child: Text(
@@ -433,7 +433,7 @@ class _DetailPendingState extends State<DetailPending> {
               btnPresssed(3);
             } else if (detailEventModel.mwpEventModel.eventStatusText ==
                 StringConstants.notSubmitted) {
-              btnPresssed(7);
+              btnPresssed(1);
             }
           },
         ),
