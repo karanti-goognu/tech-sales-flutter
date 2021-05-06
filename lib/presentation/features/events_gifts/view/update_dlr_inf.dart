@@ -88,8 +88,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     if (_dealerInfModel.eventInfluencerModelList != null &&
         _dealerInfModel.eventInfluencerModelList.length != 0) {
       for (int i = 0;
-          i < _dealerInfModel.eventInfluencerModelList.length;
-          i++) {
+      i < _dealerInfModel.eventInfluencerModelList.length;
+      i++) {
         selectedInfModels.add(EventInfluencerModelList(
             inflId: _dealerInfModel.eventInfluencerModelList[i].inflId,
             inflName: _dealerInfModel.eventInfluencerModelList[i].inflName,
@@ -123,7 +123,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               labelText: 'Add Influencer(s)',
               suffixIcon: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
                 child: Icon(
                   Icons.add,
                   size: 20,
@@ -137,16 +137,16 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 spacing: 6.0,
                 runSpacing: 6.0,
                 children: List<Widget>.generate(selectedInfModels.length,
-                    (int index) {
-                  return Chip(
-                    label: Text(selectedInfModels[index].inflName),
-                    onDeleted: () {
-                      setState(() {
-                        selectedInfModels.removeAt(index);
-                      });
-                    },
-                  );
-                }),
+                        (int index) {
+                      return Chip(
+                        label: Text(selectedInfModels[index].inflName),
+                        onDeleted: () {
+                          setState(() {
+                            selectedInfModels.removeAt(index);
+                          });
+                        },
+                      );
+                    }),
               ),
 
             ),
@@ -165,7 +165,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               labelText: 'Add Dealer(s)',
               suffixIcon: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
                 child: Icon(
                   Icons.add,
                   size: 20,
@@ -179,16 +179,16 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 spacing: 6.0,
                 runSpacing: 6.0,
                 children: List<Widget>.generate(selectedDealersModels.length,
-                    (int index) {
-                  return Chip(
-                    label: Text(selectedDealersModels[index].dealerName),
-                    onDeleted: () {
-                      setState(() {
-                        selectedDealersModels.removeAt(index);
-                      });
-                    },
-                  );
-                }),
+                        (int index) {
+                      return Chip(
+                        label: Text(selectedDealersModels[index].dealerName),
+                        onDeleted: () {
+                          setState(() {
+                            selectedDealersModels.removeAt(index);
+                          });
+                        },
+                      );
+                    }),
               ),
 
             ),
@@ -205,12 +205,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
           child: Text(
             "UPDATE",
             style:
-                //TextStyles.btnWhite,
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+            //TextStyles.btnWhite,
+            TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                // letterSpacing: 2,
+                fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
             updateBtnPressed();
@@ -221,12 +221,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
           child: Text(
             "ADD LEAD",
             style:
-                //TextStyles.btnWhite,
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+            //TextStyles.btnWhite,
+            TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                // letterSpacing: 2,
+                fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {},
         ),
@@ -239,51 +239,51 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         children: [
           Positioned.fill(
               child:
-                  //srComplaintModel != null ?
-                  ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    left: ScreenUtil().setSp(16),
-                    top: ScreenUtil().setSp(16),
-                    right: ScreenUtil().setSp(16)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'update Dealers & Influencers',
-                      style: TextStyles.titleGreenStyle,
+              //srComplaintModel != null ?
+              ListView(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: ScreenUtil().setSp(16),
+                        top: ScreenUtil().setSp(16),
+                        right: ScreenUtil().setSp(16)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'update Dealers & Influencers',
+                          style: TextStyles.titleGreenStyle,
+                        ),
+                        IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              if (_isUpdate == true) {
+                                Get.dialog(CustomDialogs().showSaveChangesDialog(
+                                    "Do you want to save changes?"));
+                              } else {
+                                Get.back();
+                              }
+                            })
+                      ],
                     ),
-                    IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: () {
-                          if (_isUpdate == true) {
-                            Get.dialog(CustomDialogs().showSaveChangesDialog(
-                                "Do you want to save changes?"));
-                          } else {
-                            Get.back();
-                          }
-                        })
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [influencer, SizedBox(height: 16), dealer]),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: btns,
+                  ),
+                  SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [influencer, SizedBox(height: 16), dealer]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: btns,
+                  )
+                ],
               )
-            ],
-          )
-              //     : Center(
-              //   child: CircularProgressIndicator(),
-              // ),
-              ),
+            //     : Center(
+            //   child: CircularProgressIndicator(),
+            // ),
+          ),
         ],
       ),
     );
@@ -333,7 +333,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     Text(
                       'Add Influencer',
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                         onPressed: () {
@@ -378,18 +378,18 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               ),
               Padding(
                   padding:
-                      const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                  const EdgeInsets.only(right: 16, left: 16, bottom: 8),
                   child: TextFormField(
                     controller: _infNameController,
                     style: FormFieldStyle.formFieldTextStyle,
                     readOnly: true,
                     enableInteractiveSelection: false,
                     decoration:
-                        FormFieldStyle.buildInputDecoration(hintText: 'Name'),
+                    FormFieldStyle.buildInputDecoration(hintText: 'Name'),
                   )),
               Padding(
                   padding:
-                      const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                  const EdgeInsets.only(right: 16, left: 16, bottom: 8),
                   child: TextFormField(
                     maxLines: null,
                     controller: _infTypeController,
@@ -401,7 +401,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   )),
               Container(
                 padding:
-                    EdgeInsets.only(top: 16, bottom: 20, left: 30, right: 30),
+                EdgeInsets.only(top: 16, bottom: 20, left: 30, right: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -413,12 +413,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                               eventId: widget.eventId,
                               eventInflId: 0,
                               inflContact:
-                                  _infDetailModel.influencerModel.inflContact,
+                              _infDetailModel.influencerModel.inflContact,
                               inflTypeId:
-                                  _infDetailModel.influencerModel.inflTypeId,
+                              _infDetailModel.influencerModel.inflTypeId,
                               inflId: _infDetailModel.influencerModel.infl_id,
                               inflName:
-                                  _infDetailModel.influencerModel.inflName,
+                              _infDetailModel.influencerModel.inflName,
                               isActive: "Y"));
 
                           Get.back();
@@ -463,7 +463,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     Text(
                       'Add Influencer',
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                         onPressed: () => Get.back(), icon: Icon(Icons.clear))
@@ -493,7 +493,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               ),
               Padding(
                   padding:
-                      const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                  const EdgeInsets.only(right: 16, left: 16, bottom: 8),
                   child: TextFormField(
                     validator: (value) {
                       if (value.isEmpty) {
@@ -505,11 +505,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     style: TextStyles.formfieldLabelText,
                     keyboardType: TextInputType.number,
                     decoration:
-                        FormFieldStyle.buildInputDecoration(labelText: "Name"),
+                    FormFieldStyle.buildInputDecoration(labelText: "Name"),
                   )),
               Padding(
                   padding:
-                      const EdgeInsets.only(right: 16, left: 16, bottom: 12),
+                  const EdgeInsets.only(right: 16, left: 16, bottom: 12),
                   child: DropdownButtonFormField(
                     onChanged: (value) {
                       setState(() {
@@ -517,15 +517,15 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       });
                     },
                     items: (_infDetailModel != null && _infDetailModel.influencerTypeEntitiesList != null)?
-                         _infDetailModel.influencerTypeEntitiesList
-                            .map((e) => DropdownMenuItem(
-                                  value: e.inflTypeId,
-                                  child: Text(
-                                    '${e.inflTypeId}',
-                                    maxLines: null,
-                                  ),
-                                ))
-                            .toList():[],
+                    _infDetailModel.influencerTypeEntitiesList
+                        .map((e) => DropdownMenuItem(
+                      value: e.inflTypeId,
+                      child: Text(
+                        '${e.inflTypeId}',
+                        maxLines: null,
+                      ),
+                    ))
+                        .toList():[],
                     style: FormFieldStyle.formFieldTextStyle,
                     decoration: FormFieldStyle.buildInputDecoration(
                         labelText: "Influencer Type"),
@@ -544,7 +544,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   children: [
                     Padding(
                       padding:
-                          const EdgeInsets.only(left: 16, top: 12, bottom: 12),
+                      const EdgeInsets.only(left: 16, top: 12, bottom: 12),
                       child: Text(
                         StringConstants.influencerDoesNotExist,
                         style: TextStyles.formfieldLabelTextDark,
@@ -561,15 +561,15 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                             });
                           },
                           items: (_infDetailModel != null && _infDetailModel.influencerCategoryEntitiesList != null)?
-                               _infDetailModel.influencerCategoryEntitiesList
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.inflCatId,
-                                        child: Text(
-                                          e.inflCatDesc,
-                                          maxLines: null,
-                                        ),
-                                      ))
-                                  .toList():[],
+                          _infDetailModel.influencerCategoryEntitiesList
+                              .map((e) => DropdownMenuItem(
+                            value: e.inflCatId,
+                            child: Text(
+                              e.inflCatDesc,
+                              maxLines: null,
+                            ),
+                          ))
+                              .toList():[],
                           style: FormFieldStyle.formFieldTextStyle,
                           decoration: FormFieldStyle.buildInputDecoration(
                               labelText: "Dalmia"),
@@ -673,49 +673,49 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 itemCount: dealers.length,
                 itemBuilder: (context, index) {
                   return
-                      // dealerId == dealers[index].dealerId
-                      //   ?
-                      CheckboxListTile(
-                    activeColor: Colors.black,
-                    dense: true,
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(dealers[index].dealerName),
-                        Text('( ${dealers[index].dealerId} )'),
-                      ],
-                    ),
-                    value: selectedDealer.contains(dealers[index].dealerName),
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedDealer.contains(dealers[index].dealerName)
-                            ? selectedDealer.remove(dealers[index].dealerName)
-                            : selectedDealer.add(dealers[index].dealerName);
+                    // dealerId == dealers[index].dealerId
+                    //   ?
+                    CheckboxListTile(
+                      activeColor: Colors.black,
+                      dense: true,
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(dealers[index].dealerName),
+                          Text('( ${dealers[index].dealerId} )'),
+                        ],
+                      ),
+                      value: selectedDealer.contains(dealers[index].dealerName),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedDealer.contains(dealers[index].dealerName)
+                              ? selectedDealer.remove(dealers[index].dealerName)
+                              : selectedDealer.add(dealers[index].dealerName);
 
-                        selectedDealersModels.contains(dealers[index])
-                            ? selectedDealersModels.remove(dealers[index])
-                            : selectedDealersModels.add(dealers[index]);
+                          selectedDealersModels.contains(dealers[index])
+                              ? selectedDealersModels.remove(dealers[index])
+                              : selectedDealersModels.add(dealers[index]);
 
-                        checkedValues[index] = newValue;
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
-                  );
+                          checkedValues[index] = newValue;
+                        });
+                      },
+                      controlAffinity: ListTileControlAffinity.leading,
+                    );
                   //  : Container();
                 },
                 separatorBuilder: (context, index) {
                   return dealerId == dealers[index].dealerId
                       ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Divider(),
-                        )
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Divider(),
+                  )
                       : Container();
                 },
               ),
             ),
             Container(
               decoration:
-                  BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
+              BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
               padding: EdgeInsets.only(top: 24, bottom: 9, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -767,7 +767,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               _infNameController.text =
                   _infDetailModel.influencerModel.inflName;
               _infTypeController.text =
-                  '${_infDetailModel.influencerModel.influencerTypeText}';
+              '${_infDetailModel.influencerModel.influencerTypeText}';
             } else {
               getBottomSheetInf();
             }
@@ -829,17 +829,17 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     print('PARAMS: ${json.encode(_updateDealer)}');
 
     internetChecking().then((result) => {
-          if (result == true)
-            {_eventsFilterController.getAccessKeyAndSaveDealerInf(_updateDealer)}
-          else
-            {
-              Get.snackbar("No internet connection.",
-                  "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-            }
-        });
+      if (result == true)
+        {_eventsFilterController.getAccessKeyAndSaveDealerInf(_updateDealer)}
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
   }
 
   addNewInfluencerBtnPressed() async {
@@ -853,28 +853,28 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       );
 
       internetChecking().then((result) => {
-            if (result == true)
-              {
-                _eventsFilterController
-                    .getAccessKeyAndSaveNewInfluencer(_save)
-                    .then((data) {
-                  setState(() {
-                    _saveNewInfluencerResponse = data;
-                    print('DD: $_saveNewInfluencerResponse');
-                    Get.dialog(
-                        successDialog(_saveNewInfluencerResponse.respMsg));
-                  });
-                })
-              }
-            else
-              {
-                Get.snackbar("No internet connection.",
-                    "Make sure that your wifi or mobile data is turned on.",
-                    colorText: Colors.white,
-                    backgroundColor: Colors.red,
-                    snackPosition: SnackPosition.BOTTOM),
-              }
-          });
+        if (result == true)
+          {
+            _eventsFilterController
+                .getAccessKeyAndSaveNewInfluencer(_save)
+                .then((data) {
+              setState(() {
+                _saveNewInfluencerResponse = data;
+                print('DD: $_saveNewInfluencerResponse');
+                Get.dialog(
+                    successDialog(_saveNewInfluencerResponse.respMsg));
+              });
+            })
+          }
+        else
+          {
+            Get.snackbar("No internet connection.",
+                "Make sure that your wifi or mobile data is turned on.",
+                colorText: Colors.white,
+                backgroundColor: Colors.red,
+                snackPosition: SnackPosition.BOTTOM),
+          }
+      });
     }
   }
 

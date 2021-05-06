@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/deleteEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -24,6 +27,14 @@ class AllEventController extends GetxController {
   final _egAllEventData = AllEventsModel().obs;
   get egAllEventData => this._egAllEventData.value;
   set egAllEventData(value) => this._egAllEventData.value = value;
+  final _endEventModel = EndEventModel().obs;
+
+  get endEventModel => _endEventModel.value;
+
+  set endEventModel(value) {
+    _endEventModel.value = value;
+  }
+
   final _eventType = ''.obs;
   final _eventTypeValue = ''.obs;
   final _eventStatus = ''.obs;
@@ -177,7 +188,7 @@ class AllEventController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
     });
-     dataForSearchResult = await repository.eventSearch(accessKey, userSecurityKey, empID, searchText);
+    dataForSearchResult = await repository.eventSearch(accessKey, userSecurityKey, empID, searchText);
     print(dataForSearchResult.respCode);
   }
 
@@ -241,6 +252,37 @@ class AllEventController extends GetxController {
     return egAllEventData;
   }
 
+  getEndEventDetail( String eventId)async{
+    String userSecurityKey = "";
+    String empID = "";
+    String accessKey = await repository.getAccessKey();
+    Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+
+    endEventModel = await repository.getEndEventDetail(accessKey, userSecurityKey, empID, eventId);
+    print(endEventModel.respCode);
+
+
+  }
+
+  Future<EventResponse> submitEndEventDetail(int eventId,
+      String eventComment,String eventDate,double eventEndLat,double eventEndLong)async{
+    String userSecurityKey = "";
+    String empID = "";
+    String accessKey = await repository.getAccessKey();
+    Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+
+    EventResponse endEventModel = await repository.submitEndEventDetail(accessKey, userSecurityKey, empID, eventId,eventComment,eventDate,eventEndLat,eventEndLong);
+    return endEventModel;
+
+  }
 
 
 }

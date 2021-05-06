@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
@@ -14,9 +15,11 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/view/Rejec
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class CustomDialogs {
 
@@ -535,4 +538,230 @@ class CustomDialogs {
       ],
     );
   }
+
+  Widget showCommentDialog(String respMsg, BuildContext context,int eventId) {
+    var _commentController = TextEditingController();
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              respMsg,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+            SizedBox(height: 16),
+            TextFormField(
+              controller: _commentController,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter Comment ';
+                }
+
+                return null;
+              },
+              style: TextStyle(
+                  fontSize: 18,
+                  color: ColorConstants.inputBoxHintColor,
+                  fontFamily: "Muli"),
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: ColorConstants.backgroundColorBlue,
+                      //color: HexColor("#0000001F"),
+                      width: 1.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: const Color(0xFF000000).withOpacity(0.4),
+                      width: 1.0),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide:
+                  BorderSide(color: Colors.red, width: 1.0),
+                ),
+                labelText: "Comment",
+                filled: false,
+                focusColor: Colors.black,
+                labelStyle: TextStyle(
+                    fontFamily: "Muli",
+                    color: ColorConstants.inputBoxHintColorDark,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 16.0),
+                fillColor: ColorConstants.backgroundColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'SUBMIT',
+            style: GoogleFonts.roboto(
+                fontSize: 17,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.bold,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            Get.dialog(
+                CustomDialogs().showCommentConfirmDialog("Are you sure ? Once you end the event, you can not modify it.",eventId,_commentController.text),
+                barrierDismissible: false);
+          },
+        ),
+        TextButton(
+          child: Text(
+            'CLOSE',
+            style: GoogleFonts.roboto(
+                fontSize: 17,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.bold,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      ],
+    );
+  }
+
+
+
+  Widget showCommentConfirmDialog(String message,int eventId,String eventComment) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'NO',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        TextButton(
+          child: Text(
+            'YES',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            _getCurrentLocation(eventId,eventComment);
+
+          },
+        ),
+      ],
+    );
+  }
+
+  _getCurrentLocation(int eventId,String eventComment) async {
+    AllEventController _eventController = Get.find();
+    var date = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    String  currentDateString = formatter.format(date);
+    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+    if (!(await Geolocator().isLocationServiceEnabled())) {
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please enable your location service from device settings"));
+    } else {
+      geolocator
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .then((Position position) {
+            _eventController.submitEndEventDetail(eventId,eventComment,currentDateString,position.latitude,position.longitude).then((value) => {
+              if(value.respCode == "DM1002"){
+                Get.toNamed(Routes.END_EVENT),
+                Get.back()
+              }else{
+                Get.back(),
+                Get.dialog(
+                    CustomDialogs().showMessage(value.respMsg),
+                    barrierDismissible: false)
+              }
+            });
+
+      }).catchError((e) {
+        print(e);
+      });
+    }
+  }
+
+  Widget showMessage(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            // Text(heading,
+            // style: GoogleFonts.roboto(
+            //     fontSize: 20,
+            //     height: 1.4,
+            //     letterSpacing: .25,
+            //     fontWeight: FontWeight.bold,
+            //     color: ColorConstants.inputBoxHintColorDark),),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'CLOSE',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      ],
+    );
+  }
+
+
+
+
+
 }

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
@@ -16,6 +18,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/influencerViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
@@ -23,7 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
 class MyApiClientEvent {
-String version;
+  String version;
   final http.Client httpClient;
 
   MyApiClientEvent({@required this.httpClient});
@@ -53,7 +56,7 @@ String version;
       print(url);
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
-       print('Response body is : ${json.decode(response.body)}');
+      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AllEventsModel eventSearchModel = AllEventsModel.fromJson(data);
@@ -111,7 +114,7 @@ String version;
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       allEventsModel = AllEventsModel.fromJson(json.decode(response.body));
-       print(response.body);
+      print(response.body);
     }
     catch (e) {
       print("Exception at EG Repo $e");
@@ -161,13 +164,9 @@ String version;
     SaveEventResponse saveEventResponse;
     try{
       var response = await http.post(Uri.parse(UrlConstants.saveEvent),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
-          body: json.encode(saveEventFormModel),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        body: json.encode(saveEventFormModel),
       );
-      print('URL : ${response.request}');
-      print('RESP: ${response.body}');
-      print('RESPONSE : ${json.encode(saveEventFormModel)}');
-
       saveEventResponse = SaveEventResponse.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -196,6 +195,8 @@ String version;
     return deleteEventModel;
   }
 
+
+
   Future<StartEventResponse>startEvent(String accessKey, String userSecretKey, StartEventModel startEventModel) async {
     StartEventResponse startEventResponse;
     try{
@@ -203,10 +204,6 @@ String version;
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(startEventModel),
       );
-      print('URL : ${response.request}');
-      print('RESP: ${response.body}');
-      print('RESPONSE : ${json.encode(startEventModel)}');
-
       startEventResponse = StartEventResponse.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -214,6 +211,51 @@ String version;
     }
     return startEventResponse;
   }
+
+  Future<EndEventModel> getEndEventDetail(String accessKey,String userSecretKey, String empId, String eventId) async{
+    EndEventModel endEventModel;
+    try{
+      var url = UrlConstants.endEvent +empId + "&eventId=$eventId";
+      print(url);
+      var response = await http.get(url, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
+      print(response.body);
+      endEventModel = EndEventModel.fromJson(json.decode(response.body));
+    }catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return endEventModel;
+  }
+
+  Future<EventResponse> submitEndEventDetail(String accessKey,String userSecretKey, String empId, int eventId,
+      String eventComment,String eventDate,double eventEndLat,double eventEndLong) async{
+    EventResponse endEventModel;
+    EndEventDetailModel endEventDetailModel = new EndEventDetailModel(eventComment, eventDate, eventEndLat, eventEndLong, eventId, empId);
+    try{
+
+      var body = {
+          "eventComment": "$eventComment",
+          "eventDate": eventDate,
+          "eventEndLat": eventEndLat,
+          "eventEndLong": eventEndLong,
+          "eventId": eventId,
+          "referenceId": empId
+      };
+      print("event-->"+body.toString());
+      print('RESPONSE : ${json.encode(endEventDetailModel)}');
+      print("event-->"+UrlConstants.submitEndEvent);
+      print("event-->"+requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version).toString());
+      var response = await http.post(Uri.parse(UrlConstants.submitEndEvent),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        body: json.encode(endEventDetailModel)
+      );
+      print("event-->"+json.decode(response.body).toString());
+      endEventModel = EventResponse.fromJson(json.decode(response.body));
+    }catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return endEventModel;
+  }
+
 
 
   Future<DealerInfModel> getDealerInfList(String accessKey,
@@ -255,7 +297,6 @@ String version;
     return updateDealerInfResponse;
   }
 
-
  Future<InfDetailModel> getInfdata(String accessKey,
     String userSecretKey, String contact) async {
   InfDetailModel infDetailModel;
@@ -265,14 +306,6 @@ String version;
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
 
     print("print-->"+json.decode(response.body).toString());
-
-    var respCode = json.decode(response.body);
-
-    if(respCode["respCode"]=="DM1002"){
-      print("respCode DM1002");
-    }else{
-      print("respCode NUM404");
-    }
 
     infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
     print('RESP : ${response.body}');
@@ -307,6 +340,4 @@ Future<SaveNewInfluencerResponse>saveNewInfluencer(String accessKey, String user
 }
 
 }
-
-
 

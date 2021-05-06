@@ -21,7 +21,7 @@ class GiftController extends GetxController {
   final _giftStockModel = GetGiftStockModel().obs;
   final _giftStockModelList= List<GiftStockModelList>().obs;
   final _giftTypeModelList= List<GiftTypeModelList>().obs;
-  final _selectedDropdown =0.obs;
+  final _selectedDropdown =1.obs;
   final _itemFromBottomSheetTapped = false.obs;
   final _logsModel = LogsModel().obs;
   final _dataForViewLog = List<GiftStockList>().obs;
@@ -92,6 +92,7 @@ class GiftController extends GetxController {
       giftStockModel = await repository.getGiftStockData(empID, accessKey, securityKey);
       giftStockModelList= giftStockModel.giftStockModelList;
       giftTypeModelList= giftStockModel.giftTypeModelList;
+      print(giftTypeModelList);
     });
     Get.back();
     return giftStockModel;
@@ -105,8 +106,8 @@ class GiftController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       String empID= prefs.getString(StringConstants.employeeId);
       String securityKey = prefs.getString(StringConstants.userSecurityKey);
-       response = await repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew);
-       print(response.respMsg);
+      response = await repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew);
+      print(response.respMsg);
     });
     Get.back();
     Get.rawSnackbar(title: "Message", message: response.respMsg);

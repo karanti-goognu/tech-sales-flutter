@@ -240,8 +240,6 @@ class EventsFilterController extends GetxController {
       return saveNewInfluencerResponse;
    // });
   }
-
-
 }
 
 
