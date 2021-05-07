@@ -132,16 +132,16 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                 )),
             FlatButton(
                 onPressed: () {
-                  Get.to(
-                      () => DetailPending(
-                          detailEventModel.mwpEventModel.eventId,
-                          ColorConstants.eventApproved),
-                      binding: EGBinding());
                   // Get.to(
-                  //     () => UpdateDlrInf(
-                  //           detailEventModel.mwpEventModel.eventId,
-                  //         ),
+                  //     () => DetailPending(
+                  //         detailEventModel.mwpEventModel.eventId,
+                  //         ColorConstants.eventApproved),
                   //     binding: EGBinding());
+                  Get.to(
+                      () => UpdateDlrInf(
+                            detailEventModel.mwpEventModel.eventId,
+                          ),
+                      binding: EGBinding());
                 },
                 child: Row(
                   children: [
@@ -301,13 +301,25 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                         'Comment',
                         style: TextStyles.formfieldLabelTextDark,
                       ),
-                      Text(
-                        detailEventModel.mwpEventModel.eventComment,
-                        maxLines: null,
+                      Container(
+
+                        margin: EdgeInsets.only(top: 10),
+                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 8, right: 8),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey, // Set border color
+                                width: 1.0),   // Set border width
+                        ),
+                        child: Text(
+                          detailEventModel.mwpEventModel.eventComment,
+                          maxLines: null,
+                        ),
                       ),
                     ],
                   ),
-                )
+                ),
+                SizedBox(height: ScreenUtil().setSp(40),)
               ],
             )
           : Container(

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
 
@@ -17,10 +22,10 @@ class _EventSearchState extends State<EventSearch> {
       case 1:return HexColor('#F9A61A');
       case 2:return HexColor('#39B54A');
       case 3:return HexColor('#B00020');
-      case 4:return HexColor('#F9A61A');
-      case 5:return HexColor('#F9A61A');
+      case 4:return HexColor('#39B54A');
+      case 5:return HexColor('#B00020');
       case 6:return HexColor('#000000');
-      case 7:return HexColor('#000000');
+      case 7:return HexColor('#808080');
     }
   }
 
@@ -70,6 +75,28 @@ Widget eventsDetailWidget(){
          itemCount: _eventController.dataForSearchResult.eventListModels.length,
          itemBuilder: (context, index){
            return GestureDetector(
+             onTap: (){
+              if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.approved
+               && _eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.cancelled){
+                Get.to(() => DetailViewEvent(_eventController.dataForSearchResult.eventListModels[index].eventId),
+                    binding: EGBinding());
+
+              }else if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.completed ){
+
+              }else if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.pendingApproval){
+                Get.to(() => DetailPending(_eventController.dataForSearchResult.eventListModels[index].eventId, ColorConstants.eventPending),
+                    binding: EGBinding());
+              }
+              else if( _eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.rejected){
+                Get.to(() => DetailPending(_eventController.dataForSearchResult.eventListModels[index].eventId, ColorConstants.eventRejected),
+                    binding: EGBinding());
+              }
+              else if( _eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.notSubmitted){
+                Get.to(() => DetailPending(_eventController.dataForSearchResult.eventListModels[index].eventId, ColorConstants.eventNotSubmited),
+                    binding: EGBinding());
+              }else{}
+
+             },
              child: Card(
                clipBehavior: Clip.antiAlias,
                borderOnForeground: true,

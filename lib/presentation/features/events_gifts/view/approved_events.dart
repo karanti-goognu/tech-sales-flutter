@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ApprovedEvents extends StatefulWidget {
   @override
@@ -48,12 +49,12 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   getSortedData() {
     print('In getSortedData');
     DateTime now = DateTime.now();
+    String formattednow = DateFormat('yyyy-MM-dd – kk:mm').format(now);
 
     if (approvedEventsModel != null && approvedEventsModel.eventListModels != null) {
       for (int i = 0; i < approvedEventsModel.eventListModels.length; i++) {
         String date = approvedEventsModel.eventListModels[i].eventDate;
         DateTime eventDt = DateTime.parse(date);
-        print("All data: ${approvedEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
 
        // if (eventDt.compareTo(now) == 0 && eventDt.compareTo(now) == 1) {
         //if (now.difference(eventDt).inDays == 0 && now.difference(eventDt).inDays == 1) {

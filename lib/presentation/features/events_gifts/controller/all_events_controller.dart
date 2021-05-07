@@ -225,6 +225,12 @@ class AllEventController extends GetxController {
       if (this.eventStatus != StringConstants.empty) {
         eventStatus = "&eventStatus=${this.eventStatusValue}";
       }
+      // var url;
+      // if(isFilterApplied == true){
+      //      url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
+      // }else{
+      //     url = "${UrlConstants.getAllEvents}$empID";
+      // }
 
       var url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
       print(url);
