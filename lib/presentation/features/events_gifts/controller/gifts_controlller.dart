@@ -21,7 +21,7 @@ class GiftController extends GetxController {
   final _giftStockModel = GetGiftStockModel().obs;
   final _giftStockModelList= List<GiftStockModelList>().obs;
   final _giftTypeModelList= List<GiftTypeModelList>().obs;
-  final _selectedDropdown =1.obs;
+  final _selectedDropdown =0.obs;
   final _itemFromBottomSheetTapped = false.obs;
   final _logsModel = LogsModel().obs;
   final _dataForViewLog = List<GiftStockList>().obs;
@@ -125,12 +125,12 @@ class GiftController extends GetxController {
       logsModel = await repository.getViewLogsData(accessKey, securityKey,empID, monthYear);
       Get.back();
       if(logsModel.respCode=="DM1006"){
-        Get.dialog(CustomDialogs().errorDialog(logsModel.respMsg));
+        Get.dialog(CustomDialogs().showMessage(logsModel.respMsg));
         dataForViewLog=<GiftStockList>[];
 
       }
       else{
-        Get.dialog(CustomDialogs().errorDialog(logsModel.respMsg));
+        Get.dialog(CustomDialogs().showMessage(logsModel.respMsg));
         dataForViewLog=logsModel.giftStockModelList;
       }
 

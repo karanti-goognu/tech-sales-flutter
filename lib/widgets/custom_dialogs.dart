@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
@@ -692,6 +693,7 @@ class CustomDialogs {
     var date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     String  currentDateString = formatter.format(date);
+    print("DateFormat--"+currentDateString);
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     if (!(await Geolocator().isLocationServiceEnabled())) {
       Get.dialog(CustomDialogs().errorDialog(
@@ -702,8 +704,11 @@ class CustomDialogs {
           .then((Position position) {
             _eventController.submitEndEventDetail(eventId,eventComment,currentDateString,position.latitude,position.longitude).then((value) => {
               if(value.respCode == "DM1002"){
-                Get.toNamed(Routes.END_EVENT),
-                Get.back()
+                print('RESPONSE : ${value.respMsg+value.respCode}'),
+
+                Get.to(() => EndEvent(eventId)),
+                // Get.toNamed(Routes.END_EVENT),
+                // Get.back()
               }else{
                 Get.back(),
                 Get.dialog(
@@ -745,7 +750,7 @@ class CustomDialogs {
       actions: <Widget>[
         TextButton(
           child: Text(
-            'CLOSE',
+            'OK',
             style: GoogleFonts.roboto(
                 fontSize: 20,
                 letterSpacing: 1.25,
@@ -759,9 +764,4 @@ class CustomDialogs {
       ],
     );
   }
-
-
-
-
-
 }

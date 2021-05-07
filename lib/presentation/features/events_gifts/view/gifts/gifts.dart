@@ -5,6 +5,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,6 +68,12 @@ class _GiftsViewState extends State<GiftsView> {
   }
 
   @override
+  void dispose() {
+    _giftController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -115,14 +122,16 @@ class _GiftsViewState extends State<GiftsView> {
                       ? Container()
                       : DropdownButton(
                           onChanged: (newValue) {
-                            _giftController.selectedDropdown = newValue;
                             var x = _giftController.giftStockModelList
                                 .toList()
                                 .indexWhere((e) {
                               return e.giftTypeId == newValue;
                             });
-                            giftTypeText = _giftController
-                                .giftStockModelList[x].giftTypeText;
+                            setState(() {
+                              _giftController.selectedDropdown = newValue;
+                              giftTypeText = _giftController
+                                  .giftStockModelList[x].giftTypeText;
+                            });
 
                           },
                     value: _giftController.selectedDropdown,
@@ -156,21 +165,25 @@ class _GiftsViewState extends State<GiftsView> {
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-                            index == 1 && _giftController.selectedDropdown != 0
+
+                            index == 1 && _giftController.selectedDropdown!=0
                                 ? Container(
                                     padding: EdgeInsets.zero,
-                                    width: 16,
-                                    height: 16,
+                                    width: 70,
+                                    height: 30,
                                     child: TextFormField(
                                       controller: _giftInHandQtyNew,
                                       textAlign: TextAlign.right,
                                       keyboardType: TextInputType.phone,
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.bold,
+                                        color: Colors.blue
                                       ),
-                                      decoration: InputDecoration.collapsed(
-                                          hintText: ""),
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: '',
+                                      ),
 //                                      initialValue: _giftCategoriesList[index].count.toString(),
                                     ))
                                 : Text(
