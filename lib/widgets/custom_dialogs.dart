@@ -705,14 +705,14 @@ class CustomDialogs {
             _eventController.submitEndEventDetail(eventId,eventComment,currentDateString,position.latitude,position.longitude).then((value) => {
               if(value.respCode == "DM1002"){
                 print('RESPONSE : ${value.respMsg+value.respCode}'),
-
-                Get.to(() => EndEvent(eventId)),
                 // Get.toNamed(Routes.END_EVENT),
-                // Get.back()
+                Get.dialog(
+                    CustomDialogs().showMessage1(value.respMsg,0,eventId),
+                    barrierDismissible: false)
               }else{
                 Get.back(),
                 Get.dialog(
-                    CustomDialogs().showMessage(value.respMsg),
+                    CustomDialogs().showMessage1(value.respMsg,1,eventId),
                     barrierDismissible: false)
               }
             });
@@ -722,6 +722,53 @@ class CustomDialogs {
       });
     }
   }
+
+  Widget showMessage1(String message,int from,int eventId) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            // Text(heading,
+            // style: GoogleFonts.roboto(
+            //     fontSize: 20,
+            //     height: 1.4,
+            //     letterSpacing: .25,
+            //     fontWeight: FontWeight.bold,
+            //     color: ColorConstants.inputBoxHintColorDark),),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            if(from==0){
+              Get.to(() => EndEvent(eventId));
+            }else{
+            Get.back();
+            }
+          },
+        ),
+      ],
+    );
+  }
+
 
   Widget showMessage(String message) {
     return AlertDialog(

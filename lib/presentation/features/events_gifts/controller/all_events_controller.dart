@@ -252,7 +252,8 @@ class AllEventController extends GetxController {
     return egAllEventData;
   }
 
-  getEndEventDetail( String eventId)async{
+  Future<EndEventModel> getEndEventDetail( String eventId)async{
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String userSecurityKey = "";
     String empID = "";
     String accessKey = await repository.getAccessKey();
@@ -264,6 +265,8 @@ class AllEventController extends GetxController {
 
     endEventModel = await repository.getEndEventDetail(accessKey, userSecurityKey, empID, eventId);
     print(endEventModel.respCode);
+    Get.back();
+    return endEventModel;
 
 
   }

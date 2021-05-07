@@ -47,10 +47,12 @@ class EndEventModel {
       data['eventCcommentsList'] =
           this.eventCcommentsList.map((v) => v.toJson()).toList();
     }
+
     if (this.eventDealersModelList != null) {
       data['eventDealersModelList'] =
           this.eventDealersModelList.map((v) => v.toJson()).toList();
     }
+
     if (this.eventInfluencerModelsList != null) {
       data['eventInfluencerModelsList'] =
           this.eventInfluencerModelsList.map((v) => v.toJson()).toList();

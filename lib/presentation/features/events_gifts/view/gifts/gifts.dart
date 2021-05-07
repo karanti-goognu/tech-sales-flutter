@@ -31,6 +31,8 @@ class _GiftsViewState extends State<GiftsView> {
   TextEditingController _giftInHandQtyNew = TextEditingController();
 
   addDateForGiftsView() async {
+    _giftsCategoriesValueList = [];
+    _giftCategoriesList = [];
     _giftsCategoriesValueList = [
       _giftController.giftStockModelList[_giftController.selectedDropdown].giftOpeningStockQty,
       _giftController.giftStockModelList[_giftController.selectedDropdown].giftInHandQty,
@@ -56,9 +58,7 @@ class _GiftsViewState extends State<GiftsView> {
 
   @override
   void initState() {
-    _giftController
-        .getGiftStockData()
-        .whenComplete(() => addDateForGiftsView());
+    _giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
     final DateFormat formatter = DateFormat("MMMM");
     DateTime date = DateTime.now();
     var currentMonth = formatter.format(date);
@@ -131,6 +131,7 @@ class _GiftsViewState extends State<GiftsView> {
                               _giftController.selectedDropdown = newValue;
                               giftTypeText = _giftController
                                   .giftStockModelList[x].giftTypeText;
+                              _giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
                             });
 
                           },
@@ -204,7 +205,7 @@ class _GiftsViewState extends State<GiftsView> {
                     },
                     itemCount: _giftCategoriesList.length)),
             SizedBox(
-              height: 24,
+              height: 14,
             ),
             Obx(
               () => _giftController.selectedDropdown == 0
@@ -229,31 +230,59 @@ class _GiftsViewState extends State<GiftsView> {
             SizedBox(
               height: 24,
             ),
-            RaisedButton(
-              onPressed: () => _giftController.selectedDropdown == 0
-                  ? Get.bottomSheet(
-                      GiftTypeBottomSheet(giftController: _giftController),)
-                  : _giftController.addGiftStock(
-                      comment: _comments.text,
-                      giftTypeId: _giftController.selectedDropdown.toString(),
-                      giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text
-
-              ),
-              color: HexColor("#1C99D4"),
-              child: Text(
-                "Update Inventory",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
-                    fontSize: 17),
-              ),
-            ),
+            // RaisedButton(
+            //   onPressed: () => _giftController.selectedDropdown == 0
+            //       ? Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController),)
+            //       : _giftController.addGiftStock(
+            //           comment: _comments.text,
+            //           giftTypeId: _giftController.selectedDropdown.toString(),
+            //           giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text
+            //
+            //   ),
+            //   color: HexColor("#1C99D4"),
+            //   child: Text(
+            //     "Update Inventory",
+            //     style: TextStyle(
+            //         color: Colors.white,
+            //         fontWeight: FontWeight.bold,
+            //         // letterSpacing: 2,
+            //         fontSize: 17),
+            //   ),
+            // ),
+            buildBody(context)
           ],
         ),
       ),
     );
   }
+
+  Widget buildBody(context){
+    return Container(
+      child: StatefulBuilder( builder: (BuildContext context, StateSetter setstates){
+        return RaisedButton(
+          onPressed: () => _giftController.selectedDropdown == 0
+              ? Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController,setstates:setstates),)
+              : _giftController.addGiftStock(
+              comment: _comments.text,
+              giftTypeId: _giftController.selectedDropdown.toString(),
+              giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text
+
+          ),
+          color: HexColor("#1C99D4"),
+          child: Text(
+            "Update Inventory",
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                // letterSpacing: 2,
+                fontSize: 17),
+          ),
+        );
+      },
+      ),
+    );
+  }
+
 }
 
 class GiftsCategories {

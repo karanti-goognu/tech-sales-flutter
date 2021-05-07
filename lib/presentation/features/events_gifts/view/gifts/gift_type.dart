@@ -5,17 +5,15 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
 
 class GiftTypeBottomSheet extends StatelessWidget {
-  const GiftTypeBottomSheet({
-    Key key,
-    @required GiftController giftController,
-  })  : _giftController = giftController,
-        super(key: key);
+  final GiftController giftController;
+  final StateSetter setstates;
 
-  final GiftController _giftController;
-
+  const GiftTypeBottomSheet({Key key, this.giftController, this.setstates}) : super(key: key);
+  
+ 
   @override
   Widget build(BuildContext context) {
-    print(_giftController.giftTypeModelList[0].giftTypeText);
+    print(giftController.giftTypeModelList[0].giftTypeText);
     return Container(
       color: Colors.white,
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -37,7 +35,7 @@ class GiftTypeBottomSheet extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: _giftController.giftTypeModelList.length,
+                itemCount: giftController.giftTypeModelList.length,
                 itemBuilder: (context, index) {
                   return Container(
                     margin: EdgeInsets.symmetric(
@@ -48,7 +46,7 @@ class GiftTypeBottomSheet extends StatelessWidget {
                             color: HexColor('000000').withOpacity(0.12))),
                     child: ListTile(
                       title: Text(
-                        '${_giftController.giftTypeModelList[index].giftTypeText} (Bal-${_giftController.giftTypeModelList[index].giftStockInHand})',
+                        '${giftController.giftTypeModelList[index].giftTypeText} (Bal-${giftController.giftTypeModelList[index].giftStockInHand})',
                         style: TextStyle(fontSize: 14),
                       ),
                       trailing: Icon(
@@ -56,11 +54,14 @@ class GiftTypeBottomSheet extends StatelessWidget {
                         size: 14,
                       ),
                       onTap: () {
-                        _giftController.itemFromBottomSheetTapped = true;
-                        print(_giftController.itemFromBottomSheetTapped );
-                        print(_giftController.giftTypeModelList[index].giftTypeId);
-                        _giftController.selectedDropdown=_giftController.giftTypeModelList[index].giftTypeId;
+                        giftController.itemFromBottomSheetTapped = true;
+                        print("000000"+giftController.itemFromBottomSheetTapped.toString() );
+                        print("000000"+giftController.giftTypeModelList[index].giftTypeId.toString());
+                        setstates(() {
+                          giftController.selectedDropdown=giftController.giftTypeModelList[index].giftTypeId;
+                        });
                         Get.back();
+
                       },
                     ),
                   );

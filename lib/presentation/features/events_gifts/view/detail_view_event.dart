@@ -76,7 +76,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
     final btnStartEvent = FlatButton(
       onPressed: () {
-        _getCurrentLocation();
+        // _getCurrentLocation();
         // Get.dialog(CustomDialogs().showStartEventDialog(
         //     'Confirmation', "Do you want to start event?"));
       },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -18,10 +19,33 @@ class EndEvent extends StatefulWidget {
 class _EndEventState extends State<EndEvent> {
   ScrollController _scrollController;
   AllEventController _eventController = Get.find();
+
+  MwpEndEventModel mwpEndEventModel;
+  List<EventCcommentsList> eventCcommentsList;
+  List<EventDealersModelList> eventDealersModelList;
+  List<EventInfluencerModelsList> eventInfluencerModelsList;
+
+
+  getDetailEventsData() async {
+
+    await _eventController.getEndEventDetail(widget.eventId.toString()).then((data) {
+      setState(() {
+        mwpEndEventModel = data.mwpEndEventModel;
+        eventCcommentsList = data.eventCcommentsList;
+        eventDealersModelList = data.eventDealersModelList;
+        eventInfluencerModelsList = data.eventInfluencerModelsList;
+      });
+    });
+  }
+
+
   @override
   void initState() {
-    _eventController.getEndEventDetail(widget.eventId.toString());
+    // _eventController.getEndEventDetail(widget.eventId.toString()).then((value) => {
+    //
+    // });
     super.initState();
+    getDetailEventsData();
   }
 
   @override
@@ -44,8 +68,7 @@ class _EndEventState extends State<EndEvent> {
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: Obx(()=>
-          ListView(
+      body: (mwpEndEventModel != null)?ListView(
             children: [
               Padding(
                 padding: EdgeInsets.only(
@@ -55,28 +78,28 @@ class _EndEventState extends State<EndEvent> {
                   bottom: ScreenUtil().setSp(20),
                 ),
                 child: Text(
-                  '${_eventController.endEventModel.mwpEndEventModel.eventDate} | ${_eventController.endEventModel.mwpEndEventModel.eventTime}',
+                  '${mwpEndEventModel.eventDate} | ${mwpEndEventModel.eventTime}',
                   style: TextStyles.mulliBoldBlue,
                 ),
               ),
-              displayInfo('Event Type', _eventController.endEventModel.mwpEndEventModel.eventTypeText),
-              displayInfo('Dalmia Influencers', _eventController.endEventModel.mwpEndEventModel.dalmiaInflCount),
-              displayInfo('Actual Dalmia Influencers', _eventController.endEventModel.mwpEndEventModel.actualDalmiaInflCount),
-              displayInfo('Non-Dalmia Influencers', _eventController.endEventModel.mwpEndEventModel.nonDalmiaInflCount),
-              displayInfo('Actual Non-Dalmia Influencers', _eventController.endEventModel.mwpEndEventModel.actualNonDalmiaInflCount),
-              displayInfo('Total Participants', _eventController.endEventModel.mwpEndEventModel.totalParticipantsCount),
-              displayInfo('Actual Total Participants', _eventController.endEventModel.mwpEndEventModel.actualTotalParticipantsCount),
+              displayInfo('Event Type', mwpEndEventModel.eventTypeText),
+              displayInfo('Dalmia Influencers', mwpEndEventModel.dalmiaInflCount),
+              displayInfo('Actual Dalmia Influencers', mwpEndEventModel.actualDalmiaInflCount),
+              displayInfo('Non-Dalmia Influencers', mwpEndEventModel.nonDalmiaInflCount),
+              displayInfo('Actual Non-Dalmia Influencers', mwpEndEventModel.actualNonDalmiaInflCount),
+              displayInfo('Total Participants', mwpEndEventModel.totalParticipantsCount),
+              displayInfo('Actual Total Participants', mwpEndEventModel.actualTotalParticipantsCount),
               // displayInfo('Venue', 'Booked'),
-              displayInfo('Venue Address', _eventController.endEventModel.mwpEndEventModel.venueAddress),
-              displayInfo('Actual Venue Address', _eventController.endEventModel.mwpEndEventModel.actualVenueAddress),
-              displayChip('Dealer(s) Detail', _eventController.endEventModel.eventInfluencerModelsList),
-              displayChip('Influencer(s) Detail', _eventController.endEventModel.eventInfluencerModelsList),
-              displayInfo('Expected Leads', _eventController.endEventModel.mwpEndEventModel.expectedLeadsCount),
-              displayInfo('Actual Leads', _eventController.endEventModel.mwpEndEventModel.actualLeadsCount),
-              displayInfo('Gift distribution', _eventController.endEventModel.mwpEndEventModel.giftDistributionCount),
-              displayInfo('Actual Gift distribution', _eventController.endEventModel.mwpEndEventModel.actualGiftDistributionCount),
-              displayInfo('Event location', _eventController.endEventModel.mwpEndEventModel.eventLocation),
-              displayInfo('Actual Event location', _eventController.endEventModel.mwpEndEventModel.actualEventLocation),
+              displayInfo('Venue Address', mwpEndEventModel.venueAddress),
+              displayInfo('Actual Venue Address', mwpEndEventModel.actualVenueAddress),
+              displayChip('Dealer(s) Detail', eventDealersModelList!=null?_eventController.endEventModel.eventDealersModelList:[]),
+              displayChip('Influencer(s) Detail', eventInfluencerModelsList),
+              displayInfo('Expected Leads', mwpEndEventModel.expectedLeadsCount),
+              displayInfo('Actual Leads', mwpEndEventModel.actualLeadsCount),
+              displayInfo('Gift distribution', mwpEndEventModel.giftDistributionCount),
+              displayInfo('Actual Gift distribution', mwpEndEventModel.actualGiftDistributionCount),
+              displayInfo('Event location', mwpEndEventModel.eventLocation),
+              displayInfo('Actual Event location', mwpEndEventModel.actualEventLocation),
               Card(
                 margin: EdgeInsets.only(left: 10,right: 10,bottom: 20),
                 elevation: 0,
@@ -96,8 +119,8 @@ class _EndEventState extends State<EndEvent> {
                       ],
                     ),
                     children: [
-                      (_eventController.endEventModel.eventCcommentsList != null && _eventController.endEventModel.eventCcommentsList.length > 0)?
-                      getList(_eventController.endEventModel.eventCcommentsList):Container(
+                      (eventCcommentsList != null && eventCcommentsList.length > 0)?
+                      getList(eventCcommentsList):Container(
                         child: Center(child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text('No Comments !!'),
@@ -111,7 +134,11 @@ class _EndEventState extends State<EndEvent> {
                 width: 250,
                 child:Center(child: btnCloseEventBottom,),)
             ],
-          )),
+          ):Container(
+        child: Center(
+          child: Text("No data!!"),
+        ),
+      ),
     );
   }
 
@@ -280,6 +307,9 @@ class _EndEventState extends State<EndEvent> {
   final btnCloseEvent = FlatButton(
     onPressed: () {
         Get.back();
+        Get.back();
+        Get.back();
+        Get.back();
     },
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(28.0),
@@ -292,6 +322,9 @@ class _EndEventState extends State<EndEvent> {
   );
   final btnCloseEventBottom = FlatButton(
     onPressed: () {
+      Get.back();
+      Get.back();
+      Get.back();
       Get.back();
     },
     shape: RoundedRectangleBorder(
