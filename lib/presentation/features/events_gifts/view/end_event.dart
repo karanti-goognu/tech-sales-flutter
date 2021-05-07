@@ -8,6 +8,9 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 
 class EndEvent extends StatefulWidget {
+  int eventId;
+  EndEvent(this.eventId);
+
   @override
   _EndEventState createState() => _EndEventState();
 }
@@ -17,7 +20,7 @@ class _EndEventState extends State<EndEvent> {
   AllEventController _eventController = Get.find();
   @override
   void initState() {
-    _eventController.getEndEventDetail('47');
+    _eventController.getEndEventDetail(widget.eventId.toString());
     super.initState();
   }
 
@@ -33,7 +36,7 @@ class _EndEventState extends State<EndEvent> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
-
+              btnCloseEvent
             ],
           ),
       ),
@@ -102,7 +105,11 @@ class _EndEventState extends State<EndEvent> {
                     ],
                   ),
                 ),
-              )
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom:30),
+                width: 250,
+                child:Center(child: btnCloseEventBottom,),)
             ],
           )),
     );
@@ -269,5 +276,32 @@ class _EndEventState extends State<EndEvent> {
       ),
     );
   }
+
+  final btnCloseEvent = FlatButton(
+    onPressed: () {
+        Get.back();
+    },
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28.0),
+        side: BorderSide(color: Colors.white)),
+    color: Colors.transparent,
+    child: Text(
+      'CLOSE',
+      style: TextStyle(color: Colors.white, fontSize: 15),
+    ),
+  );
+  final btnCloseEventBottom = FlatButton(
+    onPressed: () {
+      Get.back();
+    },
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28.0),
+        side: BorderSide(color: ColorConstants.appBarColor)),
+    color: Colors.transparent,
+    child: Text(
+      'CLOSE',
+      style: TextStyle(color: ColorConstants.appBarColor, fontSize: 15),
+    ),
+  );
 
 }

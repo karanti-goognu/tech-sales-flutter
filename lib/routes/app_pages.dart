@@ -186,11 +186,11 @@ class AppPages {
       page: () => StartEvent(),
       //binding: DashboardBinding(),
     ),
-    GetPage(
-      name: Routes.END_EVENT,
-      page: () => EndEvent(),
-      //binding: DashboardBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.END_EVENT,
+    //   page: () => EndEvent(),
+    //   //binding: DashboardBinding(),
+    // ),
     GetPage(
       name: Routes.UPDATE_EVENT,
       page: () => UpdateEvent(),
