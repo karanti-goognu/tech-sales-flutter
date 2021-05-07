@@ -301,13 +301,25 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                         'Comment',
                         style: TextStyles.formfieldLabelTextDark,
                       ),
-                      Text(
-                        detailEventModel.mwpEventModel.eventComment,
-                        maxLines: null,
+                      Container(
+
+                        margin: EdgeInsets.only(top: 10),
+                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 8, right: 8),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey, // Set border color
+                                width: 1.0),   // Set border width
+                        ),
+                        child: Text(
+                          detailEventModel.mwpEventModel.eventComment,
+                          maxLines: null,
+                        ),
                       ),
                     ],
                   ),
-                )
+                ),
+                SizedBox(height: ScreenUtil().setSp(40),)
               ],
             )
           : Container(
@@ -487,12 +499,13 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   }
 
   _getCurrentLocation() async {
+
     if (!(await Geolocator().isLocationServiceEnabled())) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
       geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best,locationPermissionLevel: GeolocationPermission.locationWhenInUse,)
           .then((Position position) {
         setState(() {
           _currentPosition = position;

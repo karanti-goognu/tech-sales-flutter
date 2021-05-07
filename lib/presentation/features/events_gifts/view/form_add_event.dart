@@ -521,9 +521,10 @@ class _FormAddEventState extends State<FormAddEvent> {
     DateTime _picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
-        firstDate: DateTime(
-          new DateTime.now().year,
-        ),
+        firstDate: new DateTime.now(),
+        // DateTime(
+        //   new DateTime.now().year,
+        // ),
         lastDate: new DateTime(2025));
     setState(() {
       _date = new DateFormat('dd-MM-yyyy').format(_picked);

@@ -36,7 +36,6 @@ class _AllEventsState extends State<AllEvents> {
 
   @override
   void initState() {
-    //allEventController.getAllEventData();
     getAllEventsData();
 
     super.initState();
@@ -371,7 +370,8 @@ class _AllEventsState extends State<AllEvents> {
   Widget eventCard(
     int index,
     List<EventListModels> list,
-    Color borderColor,) {
+    Color borderColor,
+  ) {
     return Card(
       clipBehavior: Clip.antiAlias,
       borderOnForeground: true,
@@ -395,85 +395,84 @@ class _AllEventsState extends State<AllEvents> {
                 children: [
                   // Obx(
                   //   () =>
-                        Text(
-                      list[index].eventDate,
-                      //"24-Mar-21",
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: "Muli",
-                          //fontWeight:
-                          // FontWeight.bold
-                          fontWeight: FontWeight.normal),
-                    ),
-                 // ),
+                  Text(
+                    list[index].eventDate,
+                    //"24-Mar-21",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Muli",
+                        //fontWeight:
+                        // FontWeight.bold
+                        fontWeight: FontWeight.normal),
+                  ),
+                  // ),
                   // Obx(
                   //   () =>
-                        Chip(
-                      shape:
-                          StadiumBorder(side: BorderSide(color: borderColor)),
-                      backgroundColor: borderColor.withOpacity(0.1),
-                      label: Text('Status: ${list[index].eventStatusText}'),
-                    ),
-                 // )
+                  Chip(
+                    shape: StadiumBorder(side: BorderSide(color: borderColor)),
+                    backgroundColor: borderColor.withOpacity(0.1),
+                    label: Text('Status: ${list[index].eventStatusText}'),
+                  ),
+                  // )
                 ],
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 // Obx(
                 //   () =>
-                      Text(
-                    list[index].eventTypeText,
-                    //allEventController.egAllEventData.eventListModels[index].eventTypeText,
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: "Muli",
-                        fontWeight: FontWeight.bold),
-                  ),
+                Text(
+                  list[index].eventTypeText,
+                  //allEventController.egAllEventData.eventListModels[index].eventTypeText,
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "Muli",
+                      fontWeight: FontWeight.bold),
+                ),
                 // ),
                 // Obx(
                 //   () =>
-                      Text(
-                    "Inf. Planned : ${list[index].actualEventInflCount}",
-                    // "Inf. Planned : ${allEventController.egAllEventData.eventListModels[index].actualEventInflCount}",
+                Text(
+                  "Inf. Planned : ${list[index].actualEventInflCount}",
+                  // "Inf. Planned : ${allEventController.egAllEventData.eventListModels[index].actualEventInflCount}",
 
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: "Muli",
-                        fontWeight: FontWeight.normal),
-                  ),
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "Muli",
+                      fontWeight: FontWeight.normal),
+                ),
                 //),
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 // Obx(
                 //   () =>
-                      Flexible(
-                    flex: 2,
-                    child: Text(
-                      "Venue: ${list[index].eventVenue}",
-                      //"Venue: ${allEventController.egAllEventData.eventListModels[index].eventVenue}",
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    "Venue: ${list[index].eventVenue}",
+                    //"Venue: ${allEventController.egAllEventData.eventListModels[index].eventVenue}",
 
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: "Muli",
-                          fontWeight: FontWeight.normal),
-                    ),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Muli",
+                        fontWeight: FontWeight.normal),
                   ),
+                ),
                 // ),
                 // Obx(
                 //   () =>
-                      Flexible(
-                    flex: 3,
-                    child: Text(
-                      "Dealer(s) : ${list[index].dealerName}",
-                      //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: "Muli",
-                          fontWeight: FontWeight.normal),
-                    ),
+                Flexible(
+                  flex: 3,
+                  child: Text(
+                    "Dealer(s) : ${list[index].dealerName}",
+                    //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Muli",
+                        fontWeight: FontWeight.normal),
                   ),
-              //  ),
+                ),
+                //  ),
               ]),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
@@ -485,28 +484,28 @@ class _AllEventsState extends State<AllEvents> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 // Obx(
                 //   () =>
-                      Text(
-                    "EVENT ID: ${list[index].eventId}",
-                    //"EVENT ID: ${allEventController.egAllEventData.eventListModels[index].eventId}",
+                Text(
+                  "EVENT ID: ${list[index].eventId}",
+                  //"EVENT ID: ${allEventController.egAllEventData.eventListModels[index].eventId}",
 
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: "Muli",
-                        fontWeight: FontWeight.normal),
-                  ),
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "Muli",
+                      fontWeight: FontWeight.normal),
+                ),
                 // ),
                 // Obx(
                 //   () =>
-                      Text(
-                    "LEADS EXPECTED : ${list[index].expectedLeadsCount}",
-                    //"LEADS EXPECTED : ${allEventController.egAllEventData.eventListModels[index].expectedLeadsCount}",
+                Text(
+                  "LEADS EXPECTED : ${list[index].expectedLeadsCount}",
+                  //"LEADS EXPECTED : ${allEventController.egAllEventData.eventListModels[index].expectedLeadsCount}",
 
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: "Muli",
-                        fontWeight: FontWeight.normal),
-                  ),
-               // ),
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "Muli",
+                      fontWeight: FontWeight.normal),
+                ),
+                // ),
               ]),
             ],
           ),

@@ -1,16 +1,18 @@
 class InfDetailModel {
   String respCode;
   String respMsg;
+  String mobileNumber;
   InfluencerModel influencerModel;
   List<InfluencerTypeEntitiesList> influencerTypeEntitiesList;
   List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList;
 
-  InfDetailModel({this.respCode, this.respMsg, this.influencerModel,this.influencerTypeEntitiesList,
+  InfDetailModel({this.respCode, this.respMsg, this.mobileNumber, this.influencerModel,this.influencerTypeEntitiesList,
     this.influencerCategoryEntitiesList});
 
   InfDetailModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+    mobileNumber = json['mobile_number'];
     influencerModel = json['influencer_model'] != null
         ? new InfluencerModel.fromJson(json['influencer_model'])
         : null;
@@ -36,6 +38,7 @@ class InfDetailModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
+    data['mobile_number'] = this.mobileNumber;
     if (this.influencerModel != null) {
       data['influencer_model'] = this.influencerModel.toJson();
     }

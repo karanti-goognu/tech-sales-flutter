@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ApprovedEvents extends StatefulWidget {
   @override
@@ -48,30 +49,34 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   getSortedData() {
     print('In getSortedData');
     DateTime now = DateTime.now();
+    int year = DateTime.now().year;
+    int month = DateTime.now().month;
+    int day = DateTime.now().day;
 
     if (approvedEventsModel != null && approvedEventsModel.eventListModels != null) {
+      print('Count :: ${approvedEventsModel.eventListModels.length}');
+
       for (int i = 0; i < approvedEventsModel.eventListModels.length; i++) {
         String date = approvedEventsModel.eventListModels[i].eventDate;
         DateTime eventDt = DateTime.parse(date);
-        print("All data: ${approvedEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
+        int yearEvent = eventDt.year;
+        int monthEvent = eventDt.month;
+        int dayEvent = eventDt.day;
 
-       // if (eventDt.compareTo(now) == 0 && eventDt.compareTo(now) == 1) {
-        //if (now.difference(eventDt).inDays == 0 && now.difference(eventDt).inDays == 1) {
-        if (now.difference(eventDt).inDays < 1) {
-          current.add(approvedEventsModel.eventListModels[i]);
-          //current = approvedEventsModel.eventListModels;
-          print('Current : $current');
-        //} else if (eventDt.isBefore(now)) {
-        } else if (now.difference(eventDt).inDays > 1) {
-          past.add(approvedEventsModel.eventListModels[i]);
-          //past = approvedEventsModel.eventListModels;
-          print('Past : $past');
-        //} else if (eventDt.compareTo(now) < 1) {
-        } else if (now.difference(eventDt).inDays < 2) {
-          upcoming.add(approvedEventsModel.eventListModels[i]);
-          //upcoming = approvedEventsModel.eventListModels;
-          print('Upcoming : $upcoming');
-        } else {}
+       if((year == yearEvent && month == monthEvent && day == dayEvent) ||
+           (year == yearEvent && month == monthEvent && dayEvent - day == 1)){
+         current.add(approvedEventsModel.eventListModels[i]);
+         print('Current : $current');
+
+       }else if((year == yearEvent && (month == monthEvent) && (dayEvent - day > 1)) ||
+           (year - yearEvent > 0 && (month - monthEvent > 0 ))){
+         upcoming.add(approvedEventsModel.eventListModels[i]);
+         print('Upcoming : $upcoming');
+
+       }else if(year == yearEvent && (month == monthEvent || monthEvent - month < 0)){
+         past.add(approvedEventsModel.eventListModels[i]);
+         print('Past : $past');
+       }
       }
     }
   }
@@ -274,24 +279,32 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                                 //Obx(
                                 // () =>
 
-                                Text(
-                                  list[index].eventVenue,
-                                  //"Venue:",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
+                                Flexible(
+                                  flex: 2,
+                                  child: Text(
+                                    list[index].eventVenue,
+                                    //"Venue:",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "Muli",
+                                        fontWeight: FontWeight.normal),
+                                  ),
                                 ),
                                 // ),
                                 //Obx(
                                 // () =>
-                                Text(
-                                  "Dealer(s) : ${list[index].dealerName}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.normal),
-                                  // ),
+                                Flexible(
+                                  flex: 3,
+                                  child: Text(
+                                    "Dealer(s) : ${list[index].dealerName}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "Muli",
+                                        fontWeight: FontWeight.normal),
+                                    // ),
+                                  ),
                                 ),
                               ]),
                           Padding(

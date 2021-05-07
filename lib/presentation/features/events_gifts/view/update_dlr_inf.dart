@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
@@ -35,7 +37,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   SaveNewInfluencerResponse _saveNewInfluencerResponse;
   EventsFilterController _eventsFilterController = Get.find();
   int dealerId, _infTypeId, _infCatId;
-  bool _isUpdate = false;
+  bool _isUpdate = false, _isButtonDisabled = false;
   final _formKey = GlobalKey<FormState>();
   final _newFormKey = GlobalKey<FormState>();
 
@@ -228,7 +230,9 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 // letterSpacing: 2,
                 fontSize: ScreenUtil().setSp(15)),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Get.to(()=>AddNewLeadForm(eventId:widget.eventId,));
+          },
         ),
       ],
     );
@@ -290,7 +294,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   getBottomSheet() {
+    _contactController.text = '';
+    _infNameController.text = '';
+    _infTypeController.text = '';
     _isUpdate = true;
+    _isButtonDisabled = false;
     Get.bottomSheet(
       addInfluencerBottomSheetWidget(),
       isScrollControlled: true,
@@ -298,6 +306,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   getBottomSheetInf() {
+    _newContactController.text = '';
+    _newInfNameController.text = '';
     Get.back();
     Get.bottomSheet(
       addNewInfluencerBottomSheetWidget(),
@@ -352,10 +362,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 child: TextFormField(
                   controller: _contactController,
                   maxLength: 10,
-                  onEditingComplete: () {
-                    getInfluencerData(_contactController.text);
-                    //Get.back();
-                  },
+                  // onEditingComplete: () {
+                  //   getInfluencerData(_contactController.text);
+                  //   //Get.back();
+                  // },
                   validator: (value) {
                     if (value.isEmpty) {
                       return "Contact Name can't be empty";
@@ -365,15 +375,24 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     }
                     return null;
                   },
-                  // onChanged: (data) {
-                  //   setState(() {
-                  //     //_contactName = data;
-                  //   });
-                  // },
                   style: FormFieldStyle.formFieldTextStyle,
                   keyboardType: TextInputType.number,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                      hintText: 'Contact No.'),
+                  decoration: InputDecoration(
+                      focusedBorder: InputBordersDecorations.outLineInputBorderFocused,
+                      enabledBorder: InputBordersDecorations.outLineInputBorderEnabled,
+                      errorBorder: InputBordersDecorations.outLineInputBorderError,
+                      focusedErrorBorder: InputBordersDecorations.outLineInputBorderError,
+                      focusColor: Colors.black,
+                      isDense: false,
+                      labelStyle: TextStyles.formfieldLabelText,
+                      fillColor: ColorConstants.backgroundColor,
+                      hintText: 'Contact No',
+                      filled: false,
+                      suffixIcon: IconButton(
+                          icon: Icon(Icons.arrow_forward),
+                          onPressed: () {
+                            getInfluencerData(_contactController.text);
+                          })),
                 ),
               ),
               Padding(
@@ -405,27 +424,33 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MaterialButton(
-                      color: HexColor('#1C99D4'),
-                      onPressed: () {
-                        setState(() {
-                          selectedInfModels.add(EventInfluencerModelList(
-                              eventId: widget.eventId,
-                              eventInflId: 0,
-                              inflContact:
-                              _infDetailModel.influencerModel.inflContact,
-                              inflTypeId:
-                              _infDetailModel.influencerModel.inflTypeId,
-                              inflId: _infDetailModel.influencerModel.infl_id,
-                              inflName:
-                              _infDetailModel.influencerModel.inflName,
-                              isActive: "Y"));
+                    RaisedButton(
 
-                          Get.back();
-                          _contactController.text = '';
-                          _infNameController.text = '';
-                          _infTypeController.text = '';
-                        });
+                      color: HexColor('#1C99D4'),
+                      disabledColor : Colors.grey,
+                      onPressed: () {
+                        if(_isButtonDisabled == true) {
+                          setState(() {
+                            selectedInfModels.add(EventInfluencerModelList(
+                                eventId: widget.eventId,
+                                eventInflId: 0,
+                                inflContact:
+                                _infDetailModel.influencerModel.inflContact,
+                                inflTypeId:
+                                _infDetailModel.influencerModel.inflTypeId,
+                                inflId: _infDetailModel.influencerModel.infl_id,
+                                inflName:
+                                _infDetailModel.influencerModel.inflName,
+                                isActive: "Y"));
+
+                            Get.back();
+                            _contactController.text = '';
+                            _infNameController.text = '';
+                            _infTypeController.text = '';
+                          });
+                        }else{
+                          return null;
+                        }
                       },
                       child: Text(
                         'ADD',
@@ -446,6 +471,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   addNewInfluencerBottomSheetWidget() {
+    (_infDetailModel != null)?
+    _newContactController.text = _infDetailModel.mobileNumber:"";
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.3,
@@ -470,27 +497,39 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   ],
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //       right: 16, left: 16, bottom: 8, top: 12),
+              //   child: TextFormField(
+              //     controller: _newContactController,
+              //     maxLength: 10,
+              //     validator: (value) {
+              //       if (value.isEmpty) {
+              //         return "Contact Name can't be empty";
+              //       }
+              //       if (value.length != 10) {
+              //         return "Enter valid Contact number";
+              //       }
+              //       return null;
+              //     },
+              //     style: FormFieldStyle.formFieldTextStyle,
+              //     keyboardType: TextInputType.number,
+              //     decoration: FormFieldStyle.buildInputDecoration(
+              //         hintText: 'Contact No.'),
+              //   ),
+              // ),
+
               Padding(
-                padding: const EdgeInsets.only(
-                    right: 16, left: 16, bottom: 8, top: 12),
-                child: TextFormField(
-                  controller: _newContactController,
-                  maxLength: 10,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return "Contact Name can't be empty";
-                    }
-                    if (value.length != 10) {
-                      return "Enter valid Contact number";
-                    }
-                    return null;
-                  },
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.number,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                      hintText: 'Contact No.'),
-                ),
-              ),
+                  padding:
+                  const EdgeInsets.only(right: 16, left: 16, bottom: 8),
+                  child: TextFormField(
+                    controller: _newContactController,
+                    style: FormFieldStyle.formFieldTextStyle,
+                    readOnly: true,
+                    enableInteractiveSelection: false,
+                    decoration:
+                    FormFieldStyle.buildInputDecoration(hintText: 'Contact No'),
+                  )),
               Padding(
                   padding:
                   const EdgeInsets.only(right: 16, left: 16, bottom: 8),
@@ -503,7 +542,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     },
                     controller: _newInfNameController,
                     style: TextStyles.formfieldLabelText,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     decoration:
                     FormFieldStyle.buildInputDecoration(labelText: "Name"),
                   )),
@@ -520,9 +559,13 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     _infDetailModel.influencerTypeEntitiesList
                         .map((e) => DropdownMenuItem(
                       value: e.inflTypeId,
-                      child: Text(
-                        '${e.inflTypeId}',
-                        maxLines: null,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        //250,
+                        child: Text(
+                          '${e.inflTypeDesc}',
+                          maxLines: null,
+                        ),
                       ),
                     ))
                         .toList():[],
@@ -768,6 +811,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   _infDetailModel.influencerModel.inflName;
               _infTypeController.text =
               '${_infDetailModel.influencerModel.influencerTypeText}';
+              _isButtonDisabled = true;
             } else {
               getBottomSheetInf();
             }

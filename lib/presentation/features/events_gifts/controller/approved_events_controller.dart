@@ -123,6 +123,10 @@ class EventsFilterController extends GetxController {
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     var accessKey = await repository.getAccessKey();
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -131,7 +135,7 @@ class EventsFilterController extends GetxController {
       _dealerInfModel =
       await repository.getDealerInfList(accessKey, userSecurityKey, empID, eventId);
     });
-//    Get.back();
+    Get.back();
     return _dealerInfModel;
   }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
@@ -135,6 +137,14 @@ class _DetailPendingState extends State<DetailPending> {
                   detailEventModel.eventDealersModelList[i].dealerName));
         }
       }
+      // if (detailEventModel.eventDealersModelList != null &&
+      //     detailEventModel.eventDealersModelList.length != 0) {
+      //   for (int i = 0; i < detailEventModel.eventDealersModelList.length; i++) {
+      //     // selectedDealer
+      //     //     .add(detailEventModel.eventDealersModelList[i].dealerName);
+      //   }
+      // }
+
     }
   }
 
@@ -641,19 +651,19 @@ class _DetailPendingState extends State<DetailPending> {
   List<bool> checkedValues;
   List<String> selectedDealer = [];
   List<DealersModels> selectedDealersModels = [];
-  //List<EventDealersModelList> eventSelectedDealersModels = [];
 
-  //List<String> selectedDealerList = [];
   TextEditingController _query = TextEditingController();
 
+  // if (detailEventModel.eventDealersModelList != null &&
+  //     detailEventModel.eventDealersModelList.length != 0) {
+  //   for (int i = 0; i < detailEventModel.eventDealersModelList.length; i++) {
+  //     // selectedDealer
+  //     //     .add(detailEventModel.eventDealersModelList[i].dealerName);
+  //   }
+  // }
+
+
   addDealerBottomSheetWidget() {
-    if (detailEventModel.eventDealersModelList != null &&
-        detailEventModel.eventDealersModelList.length != 0) {
-      for (int i = 0; i < detailEventModel.eventDealersModelList.length; i++) {
-        selectedDealer
-            .add(detailEventModel.eventDealersModelList[i].dealerName);
-      }
-    }
     List<DealersModels> dealers = detailEventModel.dealersModels;
     checkedValues =
         List.generate(detailEventModel.dealersModels.length, (index) => false);
@@ -709,6 +719,7 @@ class _DetailPendingState extends State<DetailPending> {
                 itemCount: dealers.length,
                 itemBuilder: (context, index) {
                   return
+
                       // dealerId == dealers[index].dealerId
                       //   ?
                       CheckboxListTile(
@@ -724,6 +735,20 @@ class _DetailPendingState extends State<DetailPending> {
                     value: selectedDealer.contains(dealers[index].dealerName),
                     onChanged: (newValue) {
                       setState(() {
+                      // print('NEWVALUE : $newValue');
+                      //     if (newValue == true) {
+                      //       selectedDealer.add(dealers[index].dealerName);
+                      //       selectedDealersModels.add(dealers[index]);
+                      //     }
+                      //
+                      //     if(newValue == false)
+                      //
+                      //       {
+                      //       selectedDealer.remove(dealers[index].dealerName);
+                      //       selectedDealersModels.remove(dealers[index]);
+                      //
+                      //     }
+                      // print('SELECTED: ${json.encode(selectedDealersModels)}');
                         selectedDealer.contains(dealers[index].dealerName)
                             ? selectedDealer.remove(dealers[index].dealerName)
                             : selectedDealer.add(dealers[index].dealerName);
@@ -760,6 +785,7 @@ class _DetailPendingState extends State<DetailPending> {
                     onTap: () {
                       setState(() {
                         selectedDealer.clear();
+                        selectedDealersModels.clear();
                       });
                     },
                     child: Text(

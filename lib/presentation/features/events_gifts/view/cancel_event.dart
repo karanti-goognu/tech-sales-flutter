@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
@@ -251,7 +253,7 @@ class _CancelEventtState extends State<CancelEvent> {
             'dealerName': e.dealerName,
             'dealerId': e.dealerId,
             'createdBy': empId,
-            'eventDealerId': null,
+            'eventDealerId': 0,
             'isActive': 'Y'
           });
         });
@@ -286,7 +288,7 @@ class _CancelEventtState extends State<CancelEvent> {
           mwpeventFormRequest: _mwpeventFormRequest,
           eventDealersModelList: _save.eventDealersModelList);
 
-      print('PARAMS: $_saveEventFormModel');
+      print('PARAMS: ${json.encode(_mwpeventFormRequest)}');
 
       internetChecking().then((result) => {
             if (result == true)

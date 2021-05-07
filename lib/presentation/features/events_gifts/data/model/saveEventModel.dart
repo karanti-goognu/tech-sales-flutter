@@ -85,6 +85,9 @@ class MwpeventFormRequest {
   String referenceId;
   String venue;
   String venueAddress;
+  int eventCancelReasonId;
+  String eventCancelComment;
+  String isEventStarted;
 
   MwpeventFormRequest(
       {this.dalmiaInflCount,
@@ -102,7 +105,11 @@ class MwpeventFormRequest {
         this.nondalmiaInflCount,
         this.referenceId,
         this.venue,
-        this.venueAddress});
+        this.venueAddress,
+        this.eventCancelReasonId,
+        this.eventCancelComment,
+        this.isEventStarted
+      });
 
   MwpeventFormRequest.fromJson(Map<String, dynamic> json) {
     dalmiaInflCount = json['dalmiaInflCount'];
@@ -121,6 +128,9 @@ class MwpeventFormRequest {
     referenceId = json['referenceId'];
     venue = json['venue'];
     venueAddress = json['venueAddress'];
+    eventCancelReasonId = json['eventCancelReasonId'];
+    eventCancelComment = json['eventCancelComment'];
+    isEventStarted = json['isEventStarted'];
   }
 
   Map<String, dynamic> toJson() {
@@ -141,6 +151,9 @@ class MwpeventFormRequest {
     data['referenceId'] = this.referenceId;
     data['venue'] = this.venue;
     data['venueAddress'] = this.venueAddress;
+    data['eventCancelReasonId'] = this.eventCancelReasonId;
+    data['eventCancelComment'] = this.eventCancelComment;
+    data['isEventStarted'] = this.isEventStarted;
     return data;
   }
 }
