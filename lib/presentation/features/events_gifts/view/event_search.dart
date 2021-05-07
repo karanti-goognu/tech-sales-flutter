@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -82,7 +83,7 @@ Widget eventsDetailWidget(){
                     binding: EGBinding());
 
               }else if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.completed ){
-
+                Get.to(() => EndEvent(_eventController.dataForSearchResult.eventListModels[index].eventId));
               }else if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.pendingApproval){
                 Get.to(() => DetailPending(_eventController.dataForSearchResult.eventListModels[index].eventId, ColorConstants.eventPending),
                     binding: EGBinding());
