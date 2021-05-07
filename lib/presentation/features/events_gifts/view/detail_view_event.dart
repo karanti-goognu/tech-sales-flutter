@@ -499,12 +499,13 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   }
 
   _getCurrentLocation() async {
+
     if (!(await Geolocator().isLocationServiceEnabled())) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
       geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best,locationPermissionLevel: GeolocationPermission.locationWhenInUse,)
           .then((Position position) {
         setState(() {
           _currentPosition = position;
