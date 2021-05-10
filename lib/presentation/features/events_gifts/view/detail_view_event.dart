@@ -179,17 +179,28 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   side: BorderSide(color: Colors.white)),
               color: Colors.transparent,
               child: Text(
-                'END TIME',
+                'END EVENT',
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
             ),
             FlatButton(
-                onPressed: () {
-                  Get.to(
-                      () => UpdateDlrInf(
-                            detailEventModel.mwpEventModel.eventId,
-                          ),
-                      binding: EGBinding());
+                onPressed: () async{
+                  Map results = await Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return UpdateDlrInf(
+                        detailEventModel.mwpEventModel.eventId,
+                      );
+                    },
+                  ));
+
+                  if (results != null && results.containsKey('reload')) {
+                    getDetailEventsData();
+                  }
+                  // Get.to(
+                  //     () => UpdateDlrInf(
+                  //           detailEventModel.mwpEventModel.eventId,
+                  //         ),
+                  //     binding: EGBinding());
                 },
                 child: Row(
                   children: [
