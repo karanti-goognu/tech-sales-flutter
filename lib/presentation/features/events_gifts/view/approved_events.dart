@@ -7,6 +7,8 @@ import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -182,11 +184,10 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   }
 
   Widget getList(List<EventListModels> list) {
-  //  getSortedData();
     return (approvedEventsModel != null &&
             approvedEventsModel.eventListModels != null &&
             approvedEventsModel.eventListModels.length > 0 )
-        //&& list != null)
+
         ? ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -197,10 +198,13 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
               return GestureDetector(
                 onTap: () {
                   print('EVENT ID: ${list[index].eventId}');
-                  Get.to(
-                          () => DetailViewEvent(list[index].eventId),
-                      binding: EGBinding());
-                // Get.toNamed(Routes.DETAIL_EVENT);
+                  if (list[index].eventStatusText == StringConstants.approved) {
+                    Get.to(
+                            () => DetailViewEvent(list[index].eventId),
+                        binding: EGBinding());
+                  }else{
+                    Get.to(() => EndEvent(list[index].eventId));
+                  }
                 },
                 child: Card(
                   clipBehavior: Clip.antiAlias,

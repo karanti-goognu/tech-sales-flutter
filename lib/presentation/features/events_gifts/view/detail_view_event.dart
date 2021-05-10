@@ -76,7 +76,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
     final btnStartEvent = FlatButton(
       onPressed: () {
-        // _getCurrentLocation();
+         _getCurrentLocation();
         // Get.dialog(CustomDialogs().showStartEventDialog(
         //     'Confirmation', "Do you want to start event?"));
       },
@@ -184,12 +184,23 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               ),
             ),
             FlatButton(
-                onPressed: () {
-                  Get.to(
-                      () => UpdateDlrInf(
-                            detailEventModel.mwpEventModel.eventId,
-                          ),
-                      binding: EGBinding());
+                onPressed: () async{
+                  Map results = await Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return UpdateDlrInf(
+                        detailEventModel.mwpEventModel.eventId,
+                      );
+                    },
+                  ));
+
+                  if (results != null && results.containsKey('reload')) {
+                    getDetailEventsData();
+                  }
+                  // Get.to(
+                  //     () => UpdateDlrInf(
+                  //           detailEventModel.mwpEventModel.eventId,
+                  //         ),
+                  //     binding: EGBinding());
                 },
                 child: Row(
                   children: [

@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_rejected.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/enums/event_status.dart';
@@ -137,7 +138,7 @@ class _AllEventsState extends State<AllEvents> {
                       ? getListForPending(
                           ColorConstants.eventRejected, rejected)
                       : (option == StringConstants.completed)
-                          ? getList(ColorConstants.eventCompleted, completed)
+                          ? getListForCompleted(ColorConstants.eventCompleted, completed)
                           : (option == StringConstants.cancelled)
                               ? getList(
                                   ColorConstants.eventCancelled, cancelled)
@@ -211,58 +212,6 @@ class _AllEventsState extends State<AllEvents> {
             allEventsModel.eventListModels != null &&
             allEventsModel.eventListModels.length > 0 &&
             list != null)
-        /*
-        allEventController != null &&
-            allEventController.egAllEventData.eventListModels != null &&
-            allEventController.egAllEventData.eventListModels.length > 0 )
-           && list != null)
-       ?
-        Obx(
-                () => (allEventController == null)
-                ? Container(
-              child: Center(
-                child: Text("event controller  is empty!!"),
-              ),
-            )
-                : (allEventController.egAllEventData == null)
-                ? Container(
-              child: Center(
-                child: Text("event list response  is empty!!"),
-              ),
-            )
-                : (allEventController.egAllEventData.eventListModels == null)
-                ? Container(
-              child: Center(
-                child: Text("Leads list is empty!!"),
-              ),
-            )
-                : (allEventController.egAllEventData.eventListModels.length ==
-                0)
-                ? Container(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("You don't have any events..!!"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        allEventController.getAllEventData();
-                      },
-                      color: ColorConstants.buttonNormalColor,
-                      child: Text(
-                        "TRY AGAIN",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-            */
-
         ? ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -292,58 +241,6 @@ class _AllEventsState extends State<AllEvents> {
             allEventsModel.eventListModels.length > 0 &&
             list != null)
         ?
-        /*
-      (allEventController != null &&
-          allEventController.egAllEventData.eventListModels != null &&
-          allEventController.egAllEventData.eventListModels.length > 0 &&
-          list != null)
-    return Obx(
-            () => (allEventController == null)
-            ? Container(
-          child: Center(
-            child: Text("event controller  is empty!!"),
-          ),
-        )
-            : (allEventController.egAllEventData == null)
-            ? Container(
-          child: Center(
-            child: Text("event list response  is empty!!"),
-          ),
-        )
-            : (allEventController.egAllEventData.eventListModels == null)
-            ? Container(
-          child: Center(
-            child: Text("Leads list is empty!!"),
-          ),
-        )
-            : (allEventController.egAllEventData.eventListModels.length ==
-            0)
-            ? Container(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("You don't have any events..!!"),
-                SizedBox(
-                  height: 10,
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    allEventController.getAllEventData();
-                  },
-                  color: ColorConstants.buttonNormalColor,
-                  child: Text(
-                    "TRY AGAIN",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
-              ],
-            ),
-          ),
-        )
-            :
-
-          */
         ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -365,6 +262,37 @@ class _AllEventsState extends State<AllEvents> {
               child: Text("No Events!!"),
             ),
           );
+  }
+
+  Widget getListForCompleted(Color borderColor, List<EventListModels> list) {
+    print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
+    return (allEventsModel != null &&
+        allEventsModel.eventListModels != null &&
+        allEventsModel.eventListModels.length > 0 &&
+        list != null)
+        ?
+    ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        controller: _scrollController,
+        itemCount: list.length,
+        padding: const EdgeInsets.only(left: 6.0, right: 6, bottom: 10),
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              // Get.to(() => DetailPending(list[index].eventId, borderColor),
+              //     binding: EGBinding());
+              Get.to(() => EndEvent(list[index].eventId));
+            },
+            child: eventCard(index, list, borderColor),
+          );
+        })
+        : Container(
+      height: 100,
+      child: Center(
+        child: Text("No Events!!"),
+      ),
+    );
   }
 
   Widget eventCard(

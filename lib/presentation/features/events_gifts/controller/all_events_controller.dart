@@ -264,6 +264,7 @@ class AllEventController extends GetxController {
     String empID = "";
     String accessKey = await repository.getAccessKey();
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
@@ -283,14 +284,18 @@ class AllEventController extends GetxController {
     String empID = "";
     String accessKey = await repository.getAccessKey();
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
     });
 
     EventResponse endEventModel = await repository.submitEndEventDetail(accessKey, userSecurityKey, empID, eventId,eventComment,eventDate,eventEndLat,eventEndLong);
+    Get.back();
     return endEventModel;
-
   }
 
 

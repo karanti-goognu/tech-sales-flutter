@@ -1,10 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
@@ -37,6 +39,7 @@ class _FormAddEventState extends State<FormAddEvent> {
   //AppController _appController = Get.find();
   EventTypeController eventController = Get.find();
   SaveEventController saveEventController = Get.find();
+  DetailEventController _detailEventController = Get.find();
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
 
@@ -263,9 +266,7 @@ class _FormAddEventState extends State<FormAddEvent> {
           labelText: "Venue address (if booked)"),
     );
 
-    final dealer =
-
-    GestureDetector(
+    final dealer = GestureDetector(
       onTap: () => getBottomSheetForDealer(),
       child: FormField(
         // validator: (value) {
@@ -292,7 +293,8 @@ class _FormAddEventState extends State<FormAddEvent> {
               height: 30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: selectedDealersModels.map((e) => Padding(
+                children: selectedDealersModels
+                    .map((e) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Chip(
                             label: Text(
@@ -534,22 +536,50 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   Future _startTime() async {
-    _time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay(hour: 10, minute: 47),
-      builder: (BuildContext context, Widget child) {
-        return MediaQuery(
-          data: MediaQuery.of(context),
-          //data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child,
-        );
-      },
-    );
+    (_time == null)
+        ? _time = await showTimePicker(
+            context: context,
+            initialTime: (TimeOfDay(hour: 10, minute: 47)),
+            builder: (BuildContext context, Widget child) {
+              return MediaQuery(
+                data: MediaQuery.of(context),
+                child: child,
+              );
+            },
+          )
+        : _time = await showTimePicker(
+            context: context,
+            initialTime: (TimeOfDay(hour: _time.hour, minute: _time.minute)),
+            builder: (BuildContext context, Widget child) {
+              return MediaQuery(
+                data: MediaQuery.of(context),
+                child: child,
+              );
+            },
+          );
     setState(() {
+      print("jj");
       timeString = ('$_date ${_time.hour}:${_time.minute}:00');
       print(timeString);
     });
   }
+  // Future _startTime() async {
+  //   _time = await showTimePicker(
+  //     context: context,
+  //     initialTime: TimeOfDay(hour: 10, minute: 47),
+  //     builder: (BuildContext context, Widget child) {
+  //       return MediaQuery(
+  //         data: MediaQuery.of(context),
+  //         //data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+  //         child: child,
+  //       );
+  //     },
+  //   );
+  //   setState(() {
+  //     timeString = ('$_date ${_time.hour}:${_time.minute}:00');
+  //     print(timeString);
+  //   });
+  // }
 
   List<bool> checkedValues;
   List<String> selectedDealer = [];
@@ -608,11 +638,10 @@ class _FormAddEventState extends State<FormAddEvent> {
             SizedBox(
               height: 20,
             ),
-
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount:  dealers.length,
+                itemCount: dealers.length,
                 itemBuilder: (context, index) {
                   return
                       // dealerId == dealers[index].dealerId
@@ -639,8 +668,6 @@ class _FormAddEventState extends State<FormAddEvent> {
                             : selectedDealersModels.add(dealers[index]);
 
                         checkedValues[index] = newValue;
-
-
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
@@ -741,23 +768,21 @@ class _FormAddEventState extends State<FormAddEvent> {
         //   list.add(new MwpMeetDealers(dealerId: dealerListSelected[i].dealerId));
         // }
 
-
-
-
         List dealersList = List();
         selectedDealersModels.forEach((e) {
           setState(() {
             dealersList.add({
-              'eventDealerId' : null,
+              'eventDealerId': null,
               'eventId': null,
               'dealerId': e.dealerId,
-              'dealerName' : e.dealerName,
+              'dealerName': e.dealerName,
               'eventStage': 'PLAN',
-              'isActive' : 'Y',
+              'isActive': 'Y',
               'createdBy': empId,
             });
           });
         });
+
         print('DEALERS: $dealersList');
         MwpeventFormRequest _mwpeventFormRequest =
             MwpeventFormRequest.fromJson({
@@ -771,24 +796,22 @@ class _FormAddEventState extends State<FormAddEvent> {
           'eventStatusId': eventStatusId,
           'eventTime': timeString,
           'eventTypeId': _eventTypeId,
-          'expectedLeadsCount': int.tryParse('${_expectedLeadsController.text}') ?? 0,
+          'expectedLeadsCount':
+              int.tryParse('${_expectedLeadsController.text}') ?? 0,
           'giftDistributionCount':
               int.tryParse('${_giftsDistributionController.text}') ?? 0,
-          'nondalmiaInflCount': int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
+          'nondalmiaInflCount':
+              int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
           'referenceId': empId,
           'venue': _selectedVenue,
           'venueAddress': _venueAddController.text,
         });
 
-        SaveEventFormModel _save = SaveEventFormModel.fromJson({
-          'eventDealersModelList' : dealersList
-        }
-
-        );
+        SaveEventFormModel _save =
+            SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
         SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
             mwpeventFormRequest: _mwpeventFormRequest,
-            eventDealersModelList: _save.eventDealersModelList
-          );
+            eventDealersModelList: _save.eventDealersModelList);
 
         internetChecking().then((result) => {
               if (result == true)
