@@ -75,7 +75,7 @@ class _DetailPendingState extends State<DetailPending> {
   void initState() {
     getEmpId();
     getDetailEventsData();
-    getDetailEventsData1();
+    // getDetailEventsData1();
     super.initState();
   }
 
