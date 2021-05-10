@@ -44,6 +44,7 @@ class _DetailPendingState extends State<DetailPending> {
   DeleteEventModel _deleteEventModel;
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
+  List<DealersModels> selectedDealersModels = [];
 
   var _date = 'Select Date';
   TimeOfDay _time;
@@ -75,7 +76,7 @@ class _DetailPendingState extends State<DetailPending> {
   void initState() {
     getEmpId();
     getDetailEventsData();
-    getDetailEventsData1();
+    //getDetailEventsData1();
     super.initState();
   }
 
@@ -134,13 +135,15 @@ class _DetailPendingState extends State<DetailPending> {
         for (int i = 0;
             i < detailEventModel.eventDealersModelList.length;
             i++) {
-          selectedDealersModels.add(DealersModels(
-              dealerId: detailEventModel.eventDealersModelList[i].dealerId,
-              dealerName:
-                  detailEventModel.eventDealersModelList[i].dealerName));
-          selectedDealer
-              .add(detailEventModel.eventDealersModelList[i].dealerName);
-        }
+            selectedDealersModels.add(DealersModels(
+                dealerId: detailEventModel.eventDealersModelList[i].dealerId,
+                dealerName:
+                detailEventModel.eventDealersModelList[i].dealerName));
+
+            selectedDealer
+                .add(selectedDealersModels[i].dealerName);
+          }
+
 
       }
     }
@@ -705,7 +708,7 @@ class _DetailPendingState extends State<DetailPending> {
 
   List<bool> checkedValues;
   List<String> selectedDealer = [];
-  List<DealersModels> selectedDealersModels = [];
+  // List<DealersModels> selectedDealersModels = [];
   final _searchList = List<DealerModel>();
 
   TextEditingController _query = TextEditingController();
@@ -713,6 +716,7 @@ class _DetailPendingState extends State<DetailPending> {
 
   addDealerBottomSheetWidget() {
     List<DealersModels> dealers = detailEventModel.dealersModels;
+
     checkedValues =
         List.generate(detailEventModel.dealersModels.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
@@ -780,34 +784,44 @@ class _DetailPendingState extends State<DetailPending> {
                         Text('( ${dealers[index].dealerId} )'),
                       ],
                     ),
-                    value: selectedDealer.contains(dealers[index].dealerName),
+                    value:
+                    //selectedDealersModels.contains(dealers[index].dealerName),
+                    selectedDealer.contains(dealers[index].dealerName),
                     onChanged: (newValue) {
                       setState(() {
                       print('NEWVALUE : $newValue');
-                       //    if (newValue == true) {
-                       //      selectedDealer.add(dealers[index].dealerName);
-                       //      selectedDealersModels.add(dealers[index]);
-                       //    }
-                       //    if(newValue == false)
-                       //      {
-                       //        selectedDealer.remove(dealers[index].dealerName);
-                       //        selectedDealersModels.removeWhere((element) =>
-                       //            element.dealerId == detailEventModel.eventDealersModelList[index].dealerId
-                       //        );
-                       //
-                       //     // selectedDealersModels.remove(dealers[index]);
-                       //
-                       //    }
-                       // print('SELECTED: ${json.encode(selectedDealersModels)}');
+                          if (newValue == true) {
+                            selectedDealer.add(dealers[index].dealerName);
+                            selectedDealersModels.add(dealers[index]);
+                            // if(selectedDealersModels[index].dealerId != dealers[index].dealerId){
+                            //   selectedDealersModels.add(dealers[index]);
+                            // }
+
+                          }
+                          if(newValue == false)
+                            {
+                              selectedDealer.remove(dealers[index].dealerName);
+                              // selectedDealersModels.removeWhere((element) =>
+                              //     element.dealerId == detailEventModel.eventDealersModelList[index].dealerId,
+                              // );
+
+                             // detailEventModel.eventDealersModelList.remove(dealers[index]);
+
+                           selectedDealersModels.remove(dealers[index]);
+
+                          }
+                       print('SELECTED: ${json.encode(selectedDealersModels)}');
+
+                        //
+                        // selectedDealer.contains(dealers[index].dealerName)
+                        //     ? selectedDealer.remove(dealers[index].dealerName)
+                        //     : selectedDealer.add(dealers[index].dealerName);
+                        //
+                        // selectedDealersModels.contains(dealers[index])
+                        //     ? selectedDealersModels.remove(dealers[index])
+                        //     : selectedDealersModels.add(dealers[index]);
 
 
-                        selectedDealer.contains(dealers[index].dealerName)
-                            ? selectedDealer.remove(dealers[index].dealerName)
-                            : selectedDealer.add(dealers[index].dealerName);
-
-                        selectedDealersModels.contains(dealers[index])
-                            ? selectedDealersModels.remove(dealers[index])
-                            : selectedDealersModels.add(dealers[index]);
 
                         checkedValues[index] = newValue;
                       });
@@ -852,7 +866,12 @@ class _DetailPendingState extends State<DetailPending> {
                   MaterialButton(
                     color: HexColor('#1C99D4'),
                     onPressed: () {
-                      Get.back();
+                       Get.back();
+
+
+
+
+
                     },
                     child: Text(
                       'OK',
