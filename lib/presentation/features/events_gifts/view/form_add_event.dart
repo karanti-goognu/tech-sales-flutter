@@ -763,11 +763,6 @@ class _FormAddEventState extends State<FormAddEvent> {
       } else {
         String empId = await getEmpId();
 
-        // List<MwpMeetDealers> list = new List();
-        // for (int i = 0; i < this.dealerListSelected.length; i++) {
-        //   list.add(new MwpMeetDealers(dealerId: dealerListSelected[i].dealerId));
-        // }
-
         List dealersList = List();
         selectedDealersModels.forEach((e) {
           setState(() {

@@ -343,57 +343,57 @@ class _DetailPendingState extends State<DetailPending> {
               ),
             ),
             child:
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Obx(
-                    () => Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 12.0,
-                  children: List<Widget>.generate(
-                    detailEventController
-                        .dealerListSelected.length,
-                        (int index) {
-                      return Chip(
-                        backgroundColor: Colors.grey[100],
-                        label: Text(
-                            "${detailEventController.dealerListSelected[index].dealerName}"),
-                        /* selected: _value == index,
-                                          onSelected: (bool selected) {
-                                            setState(() {
-                                              _value = selected ? index : null;
-                                            });
-                                          },*/
-                      );
-                    },
-                  ).toList(),
-                ),
-              ),
-            )
-            // Container(
-            //   height: 30,
-            //   child: ListView(
-            //     scrollDirection: Axis.horizontal,
-            //     children: selectedDealersModels
-            //         .map((e) => Padding(
-            //               padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            //               child: Chip(
-            //                 deleteIcon: Icon(Icons.close),
-            //                 onDeleted: () {
-            //                   setState(() {
-            //                     selectedDealersModels.remove(e);
-            //                     selectedDealer.remove(e);
-            //                   });
-            //                 },
-            //                 label: Text(
-            //                   e.dealerName,
-            //                   style: TextStyle(fontSize: 10),
-            //                 ),
-            //                 backgroundColor: Colors.lightGreen.withOpacity(0.2),
-            //               ),
-            //             ))
-            //         .toList(),
+            // Padding(
+            //   padding: const EdgeInsets.all(16.0),
+            //   child: Obx(
+            //         () => Wrap(
+            //       alignment: WrapAlignment.center,
+            //       spacing: 12.0,
+            //       children: List<Widget>.generate(
+            //         detailEventController
+            //             .dealerListSelected.length,
+            //             (int index) {
+            //           return Chip(
+            //             backgroundColor: Colors.grey[100],
+            //             label: Text(
+            //                 "${detailEventController.dealerListSelected[index].dealerName}"),
+            //             /* selected: _value == index,
+            //                               onSelected: (bool selected) {
+            //                                 setState(() {
+            //                                   _value = selected ? index : null;
+            //                                 });
+            //                               },*/
+            //           );
+            //         },
+            //       ).toList(),
+            //     ),
             //   ),
-            // ),
+            // )
+            Container(
+              height: 30,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: selectedDealersModels
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: Chip(
+                            deleteIcon: Icon(Icons.close),
+                            onDeleted: () {
+                              setState(() {
+                                selectedDealersModels.remove(e);
+                                selectedDealer.remove(e);
+                              });
+                            },
+                            label: Text(
+                              e.dealerName,
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            backgroundColor: Colors.lightGreen.withOpacity(0.2),
+                          ),
+                        ))
+                    .toList(),
+              ),
+            ),
           );
         },
       ),
