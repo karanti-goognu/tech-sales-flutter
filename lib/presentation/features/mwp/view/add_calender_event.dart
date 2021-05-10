@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -376,12 +377,23 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                         _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.rejectedEvent?  eventColor = ColorConstants.eventRejected:
                         _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.notSubmitted? eventColor = ColorConstants.eventNotSubmited: eventColor = ColorConstants.blackColor;
 
-                        _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.approved ||
-                            _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.completed ||
-                            _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.cancelled?
-                        Get.to(() => DetailViewEvent(_calendarEventController.listOfEvents[index].id),
-                            binding: EGBinding()):Get.to(() => DetailPending(_calendarEventController.listOfEvents[index].id,eventColor),
-                            binding: EGBinding());
+                        // _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.approved ||
+                        //     _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.completed ||
+                        //     _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.cancelled?
+                        // Get.to(() => DetailViewEvent(_calendarEventController.listOfEvents[index].id),
+                        //     binding: EGBinding()):Get.to(() => DetailPending(_calendarEventController.listOfEvents[index].id,eventColor),
+                        //     binding: EGBinding());
+
+                        if(_calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.completed ){
+                          Get.to(() => EndEvent(_calendarEventController.listOfEvents[index].id),
+                              binding: EGBinding());
+                        }else if(_calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.approved || _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.cancelled){
+                          Get.to(() => DetailViewEvent(_calendarEventController.listOfEvents[index].id),
+                              binding: EGBinding());
+                        }else{
+                          Get.to(() => DetailPending(_calendarEventController.listOfEvents[index].id,eventColor),
+                              binding: EGBinding());
+                        }
                       } else {
                         _addEventController.visitId =
                             _calendarEventController.listOfEvents[index].id;
