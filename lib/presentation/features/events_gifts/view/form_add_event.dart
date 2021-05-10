@@ -108,6 +108,8 @@ class _FormAddEventState extends State<FormAddEvent> {
   @override
   void dispose() {
     super.dispose();
+    eventController.dispose();
+    saveEventController.dispose();
   }
 
   @override
