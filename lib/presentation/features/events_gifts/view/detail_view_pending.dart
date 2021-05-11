@@ -641,16 +641,14 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   Future _startTime() async {
-    // String time = detailEventModel.mwpEventModel.eventTime;
-    // DateTime eventtime = DateTime.tryParse(time);
-    // int hr = eventtime.hour;
-    // int min = eventtime.minute;
-    // print('TT:$eventtime');
-    // TimeOfDay _initialTime = (TimeOfDay(hour: hr, minute: min));
+    String t = detailEventModel.mwpEventModel.eventTime;
+    TimeOfDay eventtime = TimeOfDay(hour:int.parse(t.split(":")[0]),minute: int.parse(t.split(":")[1]));
+    print('TT:$eventtime');
     (_time == null)
         ? _time = await showTimePicker(
             context: context,
-            initialTime: TimeOfDay(hour: 10, minute: 10),
+            initialTime: eventtime,
+            //TimeOfDay(hour: 10, minute: 10),
             builder: (BuildContext context, Widget child) {
               return MediaQuery(
                 data: MediaQuery.of(context),
