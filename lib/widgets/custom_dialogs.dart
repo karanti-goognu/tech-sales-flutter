@@ -254,7 +254,8 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-            Get.toNamed(Routes.HOME_SCREEN);
+            //Below line was commented for leads screen, if it's being use somewhere else, please consider.. s s
+//            Get.toNamed(Routes.HOME_SCREEN);
           },
         ),
       ],
@@ -759,7 +760,7 @@ class CustomDialogs {
           ),
           onPressed: () {
             if(from==0){
-              Get.to(() => EndEvent(eventId));
+              Get.to(() => EndEvent(eventId), binding: EGBinding());
             }else{
             Get.back();
             }

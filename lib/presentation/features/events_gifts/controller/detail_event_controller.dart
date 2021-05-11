@@ -132,23 +132,6 @@ class DetailEventController extends GetxController {
   }
 
   Future<DeleteEventModel> deleteEvent(int eventId) async {
-    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
-    //It is working fine without the progress indicator
-//    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-//     String userSecurityKey = "";
-//     String empID = "";
-//     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-//
-//     await _prefs.then((SharedPreferences prefs) async {
-//       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-//       // print(userSecurityKey);
-//       empID = prefs.getString(StringConstants.employeeId);
-//       String accessKey = await repository.getAccessKey();
-//       print('EMP: $empID');
-//       deleteEventResponse = await repository.deleteEvent(accessKey, userSecurityKey, empID, eventId);
-//     });
-//    Get.back();
- //   return deleteEventResponse;
 
     String userSecurityKey = "";
     String empID = "";

@@ -390,7 +390,8 @@ class _AllEventsState extends State<AllEvents> {
                 //   () =>
                 Flexible(
                   flex: 3,
-                  child: Text(
+                  child: ( list[index].dealerName != null)?
+                  Text(
                     "Dealer(s) : ${list[index].dealerName}",
                     //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
                     overflow: TextOverflow.ellipsis,
@@ -398,7 +399,15 @@ class _AllEventsState extends State<AllEvents> {
                         fontSize: 15,
                         fontFamily: "Muli",
                         fontWeight: FontWeight.normal),
-                  ),
+                  ):Text(
+                    "Dealer(s) : -",
+                    //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Muli",
+                        fontWeight: FontWeight.normal),
+                  )
                 ),
                 //  ),
               ]),

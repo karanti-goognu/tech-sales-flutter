@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
@@ -235,7 +236,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
-            Get.to(()=>AddNewLeadForm(eventId:widget.eventId,));
+            Get.to(()=>AddNewLeadForm(eventId:widget.eventId,),
+            binding: AddLeadsBinding());
           },
         ),
       ],

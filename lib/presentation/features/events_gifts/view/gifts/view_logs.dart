@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gifts.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
@@ -11,33 +12,51 @@ import '../../controller/gifts_controlller.dart';
 
 class ViewLogs extends StatefulWidget {
 
-  final giftsCategoriesNameList;
-
-  const ViewLogs({Key key, this.giftsCategoriesNameList})
-      : super(key: key);
-
   @override
   _LogsViewState createState() => _LogsViewState();
 }
 
 class _LogsViewState extends State<ViewLogs> {
   GiftController giftController = Get.find();
+  final List _giftsCategoriesNameList = [
+    'Opening Stock',
+    'Stock In Hand',
+    'Utilized'
+  ];
+  List _giftsCategoriesValueList = [];
+  List _giftCategoriesList = [];
   var _currentMonth;
   List<GiftStockModelList> _giftStockModelList;
 
+  addDateForGiftsView() async {
+    _giftsCategoriesValueList = [];
+    _giftCategoriesList = [];
+    _giftsCategoriesValueList = [
+      giftController.giftStockModelList[giftController.selectedDropdown].giftOpeningStockQty,
+      giftController.giftStockModelList[giftController.selectedDropdown].giftInHandQty,
+      giftController.giftStockModelList[giftController.selectedDropdown].giftUtilisedQty
+    ];
+    for (int i = 0; i < _giftsCategoriesNameList.length; i++) {
+      _giftCategoriesList.add(GiftsCategories(
+          _giftsCategoriesNameList[i], _giftsCategoriesValueList[i]));
+    }
+    setState(() {
+
+    });
+  }
+
+
   @override
   void initState() {
+    giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
     giftController.getViewLogsData("${giftController.monthYear}").then((value) => {
-
-      for(int i=0 ; i<value.giftStockModelList.length;i++)
-       print("Gift-->"+value.giftStockModelList.runtimeType.toString())
+      giftController.getViewLogsData1(giftController.giftStockModelList)
     });
     super.initState();
   }
 
   @override
   void dispose() {
-    giftController.dispose();
     super.dispose();
   }
 
@@ -128,14 +147,15 @@ class _LogsViewState extends State<ViewLogs> {
                                   onChanged: (newValue) {
                                     giftController.selectedDropdown = newValue;
                                     cc.update();
+                                    giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
                                   },
                                   value: giftController.selectedDropdown,
-                                  items: giftController.giftStockModelList
+                                  items: giftController.giftStockModelList1
                                       .map<DropdownMenuItem>((value) {
                                     return DropdownMenuItem(
                                       value: value.giftTypeId,
                                       child: SizedBox(
-                                        width: 120,
+                                        width: 115,
                                         child: Text(
                                           value.giftTypeText.toString(),
                                         ),
@@ -200,7 +220,7 @@ class _LogsViewState extends State<ViewLogs> {
                                                children: [
 
                                                  Text(
-                                                   index==2?"Stock Added":widget.giftsCategoriesNameList[index-1],
+                                                   index==2?"Stock Added":_giftsCategoriesNameList[index-1],
                                                    style: TextStyle(
                                                        fontSize: 16, fontWeight: FontWeight.bold),
                                                  ),

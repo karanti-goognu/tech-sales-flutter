@@ -134,7 +134,6 @@ class GiftController extends GetxController {
       if(logsModel.respCode=="DM1006"){
         Get.dialog(CustomDialogs().showMessage(logsModel.respMsg));
         dataForViewLog=<GiftStockList>[];
-        getViewLogsData1(giftStockModelList);
       }
       else{
         Get.dialog(CustomDialogs().showMessage(logsModel.respMsg));
@@ -151,7 +150,8 @@ class GiftController extends GetxController {
       _giftStockModelList.add(giftStockModelList[i]);
     }
     giftStockModelList1 = _giftStockModelList ;
-    print("Gift-->"+giftStockModelList1.length.toString());
+    selectedDropdown = 1;
+    print("Gift-->"+selectedDropdown.runtimeType.toString());
     return _giftStockModelList;
   }
 

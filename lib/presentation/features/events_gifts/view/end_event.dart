@@ -92,7 +92,7 @@ class _EndEventState extends State<EndEvent> {
               // displayInfo('Venue', 'Booked'),
               displayInfo('Venue Address', mwpEndEventModel.venueAddress),
               displayInfo('Actual Venue Address', mwpEndEventModel.actualVenueAddress),
-              displayChip('Dealer(s) Detail', eventDealersModelList!=null?_eventController.endEventModel.eventDealersModelList:[]),
+              displayChipForDealer('Dealer(s) Detail', eventDealersModelList!=null?_eventController.endEventModel.eventDealersModelList:[]),
               displayChip('Influencer(s) Detail', eventInfluencerModelsList),
               displayInfo('Expected Leads', mwpEndEventModel.expectedLeadsCount),
               displayInfo('Actual Leads', mwpEndEventModel.actualLeadsCount),
@@ -209,6 +209,69 @@ class _EndEventState extends State<EndEvent> {
                   child: Chip(
                     label: Text(
                       e.inflName,
+                      // e.serviceRequestTypeText,
+                      style: TextStyle(
+                          fontFamily: "Muli",
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14.0),
+                    ),
+                    backgroundColor: Colors.white,
+                    // elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                      side: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ))
+                    .toList(),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
+              child: Divider(
+                height: 1,
+                color: ColorConstants.lightBlackBorderColor,
+              ),
+            )
+          ],
+        ));
+  }
+
+  Widget displayChipForDealer(String title, List list) {
+    return Padding(
+        padding: EdgeInsets.only(
+          left: ScreenUtil().setSp(15),
+          right: ScreenUtil().setSp(10),
+          top: ScreenUtil().setSp(0),
+          bottom: ScreenUtil().setSp(10),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyles.formfieldLabelTextDark,
+            ),
+            SizedBox(
+              height: ScreenUtil().setSp(10),
+            ),
+            Container(
+              height: ScreenUtil().setSp(30),
+              child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children: list
+                    .map((e) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Chip(
+                    label: Text(
+                      e.dealerName,
                       // e.serviceRequestTypeText,
                       style: TextStyle(
                           fontFamily: "Muli",

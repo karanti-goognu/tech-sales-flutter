@@ -11,7 +11,6 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/widgets/event_dealers_list.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
@@ -44,7 +43,9 @@ class _DetailPendingState extends State<DetailPending> {
   DeleteEventModel _deleteEventModel;
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
+  // List<DealersModels> selectedDealersModels = [];
   List<DealersModels> selectedDealersModels = [];
+  List<bool> checkedValues;
 
   var _date = 'Select Date';
   TimeOfDay _time;
@@ -76,7 +77,7 @@ class _DetailPendingState extends State<DetailPending> {
   void initState() {
     getEmpId();
     getDetailEventsData();
-    // getDetailEventsData1();
+    //getDetailEventsData1();
     super.initState();
   }
 
@@ -88,15 +89,6 @@ class _DetailPendingState extends State<DetailPending> {
       isVisible = false;
     }
   }
-
-  // setSaveDraft() {
-  //   if (detailEventModel.mwpEventModel.eventStatusText ==
-  //       StringConstants.pendingApproval) {
-  //     saveBtnVisible = true;
-  //   } else {
-  //     saveBtnVisible = false;
-  //   }
-  // }
 
   setText() {
     if (detailEventModel != null && detailEventModel.mwpEventModel != null) {
@@ -130,26 +122,28 @@ class _DetailPendingState extends State<DetailPending> {
       locationLong =
           double.parse('${detailEventModel.mwpEventModel.eventLocationLong}');
 
+
+
+
       if (detailEventModel.eventDealersModelList != null &&
           detailEventModel.eventDealersModelList.length != 0) {
         for (int i = 0;
-            i < detailEventModel.eventDealersModelList.length;
-            i++) {
-            selectedDealersModels.add(DealersModels(
-                dealerId: detailEventModel.eventDealersModelList[i].dealerId,
-                dealerName:
-                detailEventModel.eventDealersModelList[i].dealerName));
+        i < detailEventModel.eventDealersModelList.length;
+        i++) {
 
-            selectedDealer
-                .add(selectedDealersModels[i].dealerName);
-          }
+          selectedDealersModels.add(DealersModels(
+              dealerId: detailEventModel.eventDealersModelList[i].dealerId,
+              dealerName:
+              detailEventModel.eventDealersModelList[i].dealerName));
 
+          //selectedDealer.add(selectedDealersModels[i].dealerName);
 
+        }
       }
+
+
     }
   }
-
-
 
   getDetailEventsData() async {
     await detailEventController.getDetailEventData(widget.eventId).then((data) {
@@ -164,15 +158,8 @@ class _DetailPendingState extends State<DetailPending> {
 
   getDetailEventsData1() async {
     await detailEventController.getDealersList(widget.eventId);
-    //     .then((data) {
-    //   setState(() {
-    //     detailEventModel = data;
-    //   });
-    //   print('DDDD: $data');
-    //   setVisibility();
-    //   setText();
-    // });
   }
+
   Future getEmpId() async {
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -263,7 +250,7 @@ class _DetailPendingState extends State<DetailPending> {
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
       decoration:
-          FormFieldStyle.buildInputDecoration(labelText: "Dalmia influencers"),
+      FormFieldStyle.buildInputDecoration(labelText: "Dalmia influencers"),
     );
 
     final nondalmia = TextFormField(
@@ -293,7 +280,7 @@ class _DetailPendingState extends State<DetailPending> {
       keyboardType: TextInputType.number,
       readOnly: true,
       decoration:
-          FormFieldStyle.buildInputDecoration(labelText: "Total participants"),
+      FormFieldStyle.buildInputDecoration(labelText: "Total participants"),
     );
 
     final venueDropDwn = DropdownButtonFormField(
@@ -304,9 +291,9 @@ class _DetailPendingState extends State<DetailPending> {
       },
       items: ['Booked', 'Not Booked']
           .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(e),
-              ))
+        value: e,
+        child: Text(e),
+      ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: venueLbl),
@@ -330,8 +317,8 @@ class _DetailPendingState extends State<DetailPending> {
 
     final dealer = GestureDetector(
       onTap: () =>
-          //_settingModalBottomSheetDealers(context),
-          getBottomSheetForDealer(),
+      //_settingModalBottomSheetDealers(context),
+      getBottomSheetForDealer(),
       child: FormField(
         builder: (state) {
           return InputDecorator(
@@ -339,7 +326,7 @@ class _DetailPendingState extends State<DetailPending> {
               labelText: 'Add Dealer(s)',
               suffixIcon: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
                 child: Icon(
                   Icons.add,
                   size: 20,
@@ -378,23 +365,25 @@ class _DetailPendingState extends State<DetailPending> {
               height: 30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: selectedDealersModels.map((e) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Chip(
-                            deleteIcon: Icon(Icons.close),
-                            onDeleted: () {
-                              setState(() {
-                                selectedDealersModels.remove(e);
-                                selectedDealer.remove(e);
-                              });
-                            },
-                            label: Text(
-                              e.dealerName,
-                              style: TextStyle(fontSize: 10),
-                            ),
-                            backgroundColor: Colors.lightGreen.withOpacity(0.2),
-                          ),
-                        )).toList(),
+                children: selectedDealersModels
+                    .map((e) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Chip(
+                    deleteIcon: Icon(Icons.close),
+                    onDeleted: () {
+                      setState(() {
+                        selectedDealersModels.remove(e);
+                        selectedDealer.remove(e);
+                      });
+                    },
+                    label: Text(
+                      e.dealerName,
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    backgroundColor: Colors.lightGreen.withOpacity(0.2),
+                  ),
+                ))
+                    .toList(),
               ),
             ),
           );
@@ -413,7 +402,7 @@ class _DetailPendingState extends State<DetailPending> {
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
       decoration:
-          FormFieldStyle.buildInputDecoration(labelText: "Expected Leads"),
+      FormFieldStyle.buildInputDecoration(labelText: "Expected Leads"),
     );
 
     final giftDistribution = TextFormField(
@@ -441,36 +430,17 @@ class _DetailPendingState extends State<DetailPending> {
     final btns = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        // Visibility(
-        //   visible: saveBtnVisible,
-        //   child: FlatButton(
-        //     shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(0),
-        //         side: BorderSide(color: Colors.black26)),
-        //     color: Colors.transparent,
-        //     child: Padding(
-        //       padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-        //       child: Text(
-        //         "SAVE AS DRAFT",
-        //         style: TextStyles.btnBlue,
-        //       ),
-        //     ),
-        //     onPressed: () {
-        //       btnPresssed(7);
-        //     },
-        //   ),
-        // ),
         RaisedButton(
           color: ColorConstants.btnBlue,
           child: Text(
             "SUBMIT",
             style:
-                //TextStyles.btnWhite,
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+            //TextStyles.btnWhite,
+            TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                // letterSpacing: 2,
+                fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
             if (detailEventModel.mwpEventModel.eventStatusText ==
@@ -483,10 +453,9 @@ class _DetailPendingState extends State<DetailPending> {
                 StringConstants.notSubmitted) {
               btnPresssed(1);
             } else if (detailEventModel.mwpEventModel.eventStatusText ==
-               StringConstants.approved){
+                StringConstants.approved) {
               btnPresssed(2);
             }
-
           },
         ),
       ],
@@ -510,7 +479,7 @@ class _DetailPendingState extends State<DetailPending> {
 
         if (result != null) {
           final placeDetails =
-              await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
+          await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
           setState(() {
             _locationController.text = result.description;
             locatinLat = placeDetails.lat;
@@ -537,119 +506,120 @@ class _DetailPendingState extends State<DetailPending> {
         children: [
           Positioned.fill(
             child: (detailEventModel != null &&
-                    detailEventModel.mwpEventModel != null)
+                detailEventModel.mwpEventModel != null)
                 ? ListView(
-                    children: [
-                      Visibility(
-                        visible: isVisible,
-                        child: Padding(
-                          padding:
-                              EdgeInsets.only(left: ScreenUtil().setSp(12)),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FlatButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                    side: BorderSide(color: Colors.black26)),
-                                color: ColorConstants.cancelRed,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 5, bottom: 8, top: 5),
-                                  child: Text(
-                                    "DELETE EVENT",
-                                    style: TextStyles.btnWhite,
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  // await detailEventController.getAccessKey().then((value) async {
-                                  //   print(value.accessKey);
-                                  await detailEventController
-                                      .deleteEvent(widget.eventId)
-                                      .then((data) {
-                                    setState(() {
-                                      _deleteEventModel = data;
-                                    });
-                                    print("response : ");
-                                  });
-                                  // });
-                                },
-                              ),
-                            ],
+              children: [
+                Visibility(
+                  visible: isVisible,
+                  child: Padding(
+                    padding:
+                    EdgeInsets.only(left: ScreenUtil().setSp(12)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0),
+                              side: BorderSide(color: Colors.black26)),
+                          color: ColorConstants.cancelRed,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 5, bottom: 8, top: 5),
+                            child: Text(
+                              "DELETE EVENT",
+                              style: TextStyles.btnWhite,
+                            ),
                           ),
+                          onPressed: () async {
+                            // await detailEventController.getAccessKey().then((value) async {
+                            //   print(value.accessKey);
+                            await detailEventController
+                                .deleteEvent(widget.eventId)
+                                .then((data) {
+                              setState(() {
+                                _deleteEventModel = data;
+                              });
+                              print("response : ");
+                            });
+                            // });
+                          },
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(ScreenUtil().setSp(12)),
-                        height: 56,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Add Event',
-                              style: TextStyles.titleGreenStyle,
-                            ),
-                            Chip(
-                              shape: StadiumBorder(
-                                  side: BorderSide(color: widget.statusColor)),
-                              backgroundColor:
-                                  widget.statusColor.withOpacity(0.1),
-                              label: Text(
-                                  'Status: ${detailEventModel.mwpEventModel.eventStatusText}'),
-                            ),
-                          ],
-                        ),
-                        // decoration: BoxDecoration(
-                        //     border: Border(bottom: BorderSide(width: 0.3))),
-                      ),
-                      SizedBox(height: 16),
-                      Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Form(
-                            key: _addEventFormKey,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  eventType,
-                                  SizedBox(height: 16),
-                                  date,
-                                  SizedBox(height: 16),
-                                  time,
-                                  SizedBox(height: 16),
-                                  Text(
-                                    "Tentative Members",
-                                    style: TextStyles.welcomeMsgTextStyle20,
-                                  ),
-                                  SizedBox(height: 16),
-                                  dalmiaInfluencer,
-                                  SizedBox(height: 16),
-                                  nondalmia,
-                                  SizedBox(height: 16),
-                                  total,
-                                  SizedBox(height: 16),
-                                  venueDropDwn,
-                                  SizedBox(height: 16),
-                                  venueAddress,
-                                  SizedBox(height: 16),
-                                  dealer,
-                                  SizedBox(height: 16),
-                                  expectedLeads,
-                                  SizedBox(height: 16),
-                                  giftDistribution,
-                                  SizedBox(height: 16),
-                                  location,
-                                  SizedBox(height: 16),
-                                  comment,
-                                  SizedBox(height: 16),
-                                  btns,
-                                  SizedBox(height: 16),
-                                ]),
-                          )),
-                    ],
-                  )
-                : Center(
-                    child: CircularProgressIndicator(),
+                      ],
+                    ),
                   ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                  height: 56,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Add Event',
+                        style: TextStyles.titleGreenStyle,
+                      ),
+                      Chip(
+                        shape: StadiumBorder(
+                            side: BorderSide(color: widget.statusColor)),
+                        backgroundColor:
+                        widget.statusColor.withOpacity(0.1),
+                        label: Text(
+                            'Status: ${detailEventModel.mwpEventModel.eventStatusText}'),
+                      ),
+                    ],
+                  ),
+                  // decoration: BoxDecoration(
+                  //     border: Border(bottom: BorderSide(width: 0.3))),
+                ),
+                SizedBox(height: 16),
+                Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Form(
+                      key: _addEventFormKey,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            eventType,
+                            SizedBox(height: 16),
+                            date,
+                            SizedBox(height: 16),
+                            time,
+                            SizedBox(height: 16),
+                            Text(
+                              "Tentative Members",
+                              style: TextStyles.welcomeMsgTextStyle20,
+                            ),
+                            SizedBox(height: 16),
+                            dalmiaInfluencer,
+                            SizedBox(height: 16),
+                            nondalmia,
+                            SizedBox(height: 16),
+                            total,
+                            SizedBox(height: 16),
+                            venueDropDwn,
+                            SizedBox(height: 16),
+                            venueAddress,
+                            SizedBox(height: 16),
+                            dealer,
+                            SizedBox(height: 16),
+                            expectedLeads,
+                            SizedBox(height: 16),
+                            giftDistribution,
+                            SizedBox(height: 16),
+                            location,
+                            SizedBox(height: 16),
+                            comment,
+                            SizedBox(height: 16),
+                            btns,
+                            SizedBox(height: 16),
+                          ]),
+                    )),
+              ],
+            )
+                : Center(
+                child: Text("No Events !")
+              //CircularProgressIndicator(),
+            ),
           ),
         ],
       ),
@@ -669,7 +639,6 @@ class _DetailPendingState extends State<DetailPending> {
     });
   }
 
-
   Future _startTime() async {
     // String time = detailEventModel.mwpEventModel.eventTime;
     // DateTime eventtime = DateTime.tryParse(time);
@@ -677,8 +646,8 @@ class _DetailPendingState extends State<DetailPending> {
     // int min = eventtime.minute;
     // print('TT:$eventtime');
     // TimeOfDay _initialTime = (TimeOfDay(hour: hr, minute: min));
-    (_time == null)?
-    _time = await showTimePicker(
+    (_time == null)
+        ? _time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: 10, minute: 10),
       builder: (BuildContext context, Widget child) {
@@ -687,16 +656,16 @@ class _DetailPendingState extends State<DetailPending> {
           child: child,
         );
       },
-    ):
-    _time = await showTimePicker(
+    )
+        : _time = await showTimePicker(
       context: context,
       initialTime: (TimeOfDay(hour: _time.hour, minute: _time.minute)),
-          builder: (BuildContext context, Widget child) {
-    return MediaQuery(
-    data: MediaQuery.of(context),
-    child: child,
-    );
-    },
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context),
+          child: child,
+        );
+      },
     );
     setState(() {
       print("jj");
@@ -706,19 +675,16 @@ class _DetailPendingState extends State<DetailPending> {
     });
   }
 
-  List<bool> checkedValues;
+
   List<String> selectedDealer = [];
-  // List<DealersModels> selectedDealersModels = [];
-  final _searchList = List<DealerModel>();
 
   TextEditingController _query = TextEditingController();
-
 
   addDealerBottomSheetWidget() {
     List<DealersModels> dealers = detailEventModel.dealersModels;
 
-    checkedValues =
-        List.generate(detailEventModel.dealersModels.length, (index) => false);
+    // checkedValues =
+    //     List.generate(detailEventModel.dealersModels.length, (index) => true);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -772,74 +738,65 @@ class _DetailPendingState extends State<DetailPending> {
                 itemBuilder: (context, index) {
                   return
 
-                      // dealerId == dealers[index].dealerId
-                      //   ?
-                      CheckboxListTile(
-                    activeColor: Colors.black,
-                    dense: true,
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(dealers[index].dealerName),
-                        Text('( ${dealers[index].dealerId} )'),
-                      ],
-                    ),
-                    value:
-                    //selectedDealersModels.contains(dealers[index].dealerName),
-                    selectedDealer.contains(dealers[index].dealerName),
-                    onChanged: (newValue) {
-                      setState(() {
-                      print('NEWVALUE : $newValue');
+                    // dealerId != dealers[index].dealerId
+                    //   ?
+                    CheckboxListTile(
+                      activeColor: Colors.black,
+                      dense: true,
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(dealers[index].dealerName),
+                          Text('( ${dealers[index].dealerId} )'),
+                        ],
+                      ),
+                      value: selectedDealer.contains(dealers[index].dealerName),
+                      // selectedDealersModels.contains(dealers[index].dealerName),
+
+                      onChanged: (newValue) {
+                        setState(() {
+                          print('NEWVALUE : $newValue');
                           if (newValue == true) {
                             selectedDealer.add(dealers[index].dealerName);
                             selectedDealersModels.add(dealers[index]);
-                            // if(selectedDealersModels[index].dealerId != dealers[index].dealerId){
-                            //   selectedDealersModels.add(dealers[index]);
-                            // }
-
                           }
-                          if(newValue == false)
-                            {
-                              selectedDealer.remove(dealers[index].dealerName);
-                              // selectedDealersModels.removeWhere((element) =>
-                              //     element.dealerId == detailEventModel.eventDealersModelList[index].dealerId,
-                              // );
-
-                             // detailEventModel.eventDealersModelList.remove(dealers[index]);
-                              selectedDealersModels.remove(dealers[index]);
-
+                          if (newValue == false) {
+                            selectedDealer.remove(dealers[index].dealerName);
+                            selectedDealersModels.remove(dealers[index]);
                           }
-                       print('SELECTED: ${json.encode(selectedDealersModels)}');
+                          print(
+                              'SELECTED: ${json.encode(selectedDealersModels)}');
 
-                        //
-                        // selectedDealer.contains(dealers[index].dealerName)
-                        //     ? selectedDealer.remove(dealers[index].dealerName)
-                        //     : selectedDealer.add(dealers[index].dealerName);
-                        //
-                        // selectedDealersModels.contains(dealers[index])
-                        //     ? selectedDealersModels.remove(dealers[index])
-                        //     : selectedDealersModels.add(dealers[index]);
+                          // selectedDealer.contains(dealers[index].dealerName)
+                          //     ? selectedDealer.remove(dealers[index].dealerName)
+                          //     : selectedDealer.add(dealers[index].dealerName);
+                          //
+                          // selectedDealersModels.contains(dealers[index])
+                          //     ? selectedDealersModels.remove(dealers[index])
+                          //     : selectedDealersModels.add(dealers[index]);
 
-                        checkedValues[index] = newValue;
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
-                  );
-                  //  : Container();
+                          // checkedValues[index] = newValue;
+                          //print("checkedValues $checkedValues");
+
+                        });
+                      },
+                      controlAffinity: ListTileControlAffinity.leading,
+                    );
+                  //: Container();
                 },
                 separatorBuilder: (context, index) {
                   return dealerId == dealers[index].dealerId
                       ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Divider(),
-                        )
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Divider(),
+                  )
                       : Container();
                 },
               ),
             ),
             Container(
               decoration:
-                  BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
+              BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
               padding: EdgeInsets.only(top: 24, bottom: 9, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -863,7 +820,7 @@ class _DetailPendingState extends State<DetailPending> {
                   MaterialButton(
                     color: HexColor('#1C99D4'),
                     onPressed: () {
-                       Get.back();
+                      Get.back();
 
                     },
                     child: Text(
@@ -898,9 +855,7 @@ class _DetailPendingState extends State<DetailPending> {
     Get.bottomSheet(
       addDealerBottomSheetWidget(),
       isScrollControlled: true,
-    ).then((value) => setState(() {
-
-    }));
+    ).then((value) => setState(() {}));
   }
 
   void _settingModalBottomSheetDealers(context) {
@@ -952,7 +907,7 @@ class _DetailPendingState extends State<DetailPending> {
         });
         print('DEALERS: $dealersList');
         MwpeventFormRequest _mwpeventFormRequest =
-            MwpeventFormRequest.fromJson({
+        MwpeventFormRequest.fromJson({
           'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ?? 0,
           'eventComment': _commentController.text,
           'eventDate': dateString,
@@ -964,18 +919,18 @@ class _DetailPendingState extends State<DetailPending> {
           'eventTime': timeString,
           'eventTypeId': detailEventModel.mwpEventModel.eventTypeId,
           'expectedLeadsCount':
-              int.tryParse('${_expectedLeadsController.text}') ?? 0,
+          int.tryParse('${_expectedLeadsController.text}') ?? 0,
           'giftDistributionCount':
-              int.tryParse('${_giftsDistributionController.text}') ?? 0,
+          int.tryParse('${_giftsDistributionController.text}') ?? 0,
           'nondalmiaInflCount':
-              int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
+          int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
           'referenceId': empId,
           'venue': _selectedVenue,
           'venueAddress': _venueAddController.text,
         });
 
         SaveEventFormModel _save =
-            SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
+        SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
         SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
             mwpeventFormRequest: _mwpeventFormRequest,
             eventDealersModelList: _save.eventDealersModelList);
@@ -983,23 +938,24 @@ class _DetailPendingState extends State<DetailPending> {
         print('PARAMS: $_saveEventFormModel');
 
         internetChecking().then((result) => {
-              if (result == true)
-                {
-                  saveEventController
-                      .getAccessKeyAndSaveRequest(_saveEventFormModel)
-                }
-              else
-                {
-                  Get.snackbar("No internet connection.",
-                      "Make sure that your wifi or mobile data is turned on.",
-                      colorText: Colors.white,
-                      backgroundColor: Colors.red,
-                      snackPosition: SnackPosition.BOTTOM),
-                }
-            });
+          if (result == true)
+            {
+              saveEventController
+                  .getAccessKeyAndSaveRequest(_saveEventFormModel)
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
       }
     }
   }
 }
+
 
 ///dd-MM-yyyy HH:mm:ss

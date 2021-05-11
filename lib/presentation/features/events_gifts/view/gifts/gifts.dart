@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
@@ -70,7 +71,7 @@ class _GiftsViewState extends State<GiftsView> {
 
   @override
   void dispose() {
-    _giftController.dispose();
+    // _giftController.dispose();
     super.dispose();
   }
 
@@ -91,7 +92,15 @@ class _GiftsViewState extends State<GiftsView> {
             scale: 0.6,
             child: FlatButton(
               onPressed: () {
-                Get.to(()=>ViewLogs(giftsCategoriesNameList: _giftsCategoriesNameList,));
+                if(_giftController.selectedDropdown ==0){
+                  _giftController.selectedDropdown = 1;
+                }
+                Get.to(() => ViewLogs());
+                // if(_giftController.selectedDropdown==0){
+                //   Get.dialog(CustomDialogs().showMessage("To view log please Select Other Gift Type"));
+                // }else {
+                //   Get.to(() => ViewLogs());
+                // }
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(28.0),
