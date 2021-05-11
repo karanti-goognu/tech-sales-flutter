@@ -49,7 +49,7 @@ class SrFormDataController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       // print(userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      srFormDaa = await repository.getSrFormData(accessKey, userSecurityKey);
+      srFormDaa = await repository.getSrFormData(accessKey, userSecurityKey,empID);
     });
     return srFormDaa;
   }

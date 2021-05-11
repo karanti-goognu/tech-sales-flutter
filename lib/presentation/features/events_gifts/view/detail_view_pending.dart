@@ -44,6 +44,7 @@ class _DetailPendingState extends State<DetailPending> {
   DeleteEventModel _deleteEventModel;
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
+  List<DealersModels> selectedDealersModels = [];
 
   var _date = 'Select Date';
   TimeOfDay _time;
@@ -134,17 +135,21 @@ class _DetailPendingState extends State<DetailPending> {
         for (int i = 0;
             i < detailEventModel.eventDealersModelList.length;
             i++) {
-          selectedDealersModels.add(DealersModels(
-              dealerId: detailEventModel.eventDealersModelList[i].dealerId,
-              dealerName:
-                  detailEventModel.eventDealersModelList[i].dealerName));
-          selectedDealer
-              .add(detailEventModel.eventDealersModelList[i].dealerName);
-        }
+            selectedDealersModels.add(DealersModels(
+                dealerId: detailEventModel.eventDealersModelList[i].dealerId,
+                dealerName:
+                detailEventModel.eventDealersModelList[i].dealerName));
+
+            selectedDealer
+                .add(selectedDealersModels[i].dealerName);
+          }
+
 
       }
     }
   }
+
+
 
   getDetailEventsData() async {
     await detailEventController.getDetailEventData(widget.eventId).then((data) {
@@ -373,8 +378,7 @@ class _DetailPendingState extends State<DetailPending> {
               height: 30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: selectedDealersModels
-                    .map((e) => Padding(
+                children: selectedDealersModels.map((e) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Chip(
                             deleteIcon: Icon(Icons.close),
@@ -390,8 +394,7 @@ class _DetailPendingState extends State<DetailPending> {
                             ),
                             backgroundColor: Colors.lightGreen.withOpacity(0.2),
                           ),
-                        ))
-                    .toList(),
+                        )).toList(),
               ),
             ),
           );
@@ -705,7 +708,7 @@ class _DetailPendingState extends State<DetailPending> {
 
   List<bool> checkedValues;
   List<String> selectedDealer = [];
-  List<DealersModels> selectedDealersModels = [];
+  // List<DealersModels> selectedDealersModels = [];
   final _searchList = List<DealerModel>();
 
   TextEditingController _query = TextEditingController();
@@ -713,6 +716,7 @@ class _DetailPendingState extends State<DetailPending> {
 
   addDealerBottomSheetWidget() {
     List<DealersModels> dealers = detailEventModel.dealersModels;
+
     checkedValues =
         List.generate(detailEventModel.dealersModels.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
@@ -780,34 +784,41 @@ class _DetailPendingState extends State<DetailPending> {
                         Text('( ${dealers[index].dealerId} )'),
                       ],
                     ),
-                    value: selectedDealer.contains(dealers[index].dealerName),
+                    value:
+                    //selectedDealersModels.contains(dealers[index].dealerName),
+                    selectedDealer.contains(dealers[index].dealerName),
                     onChanged: (newValue) {
                       setState(() {
                       print('NEWVALUE : $newValue');
-                       //    if (newValue == true) {
-                       //      selectedDealer.add(dealers[index].dealerName);
-                       //      selectedDealersModels.add(dealers[index]);
-                       //    }
-                       //    if(newValue == false)
-                       //      {
-                       //        selectedDealer.remove(dealers[index].dealerName);
-                       //        selectedDealersModels.removeWhere((element) =>
-                       //            element.dealerId == detailEventModel.eventDealersModelList[index].dealerId
-                       //        );
-                       //
-                       //     // selectedDealersModels.remove(dealers[index]);
-                       //
-                       //    }
-                       // print('SELECTED: ${json.encode(selectedDealersModels)}');
+                          if (newValue == true) {
+                            selectedDealer.add(dealers[index].dealerName);
+                            selectedDealersModels.add(dealers[index]);
+                            // if(selectedDealersModels[index].dealerId != dealers[index].dealerId){
+                            //   selectedDealersModels.add(dealers[index]);
+                            // }
 
+                          }
+                          if(newValue == false)
+                            {
+                              selectedDealer.remove(dealers[index].dealerName);
+                              // selectedDealersModels.removeWhere((element) =>
+                              //     element.dealerId == detailEventModel.eventDealersModelList[index].dealerId,
+                              // );
 
-                        selectedDealer.contains(dealers[index].dealerName)
-                            ? selectedDealer.remove(dealers[index].dealerName)
-                            : selectedDealer.add(dealers[index].dealerName);
+                             // detailEventModel.eventDealersModelList.remove(dealers[index]);
+                              selectedDealersModels.remove(dealers[index]);
 
-                        selectedDealersModels.contains(dealers[index])
-                            ? selectedDealersModels.remove(dealers[index])
-                            : selectedDealersModels.add(dealers[index]);
+                          }
+                       print('SELECTED: ${json.encode(selectedDealersModels)}');
+
+                        //
+                        // selectedDealer.contains(dealers[index].dealerName)
+                        //     ? selectedDealer.remove(dealers[index].dealerName)
+                        //     : selectedDealer.add(dealers[index].dealerName);
+                        //
+                        // selectedDealersModels.contains(dealers[index])
+                        //     ? selectedDealersModels.remove(dealers[index])
+                        //     : selectedDealersModels.add(dealers[index]);
 
                         checkedValues[index] = newValue;
                       });
@@ -852,7 +863,8 @@ class _DetailPendingState extends State<DetailPending> {
                   MaterialButton(
                     color: HexColor('#1C99D4'),
                     onPressed: () {
-                      Get.back();
+                       Get.back();
+
                     },
                     child: Text(
                       'OK',
@@ -886,7 +898,9 @@ class _DetailPendingState extends State<DetailPending> {
     Get.bottomSheet(
       addDealerBottomSheetWidget(),
       isScrollControlled: true,
-    ).then((value) => setState(() {}));
+    ).then((value) => setState(() {
+
+    }));
   }
 
   void _settingModalBottomSheetDealers(context) {

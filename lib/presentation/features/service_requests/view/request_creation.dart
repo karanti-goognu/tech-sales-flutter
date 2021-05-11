@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +18,9 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SiteAreaDetailsModel.dart';
+
 
 class RequestCreation extends StatefulWidget {
   @override
@@ -106,6 +106,7 @@ class _RequestCreationState extends State<RequestCreation> {
   int requestId;
   String creatorType;
   bool isComplaint;
+  int siteId;
 
   // GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
   // GlobalKey<AutoCompleteTextFieldState<String>> key1 = new GlobalKey();
@@ -324,44 +325,67 @@ class _RequestCreationState extends State<RequestCreation> {
                                           labelText: "Severity"),
                                 ),
                                 SizedBox(height: 16),
-                                TextFormField(
-                                  onChanged: (val) async {
-                                    if (val.length == 6) {
-                                      SiteAreaModel siteDetails =
-                                          await eventController
-                                              .getSiteAreaDetails(_siteID.text);
-                                      siteDetails.siteAreaDetailsModel != null
-                                          ? setState(() {
-                                              _pin.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .sitePincode;
-                                              _state.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteState;
-                                              _taluk.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteTaluk;
-                                              _district.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteDistrict;
-                                            })
-                                          : Get.rawSnackbar(
-                                              title: "Message",
-                                              message: siteDetails.respMsg);
-                                    }
+                                DropdownButtonFormField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                     siteId = value;
+                                     print("SiteId-->"+siteId.toString());
+                                    });
                                   },
-                                  controller: _siteID,
-                                  maxLength: 6,
-                                  validator: (value) => value.isEmpty
-                                      ? 'Please enter the Site ID'
-                                      : null,
+                                  items: srComplaintModel
+                                      .activeSiteTSOLists
+                                      .map((e) => DropdownMenuItem(
+                                    value: e.site_id,
+                                    child: Text('${toBeginningOfSentenceCase(e.contact_name)} (${e.site_id})'),
+                                  ))
+                                      .toList(),
                                   style: FormFieldStyle.formFieldTextStyle,
-                                  keyboardType: TextInputType.phone,
                                   decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Site ID*"),
+                                  FormFieldStyle.buildInputDecoration(
+                                      labelText: "Site ID*"),
+                                  validator: (value) => value == null
+                                      ? 'Please select the Site ID'
+                                      : null,
                                 ),
                                 SizedBox(height: 16),
+                                // TextFormField(
+                                //   onChanged: (val) async {
+                                //     if (val.length == 6) {
+                                //       SiteAreaModel siteDetails =
+                                //           await eventController
+                                //               .getSiteAreaDetails(_siteID.text);
+                                //       siteDetails.siteAreaDetailsModel != null
+                                //           ? setState(() {
+                                //               _pin.text = siteDetails
+                                //                   .siteAreaDetailsModel
+                                //                   .sitePincode;
+                                //               _state.text = siteDetails
+                                //                   .siteAreaDetailsModel
+                                //                   .siteState;
+                                //               _taluk.text = siteDetails
+                                //                   .siteAreaDetailsModel
+                                //                   .siteTaluk;
+                                //               _district.text = siteDetails
+                                //                   .siteAreaDetailsModel
+                                //                   .siteDistrict;
+                                //             })
+                                //           : Get.rawSnackbar(
+                                //               title: "Message",
+                                //               message: siteDetails.respMsg);
+                                //     }
+                                //   },
+                                //   controller: _siteID,
+                                //   maxLength: 6,
+                                //   validator: (value) => value.isEmpty
+                                //       ? 'Please enter the Site ID'
+                                //       : null,
+                                //   style: FormFieldStyle.formFieldTextStyle,
+                                //   keyboardType: TextInputType.phone,
+                                //   decoration:
+                                //       FormFieldStyle.buildInputDecoration(
+                                //           labelText: "Site ID*"),
+                                // ),
+                                // SizedBox(height: 16),
                                 DropdownButtonFormField(
                                   validator: (value) => value == null
                                       ? 'Please select Customer Type'
@@ -650,7 +674,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                   onPressed: () async {
                                     if (!_srCreationFormKey.currentState.validate()) {
                                     //  print("Error");
-                                      Get.dialog(CustomDialogs().errorDialog(
+                                      Get.dialog(CustomDialogs().showMessage(
                                           'Please enter the mandatory details'));
                                     } else if (_severity.text == "") {
                                       Get.defaultDialog(
@@ -701,7 +725,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                           requestDepartmentId,
                                           "requestId": requestId,
                                           "resolutionStatusId": 1,
-                                          "siteId": int.parse(_siteID.text),
+                                          "siteId": siteId,
                                           "severity": _severity.text,
                                           "srComplaintPhotosEntity": imageDetails,
                                           "srComplaintSubtypeMappingEntity":

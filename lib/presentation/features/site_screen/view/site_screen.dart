@@ -1012,7 +1012,20 @@ class _SiteScreenState extends State<SiteScreen> {
                                                   textAlign: TextAlign.right,
                                                 ),
                                                 SizedBox(
-                                                  height: 30,
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "${toBeginningOfSentenceCase(_siteController.sitesListResponse.sitesEntity[index].contactName)}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontFamily: "Muli",
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      fontStyle:
+                                                      FontStyle.normal
+                                                    //fontWeight: FontWeight.normal
+                                                  )
                                                 ),
                                                 Row(
                                                   children: [
@@ -1026,15 +1039,15 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     ),
                                                     GestureDetector(
                                                       child: Text(
-                                                        "${_siteController.sitesListResponse.sitesEntity[index].contactNumber}",
+                                                        "Call Contractor",
                                                         style: TextStyle(
                                                             color: Colors.black,
-                                                            fontSize: 15,
+                                                            fontSize: 14,
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontStyle:
-                                                                FontStyle.italic
+                                                                FontStyle.normal
                                                             //fontWeight: FontWeight.normal
                                                             ),
                                                       ),

@@ -780,7 +780,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                               });
                                                                               UpdateRequest();
                                                                             } else {
-                                                                              Get.dialog(CustomDialogs().errorDialog("Please fill all details !!!"));
+                                                                              Get.dialog(CustomDialogs().showMessage("Please fill all details !!!"));
                                                                             }
                                                                           },
                                                                         ),
@@ -1087,7 +1087,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                               });
                                                                               UpdateRequest();
                                                                             } else {
-                                                                              Get.dialog(CustomDialogs().errorDialog("Please fill all details !!!"));
+                                                                              Get.dialog(CustomDialogs().showMessage("Please fill all details !!!"));
                                                                             }
                                                                           },
                                                                         ),
@@ -1924,7 +1924,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               if (_imgDetails.length < 5) {
                                 _showPicker(context);
                               } else {
-                                Get.dialog(CustomDialogs().errorDialog(
+                                Get.dialog(CustomDialogs().showMessage(
                                     "You can add only upto 5 photos"));
                               }
                             },
@@ -2407,7 +2407,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 if (value.isEmpty) {
                   return 'Please enter Site Built-Up Area ';
                 }
-
                 return null;
               },
               style: TextStyle(
@@ -2464,8 +2463,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   if (_siteBrandFromLocalDB.brandName.toLowerCase() ==
                       "dalmia") {
                     _stageStatus.text = "WON";
+
                   } else {
                     _stageStatus.text = "LOST";
+                    visitDataDealer = "";
                   }
                 });
               },
@@ -2523,33 +2524,107 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               ),
             ),
             SizedBox(height: 16),
+            // GestureDetector(
+            //   onTap: (){
+            //     if(!isAllowSelectDealer)
+            //       Get.dialog(CustomDialogs()
+            //           .showMessage("This dealer not Confirmed by Sales Officer."));
+            //      // Get.dialog(new ConformationDialog(message:"This dealer not conformed by so."));
+            //
+            //   },
+            //   child: DropdownButtonFormField(
+            //     items: dealerEntityForDb
+            //         .map((e) => DropdownMenuItem(
+            //               value: e.id,
+            //               child: SizedBox(
+            //                 width: MediaQuery.of(context).size.width - 100,
+            //                 child: Text('${e.dealerName} (${e.id})',
+            //                     style: TextStyle(fontSize: 14)),
+            //               ),
+            //             ))
+            //         .toList(),
+            //
+            //
+            //     onChanged: isAllowSelectDealer ? (value) {
+            //
+            //       siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
+            //       int listLength=siteVisitHistoryEntity.length;
+            //
+            //         if(listLength>0){
+            //         SiteVisitHistoryEntity latestRecordData=siteVisitHistoryEntity.elementAt(0);
+            //
+            //         if(latestRecordData.soldToParty != value){
+            //           if(latestRecordData.isAuthorised=="N"){
+            //             dealerEntityForDb.map((e) => DropdownMenuItem(
+            //               value: e.id,
+            //               child: SizedBox(
+            //                 width: MediaQuery.of(context).size.width - 100,
+            //                 child: Text('${e.dealerName} (${e.id})',
+            //                     style: TextStyle(fontSize: 14)),
+            //               ),
+            //             ));
+            //             return Get.dialog(CustomDialogs().showMessage("Your previous supplier not authorised."));
+            //
+            //           }else
+            //             sitesModal.isDealerConfirmedChangedBySo="N";
+            //         }
+            //
+            //       }
+            //
+            //         selectedSubDealer = null;
+            //       setState(() {
+            //         subDealerList = new List();
+            //         visitDataDealer = value.toString();
+            //         subDealerList = counterListModel
+            //             .where((e) => e.soldToParty == visitDataDealer)
+            //             .toList();
+            //         selectedSubDealer = subDealerList[0];
+            //         visitDataSubDealer = subDealerList[0].shipToParty;
+            //
+            //       });
+            //
+            //     }: null,
+            //
+            //
+            //
+            //     style: FormFieldStyle.formFieldTextStyle,
+            //     decoration:
+            //         FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
+            //     validator: (value) =>
+            //         value == null ? 'Please select Dealer' : null,
+            //   ),
+            // ),
             GestureDetector(
               onTap: (){
+                if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
+                    "dalmia") {
                 if(!isAllowSelectDealer)
                   Get.dialog(CustomDialogs()
-                      .errorDialog("This dealer not Confirmed by Sales Officer."));
-                 // Get.dialog(new ConformationDialog(message:"This dealer not conformed by so."));
+                      .showMessage("This dealer not Confirmed by Sales Officer."));
+                } else {
+
+                }
 
               },
               child: DropdownButtonFormField(
                 items: dealerEntityForDb
                     .map((e) => DropdownMenuItem(
-                          value: e.id,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: Text('${e.dealerName} (${e.id})',
-                                style: TextStyle(fontSize: 14)),
-                          ),
-                        ))
+                  value: e.id,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width - 100,
+                    child: Text('${e.dealerName} (${e.id})',
+                        style: TextStyle(fontSize: 14)),
+                  ),
+                ))
                     .toList(),
 
 
-                onChanged: isAllowSelectDealer ? (value) {
+                onChanged:  (value) {
 
                   siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
                   int listLength=siteVisitHistoryEntity.length;
 
-                    if(listLength>0){
+                  if(listLength>0){
                     SiteVisitHistoryEntity latestRecordData=siteVisitHistoryEntity.elementAt(0);
 
                     if(latestRecordData.soldToParty != value){
@@ -2562,7 +2637,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 style: TextStyle(fontSize: 14)),
                           ),
                         ));
-                        return Get.dialog(CustomDialogs().errorDialog("Your previous supplier not authorised."));
+                        return Get.dialog(CustomDialogs().showMessage("Your previous supplier not authorised."));
 
                       }else
                         sitesModal.isDealerConfirmedChangedBySo="N";
@@ -2570,7 +2645,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                   }
 
-                    selectedSubDealer = null;
+                  selectedSubDealer = null;
                   setState(() {
                     subDealerList = new List();
                     visitDataDealer = value.toString();
@@ -2582,15 +2657,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                   });
 
-                }: null,
+                },
 
 
 
                 style: FormFieldStyle.formFieldTextStyle,
                 decoration:
-                    FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
+                FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
                 validator: (value) =>
-                    value == null ? 'Please select Dealer' : null,
+                value == null ? 'Please select Dealer' : null,
               ),
             ),
             Padding(
@@ -3435,7 +3510,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                             }
                                           }
                                         } else {
-                                          Get.dialog(CustomDialogs().errorDialog(
+                                          Get.dialog(CustomDialogs().showMessage(
                                               "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                         }
                                       });
@@ -3612,7 +3687,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                             }
                                           }
                                         } else {
-                                          Get.dialog(CustomDialogs().errorDialog(
+                                          Get.dialog(CustomDialogs().showMessage(
                                               "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                         }
                                       });
@@ -3681,7 +3756,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     }
 
                                     if (match) {
-                                      Get.dialog(CustomDialogs().errorDialog(
+                                      Get.dialog(CustomDialogs().showMessage(
                                           "Already added influencer : " +
                                               value));
                                     } else {
@@ -4144,7 +4219,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   } else {
                     print("Error : Please fill previous influencer first");
                     Get.dialog(CustomDialogs()
-                        .errorDialog("Please fill previous influencer first"));
+                        .showMessage("Please fill previous influencer first"));
                   }
                 },
               ),
@@ -5266,7 +5341,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   _getCurrentLocation() async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
-      Get.dialog(CustomDialogs().errorDialog(
+      Get.dialog(CustomDialogs().showMessage(
           "Please enable your location service from device settings"));
     } else {
       geolocator
@@ -5361,7 +5436,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _siteBuiltupArea.text == null ||
           _siteBuiltupArea.text == "null") {
         Get.dialog(CustomDialogs()
-            .errorDialog("Please fill mandatory fields in \"Site Data\" Tab"));
+            .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
       } else {
         updateSiteLogic();
         setState(() {
@@ -5372,7 +5447,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         _siteBuiltupArea.text == null ||
         _siteBuiltupArea.text == "null") {
       Get.dialog(CustomDialogs()
-          .errorDialog("Please fill mandatory fields in \"Site Data\" TAb"));
+          .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
     } else if (_selectedConstructionTypeVisit == null ||
         _stagePotentialVisit.text == null ||
         _stagePotentialVisit.text == "" ||
@@ -5390,9 +5465,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         _stageStatus.text == null ||
         _siteCompetitionStatusEntity == null ||
         _siteOpportunitStatusEnity == null ||
-        _siteProbabilityWinningEntity == null ||visitDataDealer==null) {
+        _siteProbabilityWinningEntity == null ||
+        visitDataDealer==null) {
       Get.dialog(CustomDialogs()
-          .errorDialog("Please fill mandatory fields in \"Visit Data\" Tab"));
+          .showMessage("Please fill mandatory fields in \"Visit Data\" Tab"));
     } else if (addNextButtonDisable &&
         (_selectedConstructionTypeVisitNextStage == null ||
             _stagePotentialVisitNextStage.text == null ||
@@ -5409,7 +5485,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             _stagePotentialVisitNextStage.text == null ||
             _stageStatusNextStage.text == "" ||
             _stageStatusNextStage.text == null)) {
-      Get.dialog(CustomDialogs().errorDialog(
+      Get.dialog(CustomDialogs().showMessage(
           "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
     } else {
       updateSiteLogic();
@@ -5424,7 +5500,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       SiteVisitHistoryEntity latestRecordData=siteVisitHistoryEntity.elementAt(0);
       if(latestRecordData.soldToParty != visitDataDealer)
         if(latestRecordData.isAuthorised=="N"){
-          return Get.dialog(CustomDialogs().errorDialog("Your previous supplier not authorised."));
+          return Get.dialog(CustomDialogs().showMessage("Your previous supplier not authorised."));
         }
     }
 

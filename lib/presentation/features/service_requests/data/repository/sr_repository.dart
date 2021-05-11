@@ -18,8 +18,8 @@ class SrRepository{
     return apiClient.getAccessKey();
   }
 
-  Future<SrComplaintModel> getSrFormData(String accessKey, String userSecretKey) async{
-    return apiClient.getSrComplaintData(accessKey, userSecretKey);
+  Future<SrComplaintModel> getSrFormData(String accessKey, String userSecretKey,String empId) async{
+    return apiClient.getSrComplaintData(accessKey, userSecretKey,empId);
   }
 
   Future<RequestorDetailsModel> getRequestorDetails(String accessKey, String userSecretKey, String empID, String requesterType) async{

@@ -6,13 +6,15 @@ class SrComplaintModel {
   List<ServiceRequestComplaintRequestEntity>
       serviceRequestComplaintRequestEntity;
   List<ServiceRequestComplaintTypeEntity> serviceRequestComplaintTypeEntity;
+  List<ActiveSiteTSOListsEntity> activeSiteTSOLists;
 
   SrComplaintModel(
       {this.respCode,
       this.respMsg,
       this.serviceRequestComplaintDepartmentEntity,
       this.serviceRequestComplaintRequestEntity,
-      this.serviceRequestComplaintTypeEntity});
+      this.serviceRequestComplaintTypeEntity,
+      this.activeSiteTSOLists});
 
   SrComplaintModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -41,6 +43,16 @@ class SrComplaintModel {
             .add(new ServiceRequestComplaintTypeEntity.fromJson(v));
       });
     }
+
+    if (json['activeSiteTSOLists'] != null) {
+      activeSiteTSOLists =
+      new List<ActiveSiteTSOListsEntity>();
+      json['activeSiteTSOLists'].forEach((v) {
+        activeSiteTSOLists
+            .add(new ActiveSiteTSOListsEntity.fromJson(v));
+      });
+    }
+
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +77,14 @@ class SrComplaintModel {
           .map((v) => v.toJson())
           .toList();
     }
+
+    if (this.activeSiteTSOLists != null) {
+      data['activeSiteTSOLists'] = this
+          .activeSiteTSOLists
+          .map((v) => v.toJson())
+          .toList();
+    }
+
     return data;
   }
 }
@@ -134,6 +154,27 @@ class ServiceRequestComplaintTypeEntity {
     data['requestId'] = this.requestId;
     data['serviceRequestTypeText'] = this.serviceRequestTypeText;
     data['complaintSeverity'] = this.complaintSeverity;
+    return data;
+  }
+}
+
+class ActiveSiteTSOListsEntity {
+  int site_id;
+  String contact_name;
+
+  ActiveSiteTSOListsEntity(
+      {this.site_id,
+        this.contact_name});
+
+  ActiveSiteTSOListsEntity.fromJson(Map<String, dynamic> json) {
+    site_id = json['site_id'];
+    contact_name = json['contact_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['site_id'] = this.site_id;
+    data['contact_name'] = this.contact_name;
     return data;
   }
 }

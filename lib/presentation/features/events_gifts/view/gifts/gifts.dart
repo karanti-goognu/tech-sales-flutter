@@ -91,7 +91,7 @@ class _GiftsViewState extends State<GiftsView> {
             scale: 0.6,
             child: FlatButton(
               onPressed: () {
-                Get.to(()=>ViewLogs(giftController: _giftController, giftsCategoriesNameList: _giftsCategoriesNameList,));
+                Get.to(()=>ViewLogs(giftsCategoriesNameList: _giftsCategoriesNameList,));
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(28.0),

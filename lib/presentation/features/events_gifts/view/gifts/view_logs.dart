@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
@@ -8,15 +9,40 @@ import 'package:month_picker_dialog/month_picker_dialog.dart';
 import '../../controller/gifts_controlller.dart';
 
 
-class ViewLogs extends StatelessWidget {
-  final GiftController giftController;
+class ViewLogs extends StatefulWidget {
+
   final giftsCategoriesNameList;
 
-  const ViewLogs({Key key, this.giftController, this.giftsCategoriesNameList}) : super(key: key);
+  const ViewLogs({Key key, this.giftsCategoriesNameList})
+      : super(key: key);
+
+  @override
+  _LogsViewState createState() => _LogsViewState();
+}
+
+class _LogsViewState extends State<ViewLogs> {
+  GiftController giftController = Get.find();
+  var _currentMonth;
+  List<GiftStockModelList> _giftStockModelList;
+
+  @override
+  void initState() {
+    giftController.getViewLogsData("${giftController.monthYear}").then((value) => {
+
+      for(int i=0 ; i<value.giftStockModelList.length;i++)
+       print("Gift-->"+value.giftStockModelList.runtimeType.toString())
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    giftController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _currentMonth;
-    giftController.getViewLogsData("${giftController.monthYear}");
     return Scaffold(
       appBar: AppBar(
         title: Text("View Logs".toUpperCase()),
@@ -174,7 +200,7 @@ class ViewLogs extends StatelessWidget {
                                                children: [
 
                                                  Text(
-                                                   index==2?"Stock Added":giftsCategoriesNameList[index-1],
+                                                   index==2?"Stock Added":widget.giftsCategoriesNameList[index-1],
                                                    style: TextStyle(
                                                        fontSize: 16, fontWeight: FontWeight.bold),
                                                  ),

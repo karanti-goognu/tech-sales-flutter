@@ -14,10 +14,10 @@ abstract class UrlConstants {
 
 
  // QA
-
-  // static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
-  // static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
-  // static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
+ //
+ //  static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+ //  static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
+ //  static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
  //Development
  static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
@@ -55,6 +55,7 @@ abstract class UrlConstants {
  static const String getDealersList = '$baseUrl/mwp/add-visit?referenceID=';
  static const String viewVisitData = '$baseUrl/mwp/view-mwp-visit-meet?referenceID=';
  static const String getServiceRequestFormData = '$baseUrl/srcomplaint/sr_complaint_add';
+ static const String getServiceRequestFormDataNew = '$baseUrl/srcomplaint/v2/sr_complaint_add';
  static const String getRequestorDetails = '$baseUrl/srcomplaint/sr_requester_search?referenceId=';
  static const String getComplaintListData = '$baseUrl/srcomplaint/sr_list_view?referenceId=';
  static const String addServiceRequest = '$baseUrl/srcomplaint/sr_complaint_save';
