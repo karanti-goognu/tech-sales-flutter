@@ -45,6 +45,7 @@ class _DetailPendingState extends State<DetailPending> {
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
   List<DealersModels> selectedDealersModels = [];
+  List<bool> checkedValues;
 
   var _date = 'Select Date';
   TimeOfDay _time;
@@ -89,15 +90,6 @@ class _DetailPendingState extends State<DetailPending> {
     }
   }
 
-  // setSaveDraft() {
-  //   if (detailEventModel.mwpEventModel.eventStatusText ==
-  //       StringConstants.pendingApproval) {
-  //     saveBtnVisible = true;
-  //   } else {
-  //     saveBtnVisible = false;
-  //   }
-  // }
-
   setText() {
     if (detailEventModel != null && detailEventModel.mwpEventModel != null) {
       int _total = detailEventModel.mwpEventModel.dalmiaInflCount +
@@ -130,21 +122,21 @@ class _DetailPendingState extends State<DetailPending> {
       locationLong =
           double.parse('${detailEventModel.mwpEventModel.eventLocationLong}');
 
+
       if (detailEventModel.eventDealersModelList != null &&
           detailEventModel.eventDealersModelList.length != 0) {
         for (int i = 0;
             i < detailEventModel.eventDealersModelList.length;
             i++) {
-            selectedDealersModels.add(DealersModels(
-                dealerId: detailEventModel.eventDealersModelList[i].dealerId,
-                dealerName:
-                detailEventModel.eventDealersModelList[i].dealerName));
 
-            selectedDealer
-                .add(selectedDealersModels[i].dealerName);
-          }
+          selectedDealersModels.add(DealersModels(
+              dealerId: detailEventModel.eventDealersModelList[i].dealerId,
+              dealerName:
+                  detailEventModel.eventDealersModelList[i].dealerName));
 
+          selectedDealer.add(selectedDealersModels[i].dealerName);
 
+        }
       }
     }
   }
@@ -171,6 +163,7 @@ class _DetailPendingState extends State<DetailPending> {
     //   setText();
     // });
   }
+
   Future getEmpId() async {
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -346,33 +339,33 @@ class _DetailPendingState extends State<DetailPending> {
               ),
             ),
             child:
-            // Padding(
-            //   padding: const EdgeInsets.all(16.0),
-            //   child: Obx(
-            //         () => Wrap(
-            //       alignment: WrapAlignment.center,
-            //       spacing: 12.0,
-            //       children: List<Widget>.generate(
-            //         detailEventController
-            //             .dealerListSelected.length,
-            //             (int index) {
-            //           return Chip(
-            //             backgroundColor: Colors.grey[100],
-            //             label: Text(
-            //                 "${detailEventController.dealerListSelected[index].dealerName}"),
-            //             /* selected: _value == index,
-            //                               onSelected: (bool selected) {
-            //                                 setState(() {
-            //                                   _value = selected ? index : null;
-            //                                 });
-            //                               },*/
-            //           );
-            //         },
-            //       ).toList(),
-            //     ),
-            //   ),
-            // )
-            Container(
+                // Padding(
+                //   padding: const EdgeInsets.all(16.0),
+                //   child: Obx(
+                //         () => Wrap(
+                //       alignment: WrapAlignment.center,
+                //       spacing: 12.0,
+                //       children: List<Widget>.generate(
+                //         detailEventController
+                //             .dealerListSelected.length,
+                //             (int index) {
+                //           return Chip(
+                //             backgroundColor: Colors.grey[100],
+                //             label: Text(
+                //                 "${detailEventController.dealerListSelected[index].dealerName}"),
+                //             /* selected: _value == index,
+                //                               onSelected: (bool selected) {
+                //                                 setState(() {
+                //                                   _value = selected ? index : null;
+                //                                 });
+                //                               },*/
+                //           );
+                //         },
+                //       ).toList(),
+                //     ),
+                //   ),
+                // )
+                Container(
               height: 30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -441,25 +434,6 @@ class _DetailPendingState extends State<DetailPending> {
     final btns = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        // Visibility(
-        //   visible: saveBtnVisible,
-        //   child: FlatButton(
-        //     shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(0),
-        //         side: BorderSide(color: Colors.black26)),
-        //     color: Colors.transparent,
-        //     child: Padding(
-        //       padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-        //       child: Text(
-        //         "SAVE AS DRAFT",
-        //         style: TextStyles.btnBlue,
-        //       ),
-        //     ),
-        //     onPressed: () {
-        //       btnPresssed(7);
-        //     },
-        //   ),
-        // ),
         RaisedButton(
           color: ColorConstants.btnBlue,
           child: Text(
@@ -483,10 +457,9 @@ class _DetailPendingState extends State<DetailPending> {
                 StringConstants.notSubmitted) {
               btnPresssed(1);
             } else if (detailEventModel.mwpEventModel.eventStatusText ==
-               StringConstants.approved){
+                StringConstants.approved) {
               btnPresssed(2);
             }
-
           },
         ),
       ],
@@ -669,7 +642,6 @@ class _DetailPendingState extends State<DetailPending> {
     });
   }
 
-
   Future _startTime() async {
     // String time = detailEventModel.mwpEventModel.eventTime;
     // DateTime eventtime = DateTime.tryParse(time);
@@ -677,27 +649,27 @@ class _DetailPendingState extends State<DetailPending> {
     // int min = eventtime.minute;
     // print('TT:$eventtime');
     // TimeOfDay _initialTime = (TimeOfDay(hour: hr, minute: min));
-    (_time == null)?
-    _time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay(hour: 10, minute: 10),
-      builder: (BuildContext context, Widget child) {
-        return MediaQuery(
-          data: MediaQuery.of(context),
-          child: child,
-        );
-      },
-    ):
-    _time = await showTimePicker(
-      context: context,
-      initialTime: (TimeOfDay(hour: _time.hour, minute: _time.minute)),
-          builder: (BuildContext context, Widget child) {
-    return MediaQuery(
-    data: MediaQuery.of(context),
-    child: child,
-    );
-    },
-    );
+    (_time == null)
+        ? _time = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay(hour: 10, minute: 10),
+            builder: (BuildContext context, Widget child) {
+              return MediaQuery(
+                data: MediaQuery.of(context),
+                child: child,
+              );
+            },
+          )
+        : _time = await showTimePicker(
+            context: context,
+            initialTime: (TimeOfDay(hour: _time.hour, minute: _time.minute)),
+            builder: (BuildContext context, Widget child) {
+              return MediaQuery(
+                data: MediaQuery.of(context),
+                child: child,
+              );
+            },
+          );
     setState(() {
       print("jj");
       displayTime = '${_time.hour}:${_time.minute}';
@@ -706,19 +678,16 @@ class _DetailPendingState extends State<DetailPending> {
     });
   }
 
-  List<bool> checkedValues;
+
   List<String> selectedDealer = [];
-  // List<DealersModels> selectedDealersModels = [];
-  final _searchList = List<DealerModel>();
 
   TextEditingController _query = TextEditingController();
-
 
   addDealerBottomSheetWidget() {
     List<DealersModels> dealers = detailEventModel.dealersModels;
 
-    checkedValues =
-        List.generate(detailEventModel.dealersModels.length, (index) => false);
+    // checkedValues =
+    //     List.generate(detailEventModel.dealersModels.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -772,7 +741,7 @@ class _DetailPendingState extends State<DetailPending> {
                 itemBuilder: (context, index) {
                   return
 
-                      // dealerId == dealers[index].dealerId
+                      // dealerId != dealers[index].dealerId
                       //   ?
                       CheckboxListTile(
                     activeColor: Colors.black,
@@ -784,35 +753,23 @@ class _DetailPendingState extends State<DetailPending> {
                         Text('( ${dealers[index].dealerId} )'),
                       ],
                     ),
-                    value:
-                    //selectedDealersModels.contains(dealers[index].dealerName),
-                    selectedDealer.contains(dealers[index].dealerName),
+                    value: selectedDealer.contains(dealers[index].dealerName),
+                   // selectedDealersModels.contains(dealers[index].dealerName),
+
                     onChanged: (newValue) {
                       setState(() {
-                      print('NEWVALUE : $newValue');
-                          if (newValue == true) {
-                            selectedDealer.add(dealers[index].dealerName);
-                            selectedDealersModels.add(dealers[index]);
-                            // if(selectedDealersModels[index].dealerId != dealers[index].dealerId){
-                            //   selectedDealersModels.add(dealers[index]);
-                            // }
+                        print('NEWVALUE : $newValue');
+                        if (newValue == true) {
+                          selectedDealer.add(dealers[index].dealerName);
+                          selectedDealersModels.add(dealers[index]);
+                        }
+                        if (newValue == false) {
+                          selectedDealer.remove(dealers[index].dealerName);
+                          selectedDealersModels.remove(dealers[index]);
+                        }
+                        print(
+                            'SELECTED: ${json.encode(selectedDealersModels)}');
 
-                          }
-                          if(newValue == false)
-                            {
-                              selectedDealer.remove(dealers[index].dealerName);
-                              // selectedDealersModels.removeWhere((element) =>
-                              //     element.dealerId == detailEventModel.eventDealersModelList[index].dealerId,
-                              // );
-
-                             // detailEventModel.eventDealersModelList.remove(dealers[index]);
-
-                           selectedDealersModels.remove(dealers[index]);
-
-                          }
-                       print('SELECTED: ${json.encode(selectedDealersModels)}');
-
-                        //
                         // selectedDealer.contains(dealers[index].dealerName)
                         //     ? selectedDealer.remove(dealers[index].dealerName)
                         //     : selectedDealer.add(dealers[index].dealerName);
@@ -821,14 +778,14 @@ class _DetailPendingState extends State<DetailPending> {
                         //     ? selectedDealersModels.remove(dealers[index])
                         //     : selectedDealersModels.add(dealers[index]);
 
+                        //checkedValues[index] = newValue;
+                        //print("checkedValues $checkedValues");
 
-
-                        checkedValues[index] = newValue;
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                   );
-                  //  : Container();
+                    //: Container();
                 },
                 separatorBuilder: (context, index) {
                   return dealerId == dealers[index].dealerId
@@ -866,11 +823,7 @@ class _DetailPendingState extends State<DetailPending> {
                   MaterialButton(
                     color: HexColor('#1C99D4'),
                     onPressed: () {
-                       Get.back();
-
-
-
-
+                      Get.back();
 
                     },
                     child: Text(

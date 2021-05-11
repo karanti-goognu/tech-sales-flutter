@@ -565,23 +565,6 @@ class _FormAddEventState extends State<FormAddEvent> {
       print(timeString);
     });
   }
-  // Future _startTime() async {
-  //   _time = await showTimePicker(
-  //     context: context,
-  //     initialTime: TimeOfDay(hour: 10, minute: 47),
-  //     builder: (BuildContext context, Widget child) {
-  //       return MediaQuery(
-  //         data: MediaQuery.of(context),
-  //         //data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-  //         child: child,
-  //       );
-  //     },
-  //   );
-  //   setState(() {
-  //     timeString = ('$_date ${_time.hour}:${_time.minute}:00');
-  //     print(timeString);
-  //   });
-  // }
 
   List<bool> checkedValues;
   List<String> selectedDealer = [];
@@ -779,6 +762,8 @@ class _FormAddEventState extends State<FormAddEvent> {
             });
           });
         });
+
+
 
         print('DEALERS: $dealersList');
         MwpeventFormRequest _mwpeventFormRequest =
