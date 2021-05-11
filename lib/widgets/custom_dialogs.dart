@@ -254,7 +254,8 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-            Get.toNamed(Routes.HOME_SCREEN);
+            //Below line was commented for leads screen, if it's being use somewhere else, please consider.. s s
+//            Get.toNamed(Routes.HOME_SCREEN);
           },
         ),
       ],

@@ -62,6 +62,7 @@ class AddEventScreenPageState extends State<AddEvent> {
   @override
   void dispose() {
     super.dispose();
+    _addEventController.dispose();
   }
 
   Widget _buildAddEventInterface(BuildContext context) {
@@ -103,11 +104,13 @@ class AddEventScreenPageState extends State<AddEvent> {
                                 _addEventController.selectedView = newValue;
                                 if(_addEventController.selectedView=='Service Requests'){
                                   Get.offNamed(Routes.SERVICE_REQUEST_CREATION);
+                                }else if(_addEventController.selectedView=='Influencers Events'){
+                                  Get.offNamed(Routes.ADD_EVENTS);
                                 }
                               },
                               items: <String>[
                                 'Visit',
-                                'Influencers meet',
+                                'Influencers Events',
                                 'Service Requests'
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(

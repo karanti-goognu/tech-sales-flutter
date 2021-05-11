@@ -239,7 +239,7 @@ class MyApiClientLeads {
       name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
       gv.currentId = empId;
-
+print("Event Id: ${saveLeadRequestModel.eventId }");
       var uploadImageWithLeadModel = {
         'leadSegment': "TRADE",
         'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId),
@@ -309,13 +309,14 @@ class MyApiClientLeads {
 
                   }
                   gv.fromLead = false;
-                  // Get.toNamed(Routes.HOME_SCREEN);
                   Get.back();
                   Get.back();
+                  if(saveLeadRequestModel.eventId ==null){
                   Get.back();
                   Get.toNamed(Routes.HOME_SCREEN);
+                  }
 
-                  /*Get.toNamed(Routes.LEADS_SCREEN);*/
+
 
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead("Lead Added Successfully !!!"));

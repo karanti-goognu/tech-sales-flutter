@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/deleteEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,11 +47,27 @@ class DetailEventController extends GetxController {
 
   set deleteEventResponse(value) => _deleteEventResponse.value = value;
 
+  final _dealerList = List<DealerModel>().obs;
+
+  final _dealerListSelected = List<DealerModelSelected>().obs;
+
+  get dealerList => this._dealerList;
+
+  set dealerList(value) => this._dealerList.value = value;
+
+  get dealerListSelected => this._dealerListSelected;
+
+  set dealerListSelected(value) => this._dealerListSelected.value = value;
+
+
+  // get isLoading => this._isLoading.value;
+  // set isLoading(value) => this._isLoading.value = value;
+
   Future<String> getAccessKey() {
     return repository.getAccessKey();
   }
 
-  Future<DetailEventModel> getDetailEventData(int eventId) async {
+  Future<DetailEventModel> getDetailEventData(int eventId,) async {
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
@@ -66,6 +86,49 @@ class DetailEventController extends GetxController {
     });
     Get.back();
     return egDetailEventDaa;
+  }
+
+  getDealersList( int eventId) async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    // this.isLoading = true;
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKey();
+    _prefs.then((SharedPreferences prefs) {
+      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String empId = prefs.getString(StringConstants.employeeId);
+
+      repository.getdetailEvents(accessKey, userSecurityKey, empId, eventId).then((data) {
+        // this.isLoading = false;
+        if (data == null) {
+          debugPrint('Dealer List Response is null');
+        } else {
+          debugPrint('Dealer List Response is not null');
+          this.egDetailEventDaa = data;
+         // this.isLoading = false;
+          if (this.egDetailEventDaa.dealersModels.length != 0) {
+            for (int i = 0;
+            i < this.egDetailEventDaa.dealersModels.length;
+            i++) {
+              this.dealerList.add(new DealerModel(
+                  egDetailEventDaa.dealersModels[i].dealerId,
+                  egDetailEventDaa.dealersModels[i].dealerName,
+                  false));
+            }
+          }
+          Get.back();
+          if (egDetailEventDaa.respCode == "DM1002") {
+            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
+            print('${egDetailEventDaa.respMsg}');
+            //SitesDetailWidget();
+          } else {
+            // Get.dialog(CustomDialogs().errorDialog(dealerListResponse.respMsg));
+          }
+        }
+      });
+    });
   }
 
   Future<DeleteEventModel> deleteEvent(int eventId) async {
@@ -122,6 +185,11 @@ class DetailEventController extends GetxController {
       });
     });
   }
+
+
+
+
+
 
 
 }

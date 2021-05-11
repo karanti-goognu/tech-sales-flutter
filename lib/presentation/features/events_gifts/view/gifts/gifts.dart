@@ -41,6 +41,7 @@ class _GiftsViewState extends State<GiftsView> {
     for (int i = 0; i < _giftsCategoriesNameList.length; i++) {
       _giftCategoriesList.add(GiftsCategories(
           _giftsCategoriesNameList[i], _giftsCategoriesValueList[i]));
+      print("printtttt->"+_giftCategoriesList[i].count.toString()+" "+_giftCategoriesList[i].text+",,"+_giftController.selectedDropdown.toString()+".."+ _giftController.giftStockModelList[0].giftInHandQty.toString()+" "+_giftController.giftStockModelList[1].giftInHandQty.toString()+"  "+_giftController.giftStockModelList[2].giftInHandQty.toString());
     }
     _giftInHandQtyNew.text=_giftCategoriesList[1].count.toString();
     _giftInHandQty=_giftCategoriesList[1].count.toString();
@@ -75,6 +76,7 @@ class _GiftsViewState extends State<GiftsView> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       floatingActionButton: BackFloatingButton(),
@@ -104,7 +106,7 @@ class _GiftsViewState extends State<GiftsView> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 14),
         child: Column(
           children: [
             Container(
@@ -149,7 +151,7 @@ class _GiftsViewState extends State<GiftsView> {
                         ))),
             ),
             SizedBox(
-              height: 24,
+              height: 10,
             ),
             Flexible(
                 child:  ListView.separated(
@@ -170,14 +172,15 @@ class _GiftsViewState extends State<GiftsView> {
                             index == 1 && _giftController.selectedDropdown!=0
                                 ? Container(
                                     padding: EdgeInsets.zero,
-                                    width: 70,
-                                    height: 30,
-                                    child: TextFormField(
+                                    width: 60,
+                                    height: 40,
+                                    child:
+                                    TextFormField(
                                       controller: _giftInHandQtyNew,
                                       textAlign: TextAlign.right,
-                                      keyboardType: TextInputType.phone,
+                                      keyboardType: TextInputType.number,
                                       style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 13,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.blue
                                       ),
@@ -228,7 +231,7 @@ class _GiftsViewState extends State<GiftsView> {
                   ),
             ),
             SizedBox(
-              height: 24,
+              height: 14,
             ),
             // RaisedButton(
             //   onPressed: () => _giftController.selectedDropdown == 0
@@ -249,7 +252,10 @@ class _GiftsViewState extends State<GiftsView> {
             //         fontSize: 17),
             //   ),
             // ),
-            buildBody(context)
+            buildBody(context),
+            SizedBox(
+              height: 24,
+            ),
           ],
         ),
       ),
@@ -261,7 +267,9 @@ class _GiftsViewState extends State<GiftsView> {
       child: StatefulBuilder( builder: (BuildContext context, StateSetter setstates){
         return RaisedButton(
           onPressed: () => _giftController.selectedDropdown == 0
-              ? Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController,setstates:setstates),)
+              ?
+          _settingModalBottomSheet(context,setstates)
+          // Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController,setstates:setstates),)
               : _giftController.addGiftStock(
               comment: _comments.text,
               giftTypeId: _giftController.selectedDropdown.toString(),
@@ -283,7 +291,22 @@ class _GiftsViewState extends State<GiftsView> {
     );
   }
 
+  void _settingModalBottomSheet(context,StateSetter setstates) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext bc) {
+          return GiftTypeBottomSheet(giftController: _giftController,setstates:setstates);
+        }).whenComplete(() {
+
+      _giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
+
+    });
+  }
+
 }
+
 
 class GiftsCategories {
   int count;

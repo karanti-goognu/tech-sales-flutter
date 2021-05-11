@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -40,6 +42,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   bool _isUpdate = false, _isButtonDisabled = false;
   final _formKey = GlobalKey<FormState>();
   final _newFormKey = GlobalKey<FormState>();
+  BuildContext _context;
 
   TextEditingController _infTypeController = TextEditingController();
   TextEditingController _infNameController = TextEditingController();
@@ -52,6 +55,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   @override
   void initState() {
     super.initState();
+    _context = context;
     getEmpId();
     getData();
   }
@@ -497,27 +501,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   ],
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(
-              //       right: 16, left: 16, bottom: 8, top: 12),
-              //   child: TextFormField(
-              //     controller: _newContactController,
-              //     maxLength: 10,
-              //     validator: (value) {
-              //       if (value.isEmpty) {
-              //         return "Contact Name can't be empty";
-              //       }
-              //       if (value.length != 10) {
-              //         return "Enter valid Contact number";
-              //       }
-              //       return null;
-              //     },
-              //     style: FormFieldStyle.formFieldTextStyle,
-              //     keyboardType: TextInputType.number,
-              //     decoration: FormFieldStyle.buildInputDecoration(
-              //         hintText: 'Contact No.'),
-              //   ),
-              // ),
 
               Padding(
                   padding:
@@ -874,7 +857,26 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 
     internetChecking().then((result) => {
       if (result == true)
-        {_eventsFilterController.getAccessKeyAndSaveDealerInf(_updateDealer)}
+
+        {
+          _eventsFilterController.getAccessKeyAndSaveDealerInf(_updateDealer).then((data){
+          if(data != null){
+            if (data.respCode == 'DM1002') {
+                  //Get.back();
+                  Get.dialog(
+                    successDialogAndReload(_context, data.respMsg.toString()),
+                      barrierDismissible: false
+                  );
+                } else {
+                  Get.back();
+                  Get.dialog(
+                      CustomDialogs().messageDialogMWP(data.respMsg.toString()),
+                      barrierDismissible: false);
+                }
+
+          }
+        })
+        }
       else
         {
           Get.snackbar("No internet connection.",
@@ -903,10 +905,16 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 .getAccessKeyAndSaveNewInfluencer(_save)
                 .then((data) {
               setState(() {
+
                 _saveNewInfluencerResponse = data;
                 print('DD: $_saveNewInfluencerResponse');
+                if(data.respCode == "DM1002")
                 Get.dialog(
                     successDialog(_saveNewInfluencerResponse.respMsg));
+                else if(data.respMsg == "IN2008"){
+                  Get.dialog(
+                      successDialog(_saveNewInfluencerResponse.respMsg));
+                }
               });
             })
           }
@@ -966,5 +974,48 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         ),
       ],
     );
+  }
+
+  Widget successDialogAndReload(BuildContext contex, String message) {
+    return AlertDialog(
+
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () async{
+            Get.back();
+            //Navigator.pop(_context);
+            Navigator.of(context).pop({'reload': true});
+
+          },
+        ),
+
+      ],
+
+    );
+
   }
 }

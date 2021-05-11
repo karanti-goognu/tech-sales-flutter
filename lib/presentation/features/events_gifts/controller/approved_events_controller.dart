@@ -139,7 +139,8 @@ class EventsFilterController extends GetxController {
     return _dealerInfModel;
   }
 
-  getAccessKeyAndSaveDealerInf(UpdateDealerInfModel updateDealerInfModel) {
+  Future<UpdateDealerInfResponse>getAccessKeyAndSaveDealerInf(UpdateDealerInfModel updateDealerInfModel) async{
+    UpdateDealerInfResponse _updateDealerInfResponse;
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -147,32 +148,34 @@ class EventsFilterController extends GetxController {
         Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    repository.getAccessKey().then((data) async {
+    //repository.getAccessKey().then((data) async {
       String accessKey = await repository.getAccessKey();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel)
-            .then((value) {
-          Get.back();
-          if (value.respCode == 'DM1002') {
-            Get.back();
-            Get.defaultDialog(
-                title: "Message",
-                middleText: value.respMsg.toString(),
-                confirm: MaterialButton(
-                  onPressed: () => Get.back(),
-                  child: Text('OK'),
-                ),
-                barrierDismissible: false);
-          } else {
-            Get.back();
-            Get.dialog(
-                CustomDialogs().messageDialogMWP(value.respMsg.toString()),
-                barrierDismissible: false);
-          }
-        });
-      });
+        _updateDealerInfResponse = await repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel);
+        //     .then((value) {
+        //   Get.back();
+        //   if (value.respCode == 'DM1002') {
+        //     Get.back();
+        //     Get.defaultDialog(
+        //         title: "Message",
+        //         middleText: value.respMsg.toString(),
+        //         confirm: MaterialButton(
+        //           onPressed: () => Get.back(),
+        //           child: Text('OK'),
+        //         ),
+        //         barrierDismissible: false);
+        //   } else {
+        //     Get.back();
+        //     Get.dialog(
+        //         CustomDialogs().messageDialogMWP(value.respMsg.toString()),
+        //         barrierDismissible: false);
+        //   }
+        // });
+     // });
     });
+    Get.back();
+    return _updateDealerInfResponse;
   }
 
   // Future<UpdateDealerInfResponse> updateDealerInfRequest(String accessKey,
@@ -208,7 +211,6 @@ class EventsFilterController extends GetxController {
         Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-   // repository.getAccessKey().then((data) async {
       String accessKey = await repository.getAccessKey();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
@@ -77,8 +78,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
     final btnStartEvent = FlatButton(
       onPressed: () {
         _getCurrentLocation();
-        Get.dialog(CustomDialogs().showStartEventDialog(
-            'Confirmation', "Do you want to start event?"));
+        // Get.dialog(CustomDialogs().showStartEventDialog(
+        //     'Confirmation', "Do you want to start event?"));
       },
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28.0),
@@ -92,7 +93,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
     final btnAddLead = FlatButton(
       onPressed: () {
-        Get.to(()=>AddNewLeadForm(eventId:widget.eventId,));
+        Get.to(()=>AddNewLeadForm(eventId:widget.eventId,), binding: AddLeadsBinding());
       },
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28.0),
@@ -184,12 +185,23 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               ),
             ),
             FlatButton(
-                onPressed: () {
-                  Get.to(
-                      () => UpdateDlrInf(
-                            detailEventModel.mwpEventModel.eventId,
-                          ),
-                      binding: EGBinding());
+                onPressed: () async{
+                  Map results = await Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return UpdateDlrInf(
+                        detailEventModel.mwpEventModel.eventId,
+                      );
+                    },
+                  ));
+
+                  if (results != null && results.containsKey('reload')) {
+                    getDetailEventsData();
+                  }
+                  // Get.to(
+                  //     () => UpdateDlrInf(
+                  //           detailEventModel.mwpEventModel.eventId,
+                  //         ),
+                  //     binding: EGBinding());
                 },
                 child: Row(
                   children: [

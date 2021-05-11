@@ -13,8 +13,6 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
