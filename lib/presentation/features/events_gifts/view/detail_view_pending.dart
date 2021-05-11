@@ -44,6 +44,7 @@ class _DetailPendingState extends State<DetailPending> {
   DeleteEventModel _deleteEventModel;
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
+ // List<DealersModels> selectedDealersModels = [];
   List<DealersModels> selectedDealersModels = [];
   List<bool> checkedValues;
 
@@ -123,6 +124,8 @@ class _DetailPendingState extends State<DetailPending> {
           double.parse('${detailEventModel.mwpEventModel.eventLocationLong}');
 
 
+
+
       if (detailEventModel.eventDealersModelList != null &&
           detailEventModel.eventDealersModelList.length != 0) {
         for (int i = 0;
@@ -134,10 +137,12 @@ class _DetailPendingState extends State<DetailPending> {
               dealerName:
                   detailEventModel.eventDealersModelList[i].dealerName));
 
-          selectedDealer.add(selectedDealersModels[i].dealerName);
+          //selectedDealer.add(selectedDealersModels[i].dealerName);
 
         }
       }
+
+
     }
   }
 
@@ -154,14 +159,6 @@ class _DetailPendingState extends State<DetailPending> {
 
   getDetailEventsData1() async {
     await detailEventController.getDealersList(widget.eventId);
-    //     .then((data) {
-    //   setState(() {
-    //     detailEventModel = data;
-    //   });
-    //   print('DDDD: $data');
-    //   setVisibility();
-    //   setText();
-    // });
   }
 
   Future getEmpId() async {
@@ -621,7 +618,8 @@ class _DetailPendingState extends State<DetailPending> {
                     ],
                   )
                 : Center(
-                    child: CircularProgressIndicator(),
+                    child: Text("No Events !")
+                    //CircularProgressIndicator(),
                   ),
           ),
         ],
@@ -687,7 +685,7 @@ class _DetailPendingState extends State<DetailPending> {
     List<DealersModels> dealers = detailEventModel.dealersModels;
 
     // checkedValues =
-    //     List.generate(detailEventModel.dealersModels.length, (index) => false);
+    //     List.generate(detailEventModel.dealersModels.length, (index) => true);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -778,7 +776,7 @@ class _DetailPendingState extends State<DetailPending> {
                         //     ? selectedDealersModels.remove(dealers[index])
                         //     : selectedDealersModels.add(dealers[index]);
 
-                        //checkedValues[index] = newValue;
+                       // checkedValues[index] = newValue;
                         //print("checkedValues $checkedValues");
 
                       });
