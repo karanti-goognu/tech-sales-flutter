@@ -150,8 +150,6 @@ class GiftController extends GetxController {
       _giftStockModelList.add(giftStockModelList[i]);
     }
     giftStockModelList1 = _giftStockModelList ;
-    selectedDropdown = 1;
-    print("Gift-->"+selectedDropdown.runtimeType.toString());
     return _giftStockModelList;
   }
 

@@ -45,12 +45,25 @@ class _LogsViewState extends State<ViewLogs> {
     });
   }
 
+  getDetailEventsData() async {
+    await giftController.getGiftStockData().then((data) {
+      giftController.getViewLogsData1(giftController.giftStockModelList).then((value) => {
+      setState(() {
+      _giftStockModelList = giftController.giftStockModelList1;
+      if(giftController.selectedDropdown ==0){
+        giftController.selectedDropdown = 1;
+      }
+      addDateForGiftsView();
+      })
+      });
+    });
+  }
+
 
   @override
   void initState() {
-    giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
+    getDetailEventsData();
     giftController.getViewLogsData("${giftController.monthYear}").then((value) => {
-      giftController.getViewLogsData1(giftController.giftStockModelList)
     });
     super.initState();
   }
@@ -71,7 +84,7 @@ class _LogsViewState extends State<ViewLogs> {
       bottomNavigationBar: BottomNavigator(),
       floatingActionButton: BackFloatingButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: Padding(
+      body: _giftStockModelList!=null?Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 24),
         child: Column(
           children: [
@@ -150,7 +163,7 @@ class _LogsViewState extends State<ViewLogs> {
                                     giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
                                   },
                                   value: giftController.selectedDropdown,
-                                  items: giftController.giftStockModelList1
+                                  items: _giftStockModelList
                                       .map<DropdownMenuItem>((value) {
                                     return DropdownMenuItem(
                                       value: value.giftTypeId,
@@ -164,6 +177,7 @@ class _LogsViewState extends State<ViewLogs> {
                                   }).toList(),
                                 ),),)
                         )),
+
               ],
             ),
             SizedBox(height: 20,),
@@ -253,7 +267,10 @@ class _LogsViewState extends State<ViewLogs> {
               ); })
           ],
         ),
-      ),
-    );
+      ):Container(
+    child: Center(
+    child: Text("Loading data!!"),
+    ),
+    ));
   }
 }

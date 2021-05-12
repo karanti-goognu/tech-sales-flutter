@@ -760,7 +760,7 @@ class CustomDialogs {
           ),
           onPressed: () {
             if(from==0){
-              Get.to(() => EndEvent(eventId), binding: EGBinding());
+              Get.to(() => EndEvent(eventId,0), binding: EGBinding());
             }else{
             Get.back();
             }

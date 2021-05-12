@@ -92,9 +92,9 @@ class _GiftsViewState extends State<GiftsView> {
             scale: 0.6,
             child: FlatButton(
               onPressed: () {
-                if(_giftController.selectedDropdown ==0){
-                  _giftController.selectedDropdown = 1;
-                }
+                // if(_giftController.selectedDropdown ==0){
+                //   _giftController.selectedDropdown = 1;
+                // }
                 Get.to(() => ViewLogs());
                 // if(_giftController.selectedDropdown==0){
                 //   Get.dialog(CustomDialogs().showMessage("To view log please Select Other Gift Type"));

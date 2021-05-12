@@ -385,7 +385,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                         //     binding: EGBinding());
 
                         if(_calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.completed ){
-                          Get.to(() => EndEvent(_calendarEventController.listOfEvents[index].id),
+                          Get.to(() => EndEvent(_calendarEventController.listOfEvents[index].id,1),
                               binding: EGBinding());
                         }else if(_calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.approved || _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.cancelled){
                           Get.to(() => DetailViewEvent(_calendarEventController.listOfEvents[index].id),

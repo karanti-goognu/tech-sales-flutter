@@ -203,7 +203,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                             () => DetailViewEvent(list[index].eventId),
                         binding: EGBinding());
                   }else{
-                    Get.to(() => EndEvent(list[index].eventId));
+                    Get.to(() => EndEvent(list[index].eventId,3));
                   }
                 },
                 child: Card(

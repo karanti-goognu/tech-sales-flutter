@@ -82,6 +82,7 @@ dependencies:
   package_info:
   uuid: ^2.0.4
   month_picker_dialog:
+  dropdown_search: ^0.4.9
 
 
   #  autocomplete_textfield: ^1.7.3
