@@ -558,7 +558,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     decoration: FormFieldStyle.buildInputDecoration(
                         labelText: "Influencer Type"),
                     validator: (value) => value == null
-                        ? 'Please select the Influencer Category'
+                        ? 'Please select the Influencer Type'
                         : null,
                   )),
 
@@ -600,7 +600,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                               .toList():[],
                           style: FormFieldStyle.formFieldTextStyle,
                           decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Dalmia"),
+                              labelText: "Influencer Category "),
                           validator: (value) => value == null
                               ? 'Please select the Influencer Category'
                               : null,

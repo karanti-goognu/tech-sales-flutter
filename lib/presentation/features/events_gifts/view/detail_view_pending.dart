@@ -137,7 +137,7 @@ class _DetailPendingState extends State<DetailPending> {
               dealerName:
                   detailEventModel.eventDealersModelList[i].dealerName));
 
-          //selectedDealer.add(selectedDealersModels[i].dealerName);
+          selectedDealer.add(selectedDealersModels[i].dealerName);
 
         }
       }
@@ -682,8 +682,8 @@ class _DetailPendingState extends State<DetailPending> {
   addDealerBottomSheetWidget() {
     List<DealersModels> dealers = detailEventModel.dealersModels;
 
-    // checkedValues =
-    //     List.generate(detailEventModel.dealersModels.length, (index) => true);
+    checkedValues =
+        List.generate(detailEventModel.dealersModels.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -749,6 +749,7 @@ class _DetailPendingState extends State<DetailPending> {
                         Text('( ${dealers[index].dealerId} )'),
                       ],
                     ),
+                    selected: selectedDealer.contains(dealers[index].dealerName),
                     value: selectedDealer.contains(dealers[index].dealerName),
                    // selectedDealersModels.contains(dealers[index].dealerName),
 
@@ -774,8 +775,8 @@ class _DetailPendingState extends State<DetailPending> {
                         //     ? selectedDealersModels.remove(dealers[index])
                         //     : selectedDealersModels.add(dealers[index]);
 
-                       // checkedValues[index] = newValue;
-                        //print("checkedValues $checkedValues");
+                        checkedValues[index] = newValue;
+                        print("checkedValues $checkedValues");
 
                       });
                     },
