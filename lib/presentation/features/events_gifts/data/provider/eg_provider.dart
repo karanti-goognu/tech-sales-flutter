@@ -115,6 +115,7 @@ class MyApiClientEvent {
               accessKey, userSecretKey,version));
       allEventsModel = AllEventsModel.fromJson(json.decode(response.body));
       print(response.body);
+      print("Above is the data for filter");
     }
     catch (e) {
       print("Exception at EG Repo $e");
