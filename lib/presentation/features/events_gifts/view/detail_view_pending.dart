@@ -136,7 +136,7 @@ class _DetailPendingState extends State<DetailPending> {
               dealerName:
               detailEventModel.eventDealersModelList[i].dealerName));
 
-          //selectedDealer.add(selectedDealersModels[i].dealerName);
+          selectedDealer.add(selectedDealersModels[i].dealerName);
 
         }
       }
@@ -640,23 +640,21 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   Future _startTime() async {
-    // String time = detailEventModel.mwpEventModel.eventTime;
-    // DateTime eventtime = DateTime.tryParse(time);
-    // int hr = eventtime.hour;
-    // int min = eventtime.minute;
-    // print('TT:$eventtime');
-    // TimeOfDay _initialTime = (TimeOfDay(hour: hr, minute: min));
+    String t = detailEventModel.mwpEventModel.eventTime;
+    TimeOfDay eventtime = TimeOfDay(hour:int.parse(t.split(":")[0]),minute: int.parse(t.split(":")[1]));
+    print('TT:$eventtime');
     (_time == null)
         ? _time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay(hour: 10, minute: 10),
-      builder: (BuildContext context, Widget child) {
-        return MediaQuery(
-          data: MediaQuery.of(context),
-          child: child,
-        );
-      },
-    )
+           context: context,
+            initialTime: eventtime,
+            //TimeOfDay(hour: 10, minute: 10),
+            builder: (BuildContext context, Widget child) {
+              return MediaQuery(
+                data: MediaQuery.of(context),
+                child: child,
+              );
+            },
+          )
         : _time = await showTimePicker(
       context: context,
       initialTime: (TimeOfDay(hour: _time.hour, minute: _time.minute)),
@@ -683,8 +681,8 @@ class _DetailPendingState extends State<DetailPending> {
   addDealerBottomSheetWidget() {
     List<DealersModels> dealers = detailEventModel.dealersModels;
 
-    // checkedValues =
-    //     List.generate(detailEventModel.dealersModels.length, (index) => true);
+    checkedValues =
+        List.generate(detailEventModel.dealersModels.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -737,52 +735,52 @@ class _DetailPendingState extends State<DetailPending> {
                 itemCount: dealers.length,
                 itemBuilder: (context, index) {
                   return
+                      // dealerId != dealers[index].dealerId
+                      //   ?
+                      CheckboxListTile(
+                    activeColor: Colors.black,
+                    dense: true,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(dealers[index].dealerName),
+                        Text('( ${dealers[index].dealerId} )'),
+                      ],
+                    ),
+                    selected: selectedDealer.contains(dealers[index].dealerName),
+                    value: selectedDealer.contains(dealers[index].dealerName),
+                   // selectedDealersModels.contains(dealers[index].dealerName),
 
-                    // dealerId != dealers[index].dealerId
-                    //   ?
-                    CheckboxListTile(
-                      activeColor: Colors.black,
-                      dense: true,
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(dealers[index].dealerName),
-                          Text('( ${dealers[index].dealerId} )'),
-                        ],
-                      ),
-                      value: selectedDealer.contains(dealers[index].dealerName),
-                      // selectedDealersModels.contains(dealers[index].dealerName),
+                    onChanged: (newValue) {
+                      setState(() {
+                        print('NEWVALUE : $newValue');
+                        if (newValue == true) {
+                          selectedDealer.add(dealers[index].dealerName);
+                          selectedDealersModels.add(dealers[index]);
+                        }
+                        if (newValue == false) {
+                          selectedDealer.remove(dealers[index].dealerName);
+                          selectedDealersModels.remove(dealers[index]);
+                        }
+                        print(
+                            'SELECTED: ${json.encode(selectedDealersModels)}');
 
-                      onChanged: (newValue) {
-                        setState(() {
-                          print('NEWVALUE : $newValue');
-                          if (newValue == true) {
-                            selectedDealer.add(dealers[index].dealerName);
-                            selectedDealersModels.add(dealers[index]);
-                          }
-                          if (newValue == false) {
-                            selectedDealer.remove(dealers[index].dealerName);
-                            selectedDealersModels.remove(dealers[index]);
-                          }
-                          print(
-                              'SELECTED: ${json.encode(selectedDealersModels)}');
+                        // selectedDealer.contains(dealers[index].dealerName)
+                        //     ? selectedDealer.remove(dealers[index].dealerName)
+                        //     : selectedDealer.add(dealers[index].dealerName);
+                        //
+                        // selectedDealersModels.contains(dealers[index])
+                        //     ? selectedDealersModels.remove(dealers[index])
+                        //     : selectedDealersModels.add(dealers[index]);
 
-                          // selectedDealer.contains(dealers[index].dealerName)
-                          //     ? selectedDealer.remove(dealers[index].dealerName)
-                          //     : selectedDealer.add(dealers[index].dealerName);
-                          //
-                          // selectedDealersModels.contains(dealers[index])
-                          //     ? selectedDealersModels.remove(dealers[index])
-                          //     : selectedDealersModels.add(dealers[index]);
+                        checkedValues[index] = newValue;
+                        print("checkedValues $checkedValues");
 
-                          // checkedValues[index] = newValue;
-                          //print("checkedValues $checkedValues");
-
-                        });
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
-                    );
-                  //: Container();
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  );
+                    //: Container();
                 },
                 separatorBuilder: (context, index) {
                   return dealerId == dealers[index].dealerId

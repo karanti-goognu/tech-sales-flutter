@@ -118,6 +118,16 @@ class DetailEventController extends GetxController {
                   false));
             }
           }
+
+          if (this.egDetailEventDaa.eventDealersModelList.length != 0) {
+            for (int i = 0;
+            i < this.egDetailEventDaa.eventDealersModelList.length;
+            i++) {
+              this.dealerListSelected.add(new DealerModelSelected(
+                  egDetailEventDaa.eventDealersModelList[i].dealerId,
+                  egDetailEventDaa.eventDealersModelList[i].dealerName,));
+            }
+          }
           Get.back();
           if (egDetailEventDaa.respCode == "DM1002") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
