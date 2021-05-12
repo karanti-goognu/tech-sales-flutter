@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gifts.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
@@ -8,15 +10,71 @@ import 'package:month_picker_dialog/month_picker_dialog.dart';
 import '../../controller/gifts_controlller.dart';
 
 
-class ViewLogs extends StatelessWidget {
-  final GiftController giftController;
-  final giftsCategoriesNameList;
+class ViewLogs extends StatefulWidget {
 
-  const ViewLogs({Key key, this.giftController, this.giftsCategoriesNameList}) : super(key: key);
+  @override
+  _LogsViewState createState() => _LogsViewState();
+}
+
+class _LogsViewState extends State<ViewLogs> {
+  GiftController giftController = Get.find();
+  final List _giftsCategoriesNameList = [
+    'Opening Stock',
+    'Stock In Hand',
+    'Utilized'
+  ];
+  List _giftsCategoriesValueList = [];
+  List _giftCategoriesList = [];
+  var _currentMonth;
+  List<GiftStockModelList> _giftStockModelList;
+
+  addDateForGiftsView() async {
+    _giftsCategoriesValueList = [];
+    _giftCategoriesList = [];
+    _giftsCategoriesValueList = [
+      giftController.giftStockModelList[giftController.selectedDropdown].giftOpeningStockQty,
+      giftController.giftStockModelList[giftController.selectedDropdown].giftInHandQty,
+      giftController.giftStockModelList[giftController.selectedDropdown].giftUtilisedQty
+    ];
+    for (int i = 0; i < _giftsCategoriesNameList.length; i++) {
+      _giftCategoriesList.add(GiftsCategories(
+          _giftsCategoriesNameList[i], _giftsCategoriesValueList[i]));
+    }
+    setState(() {
+
+    });
+  }
+
+  getDetailEventsData() async {
+    await giftController.getGiftStockData().then((data) {
+      giftController.getViewLogsData1(giftController.giftStockModelList).then((value) => {
+      setState(() {
+      _giftStockModelList = giftController.giftStockModelList1;
+      if(giftController.selectedDropdown ==0){
+        giftController.selectedDropdown = 1;
+      }
+      addDateForGiftsView();
+      })
+      });
+    });
+  }
+
+
+  @override
+  void initState() {
+    getDetailEventsData();
+    giftController.getViewLogsData("${giftController.monthYear}").then((value) => {
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _currentMonth;
-    giftController.getViewLogsData("${giftController.monthYear}");
     return Scaffold(
       appBar: AppBar(
         title: Text("View Logs".toUpperCase()),
@@ -26,7 +84,7 @@ class ViewLogs extends StatelessWidget {
       bottomNavigationBar: BottomNavigator(),
       floatingActionButton: BackFloatingButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: Padding(
+      body: _giftStockModelList!=null?Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 24),
         child: Column(
           children: [
@@ -102,14 +160,15 @@ class ViewLogs extends StatelessWidget {
                                   onChanged: (newValue) {
                                     giftController.selectedDropdown = newValue;
                                     cc.update();
+                                    giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
                                   },
                                   value: giftController.selectedDropdown,
-                                  items: giftController.giftStockModelList
+                                  items: _giftStockModelList
                                       .map<DropdownMenuItem>((value) {
                                     return DropdownMenuItem(
                                       value: value.giftTypeId,
                                       child: SizedBox(
-                                        width: 120,
+                                        width: 115,
                                         child: Text(
                                           value.giftTypeText.toString(),
                                         ),
@@ -118,6 +177,7 @@ class ViewLogs extends StatelessWidget {
                                   }).toList(),
                                 ),),)
                         )),
+
               ],
             ),
             SizedBox(height: 20,),
@@ -174,7 +234,7 @@ class ViewLogs extends StatelessWidget {
                                                children: [
 
                                                  Text(
-                                                   index==2?"Stock Added":giftsCategoriesNameList[index-1],
+                                                   index==2?"Stock Added":_giftsCategoriesNameList[index-1],
                                                    style: TextStyle(
                                                        fontSize: 16, fontWeight: FontWeight.bold),
                                                  ),
@@ -207,7 +267,10 @@ class ViewLogs extends StatelessWidget {
               ); })
           ],
         ),
-      ),
-    );
+      ):Container(
+    child: Center(
+    child: Text("Loading data!!"),
+    ),
+    ));
   }
 }

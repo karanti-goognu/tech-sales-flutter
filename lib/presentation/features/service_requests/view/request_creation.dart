@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SiteAreaDetailsModel.dart';
 
@@ -106,6 +108,8 @@ class _RequestCreationState extends State<RequestCreation> {
   int requestId;
   String creatorType;
   bool isComplaint;
+  int siteId;
+  String selectedValue;
 
   // GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
   // GlobalKey<AutoCompleteTextFieldState<String>> key1 = new GlobalKey();
@@ -324,43 +328,80 @@ class _RequestCreationState extends State<RequestCreation> {
                                           labelText: "Severity"),
                                 ),
                                 SizedBox(height: 16),
-                                TextFormField(
-                                  onChanged: (val) async {
-                                    if (val.length == 6) {
+                                DropdownSearch<ActiveSiteTSOListsEntity>(
+                                  mode: Mode.BOTTOM_SHEET,
+                                  items: srComplaintModel
+                                      .activeSiteTSOLists,
+                                  itemAsString: (ActiveSiteTSOListsEntity u) => '${toBeginningOfSentenceCase(u.contact_name)} (${u.site_id})',
+                                  maxHeight: 240,
+                                  // onFind: (String filter) => getData(filter),
+                                  label: "Site Id *",
+                                  onChanged: (value) async {
+                                      siteId = value.site_id;
                                       SiteAreaModel siteDetails =
                                           await eventController
-                                              .getSiteAreaDetails(_siteID.text);
+                                          .getSiteAreaDetails(siteId.toString());
                                       siteDetails.siteAreaDetailsModel != null
                                           ? setState(() {
-                                              _pin.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .sitePincode;
-                                              _state.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteState;
-                                              _taluk.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteTaluk;
-                                              _district.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteDistrict;
-                                            })
-                                          : Get.rawSnackbar(
-                                              title: "Message",
-                                              message: siteDetails.respMsg);
-                                    }
-                                  },
-                                  controller: _siteID,
-                                  maxLength: 6,
-                                  validator: (value) => value.isEmpty
-                                      ? 'Please enter the Site ID'
-                                      : null,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  keyboardType: TextInputType.phone,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Site ID*"),
+                                        _pin.text = siteDetails
+                                            .siteAreaDetailsModel
+                                            .sitePincode;
+                                        _state.text = siteDetails
+                                            .siteAreaDetailsModel
+                                            .siteState;
+                                        _taluk.text = siteDetails
+                                            .siteAreaDetailsModel
+                                            .siteTaluk;
+                                        _district.text = siteDetails
+                                            .siteAreaDetailsModel
+                                            .siteDistrict;
+                                      }) : Get.rawSnackbar(
+                                          title: "Message",
+                                          message: siteDetails.respMsg);
+                                    },
+                                  showSearchBox: true,
                                 ),
+
+
+                                // SizedBox(height: 16),
+                                // TextFormField(
+                                //   onChanged: (val) async {
+                                //     if (val.length == 6) {
+                                //       SiteAreaModel siteDetails =
+                                //           await eventController
+                                //               .getSiteAreaDetails(_siteID.text);
+                                //       siteDetails.siteAreaDetailsModel != null
+                                //           ? setState(() {
+                                //               _pin.text = siteDetails
+                                //                   .siteAreaDetailsModel
+                                //                   .sitePincode;
+                                //               _state.text = siteDetails
+                                //                   .siteAreaDetailsModel
+                                //                   .siteState;
+                                //               _taluk.text = siteDetails
+                                //                   .siteAreaDetailsModel
+                                //                   .siteTaluk;
+                                //               _district.text = siteDetails
+                                //                   .siteAreaDetailsModel
+                                //                   .siteDistrict;
+                                //             })
+                                //           : Get.rawSnackbar(
+                                //               title: "Message",
+                                //               message: siteDetails.respMsg);
+                                //     }
+                                //   },
+                                //   controller: _siteID,
+                                //   maxLength: 6,
+                                //   validator: (value) => value.isEmpty
+                                //       ? 'Please enter the Site ID'
+                                //       : null,
+                                //   style: FormFieldStyle.formFieldTextStyle,
+                                //   keyboardType: TextInputType.phone,
+                                //   decoration:
+                                //       FormFieldStyle.buildInputDecoration(
+                                //           labelText: "Site ID*"),
+                                // ),
+
                                 SizedBox(height: 16),
                                 DropdownButtonFormField(
                                   validator: (value) => value == null
@@ -701,7 +742,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                           requestDepartmentId,
                                           "requestId": requestId,
                                           "resolutionStatusId": 1,
-                                          "siteId": int.parse(_siteID.text),
+                                          "siteId": siteId,
                                           "severity": _severity.text,
                                           "srComplaintPhotosEntity": imageDetails,
                                           "srComplaintSubtypeMappingEntity":
@@ -981,7 +1022,6 @@ class _RequestCreationState extends State<RequestCreation> {
       });
     }
   }
-
 
   var customer;
   requestorDetails() {

@@ -20,6 +20,7 @@ class GiftController extends GetxController {
 
   final _giftStockModel = GetGiftStockModel().obs;
   final _giftStockModelList= List<GiftStockModelList>().obs;
+  final _giftStockModelList1= List<GiftStockModelList>().obs;
   final _giftTypeModelList= List<GiftTypeModelList>().obs;
   final _selectedDropdown =0.obs;
   final _itemFromBottomSheetTapped = false.obs;
@@ -70,6 +71,12 @@ class GiftController extends GetxController {
 
   set giftStockModelList(value) {
     _giftStockModelList.value = value;
+  }
+
+  get giftStockModelList1 => _giftStockModelList1;
+
+  set giftStockModelList1(value) {
+    _giftStockModelList1.value = value;
   }
 
   get giftStockModel => _giftStockModel.value;
@@ -127,7 +134,6 @@ class GiftController extends GetxController {
       if(logsModel.respCode=="DM1006"){
         Get.dialog(CustomDialogs().showMessage(logsModel.respMsg));
         dataForViewLog=<GiftStockList>[];
-
       }
       else{
         Get.dialog(CustomDialogs().showMessage(logsModel.respMsg));
@@ -136,6 +142,15 @@ class GiftController extends GetxController {
 
     });
     return logsModel;
+  }
+  Future getViewLogsData1(List<GiftStockModelList> giftStockModelList) async {
+    List<GiftStockModelList> _giftStockModelList = [];
+
+    for(int i=1 ; i<giftStockModelList.length;i++){
+      _giftStockModelList.add(giftStockModelList[i]);
+    }
+    giftStockModelList1 = _giftStockModelList ;
+    return _giftStockModelList;
   }
 
 }

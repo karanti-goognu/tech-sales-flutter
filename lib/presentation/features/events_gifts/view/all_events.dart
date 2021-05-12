@@ -329,7 +329,7 @@ class _AllEventsState extends State<AllEvents> {
             onTap: () {
               // Get.to(() => DetailPending(list[index].eventId, borderColor),
               //     binding: EGBinding());
-              Get.to(() => EndEvent(list[index].eventId));
+              Get.to(() => EndEvent(list[index].eventId,0));
             },
             child: eventCard(index, list, borderColor),
           );
