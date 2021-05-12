@@ -217,6 +217,12 @@ Widget eventsDetailWidget(){
          }));
 }
 
+  @override
+  void dispose() {
+    _eventController.dataForSearchResult.eventListModels=[];
+    super.dispose();
+  }
+
   onSearchTextChanged(String text) async {
     AllEventController _eventController = Get.find();
     if (controller.text.length >= 2) {
