@@ -111,7 +111,7 @@ class AllEventController extends GetxController {
 //  }
 
 
-  get isFilterApplied => _isFilterApplied;
+  get isFilterApplied => _isFilterApplied.value;
 
   set isFilterApplied(value) {
     _isFilterApplied.value = value;
@@ -193,6 +193,7 @@ class AllEventController extends GetxController {
   }
 
   Future<AllEventsModel> getAllEventData() async {
+    print("Get All Event Data called");
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
