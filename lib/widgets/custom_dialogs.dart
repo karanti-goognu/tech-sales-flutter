@@ -140,6 +140,42 @@ class CustomDialogs {
     );
   }
 
+  Widget showDialogSubmitEvent(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            //Get.back();
+            Get.toNamed(Routes.EVENTS_GIFTS);
+          },
+        ),
+      ],
+    );
+  }
   Widget appExitDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -262,6 +298,8 @@ class CustomDialogs {
     );
   }
 
+
+
   Widget showSaveChangesDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -317,6 +355,8 @@ class CustomDialogs {
       ],
     );
   }
+
+
 
   Widget showStartEventDialog(String heading, String message) {
     return AlertDialog(

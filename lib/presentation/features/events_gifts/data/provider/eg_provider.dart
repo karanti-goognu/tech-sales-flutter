@@ -115,6 +115,7 @@ class MyApiClientEvent {
               accessKey, userSecretKey,version));
       allEventsModel = AllEventsModel.fromJson(json.decode(response.body));
       print(response.body);
+      print("Above is the data for filter");
     }
     catch (e) {
       print("Exception at EG Repo $e");
@@ -208,6 +209,8 @@ class MyApiClientEvent {
         body: json.encode(startEventModel),
       );
       startEventResponse = StartEventResponse.fromJson(json.decode(response.body));
+      print('RESP : ${response.body}');
+      print('UURL ${UrlConstants.startEvent}');
     }
     catch(e){
       print("Exception at EG Repo $e");

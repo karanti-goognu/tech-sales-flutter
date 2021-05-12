@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
@@ -79,41 +80,44 @@ class EventsFilterController extends GetxController {
   }
 
 
-  getAccessKeyAndStartEvent(StartEventModel startEventModel) {
+  Future<StartEventResponse>getAccessKeyAndStartEvent(StartEventModel startEventModel) async{
+    StartEventResponse _startEventResponse;
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
+    String accessKey = await repository.getAccessKey();
     Future.delayed(
         Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    repository.getAccessKey().then((data) async {
-      String accessKey = await repository.getAccessKey();
+    //repository.getAccessKey().then((data) async {
+    //  String accessKey = await repository.getAccessKey();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        repository.startEvent(accessKey, userSecurityKey, startEventModel)
-            .then((value) {
-          //Get.back();
-          if (value.respCode == 'DM2043') {
-            Get.back();
-            Get.defaultDialog(
-                title: "Message",
-                middleText: value.respMsg.toString(),
-                confirm: MaterialButton(
-                  onPressed: () => Get.back(),
-                  child: Text('OK'),
-                ),
-                barrierDismissible: false);
-          } else {
-            Get.back();
-            Get.dialog(
-                CustomDialogs().messageDialogMWP(value.respMsg.toString()),
-                barrierDismissible: false);
-          }
-        });
-      });
+        StartEventResponse _startEventResponse = await repository.startEvent(accessKey, userSecurityKey, startEventModel);
+        //     .then((value) {
+        //   //Get.back();
+        //   if (value.respCode == 'DM2043') {
+        //     Get.back();
+        //     Get.defaultDialog(
+        //         title: "Message",
+        //         middleText: value.respMsg.toString(),
+        //         confirm: MaterialButton(
+        //           onPressed: () => Get.back(),
+        //           child: Text('OK'),
+        //         ),
+        //         barrierDismissible: false);
+        //   } else {
+        //     Get.back();
+        //     Get.dialog(
+        //         CustomDialogs().messageDialogMWP(value.respMsg.toString()),
+        //         barrierDismissible: false);
+        //   }
+        // });
+     // });
     });
+      Get.back();
+      return _startEventResponse;
   }
 
 

@@ -129,29 +129,35 @@ class _AllEventsState extends State<AllEvents> {
     return Scaffold(
       body: ListView(
         children: [
-          getStatusList(),
-          (option == StringConstants.pendingApproval)
-              ? getListForPending(ColorConstants.eventPending, pending)
-              : (option == StringConstants.approved)
+          Obx(()=>!allEventController.isFilterApplied  ?getStatusList():Container()),
+          Obx(
+              ()=>
+              allEventController.isFilterApplied  ?getFilteredList():
+              (option == StringConstants.pendingApproval)
+                  ? getListForPending(ColorConstants.eventPending, pending)
+                  : (option == StringConstants.approved)
                   ? getList(ColorConstants.eventApproved, approved)
                   : (option == StringConstants.rejected)
-                      ? getListForPending(
-                          ColorConstants.eventRejected, rejected)
-                      : (option == StringConstants.completed)
-                          ? getListForCompleted(ColorConstants.eventCompleted, completed)
-                          : (option == StringConstants.cancelled)
-                              ? getList(
-                                  ColorConstants.eventCancelled, cancelled)
-                              // : (option == 6)
-                              //      ? getList(HexColor('#B00020'), eventRejected)
-                              : (option == StringConstants.notSubmitted)
-                                  ? getListForPending(
-                                      HexColor('#808080'), notSubmitted)
-                                  : getList(HexColor('#F9A61A'), pending)
+                  ? getListForPending(
+                  ColorConstants.eventRejected, rejected)
+                  : (option == StringConstants.completed)
+                  ? getListForCompleted(ColorConstants.eventCompleted, completed)
+                  : (option == StringConstants.cancelled)
+                  ? getList(
+                  ColorConstants.eventCancelled, cancelled)
+              // : (option == 6)
+              //      ? getList(HexColor('#B00020'), eventRejected)
+                  : (option == StringConstants.notSubmitted)
+                  ? getListForPending(
+                  HexColor('#808080'), notSubmitted)
+                  : getList(HexColor('#F9A61A'), pending)
+          )
         ],
       ),
     );
   }
+
+
 
   Widget getStatusList() {
     return (allEventsModel != null &&
@@ -232,6 +238,47 @@ class _AllEventsState extends State<AllEvents> {
               child: Text("No data!!"),
             ),
           );
+  }
+  HexColor _color(int id){
+    switch(id){
+      case 1:return HexColor('#F9A61A');
+      case 2:return HexColor('#39B54A');
+      case 3:return HexColor('#B00020');
+      case 4:return HexColor('#39B54A');
+      case 5:return HexColor('#B00020');
+      case 6:return HexColor('#000000');
+      case 7:return HexColor('#808080');
+    }
+  }
+
+  Widget getFilteredList(){
+    return (allEventsModel != null &&
+        allEventsModel.eventListModels != null &&
+        allEventsModel.eventListModels.length > 0 &&
+        allEventController.egAllEventData.eventListModels != null)
+        ?
+    ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        controller: _scrollController,
+        itemCount: allEventController.egAllEventData.eventListModels.length,
+        padding: const EdgeInsets.only(left: 6.0, right: 6, bottom: 10),
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Get.to(() => DetailPending(allEventController.egAllEventData.eventListModels[index].eventId, _color(allEventController.egAllEventData.eventListModels[index].eventStatusId)),
+                  binding: EGBinding());
+            },
+            child: eventCard(index, allEventController.egAllEventData.eventListModels ,  _color(allEventController.egAllEventData.eventListModels[index].eventStatusId),
+            ),
+          );
+        })
+        : Container(
+      height: 100,
+      child: Center(
+        child: Text("No Events!!"),
+      ),
+    );
   }
 
   Widget getListForPending(Color borderColor, List<EventListModels> list) {
