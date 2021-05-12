@@ -80,7 +80,7 @@ AllEventController _eventController=Get.find();
                                   ),
                                   child: Center(
                                       child:
-                                     // Obx(() =>
+                                      Obx(() =>
                                           Text(
                                           "${_eventController.selectedFilterCount}",
                                           style: TextStyle(
@@ -88,7 +88,7 @@ AllEventController _eventController=Get.find();
                                               //fontFamily: 'Raleway',
                                               fontSize: 12,
                                               fontWeight: FontWeight.normal))
-                                      //)
+                                      )
                                   )),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
