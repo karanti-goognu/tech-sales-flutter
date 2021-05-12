@@ -73,11 +73,12 @@ class _DetailPendingState extends State<DetailPending> {
   double locatinLat;
   double locationLong;
   bool isVisible = false;
-  //bool saveBtnVisible = false;
+  bool saveBtnVisible = false;
   @override
   void initState() {
     getEmpId();
     getDetailEventsData();
+
     //getDetailEventsData1();
     super.initState();
   }
@@ -88,6 +89,15 @@ class _DetailPendingState extends State<DetailPending> {
       isVisible = true;
     } else {
       isVisible = false;
+    }
+  }
+
+  setSaveBtnVisibility() {
+    if (detailEventModel.mwpEventModel.eventStatusText ==
+        StringConstants.notSubmitted) {
+      saveBtnVisible = true;
+    } else {
+      saveBtnVisible = false;
     }
   }
 
@@ -153,6 +163,7 @@ class _DetailPendingState extends State<DetailPending> {
       });
       print('DDDD: $data');
       setVisibility();
+      setSaveBtnVisibility();
       setText();
     });
   }
@@ -429,8 +440,27 @@ class _DetailPendingState extends State<DetailPending> {
     );
 
     final btns = Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        Visibility(
+          visible: saveBtnVisible,
+          child:
+        FlatButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+              side: BorderSide(color: Colors.black26)),
+          color: Colors.transparent,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
+            child: Text(
+              "SAVE AS DRAFT",
+              style: TextStyles.btnBlue,
+            ),
+          ),
+          onPressed: () {
+            btnPresssed(7);
+          },
+        ),),
         RaisedButton(
           color: ColorConstants.btnBlue,
           child: Text(
@@ -942,6 +972,7 @@ class _DetailPendingState extends State<DetailPending> {
                 {
                   saveEventController
                       .getAccessKeyAndSaveRequest(_saveEventFormModel)
+
                 }
               else
                 {

@@ -208,6 +208,8 @@ class MyApiClientEvent {
         body: json.encode(startEventModel),
       );
       startEventResponse = StartEventResponse.fromJson(json.decode(response.body));
+      print('RESP : ${response.body}');
+      print('UURL ${UrlConstants.startEvent}');
     }
     catch(e){
       print("Exception at EG Repo $e");

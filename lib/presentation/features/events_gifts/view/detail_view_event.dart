@@ -269,9 +269,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                     bottom: ScreenUtil().setSp(20),
                   ),
                   child: Text(
-                    '${detailEventModel.mwpEventModel.eventDate}',
-                    //Text('${detailEventModel.mwpEventModel.eventDate}  | ${detailEventModel.mwpEventModel.eventTime}',
-                    //'24-Mar-2021 | 12 PM',
+                    '${detailEventModel.mwpEventModel.eventDate} | ${detailEventModel.mwpEventModel.eventTime}',
                     style: TextStyles.mulliBoldBlue,
                   ),
                 ),
@@ -543,7 +541,18 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           if (result == true)
             {
               _eventsFilterController
-                  .getAccessKeyAndStartEvent(_startEventModel)
+                  .getAccessKeyAndStartEvent(_startEventModel).then((data) {
+                    if(data != null){
+                      if(data.respCode == "DM2043"){
+                        Get.dialog(
+                            redirectToEventDetailPg(data.respMsg, data.eventID)
+                        );
+                      }
+                    }
+
+              }
+
+              )
             }
           else
             {
@@ -554,5 +563,42 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   snackPosition: SnackPosition.BOTTOM),
             }
         });
+  }
+
+  Widget redirectToEventDetailPg(String message, int eventId ) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'View Event',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            Get.to(() => DetailViewEvent(eventId),
+                binding: EGBinding());
+          },
+        ),
+      ],
+    );
   }
 }

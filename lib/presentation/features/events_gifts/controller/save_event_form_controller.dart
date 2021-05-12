@@ -41,18 +41,12 @@ class SaveEventController extends GetxController {
       _prefs.then((SharedPreferences prefs) async {
         String accessKey = await repository.getAccessKey();
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        saveEventRequest(accessKey, userSecurityKey, saveEventFormModel)
+        await repository.saveEventForm(accessKey, userSecurityKey, saveEventFormModel)
             .then((value) {
-          //Get.back();
-          if (value.respMsg == 'DM1002') {
-            Get.back();
-            Get.defaultDialog(
-                title: "Message",
-                middleText: value.respMsg.toString(),
-                confirm: MaterialButton(
-                  onPressed: () => Get.back(),
-                  child: Text('OK'),
-                ),
+          Get.back();
+           if (value.respCode == 'DM1002') {
+            Get.dialog(
+                CustomDialogs().showDialogSubmitEvent(value.respMsg.toString()),
                 barrierDismissible: false);
           } else {
             Get.back();
