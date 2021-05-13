@@ -84,7 +84,8 @@ class _DetailPendingState extends State<DetailPending> {
 
   setVisibility() {
     if (detailEventModel.mwpEventModel.eventStatusText ==
-        StringConstants.rejected) {
+        StringConstants.rejected || detailEventModel.mwpEventModel.eventStatusText ==
+        StringConstants.notSubmitted) {
       isVisible = true;
     } else {
       isVisible = false;
