@@ -84,8 +84,8 @@ class _EndEventState extends State<EndEvent> {
             ],
           ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: BackFloatingButton(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
       body: (mwpEndEventModel != null)?ListView(
