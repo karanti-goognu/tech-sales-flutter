@@ -63,12 +63,12 @@ class _EndEventState extends State<EndEvent> {
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
         FlatButton(
           onPressed: () {
-            if(widget.fromPage==1){
+            if(widget.fromPage==0){
+              Get.back();
+              Get.back();
+              Get.back();
               Get.back();
             }else {
-              Get.back();
-              Get.back();
-              Get.back();
               Get.back();
             }
           },
@@ -154,12 +154,12 @@ class _EndEventState extends State<EndEvent> {
                 width: 250,
                 child:Center(child:  FlatButton(
                   onPressed: () {
-                    if(widget.fromPage==1){
+                    if(widget.fromPage==0){
+                      Get.back();
+                      Get.back();
+                      Get.back();
                       Get.back();
                     }else {
-                      Get.back();
-                      Get.back();
-                      Get.back();
                       Get.back();
                     }
                   },
