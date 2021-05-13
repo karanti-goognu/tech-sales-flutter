@@ -154,6 +154,7 @@ class DetailEventController extends GetxController {
     repository.getAccessKey().then((data) async {
 
       await _prefs.then((SharedPreferences prefs) async {
+        empID = prefs.getString(StringConstants.employeeId);
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         repository.deleteEvent(accessKey, userSecurityKey, empID, eventId)
             .then((value) {

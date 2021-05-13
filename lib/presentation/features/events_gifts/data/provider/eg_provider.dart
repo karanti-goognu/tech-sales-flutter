@@ -191,7 +191,7 @@ class MyApiClientEvent {
       deleteEventModel = DeleteEventModel.fromJson(json.decode(response.body));
       print('RESP : ${response.body}');
       print(
-          'UURL ${UrlConstants.getDetailEvent + empID + "&eventId=$eventId"}');
+          'UURL ${UrlConstants.deleteEvent + empID + "&eventId=$eventId"}');
     }
     catch (e) {
       print("Exception at EG Repo $e");

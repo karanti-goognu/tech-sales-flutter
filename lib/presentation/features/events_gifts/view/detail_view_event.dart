@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
@@ -58,7 +59,6 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   }
 
   getDetailEventsData() async {
-
     await detailEventController.getDetailEventData(widget.eventId).then((data) {
       setState(() {
         detailEventModel = data;
@@ -93,7 +93,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
     final btnAddLead = FlatButton(
       onPressed: () {
-        Get.to(()=>AddNewLeadForm(eventId:widget.eventId,), binding: AddLeadsBinding());
+        Get.to(
+            () => AddNewLeadForm(
+                  eventId: widget.eventId,
+                ),
+            binding: AddLeadsBinding());
       },
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28.0),
@@ -171,7 +175,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             FlatButton(
               onPressed: () {
                 Get.dialog(
-                    CustomDialogs().showCommentDialog("Please Enter Comment",context,detailEventModel.mwpEventModel.eventId),
+                    CustomDialogs().showCommentDialog("Please Enter Comment",
+                        context, detailEventModel.mwpEventModel.eventId),
                     barrierDismissible: false);
                 // Get.toNamed(Routes.END_EVENT);
               },
@@ -185,8 +190,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               ),
             ),
             FlatButton(
-                onPressed: () async{
-                  Map results = await Navigator.of(context).push(new MaterialPageRoute(
+                onPressed: () async {
+                  Map results =
+                      await Navigator.of(context).push(new MaterialPageRoute(
                     builder: (BuildContext context) {
                       return UpdateDlrInf(
                         detailEventModel.mwpEventModel.eventId,
@@ -229,15 +235,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
               (detailEventModel != null &&
                       detailEventModel.mwpEventModel != null)
-                  ?
-              (detailEventModel.mwpEventModel.eventStatusText ==
-                                  StringConstants.approved &&
-                              isEventStarted == "Y")
-                          ? btnAddLead
-                          : Visibility(
-                  visible: isVisible,
-                  child: btnStartEvent
-              )
+                  ? (detailEventModel.mwpEventModel.eventStatusText ==
+                              StringConstants.approved &&
+                          isEventStarted == "Y")
+                      ? btnAddLead
+                      : Visibility(visible: isVisible, child: btnStartEvent)
                   : Container(child: Text(''))
             ],
           ),
@@ -312,14 +314,14 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                         style: TextStyles.formfieldLabelTextDark,
                       ),
                       Container(
-
                         margin: EdgeInsets.only(top: 10),
-                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 8, right: 8),
+                        padding: EdgeInsets.only(
+                            top: 10, bottom: 10, left: 8, right: 8),
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Colors.grey, // Set border color
-                                width: 1.0),   // Set border width
+                          border: Border.all(
+                              color: Colors.grey, // Set border color
+                              width: 1.0), // Set border width
                         ),
                         child: Text(
                           detailEventModel.mwpEventModel.eventComment,
@@ -329,7 +331,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                     ],
                   ),
                 ),
-                SizedBox(height: ScreenUtil().setSp(40),)
+                SizedBox(
+                  height: ScreenUtil().setSp(40),
+                )
               ],
             )
           : Container(
@@ -509,13 +513,15 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   }
 
   _getCurrentLocation() async {
-
     if (!(await Geolocator().isLocationServiceEnabled())) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
       geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best,locationPermissionLevel: GeolocationPermission.locationWhenInUse,)
+          .getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+        locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+      )
           .then((Position position) {
         setState(() {
           _currentPosition = position;
@@ -529,6 +535,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   }
 
   startEvent() async {
+    StartEventResponse _startEventResponse;
     StartEventModel _startEventModel = StartEventModel.fromJson({
       'eventID': widget.eventId,
       'eventStartUserLat': _currentPosition.latitude,
@@ -541,18 +548,28 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           if (result == true)
             {
               _eventsFilterController
-                  .getAccessKeyAndStartEvent(_startEventModel).then((data) {
-                    if(data != null){
-                      if(data.respCode == "DM2043"){
+                  .getAccessKeyAndStartEvent(_startEventModel)
+                  .then((data) {
+                      _startEventResponse = data;
+                      print('DD: $_startEventResponse');
+                      if(_startEventResponse.respCode == "DM2044") {
                         Get.dialog(
-                            redirectToEventDetailPg(data.respMsg, data.eventID)
-                        );
+                            redirectToEventDetailPg(data.respMsg, data.eventID),
+                          barrierDismissible: false);
+
+                      }else if(_startEventResponse.respCode == "DM2043") {
+                        Get.dialog(
+                            CustomDialogs()
+                                .errorDialogForEvent(data.respMsg.toString()),
+                            barrierDismissible: false);
                       }
-                    }
-
-              }
-
-              )
+                      else{
+                          Get.dialog(
+                              CustomDialogs()
+                                  .messageDialogMWP(data.respMsg.toString()),
+                              barrierDismissible: false);
+                        }
+              })
             }
           else
             {
@@ -565,7 +582,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
         });
   }
 
-  Widget redirectToEventDetailPg(String message, int eventId ) {
+  Widget redirectToEventDetailPg(String message, int eventId) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -594,11 +611,14 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           ),
           onPressed: () {
             Get.back();
-            Get.to(() => DetailViewEvent(eventId),
-                binding: EGBinding());
+            Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
           },
         ),
       ],
     );
   }
 }
+
+
+//{"respCode":"DM2043","respMsg":"The event MINI CONTRACTOR MEET is scheduled for 18-05-2021 , you can not start now.","eventID":86,"eventTypeId":4,"eventTypeText":"MINI CONTRACTOR MEET","eventDate":1621276200000}
+//{"respCode":"DM2043","respMsg":"You have not ended previous event/meet MINI CONTRACTOR MEET & 18-05-2021","eventID":86,"eventTypeId":4,"eventTypeText":"MINI CONTRACTOR MEET","eventDate":1621276200000}
