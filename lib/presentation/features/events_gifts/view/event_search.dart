@@ -56,6 +56,7 @@ class _EventSearchState extends State<EventSearch> {
                         onPressed: () {
                           controller.clear();
                           onSearchTextChanged('');
+                          _eventController.dataForSearchResult.eventListModels=null;
                         },
                       ),
                     ),
@@ -219,7 +220,7 @@ Widget eventsDetailWidget(){
 
   @override
   void dispose() {
-    _eventController.dataForSearchResult.eventListModels=[];
+    _eventController.dataForSearchResult.eventListModels=null;
     super.dispose();
   }
 

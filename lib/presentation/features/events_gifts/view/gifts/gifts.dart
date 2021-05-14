@@ -181,7 +181,7 @@ class _GiftsViewState extends State<GiftsView> {
                             index == 1 && _giftController.selectedDropdown!=0
                                 ? Container(
                                     padding: EdgeInsets.zero,
-                                    width: 60,
+                                    width: 70,
                                     height: 40,
                                     child:
                                     TextFormField(
@@ -189,7 +189,7 @@ class _GiftsViewState extends State<GiftsView> {
                                       textAlign: TextAlign.right,
                                       keyboardType: TextInputType.number,
                                       style: TextStyle(
-                                        fontSize: 13,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.blue
                                       ),
@@ -202,6 +202,7 @@ class _GiftsViewState extends State<GiftsView> {
                                 : Text(
                                     _giftCategoriesList[index].count.toString(),
                                     style: TextStyle(
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   )
