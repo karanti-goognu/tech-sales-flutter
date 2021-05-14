@@ -5,7 +5,6 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 
 class EndEvent extends StatefulWidget {
@@ -92,7 +91,7 @@ class _EndEventState extends State<EndEvent> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                  left: ScreenUtil().setSp(10),
+                left: ScreenUtil().setSp(10),
                   right: ScreenUtil().setSp(10),
                   top: ScreenUtil().setSp(20),
                   bottom: ScreenUtil().setSp(20),
@@ -406,39 +405,6 @@ class _EndEventState extends State<EndEvent> {
     );
   }
 
-  final btnCloseEvent = FlatButton(
-    onPressed: () {
 
-        Get.back();
-        Get.back();
-        Get.back();
-        Get.back();
-    },
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28.0),
-        side: BorderSide(color: Colors.white)),
-    color: Colors.transparent,
-    child: Text(
-      'CLOSE',
-      style: TextStyle(color: Colors.white, fontSize: 15),
-    ),
-  );
-  final btnCloseEventBottom =
-  FlatButton(
-    onPressed: () {
-      Get.back();
-      Get.back();
-      Get.back();
-      Get.back();
-    },
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28.0),
-        side: BorderSide(color: ColorConstants.appBarColor)),
-    color: Colors.transparent,
-    child: Text(
-      'CLOSE',
-      style: TextStyle(color: ColorConstants.appBarColor, fontSize: 15),
-    ),
-  );
 
 }

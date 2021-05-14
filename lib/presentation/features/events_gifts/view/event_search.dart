@@ -83,8 +83,11 @@ Widget eventsDetailWidget(){
          itemBuilder: (context, index){
            return GestureDetector(
              onTap: (){
-              if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.approved
-               && _eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.cancelled){
+              if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.approved){
+                Get.to(() => DetailViewEvent(_eventController.dataForSearchResult.eventListModels[index].eventId),
+                    binding: EGBinding());
+              }
+               else if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.cancelled){
                 Get.to(() => DetailViewEvent(_eventController.dataForSearchResult.eventListModels[index].eventId),
                     binding: EGBinding());
 

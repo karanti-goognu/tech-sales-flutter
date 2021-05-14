@@ -53,7 +53,7 @@ class CustomDialogs {
           ),
           onPressed: () {
 
-            Get.back();
+            // Get.back();
             Get.back();
 
           },

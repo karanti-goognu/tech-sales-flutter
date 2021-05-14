@@ -300,15 +300,36 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                                 // () =>
                                 Flexible(
                                   flex: 3,
-                                  child: Text(
-                                    "Dealer(s) : ${list[index].dealerName}",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "Muli",
-                                        fontWeight: FontWeight.normal),
-                                    // ),
-                                  ),
+                                  child:
+
+                                  // Text(
+                                  //   "Dealer(s) : ${list[index].dealerName}",
+                                  //   overflow: TextOverflow.ellipsis,
+                                  //   style: TextStyle(
+                                  //       fontSize: 15,
+                                  //       fontFamily: "Muli",
+                                  //       fontWeight: FontWeight.normal),
+                                  //   // ),
+                                  // ),
+
+                                   ( list[index].dealerName != null)?
+                                Text(
+                                  "Dealer(s) : ${list[index].dealerName}",
+                                  //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: "Muli",
+                                      fontWeight: FontWeight.normal),
+                                ):Text(
+                                  "Dealer(s) : -",
+                                  //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: "Muli",
+                                      fontWeight: FontWeight.normal),
+                                )
                                 ),
                               ]),
                           Padding(

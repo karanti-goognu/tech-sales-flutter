@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/gifts_controlller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gift_type.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/view_logs.dart';
@@ -187,7 +188,8 @@ class _GiftsViewState extends State<GiftsView> {
                                     TextFormField(
                                       controller: _giftInHandQtyNew,
                                       textAlign: TextAlign.right,
-                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      keyboardType: TextInputType.phone,
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -280,7 +282,9 @@ class _GiftsViewState extends State<GiftsView> {
               ?
           _settingModalBottomSheet(context,setstates)
           // Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController,setstates:setstates),)
-              : _giftController.addGiftStock(
+              : _giftInHandQtyNew.text.isEmpty?
+          Get.dialog(CustomDialogs().showMessage("Please enter value"))
+          :_giftController.addGiftStock(
               comment: _comments.text,
               giftTypeId: _giftController.selectedDropdown.toString(),
               giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text

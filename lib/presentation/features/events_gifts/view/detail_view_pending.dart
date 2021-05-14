@@ -43,7 +43,7 @@ class _DetailPendingState extends State<DetailPending> {
   DeleteEventModel _deleteEventModel;
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
-  // List<DealersModels> selectedDealersModels = [];
+  //List<EventDealersModelList> selectedDealersModels = [];
   List<DealersModels> selectedDealersModels = [];
   List<bool> checkedValues;
 
@@ -147,7 +147,7 @@ class _DetailPendingState extends State<DetailPending> {
               dealerName:
               detailEventModel.eventDealersModelList[i].dealerName));
 
-          selectedDealer.add(selectedDealersModels[i].dealerName);
+          selectedDealer.add(detailEventModel.eventDealersModelList[i].dealerName);
 
         }
       }
@@ -160,6 +160,7 @@ class _DetailPendingState extends State<DetailPending> {
     await detailEventController.getDetailEventData(widget.eventId).then((data) {
       setState(() {
         detailEventModel = data;
+        //selectedDealersModels = detailEventModel.eventDealersModelList;
       });
       print('DDDD: $data');
       setVisibility();
@@ -381,7 +382,7 @@ class _DetailPendingState extends State<DetailPending> {
                     .map((e) => Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Chip(
-                    deleteIcon: Icon(Icons.close),
+                   deleteIcon: Icon(Icons.close),
                     onDeleted: () {
                       setState(() {
                         selectedDealersModels.remove(e);
@@ -389,6 +390,7 @@ class _DetailPendingState extends State<DetailPending> {
                       });
                     },
                     label: Text(
+
                       e.dealerName,
                       style: TextStyle(fontSize: 10),
                     ),
@@ -474,20 +476,21 @@ class _DetailPendingState extends State<DetailPending> {
                 fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
-            if (detailEventModel.mwpEventModel.eventStatusText ==
-                StringConstants.pendingApproval) {
-              btnPresssed(1);
-            } else if (detailEventModel.mwpEventModel.eventStatusText ==
-                StringConstants.rejected) {
-              btnPresssed(1);
-            } else if (detailEventModel.mwpEventModel.eventStatusText ==
-                StringConstants.notSubmitted) {
-              btnPresssed(1);
-            } else if (detailEventModel.mwpEventModel.eventStatusText ==
-                StringConstants.approved) {
-              btnPresssed(1);
-            }
-          },
+            btnPresssed(1);
+          //   if (detailEventModel.mwpEventModel.eventStatusText ==
+          //       StringConstants.pendingApproval) {
+          //     btnPresssed(1);
+          //   } else if (detailEventModel.mwpEventModel.eventStatusText ==
+          //       StringConstants.rejected) {
+          //     btnPresssed(1);
+          //   } else if (detailEventModel.mwpEventModel.eventStatusText ==
+          //       StringConstants.notSubmitted) {
+          //     btnPresssed(1);
+          //   } else if (detailEventModel.mwpEventModel.eventStatusText ==
+          //       StringConstants.approved) {
+          //     btnPresssed(1);
+          //   }
+           },
         ),
       ],
     );
@@ -792,7 +795,11 @@ class _DetailPendingState extends State<DetailPending> {
                         if (newValue == false) {
                           selectedDealer.remove(dealers[index].dealerName);
                           selectedDealersModels.remove(dealers[index]);
+
                         }
+
+
+
                         print(
                             'SELECTED: ${json.encode(selectedDealersModels)}');
 
@@ -806,6 +813,8 @@ class _DetailPendingState extends State<DetailPending> {
 
                         checkedValues[index] = newValue;
                         print("checkedValues $checkedValues");
+                        print(
+                            'SELECTED: ${json.encode(selectedDealersModels)}');
 
                       });
                     },
