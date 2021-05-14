@@ -2949,8 +2949,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 _listInfluencerDetail.add(infl);
                               });
                             } else {
-                              print(
-                                  "Error : Please fill previous influencer first");
+                              print("Error : Please fill previous influencer first");
                               Get.dialog(CustomDialogs().errorDialog(
                                   "Please fill previous influencer first"));
                             }

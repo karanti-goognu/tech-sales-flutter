@@ -84,7 +84,8 @@ class _DetailPendingState extends State<DetailPending> {
 
   setVisibility() {
     if (detailEventModel.mwpEventModel.eventStatusText ==
-        StringConstants.rejected) {
+        StringConstants.rejected || detailEventModel.mwpEventModel.eventStatusText ==
+        StringConstants.notSubmitted) {
       isVisible = true;
     } else {
       isVisible = false;
@@ -478,13 +479,13 @@ class _DetailPendingState extends State<DetailPending> {
               btnPresssed(1);
             } else if (detailEventModel.mwpEventModel.eventStatusText ==
                 StringConstants.rejected) {
-              btnPresssed(3);
+              btnPresssed(1);
             } else if (detailEventModel.mwpEventModel.eventStatusText ==
                 StringConstants.notSubmitted) {
               btnPresssed(1);
             } else if (detailEventModel.mwpEventModel.eventStatusText ==
                 StringConstants.approved) {
-              btnPresssed(2);
+              btnPresssed(1);
             }
           },
         ),

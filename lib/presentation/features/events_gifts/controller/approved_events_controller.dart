@@ -83,18 +83,16 @@ class EventsFilterController extends GetxController {
   Future<StartEventResponse>getAccessKeyAndStartEvent(StartEventModel startEventModel) async{
     StartEventResponse _startEventResponse;
     String userSecurityKey = "";
-    String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKey();
     Future.delayed(
         Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    //repository.getAccessKey().then((data) async {
-    //  String accessKey = await repository.getAccessKey();
+
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        StartEventResponse _startEventResponse = await repository.startEvent(accessKey, userSecurityKey, startEventModel);
+         _startEventResponse = await repository.startEvent(accessKey, userSecurityKey, startEventModel);
         //     .then((value) {
         //   //Get.back();
         //   if (value.respCode == 'DM2043') {
