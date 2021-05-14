@@ -735,19 +735,22 @@ class _FormAddEventState extends State<FormAddEvent> {
     print('bbb');
     if (_addEventFormKey.currentState.validate()) {
       _addEventFormKey.currentState.save();
-      if (timeString == null) {
-        Get.snackbar("", "Select Time",
+
+        if (_date == null || _date == 'Select Date') {
+        Get.snackbar("", "Select Date",
             colorText: Colors.black,
             backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
-      } else if (_date == null || _date == 'Select Date') {
-        Get.snackbar("", "Select Date",
+      } else if (timeString == null) {
+        Get.snackbar("", "Select Time",
             colorText: Colors.black,
             backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else {
         String empId = await getEmpId();
 
+        timeString = ('$_date ${_time.hour}:${_time.minute}:00');
+        print(timeString);
         List dealersList = List();
         selectedDealersModels.forEach((e) {
           setState(() {
