@@ -56,6 +56,7 @@ class _EventSearchState extends State<EventSearch> {
                         onPressed: () {
                           controller.clear();
                           onSearchTextChanged('');
+                          _eventController.dataForSearchResult.eventListModels=null;
                         },
                       ),
                     ),
@@ -77,8 +78,11 @@ Widget eventsDetailWidget(){
          itemBuilder: (context, index){
            return GestureDetector(
              onTap: (){
-              if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.approved
-               && _eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.cancelled){
+              if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.approved){
+                Get.to(() => DetailViewEvent(_eventController.dataForSearchResult.eventListModels[index].eventId),
+                    binding: EGBinding());
+              }
+               else if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.cancelled){
                 Get.to(() => DetailViewEvent(_eventController.dataForSearchResult.eventListModels[index].eventId),
                     binding: EGBinding());
 
@@ -219,7 +223,7 @@ Widget eventsDetailWidget(){
 
   @override
   void dispose() {
-    _eventController.dataForSearchResult.eventListModels=[];
+    _eventController.dataForSearchResult.eventListModels=null;
     super.dispose();
   }
 

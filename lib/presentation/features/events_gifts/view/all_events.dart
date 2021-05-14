@@ -89,38 +89,7 @@ class _AllEventsState extends State<AllEvents> {
     } else {}
   }
 
-  // getSortedData() {
-  //   if (allEventController != null && allEventController.egAllEventData != null) {
-  //     for (int i = 0; i < allEventController.egAllEventData.eventListModels.length; i++) {
-  //       //print("All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
-  //       if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.pendingApproval) {
-  //         pending.add(allEventController.egAllEventData.eventListModels[i]);
-  //         print('PENDING : $pending');
-  //
-  //       } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.approved) {
-  //         approved.add(allEventController.egAllEventData.eventListModels[i]);
-  //         print('APPROVED : $approved');
-  //       } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.rejected) {
-  //         rejected.add(allEventController.egAllEventData.eventListModels[i]);
-  //
-  //       } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.completed) {
-  //         completed.add(allEventController.egAllEventData.eventListModels[i]);
-  //
-  //       } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.cancelled) {
-  //         cancelled.add(allEventController.egAllEventData.eventListModels[i]);
-  //
-  //       } else if (allEventController.egAllEventData.eventListModels[i].eventStatusText == StringConstants.notSubmitted) {
-  //         notSubmitted.add(allEventController.egAllEventData.eventListModels[i]);
-  //
-  //       }
-  //
-  //     }
-  //     print("Pending : ${pending.map((e) => e.eventId).toList()}");
-  //     print("approved : ${approved.map((e) => e.eventId).toList()}");
-  //     print("rejected : ${rejected.map((e) => e.eventId).toList()}");
-  //     print("completed : ${completed.map((e) => e.eventId).toList()}");
-  //   } else {}
-  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -145,8 +114,6 @@ class _AllEventsState extends State<AllEvents> {
                   : (option == StringConstants.cancelled)
                   ? getList(
                   ColorConstants.eventCancelled, cancelled)
-              // : (option == 6)
-              //      ? getList(HexColor('#B00020'), eventRejected)
                   : (option == StringConstants.notSubmitted)
                   ? getListForPending(
                   HexColor('#808080'), notSubmitted)
@@ -163,9 +130,6 @@ class _AllEventsState extends State<AllEvents> {
     return (allEventsModel != null &&
             allEventsModel.eventStatusEntities != null &&
             allEventsModel.eventStatusEntities.length > 0)
-        // allEventController != null &&
-        // allEventController.egAllEventData.eventStatusEntities != null &&
-        // allEventController.egAllEventData.eventStatusEntities.length > 0)
         ? Container(
             padding: EdgeInsets.only(
               top: ScreenUtil().setSp(5),

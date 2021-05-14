@@ -89,7 +89,7 @@ class BottomNavigator extends StatelessWidget {
                   minWidth: 40,
                   onPressed: () {
                     // Get.back();
-                    searchType=='event'?Get.to(EventSearch()):
+                    searchType=='event'?Get.to(()=>EventSearch()):
                     Get.toNamed(Routes.SEARCH_SCREEN);
                   },
                   child: Column(
