@@ -88,6 +88,7 @@ Widget eventsDetailWidget(){
 
               }else if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.completed ){
                 Get.to(() => EndEvent(_eventController.dataForSearchResult.eventListModels[index].eventId,2));
+
               }else if(_eventController.dataForSearchResult.eventListModels[index].eventStatusText == StringConstants.pendingApproval){
                 Get.to(() => DetailPending(_eventController.dataForSearchResult.eventListModels[index].eventId, ColorConstants.eventPending),
                     binding: EGBinding());
