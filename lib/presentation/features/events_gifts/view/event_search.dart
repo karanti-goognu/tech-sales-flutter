@@ -7,6 +7,8 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_e
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 
 class EventSearch extends StatefulWidget {
@@ -34,6 +36,9 @@ class _EventSearchState extends State<EventSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: BackFloatingButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: BottomNavigatorWithoutDraftsAndSearch(),
         body: new SafeArea(
           child: Column(
             children: <Widget>[
