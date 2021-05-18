@@ -169,9 +169,9 @@ class _DetailPendingState extends State<DetailPending> {
     });
   }
 
-  getDetailEventsData1() async {
-    await detailEventController.getDealersList(widget.eventId);
-  }
+  // getDetailEventsData1() async {
+  //   await detailEventController.getDealersList(widget.eventId);
+  // }
 
   Future getEmpId() async {
     String empID = "";
@@ -390,7 +390,6 @@ class _DetailPendingState extends State<DetailPending> {
                       });
                     },
                     label: Text(
-
                       e.dealerName,
                       style: TextStyle(fontSize: 10),
                     ),
@@ -477,19 +476,6 @@ class _DetailPendingState extends State<DetailPending> {
           ),
           onPressed: () {
             btnPresssed(1);
-          //   if (detailEventModel.mwpEventModel.eventStatusText ==
-          //       StringConstants.pendingApproval) {
-          //     btnPresssed(1);
-          //   } else if (detailEventModel.mwpEventModel.eventStatusText ==
-          //       StringConstants.rejected) {
-          //     btnPresssed(1);
-          //   } else if (detailEventModel.mwpEventModel.eventStatusText ==
-          //       StringConstants.notSubmitted) {
-          //     btnPresssed(1);
-          //   } else if (detailEventModel.mwpEventModel.eventStatusText ==
-          //       StringConstants.approved) {
-          //     btnPresssed(1);
-          //   }
            },
         ),
       ],
@@ -565,8 +551,7 @@ class _DetailPendingState extends State<DetailPending> {
                             ),
                           ),
                           onPressed: () async {
-                            // await detailEventController.getAccessKey().then((value) async {
-                            //   print(value.accessKey);
+
                             await detailEventController
                                 .deleteEvent(widget.eventId)
                                 .then((data) {
@@ -575,7 +560,6 @@ class _DetailPendingState extends State<DetailPending> {
                               });
                               print("response : ");
                             });
-                            // });
                           },
                         ),
                       ],
@@ -717,6 +701,7 @@ class _DetailPendingState extends State<DetailPending> {
 
     checkedValues =
         List.generate(detailEventModel.dealersModels.length, (index) => false);
+    //checkedValues = List.generate(selectedDealersModels.length, (index) => true);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -800,8 +785,8 @@ class _DetailPendingState extends State<DetailPending> {
 
 
 
-                        print(
-                            'SELECTED: ${json.encode(selectedDealersModels)}');
+                        // print(
+                        //     'SELECTED: ${json.encode(selectedDealersModels)}');
 
                         // selectedDealer.contains(dealers[index].dealerName)
                         //     ? selectedDealer.remove(dealers[index].dealerName)
@@ -813,8 +798,8 @@ class _DetailPendingState extends State<DetailPending> {
 
                         checkedValues[index] = newValue;
                         print("checkedValues $checkedValues");
-                        print(
-                            'SELECTED: ${json.encode(selectedDealersModels)}');
+                        // print(
+                        //     'SELECTED: ${json.encode(selectedDealersModels)}');
 
                       });
                     },
@@ -859,7 +844,16 @@ class _DetailPendingState extends State<DetailPending> {
                     color: HexColor('#1C99D4'),
                     onPressed: () {
                       Get.back();
-
+                      for (int i = 0;
+                      i < selectedDealer.length;
+                      i++) {
+                        selectedDealersModels.add(DealersModels(
+                            dealerId: dealers[i].dealerId,
+                            dealerName:
+                            dealers[i].dealerName));
+                      }
+                      print(
+                          'SELECTED: ${json.encode(selectedDealersModels)}');
                     },
                     child: Text(
                       'OK',

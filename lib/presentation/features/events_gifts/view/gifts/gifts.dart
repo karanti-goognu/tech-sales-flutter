@@ -284,12 +284,7 @@ class _GiftsViewState extends State<GiftsView> {
           // Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController,setstates:setstates),)
               : _giftInHandQtyNew.text.isEmpty?
           Get.dialog(CustomDialogs().showMessage("Please enter value"))
-          :_giftController.addGiftStock(
-              comment: _comments.text,
-              giftTypeId: _giftController.selectedDropdown.toString(),
-              giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text
-
-          ),
+          :Get.dialog(showConfirmationDialog("Are you sure you want to submit this entry? ")),
           color: HexColor("#1C99D4"),
           child: Text(
             "Update Inventory",
@@ -317,6 +312,62 @@ class _GiftsViewState extends State<GiftsView> {
       _giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
 
     });
+  }
+
+  Widget showConfirmationDialog(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'Yes',
+            style: GoogleFonts.roboto(
+                fontSize: 17,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                // fontWeight: FontWeight.bold,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            _giftController.addGiftStock(
+                comment: _comments.text,
+                giftTypeId: _giftController.selectedDropdown.toString(),
+                giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text
+
+            );
+          }
+        ),
+        TextButton(
+          child: Text(
+            'NO',
+            style: GoogleFonts.roboto(
+                fontSize: 17,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                //  fontWeight: FontWeight.bold,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      ],
+    );
   }
 
 }

@@ -222,6 +222,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                         0.02,
                   ),
                   /*DropDown for dealer*/
+                 /*
                   DropdownButtonFormField(
                     items: widget.dealerEntityForDb
                         .map((e) => DropdownMenuItem(
@@ -304,7 +305,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                         labelText: "Sub-Dealer"),
                   ),
 
-
+*/
                   Container(
                     alignment: Alignment.centerRight,
                     child: TextButton(

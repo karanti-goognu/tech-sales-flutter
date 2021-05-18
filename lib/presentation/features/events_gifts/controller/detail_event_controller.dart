@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 //import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerListResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -36,17 +37,24 @@ class DetailEventController extends GetxController {
 
   final _deleteEventResponse = DeleteEventModel().obs;
 
+  final _dealerListResponse = DealerListResponse().obs;
+
   //final _eventDealersModelList = EventDealersModelList().obs;
 
   get egDetailEventDaa => _egDetailEventData.value;
 
   get deleteEventResponse => _deleteEventResponse.value;
 
+  get dealerListResponse => this._dealerListResponse.value;
+
  // get eventDealersModelList => _eventDealersModelList.value;
 
   set egDetailEventDaa(value) => _egDetailEventData.value = value;
 
   set deleteEventResponse(value) => _deleteEventResponse.value = value;
+
+  set dealerListResponse(value) => this._dealerListResponse.value = value;
+
 
   //set eventDealersModelList(value) => _eventDealersModelList.value = value;
 
@@ -108,44 +116,26 @@ class DetailEventController extends GetxController {
       repository
           .getdetailEvents(accessKey, userSecurityKey, empId, eventId)
           .then((data) {
-        // this.isLoading = false;
         if (data == null) {
           debugPrint('Dealer List Response is null');
         } else {
           debugPrint('Dealer List Response is not null');
-          this.egDetailEventDaa = data;
-         // this.eventDealersModelList = data.eventDealersModelList;
-
-          // this.isLoading = false;
-          if (this.egDetailEventDaa.dealersModels.length != 0) {
+          this.dealerListResponse = data;
+          if (this.dealerListResponse.dealerList.length != 0) {
             for (int i = 0;
-                i < this.egDetailEventDaa.dealersModels.length;
-                i++) {
+            i < this.dealerListResponse.dealerList.length;
+            i++) {
               this.dealerList.add(new DealerModel(
-                  egDetailEventDaa.dealersModels[i].dealerId,
-                  egDetailEventDaa.dealersModels[i].dealerName,
+                  dealerListResponse.dealerList[i].dealerId,
+                  dealerListResponse.dealerList[i].dealerName,
                   false));
-
-              // this.dealerList.add(new DealerModel(
-              //     egDetailEventDaa.eventDealersModelList[i].dealerId,
-              //     egDetailEventDaa.eventDealersModelList[i].dealerName,
-              //     true));
             }
           }
 
-          // if (this.egDetailEventDaa.eventDealersModelList.length != 0) {
-          //   for (int i = 0;
-          //   i < this.egDetailEventDaa.eventDealersModelList.length;
-          //   i++) {
-          //     this.dealerListSelected.add(new DealerModelSelected(
-          //         egDetailEventDaa.eventDealersModelList[i].dealerId,
-          //         egDetailEventDaa.eventDealersModelList[i].dealerName,));
-          //   }
-          // }
           Get.back();
-          if (egDetailEventDaa.respCode == "DM1002") {
+          if (dealerListResponse.respCode == "DM1002") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
-            print('${egDetailEventDaa.respMsg}');
+            print('${dealerListResponse.respMsg}');
             //SitesDetailWidget();
           } else {
             // Get.dialog(CustomDialogs().errorDialog(dealerListResponse.respMsg));
