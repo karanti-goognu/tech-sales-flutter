@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
@@ -494,7 +493,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                 // SizedBox(height: 16),
                                 TextFormField(
                                   controller: _requestorContact,
-                                  enableInteractiveSelection: false,
+                                  enableInteractiveSelection: true,
                                   style: FormFieldStyle.formFieldTextStyle,
                                   keyboardType: TextInputType.phone,
                                   inputFormatters: <TextInputFormatter>[
@@ -551,8 +550,8 @@ class _RequestCreationState extends State<RequestCreation> {
                                     ),
                                     onPressed: () async {
                                       if (_imageList.length < 5) {
-                                        // _showPicker(context);
-                                        _imgFromCamera();
+                                         _showPicker(context);
+                                        // _imgFromCamera();
                                       } else {
                                         Get.dialog(CustomDialogs().errorDialog(
                                             "You can add only upto 5 photos"));
@@ -980,6 +979,8 @@ class _RequestCreationState extends State<RequestCreation> {
     });
   }
 
+
+
   getBottomSheet() {
     Get.bottomSheet(
       requestSubTypeBottomSheetWidget(),
@@ -1072,5 +1073,48 @@ class _RequestCreationState extends State<RequestCreation> {
         ),
       ),
     );
+  }
+
+  _imgFromGallery() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      // print(image.path);
+      if (image != null) {
+        _imageList.add(image);
+      }
+      // _imageList.insert(0,image);
+    });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

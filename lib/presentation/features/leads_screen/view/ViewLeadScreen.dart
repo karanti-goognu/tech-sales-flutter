@@ -2463,7 +2463,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                     .then((data) {
                                                   InfluencerDetail inflDetail =
                                                       data;
-                                                  print(
+                                                  print("print-->"+
                                                       inflDetail.inflName.text);
 
                                                   // setState(() {
@@ -2653,7 +2653,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                       });
                                                     }
 
-                                                    // Get.back();
+                                                    Get.back();
                                                     return Get.dialog(
                                                         CustomDialogs().errorDialog(
                                                             "No influencer registered with this number"));
@@ -2661,7 +2661,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                   // });
                                                   Get.back();
                                                 });
-                                                Get.back();
+                                                // Get.back();
                                               });
 
                                               print("Dhawan :: ");

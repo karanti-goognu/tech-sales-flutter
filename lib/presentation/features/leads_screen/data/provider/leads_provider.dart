@@ -186,7 +186,8 @@ class MyApiClientLeads {
         headers:
             requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
       );
-//      print('Response body is  : ${json.decode(response.body)}');
+     print('Response'+UrlConstants.getInflData + "/$phoneNumber");
+     print('Response body is  : ${json.decode(response.body)}');
       // print('Response body is  : ${json.decode(response.body)}');
 
       if (response.statusCode == 200) {

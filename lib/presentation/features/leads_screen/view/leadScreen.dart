@@ -835,8 +835,19 @@ class _LeadScreenState extends State<LeadScreen> {
                                                   //       //fontWeight: FontWeight.normal
                                                   //       ),
                                                   // ),
-                                                  Obx(
-                                                    () => GestureDetector(
+                                                  Text(
+                                                      "${toBeginningOfSentenceCase(_leadsFilterController.leadsListResponse.leadsEntity[index].contactName)}",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 14,
+                                                          fontFamily: "Muli",
+                                                          fontWeight: FontWeight.bold,
+                                                          fontStyle: FontStyle.normal
+                                                        //fontWeight: FontWeight.normal
+                                                      )
+                                                  ),
+
+                                                     GestureDetector(
                                                       child: FittedBox(
                                                         child: Row(
                                                           children: [
@@ -846,14 +857,12 @@ class _LeadScreenState extends State<LeadScreen> {
                                                                   "#8DC63F"),
                                                             ),
                                                             Text(
-                                                              "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                              //" Call Contractor",
+                                                              // "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                                               " Call Contractor",
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .black,
-                                                                  fontSize: SizeConfig
-                                                                          .safeBlockHorizontal *
-                                                                      3.8,
+                                                                  fontSize:16,
                                                                   fontFamily:
                                                                       "Muli",
                                                                   fontWeight:
@@ -861,7 +870,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                                           .bold,
                                                                   fontStyle:
                                                                       FontStyle
-                                                                          .italic
+                                                                          .normal
                                                                   //fontWeight: FontWeight.normal
                                                                   ),
                                                             ),
@@ -878,7 +887,6 @@ class _LeadScreenState extends State<LeadScreen> {
                                                         launch('tel:$num');
                                                       },
                                                     ),
-                                                  ),
                                                 ],
                                               ),
                                             ),
