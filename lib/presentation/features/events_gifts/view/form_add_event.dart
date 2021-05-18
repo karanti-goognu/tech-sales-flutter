@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/widgets/event_dealers_list.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -68,6 +69,8 @@ class _FormAddEventState extends State<FormAddEvent> {
   double locationLong;
   int _value = 0;
 
+
+
   @override
   void initState() {
     //eventController.dealerList.clear();
@@ -86,16 +89,8 @@ class _FormAddEventState extends State<FormAddEvent> {
     return empID;
   }
 
+
   getDropdownData() async {
-    // await eventController.getAccessKey().then((value) async {
-    //   print(value);
-    //   await eventController.getEventType().then((data) {
-    //     setState(() {
-    //       addEventModel = data;
-    //     });
-    //     print('RESPONSE, ${data}');
-    //   });
-    // });
 
     await eventController.getEventType().then((data) {
       setState(() {
@@ -271,12 +266,6 @@ class _FormAddEventState extends State<FormAddEvent> {
     final dealer = GestureDetector(
       onTap: () => getBottomSheetForDealer(),
       child: FormField(
-        // validator: (value) {
-        //   if (value.isEmpty) {
-        //     return "Please add dealers";
-        //   }
-        //   return null;
-        // },
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
@@ -291,7 +280,8 @@ class _FormAddEventState extends State<FormAddEvent> {
                 ),
               ),
             ),
-            child: Container(
+            child:
+            Container(
               height: 30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -309,6 +299,8 @@ class _FormAddEventState extends State<FormAddEvent> {
                     .toList(),
               ),
             ),
+
+
           );
         },
       ),
@@ -765,7 +757,6 @@ class _FormAddEventState extends State<FormAddEvent> {
             });
           });
         });
-
 
 
         print('DEALERS: $dealersList');
