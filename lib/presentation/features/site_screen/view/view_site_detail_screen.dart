@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -2658,9 +2659,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   });
 
                 },
-
-
-
                 style: FormFieldStyle.formFieldTextStyle,
                 decoration:
                 FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
@@ -2668,6 +2666,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 value == null ? 'Please select Dealer' : null,
               ),
             ),
+            (_siteBrandFromLocalDB!=null &&_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")?
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -2678,7 +2677,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   fontWeight: FontWeight.normal,
                 ),
               ),
-            ),
+            ):Container(),
+
             SizedBox(height: 8),
 
             subDealerList.isEmpty
@@ -2866,7 +2866,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     ),
                   ),
                 ),
-                Text(_siteCurrentTotalBags.text),
+                // Text(_siteCurrentTotalBags.text),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
@@ -5671,8 +5671,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "isDealerConfirmedChangedBySo": sitesModal!=null? sitesModal.isDealerConfirmedChangedBySo:"",
         "subdealerId": visitDataSubDealer,
       };
-       print(updateDataRequest);
-      print('updateDataRequest---- $updateDataRequest');
+      //  print(updateDataRequest);
+      // log('updateDataRequest---- $updateDataRequest');
       _siteController.updateLeadData(
           updateDataRequest, _imageList, context, widget.siteId);
 

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 
 class EndEvent extends StatefulWidget {
@@ -50,9 +53,24 @@ class _EndEventState extends State<EndEvent> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: () async {
+          // You can do some work here.
+          // Returning true allows the pop to happen, returning false prevents it.
+          if(widget.fromPage==0){
+            Get.back();
+            Get.back();
+            Get.back();
+            Get.back();
+          }else {
+            Get.back();
+          }
+          return true;
+        },
+    child: Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: ColorConstants.appBarColor,
@@ -177,7 +195,7 @@ class _EndEventState extends State<EndEvent> {
           child: Text("No data!!"),
         ),
       ),
-    );
+    ));
   }
 
   Widget displayInfo(String title, var value) {

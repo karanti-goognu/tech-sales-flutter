@@ -65,7 +65,10 @@ class UpdateServiceRequestController extends GetxController {
             // confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
 
             confirm: MaterialButton(
-              onPressed: () => Get.toNamed(Routes.HOME_SCREEN),
+              onPressed: () {
+                  Get.back();
+                  Get.toNamed(Routes.HOME_SCREEN);
+                  },
               child: Text('OK'),
             ),
           );

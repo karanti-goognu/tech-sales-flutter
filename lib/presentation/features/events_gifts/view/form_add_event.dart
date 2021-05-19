@@ -640,8 +640,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                             ? selectedDealer.remove(dealers[index].dealerName)
                             : selectedDealer.add(dealers[index].dealerName);
 
-                        selectedDealersModels.contains(dealers[index])
-                            ? selectedDealersModels.remove(dealers[index])
+                        selectedDealersModels.contains(dealers[index]) ? selectedDealersModels.remove(dealers[index])
                             : selectedDealersModels.add(dealers[index]);
 
                         checkedValues[index] = newValue;

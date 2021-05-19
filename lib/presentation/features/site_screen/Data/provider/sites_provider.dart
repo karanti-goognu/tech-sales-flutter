@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:async/async.dart';
@@ -188,7 +189,7 @@ class MyApiClientSites {
         'POST', Uri.parse(UrlConstants.updateSiteData));
     print(UrlConstants.updateSiteData);
     request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey, version));
-    print(json.encode(updateDataRequest));
+    // log("LogData-->"+json.encode(updateDataRequest));
     updateDataRequest['siteVisitHistoryEntity'].forEach((e)=>print(e));
 
     for (var file in list) {
@@ -219,9 +220,9 @@ class MyApiClientSites {
       request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
-      print("Request headers :: " + request.headers.toString());
-      print("Request Body/Fields :: " + request.fields['siteInfluencerEntity'].toString());
-      print("Files:: " + request.files.toString());
+      // print("Request headers :: " + request.headers.toString());
+      // log("Request Body/Fields :: " + request.fields['siteInfluencerEntity'].toString());
+      // print("Files:: " + request.files.toString());
       try {
         request
             .send()

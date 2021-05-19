@@ -77,7 +77,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     eventController.dispose();
     eventController.offset = 0;
     print(eventController.offset);
-    print("dispose");
     super.dispose();
   }
 
@@ -239,7 +238,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   itemCount: serviceRequestComplaintListModel
                       .srComplaintListModal.length,
                   itemBuilder: (context, index) {
-                    // print(serviceRequestComplaintListModel.srComplaintListModal.length);
                     return GestureDetector(
                       onTap: () {
                         // _updateServiceRequestController.siteId = serviceRequestComplaintListModel
