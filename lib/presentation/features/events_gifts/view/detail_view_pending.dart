@@ -844,16 +844,6 @@ class _DetailPendingState extends State<DetailPending> {
                     color: HexColor('#1C99D4'),
                     onPressed: () {
                       Get.back();
-                      for (int i = 0;
-                      i < selectedDealer.length;
-                      i++) {
-                        selectedDealersModels.add(DealersModels(
-                            dealerId: dealers[i].dealerId,
-                            dealerName:
-                            dealers[i].dealerName));
-                      }
-                      print(
-                          'SELECTED: ${json.encode(selectedDealersModels)}');
                     },
                     child: Text(
                       'OK',
