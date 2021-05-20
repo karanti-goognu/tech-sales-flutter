@@ -192,6 +192,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         onDeleted: () {
                           setState(() {
                             selectedDealersModels.removeAt(index);
+                            selectedDealer.removeAt(index);
+                            checkedValues[index] = false;
                           });
                         },
                       );
@@ -326,7 +328,9 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     Get.bottomSheet(
       addDealerBottomSheetWidget(),
       isScrollControlled: true,
-    ).then((value) => setState(() {}));
+    ).then((value) => setState(() {
+
+    }));
   }
 
   addInfluencerBottomSheetWidget() {
@@ -647,8 +651,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       }
     }
     List<DealersModel> dealers = _dealerInfModel.dealersModel;
-    checkedValues =
-        List.generate(_dealerInfModel.dealersModel.length, (index) => false);
+    checkedValues = List.generate(_dealerInfModel.dealersModel.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight / 1.5,
@@ -713,18 +716,42 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                           Text('( ${dealers[index].dealerId} )'),
                         ],
                       ),
+                      selected: selectedDealer.contains(dealers[index].dealerName),
                       value: selectedDealer.contains(dealers[index].dealerName),
+
+                      // onChanged: (newValue) {
+                      //   setState(() {
+                      //     selectedDealer.contains(dealers[index].dealerName)
+                      //         ? selectedDealer.remove(dealers[index].dealerName)
+                      //         : selectedDealer.add(dealers[index].dealerName);
+                      //
+                      //     selectedDealersModels.contains(dealers[index])
+                      //         ? selectedDealersModels.remove(dealers[index])
+                      //         : selectedDealersModels.add(dealers[index]);
+                      //
+                      //     checkedValues[index] = newValue;
+                      //   });
+                      // },
                       onChanged: (newValue) {
                         setState(() {
-                          selectedDealer.contains(dealers[index].dealerName)
-                              ? selectedDealer.remove(dealers[index].dealerName)
-                              : selectedDealer.add(dealers[index].dealerName);
+                          print('NEWVALUE : $newValue');
+                          if (newValue == true) {
+                            selectedDealer.add(dealers[index].dealerName);
+                            selectedDealersModels.add(dealers[index]);
+                          }
+                          if (newValue == false) {
 
-                          selectedDealersModels.contains(dealers[index])
-                              ? selectedDealersModels.remove(dealers[index])
-                              : selectedDealersModels.add(dealers[index]);
+                            // selectedDealer.remove(dealers[index].dealerName);
+                            // selectedDealersModels.remove(dealers[index]);
+                            selectedDealersModels.removeWhere((item) => item.dealerId == dealers[index].dealerId);
+                            selectedDealer.removeWhere((item) => item == dealers[index].dealerName);
 
+                          }
                           checkedValues[index] = newValue;
+                          print("checkedValues $checkedValues");
+                          // print(
+                          //     'SELECTED: ${json.encode(selectedDealersModels)}');
+
                         });
                       },
                       controlAffinity: ListTileControlAffinity.leading,

@@ -273,7 +273,8 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
         _detailEventController.dealerListSelected.removeWhere((item) =>
         item.dealerId == _detailEventController.dealerList[index].dealerId);
       }
-    });
+    }
+    );
   }
 
   void itemChange1(bool val, String dealerName,int index1) {
