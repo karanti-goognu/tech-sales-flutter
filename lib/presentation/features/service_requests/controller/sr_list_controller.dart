@@ -84,6 +84,7 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
           print('For the second time');
           print("adding");
           print(srDataToBeAdded.srComplaintListModal.length);
+          srListData.srComplaintListModal.clear();
           srListData.srComplaintListModal
               .addAll(srDataToBeAdded.srComplaintListModal);
           Get.rawSnackbar(
