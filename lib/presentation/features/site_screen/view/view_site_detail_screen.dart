@@ -2524,7 +2524,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            (_siteBrandFromLocalDB!=null &&_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")?SizedBox(height: 16):Container(),
             // GestureDetector(
             //   onTap: (){
             //     if(!isAllowSelectDealer)
@@ -2595,6 +2595,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             //         value == null ? 'Please select Dealer' : null,
             //   ),
             // ),
+            (_siteBrandFromLocalDB!=null &&_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")?
             GestureDetector(
               onTap: (){
                 if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
@@ -2665,7 +2666,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 validator: (value) =>
                 value == null ? 'Please select Dealer' : null,
               ),
-            ),
+            ):Container(),
             (_siteBrandFromLocalDB!=null &&_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")?
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -2683,7 +2684,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
             subDealerList.isEmpty
                 ? Container()
-                : DropdownButtonFormField(
+                :(_siteBrandFromLocalDB!=null &&_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")? DropdownButtonFormField(
                     items: subDealerList.isNotEmpty
                         ? subDealerList
                             .map((e) => DropdownMenuItem(
@@ -2717,7 +2718,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     style: FormFieldStyle.formFieldTextStyle,
                     decoration: FormFieldStyle.buildInputDecoration(
                         labelText: "Sub-Dealer"),
-                  ),
+                  ):Container(),
             SizedBox(height: 16),
             TextFormField(
               controller: _brandPriceVisit,
