@@ -44,18 +44,17 @@ class _SearchScreenState extends State<SearchScreen> {
                 elevation: 8,
                 child: new ListTile(
                   leading: new Icon(Icons.search),
-                  title: (tempStr.length < 3)?textKB():numKB(),
-                  // new TextField(
-                  //   controller: controller,
-                  //   decoration: new InputDecoration(
-                  //       hintText: 'Search', border: InputBorder.none),
-                  //   onChanged: onSearchTextChanged,
-                  // ),
+                  title: new TextField(
+                    controller: controller,
+                    decoration: new InputDecoration(
+                        hintText: 'Search', border: InputBorder.none),
+                    onChanged: onSearchTextChanged,
+                  ),
                   trailing: new IconButton(
                     icon: new Icon(Icons.cancel),
                     onPressed: () {
-                      controller.clear();
-                      onSearchTextChanged('');
+                        controller.clear();
+                        onSearchTextChanged('');
                     },
                   ),
                 ),
@@ -67,43 +66,45 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     ));
   }
- String tempStr = "";
-  Widget textKB(){
-    return TextField(
-      controller: controller,
-      keyboardType: TextInputType.text,
-      decoration: new InputDecoration(
-          hintText: 'Search', border: InputBorder.none),
-      onChanged: (value){
-          if(value.length >= 3 && _isNumeric(value)){
-            setState(() {
-              controller.text = value;
-              tempStr = value;
-            });
-          }else{
-            onSearchTextChanged(value);
-          }
-      },
-    );
-  }
-
-  Widget numKB(){
-    return TextField(
-      controller: controller,
-      keyboardType: TextInputType.numberWithOptions(signed: true),
-      decoration: new InputDecoration(
-          hintText: 'Search', border: InputBorder.none),
-      onChanged: onSearchTextChanged,
-    );
-  }
-
-  bool _isNumeric(String result) {
-    if (result == null) {
-      return false;
-    }
-    return double.tryParse(result) != null;
-
-  }
+ // String tempStr = "";
+ //  Widget textKB(){
+ //    return TextField(
+ //      autofocus: true,
+ //      controller: controller,
+ //      keyboardType: TextInputType.text,
+ //      decoration: new InputDecoration(
+ //          hintText: 'Search', border: InputBorder.none),
+ //      onChanged: (value){
+ //          if(value == null || value.length >= 3 && _isNumeric(value)){
+ //            setState(() {
+ //              controller.text = value;
+ //              tempStr = value;
+ //            });
+ //          }else{
+ //            onSearchTextChanged(value);
+ //          }
+ //      },
+ //    );
+ //  }
+ //
+ //  Widget numKB(){
+ //    return TextField(
+ //      controller: controller,
+ //      autofocus: true,
+ //      keyboardType: TextInputType.numberWithOptions(signed: true),
+ //      decoration: new InputDecoration(
+ //          hintText: 'Search', border: InputBorder.none),
+ //      onChanged: onSearchTextChanged
+ //    );
+ //  }
+ //
+ //  bool _isNumeric(String result) {
+ //    if (result == null) {
+ //      return false;
+ //    }
+ //    return double.tryParse(result) != null;
+ //
+ //  }
 
   Widget leadsDetailWidget() {
     return Obx(() => (_leadsFilterController == null)
