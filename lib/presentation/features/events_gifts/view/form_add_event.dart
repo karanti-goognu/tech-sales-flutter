@@ -189,10 +189,15 @@ class _FormAddEventState extends State<FormAddEvent> {
 
     final dalmiaInfluencer = TextFormField(
       onChanged: (data) {
-        setState(() {
-          calculateTotal(
-              _dalmiaInflController.text, _nonDalmiaInflController.text);
-        });
+        if(data.length > 0) {
+          setState(() {
+            _totalParticipantsController.text = _dalmiaInflController.text;
+            calculateTotal(
+                _dalmiaInflController.text, _nonDalmiaInflController.text);
+          });
+        }else{
+          _totalParticipantsController.text = _nonDalmiaInflController.text;
+        }
       },
       controller: _dalmiaInflController,
       style: TextStyles.formfieldLabelText,
@@ -203,17 +208,17 @@ class _FormAddEventState extends State<FormAddEvent> {
 
     final nondalmia = TextFormField(
       controller: _nonDalmiaInflController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return "Non Dalmia can't be empty";
-      //   }
-      //   return null;
-      // },
       onChanged: (data) {
-        setState(() {
-          calculateTotal(
-              _dalmiaInflController.text, _nonDalmiaInflController.text);
-        });
+        if(data.length > 0) {
+
+          setState(() {
+            _totalParticipantsController.text = _nonDalmiaInflController.text;
+            calculateTotal(
+                _dalmiaInflController.text, _nonDalmiaInflController.text);
+          });
+        }else{
+          _totalParticipantsController.text = _dalmiaInflController.text;
+        }
       },
 
       style: TextStyles.formfieldLabelText,

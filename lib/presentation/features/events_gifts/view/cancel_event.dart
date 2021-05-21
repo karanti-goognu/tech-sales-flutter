@@ -83,7 +83,7 @@ class _CancelEventtState extends State<CancelEvent> {
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
-          labelText: "No Dalmia Dealer in Vicinity"),
+          labelText: "Select Reason for Cancellation"),
       validator: (value) =>
           value == null ? 'Please select cancel reason' : null,
     );

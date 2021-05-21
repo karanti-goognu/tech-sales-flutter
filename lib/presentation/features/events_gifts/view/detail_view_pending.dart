@@ -255,10 +255,16 @@ class _DetailPendingState extends State<DetailPending> {
 
     final dalmiaInfluencer = TextFormField(
       onChanged: (data) {
+      if(data.length > 0) {
         setState(() {
+          _totalParticipantsController.text = _dalmiaInflController.text;
           calculateTotal(
               _dalmiaInflController.text, _nonDalmiaInflController.text);
         });
+      }else{
+        _totalParticipantsController.text = _nonDalmiaInflController.text;
+      }
+
       },
       controller: _dalmiaInflController,
       style: TextStyles.formfieldLabelText,
@@ -276,10 +282,16 @@ class _DetailPendingState extends State<DetailPending> {
       //   return null;
       // },
       onChanged: (data) {
-        setState(() {
-          calculateTotal(
-              _dalmiaInflController.text, _nonDalmiaInflController.text);
-        });
+        if(data.length > 0) {
+
+          setState(() {
+            _totalParticipantsController.text = _nonDalmiaInflController.text;
+            calculateTotal(
+                _dalmiaInflController.text, _nonDalmiaInflController.text);
+          });
+        }else{
+          _totalParticipantsController.text = _dalmiaInflController.text;
+        }
       },
 
       style: TextStyles.formfieldLabelText,
