@@ -30,12 +30,12 @@
 	<string>To capture profile photo please grant camera access</string>
 	<key>NSContactsUsageDescription</key>
 	<string>App needs access to Contacts for user mobile number</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Please allow to access GPS location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>App needs access to capture location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Please allow to access GPS location</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Please allow to access GPS location</string>
 	<key>NSMotionUsageDescription</key>
 	<string>App needs access to capture location</string>
 	<key>NSPhotoLibraryUsageDescription</key>
