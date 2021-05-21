@@ -254,7 +254,7 @@ class MyApiClientEvent {
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(endEventDetailModel)
       );
-      print("event-->"+json.decode(response.body).toString());
+      print("event1-->"+json.decode(response.body).toString());
       endEventModel = EventResponse.fromJson(json.decode(response.body));
     }catch(e){
       print("Exception at EG Repo $e");

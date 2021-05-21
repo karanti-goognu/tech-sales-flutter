@@ -378,7 +378,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   // },
                   validator: (value) {
                     if (value.isEmpty) {
-                      return "Contact Name can't be empty";
+                      return "Contact No. can't be empty";
                     }
                     if (value.length != 10) {
                       return "Enter valid Contact number";
