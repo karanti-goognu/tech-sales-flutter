@@ -383,15 +383,15 @@ class _DetailPendingState extends State<DetailPending> {
                     .map((e) => Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Chip(
-                   deleteIcon: Icon(Icons.close),
-                    onDeleted: () {
-                      setState(() {
-                        int index = selectedDealersModels.indexOf(e);
-                        selectedDealersModels.remove(e);
-                        selectedDealer.remove(e);
-                        checkedValues[index] = false;
-                      });
-                    },
+                   // deleteIcon: Icon(Icons.close),
+                   //  onDeleted: () {
+                   //    setState(() {
+                   //      int index = selectedDealersModels.indexOf(e);
+                   //      selectedDealersModels.remove(e);
+                   //      selectedDealer.remove(e);
+                   //      checkedValues[index] = false;
+                   //    });
+                   //  },
                     label: Text(
                       e.dealerName,
                       style: TextStyle(fontSize: 10),

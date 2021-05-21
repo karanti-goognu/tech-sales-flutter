@@ -189,13 +189,13 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         (int index) {
                       return Chip(
                         label: Text(selectedDealersModels[index].dealerName),
-                        onDeleted: () {
-                          setState(() {
-                            selectedDealersModels.removeAt(index);
-                            selectedDealer.removeAt(index);
-                            checkedValues[index] = false;
-                          });
-                        },
+                        // onDeleted: () {
+                        //   setState(() {
+                        //     selectedDealersModels.removeAt(index);
+                        //     selectedDealer.removeAt(index);
+                        //     checkedValues[index] = false;
+                        //   });
+                        // },
                       );
                     }),
               ),
@@ -644,12 +644,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
-    if (_dealerInfModel.eventDealersModelList != null &&
-        _dealerInfModel.eventDealersModelList.length != 0) {
-      for (int i = 0; i < _dealerInfModel.eventDealersModelList.length; i++) {
-        selectedDealer.add(_dealerInfModel.eventDealersModelList[i].dealerName);
-      }
-    }
+    // if (_dealerInfModel.eventDealersModelList != null &&
+    //     _dealerInfModel.eventDealersModelList.length != 0) {
+    //   for (int i = 0; i < _dealerInfModel.eventDealersModelList.length; i++) {
+    //     selectedDealer.add(_dealerInfModel.eventDealersModelList[i].dealerName);
+    //   }
+    // }
     List<DealersModel> dealers = _dealerInfModel.dealersModel;
     checkedValues = List.generate(_dealerInfModel.dealersModel.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
@@ -745,7 +745,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                             // selectedDealersModels.remove(dealers[index]);
                             selectedDealersModels.removeWhere((item) => item.dealerId == dealers[index].dealerId);
                             selectedDealer.removeWhere((item) => item == dealers[index].dealerName);
-
                           }
                           checkedValues[index] = newValue;
                           print("checkedValues $checkedValues");
