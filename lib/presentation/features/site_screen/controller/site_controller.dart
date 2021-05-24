@@ -334,4 +334,18 @@ class SiteController extends GetxController {
 
 
 
+  Future siteSearch(String searchText) async{
+    String userSecurityKey = "";
+    String empID = "";
+    String accessKey = await repository.getAccessKeyNew();
+    Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+    sitesListResponse = await repository.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
+  }
+
+
+
 }

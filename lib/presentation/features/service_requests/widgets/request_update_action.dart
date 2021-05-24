@@ -105,7 +105,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               ),
             ),
             onPressed: () {
-              Get.dialog(Center(child: CircularProgressIndicator(),));
+             // Get.dialog(Center(child: CircularProgressIndicator(value: 0.7,),));
               _getCurrentLocation();
             },
           ),
@@ -496,7 +496,9 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
     return empID;
   }
   _getCurrentLocation() async {
+    Get.dialog(Center(child: CircularProgressIndicator(value: 0.7,),),barrierDismissible: false);
     if (!(await Geolocator().isLocationServiceEnabled())) {
+
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
@@ -524,13 +526,14 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
       Placemark place = p[0];
 
       setState(() {
-        Get.back();
+        //Get.back();
         _location.text =
         "${place.subAdministrativeArea}, ${place.locality}, ${place.postalCode}";
 
         print(
             "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
+      Get.back();
     } catch (e) {
       print(e);
     }

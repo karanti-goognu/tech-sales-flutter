@@ -36,6 +36,23 @@ class MyApiClientLeads {
 
   MyApiClientLeads({@required this.httpClient});
 
+  Future getAccessKeyNew() async {
+    try {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
+      var response = await httpClient.get(UrlConstants.getAccessKey,
+          headers: requestHeaders(version));
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
+        return accessKeyModel.accessKey;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception at EG repo ${_.toString()}');
+    }
+  }
+
   getAccessKey() async {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -455,4 +472,30 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
       }
     });
   }
+
+
+
+
+
+  //////
+
+  Future<LeadsListModel> getSearchDataNew(String accessKey, String userSecurityKey, String empID, String searchText) async {
+    try {
+     // https://mobiledevcloud.dalmiabharat.com:443/tech_sales_server/leads/lead-search?searchText=501574&referenceID=EMP0009889
+      String url = "${UrlConstants.getSearchData}searchText=$searchText&referenceID=$empID";
+      print('URL:$url');
+      var response = await httpClient.get(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
+        return leadsListModel;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception at Lead repo ${_.toString()}');
+    }
+  }
+
 }

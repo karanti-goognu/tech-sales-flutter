@@ -220,34 +220,12 @@ class AllEventController extends GetxController {
       if (this.eventStatus != StringConstants.empty) {
         eventStatus = "&eventStatus=${this.eventStatusValue}";
       }
-      // var url;
-      // if(isFilterApplied == true){
-      //      url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
-      // }else{
-      //     url = "${UrlConstants.getAllEvents}$empID";
-      // }
 
       var url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
       print(url);
 
       egAllEventData = await repository.getAllEvents(accessKey, userSecurityKey, url);
-      //     .then((data) {
-      //   if (data == null) {
-      //     debugPrint('Events Data Response is null');
-      //   } else {
-      //     if(this.egAllEventData.eventListModels == null|| this.egAllEventData.eventListModels.isEmpty){
-      //       this.egAllEventData = data;
-      //       //this.eventListModels = data.eventListModels;
-      //     }else{
-      //       this.egAllEventData.eventListModels = data.eventListModels;
-      //     }
-      //
-      //     if (egAllEventData.respCode == "DM1002") {
-      //     } else {
-      //       Get.dialog(CustomDialogs().errorDialog(egAllEventData.respMsg));
-      //     }
-      //   }
-      // });
+
     });
     Get.back();
     return egAllEventData;

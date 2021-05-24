@@ -47,6 +47,23 @@ class MyApiClientSites {
     }
   }
 
+  Future getAccessKeyNew() async {
+    try {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version= packageInfo.version;
+      var response = await httpClient.get(UrlConstants.getAccessKey,
+          headers: requestHeaders(version));
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
+        return accessKeyModel.accessKey;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception at EG repo ${_.toString()}');
+    }
+  }
+
   getSecretKey(String empId, String mobile) async {
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
@@ -105,6 +122,7 @@ class MyApiClientSites {
   getSitesData(String accessKey, String securityKey, String url) async {
     try {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
+
       final response = await get(Uri.parse(url),
           headers:
           requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey, version));
@@ -254,4 +272,28 @@ class MyApiClientSites {
       }
     });
   }
+
+
+
+
+  Future<SitesListModel> getSearchDataNew(String accessKey, String userSecurityKey, String empID, String searchText) async {
+    try {
+
+      String url =
+          "${UrlConstants.getSiteSearchData}searchText=${searchText}&referenceID=$empID";
+      print(url);
+      var response = await httpClient.get(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+      print('Response body is : ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        SitesListModel sitesListModel = SitesListModel.fromJson(data);
+        return sitesListModel;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception at EG repo ${_.toString()}');
+    }
+  }
+
 }
