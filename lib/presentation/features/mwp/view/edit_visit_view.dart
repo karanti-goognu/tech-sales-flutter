@@ -597,6 +597,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
             // otherwise.
             if (_formKey.currentState.validate()) {
               //afterRequestLayout(empId, mobileNumber);
+              _formKey.currentState.save();
               _addEventController.visitActionType = "START";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT);
             }
@@ -624,6 +625,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
             // Validate returns true if the form is valid, or false
             // otherwise.
             if (_formKey.currentState.validate()) {
+              _formKey.currentState.save();
               _addEventController.visitActionType = "END";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT);
             }
