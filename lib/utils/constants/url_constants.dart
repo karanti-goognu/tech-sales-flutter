@@ -9,7 +9,7 @@ abstract class UrlConstants {
  // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
  // static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
  // static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
- //Base Url
+ // //Base Url
  // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
 
 

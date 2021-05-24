@@ -1,6 +1,9 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -15,16 +18,19 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  FocusNode inputFieldNode;
   TextEditingController controller = new TextEditingController();
   LeadsFilterController _leadsFilterController = Get.find();
   SplashController _splashController = Get.find();
 
 
 
-  @override
+
+
+    @override
   void initState() {
     super.initState();
-    // getUserDetails();
+      // getUserDetails();
   }
 
   @override
@@ -431,5 +437,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _leadsFilterController.srSearch(text);
     }
   }
+
 }
+
 

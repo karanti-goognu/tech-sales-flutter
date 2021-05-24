@@ -963,7 +963,7 @@ class _DetailPendingState extends State<DetailPending> {
             mwpeventFormRequest: _mwpeventFormRequest,
             eventDealersModelList: _save.eventDealersModelList);
 
-        print('PARAMS: $_saveEventFormModel');
+        print('PARAMS: ${json.encode(_saveEventFormModel)}');
 
         internetChecking().then((result) => {
           if (result == true)

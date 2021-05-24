@@ -22,6 +22,7 @@ class TopRowForMTD extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Dash-- ${(int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString()))}");
 //    print((int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).toInt());
     return Expanded(
         child: _currentMothDetailsVolume == false
@@ -39,7 +40,7 @@ class TopRowForMTD extends StatelessWidget {
                       child: Text.rich(
                         TextSpan(
                             text:
-                            "${((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString())).isNaN)
+                            "${((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString())).isNaN || ((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString())).isInfinite))
                                 ? 0 :
                             ((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString()))*100).round()}%\n",
                             style: TextStyle(

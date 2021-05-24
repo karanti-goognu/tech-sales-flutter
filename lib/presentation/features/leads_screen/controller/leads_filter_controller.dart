@@ -365,7 +365,7 @@ class LeadsFilterController extends GetxController {
     });
   }
 
-  searchLeads(String accessKey) {
+  Future<LeadsListModel>searchLeads(String accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -397,6 +397,7 @@ class LeadsFilterController extends GetxController {
         }
       });
     });
+    return leadsListResponse;
   }
 
   showNoInternetSnack() {
