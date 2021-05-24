@@ -374,7 +374,7 @@ class AddEventController extends GetxController {
     });
   }
 
-  viewVisitData(String accessKey) async {
+  Future<VisitResponseModel>viewVisitData(String accessKey) async {
     this.isLoadingVisitView = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -416,12 +416,14 @@ class AddEventController extends GetxController {
             this.visitType =
                 this.visitResponseModel.mwpVisitModel.visitType.toString();
           }
-          this.visitSubType =
-              this.visitResponseModel.mwpVisitModel.visitSubType.toString();
+          this.visitSubType = this.visitResponseModel.mwpVisitModel.visitSubType.toString();
           this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
         }
       });
     });
+
+    return visitResponseModel;
+
   }
 
 

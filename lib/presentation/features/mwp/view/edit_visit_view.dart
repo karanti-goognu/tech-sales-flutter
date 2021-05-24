@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -28,13 +29,33 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   String selectedDateString;
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
+  TextEditingController _remarks = new TextEditingController();
+
+  VisitResponseModel visitResponseModel;
 
   String siteIdText = "Site Id";
+
+  // getDetailEventsData() async {
+  //   _appController.getAccessKey(RequestIds.VIEW_VISIT);
+  //   await _addEventController.viewVisitData(this._appController.accessKeyResponse.accessKey).then((value) => {
+  //     setState(() {
+  //       visitResponseModel = value;
+  //       mwpVisitModel = value.mwpVisitModel;
+  //       visitResponseModel.mwpVisitModel != null?
+  //       visitResponseModel.mwpVisitModel.remark == 'null'
+  //           ? _remarks = new TextEditingController(text: '')
+  //           : _remarks = new TextEditingController(text:visitResponseModel.mwpVisitModel.remark):_remarks = new TextEditingController(text: '');
+  //     })
+  //   });
+  // }
+
 
   @override
   void initState() {
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
-
+    _addEventController.visitRemarks == 'null'
+        ? _remarks = new TextEditingController(text: '')
+        : _remarks = new TextEditingController(text:_addEventController.visitRemarks);
     super.initState();
   }
 
@@ -436,13 +457,18 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                           null)
                                   ? TextFormField(
                                   key: Key(_addEventController.visitRemarks),
+                                      // controller: _remarks,
                                       initialValue: _addEventController.visitRemarks == 'null'
                                           ? ''
                                           : _addEventController.visitRemarks,
-                                      onChanged: (_) {
-                                        _addEventController.visitRemarks =
-                                            _.toString();
-                                      },
+                                  onSaved: (val) {
+                                    print('saved'+val);
+                                       _addEventController.visitRemarks = val;
+                                  },
+                                      // onChanged: (_) {
+                                      //   _addEventController.visitRemarks =
+                                      //       _.toString();
+                                      // },
                                       style: TextStyle(
                                           fontSize: 18,
                                           color:
@@ -461,11 +487,16 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                               null)
                                       ? TextFormField(
                                           key: Key(_addEventController.visitRemarks),
+                                          // controller: _remarks,
                                           initialValue: _addEventController.visitRemarks,
-                                          onChanged: (_) {
-                                            _addEventController.visitRemarks =
-                                                _.toString();
-                                          },
+                                  onSaved: (val) {
+                                    print('saved'+val);
+                                    _addEventController.visitRemarks = val;
+                                  },
+                                          // onChanged: (_) {
+                                          //   _addEventController.visitRemarks =
+                                          //       _.toString();
+                                          // },
                                           style: TextStyle(fontSize: 18, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
                                           maxLines: 3,
                                           decoration: _inputDecoration("Remarks", false))
@@ -478,11 +509,12 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                             }
                                             return null;
                                           },
+                                          // controller: _remarks,
                                           initialValue: _addEventController.visitRemarks,
-                                          onChanged: (_) {
-                                            _addEventController.visitRemarks =
-                                                _.toString();
-                                          },
+                                          onSaved: (val) {
+                                            print('saved'+val);
+                                            _addEventController.visitRemarks = val;
+                                            },
                                           style: TextStyle(fontSize: 18, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
                                           keyboardType: TextInputType.text,
                                           maxLines: 3,
@@ -544,6 +576,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
             // otherwise.
             if (_formKey.currentState.validate()) {
               //afterRequestLayout(empId, mobileNumber);
+              _formKey.currentState.save();
               _addEventController.visitActionType = "UPDATE";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT);
             }
