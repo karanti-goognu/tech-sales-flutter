@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
 import 'package:meta/meta.dart';
@@ -9,6 +10,10 @@ class MyRepositoryLeads {
   final MyApiClientLeads apiClient;
 
   MyRepositoryLeads({@required this.apiClient}) : assert(apiClient != null);
+
+  Future getAccessKeyNew() {
+    return apiClient.getAccessKeyNew();
+  }
 
   getFilterData(String accessKey) {
     return apiClient.getFilterData(accessKey);
@@ -20,6 +25,11 @@ class MyRepositoryLeads {
 
   getSearchData(String accessKey, String securityKey, String url) {
     return apiClient.getSearchData(accessKey, securityKey, url);
+  }
+
+  Future<LeadsListModel>getSearchDataNew(String accessKey, String userSecurityKey,
+      String empID, String searchText) {
+    return apiClient.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
   }
 
   getAccessKey() {
@@ -54,4 +64,6 @@ class MyRepositoryLeads {
     return apiClient.updateLeadsData(accessKey, userSecurityKey,
         updateRequestModel, imageList, context, leadId);
   }
+
+
 }

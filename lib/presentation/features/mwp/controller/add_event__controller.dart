@@ -374,7 +374,7 @@ class AddEventController extends GetxController {
     });
   }
 
-  viewVisitData(String accessKey) async {
+    Future<VisitResponseModel>viewVisitData(String accessKey) async {
     this.isLoadingVisitView = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -422,6 +422,7 @@ class AddEventController extends GetxController {
         }
       });
     });
+    return visitResponseModel;
   }
 
 

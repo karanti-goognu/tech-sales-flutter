@@ -1039,7 +1039,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                     ),
                                                     GestureDetector(
                                                       child: Text(
-                                                        "Call Contractor",
+                                                        "Call Contact",
                                                         style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 14,

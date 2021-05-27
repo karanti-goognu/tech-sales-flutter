@@ -105,7 +105,13 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               ),
             ),
             onPressed: () {
-              Get.dialog(Center(child: CircularProgressIndicator(),));
+              showDialog(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext context) {
+                    return new WillPopScope(
+                        onWillPop: () {},
+                        child:Center(child: CircularProgressIndicator(),));});
               _getCurrentLocation();
             },
           ),
@@ -524,13 +530,14 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
       Placemark place = p[0];
 
       setState(() {
-        Get.back();
+        //Get.back();
         _location.text =
         "${place.subAdministrativeArea}, ${place.locality}, ${place.postalCode}";
 
         print(
             "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
+      Get.back();
     } catch (e) {
       print(e);
     }

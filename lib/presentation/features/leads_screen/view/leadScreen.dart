@@ -858,7 +858,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                             ),
                                                             Text(
                                                               // "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                               " Call Contractor",
+                                                               " Call Contact",
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .black,

@@ -144,6 +144,8 @@ class LeadsFilterController extends GetxController {
 
   set leadsListResponse(value) => this._leadsListResponse.value = value;
 
+  String accessKeyNew;
+
   getSecretKey(int requestId) {
     Future.delayed(
         Duration.zero,
@@ -411,4 +413,24 @@ class LeadsFilterController extends GetxController {
   openOtpVerificationPage(mobileNumber) {
     Get.toNamed(Routes.VERIFY_OTP);
   }
+
+
+  //////
+
+  Future srSearch(String searchText) async {
+    String userSecurityKey = "";
+    String empID = "";
+
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+    String accessKey = await repository.getAccessKeyNew();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+    leadsListResponse = await repository.getSearchDataNew(
+        accessKey, userSecurityKey, empID, searchText);
+    print(leadsListResponse.respCode);
+  }
+
 }
