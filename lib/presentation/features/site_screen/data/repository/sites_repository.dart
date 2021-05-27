@@ -35,8 +35,8 @@ class MyRepositorySites {
   Future getAccessKeyNew() {
     return apiClient.getAccessKeyNew();
   }
- // getSitedetailsData(String accessKey, String userSecurityKey, int siteId, String empID) {
-   // return apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId, empID);
+  // getSitedetailsData(String accessKey, String userSecurityKey, int siteId, String empID) {
+  // return apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId, empID);
   //}
 //r, String empIDeturn apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId, empID);
   // getSitedetailsData(String accessKey, String userSecurityKey, int siteId) {
@@ -51,6 +51,8 @@ class MyRepositorySites {
     return apiClient.updateSiteData(accessKey,userSecurityKey,updateDataRequest ,list,context,siteId);
 
   }
+
+
 
 //getSiteData(String accessKey, String userSecurityKey, int leadId) {}
 
