@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/dialog/ConformationDialog.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_visit_widget.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -24,6 +26,7 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -65,6 +68,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   double siteScore = 0.0;
   String visitDataDealer;
   String visitDataSubDealer="";
+
 
   ConstructionStageEntity _selectedConstructionType;
   ConstructionStageEntity _selectedConstructionTypeVisit;
@@ -141,6 +145,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   String _currentAddress;
   int _initialIndex = 0;
   String geoTagType;
+
+  String siteCreationDate, visitRemarks;
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
   SitesModal sitesModal;
   List<SiteFloorsEntity> siteFloorsEntity = new List();
@@ -174,6 +180,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<CounterListModel> counterListModel = new List();
   List<DealerForDb> dealerEntityForDb = new List();
   List<CounterListModel> subDealerList = new List();
+
+
+  ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
   TabController _tabController;
 
@@ -183,7 +192,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: 4, initialIndex: widget.tabIndex);
+    _tabController = TabController(vsync: this, length: 5, initialIndex: widget.tabIndex);
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
     getSiteData();
@@ -372,6 +381,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _so.text = sitesModal.siteSoname;
           geoTagType = sitesModal.siteGeotagType;
 
+          siteCreationDate = sitesModal.siteCreationDate;
+          visitRemarks = sitesModal.siteClosureReasonText;
           //   print(sitesModal.);
 
           //   print(sitesModal.siteGeotagLatitude);
@@ -458,6 +469,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             }
           }
 
+
+
+
           _siteBuiltupArea.text = sitesModal.siteBuiltArea;
           myFocusNode = FocusNode();
           myFocusNode.requestFocus();
@@ -475,6 +489,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   Widget build(BuildContext context) {
      //gv.selectedClass = widget.classroomId;
     SizeConfig().init(context);
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     return GestureDetector(
       onTap: (){
         FocusScope.of(context).requestFocus(new FocusNode());
@@ -1137,13 +1153,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       text: "Site Data",
                     ),
                     Tab(
-                      text: "Visit Data",
+                      text: "Site Progress",
                     ),
                     Tab(
                       text: "Influencer",
                     ),
                     Tab(
                       text: "Past Stage History",
+                    ),
+                    Tab(
+                      text: "Site Visit",
                     ),
                   ]),
             ),
@@ -1158,6 +1177,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 // InfluencerView(),
                 pastStageHistoryview(),
                 // PastStageHistoryView()
+                SiteVisitWidget(siteId:widget.siteId,
+                  siteDate: siteCreationDate,
+                  selectedOpportunitStatusEnity: _siteOpportunitStatusEnity, siteOpportunityStatusEntity: siteOpportunityStatusEntity, visitRemarks: visitRemarks,)
               ],
             ),
             floatingActionButton: BackFloatingButton(),
@@ -5243,6 +5265,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       ],
     ));
   }
+
+
+
+
 
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(

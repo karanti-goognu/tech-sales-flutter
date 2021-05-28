@@ -23,6 +23,7 @@ class ViewSiteDataResponse {
 
 
 
+
   ViewSiteDataResponse(
       {this.respCode,
       this.respMsg,
@@ -1036,3 +1037,5 @@ class CounterListModel {
     return data;
   }
 }
+
+
