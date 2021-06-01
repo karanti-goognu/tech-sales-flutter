@@ -50,7 +50,8 @@ class AddEventController extends GetxController {
   final _meetAction = "S".obs;
   final _visitActionType = "UPDATE".obs;
   final _retryOtpActive = false.obs;
-  final _visitSubType = 'RETENTION SITE'.obs;
+  // final _visitSubType = 'RETENTION SITE'.obs;
+  final _visitSubType = 'LEADS'.obs;
   final _visitType = 'PHYSICAL'.obs;
   final _visitSiteId = StringConstants.empty.obs;
   final _visitDateTime = "Visit Date".obs;

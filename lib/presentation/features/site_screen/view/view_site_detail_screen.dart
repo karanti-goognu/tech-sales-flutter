@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-
+import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,6 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models
     as updateResponse;
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/dialog/ConformationDialog.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -51,7 +49,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   bool isSwitchedsiteProductOralBriefing = false;
   bool addNextButtonDisable = false;
   bool viewMoreActive = false;
-  bool isAllowSelectDealer=false;
+  bool isAllowSelectDealer = false;
   String labelText;
   int labelId;
   String labelConstructionText;
@@ -64,7 +62,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   int labelOpportunityId;
   double siteScore = 0.0;
   String visitDataDealer;
-  String visitDataSubDealer="";
+  String visitDataSubDealer = "";
 
   ConstructionStageEntity _selectedConstructionType;
   ConstructionStageEntity _selectedConstructionTypeVisit;
@@ -86,6 +84,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   BrandModelforDB _siteBrandFromLocalDBNextStage;
 
   BrandModelforDB _siteProductFromLocalDB;
+  BrandModelforDB _siteProductFromLocalDB1;
 
   BrandModelforDB _siteProductFromLocalDBNextStage;
 
@@ -98,6 +97,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   var _stagePotentialVisit = new TextEditingController();
   var _stagePotentialVisitNextStage = new TextEditingController();
   var _brandPriceVisit = new TextEditingController();
+  var _brandPriceVisit1 = new TextEditingController();
   var _brandPriceVisitNextStage = new TextEditingController();
   var _productSoldVisit = new TextEditingController();
   var _productSoldVisitNextStage = new TextEditingController();
@@ -106,8 +106,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   var _dateofConstructionNextStage = new TextEditingController();
   var _nextVisitDate = new TextEditingController();
   var _dateOfBagSupplied = new TextEditingController();
+  var _dateOfBagSupplied1 = new TextEditingController();
   var _dateOfBagSuppliedNextStage = new TextEditingController();
   var _siteCurrentTotalBags = new TextEditingController();
+  var _siteCurrentTotalBags1 = new TextEditingController();
   var _siteCurrentTotalBagsNextStage = new TextEditingController();
   var _comments = new TextEditingController();
   var _inactiveReasonText = new TextEditingController();
@@ -179,11 +181,329 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   CounterListModel selectedSubDealer = CounterListModel();
 
+  List<SiteVisitHistoryEntity> productDynamicList = new List();
+
+  /// get firends text-fields
+  List<Widget> _getProductList() {
+    List<Widget> productAddedList = [];
+    for (int i = 0; i < productDynamicList.length; i++) {
+      productAddedList.add(Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Stack(
+          children: [
+            addProductDetails(i),
+          ],
+        ),
+      ));
+    }
+    return productAddedList;
+  }
+
+
+  Widget addProductDetails(int index){
+    var controller1;
+    print("index2"+index.toString());
+
+    print("ListLength "+productDynamicList.length.toString()+" "+index.toString());
+    if(productDynamicList.length-index == 1){
+      controller1 = ExpandableController(initialExpanded:true);
+    }else{
+      controller1 = ExpandableController(initialExpanded:false);
+    }
+    return  ExpandablePanel(
+      controller:controller1,
+      header: Text("Product details "+(index+1).toString(),softWrap: true,style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          // color: HexColor("#000000DE"),
+          fontFamily: "Muli"),),
+      expanded: Container(
+        margin: EdgeInsets.only(left: 0.0,right: 0.0),
+        child: Stack(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(right: 0,top: 15),
+                  child: DropdownButtonFormField<BrandModelforDB>(
+                      value: _siteProductFromLocalDB1,
+                      items: siteProductEntityfromLoaclDB
+                          .map((label) => DropdownMenuItem(
+                        child: Text(
+                          label.productName,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                        ),
+                        value: label,
+                      ))
+                          .toList(),
+
+                      // hint: Text('Rating'),
+                      onChanged: (value) {
+                        print("Product Value");
+                        print(value);
+                        setState(() {
+                          _siteProductFromLocalDB1 = value;
+                          print("Product "+_siteProductFromLocalDB1.id.toString());
+                        });
+                      },
+                      decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Product Sold")),),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    "Mandatory",
+                    style: TextStyle(
+                      fontFamily: "Muli",
+                      color: ColorConstants.inputBoxHintColorDark,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  controller: _brandPriceVisit1,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter Site Built-Up Area ';
+                    }
+
+                    return null;
+                  },
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.inputBoxHintColor,
+                      fontFamily: "Muli"),
+                  keyboardType: TextInputType.number,
+                  decoration: FormFieldStyle.buildInputDecoration(labelText: "Brand Price"),
+
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    "Mandatory",
+                    style: TextStyle(
+                      fontFamily: "Muli",
+                      color: ColorConstants.inputBoxHintColorDark,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
+                  child: Text(
+                    "No. of Bags Supplied",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        // color: HexColor("#000000DE"),
+                        fontFamily: "Muli"),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: TextFormField(
+                          controller: _dateOfBagSupplied1,
+                          readOnly: true,
+                          onChanged: (data) {
+                            // setState(() {
+                            //   _contactName.text = data;
+                            // });
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: ColorConstants.backgroundColorBlue,
+                                  //color: HexColor("#0000001F"),
+                                  width: 1.0),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: Colors.black26, width: 1.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: Colors.black26, width: 1.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red, width: 1.0),
+                            ),
+                            labelText: "Date ",
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                Icons.date_range_rounded,
+                                size: 22,
+                                color: ColorConstants.clearAllTextColor,
+                              ),
+                              onPressed: () async {
+                                print("here");
+                                final DateTime picked = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2001),
+                                  lastDate: DateTime.now(),
+                                );
+
+                                setState(() {
+                                  final DateFormat formatter = DateFormat("yyyy-MM-dd");
+                                  if(picked!=null) {
+                                    final String formattedDate = formatter.format(picked);
+                                    _dateOfBagSupplied1.text = formattedDate;
+                                  }
+                                });
+                              },
+                            ),
+                            filled: false,
+                            focusColor: Colors.black,
+                            isDense: false,
+                            labelStyle: TextStyle(
+                                fontFamily: "Muli",
+                                color: ColorConstants.inputBoxHintColorDark,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16.0),
+                            fillColor: ColorConstants.backgroundColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Text(_siteCurrentTotalBags.text),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: TextFormField(
+                          controller: _siteCurrentTotalBags1,
+                          onChanged: (v) {
+                            print(v);
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter Bags ';
+                            }
+
+                            return null;
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "No. Of Bags",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    "Mandatory",
+                    style: TextStyle(
+                      fontFamily: "Muli",
+                      color: ColorConstants.inputBoxHintColorDark,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+                Center(
+                  child:
+                  RaisedButton(
+                    elevation:
+                    5,
+                    shape:
+                    RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.circular(5.0),
+                    ),
+                    color:
+                    HexColor("#1C99D4"),
+                    child:
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(bottom: 1, top: 1),
+                      child:
+                      Text(
+                        "Add Product",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 0, fontSize: 15),
+                      ),
+                    ),
+                    onPressed:
+                        () async {
+                          print("index3"+index.toString());
+                          if (_siteProductFromLocalDB1 != null || _dateOfBagSupplied1!=null || _siteCurrentTotalBags1!=null ||_brandPriceVisit1!=null) {
+                            setState(() {
+                            productDynamicList[index] =  new SiteVisitHistoryEntity(
+                                brandId: _siteProductFromLocalDB1.id,
+                                brandPrice: _brandPriceVisit1.text,
+                                supplyDate: _dateOfBagSupplied1.text,
+                                supplyQty: _siteCurrentTotalBags1.text);
+
+                            // productDynamicList.insert(index,new SiteVisitHistoryEntity(
+                            //     brandId: _siteProductFromLocalDB1.id,
+                            //     brandPrice: _brandPriceVisit1.text,
+                            //     supplyDate: _dateOfBagSupplied1.text,
+                            //     supplyQty: _siteCurrentTotalBags1.text));
+                            });
+
+                            print("OnClickData-->"+productDynamicList[index].brandId.toString()+" "+_dateOfBagSupplied1.text);
+
+                          }else  {
+                          Get.dialog(CustomDialogs().showMessage("Please fill all details !!!"));
+                          }
+                    },
+                  ),
+                ),
+
+              ],
+            ),
+          ],
+        ),
+      ),
+      collapsed: Row(
+        children: [
+          Expanded(
+              flex: 7,
+              child:Text("Enter Details", softWrap: true, maxLines: 1, overflow: TextOverflow.ellipsis,style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  // color: HexColor("#000000DE"),
+                  fontFamily: "Muli"),)),Expanded(
+            flex: 1,
+            child:
+            GestureDetector(
+              onTap: () {
+                productDynamicList.removeAt(index);
+                setState(() {});
+              },
+              child: Icon(Icons.delete, color: Colors.black54),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: 4, initialIndex: widget.tabIndex);
+    _tabController =
+        TabController(vsync: this, length: 4, initialIndex: widget.tabIndex);
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
     getSiteData();
@@ -209,7 +529,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
         // print(viewSiteDataResponse);
         await db.clearTable();
-        siteBrandEntity = viewSiteDataResponse!=null?viewSiteDataResponse.siteBrandEntity:new List();
+        siteBrandEntity = viewSiteDataResponse != null
+            ? viewSiteDataResponse.siteBrandEntity
+            : new List();
         counterListModel = viewSiteDataResponse.counterListModel;
 
         // print("aaaaaaaaaaaaaaa");
@@ -243,9 +565,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
           sitephotosEntity = viewSiteDataResponse.sitephotosEntity;
           influencerTypeEntity = viewSiteDataResponse.influencerTypeEntity;
-          String isDealerConformedChangedBySo=viewSiteDataResponse.sitesModal.isDealerConfirmedChangedBySo;
+          String isDealerConformedChangedBySo =
+              viewSiteDataResponse.sitesModal.isDealerConfirmedChangedBySo;
           print("isDealerConformedChangedBySo  $isDealerConformedChangedBySo");
-          isAllowSelectDealer=isDealerConformedChangedBySo!="N"? true:false ;
+          isAllowSelectDealer =
+              isDealerConformedChangedBySo != "N" ? true : false;
 
           //  print(influencerTypeEntity.length);
           influencerCategoryEntity =
@@ -326,7 +650,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           // siteVisitHistoryEntity.add(SiteVisitHistoryEntity(id: 6, isAuthorised:"N", soldToParty: "0007030238"));
           // siteVisitHistoryEntity.add(SiteVisitHistoryEntity(id: 3));
 
-
           sitesModal = viewSiteDataResponse.sitesModal;
           _siteProductDemo.text = sitesModal.siteProductDemo;
           if (_siteProductDemo.text == 'N') {
@@ -348,17 +671,29 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
           _siteTotalPt.text = sitesModal.siteTotalSitePotential;
 
-          if (_siteTotalPt.text == null ||
-              _siteTotalPt.text == "") {
+          if (_siteTotalPt.text == null || _siteTotalPt.text == "") {
             _siteTotalBags.clear();
           } else {
-            _siteTotalBags.text = (double.parse(_siteTotalPt.text) * 20).round().toString();
+            _siteTotalBags.text =
+                (double.parse(_siteTotalPt.text) * 20).round().toString();
           }
           // print("Dhawan");
           // print(sitesModal.siteStageId);
           //  print(sitesModal.);
           //  print(sit);
           // print(sitesModal.)
+
+          _siteTotalBalanceBags.text = sitesModal.totalBalancePotential;
+          if (_siteTotalBalanceBags.text == null ||
+              _siteTotalBalanceBags.text == "") {
+            _siteTotalBalancePt.clear();
+          } else {
+            _siteTotalBalancePt.text = (int.parse(
+                _siteTotalBalanceBags
+                    .text) /
+                20)
+                .toString();
+          }
 
           _plotNumber.text = sitesModal.sitePlotNumber;
           _siteAddress.text = sitesModal.siteAddress;
@@ -473,10 +808,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   @override
   Widget build(BuildContext context) {
-     //gv.selectedClass = widget.classroomId;
+    //gv.selectedClass = widget.classroomId;
     SizeConfig().init(context);
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
       child: DefaultTabController(
@@ -484,7 +819,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           length: 4,
           child: Scaffold(
 //            resizeToAvoidBottomInset: true,
-             resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomPadding: false,
             backgroundColor: Colors.white,
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -561,8 +896,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             SizedBox(width: 100),
                             Expanded(
                               child: Container(
-                                padding:
-                                    const EdgeInsets.only(left: 1.0, right: 1.0),
+                                padding: const EdgeInsets.only(
+                                    left: 1.0, right: 1.0),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
                                     color: Colors.white,
@@ -625,10 +960,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                 Radius.circular(
                                                                     5.0))),
                                                     content: Container(
-                                                        width:
-                                                            MediaQuery.of(context)
-                                                                .size
-                                                                .width,
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
                                                         child:
                                                             SingleChildScrollView(
                                                           child: Stack(
@@ -662,19 +997,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             .center,
                                                                     children: [
                                                                       SizedBox(
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.03,
                                                                       ),
                                                                       Container(
-                                                                        width: MediaQuery.of(context)
-                                                                                .size
-                                                                                .width *
+                                                                        width: MediaQuery.of(context).size.width *
                                                                             0.3,
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.12,
                                                                         child: Image
                                                                             .asset(
@@ -690,9 +1019,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                                 HexColor("#B00020")),
                                                                       ),
                                                                       SizedBox(
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.03,
                                                                       ),
                                                                       Center(
@@ -714,9 +1041,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                       ),
 
                                                                       Padding(
-                                                                        padding: const EdgeInsets
-                                                                                .all(
-                                                                            10.0),
+                                                                        padding:
+                                                                            const EdgeInsets.all(10.0),
                                                                         child:
                                                                             TextFormField(
                                                                           controller:
@@ -726,10 +1052,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                           onChanged:
                                                                               (value) async {},
                                                                           style: TextStyle(
-                                                                              fontSize:
-                                                                                  18,
-                                                                              color:
-                                                                                  ColorConstants.inputBoxHintColor,
+                                                                              fontSize: 18,
+                                                                              color: ColorConstants.inputBoxHintColor,
                                                                               fontFamily: "Muli"),
                                                                           keyboardType:
                                                                               TextInputType.text,
@@ -749,33 +1073,25 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             borderRadius:
                                                                                 BorderRadius.circular(5.0),
                                                                           ),
-                                                                          color: HexColor(
-                                                                              "#1C99D4"),
+                                                                          color:
+                                                                              HexColor("#1C99D4"),
                                                                           child:
                                                                               Padding(
-                                                                            padding: const EdgeInsets.only(
-                                                                                bottom: 10,
-                                                                                top: 10),
+                                                                            padding:
+                                                                                const EdgeInsets.only(bottom: 10, top: 10),
                                                                             child:
                                                                                 Text(
                                                                               "SUBMIT",
-                                                                              style: TextStyle(
-                                                                                  color: Colors.white,
-                                                                                  fontWeight: FontWeight.bold,
-                                                                                  letterSpacing: 1,
-                                                                                  fontSize: 17),
+                                                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 17),
                                                                             ),
                                                                           ),
                                                                           onPressed:
                                                                               () async {
                                                                             if (closureReasonText.text != null &&
                                                                                 closureReasonText.text != "") {
-                                                                              _siteStage =
-                                                                                  value;
-                                                                              labelId =
-                                                                                  _siteStage.id;
-                                                                              labelText =
-                                                                                  _siteStage.siteStageDesc;
+                                                                              _siteStage = value;
+                                                                              labelId = _siteStage.id;
+                                                                              labelText = _siteStage.siteStageDesc;
                                                                               setState(() {
                                                                                 fromDropDown = true;
                                                                               });
@@ -787,9 +1103,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                         ),
                                                                       ),
                                                                       SizedBox(
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.01,
                                                                       ),
                                                                       //         // Image.asset('assets/images/rejected.png'),
@@ -814,10 +1128,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                 Radius.circular(
                                                                     5.0))),
                                                     content: Container(
-                                                        width:
-                                                            MediaQuery.of(context)
-                                                                .size
-                                                                .width,
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
                                                         child:
                                                             SingleChildScrollView(
                                                           child: Stack(
@@ -851,19 +1165,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             .center,
                                                                     children: [
                                                                       SizedBox(
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.03,
                                                                       ),
                                                                       Container(
-                                                                        width: MediaQuery.of(context)
-                                                                                .size
-                                                                                .width *
+                                                                        width: MediaQuery.of(context).size.width *
                                                                             0.3,
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.12,
                                                                         child: Image
                                                                             .asset(
@@ -879,9 +1187,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                                 HexColor("#B00020")),
                                                                       ),
                                                                       SizedBox(
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.03,
                                                                       ),
                                                                       Center(
@@ -902,15 +1208,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                         ),
                                                                       ),
                                                                       SizedBox(
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.01,
                                                                       ),
                                                                       Padding(
-                                                                        padding: const EdgeInsets
-                                                                                .all(
-                                                                            10.0),
+                                                                        padding:
+                                                                            const EdgeInsets.all(10.0),
                                                                         child:
                                                                             TextFormField(
                                                                           controller:
@@ -931,10 +1234,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             // });
                                                                           },
                                                                           style: TextStyle(
-                                                                              fontSize:
-                                                                                  18,
-                                                                              color:
-                                                                                  ColorConstants.inputBoxHintColor,
+                                                                              fontSize: 18,
+                                                                              color: ColorConstants.inputBoxHintColor,
                                                                               fontFamily: "Muli"),
                                                                           keyboardType:
                                                                               TextInputType.text,
@@ -949,31 +1250,26 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             ),
                                                                             disabledBorder:
                                                                                 OutlineInputBorder(
-                                                                              borderSide:
-                                                                                  BorderSide(color: Colors.black26, width: 1.0),
+                                                                              borderSide: BorderSide(color: Colors.black26, width: 1.0),
                                                                             ),
                                                                             enabledBorder:
                                                                                 OutlineInputBorder(
-                                                                              borderSide:
-                                                                                  BorderSide(color: Colors.black26, width: 1.0),
+                                                                              borderSide: BorderSide(color: Colors.black26, width: 1.0),
                                                                             ),
                                                                             errorBorder:
                                                                                 OutlineInputBorder(
-                                                                              borderSide:
-                                                                                  BorderSide(color: Colors.red, width: 1.0),
+                                                                              borderSide: BorderSide(color: Colors.red, width: 1.0),
                                                                             ),
                                                                             labelText:
                                                                                 "Next Visit Date ",
                                                                             suffixIcon:
                                                                                 IconButton(
-                                                                              icon:
-                                                                                  Icon(
+                                                                              icon: Icon(
                                                                                 Icons.date_range_rounded,
                                                                                 size: 22,
                                                                                 color: ColorConstants.clearAllTextColor,
                                                                               ),
-                                                                              onPressed:
-                                                                                  () async {
+                                                                              onPressed: () async {
                                                                                 print("here");
                                                                                 final DateTime picked = await showDatePicker(
                                                                                   context: context,
@@ -984,13 +1280,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                                                                                 setState(() {
                                                                                   final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                                                                                  if(picked!=null) {
-                                                                                    final String formattedDate = formatter
-                                                                                        .format(
-                                                                                        picked);
-                                                                                    _nextVisitDate
-                                                                                        .text =
-                                                                                        formattedDate;
+                                                                                  if (picked != null) {
+                                                                                    final String formattedDate = formatter.format(picked);
+                                                                                    _nextVisitDate.text = formattedDate;
                                                                                   }
                                                                                 });
                                                                               },
@@ -1012,15 +1304,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                         ),
                                                                       ),
                                                                       SizedBox(
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.01,
                                                                       ),
                                                                       Padding(
-                                                                        padding: const EdgeInsets
-                                                                                .all(
-                                                                            10.0),
+                                                                        padding:
+                                                                            const EdgeInsets.all(10.0),
                                                                         child:
                                                                             TextFormField(
                                                                           controller:
@@ -1030,10 +1319,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                           onChanged:
                                                                               (value) async {},
                                                                           style: TextStyle(
-                                                                              fontSize:
-                                                                                  18,
-                                                                              color:
-                                                                                  ColorConstants.inputBoxHintColor,
+                                                                              fontSize: 18,
+                                                                              color: ColorConstants.inputBoxHintColor,
                                                                               fontFamily: "Muli"),
                                                                           keyboardType:
                                                                               TextInputType.text,
@@ -1056,33 +1343,25 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                             borderRadius:
                                                                                 BorderRadius.circular(5.0),
                                                                           ),
-                                                                          color: HexColor(
-                                                                              "#1C99D4"),
+                                                                          color:
+                                                                              HexColor("#1C99D4"),
                                                                           child:
                                                                               Padding(
-                                                                            padding: const EdgeInsets.only(
-                                                                                bottom: 10,
-                                                                                top: 10),
+                                                                            padding:
+                                                                                const EdgeInsets.only(bottom: 10, top: 10),
                                                                             child:
                                                                                 Text(
                                                                               "SUBMIT",
-                                                                              style: TextStyle(
-                                                                                  color: Colors.white,
-                                                                                  fontWeight: FontWeight.bold,
-                                                                                  letterSpacing: 1,
-                                                                                  fontSize: 17),
+                                                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 17),
                                                                             ),
                                                                           ),
                                                                           onPressed:
                                                                               () async {
                                                                             if (_inactiveReasonText.text != null &&
                                                                                 _inactiveReasonText.text != "") {
-                                                                              _siteStage =
-                                                                                  value;
-                                                                              labelId =
-                                                                                  _siteStage.id;
-                                                                              labelText =
-                                                                                  _siteStage.siteStageDesc;
+                                                                              _siteStage = value;
+                                                                              labelId = _siteStage.id;
+                                                                              labelText = _siteStage.siteStageDesc;
                                                                               setState(() {
                                                                                 fromDropDown = true;
                                                                               });
@@ -1094,9 +1373,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                         ),
                                                                       ),
                                                                       SizedBox(
-                                                                        height: MediaQuery.of(context)
-                                                                                .size
-                                                                                .height *
+                                                                        height: MediaQuery.of(context).size.height *
                                                                             0.01,
                                                                       ),
                                                                       //         // Image.asset('assets/images/rejected.png'),
@@ -1136,8 +1413,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     Tab(
                       text: "Site Data",
                     ),
+                    // Tab(
+                    //   text: "Visit Data",
+                    // ),
                     Tab(
-                      text: "Visit Data",
+                      text: "Site Progress",
                     ),
                     Tab(
                       text: "Influencer",
@@ -1322,14 +1602,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child: DropdownButtonFormField<SiteFloorsEntity>(
+                                child:
+                                    DropdownButtonFormField<SiteFloorsEntity>(
                                   value: _selectedSiteFloor,
                                   items: siteFloorsEntity
                                       .map((label) => DropdownMenuItem(
                                             child: Text(
                                               label.siteFloorTxt,
-                                              style: TextStyle(fontSize: 18,
-                                                  color: ColorConstants.inputBoxHintColor,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: ColorConstants
+                                                      .inputBoxHintColor,
                                                   fontFamily: "Muli"),
                                             ),
                                             value: label,
@@ -1558,6 +1841,222 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             ),
                           ],
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, bottom: 20, left: 5),
+                          child: Text(
+                            "Total Balance Potential",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22,
+                                // color: HexColor("#000000DE"),
+                                fontFamily: "Muli"),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: TextFormField(
+                                  // initialValue: _totalBags.toString(),
+                                  controller: _siteTotalBalanceBags,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      // _totalBags.text = value ;
+                                      if (_siteTotalBalanceBags.text == null ||
+                                          _siteTotalBalanceBags.text == "") {
+                                        _siteTotalBalancePt.clear();
+                                      } else {
+                                        _siteTotalBalancePt.text = (int.parse(
+                                                    _siteTotalBalanceBags
+                                                        .text) /
+                                                20)
+                                            .toString();
+                                      }
+                                    });
+                                  },
+                                  keyboardType: TextInputType.phone,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter Bags ';
+                                    }
+
+                                    return null;
+                                  },
+
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                  // keyboardType: TextInputType.text,
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                    labelText: "Bags",
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: TextFormField(
+                                  controller: _siteTotalBalancePt,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      // _totalBags.text = value ;
+                                      if (_siteTotalBalancePt.text == null ||
+                                          _siteTotalBalancePt.text == "") {
+                                        _siteTotalBalanceBags.clear();
+                                      } else {
+                                        _siteTotalBalanceBags.text = (int.parse(
+                                                    _siteTotalBalancePt.text) *
+                                                20)
+                                            .toString();
+                                      }
+                                    });
+                                  },
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter MT ';
+                                    }
+
+                                    return null;
+                                  },
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                  keyboardType: TextInputType.numberWithOptions(
+                                      decimal: true),
+                                  decoration:
+                                      FormFieldStyle.buildInputDecoration(
+                                    labelText: "MT",
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+
+                        DropdownButtonFormField<SiteProbabilityWinningEntity>(
+
+                          value: _siteProbabilityWinningEntity,
+                          items: [_siteProbabilityWinningEntity]
+                              .map((label) => DropdownMenuItem(
+                            child: Text(
+                              label.siteProbabilityStatus,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                            ),
+                            value: label,
+                          ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              labelProbabilityText = value.siteProbabilityStatus;
+                              labelProbabilityId = value.id;
+                              _siteProbabilityWinningEntity = value;
+                            });
+                          },
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Probability of winning",
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            "Mandatory",
+                            style: TextStyle(
+                              fontFamily: "Muli",
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        DropdownButtonFormField<SiteCompetitionStatusEntity>(
+                          value: _siteCompetitionStatusEntity,
+                          items: [_siteCompetitionStatusEntity]
+                              .map((label) => DropdownMenuItem(
+                            child: Text(
+                              label.competitionStatus,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                            ),
+                            value: label,
+                          ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _siteCompetitionStatusEntity = value;
+                            });
+                          },
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Competition Status",
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            "Mandatory",
+                            style: TextStyle(
+                              fontFamily: "Muli",
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        DropdownButtonFormField<SiteOpportunityStatusEntity>(
+                          value: _siteOpportunitStatusEnity,
+                          items: [_siteOpportunitStatusEnity]
+                              .map((label) => DropdownMenuItem(
+                            child: Text(
+                              label.opportunityStatus,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                            ),
+                            value: label,
+                          ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _siteOpportunitStatusEnity = value;
+                            });
+                          },
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Opportunity Status",
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            "Mandatory",
+                            style: TextStyle(
+                              fontFamily: "Muli",
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
                         SizedBox(height: 25),
                         TextFormField(
                           controller: _ownerName,
@@ -1724,8 +2223,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 setState(() {
                                   _pickedLocation = result;
                                   _currentPosition = new Position(
-                                      latitude: _pickedLocation!=null?_pickedLocation.latLng.latitude:0.0,
-                                      longitude: _pickedLocation!=null?_pickedLocation.latLng.longitude:0.0);
+                                      latitude: _pickedLocation != null
+                                          ? _pickedLocation.latLng.latitude
+                                          : 0.0,
+                                      longitude: _pickedLocation != null
+                                          ? _pickedLocation.latLng.longitude
+                                          : 0.0);
                                   _getAddressFromLatLng();
                                   //print(_pickedLocation.latLng.latitude);
                                 });
@@ -2020,7 +2523,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                         SizedBox(height: 16),
 
-
                         TextFormField(
                           controller: _rera,
                           validator: (value) {
@@ -2062,8 +2564,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           ),
                         ),
 
-
-                      SizedBox(height: 16),
+                        SizedBox(height: 16),
 
                         TextFormField(
                           controller: _subDealerName,
@@ -2084,11 +2585,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             labelText: "Sub-Dealer",
                           ),
                         ),
-
-
-
-
-
 
                         SizedBox(height: 16),
 
@@ -2187,107 +2683,107 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
-              child: Text(
-                "Total Balance Potential",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    // color: HexColor("#000000DE"),
-                    fontFamily: "Muli"),
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: TextFormField(
-                      // initialValue: _totalBags.toString(),
-                      controller: _siteTotalBalanceBags,
-                      onChanged: (value) {
-                        setState(() {
-                          // _totalBags.text = value ;
-                          if (_siteTotalBalanceBags.text == null ||
-                              _siteTotalBalanceBags.text == "") {
-                            _siteTotalBalancePt.clear();
-                          } else {
-                            _siteTotalBalancePt.text =
-                                (int.parse(_siteTotalBalanceBags.text) / 20)
-                                    .toString();
-                          }
-                        });
-                      },
-                      keyboardType: TextInputType.phone,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter Bags ';
-                        }
-
-                        return null;
-                      },
-
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                      // keyboardType: TextInputType.text,
-                      decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: "Bags",
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: TextFormField(
-                      controller: _siteTotalBalancePt,
-                      onChanged: (value) {
-                        setState(() {
-                          // _totalBags.text = value ;
-                          if (_siteTotalBalancePt.text == null ||
-                              _siteTotalBalancePt.text == "") {
-                            _siteTotalBalanceBags.clear();
-                          } else {
-                            _siteTotalBalanceBags.text =
-                                (int.parse(_siteTotalBalancePt.text) * 20)
-                                    .toString();
-                          }
-                        });
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter MT ';
-                        }
-
-                        return null;
-                      },
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: "MT",
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Divider(
-                color: Colors.black26,
-                thickness: 1,
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+            //   child: Text(
+            //     "Total Balance Potential",
+            //     style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 22,
+            //         // color: HexColor("#000000DE"),
+            //         fontFamily: "Muli"),
+            //   ),
+            // ),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: Padding(
+            //         padding: const EdgeInsets.only(right: 10.0),
+            //         child: TextFormField(
+            //           // initialValue: _totalBags.toString(),
+            //           controller: _siteTotalBalanceBags,
+            //           onChanged: (value) {
+            //             setState(() {
+            //               // _totalBags.text = value ;
+            //               if (_siteTotalBalanceBags.text == null ||
+            //                   _siteTotalBalanceBags.text == "") {
+            //                 _siteTotalBalancePt.clear();
+            //               } else {
+            //                 _siteTotalBalancePt.text =
+            //                     (int.parse(_siteTotalBalanceBags.text) / 20)
+            //                         .toString();
+            //               }
+            //             });
+            //           },
+            //           keyboardType: TextInputType.phone,
+            //           inputFormatters: <TextInputFormatter>[
+            //             FilteringTextInputFormatter.digitsOnly
+            //           ],
+            //           validator: (value) {
+            //             if (value.isEmpty) {
+            //               return 'Please enter Bags ';
+            //             }
+            //
+            //             return null;
+            //           },
+            //
+            //           style: TextStyle(
+            //               fontSize: 18,
+            //               color: ColorConstants.inputBoxHintColor,
+            //               fontFamily: "Muli"),
+            //           // keyboardType: TextInputType.text,
+            //           decoration: FormFieldStyle.buildInputDecoration(
+            //             labelText: "Bags",
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //     Expanded(
+            //       child: Padding(
+            //         padding: const EdgeInsets.only(left: 10.0),
+            //         child: TextFormField(
+            //           controller: _siteTotalBalancePt,
+            //           onChanged: (value) {
+            //             setState(() {
+            //               // _totalBags.text = value ;
+            //               if (_siteTotalBalancePt.text == null ||
+            //                   _siteTotalBalancePt.text == "") {
+            //                 _siteTotalBalanceBags.clear();
+            //               } else {
+            //                 _siteTotalBalanceBags.text =
+            //                     (int.parse(_siteTotalBalancePt.text) * 20)
+            //                         .toString();
+            //               }
+            //             });
+            //           },
+            //           validator: (value) {
+            //             if (value.isEmpty) {
+            //               return 'Please enter MT ';
+            //             }
+            //
+            //             return null;
+            //           },
+            //           style: TextStyle(
+            //               fontSize: 18,
+            //               color: ColorConstants.inputBoxHintColor,
+            //               fontFamily: "Muli"),
+            //           keyboardType:
+            //               TextInputType.numberWithOptions(decimal: true),
+            //           decoration: FormFieldStyle.buildInputDecoration(
+            //             labelText: "MT",
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: Divider(
+            //     color: Colors.black26,
+            //     thickness: 1,
+            //   ),
+            // ),
             DropdownButtonFormField<ConstructionStageEntity>(
               value: _selectedConstructionTypeVisit,
               items: constructionStageEntityNew
@@ -2464,7 +2960,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   if (_siteBrandFromLocalDB.brandName.toLowerCase() ==
                       "dalmia") {
                     _stageStatus.text = "WON";
-
                   } else {
                     _stageStatus.text = "LOST";
                     visitDataDealer = "";
@@ -2487,6 +2982,135 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               ),
             ),
             SizedBox(height: 16),
+            (_siteBrandFromLocalDB != null &&
+                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+                ? GestureDetector(
+                    onTap: () {
+                      if (_siteBrandFromLocalDBNextStage.brandName
+                              .toLowerCase() ==
+                          "dalmia") {
+                        if (!isAllowSelectDealer)
+                          Get.dialog(CustomDialogs().showMessage(
+                              "This dealer not Confirmed by Sales Officer."));
+                      } else {}
+                    },
+                    child: DropdownButtonFormField(
+                      items: dealerEntityForDb
+                          .map((e) => DropdownMenuItem(
+                                value: e.id,
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 100,
+                                  child: Text('${e.dealerName} (${e.id})',
+                                      style: TextStyle(fontSize: 14)),
+                                ),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        siteVisitHistoryEntity
+                            .sort((b, a) => a.id.compareTo(b.id));
+                        int listLength = siteVisitHistoryEntity.length;
+
+                        if (listLength > 0) {
+                          SiteVisitHistoryEntity latestRecordData =
+                              siteVisitHistoryEntity.elementAt(0);
+
+                          if (latestRecordData.soldToParty != value) {
+                            if (latestRecordData.isAuthorised == "N") {
+                              dealerEntityForDb.map((e) => DropdownMenuItem(
+                                    value: e.id,
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          100,
+                                      child: Text('${e.dealerName} (${e.id})',
+                                          style: TextStyle(fontSize: 14)),
+                                    ),
+                                  ));
+                              return Get.dialog(CustomDialogs().showMessage(
+                                  "Your previous supplier not authorised."));
+                            } else
+                              sitesModal.isDealerConfirmedChangedBySo = "N";
+                          }
+                        }
+
+                        selectedSubDealer = null;
+                        setState(() {
+                          subDealerList = new List();
+                          visitDataDealer = value.toString();
+                          subDealerList = counterListModel
+                              .where((e) => e.soldToParty == visitDataDealer)
+                              .toList();
+                          selectedSubDealer = subDealerList[0];
+                          visitDataSubDealer = subDealerList[0].shipToParty;
+                        });
+                      },
+                      style: FormFieldStyle.formFieldTextStyle,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Dealer"),
+                      validator: (value) =>
+                          value == null ? 'Please select Dealer' : null,
+                    ),
+                  )
+                : Container(),
+            (_siteBrandFromLocalDB != null &&
+                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      "Mandatory",
+                      style: TextStyle(
+                        fontFamily: "Muli",
+                        color: ColorConstants.inputBoxHintColorDark,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  )
+                : Container(),
+            SizedBox(height: 8),
+
+            subDealerList.isEmpty
+                ? Container()
+                : (_siteBrandFromLocalDB != null &&
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia")
+                    ? DropdownButtonFormField(
+                        items: subDealerList.isNotEmpty
+                            ? subDealerList
+                                .map((e) => DropdownMenuItem(
+                                      value: e,
+                                      child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                100,
+                                        child: Text(
+                                          '${e.shipToPartyName} (${e.shipToParty})',
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                      ),
+                                    ))
+                                .toList()
+                            : [
+                                DropdownMenuItem(
+                                    child: Text("No Sub Dealer"), value: "0")
+                              ],
+                        value: selectedSubDealer,
+                        validator: (value) => value == null || value.isEmpty
+                            ? 'Please select Sub-Dealer'
+                            : null,
+                        onChanged: (value) {
+                          // print("Sub Dealer Value");
+                          // print(value.shipToParty.toString());
+                          setState(() {
+                            visitDataSubDealer = value.shipToParty.toString();
+                          });
+                          print(visitDataSubDealer);
+                        },
+                        style: FormFieldStyle.formFieldTextStyle,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Sub-Dealer"),
+                      )
+                    : Container(),
+            SizedBox(height: 8),
             DropdownButtonFormField<BrandModelforDB>(
                 value: _siteProductFromLocalDB,
                 items: siteProductEntityfromLoaclDB
@@ -2524,7 +3148,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
               ),
             ),
-            (_siteBrandFromLocalDB!=null &&_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")?SizedBox(height: 16):Container(),
+            (_siteBrandFromLocalDB != null &&
+                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+                ? SizedBox(height: 16)
+                : Container(),
             // GestureDetector(
             //   onTap: (){
             //     if(!isAllowSelectDealer)
@@ -2595,131 +3222,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             //         value == null ? 'Please select Dealer' : null,
             //   ),
             // ),
-            (_siteBrandFromLocalDB!=null &&_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")?
-            GestureDetector(
-              onTap: (){
-                if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
-                    "dalmia") {
-                if(!isAllowSelectDealer)
-                  Get.dialog(CustomDialogs()
-                      .showMessage("This dealer not Confirmed by Sales Officer."));
-                } else {
 
-                }
-
-              },
-              child: DropdownButtonFormField(
-                items: dealerEntityForDb
-                    .map((e) => DropdownMenuItem(
-                  value: e.id,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    child: Text('${e.dealerName} (${e.id})',
-                        style: TextStyle(fontSize: 14)),
-                  ),
-                ))
-                    .toList(),
-
-
-                onChanged:  (value) {
-
-                  siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
-                  int listLength=siteVisitHistoryEntity.length;
-
-                  if(listLength>0){
-                    SiteVisitHistoryEntity latestRecordData=siteVisitHistoryEntity.elementAt(0);
-
-                    if(latestRecordData.soldToParty != value){
-                      if(latestRecordData.isAuthorised=="N"){
-                        dealerEntityForDb.map((e) => DropdownMenuItem(
-                          value: e.id,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: Text('${e.dealerName} (${e.id})',
-                                style: TextStyle(fontSize: 14)),
-                          ),
-                        ));
-                        return Get.dialog(CustomDialogs().showMessage("Your previous supplier not authorised."));
-
-                      }else
-                        sitesModal.isDealerConfirmedChangedBySo="N";
-                    }
-
-                  }
-
-                  selectedSubDealer = null;
-                  setState(() {
-                    subDealerList = new List();
-                    visitDataDealer = value.toString();
-                    subDealerList = counterListModel
-                        .where((e) => e.soldToParty == visitDataDealer)
-                        .toList();
-                    selectedSubDealer = subDealerList[0];
-                    visitDataSubDealer = subDealerList[0].shipToParty;
-
-                  });
-
-                },
-                style: FormFieldStyle.formFieldTextStyle,
-                decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Dealer"),
-                validator: (value) =>
-                value == null ? 'Please select Dealer' : null,
-              ),
-            ):Container(),
-            (_siteBrandFromLocalDB!=null &&_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")?
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ):Container(),
-
-            SizedBox(height: 8),
-
-            subDealerList.isEmpty
-                ? Container()
-                :(_siteBrandFromLocalDB!=null &&_siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")? DropdownButtonFormField(
-                    items: subDealerList.isNotEmpty
-                        ? subDealerList
-                            .map((e) => DropdownMenuItem(
-                                  value: e,
-                                  child: SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width - 100,
-                                    child: Text(
-                                      '${e.shipToPartyName} (${e.shipToParty})',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                ))
-                            .toList()
-                        : [
-                            DropdownMenuItem(
-                                child: Text("No Sub Dealer"), value: "0")
-                          ],
-                    value: selectedSubDealer,
-                    validator: (value) => value == null || value.isEmpty
-                        ? 'Please select Sub-Dealer'
-                        : null,
-                    onChanged: (value) {
-                      // print("Sub Dealer Value");
-                      // print(value.shipToParty.toString());
-                      setState(() {
-                        visitDataSubDealer = value.shipToParty.toString();
-                      });
-                      print(visitDataSubDealer);
-                    },
-                    style: FormFieldStyle.formFieldTextStyle,
-                    decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: "Sub-Dealer"),
-                  ):Container(),
-            SizedBox(height: 16),
             TextFormField(
               controller: _brandPriceVisit,
               validator: (value) {
@@ -2845,10 +3348,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             );
 
                             setState(() {
-                              final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                              if(picked!=null) {
-                                final String formattedDate = formatter.format(
-                                    picked);
+                              final DateFormat formatter =
+                                  DateFormat("yyyy-MM-dd");
+                              if (picked != null) {
+                                final String formattedDate =
+                                    formatter.format(picked);
                                 _dateOfBagSupplied.text = formattedDate;
                               }
                             });
@@ -2907,6 +3411,41 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   fontWeight: FontWeight.normal,
                 ),
               ),
+            ),
+            ..._getProductList(),
+            Center(
+              child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
+                        side: BorderSide(color: Colors.black26)),
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                      child: Text(
+                        "ADD MORE PRODUCT",
+                        style: TextStyle(
+                            color: HexColor("#1C99D4"),
+                            fontWeight: FontWeight.bold,
+                            // letterSpacing: 2,
+                            fontSize: 17),
+                      ),
+                    ),
+                    onPressed: () async {
+                      int index;
+                      if(productDynamicList.length==0){
+                        index = 0;
+                      }else{
+                        index = productDynamicList.length;
+                      }
+                      print("index1"+index.toString());
+                      setState(() {
+                        productDynamicList.insert(index,null);
+                      });
+                    },
+                  )),
             ),
             SizedBox(height: 16),
             TextFormField(
@@ -2979,7 +3518,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                     setState(() {
                       final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                      if(picked!=null) {
+                      if (picked != null) {
                         final String formattedDate = formatter.format(picked);
                         _dateofConstruction.text = formattedDate;
                       }
@@ -3051,121 +3590,121 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               color: Colors.black26,
               thickness: 1,
             ),
-            SizedBox(
-              height: 20,
-            ),
-
-            DropdownButtonFormField<SiteProbabilityWinningEntity>(
-              value: _siteProbabilityWinningEntity,
-              items: siteProbabilityWinningEntity
-                  .map((label) => DropdownMenuItem(
-                        child: Text(
-                          label.siteProbabilityStatus,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                        ),
-                        value: label,
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  labelProbabilityText = value.siteProbabilityStatus;
-                  labelProbabilityId = value.id;
-                  _siteProbabilityWinningEntity = value;
-                });
-              },
-              decoration: FormFieldStyle.buildInputDecoration(
-                labelText: "Probability of winning",
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            DropdownButtonFormField<SiteCompetitionStatusEntity>(
-              value: _siteCompetitionStatusEntity,
-              items: siteCompetitionStatusEntity
-                  .map((label) => DropdownMenuItem(
-                        child: Text(
-                          label.competitionStatus,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                        ),
-                        value: label,
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  _siteCompetitionStatusEntity = value;
-                });
-              },
-              decoration: FormFieldStyle.buildInputDecoration(
-                labelText: "Competition Status",
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            DropdownButtonFormField<SiteOpportunityStatusEntity>(
-              value: _siteOpportunitStatusEnity,
-              items: siteOpportunityStatusEntity
-                  .map((label) => DropdownMenuItem(
-                        child: Text(
-                          label.opportunityStatus,
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                        ),
-                        value: label,
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  _siteOpportunitStatusEnity = value;
-                });
-              },
-              decoration: FormFieldStyle.buildInputDecoration(
-                labelText: "Opportunity Status",
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
+            // SizedBox(
+            //   height: 20,
+            // ),
+            //
+            // DropdownButtonFormField<SiteProbabilityWinningEntity>(
+            //   value: _siteProbabilityWinningEntity,
+            //   items: siteProbabilityWinningEntity
+            //       .map((label) => DropdownMenuItem(
+            //             child: Text(
+            //               label.siteProbabilityStatus,
+            //               style: TextStyle(
+            //                   fontSize: 18,
+            //                   color: ColorConstants.inputBoxHintColor,
+            //                   fontFamily: "Muli"),
+            //             ),
+            //             value: label,
+            //           ))
+            //       .toList(),
+            //   onChanged: (value) {
+            //     setState(() {
+            //       labelProbabilityText = value.siteProbabilityStatus;
+            //       labelProbabilityId = value.id;
+            //       _siteProbabilityWinningEntity = value;
+            //     });
+            //   },
+            //   decoration: FormFieldStyle.buildInputDecoration(
+            //     labelText: "Probability of winning",
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 15),
+            //   child: Text(
+            //     "Mandatory",
+            //     style: TextStyle(
+            //       fontFamily: "Muli",
+            //       color: ColorConstants.inputBoxHintColorDark,
+            //       fontWeight: FontWeight.normal,
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 20,
+            // ),
+            // DropdownButtonFormField<SiteCompetitionStatusEntity>(
+            //   value: _siteCompetitionStatusEntity,
+            //   items: siteCompetitionStatusEntity
+            //       .map((label) => DropdownMenuItem(
+            //             child: Text(
+            //               label.competitionStatus,
+            //               style: TextStyle(
+            //                   fontSize: 18,
+            //                   color: ColorConstants.inputBoxHintColor,
+            //                   fontFamily: "Muli"),
+            //             ),
+            //             value: label,
+            //           ))
+            //       .toList(),
+            //   onChanged: (value) {
+            //     setState(() {
+            //       _siteCompetitionStatusEntity = value;
+            //     });
+            //   },
+            //   decoration: FormFieldStyle.buildInputDecoration(
+            //     labelText: "Competition Status",
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 15),
+            //   child: Text(
+            //     "Mandatory",
+            //     style: TextStyle(
+            //       fontFamily: "Muli",
+            //       color: ColorConstants.inputBoxHintColorDark,
+            //       fontWeight: FontWeight.normal,
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 20,
+            // ),
+            // DropdownButtonFormField<SiteOpportunityStatusEntity>(
+            //   value: _siteOpportunitStatusEnity,
+            //   items: siteOpportunityStatusEntity
+            //       .map((label) => DropdownMenuItem(
+            //             child: Text(
+            //               label.opportunityStatus,
+            //               style: TextStyle(
+            //                   fontSize: 16,
+            //                   color: ColorConstants.inputBoxHintColor,
+            //                   fontFamily: "Muli"),
+            //             ),
+            //             value: label,
+            //           ))
+            //       .toList(),
+            //   onChanged: (value) {
+            //     setState(() {
+            //       _siteOpportunitStatusEnity = value;
+            //     });
+            //   },
+            //   decoration: FormFieldStyle.buildInputDecoration(
+            //     labelText: "Opportunity Status",
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 15),
+            //   child: Text(
+            //     "Mandatory",
+            //     style: TextStyle(
+            //       fontFamily: "Muli",
+            //       color: ColorConstants.inputBoxHintColorDark,
+            //       fontWeight: FontWeight.normal,
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 16),16
             TextFormField(
               controller: _nextVisitDate,
               readOnly: true,
@@ -3213,7 +3752,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                     setState(() {
                       final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                      if(picked!=null) {
+                      if (picked != null) {
                         final String formattedDate = formatter.format(picked);
                         _nextVisitDate.text = formattedDate;
                       }
@@ -3598,8 +4137,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     "Influencer Details ${(index + 1)} ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: SizeConfig.safeBlockHorizontal*4.8
-                                    ),
+                                        fontSize:
+                                            SizeConfig.safeBlockHorizontal *
+                                                4.8),
                                   ),
                                   _listInfluencerDetail[index].isExpanded
                                       ? FlatButton.icon(
@@ -3610,7 +4150,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                           icon: Icon(
                                             Icons.remove,
                                             color: HexColor("#F9A61A"),
-                                            size: SizeConfig.safeBlockHorizontal*4,
+                                            size:
+                                                SizeConfig.safeBlockHorizontal *
+                                                    4,
                                           ),
                                           label: Text(
                                             "COLLAPSE",
@@ -3618,7 +4160,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                 color: HexColor("#F9A61A"),
                                                 fontWeight: FontWeight.bold,
                                                 // letterSpacing: 2,
-                                                fontSize: SizeConfig.safeBlockHorizontal*4.5),
+                                                fontSize: SizeConfig
+                                                        .safeBlockHorizontal *
+                                                    4.5),
                                           ),
                                           onPressed: () {
                                             setState(() {
@@ -3936,7 +4480,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                     .inflName
                                                     .clear();
                                               }
-
 
                                               return Get.dialog(CustomDialogs()
                                                   .showDialog(
@@ -4580,7 +5123,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 ),
                               ),
 
-
                               SizedBox(height: 16),
                               TextFormField(
                                 readOnly: true,
@@ -5054,9 +5596,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                         setState(() {
                           final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                          if(picked!=null) {
-                            final String formattedDate = formatter.format(
-                                picked);
+                          if (picked != null) {
+                            final String formattedDate =
+                                formatter.format(picked);
                             _dateOfBagSuppliedNextStage.text = formattedDate;
                           }
                         });
@@ -5182,7 +5724,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                 setState(() {
                   final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                  if(picked!=null) {
+                  if (picked != null) {
                     final String formattedDate = formatter.format(picked);
                     _dateofConstructionNextStage.text = formattedDate;
                   }
@@ -5353,8 +5895,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         });
 
         _getAddressFromLatLng();
-              Get.back();
-
+        Get.back();
       }).catchError((e) {
         print(e);
       });
@@ -5379,7 +5920,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
         print(
             "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, "
-                "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+            "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
     } catch (e) {
       print(e);
@@ -5467,7 +6008,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         _siteCompetitionStatusEntity == null ||
         _siteOpportunitStatusEnity == null ||
         _siteProbabilityWinningEntity == null ||
-        visitDataDealer==null) {
+        visitDataDealer == null) {
       Get.dialog(CustomDialogs()
           .showMessage("Please fill mandatory fields in \"Visit Data\" Tab"));
     } else if (addNextButtonDisable &&
@@ -5494,18 +6035,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   updateSiteLogic() async {
-
+    print("OnClickData-->"+productDynamicList.length.toString()+"fdsfd");
     siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
-    int listLength=siteVisitHistoryEntity.length;
-    if(listLength>0){
-      SiteVisitHistoryEntity latestRecordData=siteVisitHistoryEntity.elementAt(0);
-      if(latestRecordData.soldToParty != visitDataDealer)
-        if(latestRecordData.isAuthorised=="N"){
-          return Get.dialog(CustomDialogs().showMessage("Your previous supplier not authorised."));
-        }
+    int listLength = siteVisitHistoryEntity.length;
+    if (listLength > 0) {
+      SiteVisitHistoryEntity latestRecordData =
+          siteVisitHistoryEntity.elementAt(0);
+      if (latestRecordData.soldToParty !=
+          visitDataDealer) if (latestRecordData.isAuthorised == "N") {
+        return Get.dialog(CustomDialogs()
+            .showMessage("Your previous supplier not authorised."));
+      }
     }
-
-
 
     String empId;
     String mobileNumber;
@@ -5533,10 +6074,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       // print("-------1234");
       // print(newSiteCommentsEntity[0].siteId);
 
-
       if (_selectedConstructionTypeVisit != null) {
         siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
-            totalBalancePotential: _siteTotalBalancePt.text,
+            // totalBalancePotential: _siteTotalBalancePt.text,
             constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
             floorId: _selectedSiteVisitFloor.id,
             stagePotential: _stagePotentialVisit.text,
@@ -5554,9 +6094,37 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             receiptNumber: "",
             isAuthorised: "N",
             authorisedBy: "",
-          authorisedOn:""
-        ));
+            authorisedOn: ""));
       }
+
+      if(productDynamicList!=null && productDynamicList.length>0){
+        for(int i=0 ; i<productDynamicList.length;i++) {
+          print("OnClickData-->");
+          print("OnClickData-->"+productDynamicList[i].brandId.toString());
+          siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
+            // totalBalancePotential: _siteTotalBalancePt.text,
+              constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
+              floorId: _selectedSiteVisitFloor.id,
+              stagePotential: _stagePotentialVisit.text,
+              brandId:productDynamicList[i].brandId,
+              brandPrice: productDynamicList[i].brandPrice,
+              constructionDate: _dateofConstruction.text,
+              siteId: widget.siteId,
+              // id: widget.siteId,
+              supplyDate:productDynamicList[i].supplyDate,
+              supplyQty: productDynamicList[i].supplyQty,
+              stageStatus: _stageStatus.text,
+              createdBy: empId,
+              soldToParty: visitDataDealer,
+              shipToParty: visitDataSubDealer,
+              receiptNumber: "",
+              isAuthorised: "N",
+              authorisedBy: "",
+              authorisedOn: ""));
+        }
+      }
+
+      print("SiteHistory--->"+siteVisitHistoryEntity.length.toString());
 
       if (_selectedConstructionTypeVisitNextStage != null) {
         siteNextStageEntity.add(new SiteNextStageEntity(
@@ -5620,7 +6188,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       // }
 
       var updateDataRequest = {
-         "siteId": widget.siteId,
+        "siteId": widget.siteId,
         "siteSegment": "TRADE",
         "assignedTo": viewSiteDataResponse.sitesModal.assignedTo,
         "siteStatusId": viewSiteDataResponse.sitesModal.siteStatusId,
@@ -5641,7 +6209,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "siteCreationDate": viewSiteDataResponse.sitesModal.siteCreationDate,
         "dealerId": viewSiteDataResponse.sitesModal.siteDealerId,
         "siteBuiltArea": _siteBuiltupArea.text,
-        "noOfFloors": _selectedSiteFloor!=null?_selectedSiteFloor.id:1,
+        "noOfFloors": _selectedSiteFloor != null ? _selectedSiteFloor.id : 1,
         "productDemo": _siteProductDemo.text,
         "productOralBriefing": _siteProductOralBriefing.text,
         "soCode": viewSiteDataResponse.sitesModal.siteSoId,
@@ -5652,6 +6220,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "closureReasonText":
             (closureReasonText.text != "") ? closureReasonText.text : null,
         "createdBy": "",
+        "totalBalancePotential":_siteTotalBalanceBags.text,
         "siteCommentsEntity": newSiteCommentsEntity,
         "siteVisitHistoryEntity": siteVisitHistoryEntity,
         "siteNextStageEntity": siteNextStageEntity,
@@ -5669,15 +6238,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             : null,
         "dealerConfirmedChangedBy": "",
         "dealerConfirmedChangedOn": "",
-        "isDealerConfirmedChangedBySo": sitesModal!=null? sitesModal.isDealerConfirmedChangedBySo:"",
+        "isDealerConfirmedChangedBySo":
+            sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
         "subdealerId": visitDataSubDealer,
       };
       //  print(updateDataRequest);
       // log('updateDataRequest---- $updateDataRequest');
       _siteController.updateLeadData(
           updateDataRequest, _imageList, context, widget.siteId);
-
-
     });
   }
 }
