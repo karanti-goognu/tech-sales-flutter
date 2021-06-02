@@ -4,6 +4,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models
     as updateResponse;
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_visit_widget.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -22,6 +24,7 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -143,6 +146,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   String _currentAddress;
   int _initialIndex = 0;
   String geoTagType;
+
+  String siteCreationDate, visitRemarks;
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
   SitesModal sitesModal;
   List<SiteFloorsEntity> siteFloorsEntity = new List();
@@ -176,14 +181,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<CounterListModel> counterListModel = new List();
   List<DealerForDb> dealerEntityForDb = new List();
   List<CounterListModel> subDealerList = new List();
+
+  ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
   TabController _tabController;
 
   CounterListModel selectedSubDealer = CounterListModel();
 
-  List<SiteVisitHistoryEntity> productDynamicList = new List();
+  List<ProductListModel> productDynamicList = new List();
 
-  /// get firends text-fields
+  /// get _getProductList
   List<Widget> _getProductList() {
     List<Widget> productAddedList = [];
     for (int i = 0; i < productDynamicList.length; i++) {
@@ -199,26 +206,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     return productAddedList;
   }
 
-
-  Widget addProductDetails(int index){
-    var controller1;
-    print("index2"+index.toString());
-
-    print("ListLength "+productDynamicList.length.toString()+" "+index.toString());
-    if(productDynamicList.length-index == 1){
-      controller1 = ExpandableController(initialExpanded:true);
-    }else{
-      controller1 = ExpandableController(initialExpanded:false);
-    }
-    return  ExpandablePanel(
-      controller:controller1,
-      header: Text("Product details "+(index+1).toString(),softWrap: true,style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-          // color: HexColor("#000000DE"),
-          fontFamily: "Muli"),),
+  Widget addProductDetails(int index) {
+    return ExpandablePanel(
+       controller: productDynamicList[index].isExpanded,
+      header: Text(
+        "Product details " + (index + 1).toString(),
+        softWrap: true,
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            // color: HexColor("#000000DE"),
+            fontFamily: "Muli"),
+      ),
       expanded: Container(
-        margin: EdgeInsets.only(left: 0.0,right: 0.0),
+        margin: EdgeInsets.only(left: 0.0, right: 0.0),
         child: Stack(
           children: <Widget>[
             Column(
@@ -227,20 +228,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               mainAxisSize: MainAxisSize.max,
               children: [
                 Container(
-                  padding: EdgeInsets.only(right: 0,top: 15),
+                  padding: EdgeInsets.only(right: 0, top: 15),
                   child: DropdownButtonFormField<BrandModelforDB>(
                       value: _siteProductFromLocalDB1,
                       items: siteProductEntityfromLoaclDB
                           .map((label) => DropdownMenuItem(
-                        child: Text(
-                          label.productName,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                        ),
-                        value: label,
-                      ))
+                                child: Text(
+                                  label.productName,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                ),
+                                value: label,
+                              ))
                           .toList(),
 
                       // hint: Text('Rating'),
@@ -249,11 +250,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         print(value);
                         setState(() {
                           _siteProductFromLocalDB1 = value;
-                          print("Product "+_siteProductFromLocalDB1.id.toString());
+                          print("Product " +
+                              _siteProductFromLocalDB1.id.toString());
                         });
                       },
                       decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "Product Sold")),),
+                          labelText: "Product Sold")),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
                   child: Text(
@@ -266,7 +269,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   ),
                 ),
                 TextFormField(
-                  controller: _brandPriceVisit1,
+                  controller: productDynamicList[index].brandPrice,
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Please enter Site Built-Up Area ';
@@ -279,8 +282,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       color: ColorConstants.inputBoxHintColor,
                       fontFamily: "Muli"),
                   keyboardType: TextInputType.number,
-                  decoration: FormFieldStyle.buildInputDecoration(labelText: "Brand Price"),
-
+                  decoration: FormFieldStyle.buildInputDecoration(
+                      labelText: "Brand Price"),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
@@ -293,9 +296,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     ),
                   ),
                 ),
-
                 Padding(
-                  padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
+                  padding:
+                      const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
                   child: Text(
                     "No. of Bags Supplied",
                     style: TextStyle(
@@ -311,7 +314,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       child: Padding(
                         padding: const EdgeInsets.only(right: 10.0),
                         child: TextFormField(
-                          controller: _dateOfBagSupplied1,
+                          controller: productDynamicList[index].supplyDate,
                           readOnly: true,
                           onChanged: (data) {
                             // setState(() {
@@ -332,14 +335,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             ),
                             disabledBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.black26, width: 1.0),
+                                  BorderSide(color: Colors.black26, width: 1.0),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.black26, width: 1.0),
+                                  BorderSide(color: Colors.black26, width: 1.0),
                             ),
                             errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red, width: 1.0),
+                              borderSide:
+                                  BorderSide(color: Colors.red, width: 1.0),
                             ),
                             labelText: "Date ",
                             suffixIcon: IconButton(
@@ -358,10 +362,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 );
 
                                 setState(() {
-                                  final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                                  if(picked!=null) {
-                                    final String formattedDate = formatter.format(picked);
-                                    _dateOfBagSupplied1.text = formattedDate;
+                                  final DateFormat formatter =
+                                      DateFormat("yyyy-MM-dd");
+                                  if (picked != null) {
+                                    final String formattedDate =
+                                        formatter.format(picked);
+                                    productDynamicList[index].supplyDate.text = formattedDate;
+                                    // _dateOfBagSupplied1.text = formattedDate;
                                   }
                                 });
                               },
@@ -384,7 +391,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: TextFormField(
-                          controller: _siteCurrentTotalBags1,
+                          controller: productDynamicList[index].supplyQty,
                           onChanged: (v) {
                             print(v);
                           },
@@ -400,7 +407,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "No. Of Bags",
                           ),
@@ -421,54 +428,60 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   ),
                 ),
                 Center(
-                  child:
-                  RaisedButton(
-                    elevation:
-                    5,
-                    shape:
-                    RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius.circular(5.0),
+                  child: RaisedButton(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
                     ),
-                    color:
-                    HexColor("#1C99D4"),
-                    child:
-                    Padding(
-                      padding:
-                      const EdgeInsets.only(bottom: 1, top: 1),
-                      child:
-                      Text(
+                    color: HexColor("#1C99D4"),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 1, top: 1),
+                      child: Text(
                         "Add Product",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 0, fontSize: 15),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0,
+                            fontSize: 15),
                       ),
                     ),
-                    onPressed:
-                        () async {
-                          print("index3"+index.toString());
-                          if (_siteProductFromLocalDB1 != null || _dateOfBagSupplied1!=null || _siteCurrentTotalBags1!=null ||_brandPriceVisit1!=null) {
-                            setState(() {
-                            productDynamicList[index] =  new SiteVisitHistoryEntity(
+                    onPressed: () async {
+                      print("index3" + index.toString()+".."+productDynamicList[index].supplyDate.text);
+                      if(_siteProductFromLocalDB1 == null ){
+                        Get.dialog(CustomDialogs()
+                            .showMessage("Please select product sold !"));
+                        return;
+                      }
+
+                      if(productDynamicList[index].brandPrice.text.isEmpty){
+                        Get.dialog(CustomDialogs()
+                            .showMessage("Please enter brand price !"));
+                        return;
+                      }
+
+                      if(productDynamicList[index].supplyDate.text.isEmpty){
+                        Get.dialog(CustomDialogs()
+                            .showMessage("Please Select Date !"));
+                        return;
+                      }
+
+                      if(productDynamicList[index].supplyQty.text.isEmpty){
+                        Get.dialog(CustomDialogs()
+                            .showMessage("Please Enter Supply Quantity !"));
+                        return;
+                      }
+                      setState(() {
+                        productDynamicList[index] =
+                            new ProductListModel(
                                 brandId: _siteProductFromLocalDB1.id,
-                                brandPrice: _brandPriceVisit1.text,
-                                supplyDate: _dateOfBagSupplied1.text,
-                                supplyQty: _siteCurrentTotalBags1.text);
-
-                            // productDynamicList.insert(index,new SiteVisitHistoryEntity(
-                            //     brandId: _siteProductFromLocalDB1.id,
-                            //     brandPrice: _brandPriceVisit1.text,
-                            //     supplyDate: _dateOfBagSupplied1.text,
-                            //     supplyQty: _siteCurrentTotalBags1.text));
-                            });
-
-                            print("OnClickData-->"+productDynamicList[index].brandId.toString()+" "+_dateOfBagSupplied1.text);
-
-                          }else  {
-                          Get.dialog(CustomDialogs().showMessage("Please fill all details !!!"));
-                          }
+                                brandPrice: productDynamicList[index].brandPrice,
+                                supplyDate: productDynamicList[index].supplyDate,
+                                supplyQty: productDynamicList[index].supplyQty,
+                            isExpanded:new ExpandableController(initialExpanded: false));
+                      });
                     },
                   ),
                 ),
-
               ],
             ),
           ],
@@ -478,15 +491,26 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         children: [
           Expanded(
               flex: 7,
-              child:Text("Enter Details", softWrap: true, maxLines: 1, overflow: TextOverflow.ellipsis,style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  // color: HexColor("#000000DE"),
-                  fontFamily: "Muli"),)),Expanded(
+              child: Text(productDynamicList[index].supplyDate.text.isEmpty || productDynamicList[index].supplyQty.text.isEmpty || productDynamicList[index].brandPrice.text.isEmpty || productDynamicList[index].brandId==-1? "Fill product Details":
+              _siteProductFromLocalDB1.brandName+"  Qty: "+productDynamicList[index].supplyQty.text,
+                softWrap: true,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    // color: HexColor("#000000DE"),
+                    fontFamily: "Muli"),
+              )),
+          Expanded(
             flex: 1,
-            child:
-            GestureDetector(
+            child: GestureDetector(
               onTap: () {
+                int index1 = siteVisitHistoryEntity.indexWhere((element) => element.brandId==productDynamicList[index].brandId && element.brandPrice==productDynamicList[index].brandPrice.text
+                && element.supplyDate==productDynamicList[index].supplyDate.text && element.supplyQty==productDynamicList[index].supplyQty.text);
+                if(index1!=-1){
+                  siteVisitHistoryEntity.removeAt(index1);
+                }
                 productDynamicList.removeAt(index);
                 setState(() {});
               },
@@ -503,7 +527,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     // TODO: implement initState
     super.initState();
     _tabController =
-        TabController(vsync: this, length: 4, initialIndex: widget.tabIndex);
+        TabController(vsync: this, length: 5, initialIndex: widget.tabIndex);
+
     //_controller.addListener(_handleTabSelection);
     // print(widget.siteId);
     getSiteData();
@@ -688,11 +713,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               _siteTotalBalanceBags.text == "") {
             _siteTotalBalancePt.clear();
           } else {
-            _siteTotalBalancePt.text = (int.parse(
-                _siteTotalBalanceBags
-                    .text) /
-                20)
-                .toString();
+            _siteTotalBalancePt.text =
+                (int.parse(_siteTotalBalanceBags.text) / 20).toString();
           }
 
           _plotNumber.text = sitesModal.sitePlotNumber;
@@ -707,6 +729,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _so.text = sitesModal.siteSoname;
           geoTagType = sitesModal.siteGeotagType;
 
+          siteCreationDate = sitesModal.siteCreationDate;
+          visitRemarks = sitesModal.siteClosureReasonText;
           //   print(sitesModal.);
 
           //   print(sitesModal.siteGeotagLatitude);
@@ -757,6 +781,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
               }
             }
+          }else{
+            _siteProbabilityWinningEntity = siteProbabilityWinningEntity[0];
           }
 
           siteCompetitionStatusEntity =
@@ -769,6 +795,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
               }
             }
+          }else{
+            _siteCompetitionStatusEntity = siteCompetitionStatusEntity[0];
           }
 
           siteOpportunityStatusEntity =
@@ -781,6 +809,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
               }
             }
+          }else{
+            _siteOpportunitStatusEnity = siteOpportunityStatusEntity[0];
           }
 
           if (viewSiteDataResponse.sitesModal.noOfFloors != null ||
@@ -810,6 +840,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   Widget build(BuildContext context) {
     //gv.selectedClass = widget.classroomId;
     SizeConfig().init(context);
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
@@ -1425,6 +1457,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     Tab(
                       text: "Past Stage History",
                     ),
+                    Tab(
+                      text: "Site Visit",
+                    ),
                   ]),
             ),
             body: TabBarView(
@@ -1438,6 +1473,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 // InfluencerView(),
                 pastStageHistoryview(),
                 // PastStageHistoryView()
+                SiteVisitWidget(
+                  siteId: widget.siteId,
+                  siteDate: siteCreationDate,
+                  selectedOpportunitStatusEnity: _siteOpportunitStatusEnity,
+                  siteOpportunityStatusEntity: siteOpportunityStatusEntity,
+                  visitRemarks: visitRemarks,
+                )
               ],
             ),
             floatingActionButton: BackFloatingButton(),
@@ -1946,23 +1988,25 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ),
 
                         DropdownButtonFormField<SiteProbabilityWinningEntity>(
-
                           value: _siteProbabilityWinningEntity,
                           items: [_siteProbabilityWinningEntity]
                               .map((label) => DropdownMenuItem(
-                            child: Text(
-                              label.siteProbabilityStatus,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
+                                    child: Text(
+                                      label==null?"":
+                                      label.siteProbabilityStatus,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color:
+                                              ColorConstants.inputBoxHintColor,
+                                          fontFamily: "Muli"),
+                                    ),
+                                    value: label,
+                                  ))
                               .toList(),
                           onChanged: (value) {
                             setState(() {
-                              labelProbabilityText = value.siteProbabilityStatus;
+                              labelProbabilityText =
+                                  value.siteProbabilityStatus;
                               labelProbabilityId = value.id;
                               _siteProbabilityWinningEntity = value;
                             });
@@ -1989,15 +2033,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           value: _siteCompetitionStatusEntity,
                           items: [_siteCompetitionStatusEntity]
                               .map((label) => DropdownMenuItem(
-                            child: Text(
-                              label.competitionStatus,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
+                                    child: Text(label==null?"":
+                                      label.competitionStatus,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color:
+                                              ColorConstants.inputBoxHintColor,
+                                          fontFamily: "Muli"),
+                                    ),
+                                    value: label,
+                                  ))
                               .toList(),
                           onChanged: (value) {
                             setState(() {
@@ -2026,15 +2071,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           value: _siteOpportunitStatusEnity,
                           items: [_siteOpportunitStatusEnity]
                               .map((label) => DropdownMenuItem(
-                            child: Text(
-                              label.opportunityStatus,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
+                                    child: Text(label==null?"":
+                                      label.opportunityStatus,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color:
+                                              ColorConstants.inputBoxHintColor,
+                                          fontFamily: "Muli"),
+                                    ),
+                                    value: label,
+                                  ))
                               .toList(),
                           onChanged: (value) {
                             setState(() {
@@ -3435,14 +3481,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     ),
                     onPressed: () async {
                       int index;
-                      if(productDynamicList.length==0){
+                      if (productDynamicList.length == 0) {
                         index = 0;
-                      }else{
+                      } else {
                         index = productDynamicList.length;
                       }
-                      print("index1"+index.toString());
+                      print("index1" + index.toString());
                       setState(() {
-                        productDynamicList.insert(index,null);
+                        ProductListModel product11 = new ProductListModel(brandId: -1,brandPrice: new TextEditingController(),supplyDate: new TextEditingController(),supplyQty: new TextEditingController(),isExpanded:new ExpandableController(initialExpanded: true));
+                        productDynamicList.insert(index, product11);
                       });
                     },
                   )),
@@ -6035,7 +6082,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   updateSiteLogic() async {
-    print("OnClickData-->"+productDynamicList.length.toString()+"fdsfd");
+    print("OnClickData-->" + productDynamicList.length.toString() + "fdsfd");
     siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
     int listLength = siteVisitHistoryEntity.length;
     if (listLength > 0) {
@@ -6097,34 +6144,34 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             authorisedOn: ""));
       }
 
-      if(productDynamicList!=null && productDynamicList.length>0){
-        for(int i=0 ; i<productDynamicList.length;i++) {
-          print("OnClickData-->");
-          print("OnClickData-->"+productDynamicList[i].brandId.toString());
-          siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
-            // totalBalancePotential: _siteTotalBalancePt.text,
-              constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
-              floorId: _selectedSiteVisitFloor.id,
-              stagePotential: _stagePotentialVisit.text,
-              brandId:productDynamicList[i].brandId,
-              brandPrice: productDynamicList[i].brandPrice,
-              constructionDate: _dateofConstruction.text,
-              siteId: widget.siteId,
-              // id: widget.siteId,
-              supplyDate:productDynamicList[i].supplyDate,
-              supplyQty: productDynamicList[i].supplyQty,
-              stageStatus: _stageStatus.text,
-              createdBy: empId,
-              soldToParty: visitDataDealer,
-              shipToParty: visitDataSubDealer,
-              receiptNumber: "",
-              isAuthorised: "N",
-              authorisedBy: "",
-              authorisedOn: ""));
+      if (productDynamicList != null && productDynamicList.length > 0) {
+        for (int i = 0; i < productDynamicList.length; i++) {
+         if(productDynamicList[i].brandId!=-1) {
+           siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
+             // totalBalancePotential: _siteTotalBalancePt.text,
+               constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
+               floorId: _selectedSiteVisitFloor.id,
+               stagePotential: _stagePotentialVisit.text,
+               brandId: productDynamicList[i].brandId,
+               brandPrice: productDynamicList[i].brandPrice.text,
+               constructionDate: _dateofConstruction.text,
+               siteId: widget.siteId,
+               // id: widget.siteId,
+               supplyDate: productDynamicList[i].supplyDate.text,
+               supplyQty: productDynamicList[i].supplyQty.text,
+               stageStatus: _stageStatus.text,
+               createdBy: empId,
+               soldToParty: visitDataDealer,
+               shipToParty: visitDataSubDealer,
+               receiptNumber: "",
+               isAuthorised: "N",
+               authorisedBy: "",
+               authorisedOn: ""));
+         }
         }
       }
 
-      print("SiteHistory--->"+siteVisitHistoryEntity.length.toString());
+      print("SiteHistory--->" + siteVisitHistoryEntity.length.toString());
 
       if (_selectedConstructionTypeVisitNextStage != null) {
         siteNextStageEntity.add(new SiteNextStageEntity(
@@ -6220,7 +6267,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "closureReasonText":
             (closureReasonText.text != "") ? closureReasonText.text : null,
         "createdBy": "",
-        "totalBalancePotential":_siteTotalBalanceBags.text,
+        "totalBalancePotential": _siteTotalBalanceBags.text,
         "siteCommentsEntity": newSiteCommentsEntity,
         "siteVisitHistoryEntity": siteVisitHistoryEntity,
         "siteNextStageEntity": siteNextStageEntity,

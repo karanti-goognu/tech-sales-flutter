@@ -1,3 +1,6 @@
+import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
+
 class ViewSiteDataResponse {
   String respCode;
   String respMsg;
@@ -18,6 +21,7 @@ class ViewSiteDataResponse {
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity;
   List<SiteInfluencerEntity> siteInfluencerEntity;
   List<CounterListModel> counterListModel;
+
 
 
 
@@ -362,7 +366,7 @@ class SitesModal {
     subdealerId = json['subdealerId'].toString() ?? "";
     siteSubDealerName = json['siteSubDealerName'].toString() ?? "";
 
-    totalBalancePotential = json['totalBalancePotential'].toString() ?? "";
+    totalBalancePotential = json['totalBalancePotential']!=null? json['totalBalancePotential'].toString():"";
 
   }
 
@@ -1042,3 +1046,38 @@ class CounterListModel {
     return data;
   }
 }
+class ProductListModel {
+  int brandId;
+  var brandPrice = TextEditingController();
+  var supplyDate = TextEditingController();
+  var supplyQty = TextEditingController();
+  var isExpanded = ExpandableController();
+
+
+  ProductListModel(
+      {this.brandId,
+        this.brandPrice,
+        this.supplyDate,
+        this.supplyQty,
+      this.isExpanded});
+
+  ProductListModel.fromJson(Map<String, dynamic> json) {
+    brandId = json['brandId'];
+    brandPrice.text = json['brandPrice'].toString() ?? "";
+    supplyDate.text = json['supplyDate'].toString() ?? "";
+    supplyQty.text = json['supplyQty'].toString() ?? "";
+    isExpanded.expanded = json['isExpanded'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['brandId'] = this.brandId;
+    data['brandPrice'] = this.brandPrice.text;
+    data['supplyDate'] = this.supplyDate.text;
+    data['supplyQty'] = this.supplyQty.text;
+    data['isExpanded'] = this.isExpanded.expanded;
+    return data;
+  }
+}
+
+
