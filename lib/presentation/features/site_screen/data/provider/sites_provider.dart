@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/Access
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -30,8 +31,9 @@ class MyApiClientSites {
 
   getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version = packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version = packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       print('Response body is : ${json.decode(response.body)}');
@@ -49,8 +51,9 @@ class MyApiClientSites {
 
   Future getAccessKeyNew() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version = packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version = packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -66,6 +69,7 @@ class MyApiClientSites {
 
   getSecretKey(String empId, String mobile) async {
     try {
+      version = VersionClass.getVersion();
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
@@ -92,6 +96,7 @@ class MyApiClientSites {
 
   getFilterData(String accessKey) async {
     try {
+      version = VersionClass.getVersion();
       String userSecurityKey = "empty";
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
@@ -122,6 +127,7 @@ class MyApiClientSites {
   getSitesData(String accessKey, String securityKey, String url) async {
     try {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
+      version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version));
@@ -143,6 +149,7 @@ class MyApiClientSites {
   getSearchData(String accessKey, String securityKey, String url) async {
     try {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
+      version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version));
@@ -164,10 +171,7 @@ class MyApiClientSites {
   getSiteDetailsData(String accessKey, String userSecurityKey, int siteId,
       String empID) async {
     try {
-      //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
-      var bodyEncrypted = {"SiteId": siteId};
-      // print('Request body is  : ${json.encode(bodyEncrypted)}');
-      // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
+      version = VersionClass.getVersion();
       String url = UrlConstants.getSiteData + "$siteId&referenceID=$empID";
       print(url);
       final response = await get(
@@ -205,6 +209,7 @@ class MyApiClientSites {
 
   updateSiteData(accessKey, String userSecurityKey, updateDataRequest,
       List<File> list, BuildContext context, int siteId) async {
+    version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateSiteData));
     print(UrlConstants.updateSiteData);
@@ -283,6 +288,7 @@ class MyApiClientSites {
   Future<SitesListModel> getSearchDataNew(String accessKey,
       String userSecurityKey, String empID, String searchText) async {
     try {
+      version = VersionClass.getVersion();
       String url =
           "${UrlConstants.getSiteSearchData}searchText=${searchText}&referenceID=$empID";
       print(url);

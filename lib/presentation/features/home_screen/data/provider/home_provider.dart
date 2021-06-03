@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
@@ -20,10 +21,9 @@ class MyApiClientHome {
 
   getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
-
-      print("Inside Access Key::::::::$version");
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -65,7 +65,7 @@ class MyApiClientHome {
 
 //      print('Request Body is ${json.encode(requestBody)}');
 //      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
-
+      version = VersionClass.getVersion();
       var response = await httpClient.post(UrlConstants.getCheckInDetails,
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey,version),
           body: jsonEncode(requestBody));
@@ -87,6 +87,7 @@ class MyApiClientHome {
 
   getHomePageDashboardDetails(String empId) async {
     try {
+      version = VersionClass.getVersion();
       String url = UrlConstants.homepageDashboardData + empId;
       print(url);
       var response = await httpClient.get(url, headers: requestHeaders(version));

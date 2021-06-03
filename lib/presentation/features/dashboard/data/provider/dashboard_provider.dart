@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/Da
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardYearlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -16,13 +17,14 @@ import 'package:package_info/package_info.dart';
 
 class MyApiClientDashboard {
   final http.Client httpClient;
-  String version;
+   String version;
   MyApiClientDashboard({this.httpClient});
 
   getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -42,6 +44,7 @@ class MyApiClientDashboard {
       String empID) async {
     try {
       var data;
+      version = VersionClass.getVersion();
       String url = UrlConstants.shareReport+empID;
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(url));
       request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey,version));
@@ -66,6 +69,7 @@ class MyApiClientDashboard {
 
   Future getMonthViewDetails(String empID, String yearMonth, String accessKey, String userSecurityKey, )async{
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.dashboadrMonthlyView+empID+'&yearMonth='+yearMonth;
       print(url);
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
@@ -89,6 +93,7 @@ class MyApiClientDashboard {
   Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth, String accessKey, String userSecurityKey, ) async{
     print('$empID $yearMonth');
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.dashboardMtdGeneratedVolumeSiteList+empID+'&yearMonth='+yearMonth;
       print(url);
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
@@ -110,6 +115,7 @@ class MyApiClientDashboard {
   Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth, String accessKey, String userSecurityKey, ) async{
     print('$empID $yearMonth');
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.dashboardMtdConvertedVolumeList+empID+'&yearMonth='+yearMonth;
       print(url);
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
@@ -130,6 +136,7 @@ class MyApiClientDashboard {
 
   Future getYearlyViewDetails(String empID,  String accessKey, String userSecurityKey, )async{
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.dashboardYearlyView+empID;
       print(url);
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
