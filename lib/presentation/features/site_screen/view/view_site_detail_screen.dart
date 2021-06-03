@@ -73,22 +73,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   SiteFloorsEntity _selectedSiteFloor;
   SiteFloorsEntity _selectedSiteVisitFloor;
   SiteFloorsEntity _selectedSiteVisitFloorNextStage;
-  SiteBrandEntity _siteBrand;
-  SiteBrandEntity _siteBrandNextStage;
   SiteStageEntity _siteStage;
   SiteProbabilityWinningEntity _siteProbabilityWinningEntity;
-
   SiteOpportunityStatusEntity _siteOpportunitStatusEnity;
   SiteCompetitionStatusEntity _siteCompetitionStatusEntity;
   List<File> _imageList = new List();
   int initialInfluencerLength = 0;
   BrandModelforDB _siteBrandFromLocalDB;
-
   BrandModelforDB _siteBrandFromLocalDBNextStage;
-
   BrandModelforDB _siteProductFromLocalDB;
   BrandModelforDB _siteProductFromLocalDB1;
-
   BrandModelforDB _siteProductFromLocalDBNextStage;
 
   List<DropdownMenuItem<String>> productSoldVisitSite = new List();
@@ -207,6 +201,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   Widget addProductDetails(int index) {
+
     return ExpandablePanel(
        controller: productDynamicList[index].isExpanded,
       header: Text(
@@ -230,7 +225,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 Container(
                   padding: EdgeInsets.only(right: 0, top: 15),
                   child: DropdownButtonFormField<BrandModelforDB>(
-                      value: _siteProductFromLocalDB1,
+                      value:  productDynamicList[index].brandModelForDB,
                       items: siteProductEntityfromLoaclDB
                           .map((label) => DropdownMenuItem(
                                 child: Text(
@@ -249,9 +244,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         print("Product Value");
                         print(value);
                         setState(() {
-                          _siteProductFromLocalDB1 = value;
-                          print("Product " +
-                              _siteProductFromLocalDB1.id.toString());
+                          productDynamicList[index].brandModelForDB=value;
+
+                          // _siteProductFromLocalDB1 = value;
+                          // print("Product " + _siteProductFromLocalDB1.id.toString());
+
                         });
                       },
                       decoration: FormFieldStyle.buildInputDecoration(
@@ -446,8 +443,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ),
                     ),
                     onPressed: () async {
-                      print("index3" + index.toString()+".."+productDynamicList[index].supplyDate.text);
-                      if(_siteProductFromLocalDB1 == null ){
+                      print("cssdsa  "+productDynamicList[index].brandModelForDB.brandName);
+                      if(productDynamicList[index].brandModelForDB == null ){
                         Get.dialog(CustomDialogs()
                             .showMessage("Please select product sold !"));
                         return;
@@ -470,14 +467,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             .showMessage("Please Enter Supply Quantity !"));
                         return;
                       }
+
                       setState(() {
                         productDynamicList[index] =
                             new ProductListModel(
-                                brandId: _siteProductFromLocalDB1.id,
+                                brandId: productDynamicList[index].brandModelForDB.id,
                                 brandPrice: productDynamicList[index].brandPrice,
                                 supplyDate: productDynamicList[index].supplyDate,
                                 supplyQty: productDynamicList[index].supplyQty,
-                            isExpanded:new ExpandableController(initialExpanded: false));
+                            isExpanded:new ExpandableController(initialExpanded: false),
+                            brandModelForDB:productDynamicList[index].brandModelForDB);
                       });
                     },
                   ),
@@ -492,9 +491,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           Expanded(
               flex: 7,
               child: Text(productDynamicList[index].supplyDate.text.isEmpty || productDynamicList[index].supplyQty.text.isEmpty || productDynamicList[index].brandPrice.text.isEmpty || productDynamicList[index].brandId==-1? "Fill product Details":
-              _siteProductFromLocalDB1.brandName+"  Qty: "+productDynamicList[index].supplyQty.text,
+              productDynamicList[index].brandModelForDB.productName+",  Qty:"+productDynamicList[index].supplyQty.text+", Price:"+productDynamicList[index].brandPrice.text,
                 softWrap: true,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -1471,7 +1470,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 // VisitDataView(siteId: widget.siteId,),
                 influencerView(),
                 // InfluencerView(),
-                pastStageHistoryview(),
+                pastStageHistoryView(),
                 // PastStageHistoryView()
                 SiteVisitWidget(
                   siteId: widget.siteId,
@@ -3488,7 +3487,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       }
                       print("index1" + index.toString());
                       setState(() {
-                        ProductListModel product11 = new ProductListModel(brandId: -1,brandPrice: new TextEditingController(),supplyDate: new TextEditingController(),supplyQty: new TextEditingController(),isExpanded:new ExpandableController(initialExpanded: true));
+                        BrandModelforDB brand;
+                        ProductListModel product11 = new ProductListModel(brandId: -1,brandPrice: new TextEditingController(),supplyDate: new TextEditingController(),supplyQty: new TextEditingController(),isExpanded:new ExpandableController(initialExpanded: true),brandModelForDB:brand);
                         productDynamicList.insert(index, product11);
                       });
                     },
@@ -4851,7 +4851,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     );
   }
 
-  Widget pastStageHistoryview() {
+  Widget pastStageHistoryView() {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),

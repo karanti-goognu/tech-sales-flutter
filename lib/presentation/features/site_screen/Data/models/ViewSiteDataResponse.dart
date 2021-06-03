@@ -1,5 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 
 class ViewSiteDataResponse {
   String respCode;
@@ -1052,6 +1053,7 @@ class ProductListModel {
   var supplyDate = TextEditingController();
   var supplyQty = TextEditingController();
   var isExpanded = ExpandableController();
+  BrandModelforDB brandModelForDB;
 
 
   ProductListModel(
@@ -1059,7 +1061,8 @@ class ProductListModel {
         this.brandPrice,
         this.supplyDate,
         this.supplyQty,
-      this.isExpanded});
+      this.isExpanded,
+      this.brandModelForDB});
 
   ProductListModel.fromJson(Map<String, dynamic> json) {
     brandId = json['brandId'];
@@ -1067,6 +1070,7 @@ class ProductListModel {
     supplyDate.text = json['supplyDate'].toString() ?? "";
     supplyQty.text = json['supplyQty'].toString() ?? "";
     isExpanded.expanded = json['isExpanded'];
+    brandModelForDB = json['brandModelForDB'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1076,6 +1080,7 @@ class ProductListModel {
     data['supplyDate'] = this.supplyDate.text;
     data['supplyQty'] = this.supplyQty.text;
     data['isExpanded'] = this.isExpanded.expanded;
+    data['brandModelForDB'] = this.brandModelForDB;
     return data;
   }
 }
