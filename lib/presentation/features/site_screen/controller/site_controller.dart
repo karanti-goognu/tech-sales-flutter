@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/Repository/sites_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -330,6 +331,38 @@ class SiteController extends GetxController {
 
     return _siteList;
     //await db.removeLeadInDraft(2);
+  }
+
+
+
+  getAccessKeyAndSaveSiteRequest(
+      SiteVisitRequestModel siteVisitRequestModel, ) {
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+
+    _prefs.then((SharedPreferences prefs) async {
+      String accessKey = await repository.getAccessKeyNew();
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel)
+          .then((value) {
+        Get.back();
+        if (value.respCode == 'MWP2028') {
+          Get.dialog(
+              CustomDialogs().showDialogSubmitSite(value.respMsg.toString()),
+              barrierDismissible: false);
+        } else {
+          Get.back();
+          Get.dialog(
+              CustomDialogs().errorDialog(value.respMsg.toString()),
+              barrierDismissible: false);
+        }
+      });
+    });
   }
 
 

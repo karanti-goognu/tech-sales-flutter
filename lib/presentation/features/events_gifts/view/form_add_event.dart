@@ -113,6 +113,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 
     final eventDropDwn = DropdownButtonFormField(
+
       onChanged: (value) {
         setState(() {
           _eventTypeId = value;

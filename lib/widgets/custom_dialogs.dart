@@ -139,6 +139,85 @@ class CustomDialogs {
     );
   }
 
+  Widget messageDialogMWPCreate(String message) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: AlertDialog(
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                message,
+                style: GoogleFonts.roboto(
+                    fontSize: 16,
+                    height: 1.4,
+                    letterSpacing: .25,
+                    fontStyle: FontStyle.normal,
+                    color: ColorConstants.inputBoxHintColorDark),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              'OK',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  letterSpacing: 1.25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.buttonNormalColor),
+            ),
+            onPressed: () {
+              Get.back();
+              Get.toNamed(Routes.ADD_MWP_SCREEN);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget messageDialogSRC(String message) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: AlertDialog(
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                message,
+                style: GoogleFonts.roboto(
+                    fontSize: 16,
+                    height: 1.4,
+                    letterSpacing: .25,
+                    fontStyle: FontStyle.normal,
+                    color: ColorConstants.inputBoxHintColorDark),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              'OK',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  letterSpacing: 1.25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.buttonNormalColor),
+            ),
+            onPressed: () {
+              Get.back();
+              //Get.offNamed(Routes.HOME_SCREEN);
+              Get.toNamed(Routes.SERVICE_REQUESTS);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget redirectToLoginDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -206,6 +285,43 @@ class CustomDialogs {
             Get.back();
             //Get.back();
             Get.toNamed(Routes.EVENTS_GIFTS);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget showDialogSubmitSite(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            //Get.back();
+            Get.toNamed(Routes.SITES_SCREEN);
           },
         ),
       ],
@@ -325,6 +441,7 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
+            Get.toNamed(Routes.LEADS_SCREEN);
             //Below line was commented for leads screen, if it's being use somewhere else, please consider.. s s
 //            Get.toNamed(Routes.HOME_SCREEN);
           },

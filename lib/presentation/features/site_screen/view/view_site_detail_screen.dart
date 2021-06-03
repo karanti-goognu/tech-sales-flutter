@@ -149,6 +149,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   String siteCreationDate, visitRemarks;
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
   SitesModal sitesModal;
+  MwpVisitModel mwpVisitModel;
   List<SiteFloorsEntity> siteFloorsEntity = new List();
   List<SiteFloorsEntity> siteFloorsEntityNew = new List();
   List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List();
@@ -337,6 +338,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
 
           sitesModal = viewSiteDataResponse.sitesModal;
+          mwpVisitModel = viewSiteDataResponse.mwpVisitModel;
           _siteProductDemo.text = sitesModal.siteProductDemo;
           if (_siteProductDemo.text == 'N') {
             isSwitchedsiteProductDemo = false;
@@ -1177,9 +1179,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 // InfluencerView(),
                 pastStageHistoryview(),
                 // PastStageHistoryView()
-                SiteVisitWidget(siteId:widget.siteId,
-                  siteDate: siteCreationDate,
-                  selectedOpportunitStatusEnity: _siteOpportunitStatusEnity, siteOpportunityStatusEntity: siteOpportunityStatusEntity, visitRemarks: visitRemarks,)
+                SiteVisitWidget(
+                  mwpVisitModel: mwpVisitModel,
+                  siteId:widget.siteId,
+                  siteOpportunityStatusEntity: siteOpportunityStatusEntity,)
               ],
             ),
             floatingActionButton: BackFloatingButton(),

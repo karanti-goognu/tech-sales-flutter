@@ -329,17 +329,19 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
 
                   }
                   gv.fromLead = false;
-                  Get.back();
-                  Get.back();
-                  if(saveLeadRequestModel.eventId ==null){
-                  Get.back();
-                  Get.toNamed(Routes.HOME_SCREEN);
-                  }
-
-
-
                   Get.dialog(CustomDialogs()
                       .showDialogSubmitLead("Lead Added Successfully !!!"));
+                  // Get.back();
+                  // Get.back();
+                  if(saveLeadRequestModel.eventId ==null){
+                  Get.back();
+                  Get.dialog(CustomDialogs()
+                      .showDialogSubmitLead("Lead Added Successfully !!!"));
+                  //Get.toNamed(Routes.HOME_SCREEN);
+                  }
+
+                  // Get.dialog(CustomDialogs()
+                  //     .showDialogSubmitLead("Lead Added Successfully !!!"));
                 } else if (saveLeadResponse.respCode == "LD2012") {
                   gv.fromLead = false;
                   Get.dialog(CustomDialogs().showExistingTSODialog(

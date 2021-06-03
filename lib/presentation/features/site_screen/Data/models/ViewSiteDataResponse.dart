@@ -2,6 +2,7 @@ class ViewSiteDataResponse {
   String respCode;
   String respMsg;
   SitesModal sitesModal;
+  MwpVisitModel mwpVisitModel;
   List<SiteFloorsEntity> siteFloorsEntity;
   List<SitephotosEntity> sitephotosEntity;
   List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
@@ -28,6 +29,7 @@ class ViewSiteDataResponse {
       {this.respCode,
       this.respMsg,
       this.sitesModal,
+        this.mwpVisitModel,
       this.siteFloorsEntity,
       this.sitephotosEntity,
       this.siteVisitHistoryEntity,
@@ -50,6 +52,9 @@ class ViewSiteDataResponse {
     respMsg = json['respMsg'];
     sitesModal = json['sitesModal'] != null
         ? new SitesModal.fromJson(json['sitesModal'])
+        : null;
+    mwpVisitModel = json['mwpVisitModel'] != null
+        ? new MwpVisitModel.fromJson(json['mwpVisitModel'])
         : null;
     if (json['siteFloorsEntity'] != null) {
       siteFloorsEntity = new List<SiteFloorsEntity>();
@@ -156,6 +161,9 @@ class ViewSiteDataResponse {
     data['respMsg'] = this.respMsg;
     if (this.sitesModal != null) {
       data['sitesModal'] = this.sitesModal.toJson();
+    }
+    if (this.mwpVisitModel != null) {
+      data['mwpVisitModel'] = this.mwpVisitModel.toJson();
     }
     if (this.siteFloorsEntity != null) {
       data['siteFloorsEntity'] =
@@ -409,6 +417,79 @@ class SitesModal {
     data['subdealerId'] = this.subdealerId;
     data['siteSubDealerName'] = this.siteSubDealerName;
 
+    return data;
+  }
+}
+
+class MwpVisitModel {
+  int id;
+  String visitSubType;
+  int docId;
+  String visitDate;
+  String visitType;
+  String visitStartTime;
+  String visitStartLat;
+  String visitStartLong;
+  String visitEndTime;
+  String visitEndLat;
+  String visitEndLong;
+  int nextVisitDate;
+  String visitOutcomes;
+  String remark;
+  String inflName;
+
+  MwpVisitModel(
+      {this.id,
+        this.visitSubType,
+        this.docId,
+        this.visitDate,
+        this.visitType,
+        this.visitStartTime,
+        this.visitStartLat,
+        this.visitStartLong,
+        this.visitEndTime,
+        this.visitEndLat,
+        this.visitEndLong,
+        this.nextVisitDate,
+        this.visitOutcomes,
+        this.remark,
+        this.inflName});
+
+  MwpVisitModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    visitSubType = json['visitSubType'];
+    docId = json['docId'];
+    visitDate = json['visitDate'];
+    visitType = json['visitType'];
+    visitStartTime = json['visitStartTime'];
+    visitStartLat = json['visitStartLat'];
+    visitStartLong = json['visitStartLong'];
+    visitEndTime = json['visitEndTime'];
+    visitEndLat = json['visitEndLat'];
+    visitEndLong = json['visitEndLong'];
+    nextVisitDate = json['nextVisitDate'];
+    visitOutcomes = json['visitOutcomes'];
+    remark = json['remark'];
+    inflName = json['inflName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['visitSubType'] = this.visitSubType;
+    data['docId'] = this.docId;
+    data['visitDate'] = this.visitDate;
+    data['visitType'] = this.visitType;
+    data['visitStartTime'] = this.visitStartTime;
+    data['visitStartLat'] = this.visitStartLat;
+    data['visitStartLong'] = this.visitStartLong;
+    data['visitEndTime'] = this.visitEndTime;
+    data['visitEndLat'] = this.visitEndLat;
+    data['visitEndLong'] = this.visitEndLong;
+    data['nextVisitDate'] = this.nextVisitDate;
+    data['visitOutcomes'] = this.visitOutcomes;
+    data['remark'] = this.remark;
+    data['inflName'] = this.inflName;
     return data;
   }
 }

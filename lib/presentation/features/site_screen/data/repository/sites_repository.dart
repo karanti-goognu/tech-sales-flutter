@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/provider/sites_provider.dart';
 import 'package:meta/meta.dart';
@@ -58,6 +59,12 @@ class MyRepositorySites {
       String userSecurityKey, String empID, String searchText) {
     return apiClient.getSearchDataNew(
         accessKey, userSecurityKey, empID, searchText);
+  }
+
+  Future<SiteVisitResponseModel>siteVisitSave(String accessKey,
+      String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
+    return apiClient.siteVisitSave(
+        accessKey, userSecretKey, siteVisitRequestModel);
   }
 
 //getSiteData(String accessKey, String userSecurityKey, int leadId) {}

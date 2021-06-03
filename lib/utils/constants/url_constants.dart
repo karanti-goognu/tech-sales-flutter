@@ -72,6 +72,8 @@ abstract class UrlConstants {
  static const String dashboardYearlyView = '$baseUrl/dashboard/dashboardYearlyView?referenceID=';
 
 
+ static const String saveUpdateSiteVisit = '$baseUrl/mwp/Save-update-site_visit';
+
  ///Events and Gifts
  static const String getAddEvent = '$baseUrl/event/add-event?referenceID=';
  static const String getInfluencer = '$baseUrl/event/view-influencer?mobileNumber=';

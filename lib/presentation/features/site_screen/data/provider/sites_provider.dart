@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
@@ -299,5 +300,24 @@ class MyApiClientSites {
     } catch (_) {
       print('exception at EG repo ${_.toString()}');
     }
+  }
+
+
+  Future<SiteVisitResponseModel>siteVisitSave(String accessKey, String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
+    SiteVisitResponseModel siteVisitResponseModel;
+    try{
+      var response = await http.post(Uri.parse(UrlConstants.saveUpdateSiteVisit),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        body: json.encode(siteVisitRequestModel),
+      );
+      siteVisitResponseModel = SiteVisitResponseModel.fromJson(json.decode(response.body));
+      print('URL : ${response.request}');
+      print('RESP: ${response.body}');
+      print('RESPONSE : ${json.encode(siteVisitRequestModel)}');
+    }
+    catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return siteVisitResponseModel;
   }
 }
