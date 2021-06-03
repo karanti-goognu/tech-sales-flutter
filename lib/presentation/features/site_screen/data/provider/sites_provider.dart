@@ -185,7 +185,7 @@ class MyApiClientSites {
         // print('@@@@');
         // print(data);
         ViewSiteDataResponse viewSiteDataResponse =
-            ViewSiteDataResponse.fromJson(data);
+        ViewSiteDataResponse.fromJson(data);
         // print('@@@@');
         // print(viewSiteDataResponse.counterListModel[0].soldToParty);
         if (viewSiteDataResponse.respCode == "ST2010") {
@@ -224,7 +224,7 @@ class MyApiClientSites {
 
       // multipart that takes file
       var multipartFileSign =
-          new http.MultipartFile('file', stream, length, filename: fileName);
+      new http.MultipartFile('file', stream, length, filename: fileName);
 
       request.files.add(multipartFileSign);
     }
@@ -252,27 +252,27 @@ class MyApiClientSites {
         request
             .send()
             .then((result) async {
-              http.Response.fromStream(result).then((response) {
-                print("---@@---");
-                print(response.body);
+          http.Response.fromStream(result).then((response) {
+            print("---@@---");
+            print(response.body);
 
-                var data = json.decode(response.body);
-                //    print(data);
+            var data = json.decode(response.body);
+            //    print(data);
 
-                //      print(response.body)  ;
-                UpdateLeadResponseModel updateLeadResponseModel =
-                    UpdateLeadResponseModel.fromJson(data);
-                //  print(response.body);
-                if (updateLeadResponseModel.respCode == "ST2033") {
-                  Get.back();
-                  Get.dialog(CustomDialogs()
-                      .showDialog(updateLeadResponseModel.respMsg));
-                } else {
-                  Get.dialog(CustomDialogs()
-                      .showDialog(updateLeadResponseModel.respMsg));
-                }
-              });
-            })
+            //      print(response.body)  ;
+            UpdateLeadResponseModel updateLeadResponseModel =
+            UpdateLeadResponseModel.fromJson(data);
+            //  print(response.body);
+            if (updateLeadResponseModel.respCode == "ST2033") {
+              Get.back();
+              Get.dialog(CustomDialogs()
+                  .showDialog(updateLeadResponseModel.respMsg));
+            } else {
+              Get.dialog(CustomDialogs()
+                  .showDialog(updateLeadResponseModel.respMsg));
+            }
+          });
+        })
             .catchError((err) => print('error : ' + err.toString()))
             .whenComplete(() {});
       } catch (_) {
