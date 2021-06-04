@@ -1,3 +1,7 @@
+import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+
 class ViewSiteDataResponse {
   String respCode;
   String respMsg;
@@ -275,6 +279,8 @@ class SitesModal {
   String subdealerId;
   String siteSubDealerName;
 
+  String totalBalancePotential;
+
   SitesModal(
       {this.assignedTo,
         this.createdOn,
@@ -319,7 +325,8 @@ class SitesModal {
         this.updatedBy,
         this.updatedOn,
         this.isDealerConfirmedChangedBySo,
-        this.subdealerId
+        this.subdealerId,
+        this.totalBalancePotential
       });
 
   SitesModal.fromJson(Map<String, dynamic> json) {
@@ -367,6 +374,8 @@ class SitesModal {
     isDealerConfirmedChangedBySo = json['isDealerConfirmedChangedBySo'].toString() ?? "";
     subdealerId = json['subdealerId'].toString() ?? "";
     siteSubDealerName = json['siteSubDealerName'].toString() ?? "";
+
+    totalBalancePotential = json['totalBalancePotential']!=null? json['totalBalancePotential'].toString():"";
 
   }
 
@@ -416,6 +425,7 @@ class SitesModal {
     data['isDealerConfirmedChangedBySo'] = this.isDealerConfirmedChangedBySo;
     data['subdealerId'] = this.subdealerId;
     data['siteSubDealerName'] = this.siteSubDealerName;
+    data['totalBalancePotential'] = this.totalBalancePotential;
 
     return data;
   }
@@ -631,7 +641,7 @@ class SitephotosEntity {
 
 class SiteVisitHistoryEntity {
   int id;
-  String totalBalancePotential;
+  // String totalBalancePotential;
   int constructionStageId;
   int floorId;
   String stagePotential;
@@ -656,7 +666,7 @@ class SiteVisitHistoryEntity {
 
   SiteVisitHistoryEntity(
       {this.id,
-        this.totalBalancePotential,
+        // this.totalBalancePotential,
         this.constructionStageId,
         this.floorId,
         this.stagePotential,
@@ -677,7 +687,7 @@ class SiteVisitHistoryEntity {
 
   SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    totalBalancePotential = json['totalBalancePotential'].toString() ?? "";
+    // totalBalancePotential = json['totalBalancePotential'].toString() ?? "";
     constructionStageId = json['constructionStageId'];
     floorId = json['floorId'];
     stagePotential = json['stagePotential'].toString() ?? "";
@@ -703,7 +713,7 @@ class SiteVisitHistoryEntity {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['totalBalancePotential'] = this.totalBalancePotential;
+    // data['totalBalancePotential'] = this.totalBalancePotential;
     data['constructionStageId'] = this.constructionStageId;
     data['floorId'] = this.floorId;
     data['stagePotential'] = this.stagePotential;
@@ -1115,6 +1125,43 @@ class CounterListModel {
     data['soldToPartyName'] = this.soldToPartyName;
     data['shipToParty'] = this.shipToParty;
     data['shipToPartyName'] = this.shipToPartyName;
+    return data;
+  }
+}
+class ProductListModel {
+  int brandId;
+  var brandPrice = TextEditingController();
+  var supplyDate = TextEditingController();
+  var supplyQty = TextEditingController();
+  var isExpanded = ExpandableController();
+  BrandModelforDB brandModelForDB;
+
+
+  ProductListModel(
+      {this.brandId,
+        this.brandPrice,
+        this.supplyDate,
+        this.supplyQty,
+      this.isExpanded,
+      this.brandModelForDB});
+
+  ProductListModel.fromJson(Map<String, dynamic> json) {
+    brandId = json['brandId'];
+    brandPrice.text = json['brandPrice'].toString() ?? "";
+    supplyDate.text = json['supplyDate'].toString() ?? "";
+    supplyQty.text = json['supplyQty'].toString() ?? "";
+    isExpanded.expanded = json['isExpanded'];
+    brandModelForDB = json['brandModelForDB'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['brandId'] = this.brandId;
+    data['brandPrice'] = this.brandPrice.text;
+    data['supplyDate'] = this.supplyDate.text;
+    data['supplyQty'] = this.supplyQty.text;
+    data['isExpanded'] = this.isExpanded.expanded;
+    data['brandModelForDB'] = this.brandModelForDB;
     return data;
   }
 }

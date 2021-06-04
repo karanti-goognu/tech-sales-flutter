@@ -19,6 +19,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
@@ -33,8 +34,9 @@ class MyApiClientEvent {
 
   Future getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -52,6 +54,7 @@ class MyApiClientEvent {
 
   Future<AllEventsModel> eventSearch(String accessKey, String userSecurityKey, String empID, String searchText) async {
     try {
+      version = VersionClass.getVersion();
       String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
       print(url);
       var response = await httpClient.get(url,
@@ -74,6 +77,7 @@ class MyApiClientEvent {
     try {
       // print(accessKey);
       // print(userSecretKey);
+      version = VersionClass.getVersion();
       print('DDDD: ${UrlConstants.getAddEvent}');
 
       var response = await http.get(Uri.parse(UrlConstants.getAddEvent + empID),
@@ -91,6 +95,7 @@ class MyApiClientEvent {
   Future<InfluencerViewModel> getInfluenceType(String accessKey, String userSecretKey, String mobileNo) async{
     InfluencerViewModel influencerViewModel;
     try {
+      version = VersionClass.getVersion();
       var response = await http.get(
           Uri.parse(UrlConstants.getInfluencer + mobileNo),
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -109,6 +114,7 @@ class MyApiClientEvent {
   Future<AllEventsModel> getAllEventData(String accessKey, String userSecretKey, String url) async {
     AllEventsModel allEventsModel;
     try {
+      version = VersionClass.getVersion();
       var response = await http.get(
           Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -127,6 +133,7 @@ class MyApiClientEvent {
       String userSecretKey, String empID) async {
     ApprovedEventsModel approvedEventsModel;
     try {
+      version = VersionClass.getVersion();
       var response = await http.get(
           Uri.parse(UrlConstants.getApproveEvents + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -145,6 +152,7 @@ class MyApiClientEvent {
       String userSecretKey, String empID, int eventId) async {
     DetailEventModel detailEventModel;
     try {
+      version = VersionClass.getVersion();
       var response = await http.get(
           Uri.parse(UrlConstants.getDetailEvent + empID + "&eventId=$eventId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -164,6 +172,7 @@ class MyApiClientEvent {
   Future<SaveEventResponse>saveEventRequest(String accessKey, String userSecretKey, SaveEventFormModel saveEventFormModel) async {
     SaveEventResponse saveEventResponse;
     try{
+      version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveEvent),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(saveEventFormModel),
@@ -184,6 +193,7 @@ class MyApiClientEvent {
       String userSecretKey, String empID, int eventId) async {
     DeleteEventModel deleteEventModel;
     try {
+      version = VersionClass.getVersion();
       var response = await http.get(
           Uri.parse(UrlConstants.deleteEvent + empID + "&eventId=$eventId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -204,6 +214,7 @@ class MyApiClientEvent {
   Future<StartEventResponse>startEvent(String accessKey, String userSecretKey, StartEventModel startEventModel) async {
     StartEventResponse startEventResponse;
     try{
+      version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.startEvent),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(startEventModel),
@@ -221,6 +232,7 @@ class MyApiClientEvent {
   Future<EndEventModel> getEndEventDetail(String accessKey,String userSecretKey, String empId, String eventId) async{
     EndEventModel endEventModel;
     try{
+      version = VersionClass.getVersion();
       var url = UrlConstants.endEvent +empId + "&eventId=$eventId";
       print(url);
       var response = await http.get(url, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
@@ -235,9 +247,9 @@ class MyApiClientEvent {
   Future<EventResponse> submitEndEventDetail(String accessKey,String userSecretKey, String empId, int eventId,
       String eventComment,String eventDate,double eventEndLat,double eventEndLong) async{
     EventResponse endEventModel;
+    version = VersionClass.getVersion();
     EndEventDetailModel endEventDetailModel = new EndEventDetailModel(eventComment, eventDate, eventEndLat, eventEndLong, eventId, empId);
     try{
-
       var body = {
           "eventComment": "$eventComment",
           "eventDate": eventDate,
@@ -246,10 +258,6 @@ class MyApiClientEvent {
           "eventId": eventId,
           "referenceId": empId
       };
-      print("event-->"+body.toString());
-      print('RESPONSE : ${json.encode(endEventDetailModel)}');
-      print("event-->"+UrlConstants.submitEndEvent);
-      print("event-->"+requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version).toString());
       var response = await http.post(Uri.parse(UrlConstants.submitEndEvent),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(endEventDetailModel)
@@ -268,6 +276,7 @@ class MyApiClientEvent {
       String userSecretKey, String empID, int eventId) async {
     DealerInfModel dealerInfModel;
     try {
+      version = VersionClass.getVersion();
       var response = await http.get(
           Uri.parse(UrlConstants.getDealerInfList + empID + "&eventId=$eventId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -287,6 +296,7 @@ class MyApiClientEvent {
   Future<UpdateDealerInfResponse>updateDealerInf(String accessKey, String userSecretKey, UpdateDealerInfModel updateDealerInfModel) async {
     UpdateDealerInfResponse updateDealerInfResponse;
     try{
+      version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveEventDealersInfluencers),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(updateDealerInfModel),
@@ -306,17 +316,11 @@ class MyApiClientEvent {
  Future<InfDetailModel> getInfdata(String accessKey,
     String userSecretKey, String contact) async {
   InfDetailModel infDetailModel;
-  print("print-->"+contact);
   try {
+    version = VersionClass.getVersion();
     var response = await http.get(Uri.parse(UrlConstants.getInfDetails + "$contact"),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
-
-    print("print-->"+json.decode(response.body).toString());
-
     infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
-    print('RESP : ${response.body}');
-    print(
-        'UURL:::: ${UrlConstants.getInfDetails + "$contact"}');
   }
   catch (e) {
     print("Exception at EG Repo $e");
@@ -329,14 +333,11 @@ class MyApiClientEvent {
 Future<SaveNewInfluencerResponse>saveNewInfluencer(String accessKey, String userSecretKey, SaveNewInfluencerModel saveNewInfluencerModel) async {
   SaveNewInfluencerResponse saveNewInfluencerResponse;
   try{
+    version = VersionClass.getVersion();
     var response = await http.post(Uri.parse(UrlConstants.saveInfluencer),
       headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
       body: json.encode(saveNewInfluencerModel),
     );
-    print('URL : ${response.request}');
-    print('RESP: ${response.body}');
-    print('RESPONSE : ${json.encode(saveNewInfluencerModel)}');
-
     saveNewInfluencerResponse = SaveNewInfluencerResponse.fromJson(json.decode(response.body));
   }
   catch(e){

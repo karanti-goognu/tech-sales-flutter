@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
@@ -41,13 +41,16 @@ class _SiteScreenState extends State<SiteScreen> {
   int currentTab = 0;
 
   ScrollController _scrollController;
+
   _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       print('hello');
       _siteController.offset += 10;
       print(_siteController.offset);
-      // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+       _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+       // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
+      // _siteController.getAccessKey(RequestIds.GET_LEADS_LIST);
     }
   }
 
@@ -100,8 +103,7 @@ class _SiteScreenState extends State<SiteScreen> {
             {
             _appController.getAccessKey(RequestIds.GET_SITES_LIST),
               // storeOfflineSiteData()
-
-             }
+            }
           else
             {
               Get.snackbar(
@@ -112,6 +114,7 @@ class _SiteScreenState extends State<SiteScreen> {
               // fetchSiteList()
             }
         });
+
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
   }
@@ -119,6 +122,8 @@ class _SiteScreenState extends State<SiteScreen> {
   @override
   void dispose() {
     super.dispose();
+    _siteController?.dispose();
+    _siteController.offset = 0;
   }
 
   @override
@@ -785,6 +790,7 @@ class _SiteScreenState extends State<SiteScreen> {
                         ),
                       )
                     : ListView.builder(
+                        controller: _scrollController,
                         itemCount: _siteController.sitesListResponse.sitesEntity.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),

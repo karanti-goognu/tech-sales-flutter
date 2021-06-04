@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/Access
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -25,8 +26,9 @@ class MyApiClient {
 
   getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
 //      print('Response body is : ${json.decode(response.body)}');
@@ -44,6 +46,7 @@ class MyApiClient {
 
   checkLoginStatus(String empId, String mobileNumber, String accessKey) async {
     try {
+      version = VersionClass.getVersion();
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
 
@@ -73,7 +76,7 @@ class MyApiClient {
         "reference-id": encryptedEmpId,
         "mobile-number": encryptedMobileNumber,
         "app-name": StringConstants.appName,
-        "app-version": StringConstants.appVersion,
+        "app-version": version,
         "device-id": deviceId,
         "device-type": deviceType,
 
@@ -108,6 +111,7 @@ class MyApiClient {
       String otpTokenId) async {
     try {
 //      print('Token Id :: $otpTokenId');
+      version = VersionClass.getVersion();
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
 
@@ -132,7 +136,7 @@ class MyApiClient {
         "device-id": deviceId,
         "device-type": deviceType,
         "app-name": StringConstants.appName,
-        "app-version": StringConstants.appVersion,
+        "app-version": version,
         "otp-token-id": otpTokenId,
       };
 
@@ -174,7 +178,7 @@ class MyApiClient {
 //    print('$encryptedOtp  -----Decrypt String :: $decryptedOtp');
     try {
       var deviceId, deviceType;
-
+      version = VersionClass.getVersion();
       if (Platform.isAndroid) {
         AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
         deviceId = build.androidId;
@@ -190,7 +194,7 @@ class MyApiClient {
         "device-id": deviceId,
         "device-type": deviceType,
         "app-name": StringConstants.appName,
-        "app-version": StringConstants.appVersion,
+        "app-version": version,
         "otp-code": encryptedOtp,
       };
 

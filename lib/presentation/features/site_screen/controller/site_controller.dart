@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/Repository/sites_repository.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SiteVisitRequestModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/ViewSiteDataResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/Repository/sites_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -178,22 +178,51 @@ class SiteController extends GetxController {
         siteStage = "&siteInflCat=${this.selectedSiteInfluencerCatValue}";
       }
       //debugPrint('request without encryption: $body');
-      String url =
-          "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=200&offset=0";
+      debugPrint('request without encryption: ${this.offset}');
+      String url = "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=10&offset=${this.offset}";
       //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
-      // debugPrint('Url is : $encodedUrl');
+       debugPrint('Url is : $url');
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
         if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
-          this.sitesListResponse = data;
-          if (sitesListResponse.respCode == "ST2006") {
-            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
+          if (this.sitesListResponse.sitesEntity == null ||
+              this.sitesListResponse.sitesEntity.isEmpty) {
+            this.sitesListResponse = data;
           } else {
-            Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
+            // this.sitesListResponse = data;
+            SitesListModel sitesListModel = data;
+
+
+            if (sitesListModel.sitesEntity.isNotEmpty) {
+              // sitesListModel.sitesEntity=[];
+              sitesListModel.sitesEntity.addAll(
+                  this.sitesListResponse.sitesEntity);
+              this.sitesListResponse = sitesListModel;
+              Get.rawSnackbar(
+                titleText: Text("Note"),
+                messageText: Text(
+                    "Loading more .."),
+                backgroundColor: Colors.white,
+              );
+//              Get.snackbar("Note", "Loading more ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xffffffff),duration: Duration(milliseconds: 2000));
+            } else {
+              Get.rawSnackbar(
+                titleText: Text("Note"),
+                messageText: Text(
+                    "No more leads .."),
+                backgroundColor: Colors.white,
+              );
+            }
+            if (sitesListResponse.respCode == "ST2006") {
+              //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
+            } else {
+              Get.dialog(
+                  CustomDialogs().errorDialog(sitesListResponse.respMsg));
+            }
           }
         }
       });
