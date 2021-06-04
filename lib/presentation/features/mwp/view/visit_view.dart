@@ -60,9 +60,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                       });
                     },
                     items: <String>[
-                      'RETENTION SITE',
+                      // 'RETENTION SITE',
                       'LEADS',
-                      'CONVERSION OPPORTUNITY',
+                      // 'CONVERSION OPPORTUNITY',
                       'COUNTER',
                       'CONTRACTOR',
                       'TECHNOCRAT'

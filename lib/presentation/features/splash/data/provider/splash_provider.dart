@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -36,11 +37,12 @@ class MyApiClientSplash {
   }
 
   getSecretKey(String empId, String mobile) async {
+    version = VersionClass.getVersion();
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': StringConstants.appVersion,
+        'app-version': version,
         'reference-id': empId,
         'mobile-number': mobile,
       };
@@ -65,11 +67,12 @@ class MyApiClientSplash {
   }
 
   getRefreshData(String url, String accessKey, String securityKey) async {
+    version = VersionClass.getVersion();
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': StringConstants.appVersion,
+        'app-version': version,
         'access-key': accessKey,
         'user-security-key': securityKey,
       };
