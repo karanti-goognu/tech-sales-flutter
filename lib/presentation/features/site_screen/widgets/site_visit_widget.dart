@@ -16,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: must_be_immutable
 class SiteVisitWidget extends StatefulWidget {
   MwpVisitModel mwpVisitModel;
   int siteId;

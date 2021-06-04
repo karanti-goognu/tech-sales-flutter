@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/data/Repository/sites_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -375,37 +375,37 @@ class SiteController extends GetxController {
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
 
-    // _prefs.then((SharedPreferences prefs) async {
-    //   String accessKey = await repository.getAccessKeyNew();
-    //   userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-    //   await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel)
-    //       .then((value) {
-    //     Get.back();
-    //     if (value.respCode == 'MWP2028') {
-    //       Get.dialog(
-    //           CustomDialogs().showDialogSubmitSite(value.respMsg.toString()),
-    //           barrierDismissible: false);
-    //     } else {
-    //       Get.back();
-    //       Get.dialog(
-    //           CustomDialogs().errorDialog(value.respMsg.toString()),
-    //           barrierDismissible: false);
-    //     }
-    //   });
-    // });
+    _prefs.then((SharedPreferences prefs) async {
+      String accessKey = await repository.getAccessKeyNew();
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel)
+          .then((value) {
+        Get.back();
+        if (value.respCode == 'MWP2028') {
+          Get.dialog(
+              CustomDialogs().showDialogSubmitSite(value.respMsg.toString()),
+              barrierDismissible: false);
+        } else {
+          Get.back();
+          Get.dialog(
+              CustomDialogs().errorDialog(value.respMsg.toString()),
+              barrierDismissible: false);
+        }
+      });
+    });
   }
 
 
   Future siteSearch(String searchText) async{
     String userSecurityKey = "";
     String empID = "";
-    // String accessKey = await repository.getAccessKeyNew();
-    // Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
-    // await _prefs.then((SharedPreferences prefs) async {
-    //   userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-    //   empID = prefs.getString(StringConstants.employeeId);
-    // });
-    // sitesListResponse = await repository.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
+    String accessKey = await repository.getAccessKeyNew();
+    Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+    sitesListResponse = await repository.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
   }
 
 }

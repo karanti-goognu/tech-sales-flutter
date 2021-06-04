@@ -1477,8 +1477,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SiteVisitWidget(
                   mwpVisitModel: mwpVisitModel,
                   siteId:widget.siteId,
-                  siteOpportunityStatusEntity: siteOpportunityStatusEntity,)
-
+                  siteOpportunityStatusEntity: siteOpportunityStatusEntity,
+                  siteDate: siteCreationDate,
+                  selectedOpportunitStatusEnity: _siteOpportunitStatusEnity,
+                  visitRemarks: visitRemarks,
+                )
               ],
             ),
             floatingActionButton: BackFloatingButton(),

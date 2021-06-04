@@ -426,7 +426,6 @@ class SitesModal {
     data['subdealerId'] = this.subdealerId;
     data['siteSubDealerName'] = this.siteSubDealerName;
     data['totalBalancePotential'] = this.totalBalancePotential;
-
     return data;
   }
 }
@@ -482,6 +481,7 @@ class MwpVisitModel {
     remark = json['remark'];
     inflName = json['inflName'];
   }
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
