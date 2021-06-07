@@ -173,10 +173,10 @@ class MyApiClientSites {
       String empID) async {
     try {
       version = VersionClass.getVersion();
-      String url = UrlConstants.getSiteData + "$siteId&referenceID=$empID";
+      String url = UrlConstants.getSiteDataVersion2 + "$siteId&referenceID=$empID";
       print(url);
       final response = await get(
-        Uri.parse(UrlConstants.getSiteData + "$siteId&referenceID=$empID"),
+        Uri.parse(UrlConstants.getSiteDataVersion2 + "$siteId&referenceID=$empID"),
         headers: requestHeadersWithAccessKeyAndSecretKey(
             accessKey, userSecurityKey, version),
       );
@@ -192,6 +192,7 @@ class MyApiClientSites {
         ViewSiteDataResponse.fromJson(data);
         // print('@@@@');
         // print(viewSiteDataResponse.counterListModel[0].soldToParty);
+        print('SITE VISIT: ${json.encode(viewSiteDataResponse.mwpVisitModel)}');
         if (viewSiteDataResponse.respCode == "ST2010") {
           return viewSiteDataResponse;
         } else if (viewSiteDataResponse.respCode == "ST2011") {

@@ -9,7 +9,7 @@ class ViewSiteDataResponse {
   MwpVisitModel mwpVisitModel;
   List<SiteFloorsEntity> siteFloorsEntity;
   List<SitephotosEntity> sitephotosEntity;
-  List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
+ // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
   List<SiteStageEntity> siteStageEntity;
   List<ConstructionStageEntity> constructionStageEntity;
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity;
@@ -36,7 +36,7 @@ class ViewSiteDataResponse {
         this.mwpVisitModel,
       this.siteFloorsEntity,
       this.sitephotosEntity,
-      this.siteVisitHistoryEntity,
+     // this.siteVisitHistoryEntity,
       this.siteStageEntity,
       this.constructionStageEntity,
       this.siteProbabilityWinningEntity,
@@ -72,12 +72,12 @@ class ViewSiteDataResponse {
         sitephotosEntity.add(new SitephotosEntity.fromJson(v));
       });
     }
-    if (json['siteVisitHistoryEntity'] != null) {
-      siteVisitHistoryEntity = new List<SiteVisitHistoryEntity>();
-      json['siteVisitHistoryEntity'].forEach((v) {
-        siteVisitHistoryEntity.add(new SiteVisitHistoryEntity.fromJson(v));
-      });
-    }
+    // if (json['siteVisitHistoryEntity'] != null) {
+    //   siteVisitHistoryEntity = new List<SiteVisitHistoryEntity>();
+    //   json['siteVisitHistoryEntity'].forEach((v) {
+    //     siteVisitHistoryEntity.add(new SiteVisitHistoryEntity.fromJson(v));
+    //   });
+    // }
     if (json['siteStageEntity'] != null) {
       siteStageEntity = new List<SiteStageEntity>();
       json['siteStageEntity'].forEach((v) {
@@ -177,10 +177,10 @@ class ViewSiteDataResponse {
       data['sitephotosEntity'] =
           this.sitephotosEntity.map((v) => v.toJson()).toList();
     }
-    if (this.siteVisitHistoryEntity != null) {
-      data['siteVisitHistoryEntity'] =
-          this.siteVisitHistoryEntity.map((v) => v.toJson()).toList();
-    }
+    // if (this.siteVisitHistoryEntity != null) {
+    //   data['siteVisitHistoryEntity'] =
+    //       this.siteVisitHistoryEntity.map((v) => v.toJson()).toList();
+    // }
     if (this.siteStageEntity != null) {
       data['siteStageEntity'] =
           this.siteStageEntity.map((v) => v.toJson()).toList();
@@ -638,7 +638,7 @@ class SitephotosEntity {
 //     return data;
 //   }
 // }
-
+/*
 class SiteVisitHistoryEntity {
   int id;
   // String totalBalancePotential;
@@ -736,7 +736,7 @@ class SiteVisitHistoryEntity {
     return data;
   }
 }
-
+*/
 class SiteStageEntity {
   int id;
   String siteStageDesc;

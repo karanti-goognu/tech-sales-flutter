@@ -35,7 +35,7 @@ class UpdateDataRequest {
   String siteOppertunityId;
   String siteConstructionId;
   List<SiteCommentsEntity> siteCommentsEntity;
-  List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
+ // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
   List<SiteNextStageEntity> siteNextStageEntity;
   List<SitePhotosEntity> sitePhotosEntity;
   List<SiteInfluencerEntity> siteInfluencerEntity;
@@ -72,7 +72,7 @@ class UpdateDataRequest {
       this.closureReasonText,
       this.createdBy,
       this.siteCommentsEntity,
-      this.siteVisitHistoryEntity,
+     // this.siteVisitHistoryEntity,
       this.siteNextStageEntity,
       this.sitePhotosEntity,
       this.siteInfluencerEntity,
@@ -126,12 +126,12 @@ class UpdateDataRequest {
         siteCommentsEntity.add(new SiteCommentsEntity.fromJson(v));
       });
     }
-    if (json['siteVisitHistoryEntity'] != null) {
-      siteVisitHistoryEntity = new List<SiteVisitHistoryEntity>();
-      json['siteVisitHistoryEntity'].forEach((v) {
-        siteVisitHistoryEntity.add(new SiteVisitHistoryEntity.fromJson(v));
-      });
-    }
+    // if (json['siteVisitHistoryEntity'] != null) {
+    //   siteVisitHistoryEntity = new List<SiteVisitHistoryEntity>();
+    //   json['siteVisitHistoryEntity'].forEach((v) {
+    //     siteVisitHistoryEntity.add(new SiteVisitHistoryEntity.fromJson(v));
+    //   });
+    // }
     if (json['siteNextStageEntity'] != null) {
       siteNextStageEntity = new List<SiteNextStageEntity>();
       json['siteNextStageEntity'].forEach((v) {
@@ -195,10 +195,10 @@ class UpdateDataRequest {
       data['siteCommentsEntity'] =
           this.siteCommentsEntity.map((v) => v.toJson()).toList();
     }
-    if (this.siteVisitHistoryEntity != null) {
-      data['siteVisitHistoryEntity'] =
-          this.siteVisitHistoryEntity.map((v) => v.toJson()).toList();
-    }
+    // if (this.siteVisitHistoryEntity != null) {
+    //   data['siteVisitHistoryEntity'] =
+    //       this.siteVisitHistoryEntity.map((v) => v.toJson()).toList();
+    // }
     if (this.siteNextStageEntity != null) {
       data['siteNextStageEntity'] =
           this.siteNextStageEntity.map((v) => v.toJson()).toList();

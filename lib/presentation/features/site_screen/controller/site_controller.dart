@@ -198,7 +198,7 @@ class SiteController extends GetxController {
 
 
             if (sitesListModel.sitesEntity.isNotEmpty) {
-              // sitesListModel.sitesEntity=[];
+              sitesListModel.sitesEntity=[];
               sitesListModel.sitesEntity.addAll(
                   this.sitesListResponse.sitesEntity);
               this.sitesListResponse = sitesListModel;
