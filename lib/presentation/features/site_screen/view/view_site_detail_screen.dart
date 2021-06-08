@@ -85,6 +85,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   BrandModelforDB _siteProductFromLocalDB1;
   BrandModelforDB _siteProductFromLocalDBNextStage;
 
+  SiteOpportunityStatusEntity _siteOpportunitStatusEnityVisit;
+
   List<DropdownMenuItem<String>> productSoldVisitSite = new List();
 
   // SiteStageEntity _siteStageNextStage;
@@ -138,7 +140,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   LocationResult _pickedLocation;
   Position _currentPosition = new Position();
   String _currentAddress;
-  int _initialIndex = 0;
+  int _initialIndex = 0, visitSubTypeId;
   String geoTagType;
 
   String siteCreationDate, visitRemarks;
@@ -152,6 +154,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   // List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<SiteStageHistory> siteStageHistorys = new List();
   List<SiteSupplyHistorys> siteSupplyHistorys = new List();
+  //List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<ConstructionStageEntity> constructionStageEntityNew = new List();
   List<ConstructionStageEntity> constructionStageEntityNewNextStage =
@@ -704,6 +707,21 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               child: Icon(Icons.delete, color: Colors.black54),
             ),
           ),
+          // Expanded(
+          //   flex: 1,
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       int index1 = siteVisitHistoryEntity.indexWhere((element) => element.brandId==productDynamicList[index].brandId && element.brandPrice==productDynamicList[index].brandPrice.text
+          //       && element.supplyDate==productDynamicList[index].supplyDate.text && element.supplyQty==productDynamicList[index].supplyQty.text);
+          //       if(index1!=-1){
+          //         siteVisitHistoryEntity.removeAt(index1);
+          //       }
+          //       productDynamicList.removeAt(index);
+          //       setState(() {});
+          //     },
+          //     child: Icon(Icons.delete, color: Colors.black54),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -852,12 +870,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 viewSiteDataResponse.influencerEntity.length;
           }
           // print('pppppppppppppppppppppppp');
+
           print(viewSiteDataResponse.siteStageHistorys);
           // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
           // siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
            siteStageHistorys = viewSiteDataResponse.siteStageHistorys;
           print(viewSiteDataResponse.siteStageHistorys.length);
-
+          //print(viewSiteDataResponse.siteVisitHistoryEntity);
+          // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
+         // siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
+         // print(viewSiteDataResponse.siteVisitHistoryEntity.length);
           // siteVisitHistoryEntity.add(SiteVisitHistoryEntity(id: 1));
           // siteVisitHistoryEntity.add(SiteVisitHistoryEntity(id: 2));
           // siteVisitHistoryEntity.add(SiteVisitHistoryEntity(id: 6, isAuthorised:"N", soldToParty: "0007030238"));
@@ -920,6 +942,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
           siteCreationDate = sitesModal.siteCreationDate;
           visitRemarks = sitesModal.siteClosureReasonText;
+          visitSubTypeId = sitesModal.siteOppertunityId;
           //   print(sitesModal.);
 
           //   print(sitesModal.siteGeotagLatitude);
@@ -996,10 +1019,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       .toString() ==
                   siteOpportunityStatusEntity[i].id.toString()) {
                 _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
+                _siteOpportunitStatusEnityVisit = siteOpportunityStatusEntity[i];
               }
             }
           }else{
             _siteOpportunitStatusEnity = siteOpportunityStatusEntity[0];
+            _siteOpportunitStatusEnityVisit = null;
           }
 
           if (viewSiteDataResponse.sitesModal.noOfFloors != null ||
@@ -1665,9 +1690,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SiteVisitWidget(
                   mwpVisitModel: mwpVisitModel,
                   siteId:widget.siteId,
+                  visitSubTypeId: visitSubTypeId,
                   siteOpportunityStatusEntity: siteOpportunityStatusEntity,
                   siteDate: siteCreationDate,
-                  selectedOpportunitStatusEnity: _siteOpportunitStatusEnity,
+                  selectedOpportunitStatusEnity: _siteOpportunitStatusEnityVisit,
                   visitRemarks: visitRemarks,
                 )
               ],
@@ -3163,6 +3189,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
               ),
             ),
+
             // SizedBox(height: 16),
             // DropdownButtonFormField<BrandModelforDB>(
             //     value: _siteProductFromLocalDB,
@@ -3205,6 +3232,232 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             //         _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
             //     ? SizedBox(height: 16)
             //     : Container(),
+
+            SizedBox(height: 16),
+            DropdownButtonFormField<BrandModelforDB>(
+              value: _siteBrandFromLocalDB,
+              items: siteBrandEntityfromLoaclDB
+                  .map((label) => DropdownMenuItem(
+                        child: Text(
+                          label.brandName,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                        ),
+                        value: label,
+                      ))
+                  .toList(),
+
+              // hint: Text('Rating'),
+              onChanged: (value) async {
+                FocusScope.of(context).requestFocus(new FocusNode());
+                print("Brand Value");
+                print(value);
+                siteProductEntityfromLoaclDB = new List();
+                _siteProductFromLocalDB = null;
+                List<BrandModelforDB> _siteProductEntityfromLoaclDB =
+                    await db.fetchAllDistinctProduct(value.brandName);
+                setState(() {
+                  _siteBrandFromLocalDB = value;
+
+                  siteProductEntityfromLoaclDB = _siteProductEntityfromLoaclDB;
+                  // _productSoldVisit.text = _siteBrand.productName;
+                  if (_siteBrandFromLocalDB.brandName.toLowerCase() ==
+                      "dalmia") {
+                    _stageStatus.text = "WON";
+                  } else {
+                    _stageStatus.text = "LOST";
+                    visitDataDealer = "";
+                  }
+                });
+              },
+              decoration: FormFieldStyle.buildInputDecoration(
+                labelText: "Brand In Use",
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(
+                "Mandatory",
+                style: TextStyle(
+                  fontFamily: "Muli",
+                  color: ColorConstants.inputBoxHintColorDark,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            // (_siteBrandFromLocalDB != null &&
+            //         _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+            //     ? GestureDetector(
+            //         onTap: () {
+            //           if (_siteBrandFromLocalDBNextStage.brandName
+            //                   .toLowerCase() ==
+            //               "dalmia") {
+            //             if (!isAllowSelectDealer)
+            //               Get.dialog(CustomDialogs().showMessage(
+            //                   "This dealer not Confirmed by Sales Officer."));
+            //           } else {}
+            //         },
+            //         child: DropdownButtonFormField(
+            //           items: dealerEntityForDb
+            //               .map((e) => DropdownMenuItem(
+            //                     value: e.id,
+            //                     child: SizedBox(
+            //                       width:
+            //                           MediaQuery.of(context).size.width - 100,
+            //                       child: Text('${e.dealerName} (${e.id})',
+            //                           style: TextStyle(fontSize: 14)),
+            //                     ),
+            //                   ))
+            //               .toList(),
+            //           onChanged: (value) {
+            //             siteVisitHistoryEntity
+            //                 .sort((b, a) => a.id.compareTo(b.id));
+            //             int listLength = siteVisitHistoryEntity.length;
+            //
+            //             if (listLength > 0) {
+            //               SiteVisitHistoryEntity latestRecordData =
+            //                   siteVisitHistoryEntity.elementAt(0);
+            //
+            //               if (latestRecordData.soldToParty != value) {
+            //                 if (latestRecordData.isAuthorised == "N") {
+            //                   dealerEntityForDb.map((e) => DropdownMenuItem(
+            //                         value: e.id,
+            //                         child: SizedBox(
+            //                           width: MediaQuery.of(context).size.width -
+            //                               100,
+            //                           child: Text('${e.dealerName} (${e.id})',
+            //                               style: TextStyle(fontSize: 14)),
+            //                         ),
+            //                       ));
+            //                   return Get.dialog(CustomDialogs().showMessage(
+            //                       "Your previous supplier not authorised."));
+            //                 } else
+            //                   sitesModal.isDealerConfirmedChangedBySo = "N";
+            //               }
+            //             }
+            //
+            //             selectedSubDealer = null;
+            //             setState(() {
+            //               subDealerList = new List();
+            //               visitDataDealer = value.toString();
+            //               subDealerList = counterListModel
+            //                   .where((e) => e.soldToParty == visitDataDealer)
+            //                   .toList();
+            //               selectedSubDealer = subDealerList[0];
+            //               visitDataSubDealer = subDealerList[0].shipToParty;
+            //             });
+            //           },
+            //           style: FormFieldStyle.formFieldTextStyle,
+            //           decoration: FormFieldStyle.buildInputDecoration(
+            //               labelText: "Dealer"),
+            //           validator: (value) =>
+            //               value == null ? 'Please select Dealer' : null,
+            //         ),
+            //       )
+            //     : Container(),
+            (_siteBrandFromLocalDB != null &&
+                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      "Mandatory",
+                      style: TextStyle(
+                        fontFamily: "Muli",
+                        color: ColorConstants.inputBoxHintColorDark,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  )
+                : Container(),
+            SizedBox(height: 8),
+
+            subDealerList.isEmpty
+                ? Container()
+                : (_siteBrandFromLocalDB != null &&
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia")
+                    ? DropdownButtonFormField(
+                        items: subDealerList.isNotEmpty
+                            ? subDealerList
+                                .map((e) => DropdownMenuItem(
+                                      value: e,
+                                      child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                100,
+                                        child: Text(
+                                          '${e.shipToPartyName} (${e.shipToParty})',
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                      ),
+                                    ))
+                                .toList()
+                            : [
+                                DropdownMenuItem(
+                                    child: Text("No Sub Dealer"), value: "0")
+                              ],
+                        value: selectedSubDealer,
+                        validator: (value) => value == null || value.isEmpty
+                            ? 'Please select Sub-Dealer'
+                            : null,
+                        onChanged: (value) {
+                          // print("Sub Dealer Value");
+                          // print(value.shipToParty.toString());
+                          setState(() {
+                            visitDataSubDealer = value.shipToParty.toString();
+                          });
+                          print(visitDataSubDealer);
+                        },
+                        style: FormFieldStyle.formFieldTextStyle,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Sub-Dealer"),
+                      )
+                    : Container(),
+            SizedBox(height: 8),
+            DropdownButtonFormField<BrandModelforDB>(
+                value: _siteProductFromLocalDB,
+                items: siteProductEntityfromLoaclDB
+                    .map((label) => DropdownMenuItem(
+                          child: Text(
+                            label.productName,
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: ColorConstants.inputBoxHintColor,
+                                fontFamily: "Muli"),
+                          ),
+                          value: label,
+                        ))
+                    .toList(),
+
+                // hint: Text('Rating'),
+                onChanged: (value) {
+                  print("Product Value");
+                  print(value);
+                  setState(() {
+                    _siteProductFromLocalDB = value;
+                    print(_siteProductFromLocalDB.id);
+                  });
+                },
+                decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Product Sold")),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(
+                "Mandatory",
+                style: TextStyle(
+                  fontFamily: "Muli",
+                  color: ColorConstants.inputBoxHintColorDark,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            (_siteBrandFromLocalDB != null &&
+                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+                ? SizedBox(height: 16)
+                : Container(),
             // GestureDetector(
             //   onTap: (){
             //     if(!isAllowSelectDealer)
@@ -5128,6 +5381,396 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
               ],
             ),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: ListView.builder(
+            //           shrinkWrap: true,
+            //           physics: NeverScrollableScrollPhysics(),
+            //           itemCount: siteVisitHistoryEntity.length,
+            //           itemBuilder: (BuildContext context, int index) {
+            //             print("00000000" +
+            //                 json.encode(siteVisitHistoryEntity[0]));
+            //             final DateFormat formatter = DateFormat('dd-MMM-yyyy');
+            //             String selectedDateString = formatter.format(
+            //                 DateTime.fromMillisecondsSinceEpoch(
+            //                     siteVisitHistoryEntity[index].createdOn));
+            //
+            //             String constructionDateString =
+            //                 siteVisitHistoryEntity[index].constructionDate;
+            //
+            //             if (!siteVisitHistoryEntity[index].isExpanded) {
+            //               return Column(
+            //                 // mainAxisAlignment:
+            //                 // MainAxisAlignment.spaceBetween,
+            //                 children: [
+            //                   Row(
+            //                     mainAxisAlignment:
+            //                         MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       Text(
+            //                         "Visit Date:" + selectedDateString,
+            //                         style: TextStyle(
+            //                             //      fontWeight: FontWeight.bold,
+            //                             fontSize: 16),
+            //                       ),
+            //                       siteVisitHistoryEntity[index].isExpanded
+            //                           ? FlatButton.icon(
+            //                               // shape: RoundedRectangleBorder(
+            //                               //     borderRadius: BorderRadius.circular(0),
+            //                               //     side: BorderSide(color: Colors.black26)),
+            //                               color: Colors.transparent,
+            //                               icon: Icon(
+            //                                 Icons.remove,
+            //                                 color: HexColor("#F9A61A"),
+            //                                 size: 18,
+            //                               ),
+            //                               label: Text(
+            //                                 "COLLAPSE",
+            //                                 style: TextStyle(
+            //                                     color: HexColor("#F9A61A"),
+            //                                     fontWeight: FontWeight.bold,
+            //                                     // letterSpacing: 2,
+            //                                     fontSize: 17),
+            //                               ),
+            //                               onPressed: () {
+            //                                 setState(() {
+            //                                   siteVisitHistoryEntity[index]
+            //                                           .isExpanded =
+            //                                       !siteVisitHistoryEntity[index]
+            //                                           .isExpanded;
+            //                                 });
+            //                                 // _getCurrentLocation();
+            //                               },
+            //                             )
+            //                           : FlatButton.icon(
+            //                               // shape: RoundedRectangleBorder(
+            //                               //     borderRadius: BorderRadius.circular(0),
+            //                               //     side: BorderSide(color: Colors.black26)),
+            //                               color: Colors.transparent,
+            //                               icon: Icon(
+            //                                 Icons.add,
+            //                                 color: HexColor("#F9A61A"),
+            //                                 size: 18,
+            //                               ),
+            //                               label: Text(
+            //                                 "EXPAND",
+            //                                 style: TextStyle(
+            //                                     color: HexColor("#F9A61A"),
+            //                                     fontWeight: FontWeight.bold,
+            //                                     // letterSpacing: 2,
+            //                                     fontSize: 17),
+            //                               ),
+            //                               onPressed: () {
+            //                                 setState(() {
+            //                                   siteVisitHistoryEntity[index]
+            //                                           .isExpanded =
+            //                                       !siteVisitHistoryEntity[index]
+            //                                           .isExpanded;
+            //                                 });
+            //                                 // _getCurrentLocation();
+            //                               },
+            //                             ),
+            //                     ],
+            //                   ),
+            //                 ],
+            //               );
+            //             } else {
+            //               // return Column(
+            //               //   // mainAxisAlignment:
+            //               //   // MainAxisAlignment.spaceBetween,
+            //               //   children: [
+            //               //     Row(
+            //               //       mainAxisAlignment:
+            //               //           MainAxisAlignment.spaceBetween,
+            //               //       children: [
+            //               //         Text(
+            //               //           "Visit Date:" + selectedDateString,
+            //               //           style: TextStyle(
+            //               //               //fontWeight: FontWeight.bold,
+            //               //               fontSize: 16),
+            //               //         ),
+            //               //         siteVisitHistoryEntity[index].isExpanded
+            //               //             ? FlatButton.icon(
+            //               //                 // shape: RoundedRectangleBorder(
+            //               //                 //     borderRadius: BorderRadius.circular(0),
+            //               //                 //     side: BorderSide(color: Colors.black26)),
+            //               //                 color: Colors.transparent,
+            //               //                 icon: Icon(
+            //               //                   Icons.remove,
+            //               //                   color: HexColor("#F9A61A"),
+            //               //                   size: 18,
+            //               //                 ),
+            //               //                 label: Text(
+            //               //                   "COLLAPSE",
+            //               //                   style: TextStyle(
+            //               //                       color: HexColor("#F9A61A"),
+            //               //                       fontWeight: FontWeight.bold,
+            //               //                       // letterSpacing: 2,
+            //               //                       fontSize: 17),
+            //               //                 ),
+            //               //                 onPressed: () {
+            //               //                   setState(() {
+            //               //                     siteVisitHistoryEntity[index]
+            //               //                             .isExpanded =
+            //               //                         !siteVisitHistoryEntity[index]
+            //               //                             .isExpanded;
+            //               //                   });
+            //               //                   // _getCurrentLocation();
+            //               //                 },
+            //               //               )
+            //               //             : FlatButton.icon(
+            //               //                 // shape: RoundedRectangleBorder(
+            //               //                 //     borderRadius: BorderRadius.circular(0),
+            //               //                 //     side: BorderSide(color: Colors.black26)),
+            //               //                 color: Colors.transparent,
+            //               //                 icon: Icon(
+            //               //                   Icons.add,
+            //               //                   color: HexColor("#F9A61A"),
+            //               //                   size: 18,
+            //               //                 ),
+            //               //                 label: Text(
+            //               //                   "EXPAND",
+            //               //                   style: TextStyle(
+            //               //                       color: HexColor("#F9A61A"),
+            //               //                       fontWeight: FontWeight.bold,
+            //               //                       // letterSpacing: 2,
+            //               //                       fontSize: 17),
+            //               //                 ),
+            //               //                 onPressed: () {
+            //               //                   setState(() {
+            //               //                     siteVisitHistoryEntity[index]
+            //               //                             .isExpanded =
+            //               //                         !siteVisitHistoryEntity[index]
+            //               //                             .isExpanded;
+            //               //                   });
+            //               //                   // _getCurrentLocation();
+            //               //                 },
+            //               //               ),
+            //               //       ],
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: siteVisitHistoryEntity[index]
+            //               //           .floorId
+            //               //           .toString(),
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Floor",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: constructionStageDesc(
+            //               //           siteVisitHistoryEntity[index]
+            //               //               .constructionStageId),
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Stage of construction",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: siteVisitHistoryEntity[index]
+            //               //           .stagePotential,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Stage Potential",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: brandValue(
+            //               //           siteVisitHistoryEntity[index].brandId),
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //           labelText: "Brand in use"),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].brandPrice,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //           labelText: "Brand Price"),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: brandProductValue(
+            //               //           siteVisitHistoryEntity[index].brandId),
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Product Sold",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].stageStatus,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Stage Status",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: constructionDateString,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Date of construction",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].receiptNumber,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Receipt Number",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: siteVisitHistoryEntity[index]
+            //               //                   .isAuthorised
+            //               //                   .toLowerCase() ==
+            //               //               'y'
+            //               //           ? "Yes"
+            //               //           : "No",
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Is Authorized",
+            //               //       ),
+            //               //     ),
+            //               //
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].soldToParty,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Dealer",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].shipToParty,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Sub-Dealer",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].supplyQty,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Supplied Quantity",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].supplyDate,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Supplied Date",
+            //               //       ),
+            //               //     ),
+            //               //     // SizedBox(height: 16),
+            //               //     // TextFormField(
+            //               //     //   readOnly: true,
+            //               //     //   initialValue:
+            //               //     //   siteVisitHistoryEntity[index].shipToParty,
+            //               //     //   style: TextStyle(
+            //               //     //       fontSize: 18,
+            //               //     //       color: ColorConstants.inputBoxHintColor,
+            //               //     //       fontFamily: "Muli"),
+            //               //     //   keyboardType: TextInputType.text,
+            //               //     //   decoration: FormFieldStyle.buildInputDecoration(
+            //               //     //     labelText: "Next Visit Date",
+            //               //     //   ),
+            //               //     // ),
+            //               //   ],
+            //               // );
+            //             }
+            //           }),
+            //     ),
+            //   ],
+            // ),
+
             SizedBox(height: 16),
             Divider(
               color: Colors.black26,
@@ -5963,6 +6606,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   updateSiteLogic() async {
+
     siteStageHistorys.sort((b, a) => a.siteStageHistoryId.compareTo(b.siteStageHistoryId));
     int listLength = siteStageHistorys.length;
     if (listLength > 0) {
@@ -5975,6 +6619,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             .showMessage("Your previous supplier not authorised."));
       }
     }
+
+    print("OnClickData-->" + productDynamicList.length.toString() + "fdsfd");
+    // siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
+    // int listLength = siteVisitHistoryEntity.length;
+    // if (listLength > 0) {
+    //   SiteVisitHistoryEntity latestRecordData =
+    //       siteVisitHistoryEntity.elementAt(0);
+    //   if (latestRecordData.soldToParty !=
+    //       visitDataDealer) if (latestRecordData.isAuthorised == "N") {
+    //     return Get.dialog(CustomDialogs()
+    //         .showMessage("Your previous supplier not authorised."));
+    //   }
+    //}
 
     String empId;
     String mobileNumber;
@@ -6085,6 +6742,36 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         ));
       }
 
+      //
+      // if (productDynamicList != null && productDynamicList.length > 0) {
+      //   for (int i = 0; i < productDynamicList.length; i++) {
+      //    if(productDynamicList[i].brandId!=-1) {
+      //      siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
+      //        // totalBalancePotential: _siteTotalBalancePt.text,
+      //          constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
+      //          floorId: _selectedSiteVisitFloor.id,
+      //          stagePotential: _stagePotentialVisit.text,
+      //          brandId: productDynamicList[i].brandId,
+      //          brandPrice: productDynamicList[i].brandPrice.text,
+      //          constructionDate: _dateofConstruction.text,
+      //          siteId: widget.siteId,
+      //          // id: widget.siteId,
+      //          supplyDate: productDynamicList[i].supplyDate.text,
+      //          supplyQty: productDynamicList[i].supplyQty.text,
+      //          stageStatus: _stageStatus.text,
+      //          createdBy: empId,
+      //          soldToParty: visitDataDealer,
+      //          shipToParty: visitDataSubDealer,
+      //          receiptNumber: "",
+      //          isAuthorised: "N",
+      //          authorisedBy: "",
+      //          authorisedOn: ""));
+      //    }
+      //   }
+      // }
+      //
+      // print("SiteHistory--->" + siteVisitHistoryEntity.length.toString());
+
       if (_selectedConstructionTypeVisitNextStage != null) {
         siteNextStageEntity.add(new SiteNextStageEntity(
           siteId: widget.siteId,
@@ -6181,8 +6868,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "createdBy": "",
         "totalBalancePotential": _siteTotalBalanceBags.text,
         "siteCommentsEntity": newSiteCommentsEntity,
+
         // "siteVisitHistoryEntity": siteVisitHistoryEntity,
         "siteStageHistorys":siteStageHistorys,
+
+       // "siteVisitHistoryEntity": siteVisitHistoryEntity,
+
         "siteNextStageEntity": siteNextStageEntity,
         "sitePhotosEntity": newSitePhotoEntity,
         "siteInfluencerEntity": newInfluencerEntity,

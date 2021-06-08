@@ -21,7 +21,8 @@ class SiteVisitWidget extends StatefulWidget {
   MwpVisitModel mwpVisitModel;
   int siteId;
   String siteDate;
-  SiteController _siteController = Get.find();
+
+  int visitSubTypeId;
   SiteOpportunityStatusEntity selectedOpportunitStatusEnity;
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity;
   String visitRemarks;
@@ -29,6 +30,7 @@ class SiteVisitWidget extends StatefulWidget {
       {this.mwpVisitModel,
       this.siteId,
       this.siteDate,
+      this.visitSubTypeId,
       this.selectedOpportunitStatusEnity,
       this.siteOpportunityStatusEntity,
       this.visitRemarks});
@@ -42,11 +44,11 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   DateTime selectedDate = DateTime.now();
   String _remark, visitSubType;
 
-  String selectedDateStringNext = 'Next visit date',
-      typeValue = "PHYSICAL",
-      selectedDateString;
+  String selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
   SiteController _siteController = Get.find();
   TextEditingController _siteTypeController = TextEditingController();
+  TextEditingController _selectedVisitType = TextEditingController();
+  String selectedDateString = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
   @override
   void initState() {
@@ -56,14 +58,20 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
 
   setData() {
     if (widget.mwpVisitModel != null) {
-      var date = DateTime.fromMillisecondsSinceEpoch(widget.mwpVisitModel.nextVisitDate);
-      var formattedDate = DateFormat("yyyy-MM-dd").format(date);
+      if (widget.mwpVisitModel.nextVisitDate != null) {
+        var date = DateTime.fromMillisecondsSinceEpoch(
+            widget.mwpVisitModel.nextVisitDate);
+        var formattedDate = DateFormat("yyyy-MM-dd").format(date);
+        selectedDateStringNext = "${formattedDate}";
+      } else {
+        selectedDateStringNext = "Next visit date";
+      }
+
       _siteTypeController.text = widget.mwpVisitModel.visitSubType;
+      _selectedVisitType.text = widget.mwpVisitModel.visitType;
       selectedDateString = "${widget.mwpVisitModel.visitDate}";
-      selectedDateStringNext = "${formattedDate}";
     } else {
       _siteTypeController.text = "";
-      selectedDateString = "Visit Date";
     }
   }
 
@@ -72,42 +80,64 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 
-    final visitType = DropdownButtonFormField(
-      items: widget.siteOpportunityStatusEntity
-          .map((label) => DropdownMenuItem(
-                child: Text(
-                  label.opportunityStatus,
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                ),
-                value: label.opportunityStatus,
-              ))
-          .toList(),
-      onChanged: (value) {
-        setState(() {
-          visitSubType = value;
-          print(visitSubType);
-        });
-      },
-      decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Opportunity Status",
-      ),
-      validator: (value) =>
-      value == null ? 'Please select Opportunity status' : null,
-    );
+    final visitType = (widget.selectedOpportunitStatusEnity == null)
+        ? DropdownButtonFormField(
+            items: widget.siteOpportunityStatusEntity
+                .map((label) => DropdownMenuItem(
+                      child: Text(
+                        label.opportunityStatus,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                      ),
+                      value: label.opportunityStatus,
+                    ))
+                .toList(),
+            onChanged: (value) {
+              setState(() {
+                visitSubType = value;
+                print(visitSubType);
+              });
+            },
+            decoration: FormFieldStyle.buildInputDecoration(
+              labelText: "Opportunity Status",
+            ),
+            validator: (value) =>
+                value == null ? 'Please select Opportunity status' : null,
+          )
+        : DropdownButtonFormField<SiteOpportunityStatusEntity>(
+            value: widget.selectedOpportunitStatusEnity,
+            items: [widget.selectedOpportunitStatusEnity]
+                .map((label) => DropdownMenuItem(
+                      child: Text(
+                        label == null ? "" : label.opportunityStatus,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                      ),
+                      value: label,
+                    ))
+                .toList(),
+            onChanged: (value) {
+              setState(() {
+                widget.selectedOpportunitStatusEnity = value;
+              });
+            },
+            decoration: FormFieldStyle.buildInputDecoration(
+              labelText: "Opportunity Status",
+            ),
+          );
 
     final btnStart = Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RaisedButton(
           color: ColorConstants.buttonNormalColor,
           highlightColor: ColorConstants.buttonPressedColor,
           onPressed: () {
-            // Validate returns true if the form is valid, or false
-            // otherwise.
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
               _getCurrentLocationStart();
@@ -125,32 +155,13 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     );
 
     final btnEnd = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RaisedButton(
           color: ColorConstants.buttonNormalColor,
           highlightColor: ColorConstants.buttonPressedColor,
           onPressed: () {
-            if (_formKey.currentState.validate()) {
-              _formKey.currentState.save();
-              _getCurrentLocation(widget.mwpVisitModel.id);
-            }
-          },
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-            child: Text(
-              'UPDATE',
-              style: ButtonStyles.buttonStyleBlue,
-            ),
-          ),
-        ),
-        RaisedButton(
-          color: ColorConstants.buttonNormalColor,
-          highlightColor: ColorConstants.buttonPressedColor,
-          onPressed: () {
-            // Validate returns true if the form is valid, or false
-            // otherwise.
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
               _getCurrentLocationEnd();
@@ -167,8 +178,9 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       ],
     );
     return SingleChildScrollView(
+      //reverse: true,
         child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.only(left:16, right: 16, top: 16, bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,20 +196,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             visitType,
-                            SizedBox(height: 16),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text("Site ID",
-                                  style: TextStyles.formfieldLabelText),
-                            ),
-                            SizedBox(height: 8),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                '${widget.siteId}',
-                                style: TextStyles.mulliBold16,
-                              ),
-                            ),
                             SizedBox(height: 16),
                             Container(
                                 width: double.infinity,
@@ -260,7 +258,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          _selectDate(context);
+                                          // _selectDate(context);
                                         },
                                         child: Icon(
                                           Icons.calendar_today_sharp,
@@ -343,20 +341,8 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                   onPressed: () {
                                     if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
-                                     if(selectedDateString == null || selectedDateString == "Visit Date"){
-                                       Get.snackbar("", "Select Visit Date",
-                                           colorText: Colors.black,
-                                           backgroundColor: Colors.white,
-                                           snackPosition: SnackPosition.BOTTOM);
-                                      }else if (selectedDateStringNext == null || selectedDateStringNext == "Next visit date") {
-                                       Get.snackbar("", "Select next visit date",
-                                           colorText: Colors.black,
-                                           backgroundColor: Colors.white,
-                                           snackPosition: SnackPosition.BOTTOM);
-                                     }
-                                     else {
-                                        _getCurrentLocation(0);
-                                      }
+
+                                      _getCurrentLocation(0);
                                     }
                                   },
                                   child: Padding(
@@ -385,56 +371,58 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                               decoration: FormFieldStyle.buildInputDecoration(),
                             ),
                             SizedBox(height: 16),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text("Site ID",
-                                  style: TextStyles.formfieldLabelText),
-                            ),
-                            SizedBox(height: 8),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                '${widget.siteId}',
-                                style: TextStyles.mulliBold16,
-                              ),
-                            ),
-                            SizedBox(height: 16),
-                            Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: ColorConstants
-                                            .inputBoxBorderSideColor)),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    value: typeValue,
-                                    onChanged: (String newValue) {
-                                      setState(() {
-                                        typeValue = newValue;
-                                      });
-                                    },
-                                    items: <String>[
-                                      'PHYSICAL',
-                                      'VIRTUAL',
-                                    ].map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          style: GoogleFonts.roboto(
-                                              color: ColorConstants
-                                                  .inputBoxHintColorDark,
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 16.0),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                )),
+                            ((widget.mwpVisitModel.visitStartTime != null &&
+                                        widget.mwpVisitModel.visitEndTime ==
+                                            null) ||
+                                    (widget.mwpVisitModel.visitStartTime !=
+                                            null &&
+                                        widget.mwpVisitModel.visitEndTime !=
+                                            null))
+                                ? TextFormField(
+                                    controller: _selectedVisitType,
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    keyboardType: TextInputType.number,
+                                    readOnly: true,
+                                    enableInteractiveSelection: false,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(),
+                                  )
+                                : Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: ColorConstants
+                                                .inputBoxBorderSideColor)),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        value: typeValue,
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            typeValue = newValue;
+                                          });
+                                        },
+                                        items: <String>[
+                                          'PHYSICAL',
+                                          'VIRTUAL',
+                                        ].map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: GoogleFonts.roboto(
+                                                  color: ColorConstants
+                                                      .inputBoxHintColorDark,
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 16.0),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    )),
                             SizedBox(height: 16),
                             Container(
                               padding: const EdgeInsets.all(16),
@@ -460,7 +448,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          _selectDate(context);
+                                          // _selectDate(context);
                                         },
                                         child: Icon(
                                           Icons.calendar_today_sharp,
@@ -475,66 +463,64 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                             SizedBox(
                               height: 16,
                             ),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                color: Colors.white,
-                                border: Border.all(
-                                    width: 1,
-                                    color: ColorConstants.lineColorFilter),
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                            nextDate(),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            (widget.mwpVisitModel.visitStartTime != null &&
+                                    widget.mwpVisitModel.visitEndTime != null)
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        selectedDateStringNext,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: ColorConstants.blackColor,
-                                            fontFamily: "Muli"),
+                                        'Remark',
+                                        style:
+                                            TextStyles.formfieldLabelTextDark,
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          _selectDateNextVisit(context);
-                                        },
-                                        child: Icon(
-                                          Icons.calendar_today_sharp,
-                                          color: Colors.orange,
+                                      Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        padding: EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 10,
+                                            left: 8,
+                                            right: 8),
+                                        alignment: Alignment.centerLeft,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors
+                                                  .grey, // Set border color
+                                              width: 1.0), // Set border width
                                         ),
-                                      )
+                                        child: Text(
+                                          widget.mwpVisitModel.remark,
+                                          maxLines: null,
+                                        ),
+                                      ),
                                     ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            TextFormField(
-                                // key: Key(
-                                //     _addEventController.visitRemarks),
-                                initialValue:
-                                    widget.mwpVisitModel.remark == 'null'
-                                        ? ''
-                                        : widget.mwpVisitModel.remark,
-                                onSaved: (val) {
-                                  print('saved' + val);
-                                  widget.mwpVisitModel.remark = val;
-                                },
-                                onChanged: (_) {
-                                  widget.mwpVisitModel.remark = _.toString();
-                                },
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: ColorConstants.inputBoxHintColor,
-                                    fontFamily: "Muli"),
-                                maxLines: 3,
-                                decoration: _inputDecoration("Remarks", false)),
+                                  )
+                                : TextFormField(
+                                    // key: Key(
+                                    //     _addEventController.visitRemarks),
+                                    initialValue:
+                                        widget.mwpVisitModel.remark == 'null'
+                                            ? ''
+                                            : widget.mwpVisitModel.remark,
+                                    onSaved: (val) {
+                                      print('saved' + val);
+                                      widget.mwpVisitModel.remark = val;
+                                    },
+                                    onChanged: (_) {
+                                      widget.mwpVisitModel.remark =
+                                          _.toString();
+                                    },
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontFamily: "Muli"),
+                                    maxLines: 3,
+                                    decoration:
+                                        _inputDecoration("Remarks", false)),
                             SizedBox(
                               height: 16,
                             ),
@@ -547,12 +533,49 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                             null)
                                     ? btnEnd
                                     : Container(),
-                            SizedBox(height: 50),
+                            SizedBox(height: 100),
                           ],
                         ),
                 )
               ],
             )));
+  }
+
+  Widget nextDate() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+        color: Colors.white,
+        border: Border.all(width: 1, color: ColorConstants.lineColorFilter),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                selectedDateStringNext,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: ColorConstants.blackColor,
+                    fontFamily: "Muli"),
+              ),
+              GestureDetector(
+                onTap: () {
+                  _selectDateNextVisit(context);
+                },
+                child: Icon(
+                  Icons.calendar_today_sharp,
+                  color: Colors.orange,
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Future getEmpId() async {
@@ -590,6 +613,16 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
     String empId = await getEmpId();
+
+    if (widget.selectedOpportunitStatusEnity == null) {
+      visitSubType = visitSubType;
+    } else {
+      visitSubType = widget.selectedOpportunitStatusEnity.opportunityStatus;
+    }
+    if (selectedDateStringNext == null ||
+        selectedDateStringNext == "Next visit date") {
+      selectedDateStringNext = "";
+    }
     SiteVisitRequestModel _siteVisitRequestModel =
         SiteVisitRequestModel.fromJson({
       "docId": widget.siteId,
@@ -607,7 +640,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitStartLong": '${_currentPosition.longitude}',
       "visitStartTime": visitStartTime,
       "visitSubType": visitSubType,
-      "visitType": "VISIT",
+      "visitType": typeValue,
     });
 
     internetChecking().then((result) => {
@@ -649,24 +682,22 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     }
   }
 
-  btnStartPressed()async{
+  btnStartPressed() async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
     String empId = await getEmpId();
-    // if(selectedDateString == null || selectedDateString == "Visit Date"){
-    //   selectedDateString = widget.mwpVisitModel.visitDate;
-    // }
-    // if(selectedDateStringNext == null || selectedDateStringNext == "Next visit date"){
-    //   selectedDateStringNext = '${widget.mwpVisitModel.nextVisitDate}';
-    // }
+    if (selectedDateStringNext == null ||
+        selectedDateStringNext == "Next visit date") {
+      selectedDateStringNext = '${widget.mwpVisitModel.nextVisitDate}';
+    }
     SiteVisitRequestModel _siteVisitRequestModel =
-    SiteVisitRequestModel.fromJson({
+        SiteVisitRequestModel.fromJson({
       "docId": widget.siteId,
       "eventType": "",
       "id": widget.mwpVisitModel.id,
       "nextVisitDate": selectedDateStringNext,
       "referenceId": empId,
-      "remark": _remark,
+      "remark": widget.mwpVisitModel.remark,
       "visitDate": selectedDateString,
       "visitEndLat": "",
       "visitEndLong": "",
@@ -676,24 +707,24 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitStartLong": '${_currentPosition.longitude}',
       "visitStartTime": visitStartTime,
       "visitSubType": widget.mwpVisitModel.visitSubType,
-      "visitType": "VISIT",
+      "visitType": typeValue,
     });
 
     internetChecking().then((result) => {
-      if (result == true)
-        {
-          _siteController
-              .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+          if (result == true)
+            {
+              _siteController
+                  .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
   _getCurrentLocationEnd() async {
@@ -718,28 +749,26 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     }
   }
 
-  btnEndPressed()async{
-
+  btnEndPressed() async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String currentTime = dateFormat.format(DateTime.now());
     String empId = await getEmpId();
-    // if(selectedDateString == null || selectedDateString == "Visit Date"){
-    //   selectedDateString = widget.mwpVisitModel.visitDate;
-    // }
-    // if(selectedDateStringNext == null || selectedDateStringNext == "Next visit date"){
-    //   selectedDateStringNext = '${widget.mwpVisitModel.nextVisitDate}';
-    // }
+    if (selectedDateStringNext == null ||
+        selectedDateStringNext == "Next visit date") {
+      selectedDateStringNext = '${widget.mwpVisitModel.nextVisitDate}';
+    }
+
     SiteVisitRequestModel _siteVisitRequestModel =
-    SiteVisitRequestModel.fromJson({
+        SiteVisitRequestModel.fromJson({
       "docId": widget.siteId,
       "eventType": "",
       "id": widget.mwpVisitModel.id,
       "nextVisitDate": selectedDateStringNext,
       "referenceId": empId,
-      "remark": _remark,
+      "remark": widget.mwpVisitModel.remark,
       "visitDate": selectedDateString,
       "visitEndLat": '${_currentPosition.latitude}',
-      "visitEndLong":  '${_currentPosition.longitude}',
+      "visitEndLong": '${_currentPosition.longitude}',
       "visitEndTime": currentTime,
       "visitOutcomes": "",
       "visitStartLat": widget.mwpVisitModel.visitStartLat,
@@ -750,20 +779,20 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     });
 
     internetChecking().then((result) => {
-      if (result == true)
-        {
-          _siteController
-              .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+          if (result == true)
+            {
+              _siteController
+                  .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
   InputDecoration _inputDecoration(String labelText, bool suffixStatus) {

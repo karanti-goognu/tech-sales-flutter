@@ -70,7 +70,7 @@ abstract class UrlConstants {
  static const String dashboardMtdConvertedVolumeList = '$baseUrl/dashboard/dashboardMtdConvertedVolumeList?referenceID=';
  static const String dashboardMtdGeneratedVolumeSiteList = '$baseUrl/dashboard/dashboardMtdGeneratedVolumeSiteList?referenceID=';
  static const String dashboardYearlyView = '$baseUrl/dashboard/dashboardYearlyView?referenceID=';
-
+ static const String getSiteDataVersion2 = '$baseUrl/sites/v2/view-site?siteId=';
 
  static const String saveUpdateSiteVisit = '$baseUrl/mwp/Save-update-site_visit';
 

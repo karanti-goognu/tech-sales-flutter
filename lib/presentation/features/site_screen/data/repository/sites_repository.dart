@@ -57,12 +57,14 @@ class MyRepositorySites {
 
   Future<SitesListModel> getSearchDataNew(String accessKey,
       String userSecurityKey, String empID, String searchText) {
-    return apiClient.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
+    return apiClient.getSearchDataNew(
+        accessKey, userSecurityKey, empID, searchText);
   }
 
   Future<SiteVisitResponseModel>siteVisitSave(String accessKey,
       String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
-    return apiClient.siteVisitSave(accessKey, userSecretKey, siteVisitRequestModel);
+    return apiClient.siteVisitSave(
+        accessKey, userSecretKey, siteVisitRequestModel);
   }
 
 //getSiteData(String accessKey, String userSecurityKey, int leadId) {}

@@ -9,8 +9,11 @@ class ViewSiteDataResponse {
   MwpVisitModel mwpVisitModel;
   List<SiteFloorsEntity> siteFloorsEntity;
   List<SitephotosEntity> sitephotosEntity;
+
   List<SiteStageHistory> siteStageHistorys;
   // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
+ // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
+
   List<SiteStageEntity> siteStageEntity;
   List<ConstructionStageEntity> constructionStageEntity;
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity;
@@ -37,7 +40,10 @@ class ViewSiteDataResponse {
         this.mwpVisitModel,
       this.siteFloorsEntity,
       this.sitephotosEntity,
+
       this.siteStageHistorys,
+
+     // this.siteVisitHistoryEntity,
       this.siteStageEntity,
       this.constructionStageEntity,
       this.siteProbabilityWinningEntity,
@@ -80,12 +86,14 @@ class ViewSiteDataResponse {
     //   });
     // }
 
+
     if (json['siteStageHistorys'] != null) {
       siteStageHistorys = new List<SiteStageHistory>();
       json['siteStageHistorys'].forEach((v) {
         siteStageHistorys.add(new SiteStageHistory.fromJson(v));
       });
     }
+
     if (json['siteStageEntity'] != null) {
       siteStageEntity = new List<SiteStageEntity>();
       json['siteStageEntity'].forEach((v) {
@@ -189,6 +197,7 @@ class ViewSiteDataResponse {
     //   data['siteVisitHistoryEntity'] =
     //       this.siteVisitHistoryEntity.map((v) => v.toJson()).toList();
     // }
+
 
     if (this.siteStageHistorys != null) {
       data['siteStageHistorys'] =
@@ -652,7 +661,7 @@ class SitephotosEntity {
 //     return data;
 //   }
 // }
-
+/*
 class SiteVisitHistoryEntity {
   int id;
   // String totalBalancePotential;
@@ -750,7 +759,7 @@ class SiteVisitHistoryEntity {
     return data;
   }
 }
-
+*/
 class SiteStageEntity {
   int id;
   String siteStageDesc;
