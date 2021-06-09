@@ -1213,7 +1213,9 @@ class SiteStageHistory {
         this.stageStatus,
         this.createdOn,
         this.createdBy,
-        this.siteSupplyHistorys});
+        this.siteSupplyHistorys,
+        this.isExpanded
+        });
 
   SiteStageHistory.fromJson(Map<String, dynamic> json) {
     siteStageHistoryId = json['siteStageHistoryId'];
@@ -1232,6 +1234,7 @@ class SiteStageHistory {
         siteSupplyHistorys.add(new SiteSupplyHistorys.fromJson(v));
       });
     }
+    isExpanded = false;
   }
 
   Map<String, dynamic> toJson() {

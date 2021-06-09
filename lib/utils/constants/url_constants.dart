@@ -42,6 +42,7 @@ abstract class UrlConstants {
  static const String getSiteData = '$baseUrl/sites/view-site?siteId=';
  static const String updateLeadsData = '$baseUrl/leads/lead-update';
  static const String updateSiteData = '$baseUrl/sites/site-update';
+ static const String updateVersion2SiteData = '$baseUrl/sites/v2/site-update';
  static const String getSearchData = '$baseUrl/leads/lead-search?';
  static const String getSiteSearchData = '$baseUrl/sites/site-search/?';
  static const String getCheckInDetails = '$baseUrl/journey/details';
@@ -71,6 +72,7 @@ abstract class UrlConstants {
  static const String dashboardMtdGeneratedVolumeSiteList = '$baseUrl/dashboard/dashboardMtdGeneratedVolumeSiteList?referenceID=';
  static const String dashboardYearlyView = '$baseUrl/dashboard/dashboardYearlyView?referenceID=';
  static const String getSiteDataVersion2 = '$baseUrl/sites/v2/view-site?siteId=';
+
 
  static const String saveUpdateSiteVisit = '$baseUrl/mwp/Save-update-site_visit';
 
