@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
@@ -65,8 +66,18 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     super.initState();
   }
 
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     return WillPopScope(
         onWillPop: () async {
           // You can do some work here.

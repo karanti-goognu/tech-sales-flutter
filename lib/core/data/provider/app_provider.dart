@@ -112,7 +112,7 @@ String version;
               accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-     // print('Response body is : ${json.decode(response.body)}');
+      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);

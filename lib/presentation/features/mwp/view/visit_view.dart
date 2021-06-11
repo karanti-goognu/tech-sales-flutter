@@ -37,6 +37,11 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,

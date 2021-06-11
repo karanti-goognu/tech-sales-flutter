@@ -266,10 +266,16 @@ class AddEventController extends GetxController {
           this.saveVisitResponse = data;
           this.visitDateTime = "Visit Date";
           this.visitRemarks = "";
+          print('Response: ${this.saveVisitResponse}');
           if (saveVisitResponse.respCode == "MWP2022") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
-          } else {
+          }else if(saveVisitResponse.respCode == "DM2144"){
+            Get.dialog(
+                CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+          }
+          else {
+            print('Success');
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
           }
