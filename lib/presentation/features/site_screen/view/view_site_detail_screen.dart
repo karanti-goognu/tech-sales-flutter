@@ -1002,8 +1002,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _district.text = sitesModal.siteDistrict;
           _taluk.text = sitesModal.siteTaluk;
           _rera.text = sitesModal.siteReraNumber;
-          _dealerName.text = sitesModal.siteDealerName;
-          _subDealerName.text = sitesModal.siteSubDealerName;
+          if(sitesModal.siteDealerName==null || sitesModal.siteDealerName=="null"){
+            _dealerName.text = "";
+          }else {
+            _dealerName.text = sitesModal.siteDealerName;
+          }
+
+          if(sitesModal.siteSubDealerName==null || sitesModal.siteSubDealerName=="null"){
+            _subDealerName.text = "";
+          }else {
+            _subDealerName.text = sitesModal.siteSubDealerName;
+          }
+
           _so.text = sitesModal.siteSoname;
           geoTagType = sitesModal.siteGeotagType;
 
@@ -2272,7 +2282,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                         DropdownButtonFormField<SiteProbabilityWinningEntity>(
                           value: _siteProbabilityWinningEntity,
-                          items: [_siteProbabilityWinningEntity]
+                          items:viewSiteDataResponse.sitesModal !=
+                              null && viewSiteDataResponse.sitesModal.siteProbabilityWinningId !=null?[_siteProbabilityWinningEntity]
                               .map((label) => DropdownMenuItem(
                                     child: Text(
                                       label==null?"":
@@ -2285,7 +2296,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     ),
                                     value: label,
                                   ))
-                              .toList(),
+                              .toList():siteProbabilityWinningEntity
+                  .map((label) => DropdownMenuItem(
+          child: Text(
+          label==null?"":
+            label.siteProbabilityStatus,
+            style: TextStyle(
+                fontSize: 18,
+                color:
+                ColorConstants.inputBoxHintColor,
+                fontFamily: "Muli"),
+          ),
+        value: label,
+      ))
+        .toList(),
                           onChanged: (value) {
                             setState(() {
                               labelProbabilityText =
@@ -2314,7 +2338,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ),
                         DropdownButtonFormField<SiteCompetitionStatusEntity>(
                           value: _siteCompetitionStatusEntity,
-                          items: [_siteCompetitionStatusEntity]
+                          items: viewSiteDataResponse.sitesModal !=
+                              null && viewSiteDataResponse.sitesModal.siteCompetitionId !=null?[_siteCompetitionStatusEntity]
                               .map((label) => DropdownMenuItem(
                                     child: Text(label==null?"":
                                       label.competitionStatus,
@@ -2326,7 +2351,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     ),
                                     value: label,
                                   ))
-                              .toList(),
+                              .toList():siteCompetitionStatusEntity
+                            .map((label) => DropdownMenuItem(
+              child: Text(label==null?"":
+                label.competitionStatus,
+                style: TextStyle(
+                    fontSize: 18,
+                    color:
+                    ColorConstants.inputBoxHintColor,
+                    fontFamily: "Muli"),
+              ),
+            value: label,
+          ))
+          .toList(),
                           onChanged: (value) {
                             setState(() {
                               _siteCompetitionStatusEntity = value;
@@ -2352,7 +2389,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ),
                         DropdownButtonFormField<SiteOpportunityStatusEntity>(
                           value: _siteOpportunitStatusEnity,
-                          items: [_siteOpportunitStatusEnity]
+                          items:viewSiteDataResponse.sitesModal !=
+                              null && viewSiteDataResponse.sitesModal.siteOppertunityId !=null ? [_siteOpportunitStatusEnity]
                               .map((label) => DropdownMenuItem(
                                     child: Text(label==null?"":
                                       label.opportunityStatus,
@@ -2364,6 +2402,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     ),
                                     value: label,
                                   ))
+                              .toList():siteOpportunityStatusEntity
+                              .map((label) => DropdownMenuItem(
+                            child: Text(label==null?"":
+                            label.opportunityStatus,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color:
+                                  ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                            ),
+                            value: label,
+                          ))
                               .toList(),
                           onChanged: (value) {
                             setState(() {
@@ -6705,7 +6755,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     //   }
     // }
 
-    print("OnClickData-->" + productDynamicList.length.toString() + "fdsfd");
     // siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
     // int listLength = siteVisitHistoryEntity.length;
     // if (listLength > 0) {
