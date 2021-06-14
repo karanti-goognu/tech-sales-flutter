@@ -816,10 +816,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       await _siteController
           .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
           .then((data) async {
-        print("here");
+        // print("here");
         viewSiteDataResponse = data;
-
-         print(json.encode(viewSiteDataResponse));
+        // print(json.encode(viewSiteDataResponse));
         await db.clearTable();
         siteBrandEntity = viewSiteDataResponse != null
             ? viewSiteDataResponse.siteBrandEntity
