@@ -20,7 +20,8 @@ class MyApiClientSplash {
   getAccessKey() async {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      //version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       print('Response body is : ${json.decode(response.body)}');

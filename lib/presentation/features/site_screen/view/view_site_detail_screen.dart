@@ -6580,6 +6580,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         _siteOpportunitStatusEnity == null ||
         _siteProbabilityWinningEntity == null ||
         visitDataDealer == null) {
+      print("_stagePotentialVisit ${_stagePotentialVisit.text}");
+      print("_siteProductFromLocalDB ${_siteProductFromLocalDB}");
+      print("_selectedSiteVisitFloor ${_selectedSiteVisitFloor}");
+      print("_brandPriceVisit ${_brandPriceVisit.text}");
+      print("_dateOfBagSupplied ${_dateOfBagSupplied.text}");
+      print("_stagePotentialVisit ${_stagePotentialVisit.text}");
+      print("_stageStatus ${_stageStatus.text}");
+      print("_siteCompetitionStatusEntity ${_siteCompetitionStatusEntity}");
+      print("_siteOpportunitStatusEnity ${_siteOpportunitStatusEnity}");
+      print("_siteProbabilityWinningEntity ${_siteProbabilityWinningEntity}");
+      print("visitDataDealer ${visitDataDealer}");
+
       Get.dialog(CustomDialogs()
           .showMessage("Please fill mandatory fields in \"Visit Data\" Tab"));
     } else if (addNextButtonDisable &&

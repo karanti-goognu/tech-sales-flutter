@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -20,7 +21,8 @@ class MyApiClient {
   Future<AccessKeyModel> getAccessKey() async {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      //version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -40,6 +42,7 @@ class MyApiClient {
     TsoAppTutorialListModel tsoAppTutorialListModel;
     try{
       //+'&offset=30'
+      version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.AppTutorialList),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
       //print(response.body);
