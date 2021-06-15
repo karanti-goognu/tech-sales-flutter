@@ -6673,108 +6673,128 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     }
   }
 
-  Future<void> UpdateRequest() async {
-    print('$visitDataDealer $visitDataSubDealer');
-    print("fromDropDown: $fromDropDown");
-    if (fromDropDown == true) {
-      print("0000000000000000000000000o");
-      if (_siteBuiltupArea.text == "" ||
+  // Future<void> UpdateRequest() async {
+  //   print('$visitDataDealer $visitDataSubDealer');
+  //   print("fromDropDown: $fromDropDown");
+  //   if (fromDropDown == true) {
+  //     print("0000000000000000000000000o");
+  //     if (_siteBuiltupArea.text == "" ||
+  //         _siteBuiltupArea.text == null ||
+  //         _siteBuiltupArea.text == "null") {
+  //       Get.dialog(CustomDialogs()
+  //           .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
+  //     } else {
+  //       updateSiteLogic();
+  //       setState(() {
+  //         fromDropDown = false;
+  //       });
+  //     }
+  //   } else if (_siteBuiltupArea.text == "" ||
+  //       _siteBuiltupArea.text == null ||
+  //       _siteBuiltupArea.text == "null") {
+  //     Get.dialog(CustomDialogs()
+  //         .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
+  //   } else if (_selectedConstructionTypeVisit == null ||
+  //       _stagePotentialVisit.text == null ||
+  //       _stagePotentialVisit.text == "" ||
+  //       _siteProductFromLocalDB == null ||
+  //       _selectedSiteVisitFloor == null ||
+  //       _brandPriceVisit.text == "" ||
+  //       _brandPriceVisit.text == null
+  //       // && _dateofConstruction.text == "" && _dateofConstruction.text == null
+  //       ||
+  //       _dateOfBagSupplied.text == "" ||
+  //       _dateOfBagSupplied.text == null ||
+  //       _stagePotentialVisit.text == "" ||
+  //       _stagePotentialVisit.text == null ||
+  //       _stageStatus.text == "" ||
+  //       _stageStatus.text == null ||
+  //       _siteCompetitionStatusEntity == null ||
+  //       _siteOpportunitStatusEnity == null ||
+  //       _siteProbabilityWinningEntity == null ||
+  //       visitDataDealer == null) {
+  //     print("_stagePotentialVisit ${_stagePotentialVisit.text}");
+  //     print("_siteProductFromLocalDB ${_siteProductFromLocalDB}");
+  //     print("_selectedSiteVisitFloor ${_selectedSiteVisitFloor}");
+  //     print("_brandPriceVisit ${_brandPriceVisit.text}");
+  //     print("_dateOfBagSupplied ${_dateOfBagSupplied.text}");
+  //     print("_stagePotentialVisit ${_stagePotentialVisit.text}");
+  //     print("_stageStatus ${_stageStatus.text}");
+  //     print("_siteCompetitionStatusEntity ${_siteCompetitionStatusEntity}");
+  //     print("_siteOpportunitStatusEnity ${_siteOpportunitStatusEnity}");
+  //     print("_siteProbabilityWinningEntity ${_siteProbabilityWinningEntity}");
+  //     print("visitDataDealer ${visitDataDealer}");
+  //
+  //     Get.dialog(CustomDialogs()
+  //         .showMessage("Please fill mandatory fields in \"Visit Data\" Tab"));
+  //   }
+
+    Future<void> UpdateRequest() async {
+      print('$visitDataDealer $visitDataSubDealer');
+      print("fromDropDown: $fromDropDown");
+      if (fromDropDown == true) {
+        print("0000000000000000000000000o");
+        if (_siteBuiltupArea.text == "" ||
+            _siteBuiltupArea.text == null ||
+            _siteBuiltupArea.text == "null") {
+          Get.dialog(CustomDialogs()
+              .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
+        } else {
+          updateSiteLogic();
+          setState(() {
+            fromDropDown = false;
+          });
+        }
+      } else if (_siteBuiltupArea.text == "" ||
           _siteBuiltupArea.text == null ||
           _siteBuiltupArea.text == "null") {
         Get.dialog(CustomDialogs()
-            .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
+            .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
+      }
+      // else if (_selectedConstructionTypeVisit == null ||
+      //     _stagePotentialVisit.text == null ||
+      //     _stagePotentialVisit.text == "" ||
+      //     _siteProductFromLocalDB == null ||
+      //     _selectedSiteVisitFloor == null ||
+      //     _brandPriceVisit.text == "" ||
+      //     _brandPriceVisit.text == null
+      //     // && _dateofConstruction.text == "" && _dateofConstruction.text == null
+      //     ||
+      //     _dateOfBagSupplied.text == "" ||
+      //     _dateOfBagSupplied.text == null ||
+      //     _stagePotentialVisit.text == "" ||
+      //     _stagePotentialVisit.text == null ||
+      //     _stageStatus.text == "" ||
+      //     _stageStatus.text == null ||
+      //     _siteCompetitionStatusEntity == null ||
+      //     _siteOpportunitStatusEnity == null ||
+      //     _siteProbabilityWinningEntity == null ||
+      //     visitDataDealer == null) {
+      //   Get.dialog(CustomDialogs()
+      //       .showMessage("Please fill mandatory fields in \"Visit Data\" Tab"));
+      // }
+      else if (addNextButtonDisable &&
+          (_selectedConstructionTypeVisitNextStage == null ||
+              _stagePotentialVisitNextStage.text == null ||
+              _stagePotentialVisitNextStage.text == "" ||
+              _siteProductFromLocalDBNextStage == null ||
+              _selectedSiteVisitFloorNextStage == null ||
+              _brandPriceVisitNextStage.text == "" ||
+              _brandPriceVisitNextStage.text == null
+              // && _dateofConstruction.text == "" && _dateofConstruction.text == null
+              ||
+              _dateOfBagSuppliedNextStage.text == "" ||
+              _dateOfBagSuppliedNextStage.text == null ||
+              _stagePotentialVisitNextStage.text == "" ||
+              _stagePotentialVisitNextStage.text == null ||
+              _stageStatusNextStage.text == "" ||
+              _stageStatusNextStage.text == null)) {
+        Get.dialog(CustomDialogs().showMessage(
+            "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
       } else {
         updateSiteLogic();
-        setState(() {
-          fromDropDown = false;
-        });
       }
-    } else if (_siteBuiltupArea.text == "" ||
-        _siteBuiltupArea.text == null ||
-        _siteBuiltupArea.text == "null") {
-      Get.dialog(CustomDialogs()
-          .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
-    } else if (_selectedConstructionTypeVisit == null ||
-        _stagePotentialVisit.text == null ||
-        _stagePotentialVisit.text == "" ||
-        _siteProductFromLocalDB == null ||
-        _selectedSiteVisitFloor == null ||
-        _brandPriceVisit.text == "" ||
-        _brandPriceVisit.text == null
-        // && _dateofConstruction.text == "" && _dateofConstruction.text == null
-        ||
-        _dateOfBagSupplied.text == "" ||
-        _dateOfBagSupplied.text == null ||
-        _stagePotentialVisit.text == "" ||
-        _stagePotentialVisit.text == null ||
-        _stageStatus.text == "" ||
-        _stageStatus.text == null ||
-        _siteCompetitionStatusEntity == null ||
-        _siteOpportunitStatusEnity == null ||
-        _siteProbabilityWinningEntity == null ||
-        visitDataDealer == null) {
-      print("_stagePotentialVisit ${_stagePotentialVisit.text}");
-      print("_siteProductFromLocalDB ${_siteProductFromLocalDB}");
-      print("_selectedSiteVisitFloor ${_selectedSiteVisitFloor}");
-      print("_brandPriceVisit ${_brandPriceVisit.text}");
-      print("_dateOfBagSupplied ${_dateOfBagSupplied.text}");
-      print("_stagePotentialVisit ${_stagePotentialVisit.text}");
-      print("_stageStatus ${_stageStatus.text}");
-      print("_siteCompetitionStatusEntity ${_siteCompetitionStatusEntity}");
-      print("_siteOpportunitStatusEnity ${_siteOpportunitStatusEnity}");
-      print("_siteProbabilityWinningEntity ${_siteProbabilityWinningEntity}");
-      print("visitDataDealer ${visitDataDealer}");
-
-      Get.dialog(CustomDialogs()
-          .showMessage("Please fill mandatory fields in \"Visit Data\" Tab"));
     }
-
-
-
-    // else if (_selectedConstructionTypeVisit == null ||
-    //     _stagePotentialVisit.text == null ||
-    //     _stagePotentialVisit.text == "" ||
-    //     _siteProductFromLocalDB == null ||
-    //     _selectedSiteVisitFloor == null ||
-    //     _brandPriceVisit.text == "" ||
-    //     _brandPriceVisit.text == null
-    //     // && _dateofConstruction.text == "" && _dateofConstruction.text == null
-    //     ||
-    //     _dateOfBagSupplied.text == "" ||
-    //     _dateOfBagSupplied.text == null ||
-    //     _stagePotentialVisit.text == "" ||
-    //     _stagePotentialVisit.text == null ||
-    //     _stageStatus.text == "" ||
-    //     _stageStatus.text == null ||
-    //     _siteCompetitionStatusEntity == null ||
-    //     _siteOpportunitStatusEnity == null ||
-    //     _siteProbabilityWinningEntity == null ||
-    //     visitDataDealer == null) {
-    //   Get.dialog(CustomDialogs()
-    //       .showMessage("Please fill mandatory fields in \"Visit Data\" Tab"));
-    // }
-    else if (addNextButtonDisable &&
-        (_selectedConstructionTypeVisitNextStage == null ||
-            _stagePotentialVisitNextStage.text == null ||
-            _stagePotentialVisitNextStage.text == "" ||
-            _siteProductFromLocalDBNextStage == null ||
-            _selectedSiteVisitFloorNextStage == null ||
-            _brandPriceVisitNextStage.text == "" ||
-            _brandPriceVisitNextStage.text == null
-            // && _dateofConstruction.text == "" && _dateofConstruction.text == null
-            ||
-            _dateOfBagSuppliedNextStage.text == "" ||
-            _dateOfBagSuppliedNextStage.text == null ||
-            _stagePotentialVisitNextStage.text == "" ||
-            _stagePotentialVisitNextStage.text == null ||
-            _stageStatusNextStage.text == "" ||
-            _stageStatusNextStage.text == null)) {
-      Get.dialog(CustomDialogs().showMessage(
-          "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
-    } else {
-      updateSiteLogic();
-    }
-  }
 
   updateSiteLogic() async {
 
@@ -6878,21 +6898,21 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       if (productDynamicList != null && productDynamicList.length > 0) {
 
         for (int i = 0; i < productDynamicList.length; i++) {
-         if(productDynamicList[i].brandId!=-1) {
-           siteSupplyHistorys.add(new SiteSupplyHistorys(
-               brandId: productDynamicList[i].brandId,
-               brandPrice: productDynamicList[i].brandPrice.text,
-               siteId: widget.siteId,
-               supplyDate: productDynamicList[i].supplyDate.text,
-               supplyQty: productDynamicList[i].supplyQty.text,
-               createdBy: empId,
-               soldToParty: visitDataDealer,
-               shipToParty: visitDataSubDealer,
-               receiptNumber: "",
-               isAuthorised: "N",
-               authorisedBy: "",
-               authorisedOn: ""));
-         }
+          if(productDynamicList[i].brandId!=-1) {
+            siteSupplyHistorys.add(new SiteSupplyHistorys(
+                brandId: productDynamicList[i].brandId,
+                brandPrice: productDynamicList[i].brandPrice.text,
+                siteId: widget.siteId,
+                supplyDate: productDynamicList[i].supplyDate.text,
+                supplyQty: productDynamicList[i].supplyQty.text,
+                createdBy: empId,
+                soldToParty: visitDataDealer,
+                shipToParty: visitDataSubDealer,
+                receiptNumber: "",
+                isAuthorised: "N",
+                authorisedBy: "",
+                authorisedOn: ""));
+          }
         }
       }
 
@@ -6982,9 +7002,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
       if (_listInfluencerDetail.length != 0) {
         if (_listInfluencerDetail[
-                        _listInfluencerDetail.length - 1]
-                    .inflName ==
-                null ||
+        _listInfluencerDetail.length - 1]
+            .inflName ==
+            null ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
                 null ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1]
@@ -6996,7 +7016,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
 
       List<updateResponse.SiteInfluencerEntityNew> newInfluencerEntity =
-          new List();
+      new List();
 
       for (int i = 0; i < _listInfluencerDetail.length; i++) {
         newInfluencerEntity.add(new updateResponse.SiteInfluencerEntityNew(
@@ -7040,11 +7060,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "productOralBriefing": _siteProductOralBriefing.text,
         "soCode": viewSiteDataResponse.sitesModal.siteSoId,
         "inactiveReasonText":
-            (_inactiveReasonText.text != "") ? _inactiveReasonText.text : null,
+        (_inactiveReasonText.text != "") ? _inactiveReasonText.text : null,
         "nextVisitDate":
-            (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
+        (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
         "closureReasonText":
-            (closureReasonText.text != "") ? closureReasonText.text : null,
+        (closureReasonText.text != "") ? closureReasonText.text : null,
         "createdBy": "",
         "totalBalancePotential": _siteTotalBalanceBags.text,
         "siteCommentsEntity": newSiteCommentsEntity,
@@ -7052,7 +7072,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         // "siteVisitHistoryEntity": siteVisitHistoryEntity,
         "siteStageHistorys":siteStageHistorys,
 
-       // "siteVisitHistoryEntity": siteVisitHistoryEntity,
+        // "siteVisitHistoryEntity": siteVisitHistoryEntity,
 
         "siteNextStageEntity": siteNextStageEntity,
         "sitePhotosEntity": newSitePhotoEntity,
@@ -7070,7 +7090,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "dealerConfirmedChangedBy": "",
         "dealerConfirmedChangedOn": "",
         "isDealerConfirmedChangedBySo":
-            sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
+        sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
         "subdealerId": visitDataSubDealer,
       };
       //  print(updateDataRequest);
