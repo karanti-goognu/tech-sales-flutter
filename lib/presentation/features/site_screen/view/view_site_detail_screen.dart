@@ -151,14 +151,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteFloorsEntity> siteFloorsEntityNew = new List();
   List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List();
   List<SitephotosEntity> sitephotosEntity = new List();
-  // List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
+  // List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List()
   List<SiteStageHistory> siteStageHistorys = new List();
   List<SiteSupplyHistorys> siteSupplyHistorys = new List();
   //List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<ConstructionStageEntity> constructionStageEntityNew = new List();
-  List<ConstructionStageEntity> constructionStageEntityNewNextStage =
-      new List();
+  List<ConstructionStageEntity> constructionStageEntityNewNextStage = new List();
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
@@ -180,6 +179,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   SiteController _siteController = Get.find();
   List<CounterListModel> counterListModel = new List();
   List<DealerForDb> dealerEntityForDb = new List();
+  DealerForDb _dealerEntityForDb;
   List<CounterListModel> subDealerList = new List();
 
   ///site visit
@@ -211,7 +211,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     return ExpandablePanel(
        controller: productDynamicList[index].isExpanded,
       header: Text(
-        "Product details " + (index + 1).toString(),
+        "Product " + (index + 1).toString(),
         softWrap: true,
         style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -230,8 +230,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               children: [
                 DropdownButtonFormField<BrandModelforDB>(
                   value: _siteBrandFromLocalDB,
-                  items: siteBrandEntityfromLoaclDB
-                      .map((label) => DropdownMenuItem(
+                  items: index==0?siteBrandEntityfromLoaclDB.map((label) => DropdownMenuItem(
                     child: Text(
                       label.brandName,
                       style: TextStyle(
@@ -240,8 +239,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           fontFamily: "Muli"),
                     ),
                     value: label,
-                  ))
-                      .toList(),
+                  )).toList():
+                  [_siteBrandFromLocalDB].map((label) => DropdownMenuItem(
+                    child: Text(
+                      label.brandName,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  )).toList(),
 
                   // hint: Text('Rating'),
                   onChanged: (value) async {
@@ -286,57 +294,34 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
                     ? GestureDetector(
                   onTap: () {
-                    if (_siteBrandFromLocalDBNextStage.brandName
-                        .toLowerCase() ==
-                        "dalmia") {
-                      if (!isAllowSelectDealer)
-                        Get.dialog(CustomDialogs().showMessage(
-                            "This dealer not Confirmed by Sales Officer."));
-                    } else {}
+
                   },
-                  child: DropdownButtonFormField(
-                    items: dealerEntityForDb
-                        .map((e) => DropdownMenuItem(
-                      value: e.id,
+                  child: DropdownButtonFormField<DealerForDb>(
+                    value: _dealerEntityForDb,
+                    items:index==0?dealerEntityForDb.map((label) => DropdownMenuItem(
                       child: SizedBox(
                         width:
                         MediaQuery.of(context).size.width - 100,
-                        child: Text('${e.dealerName} (${e.id})',
+                        child: Text('${label.dealerName} (${label.id})',
                             style: TextStyle(fontSize: 14)),
                       ),
-                    ))
-                        .toList(),
+                      value: label,
+                    )).toList():[_dealerEntityForDb].map((label) => DropdownMenuItem(
+                      child: SizedBox(
+                        width:
+                        MediaQuery.of(context).size.width - 100,
+                        child: Text('${label.dealerName} (${label.id})',
+                            style: TextStyle(fontSize: 14)),
+                      ),
+                      value: label,
+                    )).toList(),
                     onChanged: (value) {
-                      siteStageHistorys
-                          .sort((b, a) => a.siteStageHistoryId.compareTo(b.siteStageHistoryId));
-                      int listLength = siteStageHistorys.length;
-
-                      if (listLength > 0) {
-                        SiteSupplyHistorys latestRecordData =
-                        siteStageHistorys[index].siteSupplyHistorys.elementAt(0);
-
-                        if (latestRecordData.soldToParty != value) {
-                          if (latestRecordData.isAuthorised == "N") {
-                            dealerEntityForDb.map((e) => DropdownMenuItem(
-                              value: e.id,
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width -
-                                    100,
-                                child: Text('${e.dealerName} (${e.id})',
-                                    style: TextStyle(fontSize: 14)),
-                              ),
-                            ));
-                            return Get.dialog(CustomDialogs().showMessage(
-                                "Your previous supplier not authorised."));
-                          } else
-                            sitesModal.isDealerConfirmedChangedBySo = "N";
-                        }
-                      }
-
                       selectedSubDealer = null;
                       setState(() {
+                        print("Dealer Selected-->"+value.toString());
+                        _dealerEntityForDb = value;
                         subDealerList = new List();
-                        visitDataDealer = value.toString();
+                        visitDataDealer = value.id;
                         subDealerList = counterListModel
                             .where((e) => e.soldToParty == visitDataDealer)
                             .toList();
@@ -350,8 +335,85 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     validator: (value) =>
                     value == null ? 'Please select Dealer' : null,
                   ),
-                )
-                    : Container(),
+                ) : Container(),
+
+
+                // (_siteBrandFromLocalDB != null &&
+                //     _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+                //     ? GestureDetector(
+                //   onTap: () {
+                //     // if (_siteBrandFromLocalDBNextStage.brandName
+                //     //     .toLowerCase() ==
+                //     //     "dalmia") {
+                //     //   if (!isAllowSelectDealer)
+                //     //     Get.dialog(CustomDialogs().showMessage(
+                //     //         "This dealer not Confirmed by Sales Officer."));
+                //     // } else {
+                //     //
+                //     // }
+                //   },
+                //   child: DropdownButtonFormField(
+                //     value: _dealerEntityForDb,
+                //     items: dealerEntityForDb
+                //         .map((e) => DropdownMenuItem(
+                //       value: e.id,
+                //       child: SizedBox(
+                //         width:
+                //         MediaQuery.of(context).size.width - 100,
+                //         child: Text('${e.dealerName} (${e.id})',
+                //             style: TextStyle(fontSize: 14)),
+                //       ),
+                //     ))
+                //         .toList(),
+                //     onChanged: (value) {
+                //       // siteStageHistorys
+                //       //     .sort((b, a) => a.siteStageHistoryId.compareTo(b.siteStageHistoryId));
+                //       // int listLength = siteStageHistorys.length;
+                //       //
+                //       // if (listLength > 0) {
+                //       //   SiteSupplyHistorys latestRecordData =
+                //       //   siteStageHistorys[index].siteSupplyHistorys.elementAt(0);
+                //       //
+                //       //   if (latestRecordData.soldToParty != value) {
+                //       //     if (latestRecordData.isAuthorised == "N") {
+                //       //       dealerEntityForDb.map((e) => DropdownMenuItem(
+                //       //         value: e.id,
+                //       //         child: SizedBox(
+                //       //           width: MediaQuery.of(context).size.width -
+                //       //               100,
+                //       //           child: Text('${e.dealerName} (${e.id})',
+                //       //               style: TextStyle(fontSize: 14)),
+                //       //         ),
+                //       //       ));
+                //       //       return Get.dialog(CustomDialogs().showMessage(
+                //       //           "Your previous supplier not authorised."));
+                //       //     } else
+                //       //       sitesModal.isDealerConfirmedChangedBySo = "N";
+                //       //   }
+                //       // }
+                //
+                //       selectedSubDealer = null;
+                //       setState(() {
+                //         print("Dealer Selected-->"+value.toString());
+                //         _dealerEntityForDb = value;
+                //         subDealerList = new List();
+                //         visitDataDealer = value.toString();
+                //         subDealerList = counterListModel
+                //             .where((e) => e.soldToParty == visitDataDealer)
+                //             .toList();
+                //         selectedSubDealer = subDealerList[0];
+                //         visitDataSubDealer = subDealerList[0].shipToParty;
+                //       });
+                //     },
+                //     style: FormFieldStyle.formFieldTextStyle,
+                //     decoration: FormFieldStyle.buildInputDecoration(
+                //         labelText: "Dealer"),
+                //     validator: (value) =>
+                //     value == null ? 'Please select Dealer' : null,
+                //   ),
+                // ) : Container(),
+                //
+
                 (_siteBrandFromLocalDB != null &&
                     _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
                     ? Padding(
@@ -634,7 +696,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ),
                     ),
                     onPressed: () async {
-                      print("cssdsa  "+productDynamicList[index].brandModelForDB.brandName);
+                      // print("cssdsa  "+productDynamicList[index].brandModelForDB.brandName);
                       if(productDynamicList[index].brandModelForDB == null ){
                         Get.dialog(CustomDialogs()
                             .showMessage("Please select product sold !"));
@@ -757,7 +819,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         print("here");
         viewSiteDataResponse = data;
 
-        // print(viewSiteDataResponse);
+         print(json.encode(viewSiteDataResponse));
         await db.clearTable();
         siteBrandEntity = viewSiteDataResponse != null
             ? viewSiteDataResponse.siteBrandEntity
@@ -871,11 +933,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           }
           // print('pppppppppppppppppppppppp');
 
-          print(viewSiteDataResponse.siteStageHistorys);
+          // print(viewSiteDataResponse.siteStageHistorys);
           // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
           // siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
-           siteStageHistorys = viewSiteDataResponse.siteStageHistorys;
-          print(viewSiteDataResponse.siteStageHistorys.length);
+          if(viewSiteDataResponse.siteStageHistorys!=null){
+            siteStageHistorys = viewSiteDataResponse.siteStageHistorys;
+          }else
+            {
+              siteStageHistorys = [];
+            }
+          // print(viewSiteDataResponse.siteStageHistorys.length);
           //print(viewSiteDataResponse.siteVisitHistoryEntity);
           // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
          // siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
@@ -935,8 +1002,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _district.text = sitesModal.siteDistrict;
           _taluk.text = sitesModal.siteTaluk;
           _rera.text = sitesModal.siteReraNumber;
-          _dealerName.text = sitesModal.siteDealerName;
-          _subDealerName.text = sitesModal.siteSubDealerName;
+          if(sitesModal.siteDealerName==null || sitesModal.siteDealerName=="null"){
+            _dealerName.text = "";
+          }else {
+            _dealerName.text = sitesModal.siteDealerName;
+          }
+
+          if(sitesModal.siteSubDealerName==null || sitesModal.siteSubDealerName=="null"){
+            _subDealerName.text = "";
+          }else {
+            _subDealerName.text = sitesModal.siteSubDealerName;
+          }
+
           _so.text = sitesModal.siteSoname;
           geoTagType = sitesModal.siteGeotagType;
 
@@ -2205,7 +2282,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                         DropdownButtonFormField<SiteProbabilityWinningEntity>(
                           value: _siteProbabilityWinningEntity,
-                          items: [_siteProbabilityWinningEntity]
+                          items:viewSiteDataResponse.sitesModal !=
+                              null && viewSiteDataResponse.sitesModal.siteProbabilityWinningId !=null?[_siteProbabilityWinningEntity]
                               .map((label) => DropdownMenuItem(
                                     child: Text(
                                       label==null?"":
@@ -2218,7 +2296,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     ),
                                     value: label,
                                   ))
-                              .toList(),
+                              .toList():siteProbabilityWinningEntity
+                  .map((label) => DropdownMenuItem(
+          child: Text(
+          label==null?"":
+            label.siteProbabilityStatus,
+            style: TextStyle(
+                fontSize: 18,
+                color:
+                ColorConstants.inputBoxHintColor,
+                fontFamily: "Muli"),
+          ),
+        value: label,
+      ))
+        .toList(),
                           onChanged: (value) {
                             setState(() {
                               labelProbabilityText =
@@ -2247,7 +2338,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ),
                         DropdownButtonFormField<SiteCompetitionStatusEntity>(
                           value: _siteCompetitionStatusEntity,
-                          items: [_siteCompetitionStatusEntity]
+                          items: viewSiteDataResponse.sitesModal !=
+                              null && viewSiteDataResponse.sitesModal.siteCompetitionId !=null?[_siteCompetitionStatusEntity]
                               .map((label) => DropdownMenuItem(
                                     child: Text(label==null?"":
                                       label.competitionStatus,
@@ -2259,7 +2351,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     ),
                                     value: label,
                                   ))
-                              .toList(),
+                              .toList():siteCompetitionStatusEntity
+                            .map((label) => DropdownMenuItem(
+              child: Text(label==null?"":
+                label.competitionStatus,
+                style: TextStyle(
+                    fontSize: 18,
+                    color:
+                    ColorConstants.inputBoxHintColor,
+                    fontFamily: "Muli"),
+              ),
+            value: label,
+          ))
+          .toList(),
                           onChanged: (value) {
                             setState(() {
                               _siteCompetitionStatusEntity = value;
@@ -2285,7 +2389,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ),
                         DropdownButtonFormField<SiteOpportunityStatusEntity>(
                           value: _siteOpportunitStatusEnity,
-                          items: [_siteOpportunitStatusEnity]
+                          items:viewSiteDataResponse.sitesModal !=
+                              null && viewSiteDataResponse.sitesModal.siteOppertunityId !=null ? [_siteOpportunitStatusEnity]
                               .map((label) => DropdownMenuItem(
                                     child: Text(label==null?"":
                                       label.opportunityStatus,
@@ -2297,6 +2402,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     ),
                                     value: label,
                                   ))
+                              .toList():siteOpportunityStatusEntity
+                              .map((label) => DropdownMenuItem(
+                            child: Text(label==null?"":
+                            label.opportunityStatus,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color:
+                                  ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                            ),
+                            value: label,
+                          ))
                               .toList(),
                           onChanged: (value) {
                             setState(() {
@@ -3233,61 +3350,61 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             //     ? SizedBox(height: 16)
             //     : Container(),
 
-            SizedBox(height: 16),
-            DropdownButtonFormField<BrandModelforDB>(
-              value: _siteBrandFromLocalDB,
-              items: siteBrandEntityfromLoaclDB
-                  .map((label) => DropdownMenuItem(
-                        child: Text(
-                          label.brandName,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                        ),
-                        value: label,
-                      ))
-                  .toList(),
-
-              // hint: Text('Rating'),
-              onChanged: (value) async {
-                FocusScope.of(context).requestFocus(new FocusNode());
-                print("Brand Value");
-                print(value);
-                siteProductEntityfromLoaclDB = new List();
-                _siteProductFromLocalDB = null;
-                List<BrandModelforDB> _siteProductEntityfromLoaclDB =
-                    await db.fetchAllDistinctProduct(value.brandName);
-                setState(() {
-                  _siteBrandFromLocalDB = value;
-
-                  siteProductEntityfromLoaclDB = _siteProductEntityfromLoaclDB;
-                  // _productSoldVisit.text = _siteBrand.productName;
-                  if (_siteBrandFromLocalDB.brandName.toLowerCase() ==
-                      "dalmia") {
-                    _stageStatus.text = "WON";
-                  } else {
-                    _stageStatus.text = "LOST";
-                    visitDataDealer = "";
-                  }
-                });
-              },
-              decoration: FormFieldStyle.buildInputDecoration(
-                labelText: "Brand In Use",
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
+            // SizedBox(height: 16),
+            // DropdownButtonFormField<BrandModelforDB>(
+            //   value: _siteBrandFromLocalDB,
+            //   items: siteBrandEntityfromLoaclDB
+            //       .map((label) => DropdownMenuItem(
+            //             child: Text(
+            //               label.brandName,
+            //               style: TextStyle(
+            //                   fontSize: 18,
+            //                   color: ColorConstants.inputBoxHintColor,
+            //                   fontFamily: "Muli"),
+            //             ),
+            //             value: label,
+            //           ))
+            //       .toList(),
+            //
+            //   // hint: Text('Rating'),
+            //   onChanged: (value) async {
+            //     FocusScope.of(context).requestFocus(new FocusNode());
+            //     print("Brand Value");
+            //     print(value);
+            //     siteProductEntityfromLoaclDB = new List();
+            //     _siteProductFromLocalDB = null;
+            //     List<BrandModelforDB> _siteProductEntityfromLoaclDB =
+            //         await db.fetchAllDistinctProduct(value.brandName);
+            //     setState(() {
+            //       _siteBrandFromLocalDB = value;
+            //
+            //       siteProductEntityfromLoaclDB = _siteProductEntityfromLoaclDB;
+            //       // _productSoldVisit.text = _siteBrand.productName;
+            //       if (_siteBrandFromLocalDB.brandName.toLowerCase() ==
+            //           "dalmia") {
+            //         _stageStatus.text = "WON";
+            //       } else {
+            //         _stageStatus.text = "LOST";
+            //         visitDataDealer = "";
+            //       }
+            //     });
+            //   },
+            //   decoration: FormFieldStyle.buildInputDecoration(
+            //     labelText: "Brand In Use",
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 15),
+            //   child: Text(
+            //     "Mandatory",
+            //     style: TextStyle(
+            //       fontFamily: "Muli",
+            //       color: ColorConstants.inputBoxHintColorDark,
+            //       fontWeight: FontWeight.normal,
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 16),
             // (_siteBrandFromLocalDB != null &&
             //         _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
             //     ? GestureDetector(
@@ -3358,106 +3475,106 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             //         ),
             //       )
             //     : Container(),
-            (_siteBrandFromLocalDB != null &&
-                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
-                ? Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      "Mandatory",
-                      style: TextStyle(
-                        fontFamily: "Muli",
-                        color: ColorConstants.inputBoxHintColorDark,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  )
-                : Container(),
-            SizedBox(height: 8),
-
-            subDealerList.isEmpty
-                ? Container()
-                : (_siteBrandFromLocalDB != null &&
-                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                            "dalmia")
-                    ? DropdownButtonFormField(
-                        items: subDealerList.isNotEmpty
-                            ? subDealerList
-                                .map((e) => DropdownMenuItem(
-                                      value: e,
-                                      child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                100,
-                                        child: Text(
-                                          '${e.shipToPartyName} (${e.shipToParty})',
-                                          style: TextStyle(fontSize: 14),
-                                        ),
-                                      ),
-                                    ))
-                                .toList()
-                            : [
-                                DropdownMenuItem(
-                                    child: Text("No Sub Dealer"), value: "0")
-                              ],
-                        value: selectedSubDealer,
-                        validator: (value) => value == null || value.isEmpty
-                            ? 'Please select Sub-Dealer'
-                            : null,
-                        onChanged: (value) {
-                          // print("Sub Dealer Value");
-                          // print(value.shipToParty.toString());
-                          setState(() {
-                            visitDataSubDealer = value.shipToParty.toString();
-                          });
-                          print(visitDataSubDealer);
-                        },
-                        style: FormFieldStyle.formFieldTextStyle,
-                        decoration: FormFieldStyle.buildInputDecoration(
-                            labelText: "Sub-Dealer"),
-                      )
-                    : Container(),
-            SizedBox(height: 8),
-            DropdownButtonFormField<BrandModelforDB>(
-                value: _siteProductFromLocalDB,
-                items: siteProductEntityfromLoaclDB
-                    .map((label) => DropdownMenuItem(
-                          child: Text(
-                            label.productName,
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                          ),
-                          value: label,
-                        ))
-                    .toList(),
-
-                // hint: Text('Rating'),
-                onChanged: (value) {
-                  print("Product Value");
-                  print(value);
-                  setState(() {
-                    _siteProductFromLocalDB = value;
-                    print(_siteProductFromLocalDB.id);
-                  });
-                },
-                decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Product Sold")),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            (_siteBrandFromLocalDB != null &&
-                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
-                ? SizedBox(height: 16)
-                : Container(),
+            // (_siteBrandFromLocalDB != null &&
+            //         _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+            //     ? Padding(
+            //         padding: const EdgeInsets.only(left: 15),
+            //         child: Text(
+            //           "Mandatory",
+            //           style: TextStyle(
+            //             fontFamily: "Muli",
+            //             color: ColorConstants.inputBoxHintColorDark,
+            //             fontWeight: FontWeight.normal,
+            //           ),
+            //         ),
+            //       )
+            //     : Container(),
+            // SizedBox(height: 8),
+            //
+            // subDealerList.isEmpty
+            //     ? Container()
+            //     : (_siteBrandFromLocalDB != null &&
+            //             _siteBrandFromLocalDB.brandName.toLowerCase() ==
+            //                 "dalmia")
+            //         ? DropdownButtonFormField(
+            //             items: subDealerList.isNotEmpty
+            //                 ? subDealerList
+            //                     .map((e) => DropdownMenuItem(
+            //                           value: e,
+            //                           child: SizedBox(
+            //                             width:
+            //                                 MediaQuery.of(context).size.width -
+            //                                     100,
+            //                             child: Text(
+            //                               '${e.shipToPartyName} (${e.shipToParty})',
+            //                               style: TextStyle(fontSize: 14),
+            //                             ),
+            //                           ),
+            //                         ))
+            //                     .toList()
+            //                 : [
+            //                     DropdownMenuItem(
+            //                         child: Text("No Sub Dealer"), value: "0")
+            //                   ],
+            //             value: selectedSubDealer,
+            //             validator: (value) => value == null || value.isEmpty
+            //                 ? 'Please select Sub-Dealer'
+            //                 : null,
+            //             onChanged: (value) {
+            //               // print("Sub Dealer Value");
+            //               // print(value.shipToParty.toString());
+            //               setState(() {
+            //                 visitDataSubDealer = value.shipToParty.toString();
+            //               });
+            //               print(visitDataSubDealer);
+            //             },
+            //             style: FormFieldStyle.formFieldTextStyle,
+            //             decoration: FormFieldStyle.buildInputDecoration(
+            //                 labelText: "Sub-Dealer"),
+            //           )
+            //         : Container(),
+            // SizedBox(height: 8),
+            // DropdownButtonFormField<BrandModelforDB>(
+            //     value: _siteProductFromLocalDB,
+            //     items: siteProductEntityfromLoaclDB
+            //         .map((label) => DropdownMenuItem(
+            //               child: Text(
+            //                 label.productName,
+            //                 style: TextStyle(
+            //                     fontSize: 18,
+            //                     color: ColorConstants.inputBoxHintColor,
+            //                     fontFamily: "Muli"),
+            //               ),
+            //               value: label,
+            //             ))
+            //         .toList(),
+            //
+            //     // hint: Text('Rating'),
+            //     onChanged: (value) {
+            //       print("Product Value");
+            //       print(value);
+            //       setState(() {
+            //         _siteProductFromLocalDB = value;
+            //         print(_siteProductFromLocalDB.id);
+            //       });
+            //     },
+            //     decoration: FormFieldStyle.buildInputDecoration(
+            //         labelText: "Product Sold")),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 15),
+            //   child: Text(
+            //     "Mandatory",
+            //     style: TextStyle(
+            //       fontFamily: "Muli",
+            //       color: ColorConstants.inputBoxHintColorDark,
+            //       fontWeight: FontWeight.normal,
+            //     ),
+            //   ),
+            // ),
+            // (_siteBrandFromLocalDB != null &&
+            //         _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+            //     ? SizedBox(height: 16)
+            //     : Container(),
             // GestureDetector(
             //   onTap: (){
             //     if(!isAllowSelectDealer)
@@ -5122,7 +5239,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             Row(
               children: [
                 Expanded(
-                  child: ListView.builder(
+                  child: siteStageHistorys!=null? ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: siteStageHistorys.length,
@@ -5147,7 +5264,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Visit Date:" + selectedDateString,
+                                    "Visit Date:" + selectedDateString +"  "+siteStageHistorys[index].siteStageHistoryId.toString(),
                                     style: TextStyle(
                                         //      fontWeight: FontWeight.bold,
                                         fontSize: 16),
@@ -5377,7 +5494,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             ],
                           );
                         }
-                      }),
+                      }):Center(child: Text("No Data Found."),),
                 ),
               ],
             ),
@@ -6522,6 +6639,22 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     }
   }
 
+  dealerValue(String soldToParty) {
+    for (int i = 0; i < dealerEntityForDb.length; i++) {
+      if (dealerEntityForDb[i].id == soldToParty) {
+        return dealerEntityForDb[i].dealerName;
+      }
+    }
+  }
+
+  subDealerValue(String shipToParty) {
+    for (int i = 0; i < counterListModel.length; i++) {
+      if (counterListModel[i].shipToParty == shipToParty) {
+        return counterListModel[i].shipToPartyName;
+      }
+    }
+  }
+
   inflTypeValue(TextEditingController inflTypeId) {
     for (int i = 0; i < influencerTypeEntity.length; i++) {
       if (influencerTypeEntity[i].inflTypeId == int.parse(inflTypeId.text)) {
@@ -6594,7 +6727,33 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
       Get.dialog(CustomDialogs()
           .showMessage("Please fill mandatory fields in \"Visit Data\" Tab"));
-    } else if (addNextButtonDisable &&
+    }
+
+
+
+    // else if (_selectedConstructionTypeVisit == null ||
+    //     _stagePotentialVisit.text == null ||
+    //     _stagePotentialVisit.text == "" ||
+    //     _siteProductFromLocalDB == null ||
+    //     _selectedSiteVisitFloor == null ||
+    //     _brandPriceVisit.text == "" ||
+    //     _brandPriceVisit.text == null
+    //     // && _dateofConstruction.text == "" && _dateofConstruction.text == null
+    //     ||
+    //     _dateOfBagSupplied.text == "" ||
+    //     _dateOfBagSupplied.text == null ||
+    //     _stagePotentialVisit.text == "" ||
+    //     _stagePotentialVisit.text == null ||
+    //     _stageStatus.text == "" ||
+    //     _stageStatus.text == null ||
+    //     _siteCompetitionStatusEntity == null ||
+    //     _siteOpportunitStatusEnity == null ||
+    //     _siteProbabilityWinningEntity == null ||
+    //     visitDataDealer == null) {
+    //   Get.dialog(CustomDialogs()
+    //       .showMessage("Please fill mandatory fields in \"Visit Data\" Tab"));
+    // }
+    else if (addNextButtonDisable &&
         (_selectedConstructionTypeVisitNextStage == null ||
             _stagePotentialVisitNextStage.text == null ||
             _stagePotentialVisitNextStage.text == "" ||
@@ -6619,20 +6778,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   updateSiteLogic() async {
 
-    siteStageHistorys.sort((b, a) => a.siteStageHistoryId.compareTo(b.siteStageHistoryId));
-    int listLength = siteStageHistorys.length;
-    if (listLength > 0) {
-      // SiteVisitHistoryEntity latestRecordData =
-      //     siteVisitHistoryEntity.elementAt(0);
-      SiteSupplyHistorys latestRecordData = siteStageHistorys[0].siteSupplyHistorys.elementAt(0);
-      if (latestRecordData.soldToParty !=
-          visitDataDealer) if (latestRecordData.isAuthorised == "N") {
-        return Get.dialog(CustomDialogs()
-            .showMessage("Your previous supplier not authorised."));
-      }
-    }
+    // siteStageHistorys.sort((b, a) => a.siteStageHistoryId.compareTo(b.siteStageHistoryId));
+    // int listLength = siteStageHistorys.length;
+    // if (listLength > 0) {
+    //   // SiteVisitHistoryEntity latestRecordData =
+    //   //     siteVisitHistoryEntity.elementAt(0);
+    //   SiteSupplyHistorys latestRecordData = siteStageHistorys[0].siteSupplyHistorys.elementAt(0);
+    //   if (latestRecordData.soldToParty !=
+    //       visitDataDealer) if (latestRecordData.isAuthorised == "N") {
+    //     return Get.dialog(CustomDialogs()
+    //         .showMessage("Your previous supplier not authorised."));
+    //   }
+    // }
 
-    print("OnClickData-->" + productDynamicList.length.toString() + "fdsfd");
     // siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
     // int listLength = siteVisitHistoryEntity.length;
     // if (listLength > 0) {
@@ -6722,8 +6880,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         for (int i = 0; i < productDynamicList.length; i++) {
          if(productDynamicList[i].brandId!=-1) {
            siteSupplyHistorys.add(new SiteSupplyHistorys(
-               siteStageHistoryId: -1,
-               siteSupplyHistoryId: -1,
                brandId: productDynamicList[i].brandId,
                brandPrice: productDynamicList[i].brandPrice.text,
                siteId: widget.siteId,
@@ -6741,8 +6897,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
 
       if (_selectedConstructionTypeVisit != null) {
+        print(json.encode(new SiteStageHistory(
+
+            constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
+            siteId: widget.siteId,
+            floorId: _selectedSiteVisitFloor.id,
+            stagePotential: _stagePotentialVisit.text,
+            constructionDate: _dateofConstruction.text,
+            stageStatus: _stageStatus.text,
+            createdBy: empId,
+            siteSupplyHistorys: siteSupplyHistorys
+        )));
+
         siteStageHistorys.add(new SiteStageHistory(
-            siteStageHistoryId: -1,
+
             constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
             siteId: widget.siteId,
             floorId: _selectedSiteVisitFloor.id,
@@ -6933,7 +7101,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
     return ExpandablePanel(
       header: Text(
-        "Product details " + (index + 1).toString(),
+        "Product " + (index + 1).toString(),
         softWrap: true,
         style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -7025,8 +7193,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 12),
                 TextFormField(
                   readOnly: true,
-                  initialValue:
-                  siteSupplyHistory.soldToParty,
+                  initialValue:dealerValue(
+                  siteSupplyHistory.soldToParty),
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -7039,8 +7207,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue:
-                  siteSupplyHistory.shipToParty,
+                  initialValue:subDealerValue(
+                  siteSupplyHistory.shipToParty),
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,

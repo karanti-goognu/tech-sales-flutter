@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:async/async.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/UpdateSiteModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
@@ -20,7 +22,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
-import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClientSites {
@@ -286,6 +287,85 @@ class MyApiClientSites {
       }
     });
   }
+
+  updateVersion2SiteData(accessKey, String userSecurityKey, updateDataRequest,
+      List<File> list, BuildContext context, int siteId) async {
+    version = VersionClass.getVersion();
+    http.MultipartRequest request = new http.MultipartRequest(
+        'POST', Uri.parse(UrlConstants.updateVersion2SiteData));
+    print(UrlConstants.updateVersion2SiteData);
+    request.headers.addAll(
+        requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
+            accessKey, userSecurityKey, version));
+    log(json.encode(updateDataRequest));
+    updateDataRequest['siteStageHistorys'].forEach((e) => print(e));
+
+    for (var file in list) {
+      String fileName = file.path.split("/").last;
+      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+
+      // get file length
+      var length = await file.length(); //imageFile is your image file
+
+      // multipart that takes file
+      var multipartFileSign =
+      new http.MultipartFile('file', stream, length, filename: fileName);
+
+      request.files.add(multipartFileSign);
+    }
+
+    String empId;
+    String mobileNumber;
+    String name;
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) async {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
+      name = prefs.getString(StringConstants.employeeName) ?? "empty";
+
+      gv.currentId = empId;
+
+      request.fields['uploadImageWithUpdateSiteModel'] =
+          json.encode(updateDataRequest);
+
+      /// rint(saveLeadRequestModel.comments[0].commentedBy);
+      print("Request headers :: " + request.headers.toString());
+      print("Request Body/Fields :: " +
+          request.fields['siteInfluencerEntity'].toString());
+      print("Files:: " + request.files.toString());
+      try {
+        request
+            .send()
+            .then((result) async {
+          http.Response.fromStream(result).then((response) {
+            print("---@@---");
+            print(response.body);
+
+            var data = json.decode(response.body);
+            //    print(data);
+
+            //      print(response.body)  ;
+            UpdateSiteModel updateLeadResponseModel =
+            UpdateSiteModel.fromJson(data);
+            //  print(response.body);
+            if (updateLeadResponseModel.respCode == "ST2033") {
+              Get.back();
+              Get.dialog(CustomDialogs()
+                  .showDialog(updateLeadResponseModel.respMsg));
+            } else {
+              Get.dialog(CustomDialogs()
+                  .showDialog(updateLeadResponseModel.respMsg));
+            }
+          });
+        })
+            .catchError((err) => print('error : ' + err.toString()))
+            .whenComplete(() {});
+      } catch (_) {
+        print('exception ${_.toString()}');
+      }
+    });
+  }
+
 
   Future<SitesListModel> getSearchDataNew(String accessKey,
       String userSecurityKey, String empID, String searchText) async {

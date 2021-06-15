@@ -49,9 +49,15 @@ class MyRepositorySites {
         accessKey, userSecurityKey, siteId, empID);
   }
 
+  // updateSiteData(accessKey, String userSecurityKey, updateDataRequest,
+  //     List<File> list, BuildContext context, int siteId) {
+  //   return apiClient.updateSiteData(
+  //       accessKey, userSecurityKey, updateDataRequest, list, context, siteId);
+  // }
+
   updateSiteData(accessKey, String userSecurityKey, updateDataRequest,
       List<File> list, BuildContext context, int siteId) {
-    return apiClient.updateSiteData(
+    return apiClient.updateVersion2SiteData(
         accessKey, userSecurityKey, updateDataRequest, list, context, siteId);
   }
 
