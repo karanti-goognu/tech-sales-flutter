@@ -69,16 +69,23 @@ class PlaceApiProvider {
   //Platform.isAndroid ? androidKey : iosKey;
 
   Future<List<Suggestion>> fetchSuggestions(String input, String lang) async {
+    input = input.replaceAll(" ", "+");
     final request =
-        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=$lang&components=country:IN&key=$apiKey&sessiontoken=$sessionToken';
+    //    'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=$lang&components=country:IN&key=$apiKey&sessiontoken=$sessionToken';
+
+    "https://maps.googleapis.com/maps/api/place/autocomplete/json?" +
+        "key=${apiKey}&" +
+        "input={$input}&components=country:IN&sessiontoken=$sessionToken&" +
+        "language=${lang}";
+
     final response = await client.get(request);
 
 
     if (response.statusCode == 200) {
-      final result = json.decode(response.body);
+      Map<String, dynamic> result = json.decode(response.body);
       if (result['status'] == 'OK') {
         print(result);
-        // compose suggestions in a list
+
         return result['predictions']
             .map<Suggestion>((p) => Suggestion(p['place_id'], p['description']))
             .toList();
@@ -113,7 +120,7 @@ class PlaceApiProvider {
     }
   }
 
-  // Future<Place> getPlaceDetailFromId(String placeId) async {
-  //   // if you want to get the details of the selected place by place_id
-  // }
+// Future<Place> getPlaceDetailFromId(String placeId) async {
+//   // if you want to get the details of the selected place by place_id
+// }
 }

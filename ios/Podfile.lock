@@ -124,6 +124,9 @@ PODS:
   - moengage_flutter (3.0.0):
     - Flutter
     - MoEPluginBase (< 2.1.0, >= 2.0.2)
+  - moengage_inbox (2.0.1):
+    - Flutter
+    - MoEPluginBase (~> 2.0.2)
   - MoEngageInApp (2.0.2):
     - MoEngage-iOS-SDK (< 7.1.0, >= 7.0.0)
   - MoEPluginBase (2.0.2):
@@ -174,6 +177,7 @@ DEPENDENCIES:
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - moengage_flutter (from `.symlinks/plugins/moengage_flutter/ios`)
+  - moengage_inbox (from `.symlinks/plugins/moengage_inbox/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
@@ -234,6 +238,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/location_permissions/ios"
   moengage_flutter:
     :path: ".symlinks/plugins/moengage_flutter/ios"
+  moengage_inbox:
+    :path: ".symlinks/plugins/moengage_inbox/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider:
@@ -282,6 +288,7 @@ SPEC CHECKSUMS:
   location_permissions: 7e0f9aa0f60deb8ff93ddf0e2a164c7e8197bc94
   MoEngage-iOS-SDK: 6c417155f8a8bd39f1047aa64a7773c73ca1953b
   moengage_flutter: 43002c2069bd38df5f4f2af0372e1d0bf637b25a
+  moengage_inbox: a08fa1a56d0f405a82e762815e8cab585f909fd3
   MoEngageInApp: daf85a52c4a3d5dc663f31c23589a60b513acb64
   MoEPluginBase: 490c5b1ab57761ff0aa44c09bdd7662a13f8e1ee
   MORichNotification: abf1f1aaed3a9366dc8e966c55652bff7716b3b8
