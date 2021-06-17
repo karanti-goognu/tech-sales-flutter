@@ -1158,6 +1158,7 @@ class ProductListModel {
   var supplyQty = TextEditingController();
   var isExpanded = ExpandableController();
   BrandModelforDB brandModelForDB;
+  var dealerName = TextEditingController();
 
 
   ProductListModel(
@@ -1166,7 +1167,8 @@ class ProductListModel {
         this.supplyDate,
         this.supplyQty,
       this.isExpanded,
-      this.brandModelForDB});
+      this.brandModelForDB,
+      this.dealerName});
 
   ProductListModel.fromJson(Map<String, dynamic> json) {
     brandId = json['brandId'];
@@ -1175,6 +1177,7 @@ class ProductListModel {
     supplyQty.text = json['supplyQty'].toString() ?? "";
     isExpanded.expanded = json['isExpanded'];
     brandModelForDB = json['brandModelForDB'];
+    dealerName = json['dealerName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1185,6 +1188,7 @@ class ProductListModel {
     data['supplyQty'] = this.supplyQty.text;
     data['isExpanded'] = this.isExpanded.expanded;
     data['brandModelForDB'] = this.brandModelForDB;
+    data['dealerName'] = this.dealerName;
     return data;
   }
 }

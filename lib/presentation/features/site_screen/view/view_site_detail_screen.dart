@@ -95,7 +95,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   var _siteProductOralBriefing = new TextEditingController();
   var _stagePotentialVisit = new TextEditingController();
   var _stagePotentialVisitNextStage = new TextEditingController();
-  var _brandPriceVisit = new TextEditingController();
+  var _selectedBrand = new TextEditingController();
   var _brandPriceVisit1 = new TextEditingController();
   var _brandPriceVisitNextStage = new TextEditingController();
   var _productSoldVisit = new TextEditingController();
@@ -228,19 +228,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
+                (index==0)?
+                (productDynamicList[index].brandId==-1)?
                 DropdownButtonFormField<BrandModelforDB>(
                   value: _siteBrandFromLocalDB,
-                  items: index==0?siteBrandEntityfromLoaclDB.map((label) => DropdownMenuItem(
-                    child: Text(
-                      label.brandName,
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                    ),
-                    value: label,
-                  )).toList():
-                  [_siteBrandFromLocalDB].map((label) => DropdownMenuItem(
+                  items: siteBrandEntityfromLoaclDB.map((label) => DropdownMenuItem(
                     child: Text(
                       label.brandName,
                       style: TextStyle(
@@ -254,10 +246,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   // hint: Text('Rating'),
                   onChanged: (value) async {
                     FocusScope.of(context).requestFocus(new FocusNode());
-                    print("Brand Value");
-                    print(value);
                     siteProductEntityfromLoaclDB = new List();
-                    _siteProductFromLocalDB = null;
+                    // _siteProductFromLocalDB = null;
                     List<BrandModelforDB> _siteProductEntityfromLoaclDB =
                     await db.fetchAllDistinctProduct(value.brandName);
                     setState(() {
@@ -272,11 +262,45 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         _stageStatus.text = "LOST";
                         visitDataDealer = "";
                       }
+                      _selectedBrand.text = value.brandName;
                     });
                   },
                   decoration: FormFieldStyle.buildInputDecoration(
                     labelText: "Brand In Use",
                   ),
+                ):
+                DropdownButtonFormField<BrandModelforDB>(
+                  value: _siteBrandFromLocalDB,
+                  items: [_siteBrandFromLocalDB].map((label) => DropdownMenuItem(
+                    child: Text(
+                      label.brandName,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  )).toList(),
+
+                  // hint: Text('Rating'),
+                  onChanged: (value) async {
+                    FocusScope.of(context).requestFocus(new FocusNode());
+
+                  },
+                  decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Brand In Use",
+                  ),
+                ):
+                TextFormField(
+                  controller: _selectedBrand,
+                  readOnly: true,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.inputBoxHintColor,
+                      fontFamily: "Muli"),
+                  keyboardType: TextInputType.number,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                      labelText: "Brand In Use"),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
@@ -296,17 +320,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   onTap: () {
 
                   },
-                  child: DropdownButtonFormField<DealerForDb>(
+                  child:
+                  (index==0)?
+                  (productDynamicList[index].dealerName.text.isEmpty)?
+                  DropdownButtonFormField<DealerForDb>(
                     value: _dealerEntityForDb,
-                    items:index==0?dealerEntityForDb.map((label) => DropdownMenuItem(
-                      child: SizedBox(
-                        width:
-                        MediaQuery.of(context).size.width - 100,
-                        child: Text('${label.dealerName} (${label.id})',
-                            style: TextStyle(fontSize: 14)),
-                      ),
-                      value: label,
-                    )).toList():[_dealerEntityForDb].map((label) => DropdownMenuItem(
+                    items:dealerEntityForDb.map((label) => DropdownMenuItem(
                       child: SizedBox(
                         width:
                         MediaQuery.of(context).size.width - 100,
@@ -318,7 +337,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     onChanged: (value) {
                       selectedSubDealer = null;
                       setState(() {
-                        print("Dealer Selected-->"+value.toString());
                         _dealerEntityForDb = value;
                         subDealerList = new List();
                         visitDataDealer = value.id;
@@ -327,6 +345,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             .toList();
                         selectedSubDealer = subDealerList[0];
                         visitDataSubDealer = subDealerList[0].shipToParty;
+                        _dealerName.text = value.dealerName;
+
                       });
                     },
                     style: FormFieldStyle.formFieldTextStyle,
@@ -334,85 +354,51 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         labelText: "Dealer"),
                     validator: (value) =>
                     value == null ? 'Please select Dealer' : null,
+                  ):
+                  DropdownButtonFormField<DealerForDb>(
+                    value: _dealerEntityForDb,
+                    items:[_dealerEntityForDb].map((label) => DropdownMenuItem(
+                      child: SizedBox(
+                        width:
+                        MediaQuery.of(context).size.width - 100,
+                        child: Text('${label.dealerName} (${label.id})',
+                            style: TextStyle(fontSize: 14)),
+                      ),
+                      value: label,
+                    )).toList(),
+                    onChanged: (value) {
+                      selectedSubDealer = null;
+                      setState(() {
+                        _dealerEntityForDb = value;
+                        subDealerList = new List();
+                        visitDataDealer = value.id;
+                        subDealerList = counterListModel
+                            .where((e) => e.soldToParty == visitDataDealer)
+                            .toList();
+                        selectedSubDealer = subDealerList[0];
+                        visitDataSubDealer = subDealerList[0].shipToParty;
+                        _dealerName.text = value.dealerName;
+
+                      });
+                    },
+                    style: FormFieldStyle.formFieldTextStyle,
+                    decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Dealer"),
+                    validator: (value) =>
+                    value == null ? 'Please select Dealer' : null,
+                  ):
+                  TextFormField(
+                    controller: _dealerName,
+                    readOnly: true,
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: ColorConstants.inputBoxHintColor,
+                        fontFamily: "Muli"),
+                    keyboardType: TextInputType.number,
+                    decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Dealer"),
                   ),
                 ) : Container(),
-
-
-                // (_siteBrandFromLocalDB != null &&
-                //     _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
-                //     ? GestureDetector(
-                //   onTap: () {
-                //     // if (_siteBrandFromLocalDBNextStage.brandName
-                //     //     .toLowerCase() ==
-                //     //     "dalmia") {
-                //     //   if (!isAllowSelectDealer)
-                //     //     Get.dialog(CustomDialogs().showMessage(
-                //     //         "This dealer not Confirmed by Sales Officer."));
-                //     // } else {
-                //     //
-                //     // }
-                //   },
-                //   child: DropdownButtonFormField(
-                //     value: _dealerEntityForDb,
-                //     items: dealerEntityForDb
-                //         .map((e) => DropdownMenuItem(
-                //       value: e.id,
-                //       child: SizedBox(
-                //         width:
-                //         MediaQuery.of(context).size.width - 100,
-                //         child: Text('${e.dealerName} (${e.id})',
-                //             style: TextStyle(fontSize: 14)),
-                //       ),
-                //     ))
-                //         .toList(),
-                //     onChanged: (value) {
-                //       // siteStageHistorys
-                //       //     .sort((b, a) => a.siteStageHistoryId.compareTo(b.siteStageHistoryId));
-                //       // int listLength = siteStageHistorys.length;
-                //       //
-                //       // if (listLength > 0) {
-                //       //   SiteSupplyHistorys latestRecordData =
-                //       //   siteStageHistorys[index].siteSupplyHistorys.elementAt(0);
-                //       //
-                //       //   if (latestRecordData.soldToParty != value) {
-                //       //     if (latestRecordData.isAuthorised == "N") {
-                //       //       dealerEntityForDb.map((e) => DropdownMenuItem(
-                //       //         value: e.id,
-                //       //         child: SizedBox(
-                //       //           width: MediaQuery.of(context).size.width -
-                //       //               100,
-                //       //           child: Text('${e.dealerName} (${e.id})',
-                //       //               style: TextStyle(fontSize: 14)),
-                //       //         ),
-                //       //       ));
-                //       //       return Get.dialog(CustomDialogs().showMessage(
-                //       //           "Your previous supplier not authorised."));
-                //       //     } else
-                //       //       sitesModal.isDealerConfirmedChangedBySo = "N";
-                //       //   }
-                //       // }
-                //
-                //       selectedSubDealer = null;
-                //       setState(() {
-                //         print("Dealer Selected-->"+value.toString());
-                //         _dealerEntityForDb = value;
-                //         subDealerList = new List();
-                //         visitDataDealer = value.toString();
-                //         subDealerList = counterListModel
-                //             .where((e) => e.soldToParty == visitDataDealer)
-                //             .toList();
-                //         selectedSubDealer = subDealerList[0];
-                //         visitDataSubDealer = subDealerList[0].shipToParty;
-                //       });
-                //     },
-                //     style: FormFieldStyle.formFieldTextStyle,
-                //     decoration: FormFieldStyle.buildInputDecoration(
-                //         labelText: "Dealer"),
-                //     validator: (value) =>
-                //     value == null ? 'Please select Dealer' : null,
-                //   ),
-                // ) : Container(),
-                //
 
                 (_siteBrandFromLocalDB != null &&
                     _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
@@ -461,12 +447,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       ? 'Please select Sub-Dealer'
                       : null,
                   onChanged: (value) {
-                    // print("Sub Dealer Value");
-                    // print(value.shipToParty.toString());
                     setState(() {
                       visitDataSubDealer = value.shipToParty.toString();
                     });
-                    print(visitDataSubDealer);
                   },
                   style: FormFieldStyle.formFieldTextStyle,
                   decoration: FormFieldStyle.buildInputDecoration(
@@ -494,14 +477,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                       // hint: Text('Rating'),
                       onChanged: (value) {
-                        print("Product Value");
-                        print(value);
                         setState(() {
                           productDynamicList[index].brandModelForDB=value;
-
-                          // _siteProductFromLocalDB1 = value;
-                          // print("Product " + _siteProductFromLocalDB1.id.toString());
-
                         });
                       },
                       decoration: FormFieldStyle.buildInputDecoration(
@@ -729,7 +706,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 supplyDate: productDynamicList[index].supplyDate,
                                 supplyQty: productDynamicList[index].supplyQty,
                             isExpanded:new ExpandableController(initialExpanded: false),
-                            brandModelForDB:productDynamicList[index].brandModelForDB);
+                            brandModelForDB:productDynamicList[index].brandModelForDB,
+                            dealerName: _dealerName);
                       });
                     },
                   ),
@@ -763,8 +741,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 if(index1!=-1){
                   siteStageHistorys.removeAt(index1);
                 }
-                productDynamicList.removeAt(index);
-                setState(() {});
+                if(productDynamicList!=null && productDynamicList.length==1){
+                  productDynamicList.removeAt(index);
+                  _siteBrandFromLocalDB = null;
+                  _dealerEntityForDb=null;
+                  subDealerList = new List();
+                  siteProductEntityfromLoaclDB = new List();
+
+                }else {
+                  productDynamicList.removeAt(index);
+                }
+                setState(() {
+
+                });
               },
               child: Icon(Icons.delete, color: Colors.black54),
             ),
@@ -793,11 +782,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController =
-        TabController(vsync: this, length: 5, initialIndex: widget.tabIndex);
+    _tabController = TabController(vsync: this, length: 5, initialIndex: widget.tabIndex);
+
 
     //_controller.addListener(_handleTabSelection);
-    // print(widget.siteId);
     getSiteData();
   }
 
@@ -1124,6 +1112,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       //         barrierDismissible: false));
       //  Get.back();
     });
+
   }
 
   @override
@@ -3863,11 +3852,39 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         index = productDynamicList.length;
                       }
                       print("index1" + index.toString());
-                      setState(() {
-                        BrandModelforDB brand;
-                        ProductListModel product11 = new ProductListModel(brandId: -1,brandPrice: new TextEditingController(),supplyDate: new TextEditingController(),supplyQty: new TextEditingController(),isExpanded:new ExpandableController(initialExpanded: true),brandModelForDB:brand);
-                        productDynamicList.insert(index, product11);
-                      });
+                      if(index==0) {
+                        setState(() {
+                          BrandModelforDB brand;
+                          ProductListModel product11 = new ProductListModel(
+                              brandId: -1,
+                              brandPrice: new TextEditingController(),
+                              supplyDate: new TextEditingController(),
+                              supplyQty: new TextEditingController(),
+                              isExpanded: new ExpandableController(
+                                  initialExpanded: true),
+                              brandModelForDB: brand,
+                          dealerName: new TextEditingController());
+                          productDynamicList.insert(index, product11);
+                        });
+                      }else{
+                        if(productDynamicList[index-1].brandId!=-1){
+                          setState(() {
+                            BrandModelforDB brand;
+                            ProductListModel product11 = new ProductListModel(
+                                brandId: -1,
+                                brandPrice: new TextEditingController(),
+                                supplyDate: new TextEditingController(),
+                                supplyQty: new TextEditingController(),
+                                isExpanded: new ExpandableController(
+                                    initialExpanded: true),
+                                brandModelForDB: brand,
+                            dealerName: new TextEditingController());
+                            productDynamicList.insert(index, product11);
+                          });
+                        }else{
+                          Get.dialog(CustomDialogs().errorDialog("Please enter product ${index} details !"));
+                        }
+                      }
                     },
                   )),
             ),
@@ -6769,6 +6786,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     String empId;
     String mobileNumber;
     String name;
+    List<SiteStageHistory> siteStageHistory = new List();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
@@ -6872,7 +6890,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             siteSupplyHistorys: siteSupplyHistorys
         )));
 
-        siteStageHistorys.add(new SiteStageHistory(
+        siteStageHistory.add(new SiteStageHistory(
 
             constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
             siteId: widget.siteId,
@@ -7013,7 +7031,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "siteCommentsEntity": newSiteCommentsEntity,
 
         // "siteVisitHistoryEntity": siteVisitHistoryEntity,
-        "siteStageHistorys":siteStageHistorys,
+        "siteStageHistorys":siteStageHistory,
 
        // "siteVisitHistoryEntity": siteVisitHistoryEntity,
 
