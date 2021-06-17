@@ -393,6 +393,7 @@ class MyApiClientSites {
   Future<SiteVisitResponseModel>siteVisitSave(String accessKey, String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
     SiteVisitResponseModel siteVisitResponseModel;
     try{
+      version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveUpdateSiteVisit),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(siteVisitRequestModel),

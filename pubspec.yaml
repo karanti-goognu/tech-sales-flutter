@@ -70,8 +70,8 @@ dependencies:
   flutter_calendar_carousel: 1.5.3
   video_player: ^1.0.1
   chewie: ^0.12.2
-  moengage_flutter: ^3.0.0
-#  moengage_inbox: ^2.0.0
+  moengage_flutter: ^3.0.1
+  #moengage_inbox: ^2.0.1
   data_connection_checker: ^0.3.4
   syncfusion_flutter_charts: ^18.4.44+1
   syncfusion_flutter_datagrid: ^18.4.44-beta

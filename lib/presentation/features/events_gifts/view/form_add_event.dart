@@ -407,6 +407,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       onTap: () async {
         final sessionToken = Uuid().v4();
+        print('SSS: $sessionToken');
         final Suggestion result = await showSearch(
           context: context,
           delegate: AddressSearch(sessionToken),
