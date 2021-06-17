@@ -335,6 +335,8 @@ class _RequestCreationState extends State<RequestCreation> {
                                   maxHeight: 240,
                                   // onFind: (String filter) => getData(filter),
                                   label: "Site Id *",
+                                  validator: (value) =>
+                                  value == null ? "Site id is required " : null,
                                   onChanged: (value) async {
                                       siteId = value.site_id;
                                       SiteAreaModel siteDetails =
