@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -187,6 +189,7 @@ class CalendarEventController extends GetxController {
           debugPrint('MWP Data Response is null');
         } else {
           debugPrint('MWP Data Response is not null');
+          print("DATA: ${json.encode(data)}");
           this.calendarDataByDay = data;
           this.listOfEvents =
               this.calendarDataByDay.listOfEventDetails;

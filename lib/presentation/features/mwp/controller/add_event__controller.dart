@@ -19,6 +19,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddEventController extends GetxController {
@@ -550,9 +551,12 @@ class AddEventController extends GetxController {
         });
       } else if (this.visitActionType == "START") {
         if (!(await Geolocator().isLocationServiceEnabled())) {
+          Get.back();
       Get.dialog(CustomDialogs().errorDialog(
       "Please enable your location service from device settings"));
-      } else {
+      }
+
+        else {
           geolocator
               .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
               .then((Position position) {
@@ -602,12 +606,20 @@ class AddEventController extends GetxController {
                 }
               }
             });
+          }).catchError((e) {
+            Get.back();
+            Get.dialog(CustomDialogs().errorDialog(
+                "Access to location data denied "));
+            print(e);
           });
+
         }
+
       } else if (this.visitActionType == "END") {
         print('end');
         print(this.nextVisitDate);
         if (!(await Geolocator().isLocationServiceEnabled())) {
+          Get.back();
           Get.dialog(CustomDialogs().errorDialog(
               "Please enable your location service from device settings"));
         } else {
@@ -659,6 +671,11 @@ class AddEventController extends GetxController {
                 }
               }
             });
+          }).catchError((e) {
+            Get.back();
+            Get.dialog(CustomDialogs().errorDialog(
+                "Access to location data denied "));
+            print(e);
           });
         }
       } else {

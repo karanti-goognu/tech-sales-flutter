@@ -772,6 +772,7 @@ class CustomDialogs {
     print("DateFormat--"+currentDateString);
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     if (!(await Geolocator().isLocationServiceEnabled())) {
+      Get.back();
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
@@ -794,6 +795,9 @@ class CustomDialogs {
             });
 
       }).catchError((e) {
+        Get.back();
+        Get.dialog(CustomDialogs().errorDialog(
+            "Access to location data denied "));
         print(e);
       });
     }
