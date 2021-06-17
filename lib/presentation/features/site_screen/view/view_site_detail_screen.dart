@@ -24,7 +24,6 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -81,8 +80,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   int initialInfluencerLength = 0;
   BrandModelforDB _siteBrandFromLocalDB;
   BrandModelforDB _siteBrandFromLocalDBNextStage;
-  BrandModelforDB _siteProductFromLocalDB;
-  BrandModelforDB _siteProductFromLocalDB1;
   BrandModelforDB _siteProductFromLocalDBNextStage;
 
   SiteOpportunityStatusEntity _siteOpportunitStatusEnityVisit;
@@ -438,10 +435,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     ),
                   ))
                       .toList()
-                      : [
-                    DropdownMenuItem(
-                        child: Text("No Sub Dealer"), value: "0")
-                  ],
+                      : [DropdownMenuItem(child: Text("No Sub Dealer"), value: "0")],
                   value: selectedSubDealer,
                   validator: (value) => value == null || value.isEmpty
                       ? 'Please select Sub-Dealer'
@@ -6787,6 +6781,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     String mobileNumber;
     String name;
     List<SiteStageHistory> siteStageHistory = new List();
+    List<SiteSupplyHistorys> siteSupplyHistorys = new List();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
@@ -6876,19 +6871,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
          }
         }
       }
-
+      print("Product Info-->"+productDynamicList.length.toString()+"...."+siteStageHistorys.toString());
       if (_selectedConstructionTypeVisit != null) {
-        print(json.encode(new SiteStageHistory(
-
-            constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
-            siteId: widget.siteId,
-            floorId: _selectedSiteVisitFloor.id,
-            stagePotential: _stagePotentialVisit.text,
-            constructionDate: _dateofConstruction.text,
-            stageStatus: _stageStatus.text,
-            createdBy: empId,
-            siteSupplyHistorys: siteSupplyHistorys
-        )));
 
         siteStageHistory.add(new SiteStageHistory(
 
