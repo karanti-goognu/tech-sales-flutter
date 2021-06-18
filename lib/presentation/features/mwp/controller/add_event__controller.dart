@@ -548,68 +548,80 @@ class AddEventController extends GetxController {
         });
       } else if (this.visitActionType == "START") {
         if (!(await Geolocator().isLocationServiceEnabled())) {
+          Get.back();
           Get.dialog(CustomDialogs().errorDialog(
               "Please enable your location service from device settings"));
+
         } else {
-          geolocator
-              .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-              .then((Position position) {
-            print('start');
-            var journeyStartLat = position.latitude;
-            var journeyStartLong = position.longitude;
-            print('$journeyStartLong   $journeyStartLat');
-            DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-            print(this.visitViewDateTime);
-            mwpVisitModelUpdate = new MwpVisitModelUpdate(
-                this.visitId,
-                this.visitViewDateTime,
-                visitType,
-                dateFormat.format(DateTime.now()),
-                journeyStartLat,
-                journeyStartLong,
-                "",
-                0.0,
-                0.0,
-                this.nextVisitDate == "Next Visit Date"
-                    ? null
-                    : this.nextVisitDate,
-                this.visitOutcomes,
-                this.visitRemarks,
-                this.visitSubType,
-                this.visitSiteId);
-            // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
-            repository
-                .updateVisitPlan(
-                    accessKey,
-                    userSecurityKey,
-                    url,
-                    new UpdateVisitResponseModel(
-                        mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
-                .then((data) {
-              this.isLoadingVisitView = false;
-              if (data == null) {
-                debugPrint('Save Visit Response is null');
-              } else {
-                debugPrint('Save Visit Response is not null');
-                this.saveVisitResponse = data;
-                if (saveVisitResponse.respCode == "MWP2028") {
-                  Get.dialog(CustomDialogs()
-                      .messageDialogMWP(saveVisitResponse.respMsg));
-                  print('${saveVisitResponse.respMsg}');
-                  //SitesDetailWidget();
+          if ((await Geolocator().isLocationServiceEnabled())) {
+            geolocator
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+                .then((Position position) {
+              print('start');
+              var journeyStartLat = position.latitude;
+              var journeyStartLong = position.longitude;
+              print('$journeyStartLong   $journeyStartLat');
+              DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+              print(this.visitViewDateTime);
+              mwpVisitModelUpdate = new MwpVisitModelUpdate(
+                  this.visitId,
+                  this.visitViewDateTime,
+                  visitType,
+                  dateFormat.format(DateTime.now()),
+                  journeyStartLat,
+                  journeyStartLong,
+                  "",
+                  0.0,
+                  0.0,
+                  this.nextVisitDate == "Next Visit Date"
+                      ? null
+                      : this.nextVisitDate,
+                  this.visitOutcomes,
+                  this.visitRemarks,
+                  this.visitSubType,
+                  this.visitSiteId);
+              // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
+              repository
+                  .updateVisitPlan(
+                  accessKey,
+                  userSecurityKey,
+                  url,
+                  new UpdateVisitResponseModel(
+                      mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
+                  .then((data) {
+                this.isLoadingVisitView = false;
+                if (data == null) {
+                  debugPrint('Save Visit Response is null');
                 } else {
-                  Get.dialog(CustomDialogs()
-                      .messageDialogMWP(saveVisitResponse.respMsg));
-                  print('${saveVisitResponse.respMsg}');
+                  debugPrint('Save Visit Response is not null');
+                  this.saveVisitResponse = data;
+                  if (saveVisitResponse.respCode == "MWP2028") {
+                    Get.dialog(CustomDialogs()
+                        .messageDialogMWP(saveVisitResponse.respMsg));
+                    print('${saveVisitResponse.respMsg}');
+                    //SitesDetailWidget();
+                  } else {
+                    Get.dialog(CustomDialogs()
+                        .messageDialogMWP(saveVisitResponse.respMsg));
+                    print('${saveVisitResponse.respMsg}');
+                  }
                 }
-              }
+              });
+            }).catchError((e) {
+              Get.back();
+              print(e);
             });
-          });
+          }else{
+            Get.back();
+            Get.dialog(CustomDialogs().errorDialog(
+                "Please enable your location service from device settings"));
+          }
         }
       } else if (this.visitActionType == "END") {
         print('end');
         print(this.nextVisitDate);
         if (!(await Geolocator().isLocationServiceEnabled())) {
+          Get.back();
           Get.dialog(CustomDialogs().errorDialog(
               "Please enable your location service from device settings"));
         } else {
@@ -665,6 +677,9 @@ class AddEventController extends GetxController {
                 }
               }
             });
+          }).catchError((e) {
+            Get.back();
+            print(e);
           });
         }
       } else {

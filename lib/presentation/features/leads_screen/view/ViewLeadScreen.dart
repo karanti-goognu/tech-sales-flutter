@@ -3530,6 +3530,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   _getCurrentLocation() async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
+      Get.back();
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
