@@ -50,9 +50,14 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   TextEditingController _selectedVisitType = TextEditingController();
   String selectedDateString = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
+  bool _isStartButtonDisabled;
+  bool _isEndButtonDisabled;
+
   @override
   void initState() {
     super.initState();
+    _isStartButtonDisabled = false;
+    _isEndButtonDisabled = false;
     setData();
   }
 
@@ -138,9 +143,13 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           color: ColorConstants.buttonNormalColor,
           highlightColor: ColorConstants.buttonPressedColor,
           onPressed: () {
-            if (_formKey.currentState.validate()) {
-              _formKey.currentState.save();
-              _getCurrentLocationStart();
+            if(!_isStartButtonDisabled) {
+              _isStartButtonDisabled = true;
+              _isEndButtonDisabled = false;
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                _getCurrentLocationStart();
+              }
             }
           },
           child: Padding(
@@ -162,9 +171,12 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           color: ColorConstants.buttonNormalColor,
           highlightColor: ColorConstants.buttonPressedColor,
           onPressed: () {
-            if (_formKey.currentState.validate()) {
-              _formKey.currentState.save();
-              _getCurrentLocationEnd();
+            if (!_isEndButtonDisabled) {
+              _isEndButtonDisabled = true;
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                _getCurrentLocationEnd();
+              }
             }
           },
           child: Padding(
@@ -592,6 +604,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
+      Future.delayed(
+          Duration.zero,
+              () => Get.dialog(Center(child: CircularProgressIndicator()),
+              barrierDismissible: false));
       geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
@@ -665,6 +681,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
+      Future.delayed(
+          Duration.zero,
+              () => Get.dialog(Center(child: CircularProgressIndicator()),
+              barrierDismissible: false));
       geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
@@ -728,10 +748,15 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocationEnd() async {
+
     if (!(await Geolocator().isLocationServiceEnabled())) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
+      Future.delayed(
+          Duration.zero,
+              () => Get.dialog(Center(child: CircularProgressIndicator()),
+              barrierDismissible: false));
       geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
