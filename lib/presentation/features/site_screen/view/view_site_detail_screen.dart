@@ -1809,9 +1809,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     value: label,
                                   ))
                               .toList(),
-
-                          // hint: Text('Rating'),
-
                           onChanged: (value) {
                             setState(() {
                               _selectedConstructionType = value;
@@ -2027,9 +2024,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               Text(
                                 "Product oral briefing",
                                 style: TextStyle(
-                                    //fontWeight: FontWeight.bold,
                                     fontSize: 16,
-                                    // color: HexColor("#000000DE"),
                                     fontFamily: "Muli"),
                               ),
                               Row(
@@ -3226,27 +3221,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               onChanged: (value) {
                 setState(() {
                   _selectedSiteVisitFloor = value;
-
-                  // constructionStageEntityNew = new List();
-                  // _selectedConstructionTypeVisit= null;
-                  // if(_selectedSiteVisitFloor.id == 1 ){
-                  //   // siteFloorsEntityNew = new List();
-                  //   for(int i=0;i<3;i++){
-                  //     constructionStageEntityNew.add(new ConstructionStageEntity(
-                  //       id: constructionStageEntity[i].id,
-                  //       constructionStageText: constructionStageEntity[i].constructionStageText
-                  //     ));
-                  //   }
-                  // }
-                  // else{
-                  //
-                  //   for(int i=3;i<constructionStageEntity.length;i++){
-                  //     constructionStageEntityNew.add(new ConstructionStageEntity(
-                  //         id: constructionStageEntity[i].id,
-                  //         constructionStageText: constructionStageEntity[i].constructionStageText
-                  //     ));
-                  //   }
-                  // }
                 });
               },
               decoration: FormFieldStyle.buildInputDecoration(
