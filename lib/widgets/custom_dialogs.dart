@@ -1006,5 +1006,105 @@ class CustomDialogs {
     );
   }
 
+  Widget appUpdateDialog(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text("App Update",
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                height: 1.4,
+                letterSpacing: .25,
+                fontWeight: FontWeight.bold,
+                color: ColorConstants.inputBoxHintColorDark),),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'Ignore',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        TextButton(
+          child: Text(
+            'Update',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+
+          },
+        ),
+      ],
+    );
+  }
+
+
+
+
+  Widget appForceUpdateDialog(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text("App Update",
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                height: 1.4,
+                letterSpacing: .25,
+                fontWeight: FontWeight.bold,
+                color: ColorConstants.inputBoxHintColorDark),),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'Update',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+
+          },
+        ),
+      ],
+    );
+  }
+
 
 }
