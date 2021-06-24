@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
@@ -412,7 +411,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showDialogSubmitLead(String message) {
+  Widget showDialogSubmitLead(String message,int from,BuildContext context) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -440,8 +439,18 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            Get.back();
-            Get.toNamed(Routes.LEADS_SCREEN);
+            if(from==3){
+              Get.back();
+               Get.offAll(Routes.HOME_SCREEN);
+            }else if(from==4){
+              Get.back();
+              Get.back();
+              Get.offAndToNamed(Routes.LEADS_SCREEN);
+            }
+            else {
+               Get.back();
+              Get.offAndToNamed(Routes.LEADS_SCREEN);
+            }
             //Below line was commented for leads screen, if it's being use somewhere else, please consider.. s s
 //            Get.toNamed(Routes.HOME_SCREEN);
           },

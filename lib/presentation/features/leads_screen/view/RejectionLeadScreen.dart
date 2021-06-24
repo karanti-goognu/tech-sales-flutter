@@ -274,7 +274,7 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                               updateRequestModel,
                               new List<File>(),
                               context,
-                              viewLeadDataResponse.leadsEntity.leadId);
+                              viewLeadDataResponse.leadsEntity.leadId,1);
 
                           Get.back();
                         });

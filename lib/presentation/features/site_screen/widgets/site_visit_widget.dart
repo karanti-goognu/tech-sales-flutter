@@ -285,46 +285,46 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                             SizedBox(
                               height: 16,
                             ),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                color: Colors.white,
-                                border: Border.all(
-                                    width: 1,
-                                    color: ColorConstants.lineColorFilter),
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        selectedDateStringNext,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: ColorConstants.blackColor,
-                                            fontFamily: "Muli"),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          _selectDateNextVisit(context);
-                                        },
-                                        child: Icon(
-                                          Icons.calendar_today_sharp,
-                                          color: Colors.orange,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
+                            // Container(
+                            //   padding: const EdgeInsets.all(16),
+                            //   decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(2),
+                            //     color: Colors.white,
+                            //     border: Border.all(
+                            //         width: 1,
+                            //         color: ColorConstants.lineColorFilter),
+                            //   ),
+                            //   child: Column(
+                            //     children: [
+                            //       Row(
+                            //         mainAxisAlignment:
+                            //             MainAxisAlignment.spaceBetween,
+                            //         children: [
+                            //           Text(
+                            //             selectedDateStringNext,
+                            //             textAlign: TextAlign.center,
+                            //             style: TextStyle(
+                            //                 fontSize: 14,
+                            //                 color: ColorConstants.blackColor,
+                            //                 fontFamily: "Muli"),
+                            //           ),
+                            //           GestureDetector(
+                            //             onTap: () {
+                            //               _selectDateNextVisit(context);
+                            //             },
+                            //             child: Icon(
+                            //               Icons.calendar_today_sharp,
+                            //               color: Colors.orange,
+                            //             ),
+                            //           )
+                            //         ],
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
+                            // SizedBox(
+                            //   height: 16,
+                            // ),
                             TextFormField(
                                 onSaved: (val) {
                                   print('saved' + val);
@@ -475,10 +475,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                             SizedBox(
                               height: 16,
                             ),
-                            nextDate(),
-                            SizedBox(
-                              height: 16,
-                            ),
+                            // nextDate(),
+                            // SizedBox(
+                            //   height: 16,
+                            // ),
                             (widget.mwpVisitModel.visitStartTime != null &&
                                     widget.mwpVisitModel.visitEndTime != null)
                                 ? Column(

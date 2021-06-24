@@ -335,13 +335,13 @@ class MyApiClientLeads {
                   }
                   gv.fromLead = false;
                   Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead("Lead Added Successfully !!!"));
+                      .showDialogSubmitLead("Lead Added Successfully !!!",1,context));
                   // Get.back();
                   // Get.back();
                   if(saveLeadRequestModel.eventId ==null){
                   Get.back();
                   Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead("Lead Added Successfully !!!"));
+                      .showDialogSubmitLead("Lead Added Successfully !!!",1,context));
                   //Get.toNamed(Routes.HOME_SCREEN);
                   }
 
@@ -396,7 +396,7 @@ class MyApiClientLeads {
   }
 
   updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId) async {
+      List<File> imageList, BuildContext context, int leadId,int from) async {
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateLeadsData));
@@ -458,11 +458,8 @@ class MyApiClientLeads {
                   Get.back();
                   Get.back();
                   Get.back();
-                  Get.back();
-//                  Get.toNamed(Routes.HOME_SCREEN);
 //                  Get.offNamed(Routes.LEADS_SCREEN);
-                  Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead(updateLeadResponseModel.respMsg));
+                  Get.dialog(CustomDialogs().showDialogSubmitLead(updateLeadResponseModel.respMsg,from,context));
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
                   Get.back();
                   Get.dialog(CustomDialogs()

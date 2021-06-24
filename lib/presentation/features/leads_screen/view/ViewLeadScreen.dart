@@ -152,8 +152,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   @override
   void dispose() {
     super.dispose();
-    // _addLeadsController.dispose();
-    // myFocusNode.dispose();
+    _addLeadsController.dispose();
+     myFocusNode.dispose();
   }
 
   _callGetAccessKeyAndGetLeadIdData() async {
@@ -1344,7 +1344,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                   context,
                                                                   viewLeadDataResponse
                                                                       .leadsEntity
-                                                                      .leadId);
+                                                                      .leadId,2);
 
                                                               Get.back();
                                                             }
@@ -3696,7 +3696,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       print("$updateRequestModel");
 
       _addLeadsController.updateLeadData(updateRequestModel, new List<File>(),
-          context, viewLeadDataResponse.leadsEntity.leadId);
+          context, viewLeadDataResponse.leadsEntity.leadId,3);
 
       Get.back();
     });
@@ -3989,7 +3989,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                           _imageList,
                                           context,
                                           viewLeadDataResponse
-                                              .leadsEntity.leadId);
+                                              .leadsEntity.leadId,4);
 
 //                                      Get.back();
                                     }).whenComplete(() => Get.back());
