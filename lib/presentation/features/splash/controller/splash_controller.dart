@@ -11,6 +11,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:package_info/package_info.dart';
@@ -123,14 +124,35 @@ class SplashController extends GetxController {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
+
           this.splashDataModel = data;
+          print('VERSION: ${splashDataModel.versionUpdateModel}');
+          if(splashDataModel.versionUpdateModel != null){
+            print("in");
+            if(splashDataModel.versionUpdateModel.oldVersion != splashDataModel.versionUpdateModel.newVersion && splashDataModel.versionUpdateModel.updateType == "SOFT"){
+              print("inin");
+              Get.dialog(CustomDialogs().appUpdateDialog(
+                  splashDataModel.versionUpdateModel.versionUpdateText),barrierDismissible: true).then((value) => openNextPage());
+            }else if(splashDataModel.versionUpdateModel.oldVersion != splashDataModel.versionUpdateModel.newVersion && splashDataModel.versionUpdateModel.updateType == "HARD"){
+              Get.dialog(CustomDialogs().appForceUpdateDialog(
+                  splashDataModel.versionUpdateModel.versionUpdateText), barrierDismissible: false);
+            }
+          }else{
+            var journeyDate= splashDataModel.journeyDetails.journeyDate;
+            var journeyEndTime= splashDataModel.journeyDetails.journeyEndTime;
+            prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+            prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
+              openNextPage();
+          }
+
           var journeyDate= splashDataModel.journeyDetails.journeyDate;
           var journeyEndTime= splashDataModel.journeyDetails.journeyEndTime;
           prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
           prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
 
-          if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
-          openNextPage();
+         // if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
+        //  openNextPage();
 
         }
       });
