@@ -741,11 +741,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             flex: 1,
             child: GestureDetector(
               onTap: () {
-                int index1 = siteStageHistorys[index].siteSupplyHistorys.indexWhere((element) => element.brandId==productDynamicList[index].brandId && element.brandPrice==productDynamicList[index].brandPrice.text
-                    && element.supplyDate==productDynamicList[index].supplyDate.text && element.supplyQty==productDynamicList[index].supplyQty.text);
-                if(index1!=-1){
-                  siteStageHistorys.removeAt(index1);
-                }
+
+                // int index1 = siteStageHistorys[index].siteSupplyHistorys.indexWhere((element) => element.brandId==productDynamicList[index].brandId && element.brandPrice==productDynamicList[index].brandPrice.text
+                //     && element.supplyDate==productDynamicList[index].supplyDate.text && element.supplyQty==productDynamicList[index].supplyQty.text);
+
                 if(productDynamicList!=null && productDynamicList.length==1){
                   productDynamicList.removeAt(index);
                   _siteBrandFromLocalDB = null;
@@ -756,6 +755,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 }else {
                   productDynamicList.removeAt(index);
                 }
+
+                // if(index1!=-1){
+                //   siteStageHistorys.removeAt(index1);
+                // }
+
                 setState(() {
 
                 });
@@ -1806,7 +1810,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             print(_selectedConstructionType.id);
                           },
                           decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Type of Construction"),
+                              labelText: "Stage of Construction"),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -3176,7 +3180,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             });
                           },
                           decoration: FormFieldStyle.buildInputDecoration(
-                            labelText: "Type of Construction",
+                            labelText: "Stage of Construction",
                           ),
                         ),
 
@@ -3996,10 +4000,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         SizedBox(
                           height: 20,
                         ),
-                        Divider(
-                          color: Colors.black26,
-                          thickness: 1,
-                        ),
+                        // Divider(
+                        //   color: Colors.black26,
+                        //   thickness: 1,
+                        // ),
                         // SizedBox(
                         //   height: 20,
                         // ),
@@ -4115,77 +4119,77 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         //   ),
                         // ),
                         // SizedBox(height: 16),16
-                        TextFormField(
-                          controller: _nextVisitDate,
-                          readOnly: true,
-                          onChanged: (data) {
-                            // setState(() {
-                            //   _contactName.text = data;
-                            // });
-                          },
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Next Visit Date ",
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                Icons.date_range_rounded,
-                                size: 22,
-                                color: ColorConstants.clearAllTextColor,
-                              ),
-                              onPressed: () async {
-                                print("here");
-                                final DateTime picked = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime(2101),
-                                );
-
-                                setState(() {
-                                  final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                                  if (picked != null) {
-                                    final String formattedDate = formatter.format(picked);
-                                    _nextVisitDate.text = formattedDate;
-                                  }
-                                });
-                              },
-                            ),
-                            filled: false,
-                            focusColor: Colors.black,
-                            isDense: false,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Divider(
-                          color: Colors.black26,
-                          thickness: 1,
-                        ),
-                        SizedBox(height: 16),
+                        // TextFormField(
+                        //   controller: _nextVisitDate,
+                        //   readOnly: true,
+                        //   onChanged: (data) {
+                        //     // setState(() {
+                        //     //   _contactName.text = data;
+                        //     // });
+                        //   },
+                        //   style: TextStyle(
+                        //       fontSize: 18,
+                        //       color: ColorConstants.inputBoxHintColor,
+                        //       fontFamily: "Muli"),
+                        //   keyboardType: TextInputType.text,
+                        //   decoration: InputDecoration(
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //           color: ColorConstants.backgroundColorBlue,
+                        //           //color: HexColor("#0000001F"),
+                        //           width: 1.0),
+                        //     ),
+                        //     disabledBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                        //     ),
+                        //     enabledBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                        //     ),
+                        //     errorBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.red, width: 1.0),
+                        //     ),
+                        //     labelText: "Next Visit Date ",
+                        //     suffixIcon: IconButton(
+                        //       icon: Icon(
+                        //         Icons.date_range_rounded,
+                        //         size: 22,
+                        //         color: ColorConstants.clearAllTextColor,
+                        //       ),
+                        //       onPressed: () async {
+                        //         print("here");
+                        //         final DateTime picked = await showDatePicker(
+                        //           context: context,
+                        //           initialDate: DateTime.now(),
+                        //           firstDate: DateTime.now(),
+                        //           lastDate: DateTime(2101),
+                        //         );
+                        //
+                        //         setState(() {
+                        //           final DateFormat formatter = DateFormat("yyyy-MM-dd");
+                        //           if (picked != null) {
+                        //             final String formattedDate = formatter.format(picked);
+                        //             _nextVisitDate.text = formattedDate;
+                        //           }
+                        //         });
+                        //       },
+                        //     ),
+                        //     filled: false,
+                        //     focusColor: Colors.black,
+                        //     isDense: false,
+                        //     labelStyle: TextStyle(
+                        //         fontFamily: "Muli",
+                        //         color: ColorConstants.inputBoxHintColorDark,
+                        //         fontWeight: FontWeight.normal,
+                        //         fontSize: 16.0),
+                        //     fillColor: ColorConstants.backgroundColor,
+                        //   ),
+                        // ),
+                        // SizedBox(height: 16),
+                        // Divider(
+                        //   color: Colors.black26,
+                        //   thickness: 1,
+                        // ),
+                        // SizedBox(height: 16),
 
                         TextFormField(
                           maxLines: 4,
@@ -5392,9 +5396,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   SizedBox(height: 16),
                                   TextFormField(
                                     readOnly: true,
-                                    initialValue: siteStageHistorys[index]
-                                        .floorId
-                                        .toString(),
+                                    initialValue: selectedFloorText(siteStageHistorys[index].floorId),
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
@@ -5961,7 +5963,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 });
               },
               decoration: FormFieldStyle.buildInputDecoration(
-                  labelText: "Type of Construction"),
+                  labelText: "Stage of Construction"),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -6756,6 +6758,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     String mobileNumber;
     String name;
     List<SiteStageHistory> siteStageHistory = new List();
+    List<SiteSupplyHistorys> siteSupplyHistory = new List();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
@@ -6829,7 +6832,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
         for (int i = 0; i < productDynamicList.length; i++) {
           if(productDynamicList[i].brandId!=-1) {
-            siteSupplyHistorys.add(new SiteSupplyHistorys(
+            siteSupplyHistory.add(new SiteSupplyHistorys(
                 brandId: productDynamicList[i].brandId,
                 brandPrice: productDynamicList[i].brandPrice.text,
                 siteId: widget.siteId,
@@ -6847,17 +6850,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
 
       if (_selectedConstructionTypeVisit != null) {
-        print(json.encode(new SiteStageHistory(
-
-            constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
-            siteId: widget.siteId,
-            floorId: _selectedSiteVisitFloor.id,
-            stagePotential: _stagePotentialVisit.text,
-            constructionDate: _dateofConstruction.text,
-            stageStatus: _stageStatus.text,
-            createdBy: empId,
-            siteSupplyHistorys: siteSupplyHistorys
-        )));
 
         siteStageHistory.add(new SiteStageHistory(
 
@@ -6868,7 +6860,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             constructionDate: _dateofConstruction.text,
             stageStatus: _stageStatus.text,
             createdBy: empId,
-            siteSupplyHistorys: siteSupplyHistorys
+            siteSupplyHistorys: siteSupplyHistory
         ));
       }
 
@@ -7225,7 +7217,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
    int totalSumBagsSupplied = 0;
    if(productDynamicList.length>0){
      for(int i=0;i<productDynamicList.length;i++){
-       print("ValueType-->"+productDynamicList[i].supplyQty.text);
        if(productDynamicList[i].supplyQty!=null && (productDynamicList[i].supplyQty.text.isNotEmpty)) {
          totalSumBagsSupplied = totalSumBagsSupplied + int.tryParse(productDynamicList[i].supplyQty.text) ?? 0;
 
@@ -7233,6 +7224,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
      }
    }
     return totalSumBagsSupplied;
+  }
+
+  String selectedFloorText(int floorId){
+    String floorText="";
+    if(siteFloorsEntity!=null && siteFloorsEntity.length>0){
+      for(int i=0;i< siteFloorsEntity.length;i++){
+        if(siteFloorsEntity[i].id==floorId){
+          floorText = siteFloorsEntity[i].siteFloorTxt;
+        }
+      }
+    }
+    return floorText;
   }
 }
 
