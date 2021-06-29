@@ -8,21 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
-		251ED4EC615AB694BB0A5A05 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7B9EB5D4A74D5E7ACC05FD9 /* Pods_Runner.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		58C0D84D9B65FC3B7833E7A4 /* Pods_NotificationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CA44E35F96091CA695C2225 /* Pods_NotificationServices.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		9220EAD62680A121009F91BE /* NotificationServices.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 929A9A2C2670F5600021BE27 /* NotificationServices.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9220EB0C2680A263009F91BE /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7B9EB5D4A74D5E7ACC05FD9 /* Pods_Runner.framework */; };
+		9220EB0D2680A263009F91BE /* Pods_Runner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B7B9EB5D4A74D5E7ACC05FD9 /* Pods_Runner.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		926A24F326313B5D006849EF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 926A24F226313B5D006849EF /* GoogleService-Info.plist */; };
 		929A9A2F2670F5600021BE27 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929A9A2E2670F5600021BE27 /* NotificationService.swift */; };
 		929A9A3B2670F5B00021BE27 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929A9A262670D7190021BE27 /* UserNotifications.framework */; };
-		92ADDF2C26721D0400920F1A /* NotificationServices.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 929A9A2C2670F5600021BE27 /* NotificationServices.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		92ADDF2D26721D0400920F1A /* PBXContainerItemProxy */ = {
+		9220EAD72680A121009F91BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
 			proxyType = 1;
@@ -32,16 +33,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		92ADDF2F26721D0400920F1A /* Embed App Extensions */ = {
+		9220EAD92680A121009F91BE /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				92ADDF2C26721D0400920F1A /* NotificationServices.appex in Embed App Extensions */,
+				9220EAD62680A121009F91BE /* NotificationServices.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -49,6 +50,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				9220EB0D2680A263009F91BE /* Pods_Runner.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,7 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				251ED4EC615AB694BB0A5A05 /* Pods_Runner.framework in Frameworks */,
+				9220EB0C2680A263009F91BE /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,14 +227,14 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
-				92ADDF2F26721D0400920F1A /* Embed App Extensions */,
 				900884B1C9F4BCC447062EA6 /* [CP] Embed Pods Frameworks */,
 				A4BBB3FF0AD3BC2D2736D2FE /* [CP] Copy Pods Resources */,
+				9220EAD92680A121009F91BE /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				92ADDF2E26721D0400920F1A /* PBXTargetDependency */,
+				9220EAD82680A121009F91BE /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -429,10 +431,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		92ADDF2E26721D0400920F1A /* PBXTargetDependency */ = {
+		9220EAD82680A121009F91BE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 929A9A2B2670F5600021BE27 /* NotificationServices */;
-			targetProxy = 92ADDF2D26721D0400920F1A /* PBXContainerItemProxy */;
+			targetProxy = 9220EAD72680A121009F91BE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -567,7 +569,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dalmia.techsale;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dalmia.techsale.NotificationCentre;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = dbaProProduction16Apr;
 				SKIP_INSTALL = YES;
@@ -601,7 +603,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dalmia.techsale;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dalmia.techsale.NotificationCentre;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = dbaProProduction16Apr;
 				SKIP_INSTALL = YES;
@@ -633,7 +635,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dalmia.techsale;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dalmia.techsale.NotificationCentre;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = dbaProProduction16Apr;
 				SKIP_INSTALL = YES;
