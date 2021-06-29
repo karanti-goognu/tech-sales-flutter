@@ -119,12 +119,19 @@ class _SiteScreenState extends State<SiteScreen> {
     _scrollController..addListener(_scrollListener);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _siteController?.dispose();
+  //   _siteController.offset = 0;
+  // }
+
+  void disposeController(BuildContext context){
+//or what you wnat to dispose/clear
     _siteController?.dispose();
     _siteController.offset = 0;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +141,7 @@ class _SiteScreenState extends State<SiteScreen> {
     print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
+          disposeController(context);
           Get.offNamed(Routes.HOME_SCREEN);
           return true;
         },

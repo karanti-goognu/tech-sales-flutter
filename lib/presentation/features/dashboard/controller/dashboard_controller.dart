@@ -118,7 +118,7 @@ class DashboardController extends GetxController {
 
     var data= await repository.getYearlyViewDetails(empID, this.accessKeyResponse.accessKey,userSecurityCode );
           this.dashboardYearlyViewModel = data;
-//          print(":::: $data ::::");
+         // print(":::: $data ::::");
           List tempMonthList = this.dashboardYearlyViewModel.dashboardYearlyModels
               .map(
                 (e) => e.showMonth,
@@ -181,6 +181,8 @@ class DashboardController extends GetxController {
     print("EMP ID inside controller: $empID");
     String empId = empID ?? "empty";
     String userSecurityKey = "empty";
+    var value= await repository.getAccessKey();
+    this.accessKeyResponse = value;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
 

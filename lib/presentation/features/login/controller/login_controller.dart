@@ -125,7 +125,12 @@ class LoginController extends GetxController {
   // "otp-sms-time":"900000","otp-retry-sms-time":"180000","otp-token-id":"8e711d59-8820-41ee-b11d-59882041ee09"}
 
   //{"resp-code":null,"resp-msg":null,"otp-sms-time":null,"otp-retry-sms-time":null}
-  checkLoginStatus() {
+  checkLoginStatus() async{
+    String userSecurityKey = "empty";
+    // Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    // await  _prefs.then((SharedPreferences prefs) async {
+    // userSecurityKey =
+    //     prefs.getString(StringConstants.userSecurityKey) ?? "empty";
     repository
         .checkLoginStatus(
             this.empId, this.phoneNumber, this.accessKeyResponse.accessKey)
@@ -141,6 +146,7 @@ class LoginController extends GetxController {
         }
       }
     });
+  //  }).catchError((e) => print(e));
   }
 
   retryOtp() {

@@ -85,12 +85,13 @@ class MyApiClientHome {
     }
   }
 
-  getHomePageDashboardDetails(String empId) async {
+  getHomePageDashboardDetails(String accessKey,String secretKey, String empId) async {
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.homepageDashboardData + empId;
       print(url);
-      var response = await httpClient.get(url, headers: requestHeaders(version));
+     // var response = await httpClient.get(url, headers: requestHeaders(version));
+      var response = await httpClient.get(url, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
       print('Response body is : Homepage Dashboard ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

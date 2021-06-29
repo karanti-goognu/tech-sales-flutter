@@ -141,6 +141,7 @@ class MyApiClientDashboard {
       print(url);
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
       print('Response body is : ${json.decode(response.body)}');
+      print('URL : ${response.request}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         DashboardYearlyViewModel dashboardYearlyViewModel;

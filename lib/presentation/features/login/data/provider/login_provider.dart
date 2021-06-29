@@ -31,12 +31,14 @@ class MyApiClient {
       version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
-//      print('Response body is : ${json.decode(response.body)}');
+      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
+
+
       } else
         print('error');
     } catch (_) {
@@ -63,6 +65,7 @@ class MyApiClient {
 
       var deviceId, deviceType;
 
+
       if (Platform.isAndroid) {
         AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
         deviceId = build.androidId;
@@ -79,7 +82,6 @@ class MyApiClient {
         "app-version": version,
         "device-id": deviceId,
         "device-type": deviceType,
-
       };
 
 //      print('request with encryption: $bodyEncrypted');
@@ -93,7 +95,9 @@ class MyApiClient {
           body: json.encode(bodyEncrypted),
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
-//      print('response is :  ${response.body}');
+      print("REQUEST: ${json.encode(bodyEncrypted)}");
+      print('decrypted EmpId :: $decryptedEmpId   decrypted MobileNumber :: $decryptedMobileNumber');
+      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
 //        print('success');
         var data = json.decode(response.body);

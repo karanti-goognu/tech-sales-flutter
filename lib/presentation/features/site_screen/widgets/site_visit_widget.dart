@@ -136,7 +136,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           );
 
     final btnStart = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RaisedButton(

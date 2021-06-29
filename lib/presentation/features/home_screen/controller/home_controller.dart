@@ -116,13 +116,13 @@ class HomeController extends GetxController {
           getCheckOutDetails(this.accessKeyResponse.accessKey);
           break;
         case RequestIds.HOME_DASHBOARD:
-          getDashboardDetails();
+          getDashboardDetails(this.accessKeyResponse.accessKey);
           break;
       }
     });
   }
 
-  getDashboardDetails() async {
+  getDashboardDetails(String accessKey) async {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -131,7 +131,7 @@ class HomeController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 //      print('$empId $userSecurityKey');
-     await repository.getHomeDashboardDetails(empId).then((_) {
+     await repository.getHomeDashboardDetails(accessKey,userSecurityKey, empId).then((_) {
        Get.back();
         DashboardModel data = _;
         this.sitesConverted = data.dashBoardViewModal.sitesConverted;

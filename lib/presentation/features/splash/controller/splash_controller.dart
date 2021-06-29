@@ -96,7 +96,7 @@ class SplashController extends GetxController {
         Get.back();
         this.secretKeyResponse = data;
 
-        print(data);
+        print("DDD:$data");
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);
