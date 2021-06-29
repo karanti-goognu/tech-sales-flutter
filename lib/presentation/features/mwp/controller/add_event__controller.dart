@@ -266,10 +266,17 @@ class AddEventController extends GetxController {
           this.saveVisitResponse = data;
           this.visitDateTime = "Visit Date";
           this.visitRemarks = "";
+          print('Response: ${this.saveVisitResponse}');
           if (saveVisitResponse.respCode == "MWP2022") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
-          } else {
+          } else if(saveVisitResponse.respCode == "DM2144"){
+        Get.dialog(
+        CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+        }
+
+        else {
+            print('Success');
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
           }
@@ -553,7 +560,7 @@ class AddEventController extends GetxController {
               "Please enable your location service from device settings"));
 
         } else {
-          if ((await Geolocator().isLocationServiceEnabled())) {
+          //if ((await Geolocator().isLocationServiceEnabled())) {
             geolocator
                 .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
                 .then((Position position) {
@@ -609,14 +616,17 @@ class AddEventController extends GetxController {
               });
             }).catchError((e) {
               Get.back();
+              Get.dialog(CustomDialogs().errorDialog(
+                  "Access to location data denied "));
               print(e);
             });
-          }else{
-            Get.back();
-            Get.dialog(CustomDialogs().errorDialog(
-                "Please enable your location service from device settings"));
           }
-        }
+          // else{
+          //   Get.back();
+          //   Get.dialog(CustomDialogs().errorDialog(
+          //       "Please enable your location service from device settings"));
+          // }
+       // }
       } else if (this.visitActionType == "END") {
         print('end');
         print(this.nextVisitDate);
@@ -679,6 +689,8 @@ class AddEventController extends GetxController {
             });
           }).catchError((e) {
             Get.back();
+            Get.dialog(CustomDialogs().errorDialog(
+                "Access to location data denied "));
             print(e);
           });
         }

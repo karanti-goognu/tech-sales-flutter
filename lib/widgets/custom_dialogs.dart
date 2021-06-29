@@ -20,6 +20,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_redirect/store_redirect.dart';
 
 class CustomDialogs {
@@ -921,6 +922,9 @@ class CustomDialogs {
                     }
                 });
       }).catchError((e) {
+        Get.back();
+        Get.dialog(CustomDialogs().errorDialog(
+            "Access to location data denied "));
         print(e);
       });
     }
@@ -1111,6 +1115,53 @@ class CustomDialogs {
           ),
           onPressed: () {
             StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget appUserInactiveDialog(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            // Text(
+            //   "App Update",
+            //   style: GoogleFonts.roboto(
+            //       fontSize: 20,
+            //       height: 1.4,
+            //       letterSpacing: .25,
+            //       fontWeight: FontWeight.bold,
+            //       color: ColorConstants.inputBoxHintColorDark),
+            // ),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () async{
+            Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+            final SharedPreferences prefs = await _prefs;
+            prefs.clear();
+            SystemNavigator.pop();
           },
         ),
       ],

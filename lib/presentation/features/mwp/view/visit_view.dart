@@ -39,7 +39,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
 
   @override
   void dispose() {
-
     super.dispose();
   }
 

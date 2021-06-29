@@ -3548,6 +3548,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         _getAddressFromLatLng();
         Get.back();
       }).catchError((e) {
+        Get.back();
+        Get.dialog(CustomDialogs().errorDialog(
+            "Access to location data denied "));
         print(e);
       });
     }

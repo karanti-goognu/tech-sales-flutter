@@ -98,6 +98,10 @@ class SplashController extends GetxController {
 
         print("DDD:$data");
         if (data != null) {
+          if(this.secretKeyResponse.respCode == "DM1005"){
+            Get.dialog(CustomDialogs().appUserInactiveDialog(
+                this.secretKeyResponse.respMsg), barrierDismissible: false);
+          }
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);
           return getAccessKey(requestId);

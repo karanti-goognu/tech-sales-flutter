@@ -23,6 +23,7 @@ class AddEventScreenPageState extends State<AddEvent> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
+          disposeController(context);
           Get.toNamed(Routes.ADD_CALENDER_SCREEN);
           return true;
         },
@@ -59,11 +60,11 @@ class AddEventScreenPageState extends State<AddEvent> {
         ));
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+
+  void disposeController(BuildContext context){
     _addEventController.dispose();
   }
+
 
   Widget _buildAddEventInterface(BuildContext context) {
     SizeConfig().init(context);
