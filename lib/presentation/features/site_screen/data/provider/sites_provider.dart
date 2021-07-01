@@ -166,7 +166,7 @@ class MyApiClientSites {
       } else
         print('error in else');
     } catch (_) {
-      print('error in catch ${_.toString()}');
+     // print('error in catch ${_.toString()}');
     }
   }
 
@@ -182,8 +182,8 @@ class MyApiClientSites {
             accessKey, userSecurityKey, version),
       );
 
-      print(
-          'Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
+      // print(
+      //     'Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
       if (response.statusCode == 200) {
         Get.back();
         var data = json.decode(response.body);

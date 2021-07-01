@@ -437,7 +437,8 @@ class CustomDialogs {
           onPressed: () {
             if(from==3){
               Get.back();
-               Get.offAll(Routes.HOME_SCREEN);
+               //Get.offAll(Routes.HOME_SCREEN);
+              Get.offAndToNamed(Routes.HOME_SCREEN);
             }else if(from==4){
               Get.back();
               Get.back();
