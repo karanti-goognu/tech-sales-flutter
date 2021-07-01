@@ -442,7 +442,12 @@ class CustomDialogs {
               Get.back();
               Get.back();
               Get.offAndToNamed(Routes.LEADS_SCREEN);
-            }
+            }else if(from==2){
+    Get.back();
+    Get.back();
+    Get.back();
+   // Get.offAndToNamed(Routes.LEADS_SCREEN);
+    }
             else {
                Get.back();
               Get.offAndToNamed(Routes.LEADS_SCREEN);

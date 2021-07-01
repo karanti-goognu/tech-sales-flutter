@@ -84,6 +84,7 @@ class SplashController extends GetxController {
     String mobileNumber = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
+      String isUserLoggedIn = prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
       print('$empId$mobileNumber');
@@ -101,6 +102,9 @@ class SplashController extends GetxController {
           if(this.secretKeyResponse.respCode == "DM1005"){
             Get.dialog(CustomDialogs().appUserInactiveDialog(
                 this.secretKeyResponse.respMsg), barrierDismissible: false);
+          }
+          if (isUserLoggedIn == "false") {
+            Get.offNamed(Routes.LOGIN);
           }
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);

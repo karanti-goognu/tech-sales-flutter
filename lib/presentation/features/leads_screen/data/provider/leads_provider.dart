@@ -335,7 +335,7 @@ class MyApiClientLeads {
                   }
                   gv.fromLead = false;
                   Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead("Lead Added Successfully !!!",1,context));
+                      .showDialogSubmitLead("Lead Added Successfully !!!",2,context));
                   // Get.back();
                   // Get.back();
                   if(saveLeadRequestModel.eventId ==null){
