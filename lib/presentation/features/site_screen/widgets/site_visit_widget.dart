@@ -654,7 +654,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitOutcomes": "",
       "visitStartLat": '${_currentPosition.latitude}',
       "visitStartLong": '${_currentPosition.longitude}',
-      "visitStartTime": "",//visitStartTime,
+      "visitStartTime": visitStartTime,
       "visitSubType": visitSubType,
       "visitType": typeValue,
     });

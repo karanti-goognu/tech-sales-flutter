@@ -42,10 +42,6 @@
 	<string>App needs access to photo lib for profile images</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>App needs access to save records</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
-	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
