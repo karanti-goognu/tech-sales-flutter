@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
@@ -152,8 +153,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   @override
   void dispose() {
     super.dispose();
-    // _addLeadsController.dispose();
-    // myFocusNode.dispose();
+    _addLeadsController.dispose();
+     myFocusNode.dispose();
   }
 
   _callGetAccessKeyAndGetLeadIdData() async {
@@ -399,6 +400,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+
 //    if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
 ////              Get.back();
 //      return Scaffold(
@@ -1344,7 +1348,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                   context,
                                                                   viewLeadDataResponse
                                                                       .leadsEntity
-                                                                      .leadId);
+                                                                      .leadId,2);
 
                                                               Get.back();
                                                             }
@@ -3699,7 +3703,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       print("$updateRequestModel");
 
       _addLeadsController.updateLeadData(updateRequestModel, new List<File>(),
-          context, viewLeadDataResponse.leadsEntity.leadId);
+          context, viewLeadDataResponse.leadsEntity.leadId,3);
 
       Get.back();
     });
@@ -3992,7 +3996,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                           _imageList,
                                           context,
                                           viewLeadDataResponse
-                                              .leadsEntity.leadId);
+                                              .leadsEntity.leadId,4);
 
 //                                      Get.back();
                                     }).whenComplete(() => Get.back());

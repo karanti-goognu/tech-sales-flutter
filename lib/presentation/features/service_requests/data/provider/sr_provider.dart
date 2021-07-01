@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SiteAreaDetailsModel.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -26,8 +27,9 @@ class MyApiClient {
 
   Future<AccessKeyModel> getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version=packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version=packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -45,10 +47,7 @@ class MyApiClient {
   Future<SrComplaintModel> getSrComplaintData(String accessKey, String userSecretKey,String empId) async{
     SrComplaintModel complaintModel;
     try{
-      // print(accessKey);
-      // print(userSecretKey);
-      print("Url--->"+UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId);
-
+      version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       complaintModel = SrComplaintModel.fromJson(json.decode(response.body));
@@ -63,6 +62,7 @@ class MyApiClient {
   Future<RequestorDetailsModel> getRequestorDetails(String accessKey, String userSecretKey, String empID, String requesterType ) async{
     RequestorDetailsModel requestorDetailsModel;
     try{
+      version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType),
           headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey, version));
       requestorDetailsModel = RequestorDetailsModel.fromJson(json.decode(response.body));
@@ -77,7 +77,7 @@ class MyApiClient {
   Future<ServiceRequestComplaintListModel> getSrListData(String accessKey, String userSecretKey,String empID, int offset) async{
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
-      //$offset
+      version = VersionClass.getVersion();
       print(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10');
       var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10'),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
@@ -94,6 +94,7 @@ class MyApiClient {
   Future<ServiceRequestComplaintListModel> getSrListDataWithFilters(String accessKey, String userSecretKey,String empID,String resolutionStatusId,String severity, String typeOfReqId) async{
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
+      version = VersionClass.getVersion();
       String url =UrlConstants.getComplaintListData+empID;
       if (resolutionStatusId.isNotEmpty){
         url=url+'&resolutionStatusId=$resolutionStatusId';
@@ -118,6 +119,7 @@ class MyApiClient {
   Future<ServiceRequestComplaintListModel> getSiteListData(String accessKey, String userSecretKey,String empID, String siteID) async{
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.getComplaintListData+empID+'&siteId='+siteID;
       // print(url);
       var response = await http.get(Uri.parse(url),
@@ -133,6 +135,7 @@ class MyApiClient {
   Future<Map> saveServiceRequest(List<File> imageList,String accessKey, String userSecretKey, SaveServiceRequest saveServiceRequest) async{
     http.Response response;
     try{
+      version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.addServiceRequest));
       request.headers.addAll(
           requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
@@ -166,6 +169,7 @@ class MyApiClient {
   Future<Map> updateServiceRequest(List<File> imageList,String accessKey, String userSecretKey, UpdateSRModel updateServiceRequest) async{
     http.Response response;
     try{
+      version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateServiceRequest));
       request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
@@ -200,6 +204,7 @@ class MyApiClient {
   Future<ComplaintViewModel> getComplaintViewData(String accessKey, String userSecretKey,String empID, String id) async{
     ComplaintViewModel complaintViewModel;
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.srComplaintView+empID+'&id='+id;
       // print(userSecretKey);
       var response = await http.get(Uri.parse(url),
@@ -219,6 +224,7 @@ class MyApiClient {
 
     getFilterData(String accessKey) async {
     try {
+      version = VersionClass.getVersion();
       String userSecurityKey = "empty";
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
@@ -247,6 +253,7 @@ class MyApiClient {
 
   getSiteAreaDetails(String accessKey,  String userSecretKey,String empID, String siteID) async{
     SiteAreaModel siteAreaDetailsModel;
+    version = VersionClass.getVersion();
     try {
       var url=UrlConstants.getSiteAreaDetails+empID+'&siteId='+siteID;
       // print(url);

@@ -14,8 +14,8 @@ import 'package:flutter_tech_sales/presentation/features/login/data/repository/l
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/Repository/sites_repository.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/provider/sites_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/provider/sites_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/provider/splash_provider.dart';

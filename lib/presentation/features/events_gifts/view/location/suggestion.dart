@@ -120,7 +120,5 @@ class PlaceApiProvider {
     }
   }
 
-// Future<Place> getPlaceDetailFromId(String placeId) async {
-//   // if you want to get the details of the selected place by place_id
-// }
+
 }

@@ -113,6 +113,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 
     final eventDropDwn = DropdownButtonFormField(
+
       onChanged: (value) {
         setState(() {
           _eventTypeId = value;
@@ -406,6 +407,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       onTap: () async {
         final sessionToken = Uuid().v4();
+        print('SSS: $sessionToken');
         final Suggestion result = await showSearch(
           context: context,
           delegate: AddressSearch(sessionToken),

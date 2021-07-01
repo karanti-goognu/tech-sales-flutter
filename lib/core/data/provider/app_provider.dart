@@ -19,6 +19,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitMod
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -29,13 +30,14 @@ import 'package:package_info/package_info.dart';
 class MyApiClientApp {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-String version;
+  String version;
   MyApiClientApp({@required this.httpClient});
 
   getAccessKey() async {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      //version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       // print('Response body is : ${json.decode(response.body)}');
@@ -80,6 +82,7 @@ String version;
   saveMWPData(String accessKey, String userSecurityKey, String url,
       SaveMWPModel saveMWPModel) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(saveMWPModel);
     //  print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveMWPData,
@@ -105,6 +108,7 @@ String version;
   saveVisitRequest(String accessKey, String userSecurityKey, String url,
       SaveVisitRequest saveVisitRequest) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(saveVisitRequest);
      // print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
@@ -129,6 +133,7 @@ String version;
   saveMeetRequest(String accessKey, String userSecurityKey, String url,
       SaveMeetRequest saveMeetRequest) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
      print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
@@ -153,6 +158,7 @@ String version;
   updateVisitPlan(String accessKey, String userSecurityKey, String url,
       UpdateVisitResponseModel updateVisitRequest) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(updateVisitRequest);
      // print('body is  :: $body');
     //  print(url);
@@ -178,6 +184,7 @@ String version;
   updateMeetPlan(String accessKey, String userSecurityKey, String url,
       UpdateMeetRequest saveMeetRequest) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
     //  print('body is  :: $body');
       var response = await httpClient.post(url,
@@ -201,6 +208,7 @@ String version;
 
   getMWPData(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -221,6 +229,7 @@ String version;
 
   getDealerList(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -238,6 +247,7 @@ String version;
 
   getVisitData(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -255,6 +265,7 @@ String version;
 
   getMeetData(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -272,6 +283,7 @@ String version;
 
   Future<CalendarPlanModel> getCalendarPlan(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -290,6 +302,7 @@ String version;
   getCalenderPlanByDay(
       String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -308,6 +321,7 @@ String version;
   getTargetSsActualPlan(
       String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));

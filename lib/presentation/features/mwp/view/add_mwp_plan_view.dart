@@ -628,7 +628,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                                       ? _mwpPlanController
                                                           .getMWPResponse
                                                           .mwpplanModel
-                                                          .actualConsumerMeetNo
+                                                          .actualMiniContractorMeetNo
                                                           .toString()
                                                       : (index == 12)
                                                           ? _mwpPlanController

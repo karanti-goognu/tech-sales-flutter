@@ -412,7 +412,7 @@ class LeadsFilterController extends GetxController {
     Get.toNamed(Routes.VERIFY_OTP);
   }
 
-  //////
+
 
   Future srSearch(String searchText) async {
     String userSecurityKey = "";
@@ -429,4 +429,5 @@ class LeadsFilterController extends GetxController {
         accessKey, userSecurityKey, empID, searchText);
     print(leadsListResponse.respCode);
   }
+
 }

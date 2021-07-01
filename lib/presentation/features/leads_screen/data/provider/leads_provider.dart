@@ -16,6 +16,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -36,27 +37,11 @@ class MyApiClientLeads {
 
   MyApiClientLeads({@required this.httpClient});
 
-  Future getAccessKeyNew() async {
-    try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
-      var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders(version));
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        return accessKeyModel.accessKey;
-      } else
-        print('error');
-    } catch (_) {
-      print('exception at EG repo ${_.toString()}');
-    }
-  }
-
   getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -71,12 +56,31 @@ class MyApiClientLeads {
     }
   }
 
+  Future getAccessKeyNew() async {
+    try {
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
+      var response = await httpClient.get(UrlConstants.getAccessKey,
+          headers: requestHeaders(version));
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
+        return accessKeyModel.accessKey;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception at EG repo ${_.toString()}');
+    }
+  }
+
   getSecretKey(String empId, String mobile) async {
+    version = VersionClass.getVersion();
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': StringConstants.appVersion,
+        'app-version': version,
         'reference-id': empId,
         'mobile-number': mobile,
       };
@@ -100,6 +104,7 @@ class MyApiClientLeads {
 
   getFilterData(String accessKey) async {
     try {
+      version = VersionClass.getVersion();
       String userSecurityKey = "empty";
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
@@ -130,6 +135,7 @@ class MyApiClientLeads {
   getLeadsData(String accessKey, String securityKey, String url) async {
     try {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
+      version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers:
               requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version));
@@ -152,6 +158,7 @@ class MyApiClientLeads {
   getSearchData(String accessKey, String securityKey, String url) async {
     try {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
+      version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers:
               requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version));
@@ -172,6 +179,7 @@ class MyApiClientLeads {
 
   getAddLeadsData(String accessKey, String userSecurityKey) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.addLeadsData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -194,10 +202,7 @@ class MyApiClientLeads {
     phoneNumber,
   ) async {
     try {
-      var bodyEncrypted = {"inflContact": phoneNumber};
-      // print('Request body is  : ${json.encode(bodyEncrypted)}');
-      // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
-
+      version = VersionClass.getVersion();
       final response = await get(
         Uri.parse(UrlConstants.getInflData + "/$phoneNumber"),
         headers:
@@ -226,7 +231,7 @@ class MyApiClientLeads {
       List<File> imageList,
       BuildContext context) async {
     // print(imageList.length);
-
+    version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.saveLeadsData));
     request.headers.addAll(
@@ -257,7 +262,7 @@ class MyApiClientLeads {
       name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
       gv.currentId = empId;
-print("Event Id: ${saveLeadRequestModel.eventId }");
+      print("Event Id: ${saveLeadRequestModel.eventId }");
       var uploadImageWithLeadModel = {
         'leadSegment': "TRADE",
         'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId),
@@ -327,17 +332,19 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
 
                   }
                   gv.fromLead = false;
-                  Get.back();
-                  Get.back();
+                  Get.dialog(CustomDialogs()
+                      .showDialogSubmitLead("Lead Added Successfully !!!",2,context));
+                  // Get.back();
+                  // Get.back();
                   if(saveLeadRequestModel.eventId ==null){
                   Get.back();
-                  Get.toNamed(Routes.HOME_SCREEN);
+                  Get.dialog(CustomDialogs()
+                      .showDialogSubmitLead("Lead Added Successfully !!!",1,context));
+                  //Get.toNamed(Routes.HOME_SCREEN);
                   }
 
-
-
-                  Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead("Lead Added Successfully !!!"));
+                  // Get.dialog(CustomDialogs()
+                  //     .showDialogSubmitLead("Lead Added Successfully !!!"));
                 } else if (saveLeadResponse.respCode == "LD2012") {
                   gv.fromLead = false;
                   Get.dialog(CustomDialogs().showExistingTSODialog(
@@ -364,8 +371,7 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
 
   getLeadData(String accessKey, String userSecurityKey, int leadId, String empID) async {
      try {
-      //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
-      var bodyEncrypted = {"leadId": leadId};
+      version = VersionClass.getVersion();
        final response = await get(
         Uri.parse(UrlConstants.getLeadData + "$leadId"+"&referenceID=$empID"),
          headers:
@@ -388,7 +394,8 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
   }
 
   updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId) async {
+      List<File> imageList, BuildContext context, int leadId,int from) async {
+    version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateLeadsData));
     request.headers.addAll(
@@ -449,10 +456,8 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
                   Get.back();
                   Get.back();
                   Get.back();
-//                  Get.toNamed(Routes.HOME_SCREEN);
 //                  Get.offNamed(Routes.LEADS_SCREEN);
-                  Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead(updateLeadResponseModel.respMsg));
+                  Get.dialog(CustomDialogs().showDialogSubmitLead(updateLeadResponseModel.respMsg,from,context));
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
                   Get.back();
                   Get.dialog(CustomDialogs()
@@ -473,17 +478,10 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
     });
   }
 
-
-
-
-
-  //////
-
   Future<LeadsListModel> getSearchDataNew(String accessKey, String userSecurityKey, String empID, String searchText) async {
     try {
-     // https://mobiledevcloud.dalmiabharat.com:443/tech_sales_server/leads/lead-search?searchText=501574&referenceID=EMP0009889
       String url = "${UrlConstants.getSearchData}searchText=$searchText&referenceID=$empID";
-      print('URL:$url');
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       print('Response body is : ${json.decode(response.body)}');

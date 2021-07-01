@@ -1,3 +1,4 @@
+
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/JourneyDetailsModel.dart';
 
 class SplashDataModel {
@@ -22,9 +23,12 @@ class SplashDataModel {
   JourneyDetails journeyDetails;
 
 
+
   List<EventTypeModels> eventTypeModels;
   List<StatusEntitieList> statusEntitieList;
+  VersionUpdateModel versionUpdateModel;
 
+ // List<VersionUpdate> versionUpdate;
 
   SplashDataModel(
       {
@@ -49,7 +53,9 @@ class SplashDataModel {
       this.respMsg,
       this.employeeDetails,
       this.userMenu,
-      this.journeyDetails});
+      this.journeyDetails,
+      this.versionUpdateModel
+      });
 
   SplashDataModel.fromJson(Map<String, dynamic> json) {
     if (json['leadStatusEntity'] != null) {
@@ -141,6 +147,10 @@ class SplashDataModel {
         statusEntitieList.add(new StatusEntitieList.fromJson(v));
       });
     }
+
+    versionUpdateModel = json['versionUpdateModel'] != null
+        ? new VersionUpdateModel.fromJson(json['versionUpdateModel'])
+        : null;
     severity = json['severity'].cast<String>();
     userSecurityKey = json['user-security-key'];
     respCode = json['resp-code'];
@@ -217,6 +227,10 @@ class SplashDataModel {
     if (this.statusEntitieList != null) {
       data['statusEntitieList'] =
           this.statusEntitieList.map((v) => v.toJson()).toList();
+    }
+
+    if (this.versionUpdateModel != null) {
+      data['versionUpdateModel'] = this.versionUpdateModel.toJson();
     }
     data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
@@ -577,6 +591,31 @@ class StatusEntitieList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['eventStatusId'] = this.eventStatusId;
     data['eventStatusText'] = this.eventStatusText;
+    return data;
+  }
+}
+
+class VersionUpdateModel {
+  String oldVersion;
+  String newVersion;
+  String versionUpdateText;
+  String updateType;
+
+  VersionUpdateModel({this.oldVersion, this.newVersion, this.versionUpdateText, this.updateType});
+
+  VersionUpdateModel.fromJson(Map<String, dynamic> json) {
+    oldVersion = json['oldVersion'];
+    newVersion = json['newVersion'];
+    versionUpdateText = json['versionUpdateText'];
+    updateType = json['updateType'];
+  }
+
+  Map<String, dynamic> toJson(){
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['oldVersion'] = this.oldVersion;
+    data['newVersion'] = this.newVersion;
+    data['versionUpdateText'] = this.versionUpdateText;
+    data['updateType'] = this.updateType;
     return data;
   }
 }

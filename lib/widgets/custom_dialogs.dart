@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
@@ -21,9 +20,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 class CustomDialogs {
-
   Widget errorDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -52,15 +52,14 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-
             // Get.back();
             Get.back();
-
           },
         ),
       ],
     );
   }
+
   Widget errorDialogForEvent(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -89,16 +88,12 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-
             Get.back();
-
           },
         ),
       ],
     );
   }
-
-
 
   Widget messageDialogMWP(String message) {
     return WillPopScope(
@@ -132,6 +127,85 @@ class CustomDialogs {
             onPressed: () {
               Get.back();
               Get.offNamed(Routes.HOME_SCREEN);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget messageDialogMWPCreate(String message) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: AlertDialog(
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                message,
+                style: GoogleFonts.roboto(
+                    fontSize: 16,
+                    height: 1.4,
+                    letterSpacing: .25,
+                    fontStyle: FontStyle.normal,
+                    color: ColorConstants.inputBoxHintColorDark),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              'OK',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  letterSpacing: 1.25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.buttonNormalColor),
+            ),
+            onPressed: () {
+              Get.back();
+              Get.toNamed(Routes.ADD_MWP_SCREEN);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget messageDialogSRC(String message) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: AlertDialog(
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                message,
+                style: GoogleFonts.roboto(
+                    fontSize: 16,
+                    height: 1.4,
+                    letterSpacing: .25,
+                    fontStyle: FontStyle.normal,
+                    color: ColorConstants.inputBoxHintColorDark),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              'OK',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  letterSpacing: 1.25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.buttonNormalColor),
+            ),
+            onPressed: () {
+              Get.back();
+              //Get.offNamed(Routes.HOME_SCREEN);
+              Get.toNamed(Routes.SERVICE_REQUESTS);
             },
           ),
         ],
@@ -211,6 +285,44 @@ class CustomDialogs {
       ],
     );
   }
+
+  Widget showDialogSubmitSite(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            //Get.back();
+            Get.toNamed(Routes.SITES_SCREEN);
+          },
+        ),
+      ],
+    );
+  }
+
   Widget appExitDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -276,7 +388,6 @@ class CustomDialogs {
           ],
         ),
       ),
-      
       actions: <Widget>[
         TextButton(
           child: Text(
@@ -296,7 +407,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showDialogSubmitLead(String message) {
+  Widget showDialogSubmitLead(String message,int from,BuildContext context) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -324,7 +435,23 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            Get.back();
+            if(from==3){
+              Get.back();
+               Get.offAll(Routes.HOME_SCREEN);
+            }else if(from==4){
+              Get.back();
+              Get.back();
+              Get.offAndToNamed(Routes.LEADS_SCREEN);
+            }else if(from==2){
+    Get.back();
+    Get.back();
+    Get.back();
+   // Get.offAndToNamed(Routes.LEADS_SCREEN);
+    }
+            else {
+               Get.back();
+              Get.offAndToNamed(Routes.LEADS_SCREEN);
+            }
             //Below line was commented for leads screen, if it's being use somewhere else, please consider.. s s
 //            Get.toNamed(Routes.HOME_SCREEN);
           },
@@ -332,8 +459,6 @@ class CustomDialogs {
       ],
     );
   }
-
-
 
   Widget showSaveChangesDialog(String message) {
     return AlertDialog(
@@ -391,20 +516,20 @@ class CustomDialogs {
     );
   }
 
-
-
   Widget showStartEventDialog(String heading, String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Text(heading,
+            Text(
+              heading,
               style: GoogleFonts.roboto(
                   fontSize: 20,
                   height: 1.4,
                   letterSpacing: .25,
                   fontWeight: FontWeight.bold,
-                  color: ColorConstants.inputBoxHintColorDark),),
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
             Text(
               message,
               style: GoogleFonts.roboto(
@@ -616,7 +741,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showCommentDialog(String respMsg, BuildContext context,int eventId) {
+  Widget showCommentDialog(String respMsg, BuildContext context, int eventId) {
     var _commentController = TextEditingController();
     return AlertDialog(
       content: SingleChildScrollView(
@@ -659,8 +784,7 @@ class CustomDialogs {
                       width: 1.0),
                 ),
                 errorBorder: OutlineInputBorder(
-                  borderSide:
-                  BorderSide(color: Colors.red, width: 1.0),
+                  borderSide: BorderSide(color: Colors.red, width: 1.0),
                 ),
                 labelText: "Comment",
                 filled: false,
@@ -690,7 +814,10 @@ class CustomDialogs {
           onPressed: () {
             Get.back();
             Get.dialog(
-                CustomDialogs().showCommentConfirmDialog("Are you sure ? Once you end the event, you can not modify it.",eventId,_commentController.text),
+                CustomDialogs().showCommentConfirmDialog(
+                    "Are you sure ? Once you end the event, you can not modify it.",
+                    eventId,
+                    _commentController.text),
                 barrierDismissible: false);
           },
         ),
@@ -712,9 +839,8 @@ class CustomDialogs {
     );
   }
 
-
-
-  Widget showCommentConfirmDialog(String message,int eventId,String eventComment) {
+  Widget showCommentConfirmDialog(
+      String message, int eventId, String eventComment) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -756,20 +882,19 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-            _getCurrentLocation(eventId,eventComment);
-
+            _getCurrentLocation(eventId, eventComment);
           },
         ),
       ],
     );
   }
 
-  _getCurrentLocation(int eventId,String eventComment) async {
+  _getCurrentLocation(int eventId, String eventComment) async {
     AllEventController _eventController = Get.find();
     var date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    String  currentDateString = formatter.format(date);
-    print("DateFormat--"+currentDateString);
+    String currentDateString = formatter.format(date);
+    print("DateFormat--" + currentDateString);
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     if (!(await Geolocator().isLocationServiceEnabled())) {
       Get.back();
@@ -779,21 +904,28 @@ class CustomDialogs {
       geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
-            _eventController.submitEndEventDetail(eventId,eventComment,currentDateString,position.latitude,position.longitude).then((value) => {
-              if(value.respCode == "DM1002"){
-                print('RESPONSE : ${value.respMsg+value.respCode}'),
-                // Get.toNamed(Routes.END_EVENT),
-                Get.dialog(
-                    CustomDialogs().showMessage1(value.respMsg,0,eventId),
-                    barrierDismissible: false)
-              }else{
-                Get.back(),
-                Get.dialog(
-                    CustomDialogs().showMessage1(value.respMsg,1,eventId),
-                    barrierDismissible: false)
-              }
-            });
-
+        _eventController
+            .submitEndEventDetail(eventId, eventComment, currentDateString,
+                position.latitude, position.longitude)
+            .then((value) => {
+                  if (value.respCode == "DM1002")
+                    {
+                      print('RESPONSE : ${value.respMsg + value.respCode}'),
+                      // Get.toNamed(Routes.END_EVENT),
+                      Get.dialog(
+                          CustomDialogs()
+                              .showMessage1(value.respMsg, 0, eventId),
+                          barrierDismissible: false)
+                    }
+                  else
+                    {
+                      Get.back(),
+                      Get.dialog(
+                          CustomDialogs()
+                              .showMessage1(value.respMsg, 1, eventId),
+                          barrierDismissible: false)
+                    }
+                });
       }).catchError((e) {
         Get.back();
         Get.dialog(CustomDialogs().errorDialog(
@@ -803,7 +935,7 @@ class CustomDialogs {
     }
   }
 
-  Widget showMessage1(String message,int from,int eventId) {
+  Widget showMessage1(String message, int from, int eventId) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -838,17 +970,16 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            if(from==0){
-              Get.to(() => EndEvent(eventId,0), binding: EGBinding());
-            }else{
-            Get.back();
+            if (from == 0) {
+              Get.to(() => EndEvent(eventId, 0), binding: EGBinding());
+            } else {
+              Get.back();
             }
           },
         ),
       ],
     );
   }
-
 
   Widget showMessage(String message) {
     return AlertDialog(
@@ -892,5 +1023,153 @@ class CustomDialogs {
     );
   }
 
+  Widget appUpdateDialog(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              "App Update",
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontWeight: FontWeight.bold,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'Ignore',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            Get.offNamed(Routes.HOME_SCREEN);
+          },
+        ),
+        TextButton(
+          child: Text(
+            'Update',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            print("Go To Store");
+            StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
+          },
+        ),
+      ],
+    );
+  }
 
+  Widget appForceUpdateDialog(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              "App Update",
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontWeight: FontWeight.bold,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'Update',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget appUserInactiveDialog(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            // Text(
+            //   "App Update",
+            //   style: GoogleFonts.roboto(
+            //       fontSize: 20,
+            //       height: 1.4,
+            //       letterSpacing: .25,
+            //       fontWeight: FontWeight.bold,
+            //       color: ColorConstants.inputBoxHintColorDark),
+            // ),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () async{
+            Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+            final SharedPreferences prefs = await _prefs;
+            prefs.clear();
+            SystemNavigator.pop();
+          },
+        ),
+      ],
+    );
+  }
 }

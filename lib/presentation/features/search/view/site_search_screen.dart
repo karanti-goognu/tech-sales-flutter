@@ -435,11 +435,13 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
 
   onSearchTextChanged(String text) async {
     if (controller.text.length >= 3) {
-      print('Hello');
+    //  print('Hello');
+
       // _siteController.searchKey = text;
       // _appController.getAccessKey(RequestIds.SEARCH_SITES);
 
       _siteController.siteSearch(text);
+
     }
   }
 }

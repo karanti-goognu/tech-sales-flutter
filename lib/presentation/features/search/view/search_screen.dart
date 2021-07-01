@@ -431,10 +431,11 @@ class _SearchScreenState extends State<SearchScreen> {
     LeadsFilterController _leadsFilterController = Get.find();
    // _leadsFilterController.searchKey = text;
     if (controller.text.length >= 3) {
-      print('Hello');
+      // print('Hello');
       // _leadsFilterController.searchKey = text;
       //_leadsFilterController.getAccessKey(RequestIds.SEARCH_LEADS);
       _leadsFilterController.srSearch(text);
+
     }
   }
 

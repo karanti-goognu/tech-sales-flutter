@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/LogsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -17,8 +18,9 @@ String version;
 
   Future<String> getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -35,7 +37,7 @@ String version;
   Future getGiftStockData(String empID,String accessKey, String userSecurityKey)async{
     try{
       var url=UrlConstants.getGiftStock +empID;
-      print(url);
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
@@ -55,6 +57,7 @@ String version;
 
   Future getViewLogsData(String accessKey, String userSecurityKey, String empID, String monthYear )async{
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.getViewLogs +empID+ "&monthYear="+monthYear;
       print(url);
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
@@ -75,6 +78,7 @@ String version;
 
   Future addGiftStockData(String empID, String userSecurityKey, String accessKey, String comment, String giftTypeId, String giftTypeText, String giftInHandQty,String giftInHandQtyNew)async{
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.addGiftStock ;
       print(empID);
       var response = await httpClient.post(url,

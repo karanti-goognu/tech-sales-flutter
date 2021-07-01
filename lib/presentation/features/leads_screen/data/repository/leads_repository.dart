@@ -60,8 +60,10 @@ class MyRepositoryLeads {
   }
 
   updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId) {
+      List<File> imageList, BuildContext context, int leadId, int from) {
     return apiClient.updateLeadsData(accessKey, userSecurityKey,
-        updateRequestModel, imageList, context, leadId);
+        updateRequestModel, imageList, context, leadId,from);
   }
+
+
 }

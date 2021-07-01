@@ -60,16 +60,12 @@ class AddEventScreenPageState extends State<AddEvent> {
         ));
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _addEventController.dispose();
-  // }
-
   void disposeController(BuildContext context){
 //or what you wnat to dispose/clear
+
     _addEventController.dispose();
   }
+
 
   Widget _buildAddEventInterface(BuildContext context) {
     SizeConfig().init(context);

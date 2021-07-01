@@ -142,7 +142,7 @@ class AddLeadsController extends GetxController {
   }
 
   void updateLeadData(var updateRequestModel, List<File> imageList,
-      BuildContext context, int leadId) {
+      BuildContext context, int leadId,int from) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -152,12 +152,12 @@ class AddLeadsController extends GetxController {
 
       this.accessKeyResponse = data;
 //print(this.accessKeyResponse.accessKey);
-      updateLeadDataInBackend(updateRequestModel, imageList, context, leadId);
+      updateLeadDataInBackend(updateRequestModel, imageList, context, leadId,from);
     });
   }
 
   Future<void> updateLeadDataInBackend(var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId) async {
+      List<File> imageList, BuildContext context, int leadId,int from) async {
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
@@ -165,7 +165,7 @@ class AddLeadsController extends GetxController {
       print('User Security Key :: $userSecurityKey');
 
       await repository.updateLeadsData(this.accessKeyResponse.accessKey,
-          userSecurityKey, updateRequestModel, imageList, context, leadId);
+          userSecurityKey, updateRequestModel, imageList, context, leadId,from);
     });
   }
 }

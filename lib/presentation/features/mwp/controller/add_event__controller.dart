@@ -19,7 +19,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddEventController extends GetxController {
@@ -51,7 +50,8 @@ class AddEventController extends GetxController {
   final _meetAction = "S".obs;
   final _visitActionType = "UPDATE".obs;
   final _retryOtpActive = false.obs;
-  final _visitSubType = 'RETENTION SITE'.obs;
+  // final _visitSubType = 'RETENTION SITE'.obs;
+  final _visitSubType = 'LEADS'.obs;
   final _visitType = 'PHYSICAL'.obs;
   final _visitSiteId = StringConstants.empty.obs;
   final _visitDateTime = "Visit Date".obs;
@@ -61,7 +61,6 @@ class AddEventController extends GetxController {
   final _visitStartTime = StringConstants.empty.obs;
   final _nextVisitDate = "Next Visit Date".obs;
   final _visitRemarks = StringConstants.empty.obs;
-
 
   final _totalParticipants = StringConstants.empty.obs;
   final _isLoading = false.obs;
@@ -159,7 +158,6 @@ class AddEventController extends GetxController {
   set siteIdText(value) => this._siteIdText.value = value;
   set visitOutcomes(value) => this._visitOutcomes.value = value;
 
-
   set visitActionType(value) => this._visitActionType.value = value;
 
   set meetAction(value) => this._meetAction.value = value;
@@ -207,7 +205,7 @@ class AddEventController extends GetxController {
 
   set visitSiteId(value) => this._visitSiteId.value = value;
 
-  set visitRemarks(value) => this._visitRemarks.value = value ;
+  set visitRemarks(value) => this._visitRemarks.value = value;
 
   set dalmiaInflCount(value) => this._dalmiaInflCount.value = value;
 
@@ -234,7 +232,8 @@ class AddEventController extends GetxController {
   set meetInitiatorName(value) => this._meetInitiatorName.value = value;
 
   saveVisit(String accessKey) {
-    Future.delayed(Duration.zero,()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    Future.delayed(Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator())));
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -250,7 +249,7 @@ class AddEventController extends GetxController {
         "VISIT",
         this.visitSubType,
         this.visitSiteId,
-        this.visitDateTime=="Visit Date"?null:this.visitDateTime,
+        this.visitDateTime == "Visit Date" ? null : this.visitDateTime,
         this.visitRemarks,
       );
 
@@ -271,10 +270,11 @@ class AddEventController extends GetxController {
           if (saveVisitResponse.respCode == "MWP2022") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
-          }else if(saveVisitResponse.respCode == "DM2144"){
+          } else if(saveVisitResponse.respCode == "DM2144"){
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
           }
+
           else {
             print('Success');
             Get.dialog(
@@ -360,8 +360,8 @@ class AddEventController extends GetxController {
           this.isLoading = false;
           if (this.dealerListResponse.dealerList.length != 0) {
             for (int i = 0;
-                i < this.dealerListResponse.dealerList.length;
-                i++) {
+            i < this.dealerListResponse.dealerList.length;
+            i++) {
               this.dealerList.add(new DealerModel(
                   dealerListResponse.dealerList[i].dealerId,
                   dealerListResponse.dealerList[i].dealerName,
@@ -381,7 +381,7 @@ class AddEventController extends GetxController {
     });
   }
 
-  Future<VisitResponseModel>viewVisitData(String accessKey) async {
+  Future<VisitResponseModel> viewVisitData(String accessKey) async {
     this.isLoadingVisitView = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -400,8 +400,10 @@ class AddEventController extends GetxController {
           this.visitSiteId =
               this.visitResponseModel.mwpVisitModel.docId.toString();
           // this.visitDateTime = this.visitResponseModel.mwpVisitModel.visitDate.toString();
-          this.visitViewDateTime = this.visitResponseModel.mwpVisitModel.visitDate.toString();
-          this.visitOutcomes = this.visitResponseModel.mwpVisitModel.visitOutcomes.toString();
+          this.visitViewDateTime =
+              this.visitResponseModel.mwpVisitModel.visitDate.toString();
+          this.visitOutcomes =
+              this.visitResponseModel.mwpVisitModel.visitOutcomes.toString();
           if (this.visitResponseModel.mwpVisitModel.visitStartTime != null) {
             this.visitStartTime =
                 this.visitResponseModel.mwpVisitModel.visitStartTime.toString();
@@ -413,7 +415,7 @@ class AddEventController extends GetxController {
             final String formattedDate = formatter.format(date);
             this.nextVisitDate = formattedDate;
           }
-          if(this.visitResponseModel.mwpVisitModel.nextVisitDate == null){
+          if (this.visitResponseModel.mwpVisitModel.nextVisitDate == null) {
             this.nextVisitDate = "Next Visit Date";
           }
 
@@ -423,16 +425,15 @@ class AddEventController extends GetxController {
             this.visitType =
                 this.visitResponseModel.mwpVisitModel.visitType.toString();
           }
-          this.visitSubType = this.visitResponseModel.mwpVisitModel.visitSubType.toString();
-          this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
+          this.visitSubType =
+              this.visitResponseModel.mwpVisitModel.visitSubType.toString();
+          this.visitRemarks =
+              this.visitResponseModel.mwpVisitModel.remark.toString();
         }
       });
     });
-
     return visitResponseModel;
-
   }
-
 
   viewMeetData(String accessKey) async {
     this.isLoadingVisitView = true;
@@ -492,7 +493,7 @@ class AddEventController extends GetxController {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) async{
+    _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       print('$empId');
       userSecurityKey =
@@ -516,19 +517,22 @@ class AddEventController extends GetxController {
             "",
             0.0,
             0.0,
-            this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
-          this.visitOutcomes,
-          this.visitRemarks,
-          this.visitSubType,
-          this.visitSiteId
-        );
-        print('&&&&&&'+url);
-        print('visitId'+this.visitId.toString());
+            this.nextVisitDate == "Next Visit Date" ? null : this.nextVisitDate,
+            this.visitOutcomes,
+            this.visitRemarks,
+            this.visitSubType,
+            this.visitSiteId);
+        print('&&&&&&' + url);
+        print('visitId' + this.visitId.toString());
         print(json.encode(mwpVisitModelUpdate));
         // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
         repository
-            .updateVisitPlan(accessKey, userSecurityKey, url,
-                new UpdateVisitResponseModel(mwpVisitModel: mwpVisitModelUpdate,mwpMeetModel: null))
+            .updateVisitPlan(
+            accessKey,
+            userSecurityKey,
+            url,
+            new UpdateVisitResponseModel(
+                mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
             .then((data) {
           // this.isLoadingVisitView = false;
           Get.back();
@@ -552,11 +556,11 @@ class AddEventController extends GetxController {
       } else if (this.visitActionType == "START") {
         if (!(await Geolocator().isLocationServiceEnabled())) {
           Get.back();
-      Get.dialog(CustomDialogs().errorDialog(
-      "Please enable your location service from device settings"));
-      }
+          Get.dialog(CustomDialogs().errorDialog(
+              "Please enable your location service from device settings"));
 
-        else {
+        } else {
+          //if ((await Geolocator().isLocationServiceEnabled())) {
           geolocator
               .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
               .then((Position position) {
@@ -576,15 +580,19 @@ class AddEventController extends GetxController {
                 "",
                 0.0,
                 0.0,
-                this.nextVisitDate == "Next Visit Date" ? null : this
-                    .nextVisitDate,
+                this.nextVisitDate == "Next Visit Date"
+                    ? null
+                    : this.nextVisitDate,
                 this.visitOutcomes,
                 this.visitRemarks,
                 this.visitSubType,
                 this.visitSiteId);
             // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
             repository
-                .updateVisitPlan(accessKey, userSecurityKey, url,
+                .updateVisitPlan(
+                accessKey,
+                userSecurityKey,
+                url,
                 new UpdateVisitResponseModel(
                     mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
                 .then((data) {
@@ -612,9 +620,13 @@ class AddEventController extends GetxController {
                 "Access to location data denied "));
             print(e);
           });
-
         }
-
+        // else{
+        //   Get.back();
+        //   Get.dialog(CustomDialogs().errorDialog(
+        //       "Please enable your location service from device settings"));
+        // }
+        // }
       } else if (this.visitActionType == "END") {
         print('end');
         print(this.nextVisitDate);
@@ -641,15 +653,19 @@ class AddEventController extends GetxController {
                 dateFormat.format(DateTime.now()),
                 journeyEndLat,
                 journeyEndLong,
-                this.nextVisitDate == "Next Visit Date" ? null : this
-                    .nextVisitDate,
+                this.nextVisitDate == "Next Visit Date"
+                    ? null
+                    : this.nextVisitDate,
                 this.visitOutcomes,
                 this.visitRemarks,
                 this.visitSubType,
                 this.visitSiteId);
             // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
             repository
-                .updateVisitPlan(accessKey, userSecurityKey, url,
+                .updateVisitPlan(
+                accessKey,
+                userSecurityKey,
+                url,
                 new UpdateVisitResponseModel(
                     mwpVisitModel: mwpVisitModelUpdate))
                 .then((data) {
@@ -689,7 +705,7 @@ class AddEventController extends GetxController {
             "",
             0.0,
             0.0,
-            this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
+            this.nextVisitDate == "Next Visit Date" ? null : this.nextVisitDate,
             this.visitOutcomes,
             this.visitRemarks,
             this.visitSubType,
@@ -730,7 +746,7 @@ class AddEventController extends GetxController {
           updatedBy: empId,
           mwpMeetDealers: list);
       UpdateMeetRequest updateMeetRequest =
-          new UpdateMeetRequest(mwpMeetModel: mwpMeetModel);
+      new UpdateMeetRequest(mwpMeetModel: mwpMeetModel);
 
       String url = "${UrlConstants.updateVisit}";
       debugPrint('Url is : $url');
@@ -743,14 +759,14 @@ class AddEventController extends GetxController {
           debugPrint('Save Visit Response is not null');
           this.saveVisitResponse = data;
 
-          Get.dialog( CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+          Get.dialog(
+              CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
           print('${saveVisitResponse.respMsg}');
           //SitesDetailWidget();
         }
       });
     });
   }
-
 
   showNoInternetSnack() {
     Get.snackbar(

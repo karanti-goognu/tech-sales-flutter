@@ -72,12 +72,12 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
 
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+
     return WillPopScope(
         onWillPop: () async {
           // You can do some work here.
