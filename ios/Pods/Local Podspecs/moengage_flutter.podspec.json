@@ -1,0 +1,34 @@
+{
+  "name": "moengage_flutter",
+  "version": "3.0.0",
+  "summary": "A flutter plugin for MoEngage iOS and Android SDKs.",
+  "description": "A flutter plugin for MoEngage iOS and Android SDKs.",
+  "homepage": "https://www.moengage.com/",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "MoEngage Inc.": "mobiledevs@moengage.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "public_header_files": "Classes/**/*.h",
+  "dependencies": {
+    "Flutter": [
+
+    ],
+    "MoEPluginBase": [
+      ">= 2.0.2",
+      "< 2.1.0"
+    ]
+  },
+  "prepare_command": "echo // Generated file, do not edit > Classes/MOFlutterPluginInfo.swift\n     echo \"import Foundation\" >> Classes/MOFlutterPluginInfo.swift\n     echo \"struct MOFlutterPluginInfo{\n static let kVersion = \\\"3.0.0\\\" \n}\" >> Classes/MOFlutterPluginInfo.swift",
+  "platforms": {
+    "osx": null,
+    "ios": null,
+    "tvos": null,
+    "watchos": null
+  }
+}

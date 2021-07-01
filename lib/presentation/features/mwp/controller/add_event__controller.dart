@@ -233,7 +233,7 @@ class AddEventController extends GetxController {
 
   saveVisit(String accessKey) {
     Future.delayed(Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator())));
+        () => Get.dialog(Center(child: CircularProgressIndicator())));
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -271,11 +271,11 @@ class AddEventController extends GetxController {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
           } else if(saveVisitResponse.respCode == "DM2144"){
-            Get.dialog(
-                CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
-          }
+        Get.dialog(
+        CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+        }
 
-          else {
+        else {
             print('Success');
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
@@ -341,7 +341,7 @@ class AddEventController extends GetxController {
   getDealersList(String accessKey) async {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     // this.isLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -360,8 +360,8 @@ class AddEventController extends GetxController {
           this.isLoading = false;
           if (this.dealerListResponse.dealerList.length != 0) {
             for (int i = 0;
-            i < this.dealerListResponse.dealerList.length;
-            i++) {
+                i < this.dealerListResponse.dealerList.length;
+                i++) {
               this.dealerList.add(new DealerModel(
                   dealerListResponse.dealerList[i].dealerId,
                   dealerListResponse.dealerList[i].dealerName,
@@ -488,7 +488,7 @@ class AddEventController extends GetxController {
     // this.isLoadingVisitView = true;
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     String empId = "empty";
     String userSecurityKey = "empty";
@@ -528,11 +528,11 @@ class AddEventController extends GetxController {
         // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
         repository
             .updateVisitPlan(
-            accessKey,
-            userSecurityKey,
-            url,
-            new UpdateVisitResponseModel(
-                mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
+                accessKey,
+                userSecurityKey,
+                url,
+                new UpdateVisitResponseModel(
+                    mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
             .then((data) {
           // this.isLoadingVisitView = false;
           Get.back();
@@ -561,72 +561,72 @@ class AddEventController extends GetxController {
 
         } else {
           //if ((await Geolocator().isLocationServiceEnabled())) {
-          geolocator
-              .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-              .then((Position position) {
-            print('start');
-            var journeyStartLat = position.latitude;
-            var journeyStartLong = position.longitude;
-            print('$journeyStartLong   $journeyStartLat');
-            DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-            print(this.visitViewDateTime);
-            mwpVisitModelUpdate = new MwpVisitModelUpdate(
-                this.visitId,
-                this.visitViewDateTime,
-                visitType,
-                dateFormat.format(DateTime.now()),
-                journeyStartLat,
-                journeyStartLong,
-                "",
-                0.0,
-                0.0,
-                this.nextVisitDate == "Next Visit Date"
-                    ? null
-                    : this.nextVisitDate,
-                this.visitOutcomes,
-                this.visitRemarks,
-                this.visitSubType,
-                this.visitSiteId);
-            // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
-            repository
-                .updateVisitPlan(
-                accessKey,
-                userSecurityKey,
-                url,
-                new UpdateVisitResponseModel(
-                    mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
-                .then((data) {
-              this.isLoadingVisitView = false;
-              if (data == null) {
-                debugPrint('Save Visit Response is null');
-              } else {
-                debugPrint('Save Visit Response is not null');
-                this.saveVisitResponse = data;
-                if (saveVisitResponse.respCode == "MWP2028") {
-                  Get.dialog(CustomDialogs()
-                      .messageDialogMWP(saveVisitResponse.respMsg));
-                  print('${saveVisitResponse.respMsg}');
-                  //SitesDetailWidget();
+            geolocator
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+                .then((Position position) {
+              print('start');
+              var journeyStartLat = position.latitude;
+              var journeyStartLong = position.longitude;
+              print('$journeyStartLong   $journeyStartLat');
+              DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+              print(this.visitViewDateTime);
+              mwpVisitModelUpdate = new MwpVisitModelUpdate(
+                  this.visitId,
+                  this.visitViewDateTime,
+                  visitType,
+                  dateFormat.format(DateTime.now()),
+                  journeyStartLat,
+                  journeyStartLong,
+                  "",
+                  0.0,
+                  0.0,
+                  this.nextVisitDate == "Next Visit Date"
+                      ? null
+                      : this.nextVisitDate,
+                  this.visitOutcomes,
+                  this.visitRemarks,
+                  this.visitSubType,
+                  this.visitSiteId);
+              // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
+              repository
+                  .updateVisitPlan(
+                  accessKey,
+                  userSecurityKey,
+                  url,
+                  new UpdateVisitResponseModel(
+                      mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
+                  .then((data) {
+                this.isLoadingVisitView = false;
+                if (data == null) {
+                  debugPrint('Save Visit Response is null');
                 } else {
-                  Get.dialog(CustomDialogs()
-                      .messageDialogMWP(saveVisitResponse.respMsg));
-                  print('${saveVisitResponse.respMsg}');
+                  debugPrint('Save Visit Response is not null');
+                  this.saveVisitResponse = data;
+                  if (saveVisitResponse.respCode == "MWP2028") {
+                    Get.dialog(CustomDialogs()
+                        .messageDialogMWP(saveVisitResponse.respMsg));
+                    print('${saveVisitResponse.respMsg}');
+                    //SitesDetailWidget();
+                  } else {
+                    Get.dialog(CustomDialogs()
+                        .messageDialogMWP(saveVisitResponse.respMsg));
+                    print('${saveVisitResponse.respMsg}');
+                  }
                 }
-              }
+              });
+            }).catchError((e) {
+              Get.back();
+              Get.dialog(CustomDialogs().errorDialog(
+                  "Access to location data denied "));
+              print(e);
             });
-          }).catchError((e) {
-            Get.back();
-            Get.dialog(CustomDialogs().errorDialog(
-                "Access to location data denied "));
-            print(e);
-          });
-        }
-        // else{
-        //   Get.back();
-        //   Get.dialog(CustomDialogs().errorDialog(
-        //       "Please enable your location service from device settings"));
-        // }
-        // }
+          }
+          // else{
+          //   Get.back();
+          //   Get.dialog(CustomDialogs().errorDialog(
+          //       "Please enable your location service from device settings"));
+          // }
+       // }
       } else if (this.visitActionType == "END") {
         print('end');
         print(this.nextVisitDate);
@@ -746,7 +746,7 @@ class AddEventController extends GetxController {
           updatedBy: empId,
           mwpMeetDealers: list);
       UpdateMeetRequest updateMeetRequest =
-      new UpdateMeetRequest(mwpMeetModel: mwpMeetModel);
+          new UpdateMeetRequest(mwpMeetModel: mwpMeetModel);
 
       String url = "${UrlConstants.updateVisit}";
       debugPrint('Url is : $url');

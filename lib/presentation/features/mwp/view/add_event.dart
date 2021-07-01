@@ -60,9 +60,8 @@ class AddEventScreenPageState extends State<AddEvent> {
         ));
   }
 
-  void disposeController(BuildContext context){
-//or what you wnat to dispose/clear
 
+  void disposeController(BuildContext context){
     _addEventController.dispose();
   }
 

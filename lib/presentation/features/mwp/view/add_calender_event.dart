@@ -66,7 +66,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     super.initState();
   }
 
-
   @override
   void dispose() {
     super.dispose();
@@ -74,7 +73,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
 
   @override
   Widget build(BuildContext context) {
-
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 

@@ -517,10 +517,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       Get.back();
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
-
-    }
-
-    else {
+    } else {
       geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,

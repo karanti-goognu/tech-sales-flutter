@@ -364,6 +364,7 @@ class SiteController extends GetxController {
   }
 
 
+
   getAccessKeyAndSaveSiteRequest(
       SiteVisitRequestModel siteVisitRequestModel, ) {
     String userSecurityKey = "";
@@ -406,6 +407,5 @@ class SiteController extends GetxController {
     });
     sitesListResponse = await repository.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
   }
-
 
 }

@@ -2828,6 +2828,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
         Get.dialog(CustomDialogs().errorDialog(
             "Access to location data denied "));
 
+        print(e);
       });
     }
   }

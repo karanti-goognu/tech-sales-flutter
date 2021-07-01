@@ -2704,10 +2704,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         Get.back();
       }).catchError((e) {
         Get.back();
-        Get.dialog(CustomDialogs().errorDialog(
-            "Access to location data denied "));
-
-        //print(e);
+        Get.dialog(
+            CustomDialogs().errorDialog("Access to location data denied "));
+        print(e);
       });
     }
   }

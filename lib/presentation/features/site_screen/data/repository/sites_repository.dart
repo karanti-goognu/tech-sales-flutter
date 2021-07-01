@@ -23,8 +23,6 @@ class MyRepositorySites {
     return apiClient.getSearchData(accessKey, securityKey, url);
   }
 
-
-
   getAccessKey() {
     return apiClient.getAccessKey();
   }
@@ -76,12 +74,5 @@ class MyRepositorySites {
   }
 
 //getSiteData(String accessKey, String userSecurityKey, int leadId) {}
-
-
-
-  // Future<SitesListModel> getSearchDataNew(String accessKey, String userSecurityKey,
-  //     String empID, String searchText) {
-  //   return apiClient.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
-  // }
 
 }

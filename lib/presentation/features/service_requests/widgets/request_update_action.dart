@@ -105,7 +105,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               ),
             ),
             onPressed: () {
-
               showDialog(
                   context: context,
                   barrierDismissible: false, // user must tap button!
@@ -503,15 +502,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
     return empID;
   }
   _getCurrentLocation() async {
-    // showDialog(
-    //     context: context,
-    //     barrierDismissible: false, // user must tap button!
-    //     builder: (BuildContext context) {
-    //       return new WillPopScope(
-    //           onWillPop: () async => false,
-    //           child:Center(child: CircularProgressIndicator(value: 0.7,),));});
     if (!(await Geolocator().isLocationServiceEnabled())) {
-
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {

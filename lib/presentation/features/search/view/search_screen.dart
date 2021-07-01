@@ -429,13 +429,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   onSearchTextChanged(String text) async {
     LeadsFilterController _leadsFilterController = Get.find();
-   // _leadsFilterController.searchKey = text;
     if (controller.text.length >= 3) {
-      // print('Hello');
-      // _leadsFilterController.searchKey = text;
-      //_leadsFilterController.getAccessKey(RequestIds.SEARCH_LEADS);
+      print('Hello');
       _leadsFilterController.srSearch(text);
-
+      // _leadsFilterController.searchKey = text;
+      // _leadsFilterController.getAccessKey(RequestIds.SEARCH_LEADS);
     }
   }
 

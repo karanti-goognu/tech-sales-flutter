@@ -1,0 +1,6 @@
+framework module MoEPluginBase {
+  umbrella header "MoEPluginBase-umbrella.h"
+
+  export *
+  module * { export * }
+}

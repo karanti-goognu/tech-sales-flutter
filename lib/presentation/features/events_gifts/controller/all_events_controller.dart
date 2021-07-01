@@ -221,6 +221,7 @@ class AllEventController extends GetxController {
         eventStatus = "&eventStatus=${this.eventStatusValue}";
       }
 
+
       var url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
       print(url);
 
