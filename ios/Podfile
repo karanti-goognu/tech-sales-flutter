@@ -36,10 +36,10 @@ target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
-target "NotificationServices" do
+#target "NotificationServices" do
    # use_frameworks!
-    pod 'MORichNotification','~>5.0.0'
-end
+#    pod 'MORichNotification','~>5.0.0'
+#end
 
 
 post_install do |installer|
