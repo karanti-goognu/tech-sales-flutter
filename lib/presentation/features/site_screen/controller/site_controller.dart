@@ -179,7 +179,7 @@ class SiteController extends GetxController {
       }
       //debugPrint('request without encryption: $body');
       debugPrint('request without encryption: ${this.offset}');
-      String url = "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=3000&offset=0";
+      String url = "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=10&offset=${this.offset}";
       //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
        debugPrint('Url is : $url');
@@ -198,7 +198,7 @@ class SiteController extends GetxController {
 
 
             if (sitesListModel.sitesEntity.isNotEmpty) {
-              sitesListModel.sitesEntity=[];
+               // sitesListModel.sitesEntity=[];
               sitesListModel.sitesEntity.addAll(
                   this.sitesListResponse.sitesEntity);
               this.sitesListResponse = sitesListModel;
@@ -218,6 +218,7 @@ class SiteController extends GetxController {
               );
             }
             if (sitesListResponse.respCode == "ST2006") {
+
               //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             } else {
               Get.dialog(

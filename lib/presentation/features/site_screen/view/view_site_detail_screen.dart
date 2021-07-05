@@ -634,8 +634,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               fontSize: 18,
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
-                          keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "No. Of Bags",
                           ),

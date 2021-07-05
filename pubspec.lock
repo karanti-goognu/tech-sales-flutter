@@ -504,13 +504,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  moengage_inbox:
-    dependency: "direct main"
-    description:
-      name: moengage_inbox
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   month_picker_dialog:
     dependency: "direct main"
     description:
@@ -803,6 +796,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0-nullsafety.1"
+  store_redirect:
+    dependency: "direct main"
+    description:
+      name: store_redirect
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   stream_channel:
     dependency: transitive
     description:

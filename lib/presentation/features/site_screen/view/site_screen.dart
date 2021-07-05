@@ -96,35 +96,35 @@ class _SiteScreenState extends State<SiteScreen> {
 
   @override
   void initState() {
-    super.initState();
-
+    _siteController.sitesListResponse.sitesEntity = null;
     internetChecking().then((result) => {
-          if (result == true)
-            {
-            _appController.getAccessKey(RequestIds.GET_SITES_LIST),
-              // storeOfflineSiteData()
-            }
-          else
-            {
-              Get.snackbar(
-                  "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-              // fetchSiteList()
-            }
-        });
-
+      if (result == true)
+        {
+          _appController.getAccessKey(RequestIds.GET_SITES_LIST),
+          _siteController.offset =0,
+          // storeOfflineSiteData()
+        }
+      else
+        {
+          Get.snackbar(
+              "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+          // fetchSiteList()
+        }
+    });
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
+    super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _siteController?.dispose();
-  //   _siteController.offset = 0;
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+    _siteController?.dispose();
+    _siteController.offset = 0;
+  }
 
   void disposeController(BuildContext context){
 //or what you wnat to dispose/clear
