@@ -80,16 +80,21 @@ class _LeadScreenState extends State<LeadScreen> {
     }
   }
 
-  @override
-  void dispose() {
-    //_connectivity.disposeStream();
-    super.dispose();
+  // @override
+  // void dispose() {
+  //   //_connectivity.disposeStream();
+  //   super.dispose();
+  //   _leadsFilterController?.dispose();
+  //   _leadsFilterController.offset = 0;
+  //   print(_leadsFilterController.offset);
+  //   // Route.dispose();
+  // }
+  void disposeController(BuildContext context){
+//or what you wnat to dispose/clear
     _leadsFilterController?.dispose();
     _leadsFilterController.offset = 0;
     print(_leadsFilterController.offset);
-    // Route.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -98,6 +103,7 @@ class _LeadScreenState extends State<LeadScreen> {
     // print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
+          disposeController(context);
           Get.offNamed(Routes.HOME_SCREEN);
           return true;
         },

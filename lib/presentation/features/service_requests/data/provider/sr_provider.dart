@@ -78,8 +78,8 @@ class MyApiClient {
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
       version = VersionClass.getVersion();
-      print(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=3000');
-      var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=3000'),
+      print(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10');
+      var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10'),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
         serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
         print(serviceRequestComplaintListModel.srComplaintListModal.length);

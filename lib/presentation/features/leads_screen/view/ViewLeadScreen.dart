@@ -157,6 +157,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
      myFocusNode.dispose();
   }
 
+//   void disposeController(BuildContext context){
+// //or what you wnat to dispose/clear
+//     _addLeadsController.dispose();
+//     myFocusNode.dispose();
+ // }
+
   _callGetAccessKeyAndGetLeadIdData() async {
     print("sumitdhawan");
     AccessKeyModel accessKeyModel = new AccessKeyModel();

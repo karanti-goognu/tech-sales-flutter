@@ -87,6 +87,7 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
           srListData.srComplaintListModal.clear();
           srListData.srComplaintListModal
               .addAll(srDataToBeAdded.srComplaintListModal);
+          //srListData = srDataToBeAdded;
           Get.rawSnackbar(
             titleText: Text("Note"),
             messageText: Text(

@@ -331,6 +331,7 @@ class LeadsFilterController extends GetxController {
 //              leadListResponseServer.leadsEntity=[];
               leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
+              print('LEADS: ${this.leadsListResponse.leadsEntity.length}');
               Get.rawSnackbar(
                 titleText: Text("Note"),
                 messageText: Text(

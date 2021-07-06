@@ -140,7 +140,8 @@ class MyApiClientEvent {
               accessKey, userSecretKey,version));
       approvedEventsModel =
           ApprovedEventsModel.fromJson(json.decode(response.body));
-      // print(response.body);
+     //  print(response.body);
+     // print('URL ${UrlConstants.getApproveEvents + empID}');
     }
     catch (e) {
       print("Exception at EG Repo $e");
@@ -158,9 +159,8 @@ class MyApiClientEvent {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       detailEventModel = DetailEventModel.fromJson(json.decode(response.body));
-      print('RESP : ${response.body}');
-      print(
-          'UURL ${UrlConstants.getDetailEvent + empID + "&eventId=$eventId"}');
+      // print('RESP : ${response.body}');
+      // print('UURL ${UrlConstants.getDetailEvent + empID + "&eventId=$eventId"}');
     }
     catch (e) {
       print("Exception at EG Repo $e");
@@ -178,9 +178,9 @@ class MyApiClientEvent {
         body: json.encode(saveEventFormModel),
       );
       saveEventResponse = SaveEventResponse.fromJson(json.decode(response.body));
-      print('URL : ${response.request}');
-      print('RESP: ${response.body}');
-      print('RESPONSE : ${json.encode(saveEventFormModel)}');
+      // print('URL : ${response.request}');
+      // print('RESP: ${response.body}');
+      // print('RESPONSE : ${json.encode(saveEventFormModel)}');
     }
     catch(e){
       print("Exception at EG Repo $e");
@@ -199,9 +199,8 @@ class MyApiClientEvent {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       deleteEventModel = DeleteEventModel.fromJson(json.decode(response.body));
-      print('RESP : ${response.body}');
-      print(
-          'UURL ${UrlConstants.deleteEvent + empID + "&eventId=$eventId"}');
+      // print('RESP : ${response.body}');
+      // print('UURL ${UrlConstants.deleteEvent + empID + "&eventId=$eventId"}');
     }
     catch (e) {
       print("Exception at EG Repo $e");
@@ -220,8 +219,8 @@ class MyApiClientEvent {
         body: json.encode(startEventModel),
       );
       startEventResponse = StartEventResponse.fromJson(json.decode(response.body));
-      print('RESP : ${response.body}');
-      print('UURL ${UrlConstants.startEvent}');
+     // print('RESP : ${response.body}');
+     // print('UURL ${UrlConstants.startEvent}');
     }
     catch(e){
       print("Exception at EG Repo $e");
@@ -234,9 +233,9 @@ class MyApiClientEvent {
     try{
       version = VersionClass.getVersion();
       var url = UrlConstants.endEvent +empId + "&eventId=$eventId";
-      print(url);
+     // print(url);
       var response = await http.get(url, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
-      print(response.body);
+      //print(response.body);
       endEventModel = EndEventModel.fromJson(json.decode(response.body));
     }catch(e){
       print("Exception at EG Repo $e");
@@ -262,7 +261,7 @@ class MyApiClientEvent {
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(endEventDetailModel)
       );
-      print("event1-->"+json.decode(response.body).toString());
+      //print("event1-->"+json.decode(response.body).toString());
       endEventModel = EventResponse.fromJson(json.decode(response.body));
     }catch(e){
       print("Exception at EG Repo $e");
@@ -282,9 +281,8 @@ class MyApiClientEvent {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       dealerInfModel = DealerInfModel.fromJson(json.decode(response.body));
-      print('RESP : ${response.body}');
-      print(
-          'UURL ${UrlConstants.getDetailEvent + empID + "&eventId=$eventId"}');
+     // print('RESP : ${response.body}');
+     // print('UURL ${UrlConstants.getDealerInfList + empID + "&eventId=$eventId"}');
     }
     catch (e) {
       print("Exception at EG Repo $e");
@@ -321,6 +319,7 @@ class MyApiClientEvent {
     var response = await http.get(Uri.parse(UrlConstants.getInfDetails + "$contact"),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
     infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
+   // print('URL ${UrlConstants.getInfDetails + "$contact"}');
   }
   catch (e) {
     print("Exception at EG Repo $e");

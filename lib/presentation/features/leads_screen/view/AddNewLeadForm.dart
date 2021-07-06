@@ -664,6 +664,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             fontWeight: FontWeight.normal,
                             fontSize: 16.0),
                         fillColor: ColorConstants.backgroundColor,
+
                       ),
                     ),
                     SizedBox(height: 16),

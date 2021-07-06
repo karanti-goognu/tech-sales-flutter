@@ -46,7 +46,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       // print('offset old value ${eventController.offset}');
-      eventController.offset = 0;
+      eventController.offset += 10;
       // print('offset new value ${eventController.offset}');
       await eventController.getAccessKey().then((value) async {
         data = await eventController.getSrListData(

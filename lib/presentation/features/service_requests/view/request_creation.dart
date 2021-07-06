@@ -36,7 +36,6 @@ class _RequestCreationState extends State<RequestCreation> {
   List<File> _imageList = List<File>();
   SaveServiceRequest saveServiceRequest;
 
-
   Future getEmpId() async {
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -55,7 +54,7 @@ class _RequestCreationState extends State<RequestCreation> {
         setState(() {
           srComplaintModel = data;
         });
-     //   print(data.toJson());
+        //   print(data.toJson());
       });
     });
   }
@@ -115,7 +114,6 @@ class _RequestCreationState extends State<RequestCreation> {
 
   @override
   void initState() {
-
     // _connectivity?.initialise();
     // _connectivity.myStream.listen((source) {
     //   setState(() => _source = source);
@@ -126,8 +124,8 @@ class _RequestCreationState extends State<RequestCreation> {
 
   @override
   void dispose() {
-     // _connectivity?.disposeStream();
-     super.dispose();
+    // _connectivity?.disposeStream();
+    super.dispose();
   }
 
   @override
@@ -160,8 +158,8 @@ class _RequestCreationState extends State<RequestCreation> {
             ),
           ),
           Positioned.fill(
-            child: srComplaintModel != null ?
-            ListView(
+            child: srComplaintModel != null
+                ? ListView(
                     children: [
                       Container(
                         padding: EdgeInsets.all(12),
@@ -329,40 +327,40 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 DropdownSearch<ActiveSiteTSOListsEntity>(
                                   mode: Mode.BOTTOM_SHEET,
-                                  items: srComplaintModel
-                                      .activeSiteTSOLists,
-                                  itemAsString: (ActiveSiteTSOListsEntity u) => '${toBeginningOfSentenceCase(u.contact_name)} (${u.site_id})',
+                                  items: srComplaintModel.activeSiteTSOLists,
+                                  itemAsString: (ActiveSiteTSOListsEntity u) =>
+                                      '${toBeginningOfSentenceCase(u.contact_name)} (${u.site_id})',
                                   maxHeight: 240,
                                   // onFind: (String filter) => getData(filter),
                                   label: "Site Id *",
-                                  validator: (value) =>
-                                  value == null ? "Site id is required " : null,
+                                  validator: (value) => value == null
+                                      ? "Site id is required "
+                                      : null,
                                   onChanged: (value) async {
-                                      siteId = value.site_id;
-                                      SiteAreaModel siteDetails =
-                                          await eventController
-                                          .getSiteAreaDetails(siteId.toString());
-                                      siteDetails.siteAreaDetailsModel != null
-                                          ? setState(() {
-                                        _pin.text = siteDetails
-                                            .siteAreaDetailsModel
-                                            .sitePincode;
-                                        _state.text = siteDetails
-                                            .siteAreaDetailsModel
-                                            .siteState;
-                                        _taluk.text = siteDetails
-                                            .siteAreaDetailsModel
-                                            .siteTaluk;
-                                        _district.text = siteDetails
-                                            .siteAreaDetailsModel
-                                            .siteDistrict;
-                                      }) : Get.rawSnackbar(
-                                          title: "Message",
-                                          message: siteDetails.respMsg);
-                                    },
+                                    siteId = value.site_id;
+                                    SiteAreaModel siteDetails =
+                                        await eventController
+                                            .getSiteAreaDetails(
+                                                siteId.toString());
+                                    siteDetails.siteAreaDetailsModel != null
+                                        ? setState(() {
+                                            _pin.text = siteDetails
+                                                .siteAreaDetailsModel
+                                                .sitePincode;
+                                            _state.text = siteDetails
+                                                .siteAreaDetailsModel.siteState;
+                                            _taluk.text = siteDetails
+                                                .siteAreaDetailsModel.siteTaluk;
+                                            _district.text = siteDetails
+                                                .siteAreaDetailsModel
+                                                .siteDistrict;
+                                          })
+                                        : Get.rawSnackbar(
+                                            title: "Message",
+                                            message: siteDetails.respMsg);
+                                  },
                                   showSearchBox: true,
                                 ),
-
 
                                 // SizedBox(height: 16),
                                 // TextFormField(
@@ -410,7 +408,8 @@ class _RequestCreationState extends State<RequestCreation> {
                                       : null,
                                   onChanged: (value) {
                                     setState(() {
-                                      FocusScope.of(context).requestFocus(new FocusNode());
+                                      FocusScope.of(context)
+                                          .requestFocus(new FocusNode());
                                       creatorType = value;
                                     });
                                     getRequestorData(value);
@@ -552,7 +551,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                     ),
                                     onPressed: () async {
                                       if (_imageList.length < 5) {
-                                         _showPicker(context);
+                                        _showPicker(context);
                                         // _imgFromCamera();
                                       } else {
                                         Get.dialog(CustomDialogs().errorDialog(
@@ -690,8 +689,9 @@ class _RequestCreationState extends State<RequestCreation> {
                                 SizedBox(height: 16),
                                 RaisedButton(
                                   onPressed: () async {
-                                    if (!_srCreationFormKey.currentState.validate()) {
-                                    //  print("Error");
+                                    if (!_srCreationFormKey.currentState
+                                        .validate()) {
+                                      //  print("Error");
                                       Get.dialog(CustomDialogs().errorDialog(
                                           'Please enter the mandatory details'));
                                     } else if (_severity.text == "") {
@@ -700,72 +700,76 @@ class _RequestCreationState extends State<RequestCreation> {
                                           middleText:
                                               "Request Sub-type and Severity cannot be empty");
                                     } else {
-
-                                        String empId = await getEmpId();
-                                        List imageDetails = List();
-                                        List subTypeDetails = List();
-                                        selectedRequestSubtypeObjectList
-                                            .forEach((element) {
-                                          setState(() {
-                                            subTypeDetails.add({
-                                              "createdBy": empId,
-                                              "serviceRequestComplaintId": null,
-                                              "serviceRequestComplaintTypeId":
-                                              element.id
-                                            });
+                                      String empId = await getEmpId();
+                                      List imageDetails = List();
+                                      List subTypeDetails = List();
+                                      selectedRequestSubtypeObjectList
+                                          .forEach((element) {
+                                        setState(() {
+                                          subTypeDetails.add({
+                                            "createdBy": empId,
+                                            "serviceRequestComplaintId": null,
+                                            "serviceRequestComplaintTypeId":
+                                                element.id
                                           });
                                         });
-
-                                        _imageList.forEach((element) {
-                                          setState(() {
-                                            imageDetails.add({
-                                              //ToDo: Change srComplaint Id to some dynamic value
-                                              'srComplaintId': null,
-                                              'photoName':
-                                              element.path
-                                                  .split('/')
-                                                  .last,
-                                              'createdBy': empId
-                                            });
-                                          });
-                                        });
-                                        SaveServiceRequest _saveServiceRequest =
-                                        SaveServiceRequest.fromJson({
-                                          "createdBy": empId,
-                                          "creatorContactNumber":
-                                          _requestorContact.text,
-                                          "creatorId": _customerID.text,
-                                          "creatorType": creatorType,
-                                          "description": _description.text,
-                                          "district": _district.text,
-                                          "pincode": _pin.text,
-                                          "requestDepartmentId":
-                                          requestDepartmentId,
-                                          "requestId": requestId,
-                                          "resolutionStatusId": 1,
-                                          "siteId": siteId,
-                                          "severity": _severity.text,
-                                          "srComplaintPhotosEntity": imageDetails,
-                                          "srComplaintSubtypeMappingEntity":
-                                          subTypeDetails,
-                                          "state": _state.text,
-                                          "taluk": _taluk.text
-                                        });
-
-                                        // print(_saveServiceRequest);
-                                      internetChecking().then((result) => {
-                                        if (result == true)
-                                          {
-                                            saveRequest.getAccessKeyAndSaveRequest(_imageList, _saveServiceRequest)
-                                          }else{
-                                          Get.snackbar(
-                                              "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                                              colorText: Colors.white,
-                                              backgroundColor: Colors.red,
-                                              snackPosition: SnackPosition.BOTTOM),
-                                          // fetchSiteList()
-                                        }
                                       });
+
+                                      _imageList.forEach((element) {
+                                        setState(() {
+                                          imageDetails.add({
+                                            //ToDo: Change srComplaint Id to some dynamic value
+                                            'srComplaintId': null,
+                                            'photoName':
+                                                element.path.split('/').last,
+                                            'createdBy': empId
+                                          });
+                                        });
+                                      });
+                                      SaveServiceRequest _saveServiceRequest =
+                                          SaveServiceRequest.fromJson({
+                                        "createdBy": empId,
+                                        "creatorContactNumber":
+                                            _requestorContact.text,
+                                        "creatorId": _customerID.text,
+                                        "creatorType": creatorType,
+                                        "description": _description.text,
+                                        "district": _district.text,
+                                        "pincode": _pin.text,
+                                        "requestDepartmentId":
+                                            requestDepartmentId,
+                                        "requestId": requestId,
+                                        "resolutionStatusId": 1,
+                                        "siteId": siteId,
+                                        "severity": _severity.text,
+                                        "srComplaintPhotosEntity": imageDetails,
+                                        "srComplaintSubtypeMappingEntity":
+                                            subTypeDetails,
+                                        "state": _state.text,
+                                        "taluk": _taluk.text
+                                      });
+
+                                      // print(_saveServiceRequest);
+                                      internetChecking().then((result) => {
+                                            if (result == true)
+                                              {
+                                                saveRequest
+                                                    .getAccessKeyAndSaveRequest(
+                                                        _imageList,
+                                                        _saveServiceRequest)
+                                              }
+                                            else
+                                              {
+                                                Get.snackbar(
+                                                    "No internet connection.",
+                                                    "Make sure that your wifi or mobile data is turned on.",
+                                                    colorText: Colors.white,
+                                                    backgroundColor: Colors.red,
+                                                    snackPosition:
+                                                        SnackPosition.BOTTOM),
+                                                // fetchSiteList()
+                                              }
+                                          });
                                     }
                                   },
                                   color: HexColor("#1C99D4"),
@@ -824,7 +828,36 @@ class _RequestCreationState extends State<RequestCreation> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                      onPressed: () => Get.back(), icon: Icon(Icons.clear))
+                      onPressed: () {
+                        if (selectedRequestSubtypeSeverity != null) {
+                          if (selectedRequestSubtypeSeverity.contains('HIGH')) {
+                            setState(() {
+                              _severity.text = 'HIGH';
+                            });
+                          } else if (selectedRequestSubtypeSeverity
+                              .contains('MEDIUM')) {
+                            setState(() {
+                              _severity.text = 'MEDIUM';
+                            });
+                          } else if (selectedRequestSubtypeSeverity
+                              .contains('LOW')) {
+                            setState(() {
+                              _severity.text = 'LOW';
+                            });
+                          } else {
+                            //  print('No request sub type selected');
+                          }
+                          // dataToBeSentBack.isEmpty
+                          //     ? widget.customFunction(dataToBeSentBack)
+                          //     : null;
+                          // print(dataToBeSentBack);
+                          Get.back();
+                        } else {
+                          Get.back();
+                        }
+                      },
+                      // => Get.back(),
+                      icon: Icon(Icons.clear))
                 ],
               ),
             ),
@@ -894,7 +927,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                       .add(element.complaintSeverity);
                                 });
                               });
-                           //   print(selectedRequestSubtypeSeverity);
+                              //   print(selectedRequestSubtypeSeverity);
 
                               checkedValues[index] = newValue;
                               // dataToBeSentBack = requestSubtype[index];
@@ -917,8 +950,8 @@ class _RequestCreationState extends State<RequestCreation> {
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),
                         )
-                     : Container();
-               },
+                      : Container();
+                },
               ),
             ),
             Container(
@@ -942,8 +975,8 @@ class _RequestCreationState extends State<RequestCreation> {
                   MaterialButton(
                     color: HexColor('#1C99D4'),
                     onPressed: () {
-                    //  print(selectedRequestSubtype);
-                   //   print(selectedRequestSubtypeSeverity);
+                      //  print(selectedRequestSubtype);
+                      //   print(selectedRequestSubtypeSeverity);
                       if (selectedRequestSubtypeSeverity.contains('HIGH')) {
                         setState(() {
                           _severity.text = 'HIGH';
@@ -959,7 +992,7 @@ class _RequestCreationState extends State<RequestCreation> {
                           _severity.text = 'LOW';
                         });
                       } else {
-                      //  print('No request sub type selected');
+                        //  print('No request sub type selected');
                       }
                       // dataToBeSentBack.isEmpty
                       //     ? widget.customFunction(dataToBeSentBack)
@@ -980,8 +1013,6 @@ class _RequestCreationState extends State<RequestCreation> {
       );
     });
   }
-
-
 
   getBottomSheet() {
     Get.bottomSheet(
@@ -1009,7 +1040,7 @@ class _RequestCreationState extends State<RequestCreation> {
     // serviceRequestComplaintType.map((e) {
     //   print('hi');
     // }).toList();
-  //  print(serviceRequestComplaintTypeId);
+    //  print(serviceRequestComplaintTypeId);
     // print(serviceRequestComplaintType.serviceRequestTypeText);
   }
 

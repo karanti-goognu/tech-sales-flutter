@@ -140,6 +140,7 @@ class MyApiClientSites {
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
+       // print('Response body is : ${json.decode(response.body)}');
         return sitesListModel;
       } else
         print('error in else');
@@ -156,7 +157,7 @@ class MyApiClientSites {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version));
       //var response = await httpClient.post(UrlConstants.loginCheck);
-      print('response is :  ${response.body}');
+     // print('response is :  ${response.body}');
       if (response.statusCode == 200) {
         print('success');
         var data = json.decode(response.body);
