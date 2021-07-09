@@ -1164,10 +1164,14 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () async{
-            Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-            final SharedPreferences prefs = await _prefs;
-            prefs.clear();
-            SystemNavigator.pop();
+
+           //  print("IN function");
+           //  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+           //  final SharedPreferences prefs = await _prefs;
+           //  prefs.clear();
+            Get.back();
+            Get.back();
+           //  SystemNavigator.pop();
           },
         ),
       ],

@@ -189,7 +189,12 @@ class MyApiClientLeads {
         var data = json.decode(response.body);
         AddLeadInitialModel addLeadInitialModel =
             AddLeadInitialModel.fromJson(data);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         print(addLeadInitialModel.siteSubTypeEntity[0]);
+        print('Response body is  : ${json.decode(response.body)}');
         return addLeadInitialModel;
       } else
         print('error');
@@ -218,6 +223,10 @@ class MyApiClientLeads {
         var data = json.decode(response.body);
         InfluencerDetail influencerDetailModel =
             InfluencerDetail.fromJson(data);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         return influencerDetailModel;
       } else
         print('error');
@@ -311,55 +320,62 @@ class MyApiClientLeads {
 
           http.Response.fromStream(result).then((response) async {
             print(response.body);
-                var data = json.decode(response.body);
-                SaveLeadResponse saveLeadResponse =
-                    SaveLeadResponse.fromJson(data);
+            var data = json.decode(response.body);
+            SaveLeadResponse saveLeadResponse =
+            SaveLeadResponse.fromJson(data);
 
-                print(response.body);
+            print(response.body);
 
-                if (saveLeadResponse.respCode == "LD2008") {
-                  Get.back();
-                  gv.selectedLeadID = saveLeadResponse.leadId;
-                  gv.fromLead = false;
-                  Get.dialog(CustomDialogs().showExistingLeadDialog(
-                      saveLeadResponse.respMsg,
-                      context,
-                      saveLeadRequestModel,
-                      imageList));
-                } else if (saveLeadResponse.respCode == "LD2007") {
-                  if (gv.fromLead) {
+            if(data["resp_code"] == "DM1005"){
+              Get.dialog(CustomDialogs().appUserInactiveDialog(
+                  data["resp_msg"]), barrierDismissible: false);
+            }else{
+            if (saveLeadResponse.respCode == "LD2008") {
+              Get.back();
+              gv.selectedLeadID = saveLeadResponse.leadId;
+              gv.fromLead = false;
+              Get.dialog(CustomDialogs().showExistingLeadDialog(
+                  saveLeadResponse.respMsg,
+                  context,
+                  saveLeadRequestModel,
+                  imageList));
+            } else if (saveLeadResponse.respCode == "LD2007") {
+              if (gv.fromLead) {
 //                    print('Draft id :: ${gv.draftID}');
-                    db.removeLeadInDraft(gv.draftID);
-                    gv.fromLead = false;
+                db.removeLeadInDraft(gv.draftID);
+                gv.fromLead = false;
+              }
+              gv.fromLead = false;
+              Get.dialog(CustomDialogs()
+                  .showDialogSubmitLead(
+                  "Lead Added Successfully !!!", 2, context));
+              // Get.back();
+              // Get.back();
+              if (saveLeadRequestModel.eventId == null) {
+                Get.back();
+                Get.dialog(CustomDialogs()
+                    .showDialogSubmitLead(
+                    "Lead Added Successfully !!!", 1, context));
+                //Get.toNamed(Routes.HOME_SCREEN);
+              }
 
-                  }
-                  gv.fromLead = false;
-                  Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead("Lead Added Successfully !!!",2,context));
-                  // Get.back();
-                  // Get.back();
-                  if(saveLeadRequestModel.eventId ==null){
-                  Get.back();
-                  Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead("Lead Added Successfully !!!",1,context));
-                  //Get.toNamed(Routes.HOME_SCREEN);
-                  }
-
-                  // Get.dialog(CustomDialogs()
-                  //     .showDialogSubmitLead("Lead Added Successfully !!!"));
-                } else if (saveLeadResponse.respCode == "LD2012") {
-                  gv.fromLead = false;
-                  Get.dialog(CustomDialogs().showExistingTSODialog(
-                      saveLeadResponse.respMsg,
-                      context,
-                      saveLeadRequestModel,
-                      imageList));
-                } else {
-                  gv.fromLead = false;
-                  Get.back();
-                  Get.dialog(
-                      CustomDialogs().showDialog("Some Error Occured !!! "));
-                }
+              // Get.dialog(CustomDialogs()
+              //     .showDialogSubmitLead("Lead Added Successfully !!!"));
+            } else if (saveLeadResponse.respCode == "LD2012") {
+              gv.fromLead = false;
+              Get.dialog(CustomDialogs().showExistingTSODialog(
+                  saveLeadResponse.respMsg,
+                  context,
+                  saveLeadRequestModel,
+                  imageList));
+            }
+            else {
+              gv.fromLead = false;
+              Get.back();
+              Get.dialog(
+                  CustomDialogs().showDialog("Some Error Occured !!! "));
+            }
+          }
               });
             })
             .catchError((err) => print('error : ' + err.toString()))
@@ -384,9 +400,14 @@ class MyApiClientLeads {
         Get.back();
 
         var data = json.decode(response.body);
+
 //        print(data);
         ViewLeadDataResponse viewLeadDataResponse =
             ViewLeadDataResponse.fromJson(data);
+        // if(data["resp_code"] == "DM1005"){
+        //   Get.dialog(CustomDialogs().appUserInactiveDialog(
+        //       data["resp_msg"]), barrierDismissible: false);
+        // }
         return viewLeadDataResponse;
       } else
         print('error');
@@ -441,17 +462,19 @@ class MyApiClientLeads {
             .send()
             .then((result) async {
               http.Response.fromStream(result).then((response) {
-                 print("/////////////////${response.body}");
                 print(response.statusCode);
- //                print(response.statusCode);
 
                 var data = json.decode(response.body);
 //                print(data);
                 UpdateLeadResponseModel updateLeadResponseModel =
-                    UpdateLeadResponseModel.fromJson(data);
+                UpdateLeadResponseModel.fromJson(data);
 
+                if(data["resp_code"] == "DM1005"){
+                    Get.dialog(CustomDialogs().appUserInactiveDialog(
+                        data["resp_msg"]), barrierDismissible: false);
+                  }
+                else{
                 if (updateLeadResponseModel.respCode == "LD2009") {
-
                   gv.selectedLeadID = updateLeadResponseModel.leadId;
 
 
@@ -459,17 +482,24 @@ class MyApiClientLeads {
                   Get.back();
                   Get.back();
 //                  Get.offNamed(Routes.LEADS_SCREEN);
-                  Get.dialog(CustomDialogs().showDialogSubmitLead(updateLeadResponseModel.respMsg,from,context));
+                  Get.dialog(CustomDialogs().showDialogSubmitLead(
+                      updateLeadResponseModel.respMsg, from, context));
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
                   Get.back();
                   Get.dialog(CustomDialogs()
                       .showDialog(updateLeadResponseModel.respMsg));
-                } else {
+                }
+                // else if(updateLeadResponseModel.respCode == "DM1005"){
+                //   Get.dialog(CustomDialogs().appUserInactiveDialog(
+                //       updateLeadResponseModel.respMsg), barrierDismissible: false);
+                // }
+                else {
                   Get.back();
                   Get.dialog(
-                      CustomDialogs().showDialog("Some Error Occured !!! "),
+                    CustomDialogs().showDialog("Some Error Occured !!! "),
                   );
                 }
+              }
               });
             })
             .catchError((err) => print('error : ' + err.toString()))
@@ -490,6 +520,10 @@ class MyApiClientLeads {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
+        if(leadsListModel.respCode == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              leadsListModel.respMsg), barrierDismissible: false);
+        }
         return leadsListModel;
       } else
         print('error');

@@ -1302,6 +1302,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                             .accessKey)
                                                     .then((data) {
                                                   // print(data.inflName.text);
+                                                  if(data != null && data.respCode == "DM1005"){
+                                                    Get.dialog(CustomDialogs().appUserInactiveDialog(
+                                                        data.respMsg), barrierDismissible: false);
+                                                  }
+
                                                   InfluencerDetail inflDetail =
                                                       data;
                                                   // print(inflDetail.inflName.text);
@@ -2609,6 +2614,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   //  _comments.clear();
                                 });
                               } else {
+                                _isSubmitButtonDisabled = false;
                                 Get.dialog(CustomDialogs().errorDialog(
                                     "Please fill the mandotary fields. i.e. Contact Number , Address  . "));
                               }

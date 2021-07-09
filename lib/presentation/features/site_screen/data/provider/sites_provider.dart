@@ -140,7 +140,7 @@ class MyApiClientSites {
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
-       // print('Response body is : ${json.decode(response.body)}');
+        print('Response body is : ${json.decode(response.body)}');
         return sitesListModel;
       } else
         print('error in else');
@@ -189,7 +189,11 @@ class MyApiClientSites {
         Get.back();
         var data = json.decode(response.body);
         // print('@@@@');
-        // print(data);
+        //print(data);
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else{
         ViewSiteDataResponse viewSiteDataResponse =
         ViewSiteDataResponse.fromJson(data);
         // print('@@@@');
@@ -200,10 +204,12 @@ class MyApiClientSites {
         } else if (viewSiteDataResponse.respCode == "ST2011") {
           Get.back();
           Get.dialog(CustomDialogs().showDialog(viewSiteDataResponse.respMsg));
-        } else {
+        }
+        else {
           Get.back();
           Get.dialog(CustomDialogs().showDialog("Some Error Occured !!! "));
         }
+      }
       } else
         print('error');
     } catch (_) {
@@ -346,6 +352,10 @@ class MyApiClientSites {
             //    print(data);
 
             //      print(response.body)  ;
+            if(data["resp_code"] == "DM1005"){
+              Get.dialog(CustomDialogs().appUserInactiveDialog(
+                  data["resp_msg"]), barrierDismissible: false);
+            }else{
             UpdateSiteModel updateLeadResponseModel =
             UpdateSiteModel.fromJson(data);
             print(response.body);
@@ -353,10 +363,12 @@ class MyApiClientSites {
               Get.back();
               Get.dialog(CustomDialogs()
                   .showDialog(updateLeadResponseModel.respMsg));
-            } else {
+            }
+            else {
               Get.dialog(CustomDialogs()
                   .showDialog(updateLeadResponseModel.respMsg));
             }
+          }
           });
         })
             .catchError((err) => print('error : ' + err.toString()))
@@ -399,10 +411,13 @@ class MyApiClientSites {
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(siteVisitRequestModel),
       );
-      siteVisitResponseModel = SiteVisitResponseModel.fromJson(json.decode(response.body));
-      print('URL : ${response.request}');
-      print('RESP: ${response.body}');
-      print('RESPONSE : ${json.encode(siteVisitRequestModel)}');
+      var data = json.decode(response.body);
+        siteVisitResponseModel =
+            SiteVisitResponseModel.fromJson(json.decode(response.body));
+        print('URL : ${response.request}');
+        print('RESP: ${data}');
+
+      //print('RESPONSE : ${json.encode(siteVisitRequestModel)}');
     }
     catch(e){
       print("Exception at EG Repo $e");

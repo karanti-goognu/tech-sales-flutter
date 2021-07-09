@@ -192,6 +192,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   onPressed: () {
                     Navigator.pop(context);
                     _leadsFilterController.isFilterApplied=true;
+                   // _leadsFilterController.offset = 0;
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST);
                   },
@@ -385,7 +386,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                 }
                 _leadsFilterController.selectedLeadStage = value;
                 _leadsFilterController.selectedLeadStageValue = leadStageValue;
-                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+
+                ///filter issue
+               // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),

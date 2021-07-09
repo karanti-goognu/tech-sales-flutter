@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
@@ -188,15 +189,21 @@ class SiteController extends GetxController {
           .then((data) {
         if (data == null) {
           debugPrint('Sites Data Response is null');
+          print("RESPCODE1: ${sitesListResponse.respCode}");
         } else {
+          if(sitesListResponse.respCode == "DM1005"){
+            print("RESPCODE4: ${sitesListResponse.respCode}");
+            Get.dialog(CustomDialogs().appUserInactiveDialog(
+                sitesListResponse.respMsg), barrierDismissible: false);
+          }
+
           if (this.sitesListResponse.sitesEntity == null ||
               this.sitesListResponse.sitesEntity.isEmpty) {
             this.sitesListResponse = data;
+            print("//////////////RESPCODE2: ${sitesListResponse.respCode}");
           } else {
             // this.sitesListResponse = data;
             SitesListModel sitesListModel = data;
-
-
             if (sitesListModel.sitesEntity.isNotEmpty) {
                // sitesListModel.sitesEntity=[];
               sitesListModel.sitesEntity.addAll(
@@ -219,8 +226,10 @@ class SiteController extends GetxController {
             }
             if (sitesListResponse.respCode == "ST2006") {
 
+              print("RESPCODE3: ${sitesListResponse.respCode}");
               //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             } else {
+              print("RESPCODE5: ${sitesListResponse.respCod}");
               Get.dialog(
                   CustomDialogs().errorDialog(sitesListResponse.respMsg));
             }
@@ -258,7 +267,11 @@ class SiteController extends GetxController {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('success');
             //SitesDetailWidget();
-          } else {
+          } else if(sitesListResponse.respCode == "DM1005"){
+            Get.dialog(CustomDialogs().appUserInactiveDialog(
+                sitesListResponse.respMsg), barrierDismissible: false);
+          }
+          else {
             Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
           }
         }

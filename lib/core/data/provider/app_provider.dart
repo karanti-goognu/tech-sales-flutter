@@ -23,6 +23,8 @@ import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:package_info/package_info.dart';
@@ -84,7 +86,7 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMWPModel);
-    //  print('body is  :: $body');
+      //print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveMWPData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
@@ -94,9 +96,16 @@ class MyApiClientApp {
      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveMWPResponse saveMWPResponse = SaveMWPResponse.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
-        return saveMWPResponse;
+        print('Response body is : ${(data)}');
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveMWPResponse saveMWPResponse = SaveMWPResponse.fromJson(data);
+
+          //print('Access key Object is :: $accessKeyModel');
+          return saveMWPResponse;
+        }
       } else {
       //  print('Error in else');
       }
@@ -218,7 +227,12 @@ class MyApiClientApp {
          print('ho');
          print(data['mwpplanModel']);
          print("view-mwp     $data");
-        return GetMWPResponse.fromJson(data);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          return GetMWPResponse.fromJson(data);
+        }
       } else {
         print('Error in else');
       }
@@ -290,6 +304,11 @@ class MyApiClientApp {
       // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         return CalendarPlanModel.fromJson(data);
       } else {
         print('Error in else');
@@ -309,6 +328,10 @@ class MyApiClientApp {
       // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         return CalendarDataByDay.fromJson(data);
       } else {
       //  print('Error in else');
@@ -328,6 +351,10 @@ class MyApiClientApp {
       // print('Response body for Target Vs Actual is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         return TargetVsActualModel.fromJson(data);
       } else {
         // print('Error in else');
