@@ -237,7 +237,6 @@ class CalendarEventController extends GetxController {
                 CustomDialogs().errorDialog(calendarPlanResponse.respMsg));
           }
         }
-       // }
       });
     });
   }

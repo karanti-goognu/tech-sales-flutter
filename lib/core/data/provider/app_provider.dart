@@ -128,9 +128,15 @@ class MyApiClientApp {
      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
-        return saveVisitResponse;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
+              data);
+          //print('Access key Object is :: $accessKeyModel');
+          return saveVisitResponse;
+        }
       } else {
       //  print('Error in else');
       }
@@ -250,7 +256,13 @@ class MyApiClientApp {
     //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        return DealerListResponse.fromJson(data);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+else {
+          return DealerListResponse.fromJson(data);
+        }
       } else {
       //  print('Error in else');
       }

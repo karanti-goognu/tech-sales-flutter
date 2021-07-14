@@ -83,12 +83,15 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   setVisibility() {
-    if (detailEventModel.mwpEventModel.eventStatusText ==
-        StringConstants.rejected || detailEventModel.mwpEventModel.eventStatusText ==
-        StringConstants.notSubmitted) {
-      isVisible = true;
-    } else {
-      isVisible = false;
+    if(detailEventModel.mwpEventModel != null) {
+      if (detailEventModel.mwpEventModel.eventStatusText ==
+          StringConstants.rejected ||
+          detailEventModel.mwpEventModel.eventStatusText ==
+              StringConstants.notSubmitted) {
+        isVisible = true;
+      } else {
+        isVisible = false;
+      }
     }
   }
 
@@ -159,8 +162,10 @@ class _DetailPendingState extends State<DetailPending> {
   getDetailEventsData() async {
     await detailEventController.getDetailEventData(widget.eventId).then((data) {
       setState(() {
-        detailEventModel = data;
-        //selectedDealersModels = detailEventModel.eventDealersModelList;
+        if(data!=null) {
+          detailEventModel = data;
+          //selectedDealersModels = detailEventModel.eventDealersModelList;
+        }
       });
       print('DDDD: $data');
       setVisibility();

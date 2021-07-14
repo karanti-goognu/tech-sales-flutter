@@ -62,7 +62,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   void initState() {
     getSRListData().whenComplete(() {
       setState(() {
-        serviceRequestComplaintListModel = data;
+        if(data!=null) {
+          serviceRequestComplaintListModel = data;
+        }
       });
     });
     //  print("scroll controller init");
@@ -322,7 +324,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
-                  serviceRequestComplaintListModel.respMsg,
+                  serviceRequestComplaintListModel.respMsg ?? "",
                   textAlign: TextAlign.center,
                 ),
               ),

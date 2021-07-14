@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -118,7 +119,7 @@ class DashboardController extends GetxController {
 
     var data= await repository.getYearlyViewDetails(empID, this.accessKeyResponse.accessKey,userSecurityCode );
           this.dashboardYearlyViewModel = data;
-         // print(":::: $data ::::");
+         // print(":::: ${json.decode(data)} ::::");
           List tempMonthList = this.dashboardYearlyViewModel.dashboardYearlyModels
               .map(
                 (e) => e.showMonth,

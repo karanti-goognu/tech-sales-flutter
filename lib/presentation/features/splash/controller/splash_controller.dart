@@ -132,7 +132,10 @@ class SplashController extends GetxController {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
-
+          // if(data["resp_code"] == "DM1005"){
+          //   Get.dialog(CustomDialogs().appUserInactiveDialog(
+          //       data["resp_msg"]), barrierDismissible: false);
+          // }
           this.splashDataModel = data;
           print('VERSION: ${splashDataModel.versionUpdateModel}');
           if(splashDataModel.versionUpdateModel != null){

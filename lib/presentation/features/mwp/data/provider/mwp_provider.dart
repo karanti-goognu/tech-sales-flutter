@@ -50,8 +50,4 @@ class MyApiClient {
     }
     return actualModel;
   }
-
-
-
-
 }

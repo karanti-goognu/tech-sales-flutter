@@ -3,6 +3,8 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/LogsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -42,9 +44,14 @@ String version;
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        GetGiftStockModel getGiftStockModel;
-        getGiftStockModel = GetGiftStockModel.fromJson(data);
-        return getGiftStockModel;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          GetGiftStockModel getGiftStockModel;
+          getGiftStockModel = GetGiftStockModel.fromJson(data);
+          return getGiftStockModel;
+        }
       } else
         print('error');
 
@@ -63,9 +70,14 @@ String version;
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        LogsModel logsModel;
-        logsModel = LogsModel.fromJson(data);
-        return logsModel;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          LogsModel logsModel;
+          logsModel = LogsModel.fromJson(data);
+          return logsModel;
+        }
       } else
         print('error');
 
@@ -98,9 +110,14 @@ String version;
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveVisitResponse addGiftResponse;
-        addGiftResponse= SaveVisitResponse.fromJson(data);
-        return addGiftResponse;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveVisitResponse addGiftResponse;
+          addGiftResponse = SaveVisitResponse.fromJson(data);
+          return addGiftResponse;
+        }
       } else
         print('error');
 

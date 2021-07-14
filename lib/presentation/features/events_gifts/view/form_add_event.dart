@@ -91,10 +91,11 @@ class _FormAddEventState extends State<FormAddEvent> {
 
 
   getDropdownData() async {
-
     await eventController.getEventType().then((data) {
       setState(() {
-        addEventModel = data;
+        if(data!=null) {
+          addEventModel = data;
+        }
       });
       print('RESPONSE, ${data}');
     });

@@ -814,6 +814,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     if (_formKey.currentState.validate()) {
       await _eventsFilterController.getInfData(contact).then((data) {
         _infDetailModel = data;
+        print("response : $data");
         setState(() {
           if (data != null) {
             if (_infDetailModel.respCode == "DM1002" &&

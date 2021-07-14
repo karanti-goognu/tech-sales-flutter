@@ -4,14 +4,16 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SRListController extends GetxController{
+class SRListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
   }
+
   final SrRepository repository;
   SRListController({@required this.repository}) : assert(repository != null);
 
@@ -22,20 +24,17 @@ class SRListController extends GetxController{
 
   final _srListData = ServiceRequestComplaintListModel().obs;
   get srListData => _srListData.value;
-  set srListData(value) =>
-      _srListData.value = value;
+  set srListData(value) => _srListData.value = value;
 
-final _siteListData = ServiceRequestComplaintListModel().obs;
+  final _siteListData = ServiceRequestComplaintListModel().obs;
   get siteListData => _siteListData.value;
-  set siteListData(value) =>
-      _siteListData.value = value;
+  set siteListData(value) => _siteListData.value = value;
 
   var _filteredListData = ServiceRequestComplaintListModel();
   get filteredListData => _filteredListData;
-  set filteredListData(value) =>
-      _filteredListData = value;
+  set filteredListData(value) => _filteredListData = value;
 //*****
-  final _complaintListData  = ComplaintViewModel().obs;
+  final _complaintListData = ComplaintViewModel().obs;
 
   get complaintListData => _complaintListData.value;
 
@@ -52,10 +51,8 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
         snackPosition: SnackPosition.BOTTOM);
   }
 
-
-  Future<AccessKeyModel> getAccessKey(){
+  Future<AccessKeyModel> getAccessKey() {
     return repository.getAccessKey();
-
   }
 
 //   Future<ServiceRequestComplaintListModel> getSrListData(
@@ -124,85 +121,90 @@ final _siteListData = ServiceRequestComplaintListModel().obs;
       print("offset is ${this.offset}");
       ServiceRequestComplaintListModel requestComplaintListModel;
 
-     requestComplaintListModel = await repository.getSrListData(
+      requestComplaintListModel = await repository.getSrListData(
           accessKey, userSecurityKey, empID, this.offset);
-        if (requestComplaintListModel == null) {
-          debugPrint('SR Data Response is null');
+      if (requestComplaintListModel == null) {
+        debugPrint('SR Data Response is null');
+      } else {
+        // if (srListData.respCode == "DM1005") {
+        //   print("RESPCODE4: ${srListData.respCode}");
+        //   srListData = requestComplaintListModel;
+        //   Get.dialog(CustomDialogs().appUserInactiveDialog(srListData.respMsg),
+        //       barrierDismissible: false);
+        // }
+        if (srListData.srComplaintListModal == null ||
+            srListData.srComplaintListModal.isEmpty) {
+          srListData = requestComplaintListModel;
         } else {
-          if (srListData.srComplaintListModal == null ||
-              srListData.srComplaintListModal.isEmpty) {
-            srListData = requestComplaintListModel;
+          if (requestComplaintListModel.srComplaintListModal != null &&
+              requestComplaintListModel.srComplaintListModal.isNotEmpty) {
+            requestComplaintListModel.srComplaintListModal
+                .addAll(srListData.srComplaintListModal);
+            this.srListData = requestComplaintListModel;
+
+            Get.rawSnackbar(
+              titleText: Text("Note"),
+              messageText: Text("Loading more .."),
+              backgroundColor: Colors.white,
+            );
           } else {
-
-            if (requestComplaintListModel.srComplaintListModal != null &&
-                requestComplaintListModel.srComplaintListModal.isNotEmpty) {
-              requestComplaintListModel.srComplaintListModal.addAll(
-                  srListData.srComplaintListModal);
-              this.srListData = requestComplaintListModel;
-
-              Get.rawSnackbar(
-                titleText: Text("Note"),
-                messageText: Text(
-                    "Loading more .."),
-                backgroundColor: Colors.white,
-              );
-            } else {
-              Get.rawSnackbar(
-                titleText: Text("Note"),
-                messageText: Text(
-                    "No more SR Data..."),
-                backgroundColor: Colors.white,
-              );
-            }
+            Get.rawSnackbar(
+              titleText: Text("Note"),
+              messageText: Text("No more SR Data..."),
+              backgroundColor: Colors.white,
+            );
           }
         }
+      }
     });
     return srListData;
   }
 
-
-  Future<ServiceRequestComplaintListModel> getSrListDataWithFilters(String accessKey,String resolutionStatusId,String severity, String typeOfReqId) async {
+  Future<ServiceRequestComplaintListModel> getSrListDataWithFilters(
+      String accessKey,
+      String resolutionStatusId,
+      String severity,
+      String typeOfReqId) async {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      filteredListData = await repository.getSrListDataWithFilters(accessKey,userSecurityKey, empID, resolutionStatusId,severity, typeOfReqId);
+      filteredListData = await repository.getSrListDataWithFilters(accessKey,
+          userSecurityKey, empID, resolutionStatusId, severity, typeOfReqId);
     });
     return filteredListData;
   }
 
-  Future<ServiceRequestComplaintListModel> getSiteListData(String accessKey, String siteID) async {
+  Future<ServiceRequestComplaintListModel> getSiteListData(
+      String accessKey, String siteID) async {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      siteListData = await repository.getSiteListData(accessKey,userSecurityKey, empID, siteID);
+      siteListData = await repository.getSiteListData(
+          accessKey, userSecurityKey, empID, siteID);
     });
     return siteListData;
   }
 
   //*****
-  Future  getComplaintViewData(String accessKey, String id) async {
+  Future getComplaintViewData(String accessKey, String id) async {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      await _prefs.then((SharedPreferences prefs) async {
-        userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        empID = prefs.getString(StringConstants.employeeId);
-        complaintListData = await repository.getComplaintViewData(accessKey,userSecurityKey, empID, id);
-        print(complaintListData);
-      });
-      return complaintListData;
-
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+      complaintListData = await repository.getComplaintViewData(
+          accessKey, userSecurityKey, empID, id);
+      print(complaintListData);
+    });
+    return complaintListData;
   }
   //*****
 
 }
-
-
-
-

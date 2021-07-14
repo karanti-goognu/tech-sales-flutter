@@ -33,23 +33,24 @@ class SaveEventController extends GetxController {
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(
+    //     Duration.zero,
+    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
 
       _prefs.then((SharedPreferences prefs) async {
         String accessKey = await repository.getAccessKey();
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         await repository.saveEventForm(accessKey, userSecurityKey, saveEventFormModel)
             .then((value) {
-          Get.back();
+          //Get.back();
            if (value.respCode == 'DM1002') {
             Get.dialog(
                 CustomDialogs().showDialogSubmitEvent(value.respMsg.toString()),
                 barrierDismissible: false);
-          } else {
-            Get.back();
+          }
+           else {
+           // Get.back();
             Get.dialog(
                 CustomDialogs().messageDialogMWP(value.respMsg.toString()),
                 barrierDismissible: false);

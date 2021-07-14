@@ -322,11 +322,11 @@ class LeadsFilterController extends GetxController {
           if(this.leadsListResponse.leadsEntity == null|| this.leadsListResponse.leadsEntity.isEmpty){
             this.leadsListResponse = data;
           }else{
-            print("adding");
-            print(json.encode(data));
-            print(data.leadsEntity.length);
+           // print("adding");
+           // print(json.encode(data));
+           // print(data.leadsEntity.length);
             LeadsListModel leadListResponseServer = data;
-            print(json.encode(leadListResponseServer));
+            //print(json.encode(leadListResponseServer));
             if(leadListResponseServer.leadsEntity.isNotEmpty){
               leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
@@ -336,9 +336,11 @@ class LeadsFilterController extends GetxController {
               if(this.isFilterApplied==true){
                 print("Filter will be implemented here");
                 //this.offset = 0;
-                debugPrint(json.encode(data), wrapWidth: 2800);
                 print('LEADS: ${this.leadsListResponse.leadsEntity.length}');
-                this.leadsListResponse = data;
+                debugPrint(json.encode(data), wrapWidth: 2800);
+
+                this.leadsListResponse = [];
+                this.leadsListResponse = leadListResponseServer;
                 Get.rawSnackbar(
                   titleText: Text("Note"),
                   messageText: Text(
