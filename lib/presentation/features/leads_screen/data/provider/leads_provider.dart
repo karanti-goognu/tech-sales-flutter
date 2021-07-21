@@ -219,10 +219,10 @@ class MyApiClientLeads {
      print('Response body is  : ${json.decode(response.body)}');
       // print('Response body is  : ${json.decode(response.body)}');
 
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
+       if (response.statusCode == 200) {
+         var data = json.decode(response.body);
         InfluencerDetail influencerDetailModel =
-            InfluencerDetail.fromJson(data);
+            InfluencerDetail.fromJson(json.decode(response.body));
         if(data["resp_code"] == "DM1005"){
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);

@@ -1165,13 +1165,17 @@ class CustomDialogs {
           ),
           onPressed: () async{
 
-           //  print("IN function");
-           //  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-           //  final SharedPreferences prefs = await _prefs;
-           //  prefs.clear();
-            Get.back();
-            Get.back();
-           //  SystemNavigator.pop();
+            print("IN function");
+            Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+            final SharedPreferences prefs = await _prefs;
+            prefs.clear();
+            // Get.back();
+            // Get.back();
+            exit(0);
+           // SystemNavigator.pop();
+           //  Future.delayed(const Duration(milliseconds: 1000), () {
+           //    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+           //  });
           },
         ),
       ],

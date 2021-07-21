@@ -124,7 +124,16 @@ class MyApiClient {
       // print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
-      serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
+      var data = json.decode(response.body);
+      //print("=====$data");
+      if(data["resp_code"] == "DM1005"){
+        Get.dialog(CustomDialogs().appUserInactiveDialog(
+            data["resp_msg"]), barrierDismissible: false);
+      }else {
+        serviceRequestComplaintListModel =
+            ServiceRequestComplaintListModel.fromJson(
+                json.decode(response.body));
+      }
     }
     catch(e){
       print("Exception at SR Repo $e");

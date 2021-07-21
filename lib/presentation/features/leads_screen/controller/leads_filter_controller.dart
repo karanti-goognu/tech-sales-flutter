@@ -321,9 +321,11 @@ class LeadsFilterController extends GetxController {
         } else {
           if(this.leadsListResponse.leadsEntity == null|| this.leadsListResponse.leadsEntity.isEmpty){
             this.leadsListResponse = data;
+            debugPrint(json.encode(data), wrapWidth: 2800);
           }else{
            // print("adding");
-           // print(json.encode(data));
+            //print(json.encode(data));
+            debugPrint(json.encode(data), wrapWidth: 2800);
            // print(data.leadsEntity.length);
             LeadsListModel leadListResponseServer = data;
             //print(json.encode(leadListResponseServer));
@@ -335,7 +337,6 @@ class LeadsFilterController extends GetxController {
               ///filter issue
               if(this.isFilterApplied==true){
                 print("Filter will be implemented here");
-                //this.offset = 0;
                 print('LEADS: ${this.leadsListResponse.leadsEntity.length}');
                 debugPrint(json.encode(data), wrapWidth: 2800);
 

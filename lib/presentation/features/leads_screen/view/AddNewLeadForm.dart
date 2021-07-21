@@ -1302,10 +1302,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                             .accessKey)
                                                     .then((data) {
                                                   // print(data.inflName.text);
-                                                  if(data != null && data.respCode == "DM1005"){
-                                                    Get.dialog(CustomDialogs().appUserInactiveDialog(
-                                                        data.respMsg), barrierDismissible: false);
-                                                  }
+                                                  // if(data != null && data.respCode == "DM1005"){
+                                                  //   Get.dialog(CustomDialogs().appUserInactiveDialog(
+                                                  //       data.respMsg), barrierDismissible: false);
+                                                  // }
 
                                                   InfluencerDetail inflDetail =
                                                       data;

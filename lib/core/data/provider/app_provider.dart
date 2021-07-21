@@ -254,18 +254,18 @@ class MyApiClientApp {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
     //  print('Response body is : ${json.decode(response.body)}');
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
-              data["resp_msg"]), barrierDismissible: false);
-        }
-else {
+//       if (response.statusCode == 200) {
+         var data = json.decode(response.body);
+//         if(data["resp_code"] == "DM1005"){
+//           Get.dialog(CustomDialogs().appUserInactiveDialog(
+//               data["resp_msg"]), barrierDismissible: false);
+//         }
+// else {
           return DealerListResponse.fromJson(data);
-        }
-      } else {
+       // }
+     // } else {
       //  print('Error in else');
-      }
+     // }
     } catch (_) {
     //  print('exception ${_.toString()}');
     }
