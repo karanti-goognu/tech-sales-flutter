@@ -159,9 +159,15 @@ class MyApiClientApp {
      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
-        return saveVisitResponse;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
+              data);
+          //print('Access key Object is :: $accessKeyModel');
+          return saveVisitResponse;
+        }
       } else {
       //  print('Error in else');
       }
@@ -181,13 +187,19 @@ class MyApiClientApp {
           body: body,
           encoding: Encoding.getByName("utf-8"));
     //  print(response.body);
-     // print('Response body is : ${json.decode(response.body)}');
+      print('Response for update visit body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
-     //   print(saveVisitResponse);
-        //print('Access key Object is :: $accessKeyModel');
-        return saveVisitResponse;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
+              data);
+          //   print(saveVisitResponse);
+          //print('Access key Object is :: $accessKeyModel');
+          return saveVisitResponse;
+        }
       } else {
       //  print('Error in else');
       }

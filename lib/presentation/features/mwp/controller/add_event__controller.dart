@@ -504,7 +504,7 @@ class AddEventController extends GetxController {
       MwpVisitModelUpdate mwpVisitModelUpdate;
       String url = "${UrlConstants.updateVisit}";
       print('=============================');
-      // debugPrint('Url is : $url');
+      //debugPrint('Url is : $url');
       if (this.visitActionType == "UPDATE") {
         print('update');
         mwpVisitModelUpdate = new MwpVisitModelUpdate(
@@ -546,7 +546,8 @@ class AddEventController extends GetxController {
                   CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
               print('${saveVisitResponse.respMsg}');
               //SitesDetailWidget();
-            } else {
+            }
+            else {
               Get.dialog(
                   CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
               print('${saveVisitResponse.respMsg}');
@@ -554,6 +555,7 @@ class AddEventController extends GetxController {
           }
         });
       } else if (this.visitActionType == "START") {
+
         if (!(await Geolocator().isLocationServiceEnabled())) {
           Get.back();
           Get.dialog(CustomDialogs().errorDialog(
@@ -587,6 +589,7 @@ class AddEventController extends GetxController {
                   this.visitRemarks,
                   this.visitSubType,
                   this.visitSiteId);
+              print(json.encode(mwpVisitModelUpdate));
               // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
               repository
                   .updateVisitPlan(
@@ -607,10 +610,16 @@ class AddEventController extends GetxController {
                         .messageDialogMWP(saveVisitResponse.respMsg));
                     print('${saveVisitResponse.respMsg}');
                     //SitesDetailWidget();
-                  } else {
+                  } else if (saveVisitResponse.respCode == "MWP2029") {
                     Get.dialog(CustomDialogs()
                         .messageDialogMWP(saveVisitResponse.respMsg));
                     print('${saveVisitResponse.respMsg}');
+                    //SitesDetailWidget();
+                  }
+                  else {
+                    Get.dialog(CustomDialogs()
+                        .messageDialogMWP(saveVisitResponse.respMsg));
+                    print('---${saveVisitResponse.respMsg}');
                   }
                 }
               });
