@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 
-class AddInfluencerView extends StatefulWidget {
+class InfluencerView extends StatefulWidget {
   @override
-  _AddInfluencerViewState createState() => _AddInfluencerViewState();
+  _InfluencerViewState createState() => _InfluencerViewState();
 }
 
-class _AddInfluencerViewState extends State<AddInfluencerView> {
+class _InfluencerViewState extends State<InfluencerView> {
   Color _color= ColorConstants.backgroundColorBlue;
   final random = Random();
   Duration oneSec = const Duration(seconds:1);
