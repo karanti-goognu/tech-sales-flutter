@@ -395,7 +395,10 @@ class _SiteScreenState extends State<SiteScreen> {
                     children: [
                       Obx(
                         () => Text(
-                          "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                         // "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                            "Total Count : ${(_siteController.sitesListResponse.totalSiteCount == null) ? 0 : _siteController.sitesListResponse.totalSiteCount}",
+
+
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal*3.5,

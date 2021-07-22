@@ -343,8 +343,10 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            child: Text("Total Count : ${(eventController.srListData.srComplaintListModal == null) ? 0 : eventController.srListData.srComplaintListModal.length}",
-              style: TextStyle(
+       //     child: Text("Total Count : ${(eventController.srListData.srComplaintListModal == null) ? 0 : eventController.srListData.srComplaintListModal.length}",
+      child: Text("Total Count : ${(eventController.srListData.totalCount == null) ? 0 : eventController.srListData.totalCount}",
+
+        style: TextStyle(
                 fontFamily: "Muli",
                 fontSize: 12,
                 // color: HexColor("#FFFFFF99"),

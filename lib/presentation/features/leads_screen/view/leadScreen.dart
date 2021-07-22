@@ -60,6 +60,7 @@ class _LeadScreenState extends State<LeadScreen> {
       print('${_.toString()}');
     }*/
     print("------------------------------");
+    //_leadsFilterController.leadsListResponse.leadsEntity = null;
     print(_leadsFilterController.offset);
     internetChecking().then((result) {
       if (result)
@@ -414,7 +415,7 @@ class _LeadScreenState extends State<LeadScreen> {
                     children: [
                       Obx(
                         () => Text(
-                          "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
+                          "Total Count : ${(_leadsFilterController.leadsListResponse.totalLeadCount == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadCount}",
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal * 3.7,

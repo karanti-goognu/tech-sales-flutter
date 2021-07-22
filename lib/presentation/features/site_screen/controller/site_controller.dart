@@ -189,10 +189,8 @@ class SiteController extends GetxController {
           .then((data) {
         if (data == null) {
           debugPrint('Sites Data Response is null');
-          print("RESPCODE1: ${sitesListResponse.respCode}");
         } else {
           if(sitesListResponse.respCode == "DM1005"){
-            print("RESPCODE4: ${sitesListResponse.respCode}");
             Get.dialog(CustomDialogs().appUserInactiveDialog(
                 sitesListResponse.respMsg), barrierDismissible: false);
           }
@@ -200,7 +198,6 @@ class SiteController extends GetxController {
           if (this.sitesListResponse.sitesEntity == null ||
               this.sitesListResponse.sitesEntity.isEmpty) {
             this.sitesListResponse = data;
-            print("//////////////RESPCODE2: ${sitesListResponse.respCode}");
           } else {
             // this.sitesListResponse = data;
             SitesListModel sitesListModel = data;
@@ -225,11 +222,8 @@ class SiteController extends GetxController {
               );
             }
             if (sitesListResponse.respCode == "ST2006") {
-
-              print("RESPCODE3: ${sitesListResponse.respCode}");
               //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             } else {
-              print("RESPCODE5: ${sitesListResponse.respCod}");
               Get.dialog(
                   CustomDialogs().errorDialog(sitesListResponse.respMsg));
             }

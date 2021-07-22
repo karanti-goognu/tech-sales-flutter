@@ -193,7 +193,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                     Navigator.pop(context);
                     _leadsFilterController.isFilterApplied=true;
                     _leadsFilterController.offset = 0;
-                    //_leadsFilterController.leadsListResponse = [];
+                   // _leadsFilterController.leadsListResponse = [];
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST);
                   },

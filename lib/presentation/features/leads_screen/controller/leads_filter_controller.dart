@@ -337,10 +337,10 @@ class LeadsFilterController extends GetxController {
               ///filter issue
               if(this.isFilterApplied==true){
                 print("Filter will be implemented here");
-                print('LEADS: ${this.leadsListResponse.leadsEntity.length}');
-                debugPrint(json.encode(data), wrapWidth: 2800);
+               // print('////////////LEADS: ${this.leadsListResponse.leadsEntity.length}');
+                //debugPrint(json.encode(data), wrapWidth: 2800);
 
-                this.leadsListResponse = [];
+                //this.leadsListResponse = [];
                 this.leadsListResponse = leadListResponseServer;
                 Get.rawSnackbar(
                   titleText: Text("Note"),
