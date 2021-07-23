@@ -15,6 +15,7 @@ class FormAddInfluencer extends StatefulWidget {
 
 class _FormAddInfluencerState extends State<FormAddInfluencer> {
   final _addInfluencerFormKey = GlobalKey<FormState>();
+  final _addInfluencerFormKeyNext = GlobalKey<FormState>();
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _fatherNameController = TextEditingController();
@@ -28,12 +29,14 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   TextEditingController _giftStateController = TextEditingController();
   TextEditingController _totalPotentialController = TextEditingController();
   TextEditingController _potentialSiteController = TextEditingController();
+  TextEditingController _enrollmentDateController = TextEditingController();
 
   var _date = 'Date of Birth';
-  var _enrollmentDate = 'Enrollment Date';
+  //var _enrollmentDate = 'Enrollment Date';
   bool _isVisible = true;
   bool _isSecondVisible = false;
   bool checkedValue = false;
+  bool _qualificationVisible = false;
 
   String _selectedEnrollValue;
   String _memberType;
@@ -44,6 +47,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   @override
   void initState() {
     super.initState();
+    _enrollmentDateController.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
   }
 
   @override
@@ -110,7 +114,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           _selectedEnrollValue = value;
         });
       },
-      items: ['Enroll 1', 'Enroll 2']
+      items: ['Yes', 'No']
           .map((e) => DropdownMenuItem(
                 value: e,
                 child: Text(e),
@@ -127,9 +131,14 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       onChanged: (value) {
         setState(() {
           _memberType = value;
+          if(_memberType == 'Contractor' || _memberType == 'Engineer'|| _memberType == 'Architect'|| _memberType == 'Structural Consultant'){
+            _qualificationVisible = true;
+          }else{
+            _qualificationVisible = false;
+          }
         });
       },
-      items: ['Member 1', 'Member 2']
+      items: ['Mason', 'Head Mason', 'Contractor', 'Engineer', 'Architect', 'Structural Consultant']
           .map((e) => DropdownMenuItem(
                 value: e,
                 child: Text(e),
@@ -156,8 +165,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Qualification"),
-      validator: (value) =>
-          value == null ? 'Please select qualification' : null,
+      // validator: (value) =>
+      //     value == null ? 'Please select qualification' : null,
     );
 
     final birthDate = Container(
@@ -186,31 +195,40 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           ),
         ));
 
-    final enrollmentDate = Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.black26),
-          borderRadius: BorderRadius.circular(3),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 5, bottom: 5),
-          child: RaisedButton(
-            color: Colors.white,
-            elevation: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(child: Text(_enrollmentDate)),
-                Icon(
-                  Icons.calendar_today,
-                  color: ColorConstants.clearAllTextColor,
-                ),
-              ],
-            ),
-            onPressed: () {
-              _selectEnrollmentDate();
-            },
-          ),
-        ));
+    // final enrollmentDate = Container(
+    //     decoration: BoxDecoration(
+    //       border: Border.all(width: 1, color: Colors.black26),
+    //       borderRadius: BorderRadius.circular(3),
+    //     ),
+    //     child: Padding(
+    //       padding: const EdgeInsets.only(top: 5, bottom: 5),
+    //       child: RaisedButton(
+    //         color: Colors.white,
+    //         elevation: 0,
+    //         child: Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //           children: <Widget>[
+    //             Expanded(child: Text(_enrollmentDate)),
+    //             Icon(
+    //               Icons.calendar_today,
+    //               color: ColorConstants.clearAllTextColor,
+    //             ),
+    //           ],
+    //         ),
+    //         onPressed: () {
+    //           //_selectEnrollmentDate();
+    //         },
+    //       ),
+    //     ));
+
+    final enrollmentDate = TextFormField(
+      controller: _enrollmentDateController,
+      style: FormFieldStyle.formFieldTextStyle,
+      readOnly: true,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Enrollment Date",
+      ),
+    );
 
     final btnNext = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -233,8 +251,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           ),
           onPressed: () {
             setState(() {
-              _isVisible = false;
-              _isSecondVisible = true;
+              if(_addInfluencerFormKey.currentState.validate()) {
+                _isVisible = false;
+                _isSecondVisible = true;
+              }
             });
 
             // btnPresssed();
@@ -393,7 +413,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           _source = value;
         });
       },
-      items: ['Source 1', 'Source 2']
+      items: ['Dealer', 'ILP', 'TSO', 'CC']
           .map((e) => DropdownMenuItem(
                 value: e,
                 child: Text(e),
@@ -410,7 +430,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           _influencerCategory = value;
         });
       },
-      items: ['Influencer 1', 'Influencer 2']
+      items: ['Dalmia', 'Non-Dalmia']
           .map((e) => DropdownMenuItem(
                 value: e,
                 child: Text(e),
@@ -519,7 +539,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                             SizedBox(height: _height),
                             fatherName,
                             SizedBox(height: _height),
-                            qualificationDropDwn,
+                            Visibility(
+                              visible: _qualificationVisible,
+                                child: qualificationDropDwn),
                             SizedBox(height: _height),
                             enrollmentDate,
                             SizedBox(height: _height),
@@ -533,7 +555,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 child: Padding(
                     padding: EdgeInsets.all(ScreenUtil().setSp(16)),
                     child: Form(
-                      key: _addInfluencerFormKey,
+                      key: _addInfluencerFormKeyNext,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -605,15 +627,15 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     });
   }
 
-  Future _selectEnrollmentDate() async {
-    DateTime _picked = await showDatePicker(
-        context: context,
-        initialDate: new DateTime.now(),
-        firstDate: new DateTime(1950),
-        lastDate: new DateTime.now());
-    setState(() {
-      _date = new DateFormat('dd-MM-yyyy').format(_picked);
-      // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
-    });
-  }
+  // Future _selectEnrollmentDate() async {
+  //   DateTime _picked = await showDatePicker(
+  //       context: context,
+  //       initialDate: new DateTime.now(),
+  //       firstDate: new DateTime(1950),
+  //       lastDate: new DateTime.now());
+  //   setState(() {
+  //     _date = new DateFormat('dd-MM-yyyy').format(_picked);
+  //     // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
+  //   });
+  // }
 }

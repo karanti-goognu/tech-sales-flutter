@@ -148,6 +148,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                           if (value.isEmpty) {
                             return "${_addEventController.siteIdText} can't be empty";
                           }
+                          if(!isValidPhoneNumber(value)){
+                            return "Enter valid contact number";
+                          }
                           return null;
                         },
                         onChanged: (_) {
@@ -320,5 +323,22 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
         selectedDateString = formattedDate;
         this._addEventController.visitDateTime = selectedDateString;
       });
+  }
+
+  bool isValidPhoneNumber(String string) {
+    // Null or empty string is invalid phone number
+    if (string == null || string.isEmpty) {
+      return false;
+    }
+
+    // You may need to change this pattern to fit your requirement.
+    // I just copied the pattern from here: https://regexr.com/3c53v
+    const pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    final regExp = RegExp(pattern);
+
+    if (!regExp.hasMatch(string)) {
+      return false;
+    }
+    return true;
   }
 }
