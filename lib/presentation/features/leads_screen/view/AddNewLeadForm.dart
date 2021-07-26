@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
@@ -1510,6 +1511,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           if (value.isEmpty) {
                                             return 'Please enter Influencer Number ';
                                           }
+                                          if(!Validations.isValidPhoneNumber(value)){
+                                            return "Enter valid Contact number";
+                                          }
 
                                           return null;
                                         },
@@ -1900,7 +1904,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   color: ColorConstants.inputBoxHintColor,
                                   fontFamily: "Muli"),
                               keyboardType: TextInputType.numberWithOptions(
-                                  decimal: true),
+                                  decimal: false),
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(

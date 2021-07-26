@@ -60,6 +60,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   @override
   void initState() {
+    super.initState();
     getSRListData().whenComplete(() {
       setState(() {
         if(data!=null) {
@@ -72,7 +73,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     _scrollController..addListener(_scrollListener);
     //  print("scroll listener added");
 
-    super.initState();
+
   }
 
   @override

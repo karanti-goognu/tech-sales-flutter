@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNe
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
@@ -372,6 +374,9 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 child: TextFormField(
                   controller: _contactController,
                   maxLength: 10,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   // onEditingComplete: () {
                   //   getInfluencerData(_contactController.text);
                   //   //Get.back();
@@ -380,7 +385,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     if (value.isEmpty) {
                       return "Contact No. can't be empty";
                     }
-                    if (value.length != 10) {
+                    // if (value.length != 10) {
+                    //   return "Enter valid Contact number";
+                    // }
+                    if(!Validations.isValidPhoneNumber(value)){
                       return "Enter valid Contact number";
                     }
                     return null;

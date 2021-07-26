@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
@@ -502,7 +503,8 @@ class _RequestCreationState extends State<RequestCreation> {
                                   ],
                                   maxLength: 10,
                                   validator: (value) => value.isEmpty ||
-                                          value.length != 10
+                                          value.length != 10 || (!Validations.isValidPhoneNumber(value))
+
                                       ? 'Please enter a valid Contact Number'
                                       : null,
                                   decoration:

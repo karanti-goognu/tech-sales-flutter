@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
@@ -29,7 +31,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
 
   @override
   void initState() {
-
     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
     // setState(() {
     //   dropdownValue = 'RETENTION SITE';
@@ -44,7 +45,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
 
   @override
   Widget build(BuildContext context) {
-
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     return Column(
@@ -103,11 +103,13 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                                 break;
                               case "CONTRACTOR":
                                 // _addEventController.siteIdText = "Technocrat ID";
-                                _addEventController.siteIdText = "Influencer Contact";
+                                _addEventController.siteIdText =
+                                    "Influencer Contact";
                                 break;
                               case "TECHNOCRAT":
-                              // _addEventController.siteIdText = "Technocrat ID";
-                                _addEventController.siteIdText = "Influencer Contact";
+                                // _addEventController.siteIdText = "Technocrat ID";
+                                _addEventController.siteIdText =
+                                    "Influencer Contact";
                                 break;
                             }
                           });
@@ -135,8 +137,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                           return DropdownMenuItem(
                             value: val,
                             child: SizedBox(
-                              width: SizeConfig.screenWidth-100,
-                                child: Text('${val.dealerName} (${val.dealerId})')),
+                                width: SizeConfig.screenWidth - 100,
+                                child: Text(
+                                    '${val.dealerName} (${val.dealerId})')),
                           );
                         }).toList(),
                         onChanged: (val) {
@@ -148,43 +151,60 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                           if (value.isEmpty) {
                             return "${_addEventController.siteIdText} can't be empty";
                           }
+                          if (_addEventController.siteIdText ==
+                              "Influencer Contact") {
+                            if (!Validations.isValidPhoneNumber(value)) {
+                              return "Enter valid Contact number";
+                            }
+                          }
                           return null;
                         },
                         onChanged: (_) {
                           _addEventController.visitSiteId = _.toString();
                         },
-                        maxLength: _addEventController.siteIdText == "Influencer Contact"?10:null,
+                        maxLength: _addEventController.siteIdText ==
+                                "Influencer Contact"
+                            ? 10
+                            : null,
                         style: TextStyle(
                             fontSize: 18,
                             color: ColorConstants.inputBoxHintColor,
                             fontFamily: "Muli"),
-                        keyboardType: _addEventController.siteIdText == "Influencer Contact" ? TextInputType.phone : TextInputType.text,
+                        keyboardType: _addEventController.siteIdText ==
+                                "Influencer Contact"
+                            ? TextInputType.phone
+                            : TextInputType.text,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         decoration: _inputDecoration(
-
                             "${_addEventController.siteIdText}", false),
                       ),
                 SizedBox(height: 16),
-               Obx(()=> TextFormField(
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    hintText: "${this._addEventController.visitDateTime}",
-                    suffixIcon: Icon(
-                      Icons.calendar_today_sharp,
-                      color: Colors.orange,
+                Obx(
+                  () => TextFormField(
+                    decoration: FormFieldStyle.buildInputDecoration(
+                      hintText: "${this._addEventController.visitDateTime}",
+                      suffixIcon: Icon(
+                        Icons.calendar_today_sharp,
+                        color: Colors.orange,
+                      ),
                     ),
+                    readOnly: true,
+                    validator: (value) {
+                      print(this._addEventController.visitDateTime);
+                      if (this._addEventController.visitDateTime ==
+                          "Visit Date") {
+                        print(value);
+                        return "Visit Date can't be empty";
+                      }
+                      return null;
+                    },
+                    onTap: () {
+                      _selectDate(context);
+                    },
                   ),
-                  readOnly: true,
-                 validator: (value) {
-                    print(this._addEventController.visitDateTime);
-                   if (this._addEventController.visitDateTime=="Visit Date") {
-                     print(value);
-                     return "Visit Date can't be empty";
-                   }
-                   return null;
-                 },
-                  onTap: () {
-                    _selectDate(context);
-                  },
-                ),),
+                ),
                 // Container(
                 //   padding: const EdgeInsets.all(16),
                 //   decoration: BoxDecoration(
@@ -244,19 +264,22 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     if (_formKey.currentState.validate()) {
                       //afterRequestLayout(empId, mobileNumber);
                       internetChecking().then((result) => {
-                        if (result == true)
-                          {
-                            _appController.getAccessKey(RequestIds.SAVE_VISIT),
-                            _addEventController.isLoading = true
-                          }else{
-                          Get.snackbar(
-                              "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                              colorText: Colors.white,
-                              backgroundColor: Colors.red,
-                              snackPosition: SnackPosition.BOTTOM),
-                          // fetchSiteList()
-                        }
-                      });
+                            if (result == true)
+                              {
+                                _appController
+                                    .getAccessKey(RequestIds.SAVE_VISIT),
+                                _addEventController.isLoading = true
+                              }
+                            else
+                              {
+                                Get.snackbar("No internet connection.",
+                                    "Make sure that your wifi or mobile data is turned on.",
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.red,
+                                    snackPosition: SnackPosition.BOTTOM),
+                                // fetchSiteList()
+                              }
+                          });
                     }
                   },
                   child: Padding(
@@ -267,7 +290,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
