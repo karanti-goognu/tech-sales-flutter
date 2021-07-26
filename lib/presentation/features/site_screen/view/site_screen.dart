@@ -99,7 +99,8 @@ class _SiteScreenState extends State<SiteScreen> {
   @override
   void initState() {
     super.initState();
-    //_siteController.sitesListResponse.sitesEntity = null;
+    _siteController.sitesListResponse.sitesEntity = null;
+    clearFilterSelection();
     internetChecking().then((result) => {
       if (result == true)
         {
@@ -122,6 +123,18 @@ class _SiteScreenState extends State<SiteScreen> {
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
 
+  }
+
+  clearFilterSelection(){
+    _siteController.selectedSiteStage = StringConstants.empty;
+    _siteController.selectedSiteStageValue = StringConstants.empty;
+    _siteController.selectedSiteStatus = StringConstants.empty;
+    _siteController.selectedSiteStatusValue = StringConstants.empty;
+    _siteController.selectedSiteInfluencerCat = StringConstants.empty;
+    _siteController.selectedSiteInfluencerCatValue = StringConstants.empty;
+    _siteController.assignToDate = StringConstants.empty;
+    _siteController.assignFromDate = StringConstants.empty;
+    _siteController.selectedSitePincode = StringConstants.empty;
   }
 
   @override

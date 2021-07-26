@@ -172,21 +172,20 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    _siteController.isFilterApplied=false;
                     //Navigator.pop(context);
                     _siteController.selectedSiteStage = StringConstants.empty;
-                    _siteController.selectedSiteStageValue =
-                        StringConstants.empty;
+                    _siteController.selectedSiteStageValue = StringConstants.empty;
                     _siteController.selectedSiteStatus = StringConstants.empty;
-                    _siteController.selectedSiteStatusValue =
-                        StringConstants.empty;
-                    _siteController.selectedSiteInfluencerCat =
-                        StringConstants.empty;
-                    _siteController.selectedSiteInfluencerCatValue =
-                        StringConstants.empty;
+                    _siteController.selectedSiteStatusValue = StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCat = StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCatValue = StringConstants.empty;
                     _siteController.assignToDate = StringConstants.empty;
                     _siteController.assignFromDate = StringConstants.empty;
                     _siteController.selectedSitePincode = StringConstants.empty;
                     _siteController.selectedFilterCount = 0;
+                    _siteController.offset = 0;
+                    _siteController.sitesListResponse.sitesEntity = null;
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                    // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
 
@@ -200,9 +199,10 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 RaisedButton(
                   onPressed: () {
                    // setState(() {
-
-
                     Navigator.pop(context,siteList);
+                    _siteController.isFilterApplied=true;
+                    _siteController.offset = 0;
+                    _siteController.sitesListResponse.sitesEntity = null;
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                    // _siteController.offset = 0;
                     //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);

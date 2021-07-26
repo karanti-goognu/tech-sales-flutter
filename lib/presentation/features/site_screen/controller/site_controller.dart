@@ -156,6 +156,14 @@ class SiteController extends GetxController {
 
   set sitesListResponse(value) => this._sitesListResponse.value = value;
 
+  final _isFilterApplied = false.obs;
+
+  get isFilterApplied => _isFilterApplied;
+
+  set isFilterApplied(value) {
+    _isFilterApplied.value = value;
+  }
+
   // set sitesListOffline(value) => this._sitesListOffline.assignAll(value);
 /*
   getSecretKey(int requestId) {
@@ -295,6 +303,7 @@ class SiteController extends GetxController {
         if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
+
           if(sitesListResponse.respCode == "DM1005"){
             Get.dialog(CustomDialogs().appUserInactiveDialog(
                 sitesListResponse.respMsg), barrierDismissible: false);
@@ -307,16 +316,21 @@ class SiteController extends GetxController {
             SitesListModel sitesListModel = data;
             if (sitesListModel.sitesEntity.isNotEmpty) {
                // sitesListModel.sitesEntity=[];
-              sitesListModel.sitesEntity.addAll(
-                  this.sitesListResponse.sitesEntity);
+              sitesListModel.sitesEntity.addAll(this.sitesListResponse.sitesEntity);
               this.sitesListResponse = sitesListModel;
+              this.sitesListResponse.sitesEntity.sort((SitesEntity a, SitesEntity b) => b.createdOn.compareTo(a.createdOn));
+
+              ///filter issue
+              if(this.isFilterApplied==true){
+                this.sitesListResponse = sitesListModel;
+              }
+              ////
               Get.rawSnackbar(
                 titleText: Text("Note"),
                 messageText: Text(
                     "Loading more .."),
                 backgroundColor: Colors.white,
               );
-//              Get.snackbar("Note", "Loading more ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xffffffff),duration: Duration(milliseconds: 2000));
             } else {
               Get.rawSnackbar(
                 titleText: Text("Note"),

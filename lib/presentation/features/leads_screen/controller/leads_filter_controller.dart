@@ -330,9 +330,10 @@ class LeadsFilterController extends GetxController {
             LeadsListModel leadListResponseServer = data;
             //print(json.encode(leadListResponseServer));
             if(leadListResponseServer.leadsEntity.isNotEmpty){
+
               leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
-              //print('LEADS: ${this.leadsListResponse.leadsEntity.length}');
+              this.leadsListResponse.leadsEntity.sort((LeadsEntity a, LeadsEntity b) => b.createdOn.compareTo(a.createdOn));
 
               ///filter issue
               if(this.isFilterApplied==true){
