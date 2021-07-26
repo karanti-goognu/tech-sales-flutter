@@ -44,7 +44,7 @@ abstract class Routes {
 
 
   ///Influencer
-  static const ADD_INFLUENCER = '/add_influencer';
+  static const ADD_INFLUENCER = '/add_new_influencer_form';
   static const INFLUENCER_LIST = '/influencer_view';
 
 

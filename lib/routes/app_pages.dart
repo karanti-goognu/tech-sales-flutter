@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/bindings/dashboard_binding.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/bindings/gifts_binding.dart';
 import 'package:flutter_tech_sales/bindings/home_binding.dart';
+import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
 import 'package:flutter_tech_sales/bindings/leads__filter_binding.dart';
 import 'package:flutter_tech_sales/bindings/login_binding.dart';
 import 'package:flutter_tech_sales/bindings/search_binding.dart';
@@ -144,12 +145,12 @@ class AppPages {
     GetPage(
       name: Routes.INFLUENCER_LIST,
       page: () => InfluencerView(),
-      //binding: TutorialBinding(),
+      binding: InfBinding(),
     ),
     GetPage(
       name: Routes.ADD_INFLUENCER,
       page: () => FormAddInfluencer(),
-      //binding: TutorialBinding(),
+      binding: InfBinding(),
     ),
      GetPage(
       name: Routes.DASHBOARD,

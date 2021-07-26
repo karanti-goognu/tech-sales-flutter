@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class FormAddInfluencer extends StatefulWidget {
@@ -16,6 +22,11 @@ class FormAddInfluencer extends StatefulWidget {
 class _FormAddInfluencerState extends State<FormAddInfluencer> {
   final _addInfluencerFormKey = GlobalKey<FormState>();
   final _addInfluencerFormKeyNext = GlobalKey<FormState>();
+
+  InfController _infController = Get.find();
+  InfluencerTypeModel _influencerTypeModel;
+  StateDistrictListModel _stateDistrictListModel;
+
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _fatherNameController = TextEditingController();
@@ -30,6 +41,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   TextEditingController _totalPotentialController = TextEditingController();
   TextEditingController _potentialSiteController = TextEditingController();
   TextEditingController _enrollmentDateController = TextEditingController();
+  TextEditingController _qualificationController = TextEditingController();
+  TextEditingController _query = TextEditingController();
 
   var _date = 'Date of Birth';
   //var _enrollmentDate = 'Enrollment Date';
@@ -39,15 +52,67 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   bool _qualificationVisible = false;
 
   String _selectedEnrollValue;
-  String _memberType;
-  String _qualification;
-  String _influencerCategory;
-  String _source;
+  int _memberType;
+  String _district;
+  int _influencerCategory;
+  int _source;
 
   @override
   void initState() {
     super.initState();
-    _enrollmentDateController.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    _enrollmentDateController.text =
+        DateFormat('dd-MM-yyyy').format(DateTime.now());
+    getDropdownData();
+    getDistrictData();
+  }
+
+  getDropdownData() {
+    internetChecking().then((result) => {
+          if (result == true)
+            {
+              _infController.getInfType().then((data) {
+                setState(() {
+                  if (data != null) {
+                    _influencerTypeModel = data;
+                  }
+                });
+                print('RESPONSE, ${data}');
+              })
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
+  }
+
+
+  getDistrictData() {
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          _infController.getDistList().then((data) {
+            setState(() {
+              if (data != null) {
+                _stateDistrictListModel = data;
+              }
+            });
+            print('RESPONSE, ${data}');
+          })
+        }
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
   }
 
   @override
@@ -127,21 +192,54 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           value == null ? 'Please select Dalmia Master' : null,
     );
 
+    final district = TextFormField(
+      validator: (value) => value.isEmpty
+          ? 'Please select District'
+          : null,
+      controller: _districtController,
+      readOnly: true,
+      onTap: () {
+        Get.bottomSheet(districtList());
+      },
+      style: FormFieldStyle.formFieldTextStyle,
+      decoration:
+      FormFieldStyle.buildInputDecoration(
+        labelText: "District Name*",
+        suffixIcon: Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: 10.0, horizontal: 12),
+          child: Icon(
+            Icons.my_location,
+            size: 20,
+            color: HexColor('#F9A61A'),
+        ),
+      ),
+      ),
+    );
+
     final memberDropDwn = DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
           _memberType = value;
-          if(_memberType == 'Contractor' || _memberType == 'Engineer'|| _memberType == 'Architect'|| _memberType == 'Structural Consultant'){
+          if (_memberType == 2 ||
+              _memberType == 3 ||
+              _memberType == 4
+              //_memberType == 'Structural Consultant'
+          ) {
             _qualificationVisible = true;
-          }else{
+          } else {
             _qualificationVisible = false;
           }
         });
       },
-      items: ['Mason', 'Head Mason', 'Contractor', 'Engineer', 'Architect', 'Structural Consultant']
+      items: _influencerTypeModel == null
+          ? []
+          : _influencerTypeModel.influencerTypeList
           .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(e),
+                value: e.inflTypeId,
+                child: Container(
+                      width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(e.inflTypeText)),
               ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -150,23 +248,20 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       validator: (value) => value == null ? 'Please select member type' : null,
     );
 
-    final qualificationDropDwn = DropdownButtonFormField(
-      onChanged: (value) {
-        setState(() {
-          _qualification = value;
-        });
-      },
-      items: ['Qualification 1', 'Qualification 2']
-          .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(e),
-              ))
-          .toList(),
+
+    final qualification = TextFormField(
+      controller: _qualificationController,
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter qualification';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
-      decoration:
-          FormFieldStyle.buildInputDecoration(labelText: "Qualification"),
-      // validator: (value) =>
-      //     value == null ? 'Please select qualification' : null,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Qualification",
+      ),
     );
 
     final birthDate = Container(
@@ -251,7 +346,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           ),
           onPressed: () {
             setState(() {
-              if(_addInfluencerFormKey.currentState.validate()) {
+              if (_addInfluencerFormKey.currentState.validate()) {
                 _isVisible = false;
                 _isSecondVisible = true;
               }
@@ -263,59 +358,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       ],
     );
 
-    final address = TextFormField(
-      controller: _addressController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
-      style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.text,
-      decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Address",
-      ),
-    );
-
-    final pincode = TextFormField(
-      controller: _pincodeController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
-      style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.number,
-      decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Pincode",
-      ),
-    );
-
-    final district = TextFormField(
-      controller: _districtController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
-      style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.text,
-      decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "District",
-      ),
-    );
-
-    final state = TextFormField(
-      controller: _stateController,
-      style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.text,
-      decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "State",
-      ),
-    );
 
     final giftAddress = TextFormField(
       controller: _giftAddressController,
@@ -353,29 +395,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       ),
     );
 
-    final addressCheckbox = CheckboxListTile(
-      title: Text("Same as permanent"),
-      activeColor: Colors.black,
-      dense: true,
-      value: checkedValue,
-      onChanged: (newValue) {
-        setState(() {
-          if (newValue) {
-            _giftAddressController.text = _addressController.text;
-            _giftPincodeController.text = _pincodeController.text;
-            _giftDistrictController.text = _districtController.text;
-            _giftStateController.text = _stateController.text;
-          } else {
-            _giftAddressController.text = "";
-            _giftPincodeController.text = "";
-            _giftDistrictController.text = "";
-            _giftStateController.text = "";
-          }
-        });
-        checkedValue = newValue;
-      },
-      controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
-    );
 
     final totalPotential = TextFormField(
       controller: _totalPotentialController,
@@ -413,10 +432,12 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           _source = value;
         });
       },
-      items: ['Dealer', 'ILP', 'TSO', 'CC']
+      items: _influencerTypeModel == null
+          ? []
+          : _influencerTypeModel.influencerSourceList
           .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(e),
+                value: e.inflSourceId,
+                child: Text(e.inflSourceText),
               ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -430,10 +451,12 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           _influencerCategory = value;
         });
       },
-      items: ['Dalmia', 'Non-Dalmia']
+      items: _influencerTypeModel == null
+          ? []
+          : _influencerTypeModel.influencerCategoryList
           .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(e),
+                value: e.inflCatId,
+                child: Text(e.inflCatText),
               ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -495,7 +518,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                       ),
                     ],
                   ))),
-                  ListView(
+          ListView(
             children: [
               Container(
                 padding: EdgeInsets.all(ScreenUtil().setSp(12)),
@@ -533,6 +556,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                             SizedBox(height: _height),
                             enrollDropDwn,
                             SizedBox(height: _height),
+                            district,
+                            SizedBox(height: _height),
                             memberDropDwn,
                             SizedBox(height: _height),
                             birthDate,
@@ -540,8 +565,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                             fatherName,
                             SizedBox(height: _height),
                             Visibility(
-                              visible: _qualificationVisible,
-                                child: qualificationDropDwn),
+                                visible: _qualificationVisible,
+                                child: qualification),
                             SizedBox(height: _height),
                             enrollmentDate,
                             SizedBox(height: _height),
@@ -560,23 +585,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Permanent Address",
-                              style: TextStyles.welcomeMsgTextStyle20,
-                            ),
-                            SizedBox(height: _height),
-                            address,
-                            SizedBox(height: _height),
-                            pincode,
-                            SizedBox(height: _height),
-                            district,
-                            SizedBox(height: _height),
-                            state,
-                            SizedBox(height: _height),
-                            Text(
                               "Address for gift disbursement",
                               style: TextStyles.welcomeMsgTextStyle20,
                             ),
-                            addressCheckbox,
+                            //addressCheckbox,
                             SizedBox(height: _height),
                             giftAddress,
                             SizedBox(height: _height),
@@ -606,10 +618,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
               )
             ],
           )
-              //     : Center(
-              //   child: CircularProgressIndicator(),
-              // ),
-             // ),
+          //     : Center(
+          //   child: CircularProgressIndicator(),
+          // ),
+          // ),
         ],
       ),
     );
@@ -638,4 +650,77 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   //     // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
   //   });
   // }
+
+  districtList() {
+    List<StateDistrictList> dist = _stateDistrictListModel.stateDistrictList;
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) => Container(
+        color: Colors.white,
+        height: 300,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              'Please select district from the below list',
+              style: TextStyles.mulliBoldYellow18,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextFormField(
+                controller: _query,
+                onChanged: (value) {
+                  setState(() {
+                    dist = _stateDistrictListModel.stateDistrictList.where((element) {
+                      return element.districtName
+                          .toString()
+                          .toLowerCase()
+                          .contains(value);
+                    }).toList();
+                  });
+                },
+                decoration: FormFieldStyle.buildInputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    ),
+                    labelText: 'Search'),
+              ),
+            ),
+            Divider(),
+            _stateDistrictListModel.stateDistrictList == null || _stateDistrictListModel.stateDistrictList.isEmpty
+                ? Center(
+              child: CircularProgressIndicator(),
+            )
+                : Expanded(
+              child: ListView(
+                children: _stateDistrictListModel.stateDistrictList
+                    .map(
+                      (e) => RadioListTile(
+                      value: e,
+                      title: Text(
+                          '${e.districtName} (${e.stateName})'),
+                     // groupValue: customer,
+                      onChanged: (text) {
+                        setState(() {
+                          _districtController.text = text;
+                         // customer = text;
+                        });
+                        Get.back();
+                      }),
+                )
+                    .toList(),
+                shrinkWrap: true,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
