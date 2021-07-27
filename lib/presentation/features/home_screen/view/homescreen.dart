@@ -408,14 +408,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           //  height: 130,
                            // width: MediaQuery.of(context).size.width - 24,
                             child: GridView.count(
+                              scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               // itemCount: 4,
-                              physics: NeverScrollableScrollPhysics(),
+                              //physics: NeverScrollableScrollPhysics(),
                               crossAxisCount: 2,
                               // gridDelegate:
                               //     SliverGridDelegateWithFixedCrossAxisCount(
 
-                              childAspectRatio: 2.8,
+                              childAspectRatio: 2.5,
                               // ),
                               //   new HomeScreenDashboardModel("New Influencers", _homeController.newInfl),
                               //   new HomeScreenDashboardModel("DSP Slabs Converted", _homeController.dspSlabsConverted),

@@ -48,7 +48,9 @@ class _SiteScreenState extends State<SiteScreen> {
       print('hello');
       _siteController.offset += 10;
       print(_siteController.offset);
-       _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+      //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
+
+    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
        // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
       // _siteController.getAccessKey(RequestIds.GET_LEADS_LIST);
     }
@@ -96,12 +98,16 @@ class _SiteScreenState extends State<SiteScreen> {
 
   @override
   void initState() {
+    super.initState();
     _siteController.sitesListResponse.sitesEntity = null;
+    clearFilterSelection();
     internetChecking().then((result) => {
       if (result == true)
         {
           _appController.getAccessKey(RequestIds.GET_SITES_LIST),
-          _siteController.offset =0,
+        //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
+
+    _siteController.offset = 0,
           // storeOfflineSiteData()
         }
       else
@@ -116,15 +122,28 @@ class _SiteScreenState extends State<SiteScreen> {
     });
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
-    super.initState();
+
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _siteController?.dispose();
-  //   _siteController.offset = 0;
-  // }
+  clearFilterSelection(){
+    _siteController.selectedSiteStage = StringConstants.empty;
+    _siteController.selectedSiteStageValue = StringConstants.empty;
+    _siteController.selectedSiteStatus = StringConstants.empty;
+    _siteController.selectedSiteStatusValue = StringConstants.empty;
+    _siteController.selectedSiteInfluencerCat = StringConstants.empty;
+    _siteController.selectedSiteInfluencerCatValue = StringConstants.empty;
+    _siteController.assignToDate = StringConstants.empty;
+    _siteController.assignFromDate = StringConstants.empty;
+    _siteController.selectedSitePincode = StringConstants.empty;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //_appController?.dispose();
+    _siteController?.dispose();
+    _siteController.offset = 0;
+  }
 
   void disposeController(BuildContext context){
 //or what you wnat to dispose/clear
@@ -141,7 +160,7 @@ class _SiteScreenState extends State<SiteScreen> {
     print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
-          disposeController(context);
+         // disposeController(context);
           Get.offNamed(Routes.HOME_SCREEN);
           return true;
         },
@@ -395,7 +414,10 @@ class _SiteScreenState extends State<SiteScreen> {
                     children: [
                       Obx(
                         () => Text(
-                          "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                         // "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                            "Total Count : ${(_siteController.sitesListResponse.totalSiteCount == null) ? 0 : _siteController.sitesListResponse.totalSiteCount}",
+
+
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal*3.5,
@@ -867,7 +889,9 @@ class _SiteScreenState extends State<SiteScreen> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.all(2.0),
-                                                  child: Text(
+                                                  child:  Obx(
+                                                        () =>
+                                                  Text(
                                                     "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
                                                     style: TextStyle(
                                                         fontSize: 18,
@@ -877,11 +901,13 @@ class _SiteScreenState extends State<SiteScreen> {
                                                         //fontWeight: FontWeight.normal
                                                         ),
                                                   ),
-                                                ),
+                                                )),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.all(2.0),
-                                                  child: Text(
+                                                  child:  Obx(
+                                                        () =>
+                                                  Text(
                                                     "District: ${_siteController.sitesListResponse.sitesEntity[index].siteDistrict} ",
                                                     style: TextStyle(
                                                         color: Colors.black38,
@@ -892,7 +918,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                                         //fontWeight: FontWeight.normal
                                                         ),
                                                   ),
-                                                ),
+                                                )),
                                                 FittedBox(
                                                   child: Row(
                                                     children: [
@@ -1139,9 +1165,10 @@ class _SiteScreenState extends State<SiteScreen> {
         isScrollControlled: true,
         builder: (BuildContext bc) {
           return SiteFilterWidget();
-        }).whenComplete(() {
-
-    });
+        });
+    //     .whenComplete(() {
+    //
+    // });
   }
 
 

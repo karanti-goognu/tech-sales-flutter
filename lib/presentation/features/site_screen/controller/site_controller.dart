@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -9,10 +11,12 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +26,18 @@ class SiteController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    // called after the widget is rendered on screen
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    // called just before the Controller is deleted from memory
+    super.onClose();
+  }
+
   final MyRepositorySites repository;
 
   SiteController({@required this.repository}) : assert(repository != null);
@@ -29,6 +45,7 @@ class SiteController extends GetxController {
   //final _filterDataResponse = SitesFilterModel().obs;
   final _sitesListResponse = SitesListModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
+  final _secretKeyResponse = SecretKeyModel().obs;
 
   var _sitesListOffline = List<SitesEntity>().obs;
 
@@ -61,6 +78,8 @@ class SiteController extends GetxController {
   get selectedFilterCount => this._selectedFilterCount.value;
 
   get accessKeyResponse => this._accessKeyResponse.value;
+
+  get secretKeyResponse => this._secretKeyResponse.value;
 
   get searchKey => this._searchKey.value;
 
@@ -96,6 +115,8 @@ class SiteController extends GetxController {
   //set filterDataResponse(value) => this._filterDataResponse.value = value;
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
+
+  set secretKeyResponse(value) => this._secretKeyResponse.value = value;
 
   set phoneNumber(value) => this._phoneNumber.value = value;
 
@@ -135,8 +156,100 @@ class SiteController extends GetxController {
 
   set sitesListResponse(value) => this._sitesListResponse.value = value;
 
-  // set sitesListOffline(value) => this._sitesListOffline.assignAll(value);
+  final _isFilterApplied = false.obs;
 
+  get isFilterApplied => _isFilterApplied;
+
+  set isFilterApplied(value) {
+    _isFilterApplied.value = value;
+  }
+
+  // set sitesListOffline(value) => this._sitesListOffline.assignAll(value);
+/*
+  getSecretKey(int requestId) {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    String empId = "empty";
+    String mobileNumber = "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
+      String empIdEncrypted =
+      encryptString(empId, StringConstants.encryptedKey);
+      String mobileNumberEncrypted =
+      encryptString(mobileNumber, StringConstants.encryptedKey);
+      repository
+          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
+          .then((data) {
+        print(data.toJson()['secret-key']);
+        Get.back();
+        this.secretKeyResponse = data;
+        if (data != null) {
+          prefs.setString(StringConstants.userSecurityKey,
+              this.secretKeyResponse.secretKey);
+          getAccessKey(requestId);
+        } else {
+          print('Secret key response is null');
+        }
+      });
+    });
+  }
+
+  getAccessKey(int requestId) {
+
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    repository.getAccessKey().then((data) {
+      Get.back();
+      this.accessKeyResponse = data;
+
+      if (this.accessKeyResponse.respCode == 'DM1005') {
+        print(this.accessKeyResponse.respMsg);
+        Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+        _prefs.then((SharedPreferences prefs) {
+          prefs.setString(StringConstants.userSecurityKey, '');
+          prefs.setString(StringConstants.isUserLoggedIn, "false");
+          prefs.setString(StringConstants.employeeName, '');
+          prefs.setString(StringConstants.employeeId, '');
+          prefs.setString(StringConstants.mobileNumber, '');
+        });
+        SystemNavigator.pop();
+      }
+      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+      _prefs.then((SharedPreferences prefs) {
+        String userSecurityKey =
+            prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+//        print('User Security key is :: $userSecurityKey');
+        if (userSecurityKey != "empty") {
+          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
+          bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
+          if (hasExpired) {
+            print('Has expired');
+            getSecretKey(requestId);
+          } else {
+            print('Not expired');
+            switch (requestId) {
+              case RequestIds.GET_SITES_LIST:
+                getSitesData(this.accessKeyResponse.accessKey);
+                break;
+              // case RequestIds.GET_LEADS_LIST:
+              //   getLeadsData(this.accessKeyResponse.accessKey);
+              //   break;
+              // case RequestIds.SEARCH_LEADS:
+              //   searchLeads(this.accessKeyResponse.accessKey);
+              //   break;
+            }
+          }
+        }
+      });
+    });
+  }
+*/
   getSitesData(String accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
@@ -189,33 +302,35 @@ class SiteController extends GetxController {
           .then((data) {
         if (data == null) {
           debugPrint('Sites Data Response is null');
-          print("RESPCODE1: ${sitesListResponse.respCode}");
         } else {
+
           if(sitesListResponse.respCode == "DM1005"){
-            print("RESPCODE4: ${sitesListResponse.respCode}");
             Get.dialog(CustomDialogs().appUserInactiveDialog(
                 sitesListResponse.respMsg), barrierDismissible: false);
           }
-
           if (this.sitesListResponse.sitesEntity == null ||
               this.sitesListResponse.sitesEntity.isEmpty) {
             this.sitesListResponse = data;
-            print("//////////////RESPCODE2: ${sitesListResponse.respCode}");
           } else {
             // this.sitesListResponse = data;
             SitesListModel sitesListModel = data;
             if (sitesListModel.sitesEntity.isNotEmpty) {
                // sitesListModel.sitesEntity=[];
-              sitesListModel.sitesEntity.addAll(
-                  this.sitesListResponse.sitesEntity);
+              sitesListModel.sitesEntity.addAll(this.sitesListResponse.sitesEntity);
               this.sitesListResponse = sitesListModel;
+              this.sitesListResponse.sitesEntity.sort((SitesEntity a, SitesEntity b) => b.createdOn.compareTo(a.createdOn));
+
+              ///filter issue
+              if(this.isFilterApplied==true){
+                this.sitesListResponse = sitesListModel;
+              }
+              ////
               Get.rawSnackbar(
                 titleText: Text("Note"),
                 messageText: Text(
                     "Loading more .."),
                 backgroundColor: Colors.white,
               );
-//              Get.snackbar("Note", "Loading more ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xffffffff),duration: Duration(milliseconds: 2000));
             } else {
               Get.rawSnackbar(
                 titleText: Text("Note"),
@@ -225,11 +340,8 @@ class SiteController extends GetxController {
               );
             }
             if (sitesListResponse.respCode == "ST2006") {
-
-              print("RESPCODE3: ${sitesListResponse.respCode}");
               //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             } else {
-              print("RESPCODE5: ${sitesListResponse.respCod}");
               Get.dialog(
                   CustomDialogs().errorDialog(sitesListResponse.respMsg));
             }

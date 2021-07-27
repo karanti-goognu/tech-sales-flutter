@@ -172,22 +172,23 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    _siteController.isFilterApplied=false;
                     //Navigator.pop(context);
                     _siteController.selectedSiteStage = StringConstants.empty;
-                    _siteController.selectedSiteStageValue =
-                        StringConstants.empty;
+                    _siteController.selectedSiteStageValue = StringConstants.empty;
                     _siteController.selectedSiteStatus = StringConstants.empty;
-                    _siteController.selectedSiteStatusValue =
-                        StringConstants.empty;
-                    _siteController.selectedSiteInfluencerCat =
-                        StringConstants.empty;
-                    _siteController.selectedSiteInfluencerCatValue =
-                        StringConstants.empty;
+                    _siteController.selectedSiteStatusValue = StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCat = StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCatValue = StringConstants.empty;
                     _siteController.assignToDate = StringConstants.empty;
                     _siteController.assignFromDate = StringConstants.empty;
                     _siteController.selectedSitePincode = StringConstants.empty;
                     _siteController.selectedFilterCount = 0;
+                    _siteController.offset = 0;
+                    _siteController.sitesListResponse.sitesEntity = null;
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                   // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
+
                   },
                   child: Text(
                     "Clear All",
@@ -197,8 +198,15 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 Spacer(),
                 RaisedButton(
                   onPressed: () {
+                   // setState(() {
                     Navigator.pop(context,siteList);
+                    _siteController.isFilterApplied=true;
+                    _siteController.offset = 0;
+                    _siteController.sitesListResponse.sitesEntity = null;
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                   // _siteController.offset = 0;
+                    //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
+                   // });
                   },
                   color: ColorConstants.buttonNormalColor,
                   child: Text(
@@ -392,7 +400,10 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 _siteController.selectedSiteStageValue = leadStageValue;
                 fetchFilterData("","",leadStageValue,"","","");
                 print("dssd->>"+value+"..."+leadStageValue);
+               // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+               // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
+
               },
             ),
           )),
@@ -436,6 +447,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 _siteController.selectedSiteStatus = value;
                 _siteController.selectedSiteStatusValue = leadStatusValue;
                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+               // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
+
               },
             ),
           )),
@@ -540,6 +553,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 _siteController.selectedSiteInfluencerCatValue =
                     siteStatusValue;
                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+               // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
+
               },
             ),
           )),

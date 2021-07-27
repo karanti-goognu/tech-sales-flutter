@@ -610,11 +610,6 @@ class AddEventController extends GetxController {
                         .messageDialogMWP(saveVisitResponse.respMsg));
                     print('${saveVisitResponse.respMsg}');
                     //SitesDetailWidget();
-                  } else if (saveVisitResponse.respCode == "MWP2029") {
-                    Get.dialog(CustomDialogs()
-                        .messageDialogMWP(saveVisitResponse.respMsg));
-                    print('${saveVisitResponse.respMsg}');
-                    //SitesDetailWidget();
                   }
                   else {
                     Get.dialog(CustomDialogs()

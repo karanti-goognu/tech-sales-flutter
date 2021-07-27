@@ -177,9 +177,11 @@ class _FilterWidgetState extends State<FilterWidget> {
                       _leadsFilterController.selectedLeadPotentialValue =
                           StringConstants.empty;
                       _leadsFilterController.selectedFilterCount = 0;
-                      Navigator.pop(context);
+                      _leadsFilterController.offset = 0;
+                      _leadsFilterController.leadsListResponse.leadsEntity = null;
                       _leadsFilterController
                           .getAccessKey(RequestIds.GET_LEADS_LIST);
+                      Navigator.pop(context);
                     });
                   },
                   child: Text(
@@ -193,7 +195,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                     Navigator.pop(context);
                     _leadsFilterController.isFilterApplied=true;
                     _leadsFilterController.offset = 0;
-                    //_leadsFilterController.leadsListResponse = [];
+                   // _leadsFilterController.leadsListResponse = [];
+                    _leadsFilterController.leadsListResponse.leadsEntity = null;
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST);
                   },

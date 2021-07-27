@@ -2166,7 +2166,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       color: ColorConstants.inputBoxHintColor,
                                       fontFamily: "Muli"),
                                   keyboardType: TextInputType.numberWithOptions(
-                                      decimal: true),
+                                      decimal: false),
                                   decoration:
                                   FormFieldStyle.buildInputDecoration(
                                       labelText: "MT"),

@@ -330,17 +330,18 @@ class LeadsFilterController extends GetxController {
             LeadsListModel leadListResponseServer = data;
             //print(json.encode(leadListResponseServer));
             if(leadListResponseServer.leadsEntity.isNotEmpty){
+
               leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
-              //print('LEADS: ${this.leadsListResponse.leadsEntity.length}');
+              this.leadsListResponse.leadsEntity.sort((LeadsEntity a, LeadsEntity b) => b.createdOn.compareTo(a.createdOn));
 
               ///filter issue
               if(this.isFilterApplied==true){
                 print("Filter will be implemented here");
-                print('LEADS: ${this.leadsListResponse.leadsEntity.length}');
-                debugPrint(json.encode(data), wrapWidth: 2800);
+               // print('////////////LEADS: ${this.leadsListResponse.leadsEntity.length}');
+                //debugPrint(json.encode(data), wrapWidth: 2800);
 
-                this.leadsListResponse = [];
+                //this.leadsListResponse = [];
                 this.leadsListResponse = leadListResponseServer;
                 Get.rawSnackbar(
                   titleText: Text("Note"),

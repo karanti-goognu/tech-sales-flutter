@@ -60,6 +60,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   @override
   void initState() {
+    super.initState();
     getSRListData().whenComplete(() {
       setState(() {
         if(data!=null) {
@@ -72,7 +73,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     _scrollController..addListener(_scrollListener);
     //  print("scroll listener added");
 
-    super.initState();
+
   }
 
   @override
@@ -343,8 +344,10 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            child: Text("Total Count : ${(eventController.srListData.srComplaintListModal == null) ? 0 : eventController.srListData.srComplaintListModal.length}",
-              style: TextStyle(
+       //     child: Text("Total Count : ${(eventController.srListData.srComplaintListModal == null) ? 0 : eventController.srListData.srComplaintListModal.length}",
+      child: Text("Total Count : ${(eventController.srListData.totalCount == null) ? 0 : eventController.srListData.totalCount}",
+
+        style: TextStyle(
                 fontFamily: "Muli",
                 fontSize: 12,
                 // color: HexColor("#FFFFFF99"),
