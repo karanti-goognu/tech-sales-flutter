@@ -1,16 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -30,10 +35,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _fatherNameController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _pincodeController = TextEditingController();
   TextEditingController _districtController = TextEditingController();
-  TextEditingController _stateController = TextEditingController();
   TextEditingController _giftAddressController = TextEditingController();
   TextEditingController _giftPincodeController = TextEditingController();
   TextEditingController _giftDistrictController = TextEditingController();
@@ -43,8 +45,12 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   TextEditingController _enrollmentDateController = TextEditingController();
   TextEditingController _qualificationController = TextEditingController();
   TextEditingController _query = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _baseCityController = TextEditingController();
+  TextEditingController _talukaController = TextEditingController();
+  TextEditingController _pincodeController = TextEditingController();
 
-  var _date = 'Date of Birth';
+  var _date = 'Date of Birth*';
   //var _enrollmentDate = 'Enrollment Date';
   bool _isVisible = true;
   bool _isSecondVisible = false;
@@ -127,8 +133,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         if (value.isEmpty) {
           return 'Please enter mobile number ';
         }
-        if (value.length <= 9) {
-          return 'Mobile number is incorrect';
+        if(!Validations.isValidPhoneNumber(value)){
+          return 'Enter valid mobile number';
         }
         return null;
       },
@@ -140,6 +146,42 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       maxLength: 10,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Mobile number*",
+      ),
+      onChanged: (value){
+        if(value.length == 10) {
+          _infController.getInfData(value).then((data) {
+            setState(() {
+              if (data != null) {
+                if (data.respCode == "NUM404") {
+                  _contactNumberController.text = value;
+                } else if (data.respCode == "DM1002") {
+                  Get.dialog(CustomDialogs().showDialogInfPresent(
+                      data.respMsg));
+                  _contactNumberController.text = "";
+                }
+              }
+            });
+            print('RESPONSE, ${data}');
+          });
+        }
+      },
+    );
+
+    final email = TextFormField(
+      controller: _emailController,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter email ';
+        }
+        if(!Validations.isEmail(value)){
+          return 'Enter valid email ';
+        }
+        return null;
+      },
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.emailAddress,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Email*",
       ),
     );
 
@@ -170,6 +212,58 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Father Name*",
+      ),
+    );
+
+    final baseCity = TextFormField(
+      controller: _baseCityController,
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter name';
+      //   }
+      //   return null;
+      // },
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Base City",
+      ),
+    );
+
+    final taluka = TextFormField(
+      controller: _talukaController,
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter name';
+      //   }
+      //   return null;
+      // },
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Taluka",
+      ),
+    );
+
+    final pincode = TextFormField(
+      controller: _pincodeController,
+      validator: (value) {
+        // if (value.isEmpty) {
+        //   return 'Please enter name';
+        // }
+        if(!value.isEmpty && !Validations.isValidPincode(value)){
+          return "Enter valid pincode";
+        }
+        return null;
+      },
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      maxLength: 6,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Pincode",
       ),
     );
 
@@ -234,7 +328,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       },
       items: _influencerTypeModel == null
           ? []
-          : _influencerTypeModel.influencerTypeList
+          : _influencerTypeModel.response.influencerTypeList
           .map((e) => DropdownMenuItem(
                 value: e.inflTypeId,
                 child: Container(
@@ -370,8 +464,18 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final giftPincode = TextFormField(
       controller: _giftPincodeController,
+      validator: (value){
+        if(!value.isEmpty && !Validations.isValidPincode(value)){
+          return "Enter valid pincode";
+        }
+        return null;
+      },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      maxLength: 6,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Pincode",
       ),
@@ -405,7 +509,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Total Monthly Potential (MT)",
       ),
@@ -434,7 +538,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       },
       items: _influencerTypeModel == null
           ? []
-          : _influencerTypeModel.influencerSourceList
+          : _influencerTypeModel.response.influencerSourceList
           .map((e) => DropdownMenuItem(
                 value: e.inflSourceId,
                 child: Text(e.inflSourceText),
@@ -453,7 +557,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       },
       items: _influencerTypeModel == null
           ? []
-          : _influencerTypeModel.influencerCategoryList
+          : _influencerTypeModel.response.influencerCategoryList
           .map((e) => DropdownMenuItem(
                 value: e.inflCatId,
                 child: Text(e.inflCatText),
@@ -487,11 +591,22 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           ),
           onPressed: () {
             setState(() {
-              _isVisible = false;
-              _isSecondVisible = true;
+              if(_addInfluencerFormKeyNext.currentState.validate()) {
+                _addInfluencerFormKeyNext.currentState.save();
+                if(_date == null || _date == 'Date of Birth*'){
+                  Get.snackbar("", "Select Date",
+                      colorText: Colors.black,
+                      backgroundColor: Colors.white,
+                      snackPosition: SnackPosition.BOTTOM);
+                }else {
+                  _isVisible = false;
+                  _isSecondVisible = true;
+                  btnSubmitPresssed();
+                }
+              }
             });
 
-            // btnPresssed();
+
           },
         ),
       ],
@@ -554,9 +669,17 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                             SizedBox(height: _height),
                             name,
                             SizedBox(height: _height),
+                            email,
+                            SizedBox(height: _height),
                             enrollDropDwn,
                             SizedBox(height: _height),
                             district,
+                            SizedBox(height: _height),
+                            baseCity,
+                            SizedBox(height: _height),
+                            taluka,
+                            SizedBox(height: _height),
+                            pincode,
                             SizedBox(height: _height),
                             memberDropDwn,
                             SizedBox(height: _height),
@@ -651,8 +774,11 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   //   });
   // }
 
+  String stateName;
+  int stateId, districtId;
+
   districtList() {
-    List<StateDistrictList> dist = _stateDistrictListModel.stateDistrictList;
+    List<StateDistrictList> dist = _stateDistrictListModel.response.stateDistrictList;
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) => Container(
         color: Colors.white,
@@ -676,7 +802,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dist = _stateDistrictListModel.stateDistrictList.where((element) {
+                    dist = _stateDistrictListModel.response.stateDistrictList.where((element) {
                       return element.districtName
                           .toString()
                           .toLowerCase()
@@ -693,22 +819,25 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
               ),
             ),
             Divider(),
-            _stateDistrictListModel.stateDistrictList == null || _stateDistrictListModel.stateDistrictList.isEmpty
+            _stateDistrictListModel.response.stateDistrictList == null || _stateDistrictListModel.response.stateDistrictList.isEmpty
                 ? Center(
               child: CircularProgressIndicator(),
             )
                 : Expanded(
               child: ListView(
-                children: _stateDistrictListModel.stateDistrictList
+                children: dist
+                //_stateDistrictListModel.response.stateDistrictList
                     .map(
                       (e) => RadioListTile(
                       value: e,
-                      title: Text(
-                          '${e.districtName} (${e.stateName})'),
+                      title: Text('${e.districtName} (${e.stateName})'),
                      // groupValue: customer,
                       onChanged: (text) {
                         setState(() {
-                          _districtController.text = text;
+                          _districtController.text = text.districtName;
+                          stateName = text.stateName;
+                          stateId = text.stateId;
+                          districtId = text.districtId;
                          // customer = text;
                         });
                         Get.back();
@@ -723,4 +852,46 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       ),
     );
   }
+
+  btnSubmitPresssed(){
+  InfluencerRequestModel _influencerRequestModel = InfluencerRequestModel.fromJson(
+
+    {
+      "baseCity": _baseCityController.text,
+    "createBy": "",
+    "dealership": "N",
+    "districtId": districtId,
+    "districtName": _districtController.text,
+    "email": _emailController.text,
+    "fatherName": _fatherNameController.text,
+    "giftAddress": _giftAddressController.text,
+    "giftAddressDistrict": _giftDistrictController.text,
+    "giftAddressPincode": _giftPincodeController.text,
+    "giftAddressState": _giftStateController.text,
+    "ilpRegFlag": "N",
+    "inflAddress": "",
+    "inflCategoryId": _influencerCategory,
+    "inflContactNumber": _contactNumberController.text,
+    "inflDob": _date,
+    "inflEnrollmentSourceId": _source,
+    "inflJoiningDate": _enrollmentDateController.text,
+    "inflName": _nameController.text,
+    "inflQualification": _qualificationController.text,
+    "inflTypeId": _memberType,
+    "isActive": "Y",
+    "loyaltyLinkage": "test",
+    "monthlyPotentialVolumeMT": int.tryParse(_potentialSiteController.text),
+    "pinCode": _pincodeController.text,
+    "siteAssignedCount": int.tryParse(_potentialSiteController.text),
+    "stateId": stateId,
+    "stateName": stateName,
+    "taluka": _talukaController.text
+  }
+  );
+
+  print('PARAMS: ${json.encode(_influencerRequestModel)}');
+
+  }
+
+
 }

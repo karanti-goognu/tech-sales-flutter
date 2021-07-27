@@ -12,6 +12,7 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InfluencerView extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class InfluencerView extends StatefulWidget {
 
 class _InfluencerViewState extends State<InfluencerView> {
   ScrollController _scrollController;
+  String _selectedValue = "All";
   @override
   void initState() {
     super.initState();
@@ -65,19 +67,26 @@ class _InfluencerViewState extends State<InfluencerView> {
                       child: Container(
                         color: Colors.white,
                         child: DropdownButtonFormField(
+                          hint: Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text("All"),
+                          ),
                           onChanged: (value) {
                             setState(() {
-                             // _selectedEnrollValue = value;
+                              _selectedValue = value;
                             });
                           },
                           items: ['Yes', 'No']
                               .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Padding(
-                              padding:  EdgeInsets.only(left : 2.0),
-                              child: Text(e),
-                            ),
-                          ))
+                                    value: e,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 2.0),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 8.0),
+                                        child: Text(e),
+                                      ),
+                                    ),
+                                  ))
                               .toList(),
                           style: FormFieldStyle.formFieldTextStyle,
 
@@ -240,19 +249,21 @@ class _InfluencerViewState extends State<InfluencerView> {
                                       padding: const EdgeInsets.all(2.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        // crossAxisAlignment: CrossAxisAlignment.start,
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.baseline,
                                         children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text("Base city",
+                                          //Expanded(
+                                           // flex: 1,
+                                           // child:
+                                            Text("Base city",
                                                 // "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
                                                 style: TextStyles
                                                     .formfieldLabelText),
-                                          ),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Chip(
+                                         // ),
+                                         // Expanded(
+                                           // flex: 2,
+                                           // child:
+                                            Chip(
                                               shape: StadiumBorder(
                                                   side: BorderSide(
                                                       color:
@@ -262,7 +273,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                               label: Text("A. Site-43",
                                                   style: TextStyles.btnWhite),
                                             ),
-                                          ),
+                                         // ),
                                         ],
                                       ),
                                     ),
@@ -294,11 +305,17 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                   ),
                                             ),
                                           ),
-                                          Text("Contact Info",
-                                              // " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.dialog(showContactDialog(
+                                                  'Info', context));
+                                            },
+                                            child: Text("Contact Info",
+                                                // " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
 
-                                              style:
-                                                  TextStyles.contactTextStyle),
+                                                style: TextStyles
+                                                    .contactTextStyle),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -315,6 +332,76 @@ class _InfluencerViewState extends State<InfluencerView> {
                 ),
               );
             });
+  }
+
+  Widget showContactDialog(String respMsg, BuildContext context) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  respMsg,
+                  style: TextStyles.mulliBold16,
+                ),
+                IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      Get.back();
+                    })
+              ],
+            ),
+            SizedBox(height: ScreenUtil().setSp(8)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Contact No:", style: TextStyles.formfieldLabelText,),
+                GestureDetector(
+                  child: FittedBox(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.call,
+                          color: HexColor("#8DC63F"),
+                        ),
+                        Text(
+                          // "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                          " 123456789",
+                          style: TextStyles.formfieldLabelTextDark,),
+                      ],
+                    ),
+                  ),
+                  onTap: () {
+                    String num = "";
+                    // _leadsFilterController
+                    //     .leadsListResponse
+                    //     .leadsEntity[
+                    // index]
+                    //     .contactNumber;
+                    launch('tel:$num');
+                  },
+                ),
+              ],
+            ),
+            Row(
+              
+              children: [
+              Expanded(child: Text("Address:",  style: TextStyles.formfieldLabelText,)),
+              Expanded(child: Text("ddddddddddddddddddddddddd",maxLines: null,textAlign: TextAlign.end,style: TextStyles.formfieldLabelTextDark,)),
+            ],),
+            Row(
+
+              children: [
+                Expanded(child: Text("Email:",  style: TextStyles.formfieldLabelText,)),
+                Expanded(child: Text("dddddddd",maxLines: null,textAlign: TextAlign.end,style: TextStyles.formfieldLabelTextDark,)),
+              ],)
+          ],
+
+        ),
+      ),
+    );
   }
 }
 

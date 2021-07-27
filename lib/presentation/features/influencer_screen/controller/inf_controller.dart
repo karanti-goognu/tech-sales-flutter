@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/repository/inf_repository.dart';
@@ -41,7 +42,7 @@ class InfController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       infResponse =
-      await repository.getInfData(accessKey, userSecurityKey, empID);
+      await repository.getInfTypeData(accessKey, userSecurityKey, empID);
     });
     return infResponse;
   }
@@ -58,5 +59,21 @@ class InfController extends GetxController {
       await repository.getDistList(accessKey, userSecurityKey, empID);
     });
     return distResponse;
+  }
+
+  Future<InfluencerDetailModel> getInfData(String contact) async {
+    InfluencerDetailModel _infDetailModel;
+    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
+    //It is working fine without the progress indicator
+    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKey();
+
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      _infDetailModel = await repository.getInfData(accessKey, userSecurityKey, contact);
+    });
+    return _infDetailModel;
   }
 }

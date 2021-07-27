@@ -1,11 +1,31 @@
 class StateDistrictListModel {
+  Response response;
+
+  StateDistrictListModel({this.response});
+
+  StateDistrictListModel.fromJson(Map<String, dynamic> json) {
+    response = json['response'] != null
+        ? new Response.fromJson(json['response'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.response != null) {
+      data['response'] = this.response.toJson();
+    }
+    return data;
+  }
+}
+
+class Response {
   String respCode;
   String respMsg;
   List<StateDistrictList> stateDistrictList;
 
-  StateDistrictListModel({this.respCode, this.respMsg, this.stateDistrictList});
+  Response({this.respCode, this.respMsg, this.stateDistrictList});
 
-  StateDistrictListModel.fromJson(Map<String, dynamic> json) {
+  Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['stateDistrictList'] != null) {
@@ -29,27 +49,27 @@ class StateDistrictListModel {
 }
 
 class StateDistrictList {
-  int districtId;
-  String districtName;
   int stateId;
   String stateName;
+  int districtId;
+  String districtName;
 
   StateDistrictList(
-      {this.districtId, this.districtName, this.stateId, this.stateName});
+      {this.stateId, this.stateName, this.districtId, this.districtName});
 
   StateDistrictList.fromJson(Map<String, dynamic> json) {
-    districtId = json['district_id'];
-    districtName = json['district_name'];
     stateId = json['state_id'];
     stateName = json['state_name'];
+    districtId = json['district_id'];
+    districtName = json['district_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['district_id'] = this.districtId;
-    data['district_name'] = this.districtName;
     data['state_id'] = this.stateId;
     data['state_name'] = this.stateName;
+    data['district_id'] = this.districtId;
+    data['district_name'] = this.districtName;
     return data;
   }
 }

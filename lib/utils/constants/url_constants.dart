@@ -99,7 +99,8 @@ abstract class UrlConstants {
 
  ///Influencers
  static const String addIlpInfluencer = '$baseUrl/influencer/add-ilp-influencer?referenceID=';
- static const String stateDistrictList = "$baseUrl/dap/state-district-list";
+ static const String stateDistrictList = "$baseUrl/dap/state-district-list?referenceID=";
+ static const String getInfluencerDetail = "$baseUrl/influencer/v2/get-influencer-detail?inflContact=";
 }
 
 

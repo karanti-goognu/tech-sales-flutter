@@ -1,18 +1,38 @@
 class InfluencerTypeModel {
+  Response response;
+
+  InfluencerTypeModel({this.response});
+
+  InfluencerTypeModel.fromJson(Map<String, dynamic> json) {
+    response = json['response'] != null
+        ? new Response.fromJson(json['response'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.response != null) {
+      data['response'] = this.response.toJson();
+    }
+    return data;
+  }
+}
+
+class Response {
   String respCode;
   String respMsg;
   List<InfluencerTypeList> influencerTypeList;
   List<InfluencerCategoryList> influencerCategoryList;
   List<InfluencerSourceList> influencerSourceList;
 
-  InfluencerTypeModel(
+  Response(
       {this.respCode,
         this.respMsg,
         this.influencerTypeList,
         this.influencerCategoryList,
         this.influencerSourceList});
 
-  InfluencerTypeModel.fromJson(Map<String, dynamic> json) {
+  Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['influencerTypeList'] != null) {
