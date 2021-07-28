@@ -56,8 +56,10 @@ class SaveServiceRequestController extends GetxController {
                 title: "Message",
                 middleText: value['resp-msg'].toString(),
                 confirm: MaterialButton(
-                  onPressed: () =>
-                      Get.back(),
+                  onPressed: () {
+                     Get.back();
+                     Get.offAndToNamed(Routes.SERVICE_REQUESTS);
+                  },
                   //Get.toNamed(Routes.SERVICE_REQUESTS),
                   child: Text('OK'),
                 ),

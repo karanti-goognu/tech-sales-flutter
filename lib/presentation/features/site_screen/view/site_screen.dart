@@ -126,6 +126,7 @@ class _SiteScreenState extends State<SiteScreen> {
   }
 
   clearFilterSelection(){
+    _siteController.selectedFilterCount = 0;
     _siteController.selectedSiteStage = StringConstants.empty;
     _siteController.selectedSiteStageValue = StringConstants.empty;
     _siteController.selectedSiteStatus = StringConstants.empty;

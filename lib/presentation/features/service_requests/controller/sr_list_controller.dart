@@ -4,7 +4,6 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -138,9 +137,9 @@ class SRListController extends GetxController {
         } else {
           if (requestComplaintListModel.srComplaintListModal != null &&
               requestComplaintListModel.srComplaintListModal.isNotEmpty) {
-            requestComplaintListModel.srComplaintListModal
-                .addAll(srListData.srComplaintListModal);
+            requestComplaintListModel.srComplaintListModal.addAll(srListData.srComplaintListModal);
             this.srListData = requestComplaintListModel;
+            this.srListData.srComplaintListModal.sort((SrComplaintListModal a, SrComplaintListModal b) => b.createdOn.compareTo(a.createdOn));
 
             Get.rawSnackbar(
               titleText: Text("Note"),
