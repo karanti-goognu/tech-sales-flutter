@@ -3,9 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -21,10 +24,44 @@ class InfluencerView extends StatefulWidget {
 
 class _InfluencerViewState extends State<InfluencerView> {
   ScrollController _scrollController;
-  String _selectedValue = "All";
+  InfController _infController = Get.find();
+  InfluencerListModel _influencerListModel;
+  List<InfluencerTypeList> _influencerTypeList;
+  int _selectedValue;
+  String total;
+
   @override
   void initState() {
     super.initState();
+    getData();
+  }
+
+  getData() {
+    internetChecking().then((result) => {
+          if (result == true)
+            {
+              _infController.getInfluencerList().then((data) {
+                setState(() {
+                  if (data != null) {
+                    _influencerListModel = data;
+                    _influencerTypeList =
+                        _influencerListModel.response.influencerTypeList;
+                    total =
+                        '${(_influencerListModel.response.totalInfluencerCount == null) ? 0 : _influencerListModel.response.totalInfluencerCount}';
+                  }
+                });
+                print('RESPONSE, ${data}');
+              })
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
   Widget build(BuildContext context) {
@@ -76,18 +113,26 @@ class _InfluencerViewState extends State<InfluencerView> {
                               _selectedValue = value;
                             });
                           },
-                          items: ['Yes', 'No']
-                              .map((e) => DropdownMenuItem(
-                                    value: e,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 2.0),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 8.0),
-                                        child: Text(e),
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
+                          items: (_influencerListModel == null &&
+                                  _influencerTypeList == null)
+                              ? []
+                              : _influencerTypeList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.inflTypeId,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 2.0),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(left: 8.0),
+                                            child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3,
+                                                child: Text(e.inflTypeText)),
+                                          ),
+                                        ),
+                                      ))
+                                  .toList(),
                           style: FormFieldStyle.formFieldTextStyle,
 
                           // validator: (value) =>
@@ -116,8 +161,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                     // Obx(
                     //       () =>
                     Text(
-                      "Total Influencer : 89",
-                      //  ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                      "Total Influencer :$total",
                       style: TextStyle(
                         fontFamily: "Muli",
                         fontSize: SizeConfig.safeBlockHorizontal * 3.5,
@@ -133,208 +177,286 @@ class _InfluencerViewState extends State<InfluencerView> {
   }
 
   Widget leadsDetailWidget() {
-    return
-        //   Obx(() => (_siteController == null)
-        //     ? Container(
-        //   child: Center(
-        //     child: Text("Sites controller  is empty!!"),
-        //   ),
-        // )
-        //     : (_siteController.sitesListResponse == null)
-        //     ? Container(
-        //   child: Center(
-        //     child: Text("Sites list response  is empty!!"),
-        //   ),
-        // )
-        //     : (_siteController.sitesListResponse.sitesEntity == null)
-        //     ? Container(
-        //   child: Center(
-        //     child: Text("Sites list is empty!!"),
-        //   ),
-        // )
-        //     : (_siteController.sitesListResponse.sitesEntity.length == 0)
-        //     ?
-        //   Container(
-        //   child: Center(
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         Text("You don't have any Sites..!!"),
-        //         SizedBox(
-        //           height: 10,
-        //         ),
-        //         RaisedButton(
-        //           onPressed: () {
-        //             // _appController
-        //             //     .getAccessKey(RequestIds.GET_LEADS_LIST);
-        //           },
-        //           color: ColorConstants.buttonNormalColor,
-        //           child: Text(
-        //             "TRY AGAIN",
-        //             style: TextStyle(color: Colors.white),
-        //           ),
-        //         )
-        //       ],
-        //     ),
-        //   ),
-        // )
-        //     :
-        ListView.builder(
-            controller: _scrollController,
-            itemCount: 10,
-            //_siteController.sitesListResponse.sitesEntity.length,
-            padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
-            // itemExtent: 125.0,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //     context, new CupertinoPageRoute(
-                  //     builder: (BuildContext context) =>
-                  //         ViewSiteScreen(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
-                  // );
-                },
-                child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  borderOnForeground: true,
-                  elevation: 6,
-                  margin: EdgeInsets.all(5.0),
-                  color: Colors.white,
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 5.0),
+    return (_influencerListModel == null)
+        ? Container(
+            child: Center(
+              child: Text("Influencer controller  is empty!!"),
+            ),
+          )
+        : (_influencerListModel.response == null)
+            ? Container(
+                child: Center(
+                  child: Text("Sites list response  is empty!!"),
+                ),
+              )
+            : (_influencerListModel.response.ilpInfluencerEntity == null)
+                ? Container(
+                    child: Center(
+                      child: Text("Influencer list is empty!!"),
+                    ),
+                  )
+                : (_influencerListModel.response.ilpInfluencerEntity.length ==
+                        0)
+                    ? Container(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("You don't have any Influencers..!!"),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              RaisedButton(
+                                onPressed: () {
+                                  getData();
+                                },
+                                color: ColorConstants.buttonNormalColor,
+                                child: Text(
+                                  "TRY AGAIN",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        controller: _scrollController,
+                        itemCount: _influencerListModel
+                            .response.ilpInfluencerEntity.length,
+                        padding: const EdgeInsets.only(
+                            left: 10.0, right: 10, bottom: 80),
+                        // itemExtent: 125.0,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              // Navigator.push(
+                              //     context, new CupertinoPageRoute(
+                              //     builder: (BuildContext context) =>
+                              //         ViewSiteScreen(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
+                              // );
+                            },
+                            child: Card(
+                              clipBehavior: Clip.antiAlias,
+                              borderOnForeground: true,
+                              elevation: 6,
+                              margin: EdgeInsets.all(5.0),
+                              color: Colors.white,
+                              child: Container(
+                                padding: EdgeInsets.all(8),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text("22-10-2020",
-                                                // "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
-                                                style: TextStyles
-                                                    .formfieldLabelText),
-                                          ),
-                                          Expanded(
-                                            flex: 3,
-                                            child: Text(
-                                                "Avg.Monthly Vol.:${'200MT'}",
-                                                // "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
-                                                style: TextStyles
-                                                    .formfieldLabelText),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Text(
-                                        "Inf. Name :",
-                                        // "District: ${_siteController.sitesListResponse.sitesEntity[index].siteDistrict} ",
-                                        style: TextStyles.mulliBold18,
-                                      ),
-                                    ),
-
-                                    Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                                        children: [
-                                          //Expanded(
-                                           // flex: 1,
-                                           // child:
-                                            Text("Base city",
-                                                // "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
-                                                style: TextStyles
-                                                    .formfieldLabelText),
-                                         // ),
-                                         // Expanded(
-                                           // flex: 2,
-                                           // child:
-                                            Chip(
-                                              shape: StadiumBorder(
-                                                  side: BorderSide(
-                                                      color:
-                                                          HexColor("#39B54A"))),
-                                              backgroundColor:
-                                                  HexColor("#39B54A"),
-                                              label: Text("A. Site-43",
-                                                  style: TextStyles.btnWhite),
-                                            ),
-                                         // ),
-                                        ],
-                                      ),
-                                    ),
-                                    //  FittedBox(
-                                    //   child:
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: ScreenUtil().setSp(2),
-                                          right: ScreenUtil().setSp(2)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Chip(
-                                            shape: StadiumBorder(
-                                                side: BorderSide(
-                                                    color:
-                                                        HexColor("#39B54A"))),
-                                            backgroundColor: HexColor("#39B54A")
-                                                .withOpacity(0.1),
-                                            label: Text(
-                                              "Mason",
-                                              style: TextStyle(
-                                                  color: HexColor("#39B54A"),
-                                                  fontSize: 11,
-                                                  fontFamily: "Muli",
-                                                  fontWeight: FontWeight.bold
-                                                  //fontWeight: FontWeight.normal
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 5.0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: Text(
+                                                              _influencerListModel
+                                                                      .response
+                                                                      .ilpInfluencerEntity[
+                                                                          index]
+                                                                      .joiningDate ??
+                                                                  "",
+                                                              style: TextStyles
+                                                                  .formfieldLabelText)),
+                                                      Expanded(
+                                                        flex: 3,
+                                                        child: Text(
+                                                            "Avg.Monthly Vol.:${_influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
+                                                            style: TextStyles
+                                                                .formfieldLabelText),
+                                                      ),
+                                                    ],
                                                   ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .baseline,
+                                                    children: [
+                                                      Text(
+                                                        "${_influencerListModel.response.ilpInfluencerEntity[index].inflName}",
+                                                        style: TextStyles
+                                                            .mulliBold18,
+                                                      ),
+                                                      Container(
+                                                        width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                2 -
+                                                            10,
+                                                        child: Chip(
+                                                          shape: StadiumBorder(
+                                                              side: BorderSide(
+                                                                  color: HexColor(
+                                                                      "#6200EE"))),
+                                                          backgroundColor:
+                                                              HexColor(
+                                                                      "#6200EE")
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                          label: Text(
+                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
+                                                            softWrap: true,
+                                                            style: TextStyle(
+                                                                color: HexColor(
+                                                                    "#6200EE"),
+                                                                fontSize: 11,
+                                                                fontFamily:
+                                                                    "Muli",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold
+                                                                //fontWeight: FontWeight.normal
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .baseline,
+                                                    children: [
+                                                      //Expanded(
+                                                      // flex: 1,
+                                                      // child:
+
+                                                      Text(
+                                                          "${_influencerListModel.response.ilpInfluencerEntity[index].baseCity == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].baseCity}" ,
+                                                          style: TextStyles
+                                                              .formfieldLabelText),
+                                                      // ),
+                                                      // Expanded(
+                                                      // flex: 2,
+                                                      // child:
+                                                      Chip(
+                                                        shape: StadiumBorder(
+                                                            side: BorderSide(
+                                                                color: HexColor(
+                                                                    "#39B54A"))),
+                                                        backgroundColor:
+                                                            HexColor("#39B54A"),
+                                                        label: Text(
+                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].membershipId}",
+                                                            style: TextStyles
+                                                                .btnWhite),
+                                                      ),
+                                                      // ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                //  FittedBox(
+                                                //   child:
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left:
+                                                          ScreenUtil().setSp(2),
+                                                      right: ScreenUtil()
+                                                          .setSp(2)),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Chip(
+                                                        shape: StadiumBorder(
+                                                            side: BorderSide(
+                                                                color: HexColor(
+                                                                    "#007CBF"))),
+                                                        backgroundColor:
+                                                            HexColor("#007CBF"),
+                                                        label: Container(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              3,
+                                                          child: Text(
+                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
+                                                            style: TextStyle(
+                                                                color: HexColor(
+                                                                    "#FFFFFFDE"),
+                                                                fontSize: 11,
+                                                                fontFamily:
+                                                                    "Muli",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold
+                                                                //fontWeight: FontWeight.normal
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Get.dialog(showContactDialog(
+                                                              'Info',
+                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].mobileNumber}',
+                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress}',
+                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].email}',
+                                                              context));
+                                                        },
+                                                        child: Text(
+                                                            "Contact Info",
+                                                            // " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
+
+                                                            style: TextStyles
+                                                                .contactTextStyle),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                //  )
+                                              ],
                                             ),
                                           ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Get.dialog(showContactDialog(
-                                                  'Info', context));
-                                            },
-                                            child: Text("Contact Info",
-                                                // " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
-
-                                                style: TextStyles
-                                                    .contactTextStyle),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    //  )
                                   ],
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            });
+                          );
+                        });
   }
 
-  Widget showContactDialog(String respMsg, BuildContext context) {
+  Widget showContactDialog(String respMsg, String contact, String address,
+      String email, BuildContext context) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -357,7 +479,10 @@ class _InfluencerViewState extends State<InfluencerView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Contact No:", style: TextStyles.formfieldLabelText,),
+                Text(
+                  "Contact No:",
+                  style: TextStyles.formfieldLabelText,
+                ),
                 GestureDetector(
                   child: FittedBox(
                     child: Row(
@@ -367,9 +492,9 @@ class _InfluencerViewState extends State<InfluencerView> {
                           color: HexColor("#8DC63F"),
                         ),
                         Text(
-                          // "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                          " 123456789",
-                          style: TextStyles.formfieldLabelTextDark,),
+                          contact,
+                          style: TextStyles.formfieldLabelTextDark,
+                        ),
                       ],
                     ),
                   ),
@@ -386,19 +511,39 @@ class _InfluencerViewState extends State<InfluencerView> {
               ],
             ),
             Row(
-              
+              crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
-              Expanded(child: Text("Address:",  style: TextStyles.formfieldLabelText,)),
-              Expanded(child: Text("ddddddddddddddddddddddddd",maxLines: null,textAlign: TextAlign.end,style: TextStyles.formfieldLabelTextDark,)),
-            ],),
+                Expanded(
+                    child: Text(
+                  "Address:",
+                  style: TextStyles.formfieldLabelText,
+                )),
+                Expanded(
+                    child: Text(
+                  address,
+                  maxLines: null,
+                  textAlign: TextAlign.end,
+                  style: TextStyles.formfieldLabelTextDark,
+                )),
+              ],
+            ),
             Row(
-
               children: [
-                Expanded(child: Text("Email:",  style: TextStyles.formfieldLabelText,)),
-                Expanded(child: Text("dddddddd",maxLines: null,textAlign: TextAlign.end,style: TextStyles.formfieldLabelTextDark,)),
-              ],)
+                Expanded(
+                    child: Text(
+                  "Email:",
+                  style: TextStyles.formfieldLabelText,
+                )),
+                Expanded(
+                    child: Text(
+                  email,
+                  maxLines: null,
+                  textAlign: TextAlign.end,
+                  style: TextStyles.formfieldLabelTextDark,
+                )),
+              ],
+            )
           ],
-
         ),
       ),
     );

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/repository/inf_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,12 +24,15 @@ class InfController extends GetxController {
 
   final _infResponse = InfluencerTypeModel().obs;
   final _distResponse = StateDistrictListModel().obs;
+  final _infListResponse = InfluencerListModel().obs;
 
   get infResponse => _infResponse.value;
   get distResponse => _distResponse.value;
+  get infListResponse => _infListResponse.value;
 
   set infResponse(value) => _infResponse.value = value;
   set distResponse(value) => _distResponse.value = value;
+  set infListResponse(value) => _infListResponse.value = value;
 
   Future<String> getAccessKey() {
     return repository.getAccessKey();
@@ -75,5 +81,46 @@ class InfController extends GetxController {
       _infDetailModel = await repository.getInfData(accessKey, userSecurityKey, contact);
     });
     return _infDetailModel;
+  }
+
+  getAccessKeyAndSaveInfluencer(
+      InfluencerRequestModel influencerRequestModel ) {
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+    _prefs.then((SharedPreferences prefs) async {
+      String accessKey = await repository.getAccessKey();
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      await repository.saveInfluencerForm(accessKey, userSecurityKey, influencerRequestModel)
+          .then((value) {
+        //Get.back();
+        if (value.response.respCode == 'INF2001') {
+          Get.dialog(
+              CustomDialogs().showDialogSubmitInfluencer(value.response.respMsg.toString()),
+              barrierDismissible: false);
+        }
+        else {
+          // Get.back();
+          Get.dialog(
+              CustomDialogs().messageDialogMWP(value.response.respMsg.toString()),
+              barrierDismissible: false);
+        }
+      });
+    });
+  }
+
+
+  Future<InfluencerListModel> getInfluencerList() async {
+    String userSecurityKey = "";
+    String empID = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKey();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+      infListResponse =
+      await repository.getInfluencerList(accessKey, userSecurityKey, empID);
+    });
+    return infListResponse;
   }
 }

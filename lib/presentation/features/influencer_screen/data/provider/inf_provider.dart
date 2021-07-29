@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
@@ -91,7 +94,7 @@ class MyApiClientEvent {
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
-      var response = await http.get(Uri.parse(UrlConstants.getInfDetails + "$contact"),
+      var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -103,7 +106,7 @@ class MyApiClientEvent {
         }
         else {
           infDetailModel = InfluencerDetailModel.fromJson(json.decode(response.body));
-          // print('URL ${UrlConstants.getInfDetails + "$contact"}');
+           print('URL ${UrlConstants.getInfluencerDetail + "$contact"}');
         }} else {
         print('error');
       }
@@ -113,5 +116,64 @@ class MyApiClientEvent {
     }
 
     return infDetailModel;
+  }
+
+
+  Future<InfluencerResponseModel>saveInfluencerRequest(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel) async {
+    InfluencerResponseModel influencerResponseModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    try{
+      version = VersionClass.getVersion();
+      var response = await http.post(Uri.parse(UrlConstants.saveIlpInfluencer),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        body: json.encode(influencerRequestModel),
+      );
+      var data = json.decode(response.body);
+      //print("__---$data");
+      if (response.statusCode == 200) {
+        Get.back();
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          influencerResponseModel =
+              InfluencerResponseModel.fromJson(json.decode(response.body));
+          print('URL : ${response.request}');
+          print('RESP: ${response.body}');
+          print('RESPONSE : ${json.encode(influencerRequestModel)}');
+        } } else {
+        print('error');
+      }
+    } catch(e){
+      print("Exception at INF Repo $e");
+    }
+    return influencerResponseModel;
+  }
+
+
+  Future<InfluencerListModel> getInfluencerList(String accessKey, String userSecretKey,
+      String empID) async {
+    InfluencerListModel influencerListModel;
+    try {
+      version = VersionClass.getVersion();
+
+      var response = await http.get(Uri.parse(UrlConstants.getInfluencerList + empID),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecretKey,version));
+      var data = json.decode(response.body);
+      if(data["resp_code"] == "DM1005"){
+        Get.dialog(CustomDialogs().appUserInactiveDialog(
+            data["resp_msg"]), barrierDismissible: false);
+      }else {
+        influencerListModel = InfluencerListModel.fromJson(json.decode(response.body));
+        print('URL : ${response.request}');
+        print('RESP: ${response.body}');
+      }
+    }
+    catch (e) {
+      print("Exception at INF Repo $e");
+    }
+    return influencerListModel;
   }
 }
