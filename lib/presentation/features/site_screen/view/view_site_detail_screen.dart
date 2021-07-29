@@ -782,10 +782,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     );
   }
 
+  int selectedTabIndex;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    selectedTabIndex = 0;
     _tabController = TabController(vsync: this, length: 5, initialIndex: widget.tabIndex);
 
 
@@ -1163,10 +1166,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
-                                top: 20.0, bottom: 10, left: 5),
+                                top: 20.0, bottom: 10, left: 10),
                             child: Text(
                               "Trade site details",
                               style: TextStyle(
@@ -1176,6 +1180,26 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   fontFamily: "Muli"),
                             ),
                           ),
+                          selectedTabIndex==3 || selectedTabIndex==4?
+                          Row(children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, bottom: 10),
+                              child: Icon(Icons.edit_outlined,color: Colors.amber,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, bottom: 10, right: 15),
+                              child: Text(
+                                "Edit",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 18,
+                                    color: Colors.amber,
+                                    fontFamily: "Muli"),
+                              ),
+                            ),
+                          ],):Container()
                         ],
                       ),
                       Padding(
@@ -1724,6 +1748,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       color: HexColor("#007CBF").withOpacity(0.1)),
+                  onTap: (value) {
+                    setState(() {
+                      selectedTabIndex = value;
+                    });
+                  },
                   tabs: [
                     Tab(
                       text: "Site Data",

@@ -46,5 +46,6 @@ abstract class ColorConstants {
   static Color greenText = const Color.fromRGBO(0, 104, 56, 1);
   static Color lightGreyColor = const Color.fromRGBO(0, 0, 0, 0.6);
   static Color lightOutlineColor = const Color.fromRGBO(0, 0, 0, 0.12);
+  static Color lightOutlineCol = const Color(0xFFFF02A64);
 
 }
