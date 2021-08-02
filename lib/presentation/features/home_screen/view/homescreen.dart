@@ -121,6 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
 
+      print("CheckInStatus-->"+ _homeController.checkInStatus);
+
 
 
 

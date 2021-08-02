@@ -244,6 +244,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   onChanged: (value) async {
                     FocusScope.of(context).requestFocus(new FocusNode());
                     siteProductEntityfromLoaclDB = new List();
+                    productDynamicList[index].brandModelForDB=null;
                     // _siteProductFromLocalDB = null;
                     List<BrandModelforDB> _siteProductEntityfromLoaclDB =
                     await db.fetchAllDistinctProduct(value.brandName);
@@ -684,6 +685,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     ),
                     onPressed: () async {
                       // print("cssdsa  "+productDynamicList[index].brandModelForDB.brandName);
+
+                      if(_siteBrandFromLocalDB != null && _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia"){
+                        if (_dealerEntityForDb==null) {
+                          Get.dialog(CustomDialogs()
+                              .showMessage("Please Select Dealer name !"));
+                          return;
+                        }
+                      }
+
                       if(productDynamicList[index].brandModelForDB == null ){
                         Get.dialog(CustomDialogs()
                             .showMessage("Please select product sold !"));

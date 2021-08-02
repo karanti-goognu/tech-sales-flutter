@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/repository/home_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -263,10 +264,11 @@ class HomeController extends GetxController {
           } else {
             this.checkInResponse = data;
             checkInStatus = StringConstants.journeyEnded;
+
 //            print("${this.checkInResponse}");
           }
         });
-        Get.back();
+         Get.back();
       }).catchError((e) {
         print(e);
       });

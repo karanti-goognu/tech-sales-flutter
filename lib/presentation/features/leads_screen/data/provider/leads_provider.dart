@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:async/async.dart';
@@ -395,15 +396,14 @@ class MyApiClientLeads {
          headers:
          requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
       );
-//      print('Response body is  : ${json.decode(response.body)}');
+     log('Response body is  : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         Get.back();
 
         var data = json.decode(response.body);
 
 //        print(data);
-        ViewLeadDataResponse viewLeadDataResponse =
-            ViewLeadDataResponse.fromJson(data);
+        ViewLeadDataResponse viewLeadDataResponse = ViewLeadDataResponse.fromJson(data);
         // if(data["resp_code"] == "DM1005"){
         //   Get.dialog(CustomDialogs().appUserInactiveDialog(
         //       data["resp_msg"]), barrierDismissible: false);

@@ -140,11 +140,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   AddLeadsController _addLeadsController = Get.find();
   final db = BrandNameDBHelper();
+  
+  int globalCreatedBy = 65579;
+  bool isCreatorInfluencerSame;
 
   @override
   void initState() {
     super.initState();
-    print("sumitdhawan");
     _addLeadsController = Get.find();
     // myFocusNode = FocusNode();
     _callGetAccessKeyAndGetLeadIdData();
@@ -164,7 +166,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
  // }
 
   _callGetAccessKeyAndGetLeadIdData() async {
-    print("sumitdhawan");
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _addLeadsController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
@@ -324,6 +325,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     _listLeadInfluencerEntity[j].isPrimary;
                 originalId = _listLeadInfluencerEntity[j].id;
                 break;
+              }
+
+              if(_listLeadInfluencerEntity[j].inflId==globalCreatedBy){
+                isCreatorInfluencerSame = true;
+              }else{
+                isCreatorInfluencerSame = false;
               }
             }
 
@@ -2129,29 +2136,32 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                           ),
                                           Switch(
                                             onChanged: (value) {
-                                              setState(() {
-                                                if (value) {
-                                                  for (int i = 0;
-                                                      i <
-                                                          _listInfluencerDetail
-                                                              .length;
-                                                      i++) {
-                                                    if (i == index) {
-                                                      _listInfluencerDetail[i]
-                                                              .isPrimarybool =
-                                                          value;
-                                                    } else {
-                                                      _listInfluencerDetail[i]
-                                                              .isPrimarybool =
-                                                          !value;
+                                              if(isCreatorInfluencerSame){Get.dialog(CustomDialogs().errorDialog("Primary Influencer can not be changed"));
+                                              }else {
+                                                setState(() {
+                                                  if (value) {
+                                                    for (int i = 0;
+                                                    i <
+                                                        _listInfluencerDetail
+                                                            .length;
+                                                    i++) {
+                                                      if (i == index) {
+                                                        _listInfluencerDetail[i]
+                                                            .isPrimarybool =
+                                                            value;
+                                                      } else {
+                                                        _listInfluencerDetail[i]
+                                                            .isPrimarybool =
+                                                        !value;
+                                                      }
                                                     }
+                                                  } else {
+                                                    Get.dialog(CustomDialogs()
+                                                        .errorDialog(
+                                                        "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                   }
-                                                } else {
-                                                  Get.dialog(CustomDialogs()
-                                                      .errorDialog(
-                                                          "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-                                                }
-                                              });
+                                                });
+                                              }
                                             },
                                             value: _listInfluencerDetail[index]
                                                 .isPrimarybool,
