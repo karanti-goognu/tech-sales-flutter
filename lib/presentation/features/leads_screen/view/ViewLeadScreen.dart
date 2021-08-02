@@ -2471,10 +2471,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         accessKeyModel
                                                             .accessKey)
                                                     .then((data) {
-                                                  if(data["resp_code"] == "DM1005"){
-                                                    Get.dialog(CustomDialogs().appUserInactiveDialog(
-                                                        data["resp_msg"]), barrierDismissible: false);
-                                                  }
+
                                                   InfluencerDetail inflDetail =
                                                       data;
                                                   print("print-->"+

@@ -249,7 +249,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     await db.fetchAllDistinctProduct(value.brandName);
                     setState(() {
                       _siteBrandFromLocalDB = value;
-
                       siteProductEntityfromLoaclDB = _siteProductEntityfromLoaclDB;
                       // _productSoldVisit.text = _siteBrand.productName;
                       if (_siteBrandFromLocalDB.brandName.toLowerCase() ==
