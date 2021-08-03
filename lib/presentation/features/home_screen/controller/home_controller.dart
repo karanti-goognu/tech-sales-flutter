@@ -182,7 +182,7 @@ class HomeController extends GetxController {
                 null,
                 null,
                 null)
-            .then((data) {
+            .then((data) async {
           if (data == null) {
             debugPrint('Check in  Data Response is null');
           } else {
@@ -196,9 +196,11 @@ class HomeController extends GetxController {
                 this.checkInResponse.journeyEntity.journeyDate;
             _splashController.splashDataModel.journeyDetails.journeyStartTime =
                 this.checkInResponse.journeyEntity.journeyStartTime;
+            prefs.setString(StringConstants.JOURNEY_DATE, this.checkInResponse.journeyEntity.journeyDate);
 //            print("${this.checkInResponse}");
 //            print('Enable the button');
             this.disableSlider = false;
+
           }
           Get.back();
         });
@@ -264,6 +266,8 @@ class HomeController extends GetxController {
           } else {
             this.checkInResponse = data;
             checkInStatus = StringConstants.journeyEnded;
+            prefs.setString(StringConstants.JOURNEY_END_DATE,this.checkInResponse.journeyEntity.journeyEndTime);
+
 
 //            print("${this.checkInResponse}");
           }
