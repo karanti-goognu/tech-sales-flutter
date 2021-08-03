@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSuppliesResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/pending_supply_detail.dart';
@@ -32,10 +34,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   SiteController _siteController = Get.find();
   AppController _appController = Get.find();
   SplashController _splashController = Get.find();
-  DateTime selectedDate = DateTime.now();
-  String selectedDateString;
-  int selectedPosition = 0;
-  int currentTab = 0;
+
 
   ScrollController _scrollController;
 
@@ -59,39 +58,14 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
     return result;
   }
 
-  storeOfflineSiteData() async {
-    final db = SiteListDBHelper();
-    await db.clearTable();
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-    if (_siteController.sitesListResponse.sitesEntity != null) {
-      for (int i = 0;
-          i < _siteController.sitesListResponse.sitesEntity.length;
-          i++) {
-        SitesEntity siteEntity = new SitesEntity(
-            siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
-            leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
-            siteDistrict:
-                _siteController.sitesListResponse.sitesEntity[i].siteDistrict,
-            siteStageId:
-                _siteController.sitesListResponse.sitesEntity[i].siteStageId,
-            siteCreationDate: _siteController
-                .sitesListResponse.sitesEntity[i].siteCreationDate,
-            sitePotentialMt: _siteController
-                .sitesListResponse.sitesEntity[i].sitePotentialMt,
-            siteOppertunityId: _siteController
-                .sitesListResponse.sitesEntity[i].siteOppertunityId,
-            siteScore:
-                _siteController.sitesListResponse.sitesEntity[i].siteScore,
-            contactNumber:
-                _siteController.sitesListResponse.sitesEntity[i].contactNumber,
-            siteProbabilityWinningId: _siteController
-                .sitesListResponse.sitesEntity[i].siteProbabilityWinningId);
-        // SiteListModelForDB siteListModelForDb = new SiteListModelForDB(null, json.encode(siteEntity));
-        // await db.addSiteEntityInDraftList(siteListModelForDb);
-        await db.insertSiteEntityInTable(siteEntity);
-      }
-    }
+  Future<void> getPendingSupplyData() async {
+      await _siteController.pendingSupplyList()
+          .then((data1) async {
+        PendingSupplyDataResponse pendingSupplyDataResponse = data1;
+            print("SupplyResp-->"+json.encode(pendingSupplyDataResponse));
+    });
   }
+
 
   @override
   void initState() {
@@ -103,7 +77,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
             {
               _appController.getAccessKey(RequestIds.GET_SITES_LIST),
               //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
-
+              getPendingSupplyData(),
               _siteController.offset = 0,
               // storeOfflineSiteData()
             }
@@ -151,9 +125,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    selectedDateString = formatter.format(selectedDate);
-    print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
           // disposeController(context);

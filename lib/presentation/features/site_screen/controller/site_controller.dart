@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSuppliesResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
@@ -42,6 +43,13 @@ class SiteController extends GetxController {
   final _sitesListResponse = SitesListModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
+  final _pendingSupplyListResponse = PendingSupplyDataResponse().obs;
+
+  get pendingSupplyListResponse => _pendingSupplyListResponse.value;
+
+  set pendingSupplyListResponse(value) {
+    _pendingSupplyListResponse.value = value;
+  }
 
   var _sitesListOffline = List<SitesEntity>().obs;
 
@@ -528,6 +536,34 @@ class SiteController extends GetxController {
       empID = prefs.getString(StringConstants.employeeId);
     });
     sitesListResponse = await repository.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
+  }
+
+  pendingSupplyList() async {
+    String accessKey = await repository.getAccessKeyNew();
+    String empId = "empty";
+    String userSecurityKey = "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+
+      String url = "${UrlConstants.getPendingSupplyList+empId}";
+      debugPrint('Url is : $url');
+      repository.getPendingSupplyData(accessKey, userSecurityKey, url).then((data) {
+        if (data == null) {
+          debugPrint('Supply Data Response is null');
+        } else {
+          this.pendingSupplyListResponse = data;
+          // // if (pendingSupplyListResponse.r == "DM1002") {
+          // // }
+          // else {
+          //   Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
+          // }
+        }
+
+      });
+    });
+    return pendingSupplyListResponse;
   }
 
 }

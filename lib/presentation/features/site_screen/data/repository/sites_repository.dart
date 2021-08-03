@@ -73,6 +73,10 @@ class MyRepositorySites {
         accessKey, userSecretKey, siteVisitRequestModel);
   }
 
+  getPendingSupplyData(String accessKey, String securityKey, String url) {
+    return apiClient.getPendingSupplyData(accessKey, securityKey, url);
+  }
+
 //getSiteData(String accessKey, String userSecurityKey, int leadId) {}
 
 }

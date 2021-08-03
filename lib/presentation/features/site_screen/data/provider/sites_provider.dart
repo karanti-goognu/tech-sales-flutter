@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSuppliesResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/UpdateSiteModel.dart';
@@ -423,5 +424,22 @@ class MyApiClientSites {
       print("Exception at EG Repo $e");
     }
     return siteVisitResponseModel;
+  }
+
+  getPendingSupplyData(String accessKey, String securityKey, String url) async {
+    try {
+      version = VersionClass.getVersion();
+      final response = await get(Uri.parse(url),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, securityKey, version));
+      print("SupplyResp-->1"+response.body.runtimeType.toString());
+      var data = json.decode(response.body);
+        print("SupplyResp-->2"+data.toString());
+        PendingSupplyDataResponse pendingSupplyDataResponse = PendingSupplyDataResponse.fromJson(data);
+      print("SupplyResp-->3");
+        return pendingSupplyDataResponse;
+    } catch (_) {
+      // print('error in catch ${_.toString()}');
+    }
   }
 }
