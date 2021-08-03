@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -27,6 +30,7 @@ class _InfluencerViewState extends State<InfluencerView> {
   InfController _infController = Get.find();
   InfluencerListModel _influencerListModel;
   List<InfluencerTypeList> _influencerTypeList;
+  List<InfluencerTypeList> _inf;
   int _selectedValue;
   String total;
 
@@ -44,8 +48,17 @@ class _InfluencerViewState extends State<InfluencerView> {
                 setState(() {
                   if (data != null) {
                     _influencerListModel = data;
-                    _influencerTypeList =
-                        _influencerListModel.response.influencerTypeList;
+                    _influencerTypeList = _influencerListModel.response.influencerTypeList;
+
+                    List<InfluencerTypeList> infList = [InfluencerTypeList(inflTypeId: 0, inflTypeText: 'All', ilpRegFlag: 'Y')];
+
+
+
+                   _inf = infList + _influencerTypeList ;
+
+                    print("))))))))))))${json.encode(_inf)}");
+
+
                     total =
                         '${(_influencerListModel.response.totalInfluencerCount == null) ? 0 : _influencerListModel.response.totalInfluencerCount}';
                   }
@@ -63,6 +76,7 @@ class _InfluencerViewState extends State<InfluencerView> {
             }
         });
   }
+
 
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
@@ -111,12 +125,19 @@ class _InfluencerViewState extends State<InfluencerView> {
                           onChanged: (value) {
                             setState(() {
                               _selectedValue = value;
+                              print("_selectedValue${_selectedValue}");
+                              if(_selectedValue == 0){
+                                _infController.inflTypeId = "";
+                              }else {
+                                _infController.inflTypeId = '$_selectedValue';
+                              }
+                              getData();
                             });
                           },
                           items: (_influencerListModel == null &&
                                   _influencerTypeList == null)
                               ? []
-                              : _influencerTypeList
+                              : _inf
                                   .map((e) => DropdownMenuItem(
                                         value: e.inflTypeId,
                                         child: Padding(
@@ -161,7 +182,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                     // Obx(
                     //       () =>
                     Text(
-                      "Total Influencer :$total",
+                      "Total Influencer : $total",
                       style: TextStyle(
                         fontFamily: "Muli",
                         fontSize: SizeConfig.safeBlockHorizontal * 3.5,
@@ -230,11 +251,11 @@ class _InfluencerViewState extends State<InfluencerView> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              // Navigator.push(
-                              //     context, new CupertinoPageRoute(
-                              //     builder: (BuildContext context) =>
-                              //         ViewSiteScreen(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
-                              // );
+                              Navigator.push(
+                                  context, new CupertinoPageRoute(
+                                  builder: (BuildContext context) =>
+                                      InfluencerDetailView(_influencerListModel.response.ilpInfluencerEntity[index].membershipId))
+                              );
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,
@@ -262,7 +283,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                               children: [
                                                 Padding(
                                                   padding:
-                                                      const EdgeInsets.all(2.0),
+                                                      const EdgeInsets.all(0.0),
                                                   child: Row(
                                                     children: [
                                                       Expanded(
@@ -279,7 +300,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
-                                                            "Avg.Monthly Vol.:${_influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
+                                                            "Avg.Monthly Vol.:${_influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
                                                             style: TextStyles
                                                                 .formfieldLabelText),
                                                       ),
@@ -288,17 +309,17 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                 ),
                                                 Padding(
                                                   padding:
-                                                      const EdgeInsets.all(2.0),
+                                                      const EdgeInsets.all(0.0),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .baseline,
+                                                    // crossAxisAlignment:
+                                                    //     CrossAxisAlignment
+                                                    //         .baseline,
                                                     children: [
                                                       Text(
-                                                        "${_influencerListModel.response.ilpInfluencerEntity[index].inflName}",
+                                                        "${_influencerListModel.response.ilpInfluencerEntity[index].inflName == null ? " " : _influencerListModel.response.ilpInfluencerEntity[index].inflName}",
                                                         style: TextStyles
                                                             .mulliBold18,
                                                       ),
@@ -320,7 +341,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                                   .withOpacity(
                                                                       0.1),
                                                           label: Text(
-                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
+                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
                                                             softWrap: true,
                                                             style: TextStyle(
                                                                 color: HexColor(
@@ -342,7 +363,7 @@ class _InfluencerViewState extends State<InfluencerView> {
 
                                                 Padding(
                                                   padding:
-                                                      const EdgeInsets.all(2.0),
+                                                      const EdgeInsets.all(0.0),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -371,7 +392,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                         backgroundColor:
                                                             HexColor("#39B54A"),
                                                         label: Text(
-                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].membershipId}",
+                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].membershipId == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].membershipId}",
                                                             style: TextStyles
                                                                 .btnWhite),
                                                       ),
@@ -405,19 +426,26 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                                   .size
                                                                   .width /
                                                               3,
-                                                          child: Text(
-                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#FFFFFFDE"),
-                                                                fontSize: 11,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                "A. SITE - ${_influencerListModel.response.ilpInfluencerEntity[index].activeSitesCount == null ? "00" : _influencerListModel.response.ilpInfluencerEntity[index].activeSitesCount}",
+                                                                style: TextStyle(
+                                                                    color: HexColor(
+                                                                        "#FFFFFFDE"),
+                                                                    fontSize: ScreenUtil().setSp(11),
+                                                                    fontFamily:
+                                                                        "Muli",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold
+                                                                    //fontWeight: FontWeight.normal
+                                                                    ),
+                                                              ),
+                                                              Icon(Icons.arrow_forward_ios, color: HexColor(
+                                                                  "#FFFFFFDE"),size: ScreenUtil().setSp(11),)
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
@@ -426,8 +454,8 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                           Get.dialog(showContactDialog(
                                                               'Info',
                                                               '${_influencerListModel.response.ilpInfluencerEntity[index].mobileNumber}',
-                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress}',
-                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].email}',
+                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress == null ? "-mobileNumbermobileNumbermobileNumber" : _influencerListModel.response.ilpInfluencerEntity[index].giftAddress}',
+                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].email == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].email}',
                                                               context));
                                                         },
                                                         child: Text(
@@ -468,6 +496,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                   respMsg,
                   style: TextStyles.mulliBold16,
                 ),
+
                 IconButton(
                     icon: Icon(Icons.close),
                     onPressed: () {
@@ -483,6 +512,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                   "Contact No:",
                   style: TextStyles.formfieldLabelText,
                 ),
+                SizedBox(width: ScreenUtil().setSp(0),),
                 GestureDetector(
                   child: FittedBox(
                     child: Row(
@@ -511,13 +541,17 @@ class _InfluencerViewState extends State<InfluencerView> {
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
-                Expanded(
-                    child: Text(
+                // Expanded(
+                   //  child:
+                     Text(
                   "Address:",
                   style: TextStyles.formfieldLabelText,
-                )),
+              //  )
+      ),
+                SizedBox(width: ScreenUtil().setSp(40),),
                 Expanded(
                     child: Text(
                   address,
@@ -528,19 +562,25 @@ class _InfluencerViewState extends State<InfluencerView> {
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
-                Expanded(
-                    child: Text(
+                // Expanded(
+                //     child:
+                    Text(
                   "Email:",
                   style: TextStyles.formfieldLabelText,
-                )),
+              //  )
+      ),
+                SizedBox(width: ScreenUtil().setSp(40),),
                 Expanded(
-                    child: Text(
-                  email,
+                    child:
+                    Text("email502014502014502014502014502014",
                   maxLines: null,
                   textAlign: TextAlign.end,
                   style: TextStyles.formfieldLabelTextDark,
-                )),
+                )
+                ),
               ],
             )
           ],

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
@@ -119,17 +120,18 @@ class MyApiClientEvent {
   }
 
 
-  Future<InfluencerResponseModel>saveInfluencerRequest(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel) async {
+  Future<InfluencerResponseModel>saveInfluencerRequest(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel, bool status) async {
     InfluencerResponseModel influencerResponseModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try{
       version = VersionClass.getVersion();
-      var response = await http.post(Uri.parse(UrlConstants.saveIlpInfluencer),
+      var response = await http.post(Uri.parse(UrlConstants.saveIlpInfluencer + "$status"),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(influencerRequestModel),
       );
+      print("__---${response.request}");
       var data = json.decode(response.body);
-      //print("__---$data");
+      print("__---$data");
       if (response.statusCode == 200) {
         Get.back();
         if(data["resp_code"] == "DM1005"){
@@ -153,12 +155,12 @@ class MyApiClientEvent {
 
 
   Future<InfluencerListModel> getInfluencerList(String accessKey, String userSecretKey,
-      String empID) async {
+      String url) async {
     InfluencerListModel influencerListModel;
     try {
       version = VersionClass.getVersion();
 
-      var response = await http.get(Uri.parse(UrlConstants.getInfluencerList + empID),
+      var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
@@ -175,5 +177,70 @@ class MyApiClientEvent {
       print("Exception at INF Repo $e");
     }
     return influencerListModel;
+  }
+
+
+
+  Future<InfluencerDetailDataModel> getInfDetaildata(String accessKey,
+      String userSecretKey, String membershipId) async {
+    InfluencerDetailDataModel influencerDetailDataModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    try {
+      version = VersionClass.getVersion();
+      var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetailsByMembership + "$membershipId"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        Get.back();
+        print("======$data");
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          influencerDetailDataModel = InfluencerDetailDataModel.fromJson(json.decode(response.body));
+          print('URL ${UrlConstants.getInfluencerDetailsByMembership + "$membershipId"}');
+        }} else {
+        print('error');
+      }
+    }
+    catch (e) {
+      print("Exception at INF Repo $e");
+    }
+
+    return influencerDetailDataModel;
+  }
+
+  Future<InfluencerResponseModel>updateInfluencerRequest(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel) async {
+    InfluencerResponseModel influencerResponseModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    try{
+      version = VersionClass.getVersion();
+      var response = await http.post(Uri.parse(UrlConstants.updateIlpInfluencer),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        body: json.encode(influencerRequestModel),
+      );
+     // print("__---${response.request}");
+      var data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        Get.back();
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          influencerResponseModel =
+              InfluencerResponseModel.fromJson(json.decode(response.body));
+          print('URL : ${response.request}');
+          print('RESP: ${response.body}');
+          print('RESPONSE : ${json.encode(influencerRequestModel)}');
+        } } else {
+        print('error');
+      }
+    } catch(e){
+      print("Exception at INF Repo $e");
+    }
+    return influencerResponseModel;
   }
 }

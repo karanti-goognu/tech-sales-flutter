@@ -1,3 +1,4 @@
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
@@ -32,13 +33,24 @@ class InfRepository {
   }
 
   Future<InfluencerResponseModel> saveInfluencerForm(String accessKey,
-      String userSecretKey, InfluencerRequestModel influencerRequestModel) async {
+      String userSecretKey, InfluencerRequestModel influencerRequestModel, bool status) async {
     return apiClient.saveInfluencerRequest(
-        accessKey, userSecretKey, influencerRequestModel);
+        accessKey, userSecretKey, influencerRequestModel, status);
   }
 
   Future<InfluencerListModel> getInfluencerList(String accessKey, String userSecretKey,
-      String empID) async {
-    return apiClient.getInfluencerList(accessKey, userSecretKey, empID);
+      String url) async {
+    return apiClient.getInfluencerList(accessKey, userSecretKey, url);
+  }
+
+  Future<InfluencerDetailDataModel> getInfDetailData(
+      String accessKey, String userSecretKey, String membershipId) async {
+    return apiClient.getInfDetaildata(accessKey, userSecretKey, membershipId);
+  }
+
+  Future<InfluencerResponseModel> updateInfluencerForm(String accessKey,
+      String userSecretKey, InfluencerRequestModel influencerRequestModel) async {
+    return apiClient.updateInfluencerRequest(
+        accessKey, userSecretKey, influencerRequestModel);
   }
 }

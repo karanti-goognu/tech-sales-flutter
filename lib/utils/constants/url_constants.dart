@@ -101,8 +101,10 @@ abstract class UrlConstants {
  static const String addIlpInfluencer = '$baseUrl/influencer/add-ilp-influencer?referenceID=';
  static const String stateDistrictList = "$baseUrl/dap/state-district-list?referenceID=";
  static const String getInfluencerDetail = "$baseUrl/influencer/v2/get-influencer-detail?inflContact=";
- static const String saveIlpInfluencer = "$baseUrl/influencer/save-ilp-influencer";
+ static const String saveIlpInfluencer = "$baseUrl/influencer/save-ilp-influencer?isUpdate=";
  static const String getInfluencerList = "$baseUrl/influencer/get-influencer-list?referenceID=";
+ static const String getInfluencerDetailsByMembership = "$baseUrl/influencer/get-influencer-details-by-membership?memberShipId=";
+ static const String updateIlpInfluencer = "$baseUrl/influencer/save-ilp-influencer?isUpdate=true";
 }
 
 
