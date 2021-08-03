@@ -4,13 +4,9 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
-import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSuppliesResponse.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/pending_supply_detail.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
@@ -35,7 +31,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   AppController _appController = Get.find();
   SplashController _splashController = Get.find();
 
-
   ScrollController _scrollController;
 
   _scrollListener() {
@@ -46,11 +41,12 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
       print(_siteController.offset);
       //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
 
-      _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-      // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
-      // _siteController.getAccessKey(RequestIds.GET_LEADS_LIST);
+       _siteController.pendingSupplyList();
+
     }
   }
+  PendingSupplyDataResponse pendingSupplyDataResponse;
+  List<PendingSuppliesModel> _pendingSuppliesModel;
 
   Future<bool> internetChecking() async {
     // do something here
@@ -58,26 +54,27 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
     return result;
   }
 
-  Future<void> getPendingSupplyData() async {
-      await _siteController.pendingSupplyList()
-          .then((data1) async {
-        PendingSupplyDataResponse pendingSupplyDataResponse = data1;
-            print("SupplyResp-->"+json.encode(pendingSupplyDataResponse));
+   getPendingSupplyData() async {
+    await _siteController.pendingSupplyList().then((data) async {
+      setState(() {
+        pendingSupplyDataResponse = data;
+        _pendingSuppliesModel = pendingSupplyDataResponse != null
+            ? pendingSupplyDataResponse.pendingSuppliesModel
+            : new List();
+      });
     });
   }
-
 
   @override
   void initState() {
     super.initState();
-    _siteController.sitesListResponse.sitesEntity = null;
     clearFilterSelection();
     internetChecking().then((result) => {
           if (result == true)
             {
               _appController.getAccessKey(RequestIds.GET_SITES_LIST),
               //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
-              getPendingSupplyData(),
+               getPendingSupplyData(),
               _siteController.offset = 0,
               // storeOfflineSiteData()
             }
@@ -91,8 +88,9 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
               // fetchSiteList()
             }
         });
-    _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
+
+    // _scrollController = ScrollController();
+    // _scrollController..addListener(_scrollListener);
   }
 
   clearFilterSelection() {
@@ -134,7 +132,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
         child: Scaffold(
           extendBody: true,
           backgroundColor: ColorConstants.backgroundColorGrey,
-          body: Container(
+          body: pendingSupplyDataResponse!=null?Container(
             child: Column(
               children: [
                 Padding(
@@ -213,7 +211,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                           Obx(
                             () => Text(
                               // "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
-                              "Count- ${(_siteController.sitesListResponse.totalSiteCount == null) ? 0 : _siteController.sitesListResponse.totalSiteCount}",
+                              "Count- ${(_siteController.pendingSupplyListResponse.pendingSupplyListCount == null||_siteController.pendingSupplyListResponse.pendingSupplyListCount == 0) ? 0 : _siteController.pendingSupplyListResponse.pendingSupplyListCount}",
 
                               style: TextStyle(
                                 fontFamily: "Muli",
@@ -229,7 +227,11 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                 Expanded(child: leadsDetailWidget()),
               ],
             ),
-          ),
+          ):  Container(
+        child: Center(
+        child: Text("Sites list is empty!!"),
+    ),
+    ),
         ));
   }
 
@@ -240,32 +242,31 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
               child: Text("Sites controller  is empty!!"),
             ),
           )
-        : (_siteController.sitesListResponse == null)
+        : (_siteController.pendingSupplyListResponse == null)
             ? Container(
                 child: Center(
-                  child: Text("Sites list response  is empty!!"),
+                  child: Text("Supply list response  is empty!!"),
                 ),
               )
-            : (_siteController.sitesListResponse.sitesEntity == null)
+            : (_siteController.pendingSupplyListResponse.pendingSuppliesModel == null)
                 ? Container(
                     child: Center(
-                      child: Text("Sites list is empty!!"),
+                      child: Text("Pending Supply list is empty!!"),
                     ),
                   )
-                : (_siteController.sitesListResponse.sitesEntity.length == 0)
+                : (_siteController.pendingSupplyListResponse.pendingSuppliesModel.length == 0)
                     ? Container(
                         child: Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("You don't have any Sites..!!"),
+                              Text("You don't have any Supply..!!"),
                               SizedBox(
                                 height: 10,
                               ),
                               RaisedButton(
                                 onPressed: () {
-                                  _appController
-                                      .getAccessKey(RequestIds.GET_LEADS_LIST);
+                                  getPendingSupplyData();
                                 },
                                 color: ColorConstants.buttonNormalColor,
                                 child: Text(
@@ -280,7 +281,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                     : ListView.builder(
                         controller: _scrollController,
                         itemCount: _siteController
-                            .sitesListResponse.sitesEntity.length,
+                            .pendingSupplyListResponse.pendingSuppliesModel.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),
                         // itemExtent: 125.0,
@@ -293,10 +294,9 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                       builder: (BuildContext context) =>
                                           PendingSupplyDetailScreen(
                                             siteId: _siteController
-                                                .sitesListResponse
-                                                .sitesEntity[index]
-                                                .siteId,
-                                            tabIndex: 0,
+                                                .pendingSupplyListResponse
+                                                .pendingSuppliesModel[index]
+                                                .siteId
                                           )));
                             },
                             child: Card(
@@ -318,7 +318,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              "Date: 20-07-2021 ",
+                                              "Date: ${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].requestDate}",
                                               style: TextStyle(
                                                   color: Colors.black38,
                                                   fontSize: 12,
@@ -329,21 +329,21 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                             ),
                                             Row(
                                               children: [
+                                                // Text(
+                                                //   "Product Name: ",
+                                                //   style: TextStyle(
+                                                //       color: Colors.black38,
+                                                //       fontSize: SizeConfig
+                                                //               .safeBlockHorizontal *
+                                                //           3.8,
+                                                //       fontFamily: "Muli",
+                                                //       fontWeight:
+                                                //           FontWeight.bold
+                                                //       //fontWeight: FontWeight.normal
+                                                //       ),
+                                                // ),
                                                 Text(
-                                                  "Site Potential: ",
-                                                  style: TextStyle(
-                                                      color: Colors.black38,
-                                                      fontSize: SizeConfig
-                                                              .safeBlockHorizontal *
-                                                          3.8,
-                                                      fontFamily: "Muli",
-                                                      fontWeight:
-                                                          FontWeight.bold
-                                                      //fontWeight: FontWeight.normal
-                                                      ),
-                                                ),
-                                                Text(
-                                                  "${_siteController.sitesListResponse.sitesEntity[index].sitePotentialMt}MT",
+                                                  "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].productName}",
                                                   style: TextStyle(
                                                       // color: Colors.black38,
                                                       fontSize: 13,
@@ -377,7 +377,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                             2.0),
                                                     child: Obx(
                                                       () => Text(
-                                                        "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
+                                                        "Site ID (${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].siteId})",
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             fontFamily: "Muli",
@@ -393,7 +393,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                             2.0),
                                                     child: Obx(
                                                       () => Text(
-                                                        "District: ${_siteController.sitesListResponse.sitesEntity[index].siteDistrict} ",
+                                                        "District: ${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].siteDistrict} ",
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.black38,
@@ -409,7 +409,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                   height: 3,
                                                 ),
                                                 Text(
-                                                    "${toBeginningOfSentenceCase(_siteController.sitesListResponse.sitesEntity[index].contactName)}",
+                                                    "${toBeginningOfSentenceCase(_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].inflName)}",
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 14,
@@ -472,7 +472,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                                       left:
                                                                           3.0),
                                                                   child: Text(
-                                                                    "140",
+                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].approvedQty}",
                                                                     style: TextStyle(
                                                                         fontFamily:
                                                                             "Muli",
@@ -515,7 +515,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                                       left:
                                                                           3.0),
                                                                   child: Text(
-                                                                    "60",
+                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].pendingQty}",
                                                                     style: TextStyle(
                                                                         fontFamily:
                                                                             "Muli",
@@ -562,11 +562,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                       ),
                                                       onTap: () {
                                                         String num =
-                                                            _siteController
-                                                                .sitesListResponse
-                                                                .sitesEntity[
-                                                                    index]
-                                                                .contactNumber;
+                                                            _siteController.pendingSupplyListResponse.pendingSuppliesModel[index].dealerContact;
                                                         launch('tel:$num');
                                                       },
                                                     ),

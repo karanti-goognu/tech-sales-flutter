@@ -4,7 +4,7 @@ import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSuppliesResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
@@ -554,8 +554,9 @@ class SiteController extends GetxController {
           debugPrint('Supply Data Response is null');
         } else {
           this.pendingSupplyListResponse = data;
-          // // if (pendingSupplyListResponse.r == "DM1002") {
-          // // }
+          if (pendingSupplyListResponse.respCode == "DM1002") {
+            debugPrint('Supply Data Response is not null');
+          }
           // else {
           //   Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
           // }

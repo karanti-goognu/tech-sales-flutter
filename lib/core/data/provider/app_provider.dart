@@ -181,13 +181,13 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(updateVisitRequest);
-     // print('body is  :: $body');
-    //  print(url);
+      // print(url);
+      // print('body is  :: $body');
       var response = await httpClient.post(url, headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
     //  print(response.body);
-      print('Response for update visit body is : ${json.decode(response.body)}');
+    //   print('Response for update visit body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
