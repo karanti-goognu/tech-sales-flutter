@@ -29,6 +29,8 @@ class InfController extends GetxController {
   final _infListResponse = InfluencerListModel().obs;
 
 
+
+
   final _offset = 0.obs;
   final _inflTypeId = StringConstants.empty.obs;
   final _name = StringConstants.empty.obs;
@@ -191,30 +193,17 @@ class InfController extends GetxController {
     return _influencerDetailDataModel;
   }
 
-
-  getAccessKeyAndUpdateInfluencer(
-      InfluencerRequestModel influencerRequestModel ) {
+  Future infSearch(String searchText) async{
     String userSecurityKey = "";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-    _prefs.then((SharedPreferences prefs) async {
-      String accessKey = await repository.getAccessKey();
+    String empID = "";
+    String accessKey = await repository.getAccessKey();
+    Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      await repository.updateInfluencerForm(accessKey, userSecurityKey, influencerRequestModel)
-          .then((value) {
-        //Get.back();
-        if (value.response.respCode == 'INF2002') {
-          Get.dialog(
-              CustomDialogs().showDialogSubmitInfluencer(value.response.respMsg.toString()),
-              barrierDismissible: false);
-        }
-        else {
-          // Get.back();
-          Get.dialog(
-              CustomDialogs().messageDialogMWP(value.response.respMsg.toString()),
-              barrierDismissible: false);
-        }
-      });
+      empID = prefs.getString(StringConstants.employeeId);
     });
+    infListResponse = await repository.infSearch(accessKey, userSecurityKey, empID, searchText);
+   // print(_infListResponse.respCode);
   }
+
 }

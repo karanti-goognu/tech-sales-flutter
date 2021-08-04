@@ -18,6 +18,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/influencerViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -443,13 +444,13 @@ class MyApiClientEvent {
     return updateDealerInfResponse;
   }
 
- Future<InfDetailModel> getInfdata(String accessKey,
+ Future<InfluencerDetailModel> getInfdata(String accessKey,
     String userSecretKey, String contact) async {
-  InfDetailModel infDetailModel;
+   InfluencerDetailModel infDetailModel;
   Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
   try {
     version = VersionClass.getVersion();
-    var response = await http.get(Uri.parse(UrlConstants.getInfDetails + "$contact"),
+    var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
     var data = json.decode(response.body);
     if (response.statusCode == 200) {
@@ -460,7 +461,7 @@ class MyApiClientEvent {
             data["resp_msg"]), barrierDismissible: false);
       }
       else {
-        infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
+        infDetailModel = InfluencerDetailModel.fromJson(json.decode(response.body));
         // print('URL ${UrlConstants.getInfDetails + "$contact"}');
       }} else {
       print('error');

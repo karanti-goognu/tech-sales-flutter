@@ -224,7 +224,9 @@ Widget eventsDetailWidget(){
                ),
              ),
            );
-         }));
+         }
+         )
+    );
 }
 
   @override

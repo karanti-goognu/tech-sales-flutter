@@ -170,7 +170,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                 SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomNavigator(),
+            bottomNavigationBar: BottomNavigator(searchType: "influencer",),
             body: Container(
                 child: Column(children: [
               Padding(
@@ -575,7 +575,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                 SizedBox(width: ScreenUtil().setSp(40),),
                 Expanded(
                     child:
-                    Text("email502014502014502014502014502014",
+                    Text(email,
                   maxLines: null,
                   textAlign: TextAlign.end,
                   style: TextStyles.formfieldLabelTextDark,

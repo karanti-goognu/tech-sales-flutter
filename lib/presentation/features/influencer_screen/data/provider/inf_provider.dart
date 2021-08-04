@@ -211,36 +211,22 @@ class MyApiClientEvent {
     return influencerDetailDataModel;
   }
 
-  Future<InfluencerResponseModel>updateInfluencerRequest(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel) async {
-    InfluencerResponseModel influencerResponseModel;
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-    try{
+  Future<InfluencerListModel> infSearch(String accessKey, String userSecurityKey, String empID, String searchText) async {
+    try {
       version = VersionClass.getVersion();
-      var response = await http.post(Uri.parse(UrlConstants.updateIlpInfluencer),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
-        body: json.encode(influencerRequestModel),
-      );
-     // print("__---${response.request}");
-      var data = json.decode(response.body);
-
+      String url = UrlConstants.searchInfluencerList+empID+"&searchText=$searchText";
+      print(url);
+      var response = await httpClient.get(url,
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
-        Get.back();
-        if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
-              data["resp_msg"]), barrierDismissible: false);
-        }
-        else {
-          influencerResponseModel =
-              InfluencerResponseModel.fromJson(json.decode(response.body));
-          print('URL : ${response.request}');
-          print('RESP: ${response.body}');
-          print('RESPONSE : ${json.encode(influencerRequestModel)}');
-        } } else {
+        var data = json.decode(response.body);
+        InfluencerListModel infSearchModel = InfluencerListModel.fromJson(data);
+        return infSearchModel;
+      } else
         print('error');
-      }
-    } catch(e){
-      print("Exception at INF Repo $e");
+    } catch (_) {
+      print('exception at INF repo ${_.toString()}');
     }
-    return influencerResponseModel;
   }
 }

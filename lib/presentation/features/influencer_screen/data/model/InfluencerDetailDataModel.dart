@@ -92,7 +92,7 @@ class InfluencerDetails {
   String inflName;
   int inflTypeId;
   String isActive;
-  int monthlyPotentialBags;
+  Null monthlyPotentialBags;
   int monthlyPotentialVolumeMT;
   String pinCode;
   String taluka;
@@ -100,14 +100,10 @@ class InfluencerDetails {
   String loyaltyLinkage;
   String fatherName;
   String dealership;
-  int createdOn;
   String createBy;
-  Null updateOn;
-  Null updateBy;
-  String profileImageName;
   String inflAddress;
-  int inflJoiningDate;
-  int inflDob;
+  String inflJoiningDate;
+  String inflDob;
   int siteAssignedCount;
   int stateId;
   String stateName;
@@ -137,11 +133,7 @@ class InfluencerDetails {
         this.loyaltyLinkage,
         this.fatherName,
         this.dealership,
-        this.createdOn,
         this.createBy,
-        this.updateOn,
-        this.updateBy,
-        this.profileImageName,
         this.inflAddress,
         this.inflJoiningDate,
         this.inflDob,
@@ -174,11 +166,7 @@ class InfluencerDetails {
     loyaltyLinkage = json['loyaltyLinkage'];
     fatherName = json['fatherName'];
     dealership = json['dealership'];
-    createdOn = json['createdOn'];
     createBy = json['createBy'];
-    updateOn = json['updateOn'];
-    updateBy = json['updateBy'];
-    profileImageName = json['profileImageName'];
     inflAddress = json['inflAddress'];
     inflJoiningDate = json['inflJoiningDate'];
     inflDob = json['inflDob'];
@@ -213,11 +201,7 @@ class InfluencerDetails {
     data['loyaltyLinkage'] = this.loyaltyLinkage;
     data['fatherName'] = this.fatherName;
     data['dealership'] = this.dealership;
-    data['createdOn'] = this.createdOn;
     data['createBy'] = this.createBy;
-    data['updateOn'] = this.updateOn;
-    data['updateBy'] = this.updateBy;
-    data['profileImageName'] = this.profileImageName;
     data['inflAddress'] = this.inflAddress;
     data['inflJoiningDate'] = this.inflJoiningDate;
     data['inflDob'] = this.inflDob;

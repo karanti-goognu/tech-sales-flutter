@@ -51,6 +51,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   TextEditingController _baseCityController = TextEditingController();
   TextEditingController _talukaController = TextEditingController();
   TextEditingController _pincodeController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
 
   var _date = 'Date of Birth*';
   //var _enrollmentDate = 'Enrollment Date';
@@ -394,31 +395,28 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       ),
     );
 
-    final birthDate = Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.black26),
-          borderRadius: BorderRadius.circular(3),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 5, bottom: 5),
-          child: RaisedButton(
-            color: Colors.white,
-            elevation: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(child: Text(_date)),
-                Icon(
-                  Icons.calendar_today,
-                  color: ColorConstants.clearAllTextColor,
-                ),
-              ],
-            ),
-            onPressed: () {
-              _selectBirthDate();
-            },
+    final birthDate = TextFormField(
+      validator: (value) => value.isEmpty ? 'Please select Birth date' : null,
+      controller: _dateController,
+      readOnly: true,
+      onTap: () {
+        setState(() {
+          _selectBirthDate();
+        });
+      },
+      style: FormFieldStyle.formFieldTextStyle,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Birth Date*",
+        suffixIcon: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+          child: Icon(
+            Icons.calendar_today,
+            size: 20,
+            color: HexColor('#F9A61A'),
           ),
-        ));
+        ),
+      ),
+    );
 
     // final enrollmentDate = Container(
     //     decoration: BoxDecoration(
@@ -627,16 +625,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
             setState(() {
               if (_addInfluencerFormKeyNext.currentState.validate()) {
                 _addInfluencerFormKeyNext.currentState.save();
-                if (_date == null || _date == 'Date of Birth*') {
-                  Get.snackbar("", "Select Date",
-                      colorText: Colors.black,
-                      backgroundColor: Colors.white,
-                      snackPosition: SnackPosition.BOTTOM);
-                } else {
                   _isVisible = false;
                   _isSecondVisible = true;
                   btnSubmitPresssed();
-                }
               }
             });
           },
@@ -791,6 +782,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         lastDate: new DateTime.now());
     setState(() {
       _date = new DateFormat('yyyy-MM-dd').format(_picked);
+      _dateController.text = _date;
       // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
     });
   }
@@ -910,7 +902,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       "inflAddress": "",
       "inflCategoryId": _influencerCategory,
       "inflContactNumber": _contactNumberController.text,
-      "inflDob": _date,
+      "inflDob": _dateController.text,
       "inflEnrollmentSourceId": _source,
       "inflJoiningDate": _enrollmentDateController.text,
       "inflName": _nameController.text,
