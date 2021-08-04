@@ -42,15 +42,17 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                       title: new TextField(
                         controller: controller,
                         decoration: new InputDecoration(
-                            hintText: 'Search', border: InputBorder.none),
+                            hintText: 'Name, Mobile No, District , Site ID', border: InputBorder.none),
                         onChanged: onSearchTextChanged,
                       ),
                       trailing: new IconButton(
                         icon: new Icon(Icons.cancel),
                         onPressed: () {
+                          setState(() {
                           controller.clear();
                           onSearchTextChanged('');
                           _infController.infListResponse.response.ilpInfluencerEntity == null;
+                          });
                         },
                       ),
                     ),
@@ -65,7 +67,33 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
 
   Widget InfluencerDetailWidget(){
     return Obx(()=>
-    _infController.infListResponse.response.ilpInfluencerEntity == null?Container():
+   // _infController.infListResponse.response.ilpInfluencerEntity == null?Container():
+    (_infController.infListResponse == null)
+        ? Container(
+      child: Center(
+        child: Text("Influencer controller  is empty!!"),
+      ),
+    )
+        : (_infController.infListResponse.response == null)
+        ? Container(
+      child: Center(
+        child: Text("Sites list response  is empty!!"),
+      ),
+    )
+        : (_infController.infListResponse.response.ilpInfluencerEntity == null)
+        ? Container(
+      child: Center(
+        child: Text("Influencer list is empty!!"),
+      ),
+    )
+        : (_infController.infListResponse.response.ilpInfluencerEntity.length ==
+        0)
+        ? Container(
+      child: Center(
+        child: Text("You don't have any Influencers..!!"),
+
+      ),
+    ):
         ListView.builder(
         controller: _scrollController,
         itemCount: _infController.infListResponse.response.ilpInfluencerEntity.length,
@@ -112,7 +140,8 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                     children: [
                                       Expanded(
                                           flex: 2,
-                                          child: Text(
+                                          child: Obx(()=>
+                                          Text(
                                               _infController.infListResponse
                                                   .response
                                                   .ilpInfluencerEntity[
@@ -120,13 +149,13 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                                   .joiningDate ??
                                                   "",
                                               style: TextStyles
-                                                  .formfieldLabelText)),
+                                                  .formfieldLabelText)),),
                                       Expanded(
                                         flex: 3,
-                                        child: Text(
+                                        child:  Obx(()=>Text(
                                             "Avg.Monthly Vol.:${_infController.infListResponse.response.ilpInfluencerEntity[index].monthlyPotentialVolMt == null ? "" : _infController.infListResponse.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
                                             style: TextStyles
-                                                .formfieldLabelText),
+                                                .formfieldLabelText),),
                                       ),
                                     ],
                                   ),
@@ -426,8 +455,8 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
   }
 
   onSearchTextChanged(String text) async {
-    if (controller.text.length >= 2) {
+   // if (controller.text.length >= 1) {
       _infController.infSearch(text);
-    }
+   // }
   }
 }

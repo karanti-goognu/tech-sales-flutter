@@ -214,7 +214,8 @@ class MyApiClientEvent {
   Future<InfluencerListModel> infSearch(String accessKey, String userSecurityKey, String empID, String searchText) async {
     try {
       version = VersionClass.getVersion();
-      String url = UrlConstants.searchInfluencerList+empID+"&searchText=$searchText";
+      //String url = UrlConstants.searchInfluencerList+empID+"&searchText=$searchText";
+      String url = UrlConstants.searchInfluencerList+searchText+'&referenceID=$empID';
       print(url);
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
