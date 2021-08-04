@@ -323,6 +323,43 @@ class CustomDialogs {
     );
   }
 
+  Widget showDialogSubmitInfluencer(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            //Get.back();
+            Get.toNamed(Routes.INFLUENCER_LIST);
+          },
+        ),
+      ],
+    );
+  }
+
   Widget appExitDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -400,6 +437,41 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
+            Get.back();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget showDialogInfPresent(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
             Get.back();
           },
         ),

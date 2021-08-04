@@ -223,7 +223,7 @@ class AllEventController extends GetxController {
 
 
       var url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
-      print(url);
+      print("%%%%%$url");
 
       egAllEventData = await repository.getAllEvents(accessKey, userSecurityKey, url);
 

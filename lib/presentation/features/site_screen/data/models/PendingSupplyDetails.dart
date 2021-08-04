@@ -60,7 +60,7 @@ class PendingSuppliesDetailsModel {
   String brandId;
   String brandName;
   String productName;
-  Null brandPrice;
+  String brandPrice;
   String supplyQty;
   String supplyDate;
   String soldToParty;

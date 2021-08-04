@@ -72,7 +72,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
     internetChecking().then((result) => {
           if (result == true)
             {
-              _appController.getAccessKey(RequestIds.GET_SITES_LIST),
+              // _appController.getAccessKey(RequestIds.GET_SITES_LIST),
               //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
                getPendingSupplyData(),
               _siteController.offset = 0,

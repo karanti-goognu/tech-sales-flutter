@@ -11,6 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
@@ -141,8 +142,8 @@ class EventsFilterController extends GetxController {
   }
 
 
-  Future<InfDetailModel> getInfData(String contact) async {
-    InfDetailModel _infDetailModel;
+  Future<InfluencerDetailModel> getInfData(String contact) async {
+    InfluencerDetailModel _infDetailModel;
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));

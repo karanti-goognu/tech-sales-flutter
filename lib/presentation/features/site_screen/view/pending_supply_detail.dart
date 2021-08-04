@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -43,32 +42,34 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
 
 
   SiteController _siteController = Get.find();
-  AppController _appController = Get.find();
+
 
   PendingSupplyDetailsEntity pendingSupplyDetailsEntity;
 
-  Future<void> getPendingSupplyData() async {
+   getPendingSupplyData() async {
     await _siteController
         .pendingSupplyDetails(widget.supplyHistoryId, widget.siteId)
         .then((data) async {
       setState(() {
           pendingSupplyDetailsEntity = data ;
          // print("Data-->" + json.encode(pendingSupplyDetailsEntity));
-        if(pendingSupplyDetailsEntity!=null){
-          if(data.pendingSuppliesDetailsModel!=null){
-            _supplyFloor.text = data.pendingSuppliesDetailsModel.floorText;
-            _supplyStageOfConstruction.text = data.pendingSuppliesDetailsModel.stageConstructionDesc;
-            _supplyStagePotential.text = data.pendingSuppliesDetailsModel.sitePotentialMt;
-            _supplyBrandInUse.text = data.pendingSuppliesDetailsModel.brandName;
-            _supplyProductSold.text = data.pendingSuppliesDetailsModel.productName;
-            _supplyBrandPrice.text = data.pendingSuppliesDetailsModel.brandPrice;
-            _supplyNoOfBags.text = data.pendingSuppliesDetailsModel.supplyQty;
-            _supplyDate.text = data.pendingSuppliesDetailsModel.supplyDate;
-          }
-        }
+        // if(pendingSupplyDetailsEntity!=null){
+        //
+        //   if(pendingSupplyDetailsEntity.pendingSuppliesDetailsModel!=null){
+        //     _supplyFloor.text = data.pendingSuppliesDetailsModel.floorText;
+        //     _supplyStageOfConstruction.text = data.pendingSuppliesDetailsModel.stageConstructionDesc;
+        //     _supplyStagePotential.text = data.pendingSuppliesDetailsModel.sitePotentialMt;
+        //     _supplyBrandInUse.text = data.pendingSuppliesDetailsModel.brandName;
+        //     _supplyProductSold.text = data.pendingSuppliesDetailsModel.productName;
+        //     _supplyBrandPrice.text = data.pendingSuppliesDetailsModel.brandPrice;
+        //     _supplyNoOfBags.text = data.pendingSuppliesDetailsModel.supplyQty;
+        //     _supplyDate.text = data.pendingSuppliesDetailsModel.supplyDate;
+        //   }
+        // }
       });
     });
   }
+
 
   @override
   void initState() {
@@ -119,7 +120,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
           ),
         ),
       ),
-      body:visitDataView(),
+      body:visitDataView()
     );
   }
 
@@ -143,8 +144,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               ),
             ),
             SizedBox(height: 16),
-            TextFormField(
-              controller: _supplyFloor,
+            Obx(() =>TextFormField(
+              controller: _supplyFloor..text=_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel!=null?_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.floorText:"",
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter Floor ';
@@ -159,7 +160,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Floor",
               ),
-            ),
+            )),
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -172,8 +173,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               ),
             ),
             SizedBox(height: 16),
-            TextFormField(
-              controller: _supplyStageOfConstruction,
+              Obx(() =>TextFormField(
+              controller: _supplyStageOfConstruction..text=_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel!=null?_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.stageConstructionDesc:"",
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter Floor ';
@@ -188,7 +189,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Stage of Construction",
               ),
-            ),
+            )),
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -201,8 +202,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               ),
             ),
             SizedBox(height: 16),
-            TextFormField(
-              controller: _supplyStagePotential,
+              Obx(() => TextFormField(
+              controller: _supplyStagePotential..text=_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel!=null?_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.sitePotentialMt:"",
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter Site Built-Up Area ';
@@ -218,7 +219,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Stage Potential",
               ),
-            ),
+            )),
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -231,8 +232,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               ),
             ),
             SizedBox(height: 16),
-            TextFormField(
-              controller: _supplyBrandInUse,
+              Obx(() => TextFormField(
+              controller: _supplyBrandInUse..text=_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel!=null?_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.brandName:"",
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter brand ';
@@ -248,7 +249,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Brand In Use",
               ),
-            ),
+            )),
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -261,8 +262,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               ),
             ),
             SizedBox(height: 16),
-            TextFormField(
-              controller: _supplyProductSold,
+              Obx(() => TextFormField(
+              controller: _supplyProductSold..text=_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel!=null?_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.productName:"",
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter product ';
@@ -278,7 +279,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Product Sold",
               ),
-            ),
+            )),
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -291,8 +292,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               ),
             ),
             SizedBox(height: 16),
-            TextFormField(
-              controller: _supplyBrandPrice,
+              Obx(() => TextFormField(
+              controller: _supplyBrandPrice..text=_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel!=null?_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.brandPrice:"",
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter Brand Price ';
@@ -318,7 +319,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Brand Price",
               ),
-            ),
+            )),
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -346,8 +347,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 10.0),
-                    child: TextFormField(
-                      controller: _supplyNoOfBags,
+                    child: Obx(() =>TextFormField(
+                      controller: _supplyNoOfBags..text=_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel!=null?_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.supplyQty:"",
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter Bags ';
@@ -365,14 +366,14 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                       decoration: FormFieldStyle.buildInputDecoration(
                         labelText: "No. Of Bags",
                       ),
-                    ),
+                    )),
                   ),
                 ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 4.0),
-                    child: TextFormField(
-                      controller: _supplyDate,
+                    child:Obx(() => TextFormField(
+                      controller: _supplyDate..text=_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel!=null?_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.supplyDate:"",
                       readOnly: true,
                       onChanged: (data) {
                         // setState(() {
@@ -439,7 +440,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                             fontSize: 16.0),
                         fillColor: ColorConstants.backgroundColor,
                       ),
-                    ),
+                    )),
                   ),
                 ),
               ],
@@ -512,7 +513,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                           fontSize: 15),
                     ),
                   ),
-                  onPressed: () async {},
+                  onPressed: () async {
+                    print("Data1"+_supplyFloor.text);
+                  },
                 )
               ],
             ),
@@ -520,6 +523,5 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
           ]),
     ))));
   }
-
 
 }

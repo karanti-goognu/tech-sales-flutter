@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
@@ -575,7 +576,7 @@ class SiteController extends GetxController {
     return pendingSupplyListResponse;
   }
 
-  Future<PendingSupplyDetailsEntity>pendingSupplyDetails(String supplyHistoryId,String siteId) async {
+  pendingSupplyDetails(String supplyHistoryId,String siteId) async {
     Future.delayed(
         Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -589,16 +590,16 @@ class SiteController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
       String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
-      debugPrint('Url is : $url');
+
       repository.getPendingSupplyDetails(accessKey, userSecurityKey, url).then((data) {
         Get.back();
         if (data == null) {
           debugPrint('Supply Detail Response is null');
         } else {
           this.pendingSupplyDetailsResponse = data;
-          // if (pendingSupplyDetailsResponse.respCode == "DM1002") {
-          //   debugPrint('Supply Detail Response is not null');
-          // }
+          if (pendingSupplyDetailsResponse.respCode == "DM1002") {
+            debugPrint('Supply Detail Response is not null');
+          }
           // else {
           //   Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
           // }

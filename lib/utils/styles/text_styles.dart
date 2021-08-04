@@ -142,6 +142,13 @@ abstract class TextStyles {
       fontStyle: FontStyle.italic,
       fontWeight: FontWeight.normal);
 
+  static TextStyle contactTextStyle = TextStyle(
+      fontFamily: "Muli",
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      decoration: TextDecoration.underline,
+      letterSpacing: .25,
+      color: ColorConstants.clearAllTextColor);
 
 
 }

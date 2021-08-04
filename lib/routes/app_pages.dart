@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/bindings/dashboard_binding.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/bindings/gifts_binding.dart';
 import 'package:flutter_tech_sales/bindings/home_binding.dart';
+import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
 import 'package:flutter_tech_sales/bindings/leads__filter_binding.dart';
 import 'package:flutter_tech_sales/bindings/login_binding.dart';
 import 'package:flutter_tech_sales/bindings/search_binding.dart';
@@ -23,7 +24,8 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/start
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_event.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
-import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencerView.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/add_new_influencer_form.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_view.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewOldLeadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
@@ -141,9 +143,14 @@ class AppPages {
       binding: TutorialBinding(),
     ),
     GetPage(
+      name: Routes.INFLUENCER_LIST,
+      page: () => InfluencerView(),
+      binding: InfBinding(),
+    ),
+    GetPage(
       name: Routes.ADD_INFLUENCER,
-      page: () => AddInfluencerView(),
-      binding: TutorialBinding(),
+      page: () => FormAddInfluencer(),
+      binding: InfBinding(),
     ),
      GetPage(
       name: Routes.DASHBOARD,
