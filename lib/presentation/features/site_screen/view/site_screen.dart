@@ -40,61 +40,6 @@ class _SiteScreenState extends State<SiteScreen> {
   int _tabNumber = 0;
   double toolbarHeight;
 
-  ScrollController _scrollController;
-
-  _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      print('hello');
-      _siteController.offset += 10;
-      print(_siteController.offset);
-      //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
-
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-       // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
-      // _siteController.getAccessKey(RequestIds.GET_LEADS_LIST);
-    }
-  }
-
-  Future<bool> internetChecking() async {
-    // do something here
-    bool result = await DataConnectionChecker().hasConnection;
-    return result;
-  }
-
-  storeOfflineSiteData() async {
-    final db = SiteListDBHelper();
-    await db.clearTable();
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-    if (_siteController.sitesListResponse.sitesEntity != null) {
-
-      for (int i = 0; i < _siteController.sitesListResponse.sitesEntity.length; i++) {
-        SitesEntity siteEntity = new SitesEntity(
-            siteId: _siteController.sitesListResponse.sitesEntity[i].siteId,
-            leadId: _siteController.sitesListResponse.sitesEntity[i].leadId,
-            siteDistrict:
-                _siteController.sitesListResponse.sitesEntity[i].siteDistrict,
-            siteStageId:
-                _siteController.sitesListResponse.sitesEntity[i].siteStageId,
-            siteCreationDate: _siteController
-                .sitesListResponse.sitesEntity[i].siteCreationDate,
-            sitePotentialMt: _siteController
-                .sitesListResponse.sitesEntity[i].sitePotentialMt,
-            siteOppertunityId: _siteController
-                .sitesListResponse.sitesEntity[i].siteOppertunityId,
-            siteScore:
-                _siteController.sitesListResponse.sitesEntity[i].siteScore,
-            contactNumber:
-                _siteController.sitesListResponse.sitesEntity[i].contactNumber,
-            siteProbabilityWinningId: _siteController
-                .sitesListResponse.sitesEntity[i].siteProbabilityWinningId);
-        // SiteListModelForDB siteListModelForDb = new SiteListModelForDB(null, json.encode(siteEntity));
-        // await db.addSiteEntityInDraftList(siteListModelForDb);
-        await db.insertSiteEntityInTable(siteEntity);
-
-      }
-    }
-  }
 
   @override
   void initState() {
@@ -102,27 +47,6 @@ class _SiteScreenState extends State<SiteScreen> {
     toolbarHeight = SizeConfig.screenHeight*.18;
     _siteController.sitesListResponse.sitesEntity = null;
     clearFilterSelection();
-    internetChecking().then((result) => {
-      if (result == true)
-        {
-          _appController.getAccessKey(RequestIds.GET_SITES_LIST),
-        //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
-
-    _siteController.offset = 0,
-          // storeOfflineSiteData()
-        }
-      else
-        {
-          Get.snackbar(
-              "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-          // fetchSiteList()
-        }
-    });
-    _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
 
   }
 
