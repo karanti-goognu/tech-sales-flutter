@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/UpdateSiteModel.dart';
@@ -443,4 +444,23 @@ class MyApiClientSites {
       // print('error in catch ${_.toString()}');
     }
   }
+
+  getPendingSupplyDetails(String accessKey, String securityKey, String url) async {
+    try {
+      version = VersionClass.getVersion();
+      final response = await get(Uri.parse(url),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, securityKey, version));
+      if(response.statusCode==200) {
+        var data = json.decode(response.body);
+        PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
+        PendingSupplyDetailsEntity pendingSupplyDataResponse = pendingSupplyData.response;
+        return pendingSupplyDataResponse;
+      }else
+        print('error');
+    } catch (_) {
+      // print('error in catch ${_.toString()}');
+    }
+  }
+
 }

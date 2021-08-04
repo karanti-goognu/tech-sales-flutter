@@ -18,8 +18,6 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -142,8 +140,8 @@ class _SiteListScreenState extends State<SiteListScreen> {
   void dispose() {
     super.dispose();
     //_appController?.dispose();
-    _siteController?.dispose();
-    _siteController.offset = 0;
+    // _siteController?.dispose();
+    // _siteController.offset = 0;
   }
 
   void disposeController(BuildContext context){

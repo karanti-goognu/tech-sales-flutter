@@ -110,8 +110,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   void dispose() {
     super.dispose();
     //_appController?.dispose();
-    _siteController?.dispose();
-    _siteController.offset = 0;
+    // _siteController?.dispose();
+    // _siteController.offset = 0;
   }
 
   void disposeController(BuildContext context) {
@@ -296,7 +296,11 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                             siteId: _siteController
                                                 .pendingSupplyListResponse
                                                 .pendingSuppliesModel[index]
-                                                .siteId
+                                                .siteId,
+                                              supplyHistoryId:_siteController
+                                                  .pendingSupplyListResponse
+                                                  .pendingSuppliesModel[index]
+                                                  .siteSupplyHistoryId
                                           )));
                             },
                             child: Card(

@@ -98,6 +98,7 @@ abstract class UrlConstants {
 
  // pending supply
  static const String getPendingSupplyList = '$baseUrl/sites/get-pending-supplies?referenceID=';
+ static const String getPendingSupplyDetails = '$baseUrl/sites/get-pending-supplies-details?referenceID=';
 
 }
 

@@ -5,6 +5,7 @@ import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
@@ -44,11 +45,18 @@ class SiteController extends GetxController {
   final _accessKeyResponse = AccessKeyModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
   final _pendingSupplyListResponse = PendingSupplyDataResponse().obs;
+  final _pendingSupplyDetailsResponse = PendingSupplyDetailsEntity().obs;
 
   get pendingSupplyListResponse => _pendingSupplyListResponse.value;
 
   set pendingSupplyListResponse(value) {
     _pendingSupplyListResponse.value = value;
+  }
+
+  get pendingSupplyDetailsResponse => _pendingSupplyDetailsResponse.value;
+
+  set pendingSupplyDetailsResponse(value) {
+    _pendingSupplyDetailsResponse.value = value;
   }
 
   var _sitesListOffline = List<SitesEntity>().obs;
@@ -565,6 +573,40 @@ class SiteController extends GetxController {
       });
     });
     return pendingSupplyListResponse;
+  }
+
+  Future<PendingSupplyDetailsEntity>pendingSupplyDetails(String supplyHistoryId,String siteId) async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    String accessKey = await repository.getAccessKeyNew();
+    String empId = "empty";
+    String userSecurityKey = "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+
+      String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
+      debugPrint('Url is : $url');
+      repository.getPendingSupplyDetails(accessKey, userSecurityKey, url).then((data) {
+        Get.back();
+        if (data == null) {
+          debugPrint('Supply Detail Response is null');
+        } else {
+          this.pendingSupplyDetailsResponse = data;
+          // if (pendingSupplyDetailsResponse.respCode == "DM1002") {
+          //   debugPrint('Supply Detail Response is not null');
+          // }
+          // else {
+          //   Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
+          // }
+        }
+
+      });
+    });
+    return pendingSupplyDetailsResponse;
   }
 
 }
