@@ -133,9 +133,7 @@ class AddLeadsController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
-      viewLeadDataResponse =
-
-          await repository.getLeadData(accessKey, userSecurityKey, leadId, empID);
+      viewLeadDataResponse = await repository.getLeadData(accessKey, userSecurityKey, leadId, empID);
      });
     print(viewLeadDataResponse);
 

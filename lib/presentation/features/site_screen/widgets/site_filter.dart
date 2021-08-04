@@ -27,6 +27,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
 
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -391,17 +392,18 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
               value: stageValue,
               groupValue: _siteController.selectedSiteStage as String,
               onChanged: (String value) {
-                if (_siteController.selectedSiteStage ==
-                    StringConstants.empty) {
+                if (_siteController.selectedSiteStage == StringConstants.empty) {
+
                   _siteController.selectedFilterCount =
                       _siteController.selectedFilterCount + 1;
                 }
-                _siteController.selectedSiteStage = value;
-                _siteController.selectedSiteStageValue = leadStageValue;
+                  _siteController.selectedSiteStage = value;
+                 _siteController.selectedSiteStageValue = leadStageValue;
                 fetchFilterData("","",leadStageValue,"","","");
-                print("dssd->>"+value+"..."+leadStageValue);
                // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
-                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                _siteController.offset = 0;
+                _siteController.sitesListResponse.sitesEntity = null;
+                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
 
               },
@@ -444,8 +446,10 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                   _siteController.selectedFilterCount =
                       _siteController.selectedFilterCount + 1;
                 }
-                _siteController.selectedSiteStatus = value;
+                 _siteController.selectedSiteStatus = value;
                 _siteController.selectedSiteStatusValue = leadStatusValue;
+                _siteController.offset = 0;
+                _siteController.sitesListResponse.sitesEntity = null;
                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
 
@@ -473,7 +477,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
               //       <--- BoxDecoration here
               child: TextFormField(
                 onChanged: (_) {
-                  _siteController.selectedSitePincode = _;
+                   _siteController.selectedSitePincode = _;
                 },
                 style: TextStyle(
                     fontSize: 18,
@@ -552,6 +556,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 _siteController.selectedSiteInfluencerCat = value;
                 _siteController.selectedSiteInfluencerCatValue =
                     siteStatusValue;
+                _siteController.offset = 0;
+                _siteController.sitesListResponse.sitesEntity = null;
                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
                // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
 

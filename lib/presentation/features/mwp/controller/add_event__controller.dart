@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
@@ -397,6 +398,7 @@ class AddEventController extends GetxController {
         } else {
           debugPrint('Dealer List Response is not null');
           this.visitResponseModel = data;
+          log(json.encode(visitResponseModel));
           this.visitSiteId =
               this.visitResponseModel.mwpVisitModel.docId.toString();
           // this.visitDateTime = this.visitResponseModel.mwpVisitModel.visitDate.toString();
