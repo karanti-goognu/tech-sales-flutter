@@ -7,11 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class PendingSupplyDetailScreen extends StatefulWidget {
@@ -75,22 +79,22 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPendingSupplyData();
-    // internetChecking().then((result) => {
-    //   if (result == true)
-    //     {
-    //       getPendingSupplyData()
-    //     }
-    //   else
-    //     {
-    //       Get.snackbar(
-    //           "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-    //           colorText: Colors.white,
-    //           backgroundColor: Colors.red,
-    //           snackPosition: SnackPosition.BOTTOM),
-    //       // fetchSiteList()
-    //     }
-    // });
+
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          getPendingSupplyData()
+        }
+      else
+        {
+          Get.snackbar(
+              "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+          // fetchSiteList()
+        }
+    });
   }
 
   @override
@@ -495,7 +499,48 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                           fontSize: 15),
                     ),
                   ),
-                  onPressed: () async {},
+                  onPressed: () async {
+                    String empId = await getEmpId();
+                    if(_supplyBrandPrice.text.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("Please enter brand price !"));
+                      return;
+                    }
+
+                    if(_supplyNoOfBags.text.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("Please enter supply qty !"));
+                      return;
+                    }
+
+                    if(empId.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("Please enter reference Id!"));
+                      return;
+                    }
+
+                    if(widget.siteId.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("Site id can't be null or empty!"));
+                      return;
+                    }
+
+                    if(widget.supplyHistoryId.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("supplyHistory id can't be null or empty!"));
+                      return;
+                    }
+
+                    final Map<String, dynamic> jsonData = {
+                      "approveOrReject": "R",
+                      "brandPrice":_supplyBrandPrice.text,
+                      "referenceId":empId,
+                      "siteId":widget.siteId,
+                      "supplyHistoryId":widget.supplyHistoryId,
+                      "supplyQty":_supplyNoOfBags.text
+                    };
+                    _siteController.updatePendingSupplyDetails(jsonData);
+                  },
                 ),
                 RaisedButton(
                   elevation: 5,
@@ -514,7 +559,45 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                     ),
                   ),
                   onPressed: () async {
-                    print("Data1"+_supplyFloor.text);
+                    String empId = await getEmpId();
+                    if(_supplyBrandPrice.text.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("Please enter brand price !"));
+                      return;
+                    }
+
+                    if(_supplyNoOfBags.text.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("Please enter supply qty !"));
+                      return;
+                    }
+
+                    if(empId.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("Please enter reference Id!"));
+                      return;
+                    }
+
+                    if(widget.siteId.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("Site id can't be null or empty!"));
+                      return;
+                    }
+
+                    if(widget.supplyHistoryId.isEmpty){
+                      Get.dialog(CustomDialogs()
+                          .showMessage("supplyHistory id can't be null or empty!"));
+                      return;
+                    }
+                    final Map<String, dynamic> jsonData = {
+                      "approveOrReject": "A",
+                      "brandPrice":_supplyBrandPrice.text,
+                      "referenceId":empId,
+                      "siteId":widget.siteId,
+                      "supplyHistoryId":widget.supplyHistoryId,
+                      "supplyQty":_supplyNoOfBags.text
+                    };
+                    _siteController.updatePendingSupplyDetails(jsonData);
                   },
                 )
               ],
@@ -522,6 +605,16 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
             SizedBox(height: 40),
           ]),
     ))));
+  }
+
+
+  Future getEmpId() async {
+    String empID = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      empID = prefs.getString(StringConstants.employeeId);
+    });
+    return empID;
   }
 
 }

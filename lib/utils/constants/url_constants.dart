@@ -100,6 +100,7 @@ abstract class UrlConstants {
  // pending supply
  static const String getPendingSupplyList = '$baseUrl/sites/get-pending-supplies?referenceID=';
  static const String getPendingSupplyDetails = '$baseUrl/sites/get-pending-supplies-details?referenceID=';
+ static const String updatePendingSupply = '$baseUrl/sites/update-pending-supply';
 
  ///Influencers
  static const String addIlpInfluencer = '$baseUrl/influencer/add-ilp-influencer?referenceID=';

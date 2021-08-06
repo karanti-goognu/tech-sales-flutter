@@ -610,4 +610,33 @@ class SiteController extends GetxController {
     return pendingSupplyDetailsResponse;
   }
 
+  updatePendingSupplyDetails(Map<String, dynamic> jsonData) async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    String accessKey = await repository.getAccessKeyNew();
+    String userSecurityKey = "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      String url = "${UrlConstants.updatePendingSupply}";
+      repository.updatePendingSupplyDetails(accessKey, userSecurityKey, url,jsonData).then((data) {
+        Get.back();
+        if (data == null) {
+          debugPrint('Update Supply Response is null');
+        } else {
+          var dataValue = data;
+          if(dataValue['response']['respCode']=="DM1002"){
+            Get.dialog(CustomDialogs().showPendingSupplyData(dataValue['response']['respMsg']));
+          }else {
+            Get.dialog(
+                CustomDialogs().errorDialog(dataValue['response']['respMsg']));
+          }
+        }
+      });
+    });
+  }
+
+
 }

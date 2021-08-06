@@ -413,7 +413,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                   height: 3,
                                                 ),
                                                 Text(
-                                                    "${toBeginningOfSentenceCase(_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].inflName)}",
+                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].inflName!=null?toBeginningOfSentenceCase(_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].inflName):""}",
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 14,

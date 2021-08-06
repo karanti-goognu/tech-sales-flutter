@@ -463,4 +463,22 @@ class MyApiClientSites {
     }
   }
 
+  updatePendingSupplyDetails(String accessKey, String securityKey, String url,Map<String, dynamic> jsonData) async {
+    try {
+      version = VersionClass.getVersion();
+      final response = await http.put(Uri.parse(url),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, securityKey, version),
+          body: json.encode(jsonData));
+      if(response.statusCode==200) {
+        String data = response.body;
+        return json.decode(data);
+      }else
+        print('error');
+    } catch (_) {
+      // print('error in catch ${_.toString()}');
+    }
+  }
+
+
 }
