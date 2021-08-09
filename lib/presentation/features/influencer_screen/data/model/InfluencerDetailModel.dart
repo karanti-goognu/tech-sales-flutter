@@ -56,84 +56,88 @@ class InfluencerDetailModel {
 }
 
 class InfluencerModel {
-  int infl_id;
+  String ilpRegFlag;
+  int inflId;
   String inflName;
   String inflContact;
   int inflTypeId;
   String influencerTypeText;
   int inflCatId;
   String influencerCategoryText;
-  String ilpIntrested;
 
   InfluencerModel(
-      { this.infl_id,
+      {this.ilpRegFlag,
+        this.inflId,
         this.inflName,
         this.inflContact,
         this.inflTypeId,
         this.influencerTypeText,
         this.inflCatId,
-        this.influencerCategoryText,
-        this.ilpIntrested});
+        this.influencerCategoryText});
 
   InfluencerModel.fromJson(Map<String, dynamic> json) {
-    infl_id = json['infl_id'];
+    ilpRegFlag = json['ilp_reg_flag'];
+    inflId = json['infl_id'];
     inflName = json['infl_name'];
     inflContact = json['infl_contact'];
     inflTypeId = json['infl_type_id'];
     influencerTypeText = json['influencer_type_text'];
     inflCatId = json['infl_cat_id'];
     influencerCategoryText = json['influencer_category_text'];
-    ilpIntrested = json['ilp_intrested'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['infl_id'] = this.infl_id;
+    data['ilp_reg_flag'] = this.ilpRegFlag;
+    data['infl_id'] = this.inflId;
     data['infl_name'] = this.inflName;
     data['infl_contact'] = this.inflContact;
     data['infl_type_id'] = this.inflTypeId;
     data['influencer_type_text'] = this.influencerTypeText;
     data['infl_cat_id'] = this.inflCatId;
     data['influencer_category_text'] = this.influencerCategoryText;
-    data['ilp_intrested'] = this.ilpIntrested;
     return data;
   }
 }
 
 class InfluencerTypeEntitiesList {
   int inflTypeId;
-  String inflTypeDesc;
+  String inflTypeText;
+  String ilpRegFlag;
 
-  InfluencerTypeEntitiesList({this.inflTypeId, this.inflTypeDesc});
+  InfluencerTypeEntitiesList(
+      {this.inflTypeId, this.inflTypeText, this.ilpRegFlag});
 
   InfluencerTypeEntitiesList.fromJson(Map<String, dynamic> json) {
-    inflTypeId = json['inflTypeId'];
-    inflTypeDesc = json['inflTypeDesc'];
+    inflTypeId = json['infl_type_id'];
+    inflTypeText = json['infl_type_text'];
+    ilpRegFlag = json['ilp_reg_flag'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['inflTypeId'] = this.inflTypeId;
-    data['inflTypeDesc'] = this.inflTypeDesc;
+    data['infl_type_id'] = this.inflTypeId;
+    data['infl_type_text'] = this.inflTypeText;
+    data['ilp_reg_flag'] = this.ilpRegFlag;
     return data;
   }
 }
 
 class InfluencerCategoryEntitiesList {
   int inflCatId;
-  String inflCatDesc;
+  String inflCatText;
 
-  InfluencerCategoryEntitiesList({this.inflCatId, this.inflCatDesc});
+  InfluencerCategoryEntitiesList({this.inflCatId, this.inflCatText});
 
   InfluencerCategoryEntitiesList.fromJson(Map<String, dynamic> json) {
-    inflCatId = json['inflCatId'];
-    inflCatDesc = json['inflCatDesc'];
+    inflCatId = json['infl_cat_id'];
+    inflCatText = json['infl_cat_text'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['inflCatId'] = this.inflCatId;
-    data['inflCatDesc'] = this.inflCatDesc;
+    data['infl_cat_id'] = this.inflCatId;
+    data['infl_cat_text'] = this.inflCatText;
     return data;
   }
 }

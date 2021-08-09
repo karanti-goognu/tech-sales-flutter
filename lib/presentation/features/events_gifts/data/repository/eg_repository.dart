@@ -112,4 +112,12 @@ class EgRepository {
     return apiClient.getInfdata(accessKey, userSecretKey, contact);
 
   }
+
+
+  ///////////
+  // Future<InfDetailModel> getInfData1(
+  //     String accessKey, String userSecretKey, String contact) async {
+  //   return apiClient.getInfdata1(accessKey, userSecretKey, contact);
+  //
+  // }
 }

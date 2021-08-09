@@ -10,7 +10,7 @@ class InfBinding implements Bindings {
     Get.lazyPut<InfController>(() {
       return InfController(
         repository: InfRepository(
-          apiClient: MyApiClientEvent(
+          apiClient: MyApiClientInf(
             httpClient: http.Client(),
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/repository/inf_repository.dart';
@@ -204,6 +205,20 @@ class InfController extends GetxController {
     });
     infListResponse = await repository.infSearch(accessKey, userSecurityKey, empID, searchText);
    // print(_infListResponse.respCode);
+  }
+
+
+  Future<InfluencerResponseModel>getAccessKeyAndSaveNewInfluencer(InfluencerRequestModel influencerRequestModel, bool status) async{
+    InfluencerResponseModel influencerResponseModel;
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKey();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      influencerResponseModel = await repository.saveNewInfluencer(
+          accessKey, userSecurityKey, influencerRequestModel, status);
+    });
+    return influencerResponseModel;
   }
 
 }
