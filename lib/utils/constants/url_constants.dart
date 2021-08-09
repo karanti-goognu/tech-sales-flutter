@@ -97,6 +97,11 @@ abstract class UrlConstants {
  static const String submitEndEvent = '$baseUrl/event/end_event';
 
 
+ // pending supply
+ static const String getPendingSupplyList = '$baseUrl/sites/get-pending-supplies?referenceID=';
+ static const String getPendingSupplyDetails = '$baseUrl/sites/get-pending-supplies-details?referenceID=';
+ static const String updatePendingSupply = '$baseUrl/sites/update-pending-supply';
+
  ///Influencers
  static const String addIlpInfluencer = '$baseUrl/influencer/add-ilp-influencer?referenceID=';
  static const String stateDistrictList = "$baseUrl/dap/state-district-list?referenceID=";
@@ -105,6 +110,7 @@ abstract class UrlConstants {
  static const String getInfluencerList = "$baseUrl/influencer/get-influencer-list?referenceID=";
  static const String getInfluencerDetailsByMembership = "$baseUrl/influencer/get-influencer-details-by-membership?memberShipId=";
  static const String searchInfluencerList = "$baseUrl/influencer/searchInfluencerList?searchText=";
+
 
 }
 

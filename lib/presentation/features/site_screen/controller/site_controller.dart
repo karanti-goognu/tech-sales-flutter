@@ -1,22 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/repository/sites_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,6 +45,20 @@ class SiteController extends GetxController {
   final _sitesListResponse = SitesListModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
+  final _pendingSupplyListResponse = PendingSupplyDataResponse().obs;
+  final _pendingSupplyDetailsResponse = PendingSupplyDetailsEntity().obs;
+
+  get pendingSupplyListResponse => _pendingSupplyListResponse.value;
+
+  set pendingSupplyListResponse(value) {
+    _pendingSupplyListResponse.value = value;
+  }
+
+  get pendingSupplyDetailsResponse => _pendingSupplyDetailsResponse.value;
+
+  set pendingSupplyDetailsResponse(value) {
+    _pendingSupplyDetailsResponse.value = value;
+  }
 
   var _sitesListOffline = List<SitesEntity>().obs;
 
@@ -533,5 +546,97 @@ class SiteController extends GetxController {
     });
     sitesListResponse = await repository.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
   }
+
+  pendingSupplyList() async {
+    String accessKey = await repository.getAccessKeyNew();
+    String empId = "empty";
+    String userSecurityKey = "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+
+      String url = "${UrlConstants.getPendingSupplyList+empId}";
+      debugPrint('Url is : $url');
+      repository.getPendingSupplyData(accessKey, userSecurityKey, url).then((data) {
+        if (data == null) {
+          debugPrint('Supply Data Response is null');
+        } else {
+          this.pendingSupplyListResponse = data;
+          if (pendingSupplyListResponse.respCode == "DM1002") {
+            debugPrint('Supply Data Response is not null');
+          }
+          // else {
+          //   Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
+          // }
+        }
+
+      });
+    });
+    return pendingSupplyListResponse;
+  }
+
+  pendingSupplyDetails(String supplyHistoryId,String siteId) async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    String accessKey = await repository.getAccessKeyNew();
+    String empId = "empty";
+    String userSecurityKey = "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+
+      String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
+
+      repository.getPendingSupplyDetails(accessKey, userSecurityKey, url).then((data) {
+        Get.back();
+        if (data == null) {
+          debugPrint('Supply Detail Response is null');
+        } else {
+          this.pendingSupplyDetailsResponse = data;
+          if (pendingSupplyDetailsResponse.respCode == "DM1002") {
+            debugPrint('Supply Detail Response is not null');
+          }
+          // else {
+          //   Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
+          // }
+        }
+
+      });
+    });
+    return pendingSupplyDetailsResponse;
+  }
+
+  updatePendingSupplyDetails(Map<String, dynamic> jsonData) async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    String accessKey = await repository.getAccessKeyNew();
+    String userSecurityKey = "empty";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      String url = "${UrlConstants.updatePendingSupply}";
+      repository.updatePendingSupplyDetails(accessKey, userSecurityKey, url,jsonData).then((data) {
+        Get.back();
+        if (data == null) {
+          debugPrint('Update Supply Response is null');
+        } else {
+          var dataValue = data;
+          if(dataValue['response']['respCode']=="DM1002"){
+            Get.dialog(CustomDialogs().showPendingSupplyData(dataValue['response']['respMsg']));
+          }else {
+            Get.dialog(
+                CustomDialogs().errorDialog(dataValue['response']['respMsg']));
+          }
+        }
+      });
+    });
+  }
+
 
 }

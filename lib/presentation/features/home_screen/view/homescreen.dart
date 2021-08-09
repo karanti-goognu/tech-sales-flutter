@@ -123,9 +123,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
 
 
-
-
-
       _homeController.employeeName = prefs.getString(StringConstants.employeeName);
 
       // MoEngage implementation done here ....

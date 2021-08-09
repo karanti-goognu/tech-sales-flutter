@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -67,7 +68,8 @@ class UpdateServiceRequestController extends GetxController {
             confirm: MaterialButton(
               onPressed: () {
                   Get.back();
-                  Get.toNamed(Routes.HOME_SCREEN);
+                  Get.offAll(HomeScreen());
+                  // Get.toNamed(Routes.HOME_SCREEN);
                   },
               child: Text('OK'),
             ),
