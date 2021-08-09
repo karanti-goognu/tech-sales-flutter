@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_name_list.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -413,7 +414,12 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      Chip(
+                                                      GestureDetector(
+                                                          onTap: (){
+
+                                                            Get.to(InfluencerNameList());
+                                                          },
+                                                          child: Chip(
                                                         shape: StadiumBorder(
                                                             side: BorderSide(
                                                                 color: HexColor(
@@ -448,7 +454,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                             ],
                                                           ),
                                                         ),
-                                                      ),
+                                                      )),
                                                       GestureDetector(
                                                         onTap: () {
                                                           Get.dialog(showContactDialog(
