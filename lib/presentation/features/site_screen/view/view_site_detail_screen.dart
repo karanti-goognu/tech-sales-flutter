@@ -4160,12 +4160,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                     _listInfluencerDetail[
                                                     index]
                                                         .id.text = inflDetail
-                                                        .infl_id.toString();
-                                                    _listInfluencerDetail[
-                                                    index]
-                                                        .ilpIntrested.text =
-                                                        inflDetail
-                                                            .ilpIntrested;
+                                                        .inflId.toString();
+                                                    //_listInfluencerDetail[
+                                                    // index]
+                                                    //     .ilpIntrested.text =
+                                                    //     inflDetail
+                                                    //         .ilpIntrested;
                                                     // _listInfluencerDetail[
                                                     //             index]
                                                     //         .createdOn =

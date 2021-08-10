@@ -2542,13 +2542,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         _listInfluencerDetail[
                                                         index]
                                                             .id.text =
-                                                            inflDetail.infl_id
+                                                            inflDetail.inflId
                                                                 .toString();
-                                                        _listInfluencerDetail[
-                                                        index]
-                                                            .ilpIntrested.text =
-                                                            inflDetail
-                                                                .ilpIntrested;
+                                                        // _listInfluencerDetail[
+                                                        // index]
+                                                        //     .ilpIntrested.text =
+                                                        //     inflDetail
+                                                        //         .ilpIntrested;
                                                         // _listInfluencerDetail[
                                                         //             index]
                                                         //         .createdOn =
