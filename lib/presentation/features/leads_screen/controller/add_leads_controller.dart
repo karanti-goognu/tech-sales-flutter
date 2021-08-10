@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
@@ -166,5 +167,23 @@ class AddLeadsController extends GetxController {
       await repository.updateLeadsData(this.accessKeyResponse.accessKey,
           userSecurityKey, updateRequestModel, imageList, context, leadId,from);
     });
+  }
+
+  Future<InfluencerDetailModel> getInfNewData(String accessKey) async {
+    InfluencerDetailModel _infDetailModel;
+    InfluencerModel _influencerModel;
+    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
+    //It is working fine without the progress indicator
+    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    // String accessKey = await repository.getAccessKey();
+
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      _infDetailModel = await repository.getInflNewDetailsData(accessKey, userSecurityKey, this.phoneNumber);
+      _influencerModel = _infDetailModel.influencerModel;
+    });
+    return _infDetailModel;
   }
 }

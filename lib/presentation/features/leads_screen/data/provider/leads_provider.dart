@@ -6,6 +6,7 @@ import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
@@ -530,6 +531,36 @@ class MyApiClientLeads {
     } catch (_) {
       print('exception at Lead repo ${_.toString()}');
     }
+  }
+
+  Future<InfluencerDetailModel> getInfNewData(String accessKey,
+      String userSecretKey, String contact) async {
+    InfluencerDetailModel infDetailModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    try {
+      version = VersionClass.getVersion();
+      var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        Get.back();
+        print("======$data");
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          infDetailModel = InfluencerDetailModel.fromJson(json.decode(response.body));
+          // print('URL ${UrlConstants.getInfDetails + "$contact"}');
+        }} else {
+        print('error');
+      }
+    }
+    catch (e) {
+      print("Exception at EG Repo $e");
+    }
+
+    return infDetailModel;
   }
 
 }

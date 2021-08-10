@@ -306,7 +306,7 @@ class MyApiClientSites {
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));
-    log(json.encode(updateDataRequest));
+    log(""+json.encode(updateDataRequest));
     updateDataRequest['siteStageHistorys'].forEach((e) => print(e));
 
     for (var file in list) {

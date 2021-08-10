@@ -65,5 +65,10 @@ class MyRepositoryLeads {
         updateRequestModel, imageList, context, leadId,from);
   }
 
+  getInflNewDetailsData(String accessKey, String userSecurityKey, phoneNumber) {
+    return apiClient.getInfNewData(
+        accessKey, userSecurityKey, phoneNumber);
+  }
+
 
 }
