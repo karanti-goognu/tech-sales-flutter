@@ -6454,8 +6454,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
         "subdealerId": visitDataSubDealer,
       };
-      //  print(updateDataRequest);
-      log('updateDataRequest---- $updateDataRequest');
+      // log('updateDataRequest---- $updateDataRequest');
       _siteController.updateLeadData(
           updateDataRequest, _imageList, context, widget.siteId);
     });
@@ -6501,8 +6500,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue:
-                  siteSupplyHistory.receiptNumber,
+                  initialValue: (siteSupplyHistory.receiptNumber!=null && siteSupplyHistory.receiptNumber!="null")?siteSupplyHistory.receiptNumber:"",
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -6615,8 +6613,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue:
-                  siteSupplyHistory.supplyDate,
+                  initialValue: siteSupplyHistory.supplyDate,
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,

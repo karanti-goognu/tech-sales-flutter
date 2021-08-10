@@ -59,7 +59,6 @@ class _LeadScreenState extends State<LeadScreen> {
     } catch (_) {
       print('${_.toString()}');
     }*/
-    print("------------------------------");
     _leadsFilterController.leadsListResponse.leadsEntity = null;
     print(_leadsFilterController.offset);
     internetChecking().then((result) {

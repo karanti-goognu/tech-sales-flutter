@@ -548,6 +548,9 @@ class SiteController extends GetxController {
   }
 
   pendingSupplyList() async {
+    Future.delayed(Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     String accessKey = await repository.getAccessKeyNew();
     String empId = "empty";
     String userSecurityKey = "empty";
@@ -559,6 +562,7 @@ class SiteController extends GetxController {
       String url = "${UrlConstants.getPendingSupplyList+empId}";
       debugPrint('Url is : $url');
       repository.getPendingSupplyData(accessKey, userSecurityKey, url).then((data) {
+        Get.back();
         if (data == null) {
           debugPrint('Supply Data Response is null');
         } else {
@@ -577,8 +581,7 @@ class SiteController extends GetxController {
   }
 
   pendingSupplyDetails(String supplyHistoryId,String siteId) async {
-    Future.delayed(
-        Duration.zero,
+    Future.delayed(Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     String accessKey = await repository.getAccessKeyNew();

@@ -1,9 +1,6 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
-import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/pending_supply_list.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_list_screen.dart';
@@ -11,16 +8,12 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/sit
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
-import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SiteScreen extends StatefulWidget {
   @override
@@ -40,17 +33,15 @@ class _SiteScreenState extends State<SiteScreen> {
   int _tabNumber = 0;
   double toolbarHeight;
 
-
   @override
   void initState() {
     super.initState();
-    toolbarHeight = SizeConfig.screenHeight*.18;
+    toolbarHeight = SizeConfig.screenHeight * .18;
     _siteController.sitesListResponse.sitesEntity = null;
     clearFilterSelection();
-
   }
 
-  clearFilterSelection(){
+  clearFilterSelection() {
     _siteController.selectedFilterCount = 0;
     _siteController.selectedSiteStage = StringConstants.empty;
     _siteController.selectedSiteStageValue = StringConstants.empty;
@@ -71,12 +62,11 @@ class _SiteScreenState extends State<SiteScreen> {
     _siteController.offset = 0;
   }
 
-  void disposeController(BuildContext context){
+  void disposeController(BuildContext context) {
 //or what you wnat to dispose/clear
     _siteController?.dispose();
     _siteController.offset = 0;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -86,272 +76,298 @@ class _SiteScreenState extends State<SiteScreen> {
     print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
-         // disposeController(context);
+          // disposeController(context);
           Get.offNamed(Routes.HOME_SCREEN);
           return true;
         },
         child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          extendBody: true,
-          backgroundColor: ColorConstants.backgroundColorGrey,
-          appBar: AppBar(
-            backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: toolbarHeight,
-            centerTitle: false,
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  // mainAxisSize: MainAxisSize.max,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            length: 2,
+            child: Scaffold(
+              extendBody: true,
+              backgroundColor: ColorConstants.backgroundColorGrey,
+              appBar: AppBar(
+                backgroundColor: ColorConstants.appBarColor,
+                toolbarHeight: toolbarHeight,
+                centerTitle: false,
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      _tabNumber==0? "OPEN SITES":"PENDING SUPPLY",
-                      style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontFamily: "Muli"),
-                    ),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    _tabNumber==1?Container(): FlatButton(
-                      onPressed: () {
-                        _settingModalBottomSheet(context);
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.white)),
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: Row(
-                          children: [
-                            //  Icon(Icons.exposure_zero_outlined),
-                            Container(
-                                height: 18,
-                                width: 18,
-                                // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                                decoration: new BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Colors.black, width: 0.0),
-                                  borderRadius:
-                                      new BorderRadius.all(Radius.circular(3)),
+                    Row(
+                      // mainAxisSize: MainAxisSize.max,
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _tabNumber == 0 ? "OPEN SITES" : "PENDING SUPPLY",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontFamily: "Muli"),
+                        ),
+                        Expanded(
+                          child: Container(),
+                        ),
+                        _tabNumber == 1
+                            ? Container()
+                            : FlatButton(
+                                onPressed: () {
+                                  _settingModalBottomSheet(context);
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Colors.white)),
+                                color: Colors.transparent,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Row(
+                                    children: [
+                                      //  Icon(Icons.exposure_zero_outlined),
+                                      Container(
+                                          height: 18,
+                                          width: 18,
+                                          // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                                          decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: Colors.black,
+                                                width: 0.0),
+                                            borderRadius: new BorderRadius.all(
+                                                Radius.circular(3)),
+                                          ),
+                                          child: Center(
+                                              child: Obx(() => Text(
+                                                  "${_siteController.selectedFilterCount}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      //fontFamily: 'Raleway',
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight
+                                                          .normal))))),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                          'FILTER',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                child: Center(
-                                    child: Obx(() => Text(
-                                        "${_siteController.selectedFilterCount}",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            //fontFamily: 'Raleway',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.normal))))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                'FILTER',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
                               ),
+                        _tabNumber == 1
+                            ? Container()
+                            : IconButton(
+                                icon: Icon(Icons.search),
+                                onPressed: () =>
+                                    Get.toNamed(Routes.SEARCH_SITES_SCREEN),
+                              )
+                      ],
+                    ),
+                    _tabNumber == 1
+                        ? Container()
+                        : SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController.assignToDate ==
+                                        StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                        label: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                                "${_siteController.assignFromDate} to ${_siteController.assignToDate}")
+                                          ],
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                        shape:
+                                            StadiumBorder(side: BorderSide()),
+                                        onSelected: (bool value) {
+                                          print("selected");
+                                        },
+                                      )),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController.selectedSiteStatus ==
+                                        StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                        label: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                                "${_siteController.selectedSiteStatus}")
+                                          ],
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                        shape:
+                                            StadiumBorder(side: BorderSide()),
+                                        onSelected: (bool value) {
+                                          print("selected");
+                                        },
+                                      )),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController.selectedSiteStage ==
+                                        StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                        label: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                                "${_siteController.selectedSiteStage}")
+                                          ],
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                        shape:
+                                            StadiumBorder(side: BorderSide()),
+                                        onSelected: (bool value) {
+                                          print("selected");
+                                        },
+                                      )),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController
+                                            .selectedSitePincode ==
+                                        StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                        label: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                                "${_siteController.selectedSitePincode}")
+                                          ],
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                        shape:
+                                            StadiumBorder(side: BorderSide()),
+                                        onSelected: (bool value) {
+                                          print("selected");
+                                        },
+                                      )),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController
+                                            .selectedSiteInfluencerCat ==
+                                        StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                        label: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                                "${_siteController.selectedSiteInfluencerCat}")
+                                          ],
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                        shape:
+                                            StadiumBorder(side: BorderSide()),
+                                        onSelected: (bool value) {
+                                          print("selected");
+                                        },
+                                      )),
+                              ],
+                            ))
+                  ],
+                ),
+                automaticallyImplyLeading: false,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(50),
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        TabBar(
+                          indicatorColor: Color(0xFF004280),
+                          labelColor: Color(0xFF004280),
+                          unselectedLabelColor: Colors.grey,
+                          labelStyle: TextStyle(
+                              fontSize: 14.0,
+                              fontFamily: 'Muli',
+                              fontWeight: FontWeight.w600),
+                          //For Selected tab
+                          unselectedLabelStyle: TextStyle(
+                              fontSize: 14.0,
+                              fontFamily: 'Muli',
+                              fontWeight: FontWeight.w600),
+                          tabs: [
+                            Tab(
+                              text: "ALL SITES",
+                            ),
+                            Tab(
+                              text: "PENDING SUPPLY",
                             ),
                           ],
-                        ),
-                      ),
-                    ),
-                    _tabNumber==1?Container():IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () => Get.toNamed(Routes.SEARCH_SITES_SCREEN),
-                    )
-                  ],
-                ),
-                _tabNumber==1?Container():SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Obx(() => (_siteController.assignToDate ==
-                                StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                                label: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check,
-                                      color: Colors.black,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                        "${_siteController.assignFromDate} to ${_siteController.assignToDate}")
-                                  ],
-                                ),
-                                backgroundColor: Colors.transparent,
-                                shape: StadiumBorder(side: BorderSide()),
-                                onSelected: (bool value) {
-                                  print("selected");
-                                },
-                              )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Obx(() => (_siteController.selectedSiteStatus ==
-                                StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                                label: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check,
-                                      color: Colors.black,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                        "${_siteController.selectedSiteStatus}")
-                                  ],
-                                ),
-                                backgroundColor: Colors.transparent,
-                                shape: StadiumBorder(side: BorderSide()),
-                                onSelected: (bool value) {
-                                  print("selected");
-                                },
-                              )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Obx(() => (_siteController.selectedSiteStage ==
-                                StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                                label: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check,
-                                      color: Colors.black,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text("${_siteController.selectedSiteStage}")
-                                  ],
-                                ),
-                                backgroundColor: Colors.transparent,
-                                shape: StadiumBorder(side: BorderSide()),
-                                onSelected: (bool value) {
-                                  print("selected");
-                                },
-                              )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Obx(() => (_siteController.selectedSitePincode ==
-                                StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                                label: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check,
-                                      color: Colors.black,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                        "${_siteController.selectedSitePincode}")
-                                  ],
-                                ),
-                                backgroundColor: Colors.transparent,
-                                shape: StadiumBorder(side: BorderSide()),
-                                onSelected: (bool value) {
-                                  print("selected");
-                                },
-                              )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Obx(() => (_siteController.selectedSiteInfluencerCat ==
-                                StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                                label: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check,
-                                      color: Colors.black,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                        "${_siteController.selectedSiteInfluencerCat}")
-                                  ],
-                                ),
-                                backgroundColor: Colors.transparent,
-                                shape: StadiumBorder(side: BorderSide()),
-                                onSelected: (bool value) {
-                                  print("selected");
-                                },
-                              )),
-                      ],
-                    ))
-              ],
-            ),
-            automaticallyImplyLeading: false,
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(50),
-              child: Container(
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    TabBar(
-                      indicatorColor: Color(0xFF004280),
-                      labelColor:Color(0xFF004280),
-                      unselectedLabelColor: Colors.grey,
-                      labelStyle: TextStyle(fontSize: 14.0,fontFamily: 'Muli',fontWeight: FontWeight.w600),  //For Selected tab
-                      unselectedLabelStyle: TextStyle(fontSize: 14.0,fontFamily: 'Muli',fontWeight: FontWeight.w600),
-                      tabs: [
-                        Tab(
-                          text: "ALL SITES",
-                        ),
-                        Tab(
-                          text: "PENDING SUPPLY",
+                          onTap: (i) {
+                            setState(() {
+                              _tabNumber = i;
+                            });
+                          },
                         ),
                       ],
-                      onTap: (i) {
-                        setState(() {
-                          _tabNumber = i;
-                        });
-                      },
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-          floatingActionButton:
-              SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: BottomNavigator(),
-          body: TabBarView(
-            children: [
-              SiteListScreen(),
-              PendingSupplyListScreen(),
-            ],
-          ),
-        )
-        ));
+              floatingActionButton:
+                  SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              bottomNavigationBar: BottomNavigator(),
+              body: Container(
+                  padding: EdgeInsets.only(bottom: 50),
+                  child: TabBarView(
+                    children: [
+                      SiteListScreen(),
+                      PendingSupplyListScreen(),
+                    ],
+                  )),
+            )));
   }
-
-
 
   void _settingModalBottomSheet(context) {
     showModalBottomSheet(
@@ -360,24 +376,20 @@ class _SiteScreenState extends State<SiteScreen> {
         isScrollControlled: true,
         builder: (BuildContext bc) {
           return SiteFilterWidget();
-        })
-        .whenComplete(() {
-          setState(() {
-            toolbarHeight =_siteController.selectedFilterCount==0? SizeConfig.screenHeight*.18:SizeConfig.screenHeight*.24;
-          });
-           print("ItemCount-->"+_siteController.selectedFilterCount.toString());
+        }).whenComplete(() {
+      setState(() {
+        toolbarHeight = _siteController.selectedFilterCount == 0
+            ? SizeConfig.screenHeight * .18
+            : SizeConfig.screenHeight * .24;
+      });
     });
   }
 
-
-  Widget SiteFilter (){
-
-  }
+  Widget SiteFilter() {}
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(
         border: Border.all(color: ColorConstants.dateBorderColor),
         color: Colors.white);
   }
-
 }
