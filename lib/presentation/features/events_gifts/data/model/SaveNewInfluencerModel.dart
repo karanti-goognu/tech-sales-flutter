@@ -4,13 +4,16 @@ class SaveNewInfluencerModel {
   String influencerName;
   int influencerTypeId;
   String mobileNumber;
+  String ilpRegFlag;
 
   SaveNewInfluencerModel(
       {this.ilpIntrested,
         this.influencerCategoryId,
         this.influencerName,
         this.influencerTypeId,
-        this.mobileNumber});
+        this.mobileNumber,
+        this.ilpRegFlag
+      });
 
   SaveNewInfluencerModel.fromJson(Map<String, dynamic> json) {
     ilpIntrested = json['ilp_intrested'];
@@ -18,6 +21,7 @@ class SaveNewInfluencerModel {
     influencerName = json['influencer_name'];
     influencerTypeId = json['influencer_type_id'];
     mobileNumber = json['mobile_number'];
+    ilpRegFlag = json['ilpRegFlag'];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +31,7 @@ class SaveNewInfluencerModel {
     data['influencer_name'] = this.influencerName;
     data['influencer_type_id'] = this.influencerTypeId;
     data['mobile_number'] = this.mobileNumber;
+    data['ilpRegFlag'] = this.ilpRegFlag;
     return data;
   }
 }

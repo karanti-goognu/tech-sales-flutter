@@ -1,12 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -18,35 +19,34 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class InfluencerNameList extends StatefulWidget {
+  String influencerName;
+  String influencerID;
+  InfluencerNameList({this.influencerID, this.influencerName});
+
   @override
   _InfluencerNameListState createState() => _InfluencerNameListState();
+
 }
 
 
 PersistentBottomSheetController controller;
 
 class _InfluencerNameListState extends State<InfluencerNameList> {
-  LeadsFilterController _leadsFilterController = Get.find();
+  SiteController _siteController = Get.find();
   SplashController _splashController = Get.find();
-  DateTime selectedDate = DateTime.now();
-  String selectedDateString;
 
-  int selectedPosition = 0;
-
-  int currentTab = 0;
-
-  var bottomSheetController;
+  
+  
   ScrollController _scrollController;
 
   @override
   void initState() {
-    print("Leads initstate called");
-
     super.initState();
+    _siteController.sitesListResponse.sitesEntity = null;
     internetChecking().then((result) {
       if (result)
-        _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
-      _leadsFilterController.offset = 0;
+        _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
+      _siteController.offset = 0;
     });
 
     _scrollController = ScrollController();
@@ -57,25 +57,22 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       print('hello');
-      _leadsFilterController.offset += 10;
-      print(_leadsFilterController.offset);
-      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+      _siteController.offset += 10;
+      print(_siteController.offset);
+      _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    _leadsFilterController?.dispose();
-    _leadsFilterController.offset = 0;
+    _siteController?.dispose();
+    _siteController.offset = 0;
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    selectedDateString = formatter.format(selectedDate);
-    // print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
           // disposeController(context);
@@ -101,173 +98,173 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "INFL. NAME",
+                      "${widget.influencerName}".toUpperCase(),
                       style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 22,
                           color: Colors.white,
                           fontFamily: "Muli"),
                     ),
-                    FlatButton(
-                      onPressed: () {
-                        // _settingModalBottomSheet(context);
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.white)),
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: Row(
-                          children: [
-                            //  Icon(Icons.exposure_zero_outlined),
-                            Container(
-                                height: 18,
-                                width: 18,
-                                // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                                decoration: new BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Colors.black, width: 0.0),
-                                  borderRadius:
-                                  new BorderRadius.all(Radius.circular(3)),
-                                ),
-                                child: Center(
-                                    child: Obx(() => Text(
-                                        "${_leadsFilterController.selectedFilterCount}",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            //fontFamily: 'Raleway',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.normal))))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                'FILTER',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
+                    // FlatButton(
+                    //   onPressed: () {
+                    //     // _settingModalBottomSheet(context);
+                    //   },
+                    //   shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(18.0),
+                    //       side: BorderSide(color: Colors.white)),
+                    //   color: Colors.transparent,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 5),
+                    //     child: Row(
+                    //       children: [
+                    //         //  Icon(Icons.exposure_zero_outlined),
+                    //         Container(
+                    //             height: 18,
+                    //             width: 18,
+                    //             // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                    //             decoration: new BoxDecoration(
+                    //               color: Colors.white,
+                    //               border: Border.all(
+                    //                   color: Colors.black, width: 0.0),
+                    //               borderRadius:
+                    //               new BorderRadius.all(Radius.circular(3)),
+                    //             ),
+                    //             child: Center(
+                    //                 child: Obx(() => Text(
+                    //                     "${_siteController.selectedFilterCount}",
+                    //                     style: TextStyle(
+                    //                         color: Colors.black,
+                    //                         //fontFamily: 'Raleway',
+                    //                         fontSize: 12,
+                    //                         fontWeight: FontWeight.normal))))),
+                    //         Padding(
+                    //           padding: const EdgeInsets.only(left: 8.0),
+                    //           child: Text(
+                    //             'FILTER',
+                    //             style: TextStyle(
+                    //                 color: Colors.white, fontSize: 18),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
-                SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Obx(() => (_leadsFilterController.assignToDate ==
-                            StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                          label: Row(
-                            children: [
-                              Icon(
-                                Icons.check,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                  "${_leadsFilterController.assignFromDate} to ${_leadsFilterController.assignToDate}")
-                            ],
-                          ),
-                          backgroundColor: Colors.transparent,
-                          shape: StadiumBorder(side: BorderSide()),
-                          onSelected: (bool value) {
-                            print("selected");
-                          },
-                        )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Obx(() => (_leadsFilterController.selectedLeadStatus ==
-                            StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                          label: Row(
-                            children: [
-                              Icon(
-                                Icons.check,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                  "${_leadsFilterController.selectedLeadStatus}")
-                            ],
-                          ),
-                          backgroundColor: Colors.transparent,
-                          shape: StadiumBorder(side: BorderSide()),
-                          onSelected: (bool value) {
-                            print("selected");
-                          },
-                        )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Obx(() => (_leadsFilterController.selectedLeadStage ==
-                            StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                          label: Row(
-                            children: [
-                              Icon(
-                                Icons.check,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                  "${_leadsFilterController.selectedLeadStage}")
-                            ],
-                          ),
-                          backgroundColor: Colors.transparent,
-                          shape: StadiumBorder(side: BorderSide()),
-                          onSelected: (bool value) {
-                            print("selected");
-                          },
-                        )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Obx(() =>
-                        (_leadsFilterController.selectedLeadPotential ==
-                            StringConstants.empty)
-                            ? Container()
-                            : FilterChip(
-                          label: Row(
-                            children: [
-                              Icon(
-                                Icons.check,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                  "${_leadsFilterController.selectedLeadPotential}")
-                            ],
-                          ),
-                          backgroundColor: Colors.transparent,
-                          shape: StadiumBorder(side: BorderSide()),
-                          onSelected: (bool value) {
-                            print("selected");
-                          },
-                        )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                      ],
-                    ))
+                // SingleChildScrollView(
+                //     scrollDirection: Axis.horizontal,
+                //     child: Row(
+                //       children: [
+                //         SizedBox(
+                //           width: 8,
+                //         ),
+                //         Obx(() => (_siteController.assignToDate ==
+                //             StringConstants.empty)
+                //             ? Container()
+                //             : FilterChip(
+                //           label: Row(
+                //             children: [
+                //               Icon(
+                //                 Icons.check,
+                //                 color: Colors.black,
+                //               ),
+                //               SizedBox(
+                //                 width: 4,
+                //               ),
+                //               Text(
+                //                   "${_siteController.assignFromDate} to ${_siteController.assignToDate}")
+                //             ],
+                //           ),
+                //           backgroundColor: Colors.transparent,
+                //           shape: StadiumBorder(side: BorderSide()),
+                //           onSelected: (bool value) {
+                //             print("selected");
+                //           },
+                //         )),
+                //         SizedBox(
+                //           width: 8,
+                //         ),
+                //         Obx(() => (_siteController.selectedLeadStatus ==
+                //             StringConstants.empty)
+                //             ? Container()
+                //             : FilterChip(
+                //           label: Row(
+                //             children: [
+                //               Icon(
+                //                 Icons.check,
+                //                 color: Colors.black,
+                //               ),
+                //               SizedBox(
+                //                 width: 4,
+                //               ),
+                //               Text(
+                //                   "${_siteController.selectedLeadStatus}")
+                //             ],
+                //           ),
+                //           backgroundColor: Colors.transparent,
+                //           shape: StadiumBorder(side: BorderSide()),
+                //           onSelected: (bool value) {
+                //             print("selected");
+                //           },
+                //         )),
+                //         SizedBox(
+                //           width: 8,
+                //         ),
+                //         Obx(() => (_siteController.selectedLeadStage ==
+                //             StringConstants.empty)
+                //             ? Container()
+                //             : FilterChip(
+                //           label: Row(
+                //             children: [
+                //               Icon(
+                //                 Icons.check,
+                //                 color: Colors.black,
+                //               ),
+                //               SizedBox(
+                //                 width: 4,
+                //               ),
+                //               Text(
+                //                   "${_siteController.selectedLeadStage}")
+                //             ],
+                //           ),
+                //           backgroundColor: Colors.transparent,
+                //           shape: StadiumBorder(side: BorderSide()),
+                //           onSelected: (bool value) {
+                //             print("selected");
+                //           },
+                //         )),
+                //         SizedBox(
+                //           width: 8,
+                //         ),
+                //         Obx(() =>
+                //         (_siteController.selectedLeadPotential ==
+                //             StringConstants.empty)
+                //             ? Container()
+                //             : FilterChip(
+                //           label: Row(
+                //             children: [
+                //               Icon(
+                //                 Icons.check,
+                //                 color: Colors.black,
+                //               ),
+                //               SizedBox(
+                //                 width: 4,
+                //               ),
+                //               Text(
+                //                   "${_siteController.selectedLeadPotential}")
+                //             ],
+                //           ),
+                //           backgroundColor: Colors.transparent,
+                //           shape: StadiumBorder(side: BorderSide()),
+                //           onSelected: (bool value) {
+                //             print("selected");
+                //           },
+                //         )),
+                //         SizedBox(
+                //           width: 8,
+                //         ),
+                //       ],
+                //     ))
               ],
             ),
             automaticallyImplyLeading: false,
@@ -288,7 +285,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                     children: [
                       Obx(
                             () => Text(
-                          "Total Count : ${(_leadsFilterController.leadsListResponse.totalLeadCount == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadCount}",
+                          "Total Count : ${(_siteController.sitesListResponse.totalSiteCount == null) ? 0 : _siteController.sitesListResponse.totalSiteCount}",
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal * 3.7,
@@ -297,7 +294,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                         ),
                       ),
                       Obx(() => Text(
-                        "Total Potential : ${(_leadsFilterController.leadsListResponse.totalLeadPotential == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadPotential}",
+                        "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : _siteController.sitesListResponse.totalSitePotential}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: "Muli",
@@ -308,71 +305,71 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                     ],
                   ),
                 ),
-                Padding(
-                    padding:
-                    EdgeInsets.only(left: 10.0, right: 5.0, bottom: 5),
-                    child:Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: Container(
-                                    width: 10,
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: HexColor("#1C99D4")),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3.0),
-                                  child: Text(
-                                    "Tele-Verified",
-                                    style: TextStyle(
-                                      fontFamily: "Muli",
-                                      fontSize: 14,
-                                      // color: HexColor("#FFFFFF99"),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: Container(
-                                    width: 10,
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: HexColor("#39B54A")),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3.0),
-                                  child: Text(
-                                    "Phy-Verified",
-                                    style: TextStyle(
-                                      fontFamily: "Muli",
-                                      fontSize: 14,
-                                      // color: HexColor("#FFFFFF99"),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),),
+                // Padding(
+                //     padding:
+                //     EdgeInsets.only(left: 10.0, right: 5.0, bottom: 5),
+                //     child:Row(
+                //         mainAxisAlignment: MainAxisAlignment.start,
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Padding(
+                //             padding: const EdgeInsets.only(right: 8),
+                //             child: Row(
+                //               children: [
+                //                 Padding(
+                //                   padding: const EdgeInsets.only(top: 4.0),
+                //                   child: Container(
+                //                     width: 10,
+                //                     height: 10,
+                //                     decoration: BoxDecoration(
+                //                         shape: BoxShape.circle,
+                //                         color: HexColor("#1C99D4")),
+                //                   ),
+                //                 ),
+                //                 Padding(
+                //                   padding: const EdgeInsets.only(left: 3.0),
+                //                   child: Text(
+                //                     "Tele-Verified",
+                //                     style: TextStyle(
+                //                       fontFamily: "Muli",
+                //                       fontSize: 14,
+                //                       // color: HexColor("#FFFFFF99"),
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //           Padding(
+                //             padding: const EdgeInsets.only(right: 8),
+                //             child: Row(
+                //               children: [
+                //                 Padding(
+                //                   padding: const EdgeInsets.only(top: 4.0),
+                //                   child: Container(
+                //                     width: 10,
+                //                     height: 10,
+                //                     decoration: BoxDecoration(
+                //                         shape: BoxShape.circle,
+                //                         color: HexColor("#39B54A")),
+                //                   ),
+                //                 ),
+                //                 Padding(
+                //                   padding: const EdgeInsets.only(left: 3.0),
+                //                   child: Text(
+                //                     "Phy-Verified",
+                //                     style: TextStyle(
+                //                       fontFamily: "Muli",
+                //                       fontSize: 14,
+                //                       // color: HexColor("#FFFFFF99"),
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //         ],
+                //       ),),
                 Expanded(child: leadsDetailWidget()),
                 Container(
                   height: 70,
@@ -386,41 +383,40 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
 
   Widget leadsDetailWidget() {
     return Obx(
-          () => (_leadsFilterController == null)
+          () => (_siteController == null)
           ? Container(
         child: Center(
-          child: Text("Leads controller  is empty!!"),
+          child: Text("Site controller  is empty!!"),
         ),
       )
-          : (_leadsFilterController.leadsListResponse == null)
+          : (_siteController.sitesListResponse == null)
           ? Container(
         child: Center(
-          child: Text("Leads list response  is empty!!"),
+          child: Text("Site list response  is empty!!"),
         ),
       )
-          : (_leadsFilterController.leadsListResponse.leadsEntity == null)
+          : (_siteController.sitesListResponse.sitesEntity == null)
           ? Container(
         child: Center(
-          child: Text("Leads list is empty!!"),
+          child: Text("Site list is empty!!"),
         ),
       )
-          : (_leadsFilterController
-          .leadsListResponse.leadsEntity.length ==
+          : (_siteController
+          .sitesListResponse.sitesEntity.length ==
           0)
           ? Container(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("You don't have any leads..!!"),
+              Text("You don't have any site..!!"),
               SizedBox(
                 height: 10,
               ),
               RaisedButton(
                 onPressed: () {
-                  _leadsFilterController.offset = 0;
-                  _leadsFilterController.getAccessKey(
-                      RequestIds.GET_LEADS_LIST);
+                  _siteController.offset = 0;
+                  _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
                 },
                 color: ColorConstants.buttonNormalColor,
                 child: Text(
@@ -434,15 +430,15 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
       )
           : ListView.builder(
           controller: _scrollController,
-          itemCount: _leadsFilterController
-              .leadsListResponse.leadsEntity.length,
+          itemCount: _siteController
+              .sitesListResponse.sitesEntity.length,
           padding: const EdgeInsets.only(
-              left: 6.0, right: 6, bottom: 10),
+              left: 6.0, right: 6, bottom: 50,top:5),
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
                 print(
-                    "Site ID: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId}");
+                    "Site ID: ${_siteController.sitesListResponse.sitesEntity[index].siteId}");
               },
               child: Card(
                 clipBehavior: Clip.antiAlias,
@@ -451,25 +447,25 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                 margin: EdgeInsets.all(4.0),
                 color: Colors.white,
                 child: Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                        left: BorderSide(
-                          color: (_leadsFilterController
-                              .leadsListResponse
-                              .leadsEntity[index]
-                              .leadStageId ==
-                              1)
-                              ? HexColor("#F9A61A")
-                              : (_leadsFilterController
-                              .leadsListResponse
-                              .leadsEntity[index]
-                              .leadStageId ==
-                              2)
-                              ? HexColor("#007CBF")
-                              : HexColor("#39B54A"),
-                          width: 6,
-                        )),
-                  ),
+                  // decoration: BoxDecoration(
+                  //   border: Border(
+                  //       left: BorderSide(
+                  //         color: (_siteController
+                  //             .sitesListResponse
+                  //             .sitesEntity[index]
+                  //             .siteStageId ==
+                  //             1)
+                  //             ? HexColor("#F9A61A")
+                  //             : (_siteController
+                  //             .sitesListResponse
+                  //             .sitesEntity[index]
+                  //             .siteStageId ==
+                  //             2)
+                  //             ? HexColor("#007CBF")
+                  //             : HexColor("#39B54A"),
+                  //         width: 6,
+                  //       )),
+                  // ),
                   child: Column(
                     children: [
                       Row(
@@ -478,7 +474,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                         children: [
                           Padding(padding: const EdgeInsets.only(top: 2.0,left: 7),
                             child:  Text(
-                              "Follow-up Date XXXX",
+                              "",
                               style: TextStyle(
                                   color:
                                   Colors.black38,
@@ -513,7 +509,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                   ),
                                   Obx(
                                         () => Text(
-                                      "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
+                                      "${_siteController.sitesListResponse.sitesEntity[index].sitePotentialMt}MT",
                                       style: TextStyle(
                                         // color: Colors.black38,
                                           fontSize: SizeConfig
@@ -544,7 +540,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                   2.0,left: 7),
                               child: Obx(
                                     () => Text(
-                                  "Site ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
+                                  "Site ID (${_siteController.sitesListResponse.sitesEntity[index].siteId})",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontFamily: "Muli",
@@ -555,11 +551,16 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                 ),
                               )),
                           Padding(padding: const EdgeInsets.only(top: 2.0,right: 7),
-                            child: Text(
-                              "Retention Site",
+                            child: Text( (_siteController.sitesListResponse.sitesEntity[index]
+                                .siteOppertunityId ==
+                                null)
+                                ? ""
+                                : printOpportuityStatus(
+                                _siteController.sitesListResponse.sitesEntity[index]
+                                    .siteOppertunityId),
                               style: TextStyle(
                                   color: Colors.blue,
-                                  fontSize: 14,
+                                  fontSize: 9,
                                   fontFamily: "Muli",
                                   fontWeight: FontWeight.bold,
                                   fontStyle: FontStyle.normal
@@ -575,10 +576,10 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                           Padding(
                               padding:
                               const EdgeInsets.only(top:
-                                  2.0,left: 7),
+                                  5.0,left: 7),
                               child: Obx(
                                     () => Text(
-                                  "District: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadDistrictName}",
+                                  "District: ${_siteController.sitesListResponse.sitesEntity[index].siteDistrict}",
                                   style: TextStyle(
                                       color:
                                       Colors.black38,
@@ -593,7 +594,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                           Padding(padding: const EdgeInsets.only(top: 2.0,right: 7),
                             child:
                           Text(
-                              "${toBeginningOfSentenceCase(_leadsFilterController.leadsListResponse.leadsEntity[index].contactName)}",
+                              "${toBeginningOfSentenceCase(_siteController.sitesListResponse.sitesEntity[index].contactName)}",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
@@ -609,7 +610,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                         mainAxisAlignment:
                         MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(padding: const EdgeInsets.only(top: 2.0,left: 7),
+                          Padding(padding: const EdgeInsets.only(top: 10.0,left: 7),
                             child:
                           Row(
                             mainAxisAlignment:
@@ -633,11 +634,9 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                           .withOpacity(
                                           0.1),
                                       label: Obx(
-                                              () =>Text(
-                                            (_splashController.splashDataModel.leadStatusEntity[(_leadsFilterController.leadsListResponse.leadsEntity[index]
-                                                .leadStatusId) -
-                                                1]
-                                                .leadStatusDesc),
+                                              () =>Text(printSiteStage(
+                                                  _siteController.sitesListResponse.sitesEntity[index]
+                                                      .siteStageId),
                                             style: TextStyle(
                                                 color: HexColor(
                                                     "#39B54A"),
@@ -660,13 +659,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                         .safeBlockHorizontal *
                                         1.3),
                                 child: Text(
-                                  " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
-                                    _leadsFilterController
-                                        .leadsListResponse
-                                        .leadsEntity[
-                                    index]
-                                        .createdOn,
-                                  ))}",
+                                  " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
                                   //  textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: SizeConfig
@@ -694,7 +687,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                         "#8DC63F"),
                                   ),
                                   Text(
-                                    // "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
+                                    // "${_siteController.sitesListResponse.sitesEntity[index].contactNumber}",
                                     " Call Contact",
                                     style: TextStyle(
                                         color: Colors
@@ -716,9 +709,9 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                             ),
                             onTap: () {
                               String num =
-                                  _leadsFilterController
-                                      .leadsListResponse
-                                      .leadsEntity[
+                                  _siteController
+                                      .sitesListResponse
+                                      .sitesEntity[
                                   index]
                                       .contactNumber;
                               launch('tel:$num');
@@ -741,7 +734,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                           mainAxisAlignment:
                           MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Exclusive Dalmia ".toUpperCase(),
+                            Text(" ".toUpperCase(),
                               style: TextStyle(
                                   color: Colors.blue[700],
                                   fontSize: 14,
@@ -750,14 +743,20 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                               ),
                             ),
                             Row(children: [
-                              Text("High".toUpperCase(), style: TextStyle(
+                              Text( (_siteController.sitesListResponse.sitesEntity[index]
+                                  .siteProbabilityWinningId ==
+                                  null)
+                                  ? ""
+                                  : printProbabilityOfWinning(
+                                  _siteController.sitesListResponse.sitesEntity[index]
+                                      .siteProbabilityWinningId), style: TextStyle(
                                 color: Colors.blue,
                                 fontSize: 14,
                                 fontFamily: "Muli",
                                 fontWeight: FontWeight.bold
                               //fontWeight: FontWeight.normal
                             ),),
-                              Icon(Icons.whatshot,color: Colors.orange,)
+                              // Icon(Icons.whatshot,color: Colors.orange,)
                             ],)
                           ],
                         ),
@@ -779,6 +778,46 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
         builder: (BuildContext bc) {
           return FilterWidget();
         });
+  }
+
+  String printSiteStage(int value) {
+    List<SiteStageEntity> data = List<SiteStageEntity>.from(_splashController
+        .splashDataModel.siteStageEntity
+        .where((i) => i.id == value));
+    if (data.length >= 1) {
+      print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
+      return "${data[0].siteStageDesc}";
+    } else {
+      print("size is 0");
+      return "";
+    }
+  }
+
+  String printOpportuityStatus(int value) {
+    List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
+        _splashController.splashDataModel.siteOpportunityStatusRepository
+            .where((i) => i.id == value));
+    if (data.length >= 1) {
+      print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
+      return "${data[0].opportunityStatus}";
+    } else {
+      print("size is 0");
+      return "";
+    }
+  }
+
+  String printProbabilityOfWinning(int value) {
+    List<SiteProbabilityWinningEntity> data = List<SiteProbabilityWinningEntity>.from(_splashController
+        .splashDataModel.siteProbabilityWinningEntity
+        .where((i) => i.id == value));
+    if (data.length >= 1) {
+      print(
+          "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
+      return "${data[0].siteProbabilityStatus}";
+    } else {
+      print("size is 0");
+      return "";
+    }
   }
 
   BoxDecoration myBoxDecoration() {

@@ -107,7 +107,7 @@ class AppController extends GetxController {
             Get.back();
             switch (requestId) {
               case RequestIds.GET_SITES_LIST:
-                _siteController.getSitesData(this.accessKeyResponse.accessKey);
+                _siteController.getSitesData(this.accessKeyResponse.accessKey,"");
                 break;
               case RequestIds.SEARCH_SITES:
                 _siteController.searchSites(this.accessKeyResponse.accessKey);

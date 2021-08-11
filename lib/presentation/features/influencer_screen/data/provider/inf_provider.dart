@@ -16,11 +16,11 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class MyApiClientEvent {
+class MyApiClientInf {
   String version;
   final http.Client httpClient;
 
-  MyApiClientEvent({@required this.httpClient});
+  MyApiClientInf({@required this.httpClient});
 
   Future getAccessKey() async {
     try {
@@ -101,6 +101,7 @@ class MyApiClientEvent {
       if (response.statusCode == 200) {
         Get.back();
         print("======$data");
+
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -229,5 +230,34 @@ class MyApiClientEvent {
     } catch (_) {
       print('exception at INF repo ${_.toString()}');
     }
+  }
+
+  Future<InfluencerResponseModel>saveNewInfluencer(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel, bool status) async {
+    InfluencerResponseModel influencerResponseModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    try{
+      version = VersionClass.getVersion();
+      var response = await http.post(Uri.parse(UrlConstants.saveIlpInfluencer + "$status"),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        body: json.encode(influencerRequestModel),
+      );
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        Get.back();
+        print("======$data");
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          influencerResponseModel = InfluencerResponseModel.fromJson(json.decode(response.body));
+        }} else {
+        print('error');
+      }
+    }
+    catch(e){
+      print("Exception at EG Repo $e");
+    }
+    return influencerResponseModel;
   }
 }

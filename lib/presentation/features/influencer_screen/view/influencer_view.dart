@@ -319,10 +319,16 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                     //     CrossAxisAlignment
                                                     //         .baseline,
                                                     children: [
-                                                      Text(
-                                                        "${_influencerListModel.response.ilpInfluencerEntity[index].inflName == null ? " " : _influencerListModel.response.ilpInfluencerEntity[index].inflName}",
-                                                        style: TextStyles
-                                                            .mulliBold18,
+                                                      Flexible(
+                                                        child: Container(
+                                                          padding: new EdgeInsets.only(right: 5.0),
+                                                          child: Text(
+                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].inflName == null ? " " : _influencerListModel.response.ilpInfluencerEntity[index].inflName}",
+                                                            style: TextStyles
+                                                                .mulliBold18,
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ),
                                                       ),
                                                       Container(
                                                         width: MediaQuery.of(
@@ -416,8 +422,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                     children: [
                                                       GestureDetector(
                                                           onTap: (){
-
-                                                            Get.to(InfluencerNameList());
+                                                            Get.to(InfluencerNameList(influencerID:_influencerListModel.response.ilpInfluencerEntity[index].membershipId,influencerName:_influencerListModel.response.ilpInfluencerEntity[index].inflName));
                                                           },
                                                           child: Chip(
                                                         shape: StadiumBorder(

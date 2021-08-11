@@ -8,7 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/provider/inf_provider.dart';
 
 class InfRepository {
-  final MyApiClientEvent apiClient;
+  final MyApiClientInf apiClient;
 
   InfRepository({this.apiClient});
 
@@ -51,5 +51,10 @@ class InfRepository {
   Future<InfluencerListModel> infSearch(String accessKey, String userSecurityKey,
       String empID, String searchText) {
     return apiClient.infSearch(accessKey, userSecurityKey, empID, searchText);
+  }
+
+  Future<InfluencerResponseModel> saveNewInfluencer(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel, bool status) async {
+    return apiClient.saveNewInfluencer(
+        accessKey, userSecretKey, influencerRequestModel, status);
   }
 }

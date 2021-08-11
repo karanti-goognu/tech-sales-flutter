@@ -504,5 +504,42 @@ Future<SaveNewInfluencerResponse>saveNewInfluencer(String accessKey, String user
   return saveNewInfluencerResponse;
 }
 
+
+
+
+
+
+
+/////////////
+//   Future<InfDetailModel> getInfdata1(String accessKey,
+//       String userSecretKey, String contact) async {
+//     InfDetailModel infDetailModel;
+//     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+//     try {
+//       version = VersionClass.getVersion();
+//       var response = await http.get(Uri.parse(UrlConstants.getInfDetails + "$contact"),
+//           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+//       var data = json.decode(response.body);
+//       if (response.statusCode == 200) {
+//         Get.back();
+//         print("======$data");
+//         if (data["resp_code"] == "DM1005") {
+//           Get.dialog(CustomDialogs().appUserInactiveDialog(
+//               data["resp_msg"]), barrierDismissible: false);
+//         }
+//         else {
+//           infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
+//           // print('URL ${UrlConstants.getInfDetails + "$contact"}');
+//         }} else {
+//         print('error');
+//       }
+//     }
+//     catch (e) {
+//       print("Exception at EG Repo $e");
+//     }
+//
+//     return infDetailModel;
+//   }
+
 }
 

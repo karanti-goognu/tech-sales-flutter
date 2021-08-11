@@ -60,7 +60,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   bool checkedValue = false;
   bool _qualificationVisible = false;
 
-  String _selectedEnrollValue;
+  String _selectedEnrollValue = "N";
   int _memberType;
   String _district;
   int _influencerCategory;
@@ -200,13 +200,19 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final name = TextFormField(
       controller: _nameController,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value.isEmpty || value.length <=0 || value == null || value == " ") {
           return 'Please enter name';
         }
         return null;
       },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
+      // inputFormatters: <TextInputFormatter>[
+      //   FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
+      // ],
+      // inputFormatters: [
+      //   FilteringTextInputFormatter.deny(RegExp('[ ]')),
+      // ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Name*",
       ),
@@ -534,12 +540,12 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final totalPotential = TextFormField(
       controller: _totalPotentialController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter Total Monthly Potential (MT)';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter Total Monthly Potential (MT)';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: FormFieldStyle.buildInputDecoration(
@@ -549,12 +555,12 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final potentialSite = TextFormField(
       controller: _potentialSiteController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter Potential sites';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter Potential sites';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -578,7 +584,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Source"),
-      validator: (value) => value == null ? 'Please select Source' : null,
+      //validator: (value) => value == null ? 'Please select Source' : null,
     );
 
     final influencerCategoryDropDwn = DropdownButtonFormField(
@@ -598,8 +604,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Influencer Category"),
-      validator: (value) =>
-          value == null ? 'Please select Influencer Category' : null,
+      // validator: (value) =>
+      //     value == null ? 'Please select Influencer Category' : null,
     );
 
     final btnSubmit = Row(

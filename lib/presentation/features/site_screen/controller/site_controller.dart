@@ -263,7 +263,10 @@ class SiteController extends GetxController {
     });
   }
 */
-  getSitesData(String accessKey) {
+  getSitesData(String accessKey,String influencer_id) {
+    Future.delayed(Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -304,15 +307,20 @@ class SiteController extends GetxController {
       if (this.selectedSiteInfluencerCatValue != StringConstants.empty) {
         siteStage = "&siteInflCat=${this.selectedSiteInfluencerCatValue}";
       }
+      String influencerID = "";
+      if (influencer_id != StringConstants.empty) {
+        influencerID = "&influencerID=${influencer_id}";
+      }
       //debugPrint('request without encryption: $body');
       debugPrint('request without encryption: ${this.offset}');
-      String url = "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat&limit=10&offset=${this.offset}";
+      String url = "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID&limit=10&offset=${this.offset}";
       //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
        debugPrint('Url is : $url');
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
+            Get.back();
         if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {

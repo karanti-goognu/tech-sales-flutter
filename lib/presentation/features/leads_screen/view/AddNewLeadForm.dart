@@ -1361,13 +1361,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                         _listInfluencerDetail[
                                                         index]
                                                             .id.text =
-                                                            inflDetail.infl_id
+                                                            inflDetail.inflId
                                                                 .toString();
                                                         _listInfluencerDetail[
                                                         index]
                                                             .ilpIntrested.text =
                                                             inflDetail
-                                                                .ilpIntrested;
+                                                                .ilpRegFlag;
                                                         // _listInfluencerDetail[
                                                         //             index]
                                                         //         .createdOn =

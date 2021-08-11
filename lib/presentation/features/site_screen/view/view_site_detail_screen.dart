@@ -4145,8 +4145,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                         .ilpIntrested =
                                                     new TextEditingController();
 
-                                                    print(
-                                                        inflDetail.inflName);
+                                                    print(inflDetail.inflName);
 
                                                     _listInfluencerDetail[
                                                     index]
@@ -4160,12 +4159,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                     _listInfluencerDetail[
                                                     index]
                                                         .id.text = inflDetail
-                                                        .infl_id.toString();
+                                                        .inflId.toString();
                                                     _listInfluencerDetail[
                                                     index]
                                                         .ilpIntrested.text =
                                                         inflDetail
-                                                            .ilpIntrested;
+                                                            .ilpRegFlag;
                                                     // _listInfluencerDetail[
                                                     //             index]
                                                     //         .createdOn =
@@ -6088,6 +6087,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
     }
   }
+
+  // inflCatValue(TextEditingController inflCatId) {
+  //   for (int i = 0; i < influencerCategoryEntity.length; i++) {
+  //     if (influencerCategoryEntity[i].inflCatId == int.parse(inflCatId.text)) {
+  //       return new TextEditingController(
+  //           text: influencerCategoryEntity[i].inflCatDesc);
+  //     }
+  //   }
+  // }
 
   inflCatValue(TextEditingController inflCatId) {
     for (int i = 0; i < influencerCategoryEntity.length; i++) {
