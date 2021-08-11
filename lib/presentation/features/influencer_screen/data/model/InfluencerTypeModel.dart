@@ -123,14 +123,14 @@ class InfluencerSourceList {
   InfluencerSourceList({this.inflSourceId, this.inflSourceText});
 
   InfluencerSourceList.fromJson(Map<String, dynamic> json) {
-    inflSourceId = json['infl_source_id'];
-    inflSourceText = json['infl_source_text'];
+    inflSourceId = json['inflSourceId'];
+    inflSourceText = json['inflSourceText'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['infl_source_id'] = this.inflSourceId;
-    data['infl_source_text'] = this.inflSourceText;
+    data['inflSourceId'] = this.inflSourceId;
+    data['inflSourceText'] = this.inflSourceText;
     return data;
   }
 }
