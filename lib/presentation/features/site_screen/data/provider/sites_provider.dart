@@ -177,10 +177,10 @@ class MyApiClientSites {
       String empID) async {
     try {
       version = VersionClass.getVersion();
-      String url = UrlConstants.getSiteDataVersion2 + "$siteId&referenceID=$empID";
+      String url = UrlConstants.getSiteDataVersion3 + "$siteId&referenceID=$empID";
       print(url);
       final response = await get(
-        Uri.parse(UrlConstants.getSiteDataVersion2 + "$siteId&referenceID=$empID"),
+        Uri.parse(UrlConstants.getSiteDataVersion3 + "$siteId&referenceID=$empID"),
         headers: requestHeadersWithAccessKeyAndSecretKey(
             accessKey, userSecurityKey, version),
       );
@@ -301,8 +301,8 @@ class MyApiClientSites {
       List<File> list, BuildContext context, int siteId) async {
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
-        'POST', Uri.parse(UrlConstants.updateVersion2SiteData));
-    print(UrlConstants.updateVersion2SiteData);
+        'POST', Uri.parse(UrlConstants.updateVersion3SiteData));
+    print(UrlConstants.updateVersion3SiteData);
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));

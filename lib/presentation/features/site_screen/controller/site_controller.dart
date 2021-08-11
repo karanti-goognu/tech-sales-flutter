@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
@@ -393,12 +392,9 @@ class SiteController extends GetxController {
         if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
-          print('@@@@');
-          print(data);
           this.sitesListResponse = data;
           if (sitesListResponse.respCode == "ST2004") {
             //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
-            print('success');
             //SitesDetailWidget();
           } else if(sitesListResponse.respCode == "DM1005"){
             Get.dialog(CustomDialogs().appUserInactiveDialog(

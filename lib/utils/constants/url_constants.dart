@@ -74,6 +74,7 @@ abstract class UrlConstants {
  static const String getSiteDataVersion2 = '$baseUrl/sites/v2/view-site?siteId=';
  static const String getSiteDataVersion3 = '$baseUrl/sites/v3/view-site?siteId=';
  static const String updateVersion3SiteData = '$baseUrl/sites/v3/site-update';
+ static const String getLeadData2 = '$baseUrl/leads/v2/view-lead?leadId=';
 
 
  static const String saveUpdateSiteVisit = '$baseUrl/mwp/Save-update-site_visit';

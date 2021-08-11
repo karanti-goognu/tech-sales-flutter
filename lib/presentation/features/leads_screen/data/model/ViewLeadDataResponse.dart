@@ -350,11 +350,9 @@ class InfluencerEntity {
       this.isPrimary});
 
   InfluencerEntity.fromJson(Map<String, dynamic> json) {
-    print("Sumit Dhawan");
-    print(json['isPrimary']);
     id = json['id'];
     inflName = json['inflName'];
-    inflContact = json['inflContact'];
+    inflContact = json['inflContactNumber'];
     inflTypeId = json['inflTypeId'];
     inflCatId = json['inflCatId'];
     ilpIntrested = json['ilpIntrested'];
@@ -366,7 +364,7 @@ class InfluencerEntity {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['inflName'] = this.inflName;
-    data['inflContact'] = this.inflContact;
+    data['inflContactNumber'] = this.inflContact;
     data['inflTypeId'] = this.inflTypeId;
     data['inflCatId'] = this.inflCatId;
     data['ilpIntrested'] = this.ilpIntrested;

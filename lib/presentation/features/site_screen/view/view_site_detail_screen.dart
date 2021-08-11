@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/controller
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/UpdateDataRequest.dart'
-as updateResponse;
+    as updateResponse;
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_visit_widget.dart';
@@ -149,13 +148,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<SiteFloorsEntity> siteFloorsEntityNew = new List();
   List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List();
   List<SitephotosEntity> sitephotosEntity = new List();
+
   // List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List()
   List<SiteStageHistory> siteStageHistorys = new List();
   List<SiteSupplyHistorys> siteSupplyHistorys = new List();
+
   //List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
   List<ConstructionStageEntity> constructionStageEntity = new List();
   List<ConstructionStageEntity> constructionStageEntityNew = new List();
-  List<ConstructionStageEntity> constructionStageEntityNewNextStage = new List();
+  List<ConstructionStageEntity> constructionStageEntityNewNextStage =
+      new List();
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
@@ -188,7 +190,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
   List<ProductListModel> productDynamicList = new List();
 
-
   /// get _getProductList
   List<Widget> _getProductList() {
     List<Widget> productAddedList = [];
@@ -206,7 +207,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   Widget addProductDetails(int index) {
-
     return ExpandablePanel(
       controller: productDynamicList[index].isExpanded,
       header: Text(
@@ -227,80 +227,90 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-                (index==0)?
-                (productDynamicList[index].brandId==-1)?
-                DropdownButtonFormField<BrandModelforDB>(
-                  value: _siteBrandFromLocalDB,
-                  items: siteBrandEntityfromLoaclDB.map((label) => DropdownMenuItem(
-                    child: Text(
-                      label.brandName,
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                    ),
-                    value: label,
-                  )).toList(),
+                (index == 0)
+                    ? (productDynamicList[index].brandId == -1)
+                        ? DropdownButtonFormField<BrandModelforDB>(
+                            value: _siteBrandFromLocalDB,
+                            items: siteBrandEntityfromLoaclDB
+                                .map((label) => DropdownMenuItem(
+                                      child: Text(
+                                        label.brandName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: ColorConstants
+                                                .inputBoxHintColor,
+                                            fontFamily: "Muli"),
+                                      ),
+                                      value: label,
+                                    ))
+                                .toList(),
 
-                  // hint: Text('Rating'),
-                  onChanged: (value) async {
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                    siteProductEntityfromLoaclDB = new List();
-                    productDynamicList[index].brandModelForDB=null;
-                    // _siteProductFromLocalDB = null;
-                    List<BrandModelforDB> _siteProductEntityfromLoaclDB =
-                    await db.fetchAllDistinctProduct(value.brandName);
-                    setState(() {
-                      _siteBrandFromLocalDB = value;
-                      siteProductEntityfromLoaclDB = _siteProductEntityfromLoaclDB;
-                      // _productSoldVisit.text = _siteBrand.productName;
-                      if (_siteBrandFromLocalDB.brandName.toLowerCase() ==
-                          "dalmia") {
-                        _stageStatus.text = "WON";
-                      } else {
-                        _stageStatus.text = "LOST";
-                        visitDataDealer = "";
-                      }
-                      _selectedBrand.text = value.brandName;
-                    });
-                  },
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Brand In Use",
-                  ),
-                ):
-                DropdownButtonFormField<BrandModelforDB>(
-                  value: _siteBrandFromLocalDB,
-                  items: [_siteBrandFromLocalDB].map((label) => DropdownMenuItem(
-                    child: Text(
-                      label.brandName,
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                    ),
-                    value: label,
-                  )).toList(),
+                            // hint: Text('Rating'),
+                            onChanged: (value) async {
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+                              siteProductEntityfromLoaclDB = new List();
+                              productDynamicList[index].brandModelForDB = null;
+                              // _siteProductFromLocalDB = null;
+                              List<BrandModelforDB>
+                                  _siteProductEntityfromLoaclDB = await db
+                                      .fetchAllDistinctProduct(value.brandName);
+                              setState(() {
+                                _siteBrandFromLocalDB = value;
+                                siteProductEntityfromLoaclDB =
+                                    _siteProductEntityfromLoaclDB;
+                                // _productSoldVisit.text = _siteBrand.productName;
+                                if (_siteBrandFromLocalDB.brandName
+                                        .toLowerCase() ==
+                                    "dalmia") {
+                                  _stageStatus.text = "WON";
+                                } else {
+                                  _stageStatus.text = "LOST";
+                                  visitDataDealer = "";
+                                }
+                                _selectedBrand.text = value.brandName;
+                              });
+                            },
+                            decoration: FormFieldStyle.buildInputDecoration(
+                              labelText: "Brand In Use",
+                            ),
+                          )
+                        : DropdownButtonFormField<BrandModelforDB>(
+                            value: _siteBrandFromLocalDB,
+                            items: [_siteBrandFromLocalDB]
+                                .map((label) => DropdownMenuItem(
+                                      child: Text(
+                                        label.brandName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: ColorConstants
+                                                .inputBoxHintColor,
+                                            fontFamily: "Muli"),
+                                      ),
+                                      value: label,
+                                    ))
+                                .toList(),
 
-                  // hint: Text('Rating'),
-                  onChanged: (value) async {
-                    FocusScope.of(context).requestFocus(new FocusNode());
-
-                  },
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Brand In Use",
-                  ),
-                ):
-                TextFormField(
-                  controller: _selectedBrand,
-                  readOnly: true,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                  keyboardType: TextInputType.number,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                      labelText: "Brand In Use"),
-                ),
+                            // hint: Text('Rating'),
+                            onChanged: (value) async {
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+                            },
+                            decoration: FormFieldStyle.buildInputDecoration(
+                              labelText: "Brand In Use",
+                            ),
+                          )
+                    : TextFormField(
+                        controller: _selectedBrand,
+                        readOnly: true,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.number,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Brand In Use"),
+                      ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
                   child: Text(
@@ -314,177 +324,207 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
                 SizedBox(height: 12),
                 (_siteBrandFromLocalDB != null &&
-                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia")
                     ? GestureDetector(
-                  onTap: () {
-
-                  },
-                  child:
-                  (index==0)?
-                  (productDynamicList[index].dealerName.text.isEmpty)?
-                  DropdownButtonFormField<DealerForDb>(
-                    value: _dealerEntityForDb,
-                    items:dealerEntityForDb.map((label) => DropdownMenuItem(
-                      child: SizedBox(
-                        width:
-                        MediaQuery.of(context).size.width - 100,
-                        child: Text('${label.dealerName} (${label.id})',
-                            style: TextStyle(fontSize: 14)),
-                      ),
-                      value: label,
-                    )).toList(),
-                    onChanged: (value) {
-                      selectedSubDealer = null;
-                      setState(() {
-                        _dealerEntityForDb = value;
-                        subDealerList = new List();
-                        visitDataDealer = value.id;
-                        subDealerList = counterListModel
-                            .where((e) => e.soldToParty == visitDataDealer)
-                            .toList();
-                        selectedSubDealer = subDealerList[0];
-                        visitDataSubDealer = subDealerList[0].shipToParty;
-                        _dealerName.text = value.dealerName;
-
-                      });
-                    },
-                    style: FormFieldStyle.formFieldTextStyle,
-                    decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: "Dealer"),
-                    validator: (value) =>
-                    value == null ? 'Please select Dealer' : null,
-                  ):
-                  DropdownButtonFormField<DealerForDb>(
-                    value: _dealerEntityForDb,
-                    items:[_dealerEntityForDb].map((label) => DropdownMenuItem(
-                      child: SizedBox(
-                        width:
-                        MediaQuery.of(context).size.width - 100,
-                        child: Text('${label.dealerName} (${label.id})',
-                            style: TextStyle(fontSize: 14)),
-                      ),
-                      value: label,
-                    )).toList(),
-                    onChanged: (value) {
-                      selectedSubDealer = null;
-                      setState(() {
-                        _dealerEntityForDb = value;
-                        subDealerList = new List();
-                        visitDataDealer = value.id;
-                        subDealerList = counterListModel
-                            .where((e) => e.soldToParty == visitDataDealer)
-                            .toList();
-                        selectedSubDealer = subDealerList[0];
-                        visitDataSubDealer = subDealerList[0].shipToParty;
-                        _dealerName.text = value.dealerName;
-
-                      });
-                    },
-                    style: FormFieldStyle.formFieldTextStyle,
-                    decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: "Dealer"),
-                    validator: (value) =>
-                    value == null ? 'Please select Dealer' : null,
-                  ):
-                  TextFormField(
-                    controller: _dealerName,
-                    readOnly: true,
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: ColorConstants.inputBoxHintColor,
-                        fontFamily: "Muli"),
-                    keyboardType: TextInputType.number,
-                    decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: "Dealer"),
-                  ),
-                ) : Container(),
-
+                        onTap: () {},
+                        child: (index == 0)
+                            ? (productDynamicList[index]
+                                    .dealerName
+                                    .text
+                                    .isEmpty)
+                                ? DropdownButtonFormField<DealerForDb>(
+                                    value: _dealerEntityForDb,
+                                    items: dealerEntityForDb
+                                        .map((label) => DropdownMenuItem(
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    100,
+                                                child: Text(
+                                                    '${label.dealerName} (${label.id})',
+                                                    style: TextStyle(
+                                                        fontSize: 14)),
+                                              ),
+                                              value: label,
+                                            ))
+                                        .toList(),
+                                    onChanged: (value) {
+                                      selectedSubDealer = null;
+                                      setState(() {
+                                        _dealerEntityForDb = value;
+                                        subDealerList = new List();
+                                        visitDataDealer = value.id;
+                                        subDealerList = counterListModel
+                                            .where((e) =>
+                                                e.soldToParty ==
+                                                visitDataDealer)
+                                            .toList();
+                                        selectedSubDealer = subDealerList[0];
+                                        visitDataSubDealer =
+                                            subDealerList[0].shipToParty;
+                                        _dealerName.text = value.dealerName;
+                                      });
+                                    },
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                            labelText: "Dealer"),
+                                    validator: (value) => value == null
+                                        ? 'Please select Dealer'
+                                        : null,
+                                  )
+                                : DropdownButtonFormField<DealerForDb>(
+                                    value: _dealerEntityForDb,
+                                    items: [_dealerEntityForDb]
+                                        .map((label) => DropdownMenuItem(
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    100,
+                                                child: Text(
+                                                    '${label.dealerName} (${label.id})',
+                                                    style: TextStyle(
+                                                        fontSize: 14)),
+                                              ),
+                                              value: label,
+                                            ))
+                                        .toList(),
+                                    onChanged: (value) {
+                                      selectedSubDealer = null;
+                                      setState(() {
+                                        _dealerEntityForDb = value;
+                                        subDealerList = new List();
+                                        visitDataDealer = value.id;
+                                        subDealerList = counterListModel
+                                            .where((e) =>
+                                                e.soldToParty ==
+                                                visitDataDealer)
+                                            .toList();
+                                        selectedSubDealer = subDealerList[0];
+                                        visitDataSubDealer =
+                                            subDealerList[0].shipToParty;
+                                        _dealerName.text = value.dealerName;
+                                      });
+                                    },
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                            labelText: "Dealer"),
+                                    validator: (value) => value == null
+                                        ? 'Please select Dealer'
+                                        : null,
+                                  )
+                            : TextFormField(
+                                controller: _dealerName,
+                                readOnly: true,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.number,
+                                decoration: FormFieldStyle.buildInputDecoration(
+                                    labelText: "Dealer"),
+                              ),
+                      )
+                    : Container(),
                 (_siteBrandFromLocalDB != null &&
-                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia")
                     ? Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text(
-                    "Mandatory",
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ) : Container(),
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          "Mandatory",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            color: ColorConstants.inputBoxHintColorDark,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      )
+                    : Container(),
                 (_siteBrandFromLocalDB != null &&
-                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
-                    ?SizedBox(height: 15):SizedBox(),
-
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia")
+                    ? SizedBox(height: 15)
+                    : SizedBox(),
                 subDealerList.isEmpty
                     ? Container()
                     : (_siteBrandFromLocalDB != null &&
-                    _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                        "dalmia")
-                    ? DropdownButtonFormField(
-                  items: subDealerList.isNotEmpty
-                      ? subDealerList
-                      .map((e) => DropdownMenuItem(
-                    value: e,
-                    child: SizedBox(
-                      width:
-                      MediaQuery.of(context).size.width -
-                          100,
-                      child: Text(
-                        '${e.shipToPartyName} (${e.shipToParty})',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                  ))
-                      .toList()
-                      : [
-                    DropdownMenuItem(
-                        child: Text("No Sub Dealer"), value: "0")
-                  ],
-                  value: selectedSubDealer,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Please select Sub-Dealer'
-                      : null,
-                  onChanged: (value) {
-                    setState(() {
-                      visitDataSubDealer = value.shipToParty.toString();
-                    });
-                  },
-                  style: FormFieldStyle.formFieldTextStyle,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                      labelText: "Sub-Dealer"),
-                ) : Container(),
+                            _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                                "dalmia")
+                        ? DropdownButtonFormField(
+                            items: subDealerList.isNotEmpty
+                                ? subDealerList
+                                    .map((e) => DropdownMenuItem(
+                                          value: e,
+                                          child: SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                100,
+                                            child: Text(
+                                              '${e.shipToPartyName} (${e.shipToParty})',
+                                              style: TextStyle(fontSize: 14),
+                                            ),
+                                          ),
+                                        ))
+                                    .toList()
+                                : [
+                                    DropdownMenuItem(
+                                        child: Text("No Sub Dealer"),
+                                        value: "0")
+                                  ],
+                            value: selectedSubDealer,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please select Sub-Dealer'
+                                : null,
+                            onChanged: (value) {
+                              setState(() {
+                                visitDataSubDealer =
+                                    value.shipToParty.toString();
+                              });
+                            },
+                            style: FormFieldStyle.formFieldTextStyle,
+                            decoration: FormFieldStyle.buildInputDecoration(
+                                labelText: "Sub-Dealer"),
+                          )
+                        : Container(),
                 (_siteBrandFromLocalDB != null &&
-                    _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia")
-                    ? SizedBox(height: 8):SizedBox(),
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia")
+                    ? SizedBox(height: 8)
+                    : SizedBox(),
                 Container(
                   padding: EdgeInsets.only(right: 0, top: 0),
                   child: DropdownButtonFormField<BrandModelforDB>(
-                      value:  productDynamicList[index].brandModelForDB,
+                      value: productDynamicList[index].brandModelForDB,
                       items: siteProductEntityfromLoaclDB
                           .map((label) => DropdownMenuItem(
-                        child: Text(
-                          label.productName,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                        ),
-                        value: label,
-                      ))
+                                child: Text(
+                                  label.productName,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                ),
+                                value: label,
+                              ))
                           .toList(),
 
                       // hint: Text('Rating'),
                       onChanged: (value) {
                         setState(() {
-                          productDynamicList[index].brandModelForDB=value;
+                          productDynamicList[index].brandModelForDB = value;
                         });
                       },
                       decoration: FormFieldStyle.buildInputDecoration(
                           labelText: "Product Sold")),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15,bottom: 10),
+                  padding: const EdgeInsets.only(left: 15, bottom: 10),
                   child: Text(
                     "Mandatory",
                     style: TextStyle(
@@ -507,9 +547,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
                       fontFamily: "Muli"),
-
                   keyboardType: TextInputType.number,
-                  inputFormatters:[
+                  inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
                     TextInputFormatter.withFunction((oldValue, newValue) {
                       try {
@@ -536,7 +575,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
+                      const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
                   child: Text(
                     "No. of Bags Supplied",
                     style: TextStyle(
@@ -573,15 +612,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             ),
                             disabledBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.black26, width: 1.0),
+                                  BorderSide(color: Colors.black26, width: 1.0),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.black26, width: 1.0),
+                                  BorderSide(color: Colors.black26, width: 1.0),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.red, width: 1.0),
+                                  BorderSide(color: Colors.red, width: 1.0),
                             ),
                             labelText: "Date ",
                             suffixIcon: IconButton(
@@ -601,11 +640,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                                 setState(() {
                                   final DateFormat formatter =
-                                  DateFormat("yyyy-MM-dd");
+                                      DateFormat("yyyy-MM-dd");
                                   if (picked != null) {
                                     final String formattedDate =
-                                    formatter.format(picked);
-                                    productDynamicList[index].supplyDate.text = formattedDate;
+                                        formatter.format(picked);
+                                    productDynamicList[index].supplyDate.text =
+                                        formattedDate;
                                     // _dateOfBagSupplied1.text = formattedDate;
                                   }
                                 });
@@ -688,47 +728,51 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     onPressed: () async {
                       // print("cssdsa  "+productDynamicList[index].brandModelForDB.brandName);
 
-                      if(_siteBrandFromLocalDB != null && _siteBrandFromLocalDB.brandName.toLowerCase() == "dalmia"){
-                        if (_dealerEntityForDb==null) {
+                      if (_siteBrandFromLocalDB != null &&
+                          _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                              "dalmia") {
+                        if (_dealerEntityForDb == null) {
                           Get.dialog(CustomDialogs()
                               .showMessage("Please Select Dealer name !"));
                           return;
                         }
                       }
 
-                      if(productDynamicList[index].brandModelForDB == null ){
+                      if (productDynamicList[index].brandModelForDB == null) {
                         Get.dialog(CustomDialogs()
                             .showMessage("Please select product sold !"));
                         return;
                       }
 
-                      if(productDynamicList[index].brandPrice.text.isEmpty){
+                      if (productDynamicList[index].brandPrice.text.isEmpty) {
                         Get.dialog(CustomDialogs()
                             .showMessage("Please enter brand price !"));
                         return;
                       }
 
-                      if(productDynamicList[index].supplyDate.text.isEmpty){
+                      if (productDynamicList[index].supplyDate.text.isEmpty) {
                         Get.dialog(CustomDialogs()
                             .showMessage("Please Select Date !"));
                         return;
                       }
 
-                      if(productDynamicList[index].supplyQty.text.isEmpty){
+                      if (productDynamicList[index].supplyQty.text.isEmpty) {
                         Get.dialog(CustomDialogs()
                             .showMessage("Please Enter Supply Quantity !"));
                         return;
                       }
 
                       setState(() {
-                        productDynamicList[index] =
-                        new ProductListModel(
-                            brandId: productDynamicList[index].brandModelForDB.id,
+                        productDynamicList[index] = new ProductListModel(
+                            brandId:
+                                productDynamicList[index].brandModelForDB.id,
                             brandPrice: productDynamicList[index].brandPrice,
                             supplyDate: productDynamicList[index].supplyDate,
                             supplyQty: productDynamicList[index].supplyQty,
-                            isExpanded:new ExpandableController(initialExpanded: false),
-                            brandModelForDB:productDynamicList[index].brandModelForDB,
+                            isExpanded: new ExpandableController(
+                                initialExpanded: false),
+                            brandModelForDB:
+                                productDynamicList[index].brandModelForDB,
                             dealerName: _dealerName);
                         sumNoOfBagsSupplied();
                       });
@@ -744,11 +788,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         children: [
           Expanded(
               flex: 7,
-              child: Text(productDynamicList[index].supplyDate.text.isEmpty || productDynamicList[index].supplyQty.text.isEmpty || productDynamicList[index].brandPrice.text.isEmpty || productDynamicList[index].brandId==-1? "Fill product Details":
-
-              productDynamicList[index].brandModelForDB.productName+",  Qty:"+productDynamicList[index].supplyQty.text
-                  +", Price:"+productDynamicList[index].brandPrice.text,
-
+              child: Text(
+                productDynamicList[index].supplyDate.text.isEmpty ||
+                        productDynamicList[index].supplyQty.text.isEmpty ||
+                        productDynamicList[index].brandPrice.text.isEmpty ||
+                        productDynamicList[index].brandId == -1
+                    ? "Fill product Details"
+                    : productDynamicList[index].brandModelForDB.productName +
+                        ",  Qty:" +
+                        productDynamicList[index].supplyQty.text +
+                        ", Price:" +
+                        productDynamicList[index].brandPrice.text,
                 softWrap: true,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -762,18 +812,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             flex: 1,
             child: GestureDetector(
               onTap: () {
-
                 // int index1 = siteStageHistorys[index].siteSupplyHistorys.indexWhere((element) => element.brandId==productDynamicList[index].brandId && element.brandPrice==productDynamicList[index].brandPrice.text
                 //     && element.supplyDate==productDynamicList[index].supplyDate.text && element.supplyQty==productDynamicList[index].supplyQty.text);
 
-                if(productDynamicList!=null && productDynamicList.length==1){
+                if (productDynamicList != null &&
+                    productDynamicList.length == 1) {
                   productDynamicList.removeAt(index);
                   _siteBrandFromLocalDB = null;
-                  _dealerEntityForDb=null;
+                  _dealerEntityForDb = null;
                   subDealerList = new List();
                   siteProductEntityfromLoaclDB = new List();
-
-                }else {
+                } else {
                   productDynamicList.removeAt(index);
                 }
 
@@ -781,9 +830,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 //   siteStageHistorys.removeAt(index1);
                 // }
 
-                setState(() {
-
-                });
+                setState(() {});
               },
               child: Icon(Icons.delete, color: Colors.black54),
             ),
@@ -800,8 +847,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     // TODO: implement initState
     super.initState();
     selectedTabIndex = 0;
-    _tabController = TabController(vsync: this, length: 5, initialIndex: widget.tabIndex);
-
+    _tabController =
+        TabController(vsync: this, length: 5, initialIndex: widget.tabIndex);
 
     //_controller.addListener(_handleTabSelection);
     getSiteData();
@@ -866,7 +913,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               viewSiteDataResponse.sitesModal.isDealerConfirmedChangedBySo;
           print("isDealerConformedChangedBySo  $isDealerConformedChangedBySo");
           isAllowSelectDealer =
-          isDealerConformedChangedBySo != "N" ? true : false;
+              isDealerConformedChangedBySo != "N" ? true : false;
 
           //  print(influencerTypeEntity.length);
           influencerCategoryEntity =
@@ -888,8 +935,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           if (viewSiteDataResponse.influencerEntity != null &&
               viewSiteDataResponse.influencerEntity.length > 0) {
             for (int i = 0;
-            i < viewSiteDataResponse.influencerEntity.length;
-            i++) {
+                i < viewSiteDataResponse.influencerEntity.length;
+                i++) {
               int originalId;
               for (int j = 0; j < siteInfluencerEntity.length; j++) {
                 if (viewSiteDataResponse.influencerEntity[i].id ==
@@ -905,15 +952,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   originalId: originalId,
                   isPrimary: viewSiteDataResponse.influencerEntity[i].isPrimary,
                   isPrimarybool:
-                  viewSiteDataResponse.influencerEntity[i].isPrimary == "Y"
-                      ? true
-                      : false,
+                      viewSiteDataResponse.influencerEntity[i].isPrimary == "Y"
+                          ? true
+                          : false,
                   id: new TextEditingController(
                       text: viewSiteDataResponse.influencerEntity[i].id
                           .toString()),
                   inflContact: new TextEditingController(
                       text:
-                      viewSiteDataResponse.influencerEntity[i].inflContact),
+                          viewSiteDataResponse.influencerEntity[i].inflContact),
                   //createdBy: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflContact),
                   inflTypeId: new TextEditingController(
                       text: viewSiteDataResponse.influencerEntity[i].inflTypeId
@@ -928,7 +975,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                       text: viewSiteDataResponse.influencerEntity[i].inflCatId
                           .toString())),
                   inflName:
-                  new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflName),
+                      new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflName),
                   ilpIntrested: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].ilpIntrested),
                   createdOn: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].createdOn.toString()),
                   isExpanded: false));
@@ -941,10 +988,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           // print(viewSiteDataResponse.siteStageHistorys);
           // _listInfluencerDetail.add(new InfluencerDetail(isExpanded: true , isPrimarybool: false));
           // siteVisitHistoryEntity = viewSiteDataResponse.siteVisitHistoryEntity;
-          if(viewSiteDataResponse.siteStageHistorys!=null){
+          if (viewSiteDataResponse.siteStageHistorys != null) {
             siteStageHistorys = viewSiteDataResponse.siteStageHistorys;
-          }else
-          {
+          } else {
             siteStageHistorys = [];
           }
           // print(viewSiteDataResponse.siteStageHistorys.length);
@@ -1007,15 +1053,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _district.text = sitesModal.siteDistrict;
           _taluk.text = sitesModal.siteTaluk;
           _rera.text = sitesModal.siteReraNumber;
-          if(sitesModal.siteDealerName==null || sitesModal.siteDealerName=="null"){
+          if (sitesModal.siteDealerName == null ||
+              sitesModal.siteDealerName == "null") {
             _dealerName.text = "";
-          }else {
+          } else {
             _dealerName.text = sitesModal.siteDealerName;
           }
 
-          if(sitesModal.siteSubDealerName==null || sitesModal.siteSubDealerName=="null"){
+          if (sitesModal.siteSubDealerName == null ||
+              sitesModal.siteSubDealerName == "null") {
             _subDealerName.text = "";
-          }else {
+          } else {
             _subDealerName.text = sitesModal.siteSubDealerName;
           }
 
@@ -1069,13 +1117,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               null) {
             for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
               if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId
-                  .toString() ==
+                      .toString() ==
                   siteProbabilityWinningEntity[i].id.toString()) {
                 labelProbabilityId = siteProbabilityWinningEntity[i].id;
                 _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
               }
             }
-          }else{
+          } else {
             _siteProbabilityWinningEntity = siteProbabilityWinningEntity[0];
           }
 
@@ -1084,12 +1132,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           if (viewSiteDataResponse.sitesModal.siteCompetitionId != null) {
             for (int i = 0; i < siteCompetitionStatusEntity.length; i++) {
               if (viewSiteDataResponse.sitesModal.siteCompetitionId
-                  .toString() ==
+                      .toString() ==
                   siteCompetitionStatusEntity[i].id.toString()) {
                 _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
               }
             }
-          }else{
+          } else {
             _siteCompetitionStatusEntity = siteCompetitionStatusEntity[0];
           }
 
@@ -1098,13 +1146,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
             for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
               if (viewSiteDataResponse.sitesModal.siteOppertunityId
-                  .toString() ==
+                      .toString() ==
                   siteOpportunityStatusEntity[i].id.toString()) {
                 _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
-                _siteOpportunitStatusEnityVisit = siteOpportunityStatusEntity[i];
+                _siteOpportunitStatusEnityVisit =
+                    siteOpportunityStatusEntity[i];
               }
             }
-          }else{
+          } else {
             _siteOpportunitStatusEnity = siteOpportunityStatusEntity[0];
             _siteOpportunitStatusEnityVisit = null;
           }
@@ -1130,7 +1179,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       //         barrierDismissible: false));
       //  Get.back();
     });
-
   }
 
   @override
@@ -1191,26 +1239,32 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   fontFamily: "Muli"),
                             ),
                           ),
-                          selectedTabIndex==3 || selectedTabIndex==4?
-                          Row(children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 20.0, bottom: 10),
-                              child: Icon(Icons.edit_outlined,color: Colors.amber,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 20.0, bottom: 10, right: 15),
-                              child: Text(
-                                "Edit",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 18,
-                                    color: Colors.amber,
-                                    fontFamily: "Muli"),
-                              ),
-                            ),
-                          ],):Container()
+                          selectedTabIndex == 3 || selectedTabIndex == 4
+                              ? Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 20.0, bottom: 10),
+                                      child: Icon(
+                                        Icons.edit_outlined,
+                                        color: Colors.amber,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 20.0, bottom: 10, right: 15),
+                                      child: Text(
+                                        "Edit",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 18,
+                                            color: Colors.amber,
+                                            fontFamily: "Muli"),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Container()
                         ],
                       ),
                       Padding(
@@ -1233,13 +1287,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 ),
                                 siteScore != 0.0
                                     ? Text(
-                                  "Site Score: " + siteScore.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: HexColor("#002A64"),
-                                    fontFamily: "Muli",
-                                  ),
-                                )
+                                        "Site Score: " + siteScore.toString(),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: HexColor("#002A64"),
+                                          fontFamily: "Muli",
+                                        ),
+                                      )
                                     : Container(),
                               ],
                             ),
@@ -1265,20 +1319,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     value: _siteStage,
                                     items: siteStageEntity
                                         .map((label) => DropdownMenuItem(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 7.0),
-                                        child: Text(
-                                          label.siteStageDesc,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: ColorConstants
-                                                  .inputBoxHintColor,
-                                              fontFamily: "Muli"),
-                                        ),
-                                      ),
-                                      value: label,
-                                    ))
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 7.0),
+                                                child: Text(
+                                                  label.siteStageDesc,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: ColorConstants
+                                                          .inputBoxHintColor,
+                                                      fontFamily: "Muli"),
+                                                ),
+                                              ),
+                                              value: label,
+                                            ))
                                         .toList(),
                                     //  elevation: 0,
                                     iconSize: 30,
@@ -1303,19 +1357,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
                                                     contentPadding:
-                                                    EdgeInsets.all(0.0),
+                                                        EdgeInsets.all(0.0),
                                                     shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                5.0))),
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5.0))),
                                                     content: Container(
                                                         width: MediaQuery.of(
-                                                            context)
+                                                                context)
                                                             .size
                                                             .width,
                                                         child:
-                                                        SingleChildScrollView(
+                                                            SingleChildScrollView(
                                                           child: Stack(
                                                             //
 
@@ -1338,13 +1392,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                               Center(
                                                                 child: Padding(
                                                                   padding:
-                                                                  const EdgeInsets
-                                                                      .all(
-                                                                      8.0),
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
                                                                   child: Column(
                                                                     mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
+                                                                        MainAxisAlignment
+                                                                            .center,
                                                                     children: [
                                                                       SizedBox(
                                                                         height: MediaQuery.of(context).size.height *
@@ -1364,9 +1418,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                         "Closed",
                                                                         style: TextStyle(
                                                                             fontSize:
-                                                                            30,
+                                                                                30,
                                                                             color:
-                                                                            HexColor("#B00020")),
+                                                                                HexColor("#B00020")),
                                                                       ),
                                                                       SizedBox(
                                                                         height: MediaQuery.of(context).size.height *
@@ -1374,16 +1428,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                       ),
                                                                       Center(
                                                                         child:
-                                                                        Text(
+                                                                            Text(
                                                                           "Please add your comment to complete this rejection",
                                                                           maxLines:
-                                                                          2,
+                                                                              2,
                                                                           textAlign:
-                                                                          TextAlign.center,
+                                                                              TextAlign.center,
                                                                           style:
-                                                                          TextStyle(
+                                                                              TextStyle(
                                                                             fontSize:
-                                                                            15,
+                                                                                15,
 
                                                                             //color: HexColor("#B00020")
                                                                           ),
@@ -1392,13 +1446,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                                                                       Padding(
                                                                         padding:
-                                                                        const EdgeInsets.all(10.0),
+                                                                            const EdgeInsets.all(10.0),
                                                                         child:
-                                                                        TextFormField(
+                                                                            TextFormField(
                                                                           controller:
-                                                                          closureReasonText,
+                                                                              closureReasonText,
                                                                           maxLength:
-                                                                          100,
+                                                                              100,
                                                                           onChanged:
                                                                               (value) async {},
                                                                           style: TextStyle(
@@ -1406,31 +1460,31 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                               color: ColorConstants.inputBoxHintColor,
                                                                               fontFamily: "Muli"),
                                                                           keyboardType:
-                                                                          TextInputType.text,
+                                                                              TextInputType.text,
                                                                           maxLines:
-                                                                          4,
+                                                                              4,
                                                                           decoration:
-                                                                          FormFieldStyle.buildInputDecoration(labelText: "Comments"),
+                                                                              FormFieldStyle.buildInputDecoration(labelText: "Comments"),
                                                                         ),
                                                                       ),
                                                                       Center(
                                                                         child:
-                                                                        RaisedButton(
+                                                                            RaisedButton(
                                                                           elevation:
-                                                                          5,
+                                                                              5,
                                                                           shape:
-                                                                          RoundedRectangleBorder(
+                                                                              RoundedRectangleBorder(
                                                                             borderRadius:
-                                                                            BorderRadius.circular(5.0),
+                                                                                BorderRadius.circular(5.0),
                                                                           ),
                                                                           color:
-                                                                          HexColor("#1C99D4"),
+                                                                              HexColor("#1C99D4"),
                                                                           child:
-                                                                          Padding(
+                                                                              Padding(
                                                                             padding:
-                                                                            const EdgeInsets.only(bottom: 10, top: 10),
+                                                                                const EdgeInsets.only(bottom: 10, top: 10),
                                                                             child:
-                                                                            Text(
+                                                                                Text(
                                                                               "SUBMIT",
                                                                               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 17),
                                                                             ),
@@ -1471,19 +1525,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
                                                     contentPadding:
-                                                    EdgeInsets.all(0.0),
+                                                        EdgeInsets.all(0.0),
                                                     shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                5.0))),
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5.0))),
                                                     content: Container(
                                                         width: MediaQuery.of(
-                                                            context)
+                                                                context)
                                                             .size
                                                             .width,
                                                         child:
-                                                        SingleChildScrollView(
+                                                            SingleChildScrollView(
                                                           child: Stack(
                                                             //
 
@@ -1506,13 +1560,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                               Center(
                                                                 child: Padding(
                                                                   padding:
-                                                                  const EdgeInsets
-                                                                      .all(
-                                                                      8.0),
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
                                                                   child: Column(
                                                                     mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
+                                                                        MainAxisAlignment
+                                                                            .center,
                                                                     children: [
                                                                       SizedBox(
                                                                         height: MediaQuery.of(context).size.height *
@@ -1532,9 +1586,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                         "Inactive",
                                                                         style: TextStyle(
                                                                             fontSize:
-                                                                            30,
+                                                                                30,
                                                                             color:
-                                                                            HexColor("#B00020")),
+                                                                                HexColor("#B00020")),
                                                                       ),
                                                                       SizedBox(
                                                                         height: MediaQuery.of(context).size.height *
@@ -1542,16 +1596,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                       ),
                                                                       Center(
                                                                         child:
-                                                                        Text(
+                                                                            Text(
                                                                           "Please add your comment to complete this Inactive",
                                                                           maxLines:
-                                                                          2,
+                                                                              2,
                                                                           textAlign:
-                                                                          TextAlign.center,
+                                                                              TextAlign.center,
                                                                           style:
-                                                                          TextStyle(
+                                                                              TextStyle(
                                                                             fontSize:
-                                                                            15,
+                                                                                15,
 
                                                                             //color: HexColor("#B00020")
                                                                           ),
@@ -1563,11 +1617,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                       ),
                                                                       Padding(
                                                                         padding:
-                                                                        const EdgeInsets.all(10.0),
+                                                                            const EdgeInsets.all(10.0),
                                                                         child:
-                                                                        TextFormField(
+                                                                            TextFormField(
                                                                           controller:
-                                                                          _nextVisitDate,
+                                                                              _nextVisitDate,
                                                                           // validator: (value) {
                                                                           //   if (value.isEmpty) {
                                                                           //     return "Contact Name can't be empty";
@@ -1576,7 +1630,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                           //   return null;
                                                                           // },
                                                                           readOnly:
-                                                                          true,
+                                                                              true,
                                                                           onChanged:
                                                                               (data) {
                                                                             // setState(() {
@@ -1588,32 +1642,32 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                               color: ColorConstants.inputBoxHintColor,
                                                                               fontFamily: "Muli"),
                                                                           keyboardType:
-                                                                          TextInputType.text,
+                                                                              TextInputType.text,
                                                                           decoration:
-                                                                          InputDecoration(
+                                                                              InputDecoration(
                                                                             focusedBorder:
-                                                                            OutlineInputBorder(
+                                                                                OutlineInputBorder(
                                                                               borderSide: BorderSide(
                                                                                   color: ColorConstants.backgroundColorBlue,
                                                                                   //color: HexColor("#0000001F"),
                                                                                   width: 1.0),
                                                                             ),
                                                                             disabledBorder:
-                                                                            OutlineInputBorder(
+                                                                                OutlineInputBorder(
                                                                               borderSide: BorderSide(color: Colors.black26, width: 1.0),
                                                                             ),
                                                                             enabledBorder:
-                                                                            OutlineInputBorder(
+                                                                                OutlineInputBorder(
                                                                               borderSide: BorderSide(color: Colors.black26, width: 1.0),
                                                                             ),
                                                                             errorBorder:
-                                                                            OutlineInputBorder(
+                                                                                OutlineInputBorder(
                                                                               borderSide: BorderSide(color: Colors.red, width: 1.0),
                                                                             ),
                                                                             labelText:
-                                                                            "Next Visit Date ",
+                                                                                "Next Visit Date ",
                                                                             suffixIcon:
-                                                                            IconButton(
+                                                                                IconButton(
                                                                               icon: Icon(
                                                                                 Icons.date_range_rounded,
                                                                                 size: 22,
@@ -1638,18 +1692,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                               },
                                                                             ),
                                                                             filled:
-                                                                            false,
+                                                                                false,
                                                                             focusColor:
-                                                                            Colors.black,
+                                                                                Colors.black,
                                                                             isDense:
-                                                                            false,
+                                                                                false,
                                                                             labelStyle: TextStyle(
                                                                                 fontFamily: "Muli",
                                                                                 color: ColorConstants.inputBoxHintColorDark,
                                                                                 fontWeight: FontWeight.normal,
                                                                                 fontSize: 16.0),
                                                                             fillColor:
-                                                                            ColorConstants.backgroundColor,
+                                                                                ColorConstants.backgroundColor,
                                                                           ),
                                                                         ),
                                                                       ),
@@ -1659,13 +1713,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                       ),
                                                                       Padding(
                                                                         padding:
-                                                                        const EdgeInsets.all(10.0),
+                                                                            const EdgeInsets.all(10.0),
                                                                         child:
-                                                                        TextFormField(
+                                                                            TextFormField(
                                                                           controller:
-                                                                          _inactiveReasonText,
+                                                                              _inactiveReasonText,
                                                                           maxLength:
-                                                                          100,
+                                                                              100,
                                                                           onChanged:
                                                                               (value) async {},
                                                                           style: TextStyle(
@@ -1673,34 +1727,34 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                                               color: ColorConstants.inputBoxHintColor,
                                                                               fontFamily: "Muli"),
                                                                           keyboardType:
-                                                                          TextInputType.text,
+                                                                              TextInputType.text,
                                                                           maxLines:
-                                                                          4,
+                                                                              4,
                                                                           decoration:
-                                                                          FormFieldStyle.buildInputDecoration(
+                                                                              FormFieldStyle.buildInputDecoration(
                                                                             labelText:
-                                                                            "Comments",
+                                                                                "Comments",
                                                                           ),
                                                                         ),
                                                                       ),
                                                                       Center(
                                                                         child:
-                                                                        RaisedButton(
+                                                                            RaisedButton(
                                                                           elevation:
-                                                                          5,
+                                                                              5,
                                                                           shape:
-                                                                          RoundedRectangleBorder(
+                                                                              RoundedRectangleBorder(
                                                                             borderRadius:
-                                                                            BorderRadius.circular(5.0),
+                                                                                BorderRadius.circular(5.0),
                                                                           ),
                                                                           color:
-                                                                          HexColor("#1C99D4"),
+                                                                              HexColor("#1C99D4"),
                                                                           child:
-                                                                          Padding(
+                                                                              Padding(
                                                                             padding:
-                                                                            const EdgeInsets.only(bottom: 10, top: 10),
+                                                                                const EdgeInsets.only(bottom: 10, top: 10),
                                                                             child:
-                                                                            Text(
+                                                                                Text(
                                                                               "SUBMIT",
                                                                               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 17),
                                                                             ),
@@ -1798,18 +1852,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 // PastStageHistoryView()
                 SiteVisitWidget(
                   mwpVisitModel: mwpVisitModel,
-                  siteId:widget.siteId,
+                  siteId: widget.siteId,
                   visitSubTypeId: visitSubTypeId,
                   siteOpportunityStatusEntity: siteOpportunityStatusEntity,
                   siteDate: siteCreationDate,
-                  selectedOpportunitStatusEnity: _siteOpportunitStatusEnityVisit,
+                  selectedOpportunitStatusEnity:
+                      _siteOpportunitStatusEnityVisit,
                   visitRemarks: visitRemarks,
                 )
               ],
             ),
             floatingActionButton: BackFloatingButton(),
             floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerDocked,
+                FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: BottomNavigator(),
             //child:Text("classroomName")
           )),
@@ -1842,16 +1897,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           value: _selectedConstructionType,
                           items: constructionStageEntity
                               .map((label) => DropdownMenuItem(
-                            child: Text(
-                              label.constructionStageText,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                  ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
+                                    child: Text(
+                                      label.constructionStageText,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color:
+                                              ColorConstants.inputBoxHintColor,
+                                          fontFamily: "Muli"),
+                                    ),
+                                    value: label,
+                                  ))
                               .toList(),
                           onChanged: (value) {
                             setState(() {
@@ -1888,16 +1943,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 fontFamily: "Muli"),
                             keyboardType: TextInputType.number,
                             inputFormatters: [
-                              FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                              TextInputFormatter.withFunction((oldValue, newValue) {
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r"[0-9.]")),
+                              TextInputFormatter.withFunction(
+                                  (oldValue, newValue) {
                                 try {
                                   final text = newValue.text;
                                   if (text.isNotEmpty) double.parse(text);
                                   return newValue;
                                 } catch (e) {}
                                 return oldValue;
-                              }
-                              ),
+                              }),
                             ],
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Site Built-up area")),
@@ -1979,20 +2035,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child:
-                                DropdownButtonFormField<SiteFloorsEntity>(
+                                    DropdownButtonFormField<SiteFloorsEntity>(
                                   value: _selectedSiteFloor,
                                   items: siteFloorsEntity
                                       .map((label) => DropdownMenuItem(
-                                    child: Text(
-                                      label.siteFloorTxt,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: ColorConstants
-                                              .inputBoxHintColor,
-                                          fontFamily: "Muli"),
-                                    ),
-                                    value: label,
-                                  ))
+                                            child: Text(
+                                              label.siteFloorTxt,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: ColorConstants
+                                                      .inputBoxHintColor,
+                                                  fontFamily: "Muli"),
+                                            ),
+                                            value: label,
+                                          ))
                                       .toList(),
                                   // hint: Text('Rating'),
                                   onChanged: (value) {
@@ -2003,8 +2059,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     });
                                   },
                                   decoration:
-                                  FormFieldStyle.buildInputDecoration(
-                                      labelText: "+ Floors"),
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "+ Floors"),
                                 ),
                               ),
                             )
@@ -2031,7 +2087,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               Text(
                                 "Product demo",
                                 style: TextStyle(
-                                  //fontWeight: FontWeight.bold,
+                                    //fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                     // color: HexColor("#000000DE"),
                                     fontFamily: "Muli"),
@@ -2051,7 +2107,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     value: isSwitchedsiteProductDemo,
                                     activeColor: HexColor("#009688"),
                                     activeTrackColor:
-                                    HexColor("#009688").withOpacity(0.5),
+                                        HexColor("#009688").withOpacity(0.5),
                                     inactiveThumbColor: HexColor("#F1F1F1"),
                                     inactiveTrackColor: Colors.black26,
                                   ),
@@ -2079,9 +2135,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             children: [
                               Text(
                                 "Product oral briefing",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "Muli"),
+                                style:
+                                    TextStyle(fontSize: 16, fontFamily: "Muli"),
                               ),
                               Row(
                                 children: [
@@ -2098,7 +2153,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                     value: isSwitchedsiteProductOralBriefing,
                                     activeColor: HexColor("#009688"),
                                     activeTrackColor:
-                                    HexColor("#009688").withOpacity(0.5),
+                                        HexColor("#009688").withOpacity(0.5),
                                     inactiveThumbColor: HexColor("#F1F1F1"),
                                     inactiveTrackColor: Colors.black26,
                                   ),
@@ -2148,7 +2203,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       } else {
                                         _siteTotalPt.text =
                                             (int.parse(_siteTotalBags.text) /
-                                                20)
+                                                    20)
                                                 .toString();
                                       }
                                     });
@@ -2171,8 +2226,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       fontFamily: "Muli"),
                                   // keyboardType: TextInputType.text,
                                   decoration:
-                                  FormFieldStyle.buildInputDecoration(
-                                      labelText: "Bags"),
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "Bags"),
                                 ),
                               ),
                             ),
@@ -2208,8 +2263,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   keyboardType: TextInputType.numberWithOptions(
                                       decimal: false),
                                   decoration:
-                                  FormFieldStyle.buildInputDecoration(
-                                      labelText: "MT"),
+                                      FormFieldStyle.buildInputDecoration(
+                                          labelText: "MT"),
                                 ),
                               ),
                             ),
@@ -2243,9 +2298,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                         _siteTotalBalancePt.clear();
                                       } else {
                                         _siteTotalBalancePt.text = (int.parse(
-                                            _siteTotalBalanceBags
-                                                .text) /
-                                            20)
+                                                    _siteTotalBalanceBags
+                                                        .text) /
+                                                20)
                                             .toString();
                                       }
                                     });
@@ -2268,7 +2323,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                       fontFamily: "Muli"),
                                   // keyboardType: TextInputType.text,
                                   decoration:
-                                  FormFieldStyle.buildInputDecoration(
+                                      FormFieldStyle.buildInputDecoration(
                                     labelText: "Bags",
                                   ),
                                 ),
@@ -2287,8 +2342,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                         _siteTotalBalanceBags.clear();
                                       } else {
                                         _siteTotalBalanceBags.text = (int.parse(
-                                            _siteTotalBalancePt.text) *
-                                            20)
+                                                    _siteTotalBalancePt.text) *
+                                                20)
                                             .toString();
                                       }
                                     });
@@ -2307,7 +2362,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   keyboardType: TextInputType.numberWithOptions(
                                       decimal: true),
                                   decoration:
-                                  FormFieldStyle.buildInputDecoration(
+                                      FormFieldStyle.buildInputDecoration(
                                     labelText: "MT",
                                   ),
                                 ),
@@ -2321,34 +2376,40 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                         DropdownButtonFormField<SiteProbabilityWinningEntity>(
                           value: _siteProbabilityWinningEntity,
-                          items:viewSiteDataResponse.sitesModal !=
-                              null && viewSiteDataResponse.sitesModal.siteProbabilityWinningId !=null?[_siteProbabilityWinningEntity]
-                              .map((label) => DropdownMenuItem(
-                            child: Text(
-                              label==null?"":
-                              label.siteProbabilityStatus,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                  ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
-                              .toList():siteProbabilityWinningEntity
-                              .map((label) => DropdownMenuItem(
-                            child: Text(
-                              label==null?"":
-                              label.siteProbabilityStatus,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                  ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
-                              .toList(),
+                          items: viewSiteDataResponse.sitesModal != null &&
+                                  viewSiteDataResponse.sitesModal
+                                          .siteProbabilityWinningId !=
+                                      null
+                              ? [_siteProbabilityWinningEntity]
+                                  .map((label) => DropdownMenuItem(
+                                        child: Text(
+                                          label == null
+                                              ? ""
+                                              : label.siteProbabilityStatus,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: ColorConstants
+                                                  .inputBoxHintColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                        value: label,
+                                      ))
+                                  .toList()
+                              : siteProbabilityWinningEntity
+                                  .map((label) => DropdownMenuItem(
+                                        child: Text(
+                                          label == null
+                                              ? ""
+                                              : label.siteProbabilityStatus,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: ColorConstants
+                                                  .inputBoxHintColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                        value: label,
+                                      ))
+                                  .toList(),
                           onChanged: (value) {
                             setState(() {
                               labelProbabilityText =
@@ -2377,32 +2438,40 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ),
                         DropdownButtonFormField<SiteCompetitionStatusEntity>(
                           value: _siteCompetitionStatusEntity,
-                          items: viewSiteDataResponse.sitesModal !=
-                              null && viewSiteDataResponse.sitesModal.siteCompetitionId !=null?[_siteCompetitionStatusEntity]
-                              .map((label) => DropdownMenuItem(
-                            child: Text(label==null?"":
-                            label.competitionStatus,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                  ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
-                              .toList():siteCompetitionStatusEntity
-                              .map((label) => DropdownMenuItem(
-                            child: Text(label==null?"":
-                            label.competitionStatus,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                  ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
-                              .toList(),
+                          items: viewSiteDataResponse.sitesModal != null &&
+                                  viewSiteDataResponse
+                                          .sitesModal.siteCompetitionId !=
+                                      null
+                              ? [_siteCompetitionStatusEntity]
+                                  .map((label) => DropdownMenuItem(
+                                        child: Text(
+                                          label == null
+                                              ? ""
+                                              : label.competitionStatus,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: ColorConstants
+                                                  .inputBoxHintColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                        value: label,
+                                      ))
+                                  .toList()
+                              : siteCompetitionStatusEntity
+                                  .map((label) => DropdownMenuItem(
+                                        child: Text(
+                                          label == null
+                                              ? ""
+                                              : label.competitionStatus,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: ColorConstants
+                                                  .inputBoxHintColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                        value: label,
+                                      ))
+                                  .toList(),
                           onChanged: (value) {
                             setState(() {
                               _siteCompetitionStatusEntity = value;
@@ -2428,32 +2497,40 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         ),
                         DropdownButtonFormField<SiteOpportunityStatusEntity>(
                           value: _siteOpportunitStatusEnity,
-                          items:viewSiteDataResponse.sitesModal !=
-                              null && viewSiteDataResponse.sitesModal.siteOppertunityId !=null ? [_siteOpportunitStatusEnity]
-                              .map((label) => DropdownMenuItem(
-                            child: Text(label==null?"":
-                            label.opportunityStatus,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color:
-                                  ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
-                              .toList():siteOpportunityStatusEntity
-                              .map((label) => DropdownMenuItem(
-                            child: Text(label==null?"":
-                            label.opportunityStatus,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color:
-                                  ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
-                              .toList(),
+                          items: viewSiteDataResponse.sitesModal != null &&
+                                  viewSiteDataResponse
+                                          .sitesModal.siteOppertunityId !=
+                                      null
+                              ? [_siteOpportunitStatusEnity]
+                                  .map((label) => DropdownMenuItem(
+                                        child: Text(
+                                          label == null
+                                              ? ""
+                                              : label.opportunityStatus,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: ColorConstants
+                                                  .inputBoxHintColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                        value: label,
+                                      ))
+                                  .toList()
+                              : siteOpportunityStatusEntity
+                                  .map((label) => DropdownMenuItem(
+                                        child: Text(
+                                          label == null
+                                              ? ""
+                                              : label.opportunityStatus,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: ColorConstants
+                                                  .inputBoxHintColor,
+                                              fontFamily: "Muli"),
+                                        ),
+                                        value: label,
+                                      ))
+                                  .toList(),
                           onChanged: (value) {
                             setState(() {
                               _siteOpportunitStatusEnity = value;
@@ -2623,7 +2700,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                   geoTagType = "M";
                                 });
                                 LocationResult result =
-                                await showLocationPicker(
+                                    await showLocationPicker(
                                   context,
                                   StringConstants.API_Key,
                                   initialCenter: LatLng(31.1975844, 29.9598339),
@@ -2855,87 +2932,87 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
                         _imgDetails != null
                             ? Row(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: _imgDetails.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    print(_imgDetails[index]
-                                        .from
-                                        .toLowerCase());
-                                    return GestureDetector(
-                                      onTap: () {
-                                        return showDialog(
-                                            context: context,
-                                            builder:
-                                                (BuildContext context) {
-                                              return AlertDialog(
-                                                content: new Container(
-                                                  // width: 500,
-                                                  // height: 500,
-                                                  child: _imgDetails[
-                                                  index]
-                                                      .from
-                                                      .toLowerCase() ==
-                                                      "network"
-                                                      ? Image.network(
-                                                      _imgDetails[
-                                                      index]
-                                                          .file
-                                                          .path)
-                                                      : Image.file(
-                                                      _imgDetails[
-                                                      index]
-                                                          .file),
-                                                ),
-                                              );
-                                            });
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Picture ${(index + 1)}. ",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    fontSize: 15),
-                                              ),
-                                              Text(
-                                                "Image_${(index + 1)}.jpg",
-                                                style: TextStyle(
-                                                    color: HexColor(
-                                                        "#007CBF"),
-                                                    fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          GestureDetector(
-                                            child: Icon(
-                                              Icons.delete,
-                                              color: HexColor("#FFCD00"),
-                                            ),
+                                children: [
+                                  Expanded(
+                                    child: ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: _imgDetails.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          print(_imgDetails[index]
+                                              .from
+                                              .toLowerCase());
+                                          return GestureDetector(
                                             onTap: () {
-                                              setState(() {
-                                                _imgDetails
-                                                    .removeAt(index);
-                                              });
+                                              return showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      content: new Container(
+                                                        // width: 500,
+                                                        // height: 500,
+                                                        child: _imgDetails[
+                                                                        index]
+                                                                    .from
+                                                                    .toLowerCase() ==
+                                                                "network"
+                                                            ? Image.network(
+                                                                _imgDetails[
+                                                                        index]
+                                                                    .file
+                                                                    .path)
+                                                            : Image.file(
+                                                                _imgDetails[
+                                                                        index]
+                                                                    .file),
+                                                      ),
+                                                    );
+                                                  });
                                             },
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                            ),
-                          ],
-                        )
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "Picture ${(index + 1)}. ",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                    ),
+                                                    Text(
+                                                      "Image_${(index + 1)}.jpg",
+                                                      style: TextStyle(
+                                                          color: HexColor(
+                                                              "#007CBF"),
+                                                          fontSize: 15),
+                                                    ),
+                                                  ],
+                                                ),
+                                                GestureDetector(
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    color: HexColor("#FFCD00"),
+                                                  ),
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _imgDetails
+                                                          .removeAt(index);
+                                                    });
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ],
+                              )
                             : Container(),
                         //
 
@@ -3063,2299 +3140,178 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         child: Container(
             child: Form(
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Current Stage",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    // color: HexColor("#000000DE"),
-                                    fontFamily: "Muli"),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _initialIndex = 3;
-                                    _tabController.animateTo(3);
-                                  });
-                                },
-                                child: Text(
-                                  "View previous detail",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                      color: HexColor("#F9A61A"),
-                                      fontFamily: "Muli"),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
-                        //   child: Text(
-                        //     "Total Balance Potential",
-                        //     style: TextStyle(
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 22,
-                        //         // color: HexColor("#000000DE"),
-                        //         fontFamily: "Muli"),
-                        //   ),
-                        // ),
-                        // Row(
-                        //   children: [
-                        //     Expanded(
-                        //       child: Padding(
-                        //         padding: const EdgeInsets.only(right: 10.0),
-                        //         child: TextFormField(
-                        //           // initialValue: _totalBags.toString(),
-                        //           controller: _siteTotalBalanceBags,
-                        //           onChanged: (value) {
-                        //             setState(() {
-                        //               // _totalBags.text = value ;
-                        //               if (_siteTotalBalanceBags.text == null ||
-                        //                   _siteTotalBalanceBags.text == "") {
-                        //                 _siteTotalBalancePt.clear();
-                        //               } else {
-                        //                 _siteTotalBalancePt.text =
-                        //                     (int.parse(_siteTotalBalanceBags.text) / 20)
-                        //                         .toString();
-                        //               }
-                        //             });
-                        //           },
-                        //           keyboardType: TextInputType.phone,
-                        //           inputFormatters: <TextInputFormatter>[
-                        //             FilteringTextInputFormatter.digitsOnly
-                        //           ],
-                        //           validator: (value) {
-                        //             if (value.isEmpty) {
-                        //               return 'Please enter Bags ';
-                        //             }
-                        //
-                        //             return null;
-                        //           },
-                        //
-                        //           style: TextStyle(
-                        //               fontSize: 18,
-                        //               color: ColorConstants.inputBoxHintColor,
-                        //               fontFamily: "Muli"),
-                        //           // keyboardType: TextInputType.text,
-                        //           decoration: FormFieldStyle.buildInputDecoration(
-                        //             labelText: "Bags",
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     Expanded(
-                        //       child: Padding(
-                        //         padding: const EdgeInsets.only(left: 10.0),
-                        //         child: TextFormField(
-                        //           controller: _siteTotalBalancePt,
-                        //           onChanged: (value) {
-                        //             setState(() {
-                        //               // _totalBags.text = value ;
-                        //               if (_siteTotalBalancePt.text == null ||
-                        //                   _siteTotalBalancePt.text == "") {
-                        //                 _siteTotalBalanceBags.clear();
-                        //               } else {
-                        //                 _siteTotalBalanceBags.text =
-                        //                     (int.parse(_siteTotalBalancePt.text) * 20)
-                        //                         .toString();
-                        //               }
-                        //             });
-                        //           },
-                        //           validator: (value) {
-                        //             if (value.isEmpty) {
-                        //               return 'Please enter MT ';
-                        //             }
-                        //
-                        //             return null;
-                        //           },
-                        //           style: TextStyle(
-                        //               fontSize: 18,
-                        //               color: ColorConstants.inputBoxHintColor,
-                        //               fontFamily: "Muli"),
-                        //           keyboardType:
-                        //               TextInputType.numberWithOptions(decimal: true),
-                        //           decoration: FormFieldStyle.buildInputDecoration(
-                        //             labelText: "MT",
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.all(8.0),
-                        //   child: Divider(
-                        //     color: Colors.black26,
-                        //     thickness: 1,
-                        //   ),
-                        // ),
-                        DropdownButtonFormField<ConstructionStageEntity>(
-                          value: _selectedConstructionTypeVisit,
-                          items: constructionStageEntityNew
-                              .map((label) => DropdownMenuItem(
-                            child: Text(
-                              label.constructionStageText,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
-                              .toList(),
-
-                          // hint: Text('Rating'),
-                          onChanged: (value) {
-                            setState(() {
-                              FocusScope.of(context).requestFocus(new FocusNode());
-                              _selectedConstructionTypeVisit = value;
-                              print(_selectedConstructionTypeVisit.id);
-                              siteFloorsEntityNew = new List();
-                              _selectedSiteVisitFloor = null;
-                              if (_selectedConstructionTypeVisit.id == 1 ||
-                                  _selectedConstructionTypeVisit.id == 2 ||
-                                  _selectedConstructionTypeVisit.id == 3) {
-                                // siteFloorsEntityNew = new List();
-                                siteFloorsEntityNew.add(new SiteFloorsEntity(
-                                    id: siteFloorsEntity[0].id,
-                                    siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
-                              } else {
-                                for (int i = 1; i < siteFloorsEntity.length; i++) {
-                                  siteFloorsEntityNew.add(new SiteFloorsEntity(
-                                      id: siteFloorsEntity[i].id,
-                                      siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
-                                }
-                              }
-                            });
-                          },
-                          decoration: FormFieldStyle.buildInputDecoration(
-                            labelText: "Stage of Construction",
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Text(
-                            "Mandatory",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        DropdownButtonFormField<SiteFloorsEntity>(
-                          value: _selectedSiteVisitFloor,
-                          items: siteFloorsEntityNew
-                              .map((label) => DropdownMenuItem(
-                            child: Text(
-                              label.siteFloorTxt,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                            ),
-                            value: label,
-                          ))
-                              .toList(),
-
-                          // hint: Text('Rating'),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedSiteVisitFloor = value;
-                            });
-                          },
-                          decoration: FormFieldStyle.buildInputDecoration(
-                            labelText: "Floor",
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Text(
-                            "Mandatory",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        TextFormField(
-                          controller: _stagePotentialVisit,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter Site Built-Up Area ';
-                            }
-                            return null;
-                          },
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
-                            TextInputFormatter.withFunction((oldValue, newValue) {
-                              try {
-                                final text = newValue.text;
-                                if (text.isNotEmpty) double.parse(text);
-                                return newValue;
-                              } catch (e) {}
-                              return oldValue;
-                            }
-                            ),
-                          ],
-                          decoration: FormFieldStyle.buildInputDecoration(
-                            labelText: "Stage Potential",
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Text(
-                            "Mandatory",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-
-                        ..._getProductList(),
-                        sumNoOfBagsSupplied() > 0? Container(child: Text("MULTIPLE - ${sumNoOfBagsSupplied()} >",style:TextStyle(
-                            color: Colors.amber[700],
-                            fontWeight: FontWeight.bold,
-                            // letterSpacing: 2,
-                            fontSize: 15) ,),):Container(),
-                        Center(
-                          child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: FlatButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                    side: BorderSide(color: Colors.black26)),
-                                color: Colors.transparent,
-                                child: Padding(
-                                  padding:
-                                  const EdgeInsets.only(right: 5, bottom: 10, top: 10),
-                                  child: Text(
-                                    "ADD MORE PRODUCT",
-                                    style: TextStyle(
-                                        color: HexColor("#1C99D4"),
-                                        fontWeight: FontWeight.bold,
-                                        // letterSpacing: 2,
-                                        fontSize: 17),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  int index;
-                                  if (productDynamicList.length == 0) {
-                                    index = 0;
-                                  } else {
-                                    index = productDynamicList.length;
-                                  }
-                                  print("index1" + index.toString());
-                                  if(index==0) {
-                                    setState(() {
-                                      BrandModelforDB brand;
-                                      ProductListModel product11 = new ProductListModel(
-                                          brandId: -1,
-                                          brandPrice: new TextEditingController(),
-                                          supplyDate: new TextEditingController(),
-                                          supplyQty: new TextEditingController(),
-                                          isExpanded: new ExpandableController(
-                                              initialExpanded: true),
-                                          brandModelForDB: brand,
-                                          dealerName: new TextEditingController());
-                                      productDynamicList.insert(index, product11);
-                                    });
-                                  }else{
-                                    if(productDynamicList[index-1].brandId!=-1){
-                                      setState(() {
-                                        BrandModelforDB brand;
-                                        ProductListModel product11 = new ProductListModel(
-                                            brandId: -1,
-                                            brandPrice: new TextEditingController(),
-                                            supplyDate: new TextEditingController(),
-                                            supplyQty: new TextEditingController(),
-                                            isExpanded: new ExpandableController(
-                                                initialExpanded: true),
-                                            brandModelForDB: brand,
-                                            dealerName: new TextEditingController());
-                                        productDynamicList.insert(index, product11);
-                                      });
-                                    }else{
-                                      Get.dialog(CustomDialogs().errorDialog("Please enter product ${index} details !"));
-                                    }
-                                  }
-                                },
-                              )),
-                        ),
-                        SizedBox(height: 16),
-                        TextFormField(
-                          controller: _stageStatus,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter Site Built-Up Area ';
-                            }
-
-                            return null;
-                          },
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                          keyboardType: TextInputType.text,
-                          readOnly: true,
-                          decoration: FormFieldStyle.buildInputDecoration(
-                            labelText: "Stage Status",
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Text(
-                            "Mandatory",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              color: ColorConstants.inputBoxHintColorDark,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        TextFormField(
-                          controller: _dateofConstruction,
-                          // validator: (value) {
-                          //   if (value.isEmpty) {
-                          //     return "Contact Name can't be empty";
-                          //   }
-                          //   //leagueSize = int.parse(value);
-                          //   return null;
-                          // },
-                          readOnly: true,
-                          onChanged: (data) {
-                            // setState(() {
-                            //   _contactName.text = data;
-                            // });
-                          },
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                          keyboardType: TextInputType.text,
-                          decoration: FormFieldStyle.buildInputDecoration(
-                            labelText: "Date of construction",
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                Icons.date_range_rounded,
-                                size: 22,
-                                color: ColorConstants.clearAllTextColor,
-                              ),
-                              onPressed: () async {
-                                print("here");
-                                final DateTime picked = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2001),
-                                  lastDate: DateTime.now(),
-                                );
-
-                                setState(() {
-                                  final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                                  if (picked != null) {
-                                    final String formattedDate = formatter.format(picked);
-                                    _dateofConstruction.text = formattedDate;
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: !addNextButtonDisable
-                                ? FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                  side: BorderSide(color: Colors.black26)),
-                              color: Colors.transparent,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 5, bottom: 10, top: 10),
-                                child: Text(
-                                  "ADD NEXT STAGE",
-                                  style: TextStyle(
-                                      color: HexColor("#1C99D4"),
-                                      fontWeight: FontWeight.bold,
-                                      // letterSpacing: 2,
-                                      fontSize: 17),
-                                ),
-                              ),
-                              onPressed: () async {
-                                setState(() {
-                                  addNextButtonDisable = !addNextButtonDisable;
-                                });
-                              },
-                            )
-                                : FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                  side: BorderSide(color: Colors.black26)),
-                              color: Colors.transparent,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 5, bottom: 10, top: 10),
-                                child: Text(
-                                  "HIDE NEXT STAGE",
-                                  style: TextStyle(
-                                      color: Colors.redAccent,
-                                      fontWeight: FontWeight.bold,
-                                      // letterSpacing: 2,
-                                      fontSize: 17),
-                                ),
-                              ),
-                              onPressed: () async {
-                                setState(() {
-                                  addNextButtonDisable = !addNextButtonDisable;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-
-                        ////Add Next Stage Container
-
-                        addNextButtonDisable ? addNextStageContainer() : Container(),
-                        SizedBox(
-                          height: 20,
-                        ),
-
-                        TextFormField(
-                          maxLines: 4,
-                          maxLength: 500,
-                          // initialValue: _comments.text,
-                          controller: _comments,
-
-                          // validator: (value) {
-                          //   if (value.isEmpty) {
-                          //     return 'Please enter RERA Number ';
-                          //   }
-                          //
-                          //   return null;
-                          // },
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.inputBoxHintColor,
-                              fontFamily: "Muli"),
-                          keyboardType: TextInputType.text,
-                          onChanged: (value) {
-                            print(_comments.text);
-                            // setState(() {
-                            //   _comments.text = value;
-                            // });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: const Color(0xFF000000).withOpacity(0.4),
-                                  width: 1.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red, width: 1.0),
-                            ),
-                            labelText: "Comment",
-                            filled: false,
-                            focusColor: Colors.black,
-                            labelStyle: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.0),
-                            fillColor: ColorConstants.backgroundColor,
-                          ),
-                        ),
-                        SizedBox(height: 16),
-
-                        siteCommentsEntity != null && siteCommentsEntity.length != 0
-                            ? viewMoreActive
-                            ? Row(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  reverse: true,
-                                  shrinkWrap: true,
-                                  itemCount: siteCommentsEntity.length,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              siteCommentsEntity[index]
-                                                  .creatorName ??
-                                                  "",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25),
-                                            ),
-                                            Text(
-                                              siteCommentsEntity[index]
-                                                  .siteCommentText ??
-                                                  "",
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 25),
-                                            ),
-                                            Text(
-                                              formatter.format(DateTime
-                                                  .fromMillisecondsSinceEpoch(
-                                                  siteCommentsEntity[
-                                                  siteCommentsEntity
-                                                      .length -
-                                                      1]
-                                                      .createdOn)) ??
-                                                  "",
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 15),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        )
-                                      ],
-                                    );
-                                  }),
-                            ),
-                          ],
-                        )
-                            : Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  siteCommentsEntity[
-                                  siteCommentsEntity.length - 1]
-                                      .creatorName,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 25),
-                                ),
-                                Text(
-                                  siteCommentsEntity[
-                                  siteCommentsEntity.length - 1]
-                                      .siteCommentText,
-                                  style: TextStyle(
-                                      color: Colors.black.withOpacity(0.5),
-                                      fontSize: 25),
-                                ),
-                                Text(
-                                  formatter.format(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                          siteCommentsEntity[
-                                          siteCommentsEntity.length - 1]
-                                              .createdOn)),
-                                  style: TextStyle(
-                                      color: Colors.black.withOpacity(0.5),
-                                      fontSize: 15),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            )
-                          ],
-                        )
-                            : Container(),
-
-                        Center(
-                          child: FlatButton(
-                            // shape: RoundedRectangleBorder(
-                            //     borderRadius: BorderRadius.circular(0),
-                            //     side: BorderSide(color: Colors.black26)),
-                            color: Colors.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-                              child: !viewMoreActive
-                                  ? Text(
-                                "VIEW MORE COMMENT (" +
-                                    siteCommentsEntity.length.toString() +
-                                    ")",
-                                style: TextStyle(
-                                    color: HexColor("##F9A61A"),
-                                    fontWeight: FontWeight.bold,
-                                    // letterSpacing: 2,
-                                    fontSize: 17),
-                              )
-                                  : Text(
-                                "VIEW LESS COMMENT (" +
-                                    siteCommentsEntity.length.toString() +
-                                    ")",
-                                style: TextStyle(
-                                    color: HexColor("##F9A61A"),
-                                    fontWeight: FontWeight.bold,
-                                    // letterSpacing: 2,
-                                    fontSize: 17),
-                              ),
-                            ),
-                            onPressed: () async {
-                              setState(() {
-                                viewMoreActive = !viewMoreActive;
-                              });
-                            },
-                          ),
-                        ),
-
-                        SizedBox(height: 35),
-
-                        Center(
-                          child: RaisedButton(
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            color: HexColor("#1C99D4"),
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
-                              child: Text(
-                                "UPDATE",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1,
-                                    fontSize: 17),
-                              ),
-                            ),
-                            onPressed: () async {
-                              UpdateRequest();
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 40),
-                      ]),
-                ))));
-  }
-
-  Widget influencerView() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: _listInfluencerDetail.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (!_listInfluencerDetail[index].isExpanded) {
-                              return Column(
-                                // mainAxisAlignment:
-                                // MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Influencer Details ${(index + 1)} ",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
-                                      ),
-                                      Switch(
-                                        onChanged: (value) {
-                                          setState(() {
-                                            if (value) {
-                                              for (int i = 0;
-                                              i < _listInfluencerDetail.length;
-                                              i++) {
-                                                if (i == index) {
-                                                  _listInfluencerDetail[i]
-                                                      .isPrimarybool = value;
-                                                } else {
-                                                  _listInfluencerDetail[i]
-                                                      .isPrimarybool = !value;
-                                                }
-                                              }
-                                            } else {
-                                              Get.dialog(CustomDialogs().showMessage(
-                                                  "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-                                            }
-                                          });
-                                        },
-                                        value: _listInfluencerDetail[index]
-                                            .isPrimarybool,
-                                        activeColor: HexColor("#009688"),
-                                        activeTrackColor:
-                                        HexColor("#009688").withOpacity(0.5),
-                                        inactiveThumbColor: HexColor("#F1F1F1"),
-                                        inactiveTrackColor: Colors.black26,
-                                      ),
-                                      _listInfluencerDetail[index].isExpanded
-                                          ? FlatButton.icon(
-                                        // shape: RoundedRectangleBorder(
-                                        //     borderRadius: BorderRadius.circular(0),
-                                        //     side: BorderSide(color: Colors.black26)),
-                                        color: Colors.transparent,
-                                        icon: Icon(
-                                          Icons.remove,
-                                          color: HexColor("#F9A61A"),
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          "COLLAPSE",
-                                          style: TextStyle(
-                                              color: HexColor("#F9A61A"),
-                                              fontWeight: FontWeight.bold,
-                                              // letterSpacing: 2,
-                                              fontSize: 17),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _listInfluencerDetail[index]
-                                                .isExpanded =
-                                            !_listInfluencerDetail[index]
-                                                .isExpanded;
-                                          });
-                                          // _getCurrentLocation();
-                                        },
-                                      )
-                                          : FlatButton.icon(
-                                        // shape: RoundedRectangleBorder(
-                                        //     borderRadius: BorderRadius.circular(0),
-                                        //     side: BorderSide(color: Colors.black26)),
-                                        color: Colors.transparent,
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: HexColor("#F9A61A"),
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          "EXPAND",
-                                          style: TextStyle(
-                                              color: HexColor("#F9A61A"),
-                                              fontWeight: FontWeight.bold,
-                                              // letterSpacing: 2,
-                                              fontSize: 17),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _listInfluencerDetail[index]
-                                                .isExpanded =
-                                            !_listInfluencerDetail[index]
-                                                .isExpanded;
-                                          });
-                                          // _getCurrentLocation();
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return Column(
-                                // mainAxisAlignment:
-                                // MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Influencer Details ${(index + 1)} ",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize:
-                                            SizeConfig.safeBlockHorizontal *
-                                                4.8),
-                                      ),
-                                      _listInfluencerDetail[index].isExpanded
-                                          ? FlatButton.icon(
-                                        // shape: RoundedRectangleBorder(
-                                        //     borderRadius: BorderRadius.circular(0),
-                                        //     side: BorderSide(color: Colors.black26)),
-                                        color: Colors.transparent,
-                                        icon: Icon(
-                                          Icons.remove,
-                                          color: HexColor("#F9A61A"),
-                                          size:
-                                          SizeConfig.safeBlockHorizontal *
-                                              4,
-                                        ),
-                                        label: Text(
-                                          "COLLAPSE",
-                                          style: TextStyle(
-                                              color: HexColor("#F9A61A"),
-                                              fontWeight: FontWeight.bold,
-                                              // letterSpacing: 2,
-                                              fontSize: SizeConfig
-                                                  .safeBlockHorizontal *
-                                                  4.5),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _listInfluencerDetail[index]
-                                                .isExpanded =
-                                            !_listInfluencerDetail[index]
-                                                .isExpanded;
-                                          });
-                                          // _getCurrentLocation();
-                                        },
-                                      )
-                                          : FlatButton.icon(
-                                        // shape: RoundedRectangleBorder(
-                                        //     borderRadius: BorderRadius.circular(0),
-                                        //     side: BorderSide(color: Colors.black26)),
-                                        color: Colors.transparent,
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: HexColor("#F9A61A"),
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          "EXPAND",
-                                          style: TextStyle(
-                                              color: HexColor("#F9A61A"),
-                                              fontWeight: FontWeight.bold,
-                                              // letterSpacing: 2,
-                                              fontSize: 17),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _listInfluencerDetail[index]
-                                                .isExpanded =
-                                            !_listInfluencerDetail[index]
-                                                .isExpanded;
-                                          });
-                                          // _getCurrentLocation();
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 16),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Secondary",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            // color: HexColor("#000000DE"),
-                                            fontFamily: "Muli"),
-                                      ),
-                                      Switch(
-                                        onChanged: (value) {
-                                          setState(() {
-                                            if (value) {
-                                              for (int i = 0;
-                                              i < _listInfluencerDetail.length;
-                                              i++) {
-                                                if (i == index) {
-                                                  _listInfluencerDetail[i]
-                                                      .isPrimarybool = value;
-                                                } else {
-                                                  _listInfluencerDetail[i]
-                                                      .isPrimarybool = !value;
-                                                }
-                                              }
-                                            } else {
-                                              Get.dialog(CustomDialogs().showMessage(
-                                                  "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-                                            }
-                                          });
-                                        },
-                                        value: _listInfluencerDetail[index]
-                                            .isPrimarybool,
-                                        activeColor: HexColor("#009688"),
-                                        activeTrackColor:
-                                        HexColor("#009688").withOpacity(0.5),
-                                        inactiveThumbColor: HexColor("#F1F1F1"),
-                                        inactiveTrackColor: Colors.black26,
-                                      ),
-                                      Text(
-                                        "Primary",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            color: _listInfluencerDetail[index]
-                                                .isPrimarybool
-                                                ? HexColor("#009688")
-                                                : Colors.black,
-                                            // color: HexColor("#000000DE"),
-                                            fontFamily: "Muli"),
-                                      ),
-                                    ],
-                                  ),
-                                  TextFormField(
-                                    controller:
-                                    _listInfluencerDetail[index].inflContact,
-                                    maxLength: 10,
-                                    onChanged: (value) async {
-                                      bool match = false;
-                                      if (value.length < 10) {
-                                        // _listInfluencerDetail[
-                                        // index]
-                                        //     .inflContact
-                                        //     .clear();
-                                        if (_listInfluencerDetail[index].inflName !=
-                                            null) {
-                                          _listInfluencerDetail[index]
-                                              .inflName
-                                              .clear();
-                                          _listInfluencerDetail[index]
-                                              .inflTypeValue
-                                              .clear();
-                                          _listInfluencerDetail[index]
-                                              .inflCatValue
-                                              .clear();
-                                        }
-                                      } else if (value.length == 10) {
-                                        var bodyEncrypted = {
-                                          //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
-                                          "inflContact": value
-                                        };
-
-                                        for (int i = 0;
-                                        i < _listInfluencerDetail.length - 1;
-                                        i++) {
-                                          if (value ==
-                                              _listInfluencerDetail[i]
-                                                  .inflContact
-                                                  .text) {
-                                            match = true;
-                                            break;
-                                          }
-                                        }
-
-                                        if (match) {
-                                          Get.dialog(CustomDialogs().showMessage(
-                                              "Already added influencer : " +
-                                                  value));
-                                        } else {
-                                          String empId;
-                                          String mobileNumber;
-                                          String name;
-                                          Future<SharedPreferences> _prefs =
-                                          SharedPreferences.getInstance();
-                                          await _prefs
-                                              .then((SharedPreferences prefs) {
-                                            empId = prefs.getString(
-                                                StringConstants.employeeId) ??
-                                                "empty";
-                                            mobileNumber = prefs.getString(
-                                                StringConstants.mobileNumber) ??
-                                                "empty";
-                                            name = prefs.getString(
-                                                StringConstants.employeeName) ??
-                                                "empty";
-                                            print(_comments.text);
-                                          });
-                                          AddLeadsController _addLeadsController =
-                                          Get.find();
-                                          _addLeadsController.phoneNumber = value;
-                                          AccessKeyModel accessKeyModel =
-                                          new AccessKeyModel();
-                                          await _addLeadsController
-                                              .getAccessKeyOnly()
-                                              .then((data) async {
-                                            accessKeyModel = data;
-                                            print("AccessKey :: " +
-                                                accessKeyModel.accessKey);
-                                            await _addLeadsController
-                                                .getInfNewData(
-                                                accessKeyModel.accessKey)
-                                                .then((data) {
-                                              InfluencerDetailModel _infDetailModel = data;
-                                              if(_infDetailModel.respCode=="DM1002") {
-                                                InfluencerModel inflDetail = _infDetailModel
-                                                    .influencerModel;
-                                                // print(inflDetail.inflName);
-                                                setState(() {
-                                                  if (inflDetail.inflName !=
-                                                      "null") {
-                                                    _listInfluencerDetail[index]
-                                                        .inflContact =
-                                                    new TextEditingController();
-                                                    ;
-                                                    _listInfluencerDetail[index]
-                                                        .inflName =
-                                                    new TextEditingController();
-                                                    FocusScope.of(context)
-                                                        .unfocus();
-                                                    //  print(inflDetail.inflName.text);
-                                                    _listInfluencerDetail[index]
-                                                        .inflTypeId =
-                                                    new TextEditingController();
-                                                    _listInfluencerDetail[index]
-                                                        .inflCatId =
-                                                    new TextEditingController();
-                                                    _listInfluencerDetail[index]
-                                                        .inflTypeValue =
-                                                    new TextEditingController();
-                                                    _listInfluencerDetail[index]
-                                                        .inflCatValue =
-                                                    new TextEditingController();
-                                                    _listInfluencerDetail[index]
-                                                        .id =
-                                                    new TextEditingController();
-                                                    _listInfluencerDetail[index]
-                                                        .ilpIntrested =
-                                                    new TextEditingController();
-
-                                                    print(inflDetail.inflName);
-
-                                                    _listInfluencerDetail[
-                                                    index]
-                                                        .inflContact.text =
-                                                        inflDetail
-                                                            .inflContact;
-                                                    _listInfluencerDetail[
-                                                    index]
-                                                        .inflName.text =
-                                                        inflDetail.inflName;
-                                                    _listInfluencerDetail[
-                                                    index]
-                                                        .id.text = inflDetail
-                                                        .inflId.toString();
-                                                    _listInfluencerDetail[
-                                                    index]
-                                                        .ilpIntrested.text =
-                                                        inflDetail
-                                                            .ilpRegFlag;
-                                                    // _listInfluencerDetail[
-                                                    //             index]
-                                                    //         .createdOn =
-                                                    //     inflDetail.createdOn;
-                                                    _listInfluencerDetail[
-                                                    index]
-                                                        .inflTypeValue.text =
-                                                        inflDetail
-                                                            .influencerTypeText;
-                                                    _listInfluencerDetail[
-                                                    index]
-                                                        .inflCatValue.text =
-                                                        inflDetail
-                                                            .influencerCategoryText;
-                                                    _listInfluencerDetail[
-                                                    index]
-                                                        .createdBy = empId;
-                                                    print(
-                                                        _listInfluencerDetail[
-                                                        index]
-                                                            .inflName);
-                                                    for (int i = 0;
-                                                    i <
-                                                        influencerTypeEntity
-                                                            .length;
-                                                    i++) {
-                                                      if (influencerTypeEntity[i]
-                                                          .inflTypeId
-                                                          .toString() ==
-                                                          inflDetail.inflTypeId
-                                                              .toString()) {
-                                                        _listInfluencerDetail[index]
-                                                            .inflTypeId.text =
-                                                            inflDetail
-                                                                .inflTypeId
-                                                                .toString();
-                                                        //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                        _listInfluencerDetail[index]
-                                                            .inflTypeValue
-                                                            .text =
-                                                            influencerTypeEntity[
-                                                            influencerTypeEntity[
-                                                            i]
-                                                                .inflTypeId -
-                                                                1]
-                                                                .inflTypeDesc;
-                                                        break;
-                                                      } else {
-                                                        // _listInfluencerDetail[
-                                                        // index]
-                                                        //     .inflContact
-                                                        //     .clear();
-                                                        // _listInfluencerDetail[
-                                                        // index]
-                                                        //     .inflName
-                                                        //     .clear();
-                                                        _listInfluencerDetail[index]
-                                                            .inflTypeId
-                                                            .clear();
-                                                        _listInfluencerDetail[index]
-                                                            .inflTypeValue
-                                                            .clear();
-                                                      }
-                                                    }
-                                                    print(
-                                                        _listInfluencerDetail[index]
-                                                            .inflName);
-                                                    // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
-
-                                                    for (int i = 0;
-                                                    i <
-                                                        influencerCategoryEntity
-                                                            .length;
-                                                    i++) {
-                                                      if (influencerCategoryEntity[i]
-                                                          .inflCatId
-                                                          .toString() ==
-                                                          inflDetail.inflCatId
-                                                              .toString()) {
-                                                        _listInfluencerDetail[index]
-                                                            .inflCatId.text =
-                                                            inflDetail.inflCatId
-                                                                .toString();
-                                                        //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                        _listInfluencerDetail[index]
-                                                            .inflCatValue
-                                                            .text =
-                                                            influencerCategoryEntity[
-                                                            influencerCategoryEntity[
-                                                            i]
-                                                                .inflCatId -
-                                                                1]
-                                                                .inflCatDesc;
-                                                        break;
-                                                      } else {
-                                                        _listInfluencerDetail[index]
-                                                            .inflCatId
-                                                            .clear();
-                                                        _listInfluencerDetail[index]
-                                                            .inflCatValue
-                                                            .clear();
-                                                      }
-                                                    }
-                                                  } else {
-                                                    if (_listInfluencerDetail[index]
-                                                        .inflContact !=
-                                                        null) {
-                                                      _listInfluencerDetail[index]
-                                                          .inflContact
-                                                          .clear();
-                                                      _listInfluencerDetail[index]
-                                                          .inflName
-                                                          .clear();
-                                                    }
-                                                    return Get.dialog(
-                                                        CustomDialogs()
-                                                            .showDialog(
-                                                            "No influencer registered with this number"));
-                                                  }
-                                                });
-                                              }else{
-                                                if (_listInfluencerDetail[index]
-                                                    .inflContact !=
-                                                    null) {
-                                                  _listInfluencerDetail[index]
-                                                      .inflContact
-                                                      .clear();
-                                                  _listInfluencerDetail[index]
-                                                      .inflName
-                                                      .clear();
-                                                }
-                                                return Get.dialog(
-                                                    CustomDialogs()
-                                                        .showDialog(_infDetailModel.respMsg));
-                                              }
-                                              Get.back();
-                                            });
-                                          });
-
-                                          print("Dhawan :: ");
-                                        }
-                                      }
-                                      // setState(() {
-                                      //   _totalBags = value as int;
-                                      // });
-                                    },
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'Please enter Influencer Number ';
-                                      }
-
-                                      return null;
-                                    },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType: TextInputType.phone,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                            ColorConstants.backgroundColorBlue,
-                                            //color: HexColor("#0000001F"),
-                                            width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1.0),
-                                      ),
-                                      labelText: "Mobile Number",
-                                      filled: false,
-                                      focusColor: Colors.black,
-                                      labelStyle: TextStyle(
-                                          fontFamily: "Muli",
-                                          color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 16.0),
-                                      fillColor: ColorConstants.backgroundColor,
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  TextFormField(
-                                    //  initialValue: _listInfluencerDetail[index].inflName,
-                                    controller:
-                                    _listInfluencerDetail[index].inflName,
-
-                                    // validator: (value) {
-                                    //   if (value.isEmpty) {
-                                    //     return 'Please enter Influencer Number ';
-                                    //   }
-                                    //
-                                    //   return null;
-                                    // },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                            ColorConstants.backgroundColorBlue,
-                                            //color: HexColor("#0000001F"),
-                                            width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1.0),
-                                      ),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      labelText: "Name",
-                                      enabled: false,
-                                      filled: false,
-                                      focusColor: Colors.black,
-                                      labelStyle: TextStyle(
-                                          fontFamily: "Muli",
-                                          color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 16.0),
-                                      fillColor: ColorConstants.backgroundColor,
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  TextFormField(
-                                    controller:
-                                    _listInfluencerDetail[index].inflTypeValue,
-                                    // validator: (value) {
-                                    //   if (value.isEmpty) {
-                                    //     return 'Please enter Influencer Number ';
-                                    //   }
-                                    //
-                                    //   return null;
-                                    // },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                            ColorConstants.backgroundColorBlue,
-                                            //color: HexColor("#0000001F"),
-                                            width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1.0),
-                                      ),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      enabled: false,
-                                      labelText: "Type",
-                                      filled: false,
-                                      focusColor: Colors.black,
-                                      labelStyle: TextStyle(
-                                          fontFamily: "Muli",
-                                          color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 16.0),
-                                      fillColor: ColorConstants.backgroundColor,
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  TextFormField(
-                                    controller:
-                                    _listInfluencerDetail[index].inflCatValue,
-                                    // validator: (value) {
-                                    //   if (value.isEmpty) {
-                                    //     return 'Please enter Influencer Number ';
-                                    //   }
-                                    //
-                                    //   return null;
-                                    // },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                            ColorConstants.backgroundColorBlue,
-                                            //color: HexColor("#0000001F"),
-                                            width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1.0),
-                                      ),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      enabled: false,
-                                      labelText: "Category",
-                                      filled: false,
-                                      focusColor: Colors.black,
-                                      labelStyle: TextStyle(
-                                          fontFamily: "Muli",
-                                          color:
-                                          ColorConstants.inputBoxHintColorDark,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 16.0),
-                                      fillColor: ColorConstants.backgroundColor,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }
-                          }),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Center(
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0),
-                        side: BorderSide(color: Colors.black26)),
-                    color: Colors.transparent,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-                      child: Text(
-                        "ADD MORE INFLUENCER",
-                        style: TextStyle(
-                            color: HexColor("#1C99D4"),
-                            fontWeight: FontWeight.bold,
-                            // letterSpacing: 2,
-                            fontSize: 17),
-                      ),
-                    ),
-                    onPressed: () async {
-                      // //  print(_listInfluencerDetail[
-                      //   _listInfluencerDetail.length - 1]
-                      //       .inflName);
-                      if (_listInfluencerDetail.length == 0) {
-                        setState(() {
-                          _listInfluencerDetail.add(new InfluencerDetail(
-                              isExpanded: true, isPrimarybool: true));
-                        });
-                      } else if (_listInfluencerDetail[
-                      _listInfluencerDetail.length - 1]
-                          .inflName !=
-                          null &&
-                          _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                              .inflName
-                              .text !=
-                              "null" &&
-                          !_listInfluencerDetail[_listInfluencerDetail.length - 1]
-                              .inflName
-                              .text
-                              .isNullOrBlank) {
-                        InfluencerDetail infl = new InfluencerDetail(
-                            isExpanded: true, isPrimarybool: false);
-
-                        // Item item = new Item(
-                        //     headerValue: "agx ", expandedValue: "dnxcx");
-                        setState(() {
-                          // _data.add(item);
-                          _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                              .isExpanded = false;
-                          _listInfluencerDetail.add(infl);
-                        });
-                      } else {
-                        print("Error : Please fill previous influencer first");
-                        Get.dialog(CustomDialogs()
-                            .showMessage("Please fill previous influencer first"));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(height: 16),
-                Divider(
-                  color: Colors.black26,
-                  thickness: 1,
-                ),
-                SizedBox(height: 16),
-                Center(
-                  child: RaisedButton(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    color: HexColor("#1C99D4"),
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
-                      child: Text(
-                        "UPDATE",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                            fontSize: 17),
-                      ),
-                    ),
-                    onPressed: () async {
-                      UpdateRequest();
-                    },
-                  ),
-                ),
-                SizedBox(height: 40),
-              ],
-            )),
-      ),
-    );
-  }
-
-  Widget pastStageHistoryView() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: siteStageHistorys!=null? ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: siteStageHistorys.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            print("00000000" +
-                                json.encode(siteStageHistorys[0]));
-                            final DateFormat formatter = DateFormat('dd-MMM-yyyy');
-                            String selectedDateString = formatter.format(
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    siteStageHistorys[index].createdOn));
-
-                            String constructionDateString =
-                                siteStageHistorys[index].constructionDate;
-
-                            if (!siteStageHistorys[index].isExpanded) {
-                              return Column(
-                                // mainAxisAlignment:
-                                // MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Visit Date:" + selectedDateString ,
-                                        style: TextStyle(
-                                          //      fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                      siteStageHistorys[index].isExpanded
-                                          ? FlatButton.icon(
-                                        // shape: RoundedRectangleBorder(
-                                        //     borderRadius: BorderRadius.circular(0),
-                                        //     side: BorderSide(color: Colors.black26)),
-                                        color: Colors.transparent,
-                                        icon: Icon(
-                                          Icons.remove,
-                                          color: HexColor("#F9A61A"),
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          "COLLAPSE",
-                                          style: TextStyle(
-                                              color: HexColor("#F9A61A"),
-                                              fontWeight: FontWeight.bold,
-                                              // letterSpacing: 2,
-                                              fontSize: 17),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            siteStageHistorys[index]
-                                                .isExpanded =
-                                            !siteStageHistorys[index]
-                                                .isExpanded;
-                                          });
-                                          // _getCurrentLocation();
-                                        },
-                                      )
-                                          : FlatButton.icon(
-                                        // shape: RoundedRectangleBorder(
-                                        //     borderRadius: BorderRadius.circular(0),
-                                        //     side: BorderSide(color: Colors.black26)),
-                                        color: Colors.transparent,
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: HexColor("#F9A61A"),
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          "EXPAND",
-                                          style: TextStyle(
-                                              color: HexColor("#F9A61A"),
-                                              fontWeight: FontWeight.bold,
-                                              // letterSpacing: 2,
-                                              fontSize: 17),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            siteStageHistorys[index]
-                                                .isExpanded =
-                                            !siteStageHistorys[index]
-                                                .isExpanded;
-                                          });
-                                          // _getCurrentLocation();
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return Column(
-                                // mainAxisAlignment:
-                                // MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Visit Date:" + selectedDateString,
-                                        style: TextStyle(
-                                          //fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                      siteStageHistorys[index].isExpanded
-                                          ? FlatButton.icon(
-                                        // shape: RoundedRectangleBorder(
-                                        //     borderRadius: BorderRadius.circular(0),
-                                        //     side: BorderSide(color: Colors.black26)),
-                                        color: Colors.transparent,
-                                        icon: Icon(
-                                          Icons.remove,
-                                          color: HexColor("#F9A61A"),
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          "COLLAPSE",
-                                          style: TextStyle(
-                                              color: HexColor("#F9A61A"),
-                                              fontWeight: FontWeight.bold,
-                                              // letterSpacing: 2,
-                                              fontSize: 17),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            siteStageHistorys[index]
-                                                .isExpanded =
-                                            !siteStageHistorys[index]
-                                                .isExpanded;
-                                          });
-                                          // _getCurrentLocation();
-                                        },
-                                      )
-                                          : FlatButton.icon(
-                                        // shape: RoundedRectangleBorder(
-                                        //     borderRadius: BorderRadius.circular(0),
-                                        //     side: BorderSide(color: Colors.black26)),
-                                        color: Colors.transparent,
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: HexColor("#F9A61A"),
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          "EXPAND",
-                                          style: TextStyle(
-                                              color: HexColor("#F9A61A"),
-                                              fontWeight: FontWeight.bold,
-                                              // letterSpacing: 2,
-                                              fontSize: 17),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            siteStageHistorys[index]
-                                                .isExpanded =
-                                            !siteStageHistorys[index]
-                                                .isExpanded;
-                                          });
-                                          // _getCurrentLocation();
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 16),
-                                  TextFormField(
-                                    readOnly: true,
-                                    initialValue: selectedFloorText(siteStageHistorys[index].floorId),
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType: TextInputType.text,
-                                    decoration: FormFieldStyle.buildInputDecoration(
-                                      labelText: "Floor",
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  TextFormField(
-                                    readOnly: true,
-                                    initialValue: constructionStageDesc(
-                                        siteStageHistorys[index]
-                                            .constructionStageId),
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType: TextInputType.text,
-                                    decoration: FormFieldStyle.buildInputDecoration(
-                                      labelText: "Stage of construction",
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  TextFormField(
-                                    readOnly: true,
-                                    initialValue: siteStageHistorys[index]
-                                        .stagePotential,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType: TextInputType.text,
-                                    decoration: FormFieldStyle.buildInputDecoration(
-                                      labelText: "Stage Potential",
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  TextFormField(
-                                    readOnly: true,
-                                    initialValue:
-                                    siteStageHistorys[index].stageStatus,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType: TextInputType.text,
-                                    decoration: FormFieldStyle.buildInputDecoration(
-                                      labelText: "Stage Status",
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  TextFormField(
-                                    readOnly: true,
-                                    initialValue: constructionDateString,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType: TextInputType.text,
-                                    decoration: FormFieldStyle.buildInputDecoration(
-                                      labelText: "Date of construction",
-                                    ),
-                                  ),
-                                  ..._getPastHistoryProductList(index),
-                                  // getPastHistoryProductDetails(siteVisitHistoryEntity[index],index),
-                                  // SizedBox(height: 16),
-                                  // TextFormField(
-                                  //   readOnly: true,
-                                  //   initialValue:
-                                  //   siteVisitHistoryEntity[index].shipToParty,
-                                  //   style: TextStyle(
-                                  //       fontSize: 18,
-                                  //       color: ColorConstants.inputBoxHintColor,
-                                  //       fontFamily: "Muli"),
-                                  //   keyboardType: TextInputType.text,
-                                  //   decoration: FormFieldStyle.buildInputDecoration(
-                                  //     labelText: "Next Visit Date",
-                                  //   ),
-                                  // ),
-                                ],
-                              );
-                            }
-                          }):Center(child: Text("No Data Found."),),
-                    ),
-                  ],
-                ),
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: ListView.builder(
-                //           shrinkWrap: true,
-                //           physics: NeverScrollableScrollPhysics(),
-                //           itemCount: siteVisitHistoryEntity.length,
-                //           itemBuilder: (BuildContext context, int index) {
-                //             print("00000000" +
-                //                 json.encode(siteVisitHistoryEntity[0]));
-                //             final DateFormat formatter = DateFormat('dd-MMM-yyyy');
-                //             String selectedDateString = formatter.format(
-                //                 DateTime.fromMillisecondsSinceEpoch(
-                //                     siteVisitHistoryEntity[index].createdOn));
-                //
-                //             String constructionDateString =
-                //                 siteVisitHistoryEntity[index].constructionDate;
-                //
-                //             if (!siteVisitHistoryEntity[index].isExpanded) {
-                //               return Column(
-                //                 // mainAxisAlignment:
-                //                 // MainAxisAlignment.spaceBetween,
-                //                 children: [
-                //                   Row(
-                //                     mainAxisAlignment:
-                //                         MainAxisAlignment.spaceBetween,
-                //                     children: [
-                //                       Text(
-                //                         "Visit Date:" + selectedDateString,
-                //                         style: TextStyle(
-                //                             //      fontWeight: FontWeight.bold,
-                //                             fontSize: 16),
-                //                       ),
-                //                       siteVisitHistoryEntity[index].isExpanded
-                //                           ? FlatButton.icon(
-                //                               // shape: RoundedRectangleBorder(
-                //                               //     borderRadius: BorderRadius.circular(0),
-                //                               //     side: BorderSide(color: Colors.black26)),
-                //                               color: Colors.transparent,
-                //                               icon: Icon(
-                //                                 Icons.remove,
-                //                                 color: HexColor("#F9A61A"),
-                //                                 size: 18,
-                //                               ),
-                //                               label: Text(
-                //                                 "COLLAPSE",
-                //                                 style: TextStyle(
-                //                                     color: HexColor("#F9A61A"),
-                //                                     fontWeight: FontWeight.bold,
-                //                                     // letterSpacing: 2,
-                //                                     fontSize: 17),
-                //                               ),
-                //                               onPressed: () {
-                //                                 setState(() {
-                //                                   siteVisitHistoryEntity[index]
-                //                                           .isExpanded =
-                //                                       !siteVisitHistoryEntity[index]
-                //                                           .isExpanded;
-                //                                 });
-                //                                 // _getCurrentLocation();
-                //                               },
-                //                             )
-                //                           : FlatButton.icon(
-                //                               // shape: RoundedRectangleBorder(
-                //                               //     borderRadius: BorderRadius.circular(0),
-                //                               //     side: BorderSide(color: Colors.black26)),
-                //                               color: Colors.transparent,
-                //                               icon: Icon(
-                //                                 Icons.add,
-                //                                 color: HexColor("#F9A61A"),
-                //                                 size: 18,
-                //                               ),
-                //                               label: Text(
-                //                                 "EXPAND",
-                //                                 style: TextStyle(
-                //                                     color: HexColor("#F9A61A"),
-                //                                     fontWeight: FontWeight.bold,
-                //                                     // letterSpacing: 2,
-                //                                     fontSize: 17),
-                //                               ),
-                //                               onPressed: () {
-                //                                 setState(() {
-                //                                   siteVisitHistoryEntity[index]
-                //                                           .isExpanded =
-                //                                       !siteVisitHistoryEntity[index]
-                //                                           .isExpanded;
-                //                                 });
-                //                                 // _getCurrentLocation();
-                //                               },
-                //                             ),
-                //                     ],
-                //                   ),
-                //                 ],
-                //               );
-                //             } else {
-                //               // return Column(
-                //               //   // mainAxisAlignment:
-                //               //   // MainAxisAlignment.spaceBetween,
-                //               //   children: [
-                //               //     Row(
-                //               //       mainAxisAlignment:
-                //               //           MainAxisAlignment.spaceBetween,
-                //               //       children: [
-                //               //         Text(
-                //               //           "Visit Date:" + selectedDateString,
-                //               //           style: TextStyle(
-                //               //               //fontWeight: FontWeight.bold,
-                //               //               fontSize: 16),
-                //               //         ),
-                //               //         siteVisitHistoryEntity[index].isExpanded
-                //               //             ? FlatButton.icon(
-                //               //                 // shape: RoundedRectangleBorder(
-                //               //                 //     borderRadius: BorderRadius.circular(0),
-                //               //                 //     side: BorderSide(color: Colors.black26)),
-                //               //                 color: Colors.transparent,
-                //               //                 icon: Icon(
-                //               //                   Icons.remove,
-                //               //                   color: HexColor("#F9A61A"),
-                //               //                   size: 18,
-                //               //                 ),
-                //               //                 label: Text(
-                //               //                   "COLLAPSE",
-                //               //                   style: TextStyle(
-                //               //                       color: HexColor("#F9A61A"),
-                //               //                       fontWeight: FontWeight.bold,
-                //               //                       // letterSpacing: 2,
-                //               //                       fontSize: 17),
-                //               //                 ),
-                //               //                 onPressed: () {
-                //               //                   setState(() {
-                //               //                     siteVisitHistoryEntity[index]
-                //               //                             .isExpanded =
-                //               //                         !siteVisitHistoryEntity[index]
-                //               //                             .isExpanded;
-                //               //                   });
-                //               //                   // _getCurrentLocation();
-                //               //                 },
-                //               //               )
-                //               //             : FlatButton.icon(
-                //               //                 // shape: RoundedRectangleBorder(
-                //               //                 //     borderRadius: BorderRadius.circular(0),
-                //               //                 //     side: BorderSide(color: Colors.black26)),
-                //               //                 color: Colors.transparent,
-                //               //                 icon: Icon(
-                //               //                   Icons.add,
-                //               //                   color: HexColor("#F9A61A"),
-                //               //                   size: 18,
-                //               //                 ),
-                //               //                 label: Text(
-                //               //                   "EXPAND",
-                //               //                   style: TextStyle(
-                //               //                       color: HexColor("#F9A61A"),
-                //               //                       fontWeight: FontWeight.bold,
-                //               //                       // letterSpacing: 2,
-                //               //                       fontSize: 17),
-                //               //                 ),
-                //               //                 onPressed: () {
-                //               //                   setState(() {
-                //               //                     siteVisitHistoryEntity[index]
-                //               //                             .isExpanded =
-                //               //                         !siteVisitHistoryEntity[index]
-                //               //                             .isExpanded;
-                //               //                   });
-                //               //                   // _getCurrentLocation();
-                //               //                 },
-                //               //               ),
-                //               //       ],
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue: siteVisitHistoryEntity[index]
-                //               //           .floorId
-                //               //           .toString(),
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Floor",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue: constructionStageDesc(
-                //               //           siteVisitHistoryEntity[index]
-                //               //               .constructionStageId),
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Stage of construction",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue: siteVisitHistoryEntity[index]
-                //               //           .stagePotential,
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Stage Potential",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue: brandValue(
-                //               //           siteVisitHistoryEntity[index].brandId),
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //           labelText: "Brand in use"),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue:
-                //               //           siteVisitHistoryEntity[index].brandPrice,
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //           labelText: "Brand Price"),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue: brandProductValue(
-                //               //           siteVisitHistoryEntity[index].brandId),
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Product Sold",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue:
-                //               //           siteVisitHistoryEntity[index].stageStatus,
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Stage Status",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue: constructionDateString,
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Date of construction",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue:
-                //               //           siteVisitHistoryEntity[index].receiptNumber,
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Receipt Number",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue: siteVisitHistoryEntity[index]
-                //               //                   .isAuthorised
-                //               //                   .toLowerCase() ==
-                //               //               'y'
-                //               //           ? "Yes"
-                //               //           : "No",
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Is Authorized",
-                //               //       ),
-                //               //     ),
-                //               //
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue:
-                //               //           siteVisitHistoryEntity[index].soldToParty,
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Dealer",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue:
-                //               //           siteVisitHistoryEntity[index].shipToParty,
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Sub-Dealer",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue:
-                //               //           siteVisitHistoryEntity[index].supplyQty,
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Supplied Quantity",
-                //               //       ),
-                //               //     ),
-                //               //     SizedBox(height: 16),
-                //               //     TextFormField(
-                //               //       readOnly: true,
-                //               //       initialValue:
-                //               //           siteVisitHistoryEntity[index].supplyDate,
-                //               //       style: TextStyle(
-                //               //           fontSize: 18,
-                //               //           color: ColorConstants.inputBoxHintColor,
-                //               //           fontFamily: "Muli"),
-                //               //       keyboardType: TextInputType.text,
-                //               //       decoration: FormFieldStyle.buildInputDecoration(
-                //               //         labelText: "Supplied Date",
-                //               //       ),
-                //               //     ),
-                //               //     // SizedBox(height: 16),
-                //               //     // TextFormField(
-                //               //     //   readOnly: true,
-                //               //     //   initialValue:
-                //               //     //   siteVisitHistoryEntity[index].shipToParty,
-                //               //     //   style: TextStyle(
-                //               //     //       fontSize: 18,
-                //               //     //       color: ColorConstants.inputBoxHintColor,
-                //               //     //       fontFamily: "Muli"),
-                //               //     //   keyboardType: TextInputType.text,
-                //               //     //   decoration: FormFieldStyle.buildInputDecoration(
-                //               //     //     labelText: "Next Visit Date",
-                //               //     //   ),
-                //               //     // ),
-                //               //   ],
-                //               // );
-                //             }
-                //           }),
-                //     ),
-                //   ],
-                // ),
-
-                SizedBox(height: 16),
-                Divider(
-                  color: Colors.black26,
-                  thickness: 1,
-                ),
-                SizedBox(height: 16),
-                Center(
-                  child: RaisedButton(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    color: HexColor("#1C99D4"),
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
-                      child: Text(
-                        "UPDATE",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                            fontSize: 17),
-                      ),
-                    ),
-                    onPressed: () async {
-                      UpdateRequest();
-                    },
-                  ),
-                ),
-                SizedBox(height: 40),
-              ],
-            )),
-      ),
-    );
-  }
-
-  Widget addNextStageContainer() {
-    return Container(
-        child: Column(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Divider(
-                color: Colors.black26,
-                thickness: 1,
+              padding: const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Current Stage",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        // color: HexColor("#000000DE"),
+                        fontFamily: "Muli"),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _initialIndex = 3;
+                        _tabController.animateTo(3);
+                      });
+                    },
+                    child: Text(
+                      "View previous detail",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: HexColor("#F9A61A"),
+                          fontFamily: "Muli"),
+                    ),
+                  ),
+                ],
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+            //   child: Text(
+            //     "Total Balance Potential",
+            //     style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 22,
+            //         // color: HexColor("#000000DE"),
+            //         fontFamily: "Muli"),
+            //   ),
+            // ),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: Padding(
+            //         padding: const EdgeInsets.only(right: 10.0),
+            //         child: TextFormField(
+            //           // initialValue: _totalBags.toString(),
+            //           controller: _siteTotalBalanceBags,
+            //           onChanged: (value) {
+            //             setState(() {
+            //               // _totalBags.text = value ;
+            //               if (_siteTotalBalanceBags.text == null ||
+            //                   _siteTotalBalanceBags.text == "") {
+            //                 _siteTotalBalancePt.clear();
+            //               } else {
+            //                 _siteTotalBalancePt.text =
+            //                     (int.parse(_siteTotalBalanceBags.text) / 20)
+            //                         .toString();
+            //               }
+            //             });
+            //           },
+            //           keyboardType: TextInputType.phone,
+            //           inputFormatters: <TextInputFormatter>[
+            //             FilteringTextInputFormatter.digitsOnly
+            //           ],
+            //           validator: (value) {
+            //             if (value.isEmpty) {
+            //               return 'Please enter Bags ';
+            //             }
+            //
+            //             return null;
+            //           },
+            //
+            //           style: TextStyle(
+            //               fontSize: 18,
+            //               color: ColorConstants.inputBoxHintColor,
+            //               fontFamily: "Muli"),
+            //           // keyboardType: TextInputType.text,
+            //           decoration: FormFieldStyle.buildInputDecoration(
+            //             labelText: "Bags",
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //     Expanded(
+            //       child: Padding(
+            //         padding: const EdgeInsets.only(left: 10.0),
+            //         child: TextFormField(
+            //           controller: _siteTotalBalancePt,
+            //           onChanged: (value) {
+            //             setState(() {
+            //               // _totalBags.text = value ;
+            //               if (_siteTotalBalancePt.text == null ||
+            //                   _siteTotalBalancePt.text == "") {
+            //                 _siteTotalBalanceBags.clear();
+            //               } else {
+            //                 _siteTotalBalanceBags.text =
+            //                     (int.parse(_siteTotalBalancePt.text) * 20)
+            //                         .toString();
+            //               }
+            //             });
+            //           },
+            //           validator: (value) {
+            //             if (value.isEmpty) {
+            //               return 'Please enter MT ';
+            //             }
+            //
+            //             return null;
+            //           },
+            //           style: TextStyle(
+            //               fontSize: 18,
+            //               color: ColorConstants.inputBoxHintColor,
+            //               fontFamily: "Muli"),
+            //           keyboardType:
+            //               TextInputType.numberWithOptions(decimal: true),
+            //           decoration: FormFieldStyle.buildInputDecoration(
+            //             labelText: "MT",
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: Divider(
+            //     color: Colors.black26,
+            //     thickness: 1,
+            //   ),
+            // ),
             DropdownButtonFormField<ConstructionStageEntity>(
-              value: _selectedConstructionTypeVisitNextStage,
-              items: constructionStageEntityNewNextStage
+              value: _selectedConstructionTypeVisit,
+              items: constructionStageEntityNew
                   .map((label) => DropdownMenuItem(
-                child: Text(
-                  label.constructionStageText,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                ),
-                value: label,
-              ))
+                        child: Text(
+                          label.constructionStageText,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                        ),
+                        value: label,
+                      ))
                   .toList(),
 
               // hint: Text('Rating'),
               onChanged: (value) {
                 setState(() {
-                  _selectedConstructionTypeVisitNextStage = value;
-                  print(_selectedConstructionTypeVisitNextStage.id);
-                  siteFloorsEntityNewNextStage = new List();
-                  _selectedSiteVisitFloorNextStage = null;
-                  if (_selectedConstructionTypeVisitNextStage.id == 1 ||
-                      _selectedConstructionTypeVisitNextStage.id == 2 ||
-                      _selectedConstructionTypeVisitNextStage.id == 3) {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  _selectedConstructionTypeVisit = value;
+                  print(_selectedConstructionTypeVisit.id);
+                  siteFloorsEntityNew = new List();
+                  _selectedSiteVisitFloor = null;
+                  if (_selectedConstructionTypeVisit.id == 1 ||
+                      _selectedConstructionTypeVisit.id == 2 ||
+                      _selectedConstructionTypeVisit.id == 3) {
                     // siteFloorsEntityNew = new List();
-                    siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(
+                    siteFloorsEntityNew.add(new SiteFloorsEntity(
                         id: siteFloorsEntity[0].id,
                         siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
                   } else {
                     for (int i = 1; i < siteFloorsEntity.length; i++) {
-                      siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(
+                      siteFloorsEntityNew.add(new SiteFloorsEntity(
                           id: siteFloorsEntity[i].id,
                           siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
                     }
@@ -5363,8 +3319,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 });
               },
               decoration: FormFieldStyle.buildInputDecoration(
-                  labelText: "Stage of Construction"),
+                labelText: "Stage of Construction",
+              ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -5378,70 +3336,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             ),
             SizedBox(height: 16),
             DropdownButtonFormField<SiteFloorsEntity>(
-              value: _selectedSiteVisitFloorNextStage,
-              items: siteFloorsEntityNewNextStage
+              value: _selectedSiteVisitFloor,
+              items: siteFloorsEntityNew
                   .map((label) => DropdownMenuItem(
-                child: Text(
-                  label.siteFloorTxt,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                ),
-                value: label,
-              ))
+                        child: Text(
+                          label.siteFloorTxt,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                        ),
+                        value: label,
+                      ))
                   .toList(),
 
               // hint: Text('Rating'),
               onChanged: (value) {
                 setState(() {
-                  _selectedSiteVisitFloorNextStage = value;
-
-                  // constructionStageEntityNewNextStage = new List();
-                  // _selectedConstructionTypeVisitNextStage= null;
-                  // if(_selectedSiteVisitFloor.id == 1 ){
-                  //   // siteFloorsEntityNew = new List();
-                  //   for(int i=0;i<3;i++){
-                  //     constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
-                  //         id: constructionStageEntity[i].id,
-                  //         constructionStageText: constructionStageEntity[i].constructionStageText
-                  //     ));
-                  //   }
-                  // }
-                  // else{
-                  //
-                  //   for(int i=3;i<constructionStageEntity.length;i++){
-                  //     constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
-                  //         id: constructionStageEntity[i].id,
-                  //         constructionStageText: constructionStageEntity[i].constructionStageText
-                  //     ));
-                  //   }
-                  // }
+                  _selectedSiteVisitFloor = value;
                 });
               },
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
+              decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Floor",
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
               ),
             ),
             Padding(
@@ -5457,12 +3373,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             ),
             SizedBox(height: 16),
             TextFormField(
-              controller: _stagePotentialVisitNextStage,
+              controller: _stagePotentialVisit,
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter Site Built-Up Area ';
                 }
-
                 return null;
               },
               style: TextStyle(
@@ -5485,53 +3400,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 labelText: "Stage Potential",
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            DropdownButtonFormField<BrandModelforDB>(
-              value: _siteBrandFromLocalDBNextStage,
-              items: siteBrandEntityfromLoaclDB
-                  .map((label) => DropdownMenuItem(
-                child: Text(
-                  label.brandName,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                ),
-                value: label,
-              ))
-                  .toList(),
-              onChanged: (value) async {
-                siteProductEntityfromLoaclDBNextStage = new List();
-                _siteProductFromLocalDBNextStage = null;
-                List<BrandModelforDB> _siteProductEntityfromLoaclDB =
-                await db.fetchAllDistinctProduct(value.brandName);
-                setState(() {
-                  _siteBrandFromLocalDBNextStage = value;
 
-                  siteProductEntityfromLoaclDBNextStage =
-                      _siteProductEntityfromLoaclDB;
-                  // _productSoldVisit.text = _siteBrand.productName;
-                  if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
-                      "dalmia") {
-                    _stageStatusNextStage.text = "WON";
-                  } else {
-                    _stageStatusNextStage.text = "LOST";
-                  }
-                });
-              },
-              decoration:
-              FormFieldStyle.buildInputDecoration(labelText: "Brand in use"),
-            ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -5543,229 +3412,88 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 ),
               ),
             ),
-            SizedBox(height: 16),
-            TextFormField(
-              controller: _brandPriceVisitNextStage,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter Site Built-Up Area ';
-                }
 
-                return null;
-              },
-              style: TextStyle(
-                  fontSize: 18,
-                  color: ColorConstants.inputBoxHintColor,
-                  fontFamily: "Muli"),
-              keyboardType: TextInputType.number,
-              inputFormatters:[
-                FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                TextInputFormatter.withFunction((oldValue, newValue) {
-                  try {
-                    final text = newValue.text;
-                    if (text.isNotEmpty) double.parse(text);
-                    return newValue;
-                  } catch (e) {}
-                  return oldValue;
-                }),
-              ],
-              decoration: FormFieldStyle.buildInputDecoration(
-                labelText: "Brand Price",
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-            DropdownButtonFormField<BrandModelforDB>(
-              value: _siteProductFromLocalDBNextStage,
-              items: siteProductEntityfromLoaclDBNextStage
-                  .map((label) => DropdownMenuItem(
-                child: Text(
-                  label.productName,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                ),
-                value: label,
-              ))
-                  .toList(),
-
-              // hint: Text('Rating'),
-              onChanged: (value) {
-                setState(() {
-                  _siteProductFromLocalDBNextStage = value;
-                  print(_siteProductFromLocalDBNextStage.id);
-                });
-              },
-              decoration: FormFieldStyle.buildInputDecoration(
-                labelText: "Product Sold",
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
-              child: Text(
-                "No. of Bags Supplied",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    // color: HexColor("#000000DE"),
-                    fontFamily: "Muli"),
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: TextFormField(
-                      controller: _dateOfBagSuppliedNextStage,
-                      // validator: (value) {
-                      //   if (value.isEmpty) {
-                      //     return "Contact Name can't be empty";
-                      //   }
-                      //   //leagueSize = int.parse(value);
-                      //   return null;
-                      // },
-                      readOnly: true,
-                      onChanged: (data) {
-                        // setState(() {
-                        //   _contactName.text = data;
-                        // });
-                      },
+            ..._getProductList(),
+            sumNoOfBagsSupplied() > 0
+                ? Container(
+                    child: Text(
+                      "MULTIPLE - ${sumNoOfBagsSupplied()} >",
                       style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
-                              width: 1.0),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1.0),
-                        ),
-                        labelText: "Date ",
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.date_range_rounded,
-                            size: 22,
-                            color: ColorConstants.clearAllTextColor,
-                          ),
-                          onPressed: () async {
-                            print("here");
-                            final DateTime picked = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2001),
-                              lastDate: DateTime.now(),
-                            );
-
-                            setState(() {
-                              final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                              if (picked != null) {
-                                final String formattedDate =
-                                formatter.format(picked);
-                                _dateOfBagSuppliedNextStage.text = formattedDate;
-                              }
-                            });
-                          },
-                        ),
-                        filled: false,
-                        focusColor: Colors.black,
-                        isDense: false,
-                        labelStyle: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0),
-                        fillColor: ColorConstants.backgroundColor,
+                          color: Colors.amber[700],
+                          fontWeight: FontWeight.bold,
+                          // letterSpacing: 2,
+                          fontSize: 15),
+                    ),
+                  )
+                : Container(),
+            Center(
+              child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
+                        side: BorderSide(color: Colors.black26)),
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                      child: Text(
+                        "ADD MORE PRODUCT",
+                        style: TextStyle(
+                            color: HexColor("#1C99D4"),
+                            fontWeight: FontWeight.bold,
+                            // letterSpacing: 2,
+                            fontSize: 17),
                       ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: TextFormField(
-                      controller: _siteCurrentTotalBagsNextStage,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter Bags ';
+                    onPressed: () async {
+                      int index;
+                      if (productDynamicList.length == 0) {
+                        index = 0;
+                      } else {
+                        index = productDynamicList.length;
+                      }
+                      print("index1" + index.toString());
+                      if (index == 0) {
+                        setState(() {
+                          BrandModelforDB brand;
+                          ProductListModel product11 = new ProductListModel(
+                              brandId: -1,
+                              brandPrice: new TextEditingController(),
+                              supplyDate: new TextEditingController(),
+                              supplyQty: new TextEditingController(),
+                              isExpanded: new ExpandableController(
+                                  initialExpanded: true),
+                              brandModelForDB: brand,
+                              dealerName: new TextEditingController());
+                          productDynamicList.insert(index, product11);
+                        });
+                      } else {
+                        if (productDynamicList[index - 1].brandId != -1) {
+                          setState(() {
+                            BrandModelforDB brand;
+                            ProductListModel product11 = new ProductListModel(
+                                brandId: -1,
+                                brandPrice: new TextEditingController(),
+                                supplyDate: new TextEditingController(),
+                                supplyQty: new TextEditingController(),
+                                isExpanded: new ExpandableController(
+                                    initialExpanded: true),
+                                brandModelForDB: brand,
+                                dealerName: new TextEditingController());
+                            productDynamicList.insert(index, product11);
+                          });
+                        } else {
+                          Get.dialog(CustomDialogs().errorDialog(
+                              "Please enter product ${index} details !"));
                         }
-                        return null;
-                      },
-                      onChanged: (v) {
-                        print(v);
-                        print('hi');
-                      },
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.inputBoxHintColor,
-                          fontFamily: "Muli"),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
-                        TextInputFormatter.withFunction((oldValue, newValue) {
-                          try {
-                            final text = newValue.text;
-                            if (text.isNotEmpty) double.parse(text);
-                            return newValue;
-                          } catch (e) {}
-                          return oldValue;
-                        }),
-                      ],
-                      decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "No. Of Bags"),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Mandatory",
-                style: TextStyle(
-                  fontFamily: "Muli",
-                  color: ColorConstants.inputBoxHintColorDark,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
+                      }
+                    },
+                  )),
             ),
             SizedBox(height: 16),
             TextFormField(
-              controller: _stageStatusNextStage,
+              controller: _stageStatus,
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter Site Built-Up Area ';
@@ -5778,9 +3506,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   color: ColorConstants.inputBoxHintColor,
                   fontFamily: "Muli"),
               keyboardType: TextInputType.text,
-              enabled: false,
-              decoration:
-              FormFieldStyle.buildInputDecoration(labelText: "Stage Status"),
+              readOnly: true,
+              decoration: FormFieldStyle.buildInputDecoration(
+                labelText: "Stage Status",
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -5795,7 +3524,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             ),
             SizedBox(height: 16),
             TextFormField(
-              controller: _dateofConstructionNextStage,
+              controller: _dateofConstruction,
               // validator: (value) {
               //   if (value.isEmpty) {
               //     return "Contact Name can't be empty";
@@ -5815,7 +3544,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   fontFamily: "Muli"),
               keyboardType: TextInputType.text,
               decoration: FormFieldStyle.buildInputDecoration(
-                labelText: "Planned Start Date of construction",
+                labelText: "Date of construction",
                 suffixIcon: IconButton(
                   icon: Icon(
                     Icons.date_range_rounded,
@@ -5825,73 +3554,2436 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                   onPressed: () async {
                     print("here");
                     final DateTime picked = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2101));
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2001),
+                      lastDate: DateTime.now(),
+                    );
 
                     setState(() {
                       final DateFormat formatter = DateFormat("yyyy-MM-dd");
                       if (picked != null) {
                         final String formattedDate = formatter.format(picked);
-                        _dateofConstructionNextStage.text = formattedDate;
+                        _dateofConstruction.text = formattedDate;
                       }
                     });
                   },
                 ),
               ),
-              // decoration: InputDecoration(
-              //   focusedBorder: OutlineInputBorder(
-              //     borderSide: BorderSide(
-              //         color: ColorConstants.backgroundColorBlue,
-              //         //color: HexColor("#0000001F"),
-              //         width: 1.0),
-              //   ),
-              //   disabledBorder: OutlineInputBorder(
-              //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
-              //   ),
-              //   enabledBorder: OutlineInputBorder(
-              //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
-              //   ),
-              //   errorBorder: OutlineInputBorder(
-              //     borderSide: BorderSide(color: Colors.red, width: 1.0),
-              //   ),
-              //   labelText: "Planned Start Date of construction",
-              //   suffixIcon: IconButton(
-              //     icon: Icon(
-              //       Icons.date_range_rounded,
-              //       size: 22,
-              //       color: ColorConstants.clearAllTextColor,
-              //     ),
-              //     onPressed: () async {
-              //       print("here");
-              //       final DateTime picked = await showDatePicker(
-              //           context: context,
-              //           initialDate: DateTime.now(),
-              //           firstDate: DateTime.now(),
-              //           lastDate: DateTime(2101));
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: !addNextButtonDisable
+                    ? FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            side: BorderSide(color: Colors.black26)),
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 5, bottom: 10, top: 10),
+                          child: Text(
+                            "ADD NEXT STAGE",
+                            style: TextStyle(
+                                color: HexColor("#1C99D4"),
+                                fontWeight: FontWeight.bold,
+                                // letterSpacing: 2,
+                                fontSize: 17),
+                          ),
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            addNextButtonDisable = !addNextButtonDisable;
+                          });
+                        },
+                      )
+                    : FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            side: BorderSide(color: Colors.black26)),
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 5, bottom: 10, top: 10),
+                          child: Text(
+                            "HIDE NEXT STAGE",
+                            style: TextStyle(
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.bold,
+                                // letterSpacing: 2,
+                                fontSize: 17),
+                          ),
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            addNextButtonDisable = !addNextButtonDisable;
+                          });
+                        },
+                      ),
+              ),
+            ),
+
+            ////Add Next Stage Container
+
+            addNextButtonDisable ? addNextStageContainer() : Container(),
+            SizedBox(
+              height: 20,
+            ),
+
+            TextFormField(
+              maxLines: 4,
+              maxLength: 500,
+              // initialValue: _comments.text,
+              controller: _comments,
+
+              // validator: (value) {
+              //   if (value.isEmpty) {
+              //     return 'Please enter RERA Number ';
+              //   }
               //
-              //       setState(() {
-              //         final DateFormat formatter = DateFormat("yyyy-MM-dd");
-              //         final String formattedDate = formatter.format(picked);
+              //   return null;
+              // },
+              style: TextStyle(
+                  fontSize: 18,
+                  color: ColorConstants.inputBoxHintColor,
+                  fontFamily: "Muli"),
+              keyboardType: TextInputType.text,
+              onChanged: (value) {
+                print(_comments.text);
+                // setState(() {
+                //   _comments.text = value;
+                // });
+              },
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: ColorConstants.backgroundColorBlue,
+                      //color: HexColor("#0000001F"),
+                      width: 1.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: const Color(0xFF000000).withOpacity(0.4),
+                      width: 1.0),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 1.0),
+                ),
+                labelText: "Comment",
+                filled: false,
+                focusColor: Colors.black,
+                labelStyle: TextStyle(
+                    fontFamily: "Muli",
+                    color: ColorConstants.inputBoxHintColorDark,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 16.0),
+                fillColor: ColorConstants.backgroundColor,
+              ),
+            ),
+            SizedBox(height: 16),
+
+            siteCommentsEntity != null && siteCommentsEntity.length != 0
+                ? viewMoreActive
+                    ? Row(
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                reverse: true,
+                                shrinkWrap: true,
+                                itemCount: siteCommentsEntity.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            siteCommentsEntity[index]
+                                                    .creatorName ??
+                                                "",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 25),
+                                          ),
+                                          Text(
+                                            siteCommentsEntity[index]
+                                                    .siteCommentText ??
+                                                "",
+                                            style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                fontSize: 25),
+                                          ),
+                                          Text(
+                                            formatter.format(DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        siteCommentsEntity[
+                                                                siteCommentsEntity
+                                                                        .length -
+                                                                    1]
+                                                            .createdOn)) ??
+                                                "",
+                                            style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      )
+                                    ],
+                                  );
+                                }),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                siteCommentsEntity[
+                                        siteCommentsEntity.length - 1]
+                                    .creatorName,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 25),
+                              ),
+                              Text(
+                                siteCommentsEntity[
+                                        siteCommentsEntity.length - 1]
+                                    .siteCommentText,
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.5),
+                                    fontSize: 25),
+                              ),
+                              Text(
+                                formatter.format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        siteCommentsEntity[
+                                                siteCommentsEntity.length - 1]
+                                            .createdOn)),
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.5),
+                                    fontSize: 15),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          )
+                        ],
+                      )
+                : Container(),
+
+            Center(
+              child: FlatButton(
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(0),
+                //     side: BorderSide(color: Colors.black26)),
+                color: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
+                  child: !viewMoreActive
+                      ? Text(
+                          "VIEW MORE COMMENT (" +
+                              siteCommentsEntity.length.toString() +
+                              ")",
+                          style: TextStyle(
+                              color: HexColor("##F9A61A"),
+                              fontWeight: FontWeight.bold,
+                              // letterSpacing: 2,
+                              fontSize: 17),
+                        )
+                      : Text(
+                          "VIEW LESS COMMENT (" +
+                              siteCommentsEntity.length.toString() +
+                              ")",
+                          style: TextStyle(
+                              color: HexColor("##F9A61A"),
+                              fontWeight: FontWeight.bold,
+                              // letterSpacing: 2,
+                              fontSize: 17),
+                        ),
+                ),
+                onPressed: () async {
+                  setState(() {
+                    viewMoreActive = !viewMoreActive;
+                  });
+                },
+              ),
+            ),
+
+            SizedBox(height: 35),
+
+            Center(
+              child: RaisedButton(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                color: HexColor("#1C99D4"),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                  child: Text(
+                    "UPDATE",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                        fontSize: 17),
+                  ),
+                ),
+                onPressed: () async {
+                  UpdateRequest();
+                },
+              ),
+            ),
+            SizedBox(height: 40),
+          ]),
+    ))));
+  }
+
+  Widget influencerView() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+            child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: _listInfluencerDetail.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (!_listInfluencerDetail[index].isExpanded) {
+                          return Column(
+                            // mainAxisAlignment:
+                            // MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Influencer Details ${(index + 1)} ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  Switch(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value) {
+                                          for (int i = 0;
+                                              i < _listInfluencerDetail.length;
+                                              i++) {
+                                            if (i == index) {
+                                              _listInfluencerDetail[i]
+                                                  .isPrimarybool = value;
+                                            } else {
+                                              _listInfluencerDetail[i]
+                                                  .isPrimarybool = !value;
+                                            }
+                                          }
+                                        } else {
+                                          Get.dialog(CustomDialogs().showMessage(
+                                              "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                        }
+                                      });
+                                    },
+                                    value: _listInfluencerDetail[index]
+                                        .isPrimarybool,
+                                    activeColor: HexColor("#009688"),
+                                    activeTrackColor:
+                                        HexColor("#009688").withOpacity(0.5),
+                                    inactiveThumbColor: HexColor("#F1F1F1"),
+                                    inactiveTrackColor: Colors.black26,
+                                  ),
+                                  _listInfluencerDetail[index].isExpanded
+                                      ? FlatButton.icon(
+                                          // shape: RoundedRectangleBorder(
+                                          //     borderRadius: BorderRadius.circular(0),
+                                          //     side: BorderSide(color: Colors.black26)),
+                                          color: Colors.transparent,
+                                          icon: Icon(
+                                            Icons.remove,
+                                            color: HexColor("#F9A61A"),
+                                            size: 18,
+                                          ),
+                                          label: Text(
+                                            "COLLAPSE",
+                                            style: TextStyle(
+                                                color: HexColor("#F9A61A"),
+                                                fontWeight: FontWeight.bold,
+                                                // letterSpacing: 2,
+                                                fontSize: 17),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _listInfluencerDetail[index]
+                                                      .isExpanded =
+                                                  !_listInfluencerDetail[index]
+                                                      .isExpanded;
+                                            });
+                                            // _getCurrentLocation();
+                                          },
+                                        )
+                                      : FlatButton.icon(
+                                          // shape: RoundedRectangleBorder(
+                                          //     borderRadius: BorderRadius.circular(0),
+                                          //     side: BorderSide(color: Colors.black26)),
+                                          color: Colors.transparent,
+                                          icon: Icon(
+                                            Icons.add,
+                                            color: HexColor("#F9A61A"),
+                                            size: 18,
+                                          ),
+                                          label: Text(
+                                            "EXPAND",
+                                            style: TextStyle(
+                                                color: HexColor("#F9A61A"),
+                                                fontWeight: FontWeight.bold,
+                                                // letterSpacing: 2,
+                                                fontSize: 17),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _listInfluencerDetail[index]
+                                                      .isExpanded =
+                                                  !_listInfluencerDetail[index]
+                                                      .isExpanded;
+                                            });
+                                            // _getCurrentLocation();
+                                          },
+                                        ),
+                                ],
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Column(
+                            // mainAxisAlignment:
+                            // MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Influencer Details ${(index + 1)} ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize:
+                                            SizeConfig.safeBlockHorizontal *
+                                                4.8),
+                                  ),
+                                  _listInfluencerDetail[index].isExpanded
+                                      ? FlatButton.icon(
+                                          // shape: RoundedRectangleBorder(
+                                          //     borderRadius: BorderRadius.circular(0),
+                                          //     side: BorderSide(color: Colors.black26)),
+                                          color: Colors.transparent,
+                                          icon: Icon(
+                                            Icons.remove,
+                                            color: HexColor("#F9A61A"),
+                                            size:
+                                                SizeConfig.safeBlockHorizontal *
+                                                    4,
+                                          ),
+                                          label: Text(
+                                            "COLLAPSE",
+                                            style: TextStyle(
+                                                color: HexColor("#F9A61A"),
+                                                fontWeight: FontWeight.bold,
+                                                // letterSpacing: 2,
+                                                fontSize: SizeConfig
+                                                        .safeBlockHorizontal *
+                                                    4.5),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _listInfluencerDetail[index]
+                                                      .isExpanded =
+                                                  !_listInfluencerDetail[index]
+                                                      .isExpanded;
+                                            });
+                                            // _getCurrentLocation();
+                                          },
+                                        )
+                                      : FlatButton.icon(
+                                          // shape: RoundedRectangleBorder(
+                                          //     borderRadius: BorderRadius.circular(0),
+                                          //     side: BorderSide(color: Colors.black26)),
+                                          color: Colors.transparent,
+                                          icon: Icon(
+                                            Icons.add,
+                                            color: HexColor("#F9A61A"),
+                                            size: 18,
+                                          ),
+                                          label: Text(
+                                            "EXPAND",
+                                            style: TextStyle(
+                                                color: HexColor("#F9A61A"),
+                                                fontWeight: FontWeight.bold,
+                                                // letterSpacing: 2,
+                                                fontSize: 17),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _listInfluencerDetail[index]
+                                                      .isExpanded =
+                                                  !_listInfluencerDetail[index]
+                                                      .isExpanded;
+                                            });
+                                            // _getCurrentLocation();
+                                          },
+                                        ),
+                                ],
+                              ),
+                              SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Secondary",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        // color: HexColor("#000000DE"),
+                                        fontFamily: "Muli"),
+                                  ),
+                                  Switch(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value) {
+                                          for (int i = 0;
+                                              i < _listInfluencerDetail.length;
+                                              i++) {
+                                            if (i == index) {
+                                              _listInfluencerDetail[i]
+                                                  .isPrimarybool = value;
+                                            } else {
+                                              _listInfluencerDetail[i]
+                                                  .isPrimarybool = !value;
+                                            }
+                                          }
+                                        } else {
+                                          Get.dialog(CustomDialogs().showMessage(
+                                              "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                        }
+                                      });
+                                    },
+                                    value: _listInfluencerDetail[index]
+                                        .isPrimarybool,
+                                    activeColor: HexColor("#009688"),
+                                    activeTrackColor:
+                                        HexColor("#009688").withOpacity(0.5),
+                                    inactiveThumbColor: HexColor("#F1F1F1"),
+                                    inactiveTrackColor: Colors.black26,
+                                  ),
+                                  Text(
+                                    "Primary",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: _listInfluencerDetail[index]
+                                                .isPrimarybool
+                                            ? HexColor("#009688")
+                                            : Colors.black,
+                                        // color: HexColor("#000000DE"),
+                                        fontFamily: "Muli"),
+                                  ),
+                                ],
+                              ),
+                              TextFormField(
+                                controller:
+                                    _listInfluencerDetail[index].inflContact,
+                                maxLength: 10,
+                                onChanged: (value) async {
+                                  bool match = false;
+                                  if (value.length < 10) {
+                                    // _listInfluencerDetail[
+                                    // index]
+                                    //     .inflContact
+                                    //     .clear();
+                                    if (_listInfluencerDetail[index].inflName !=
+                                        null) {
+                                      _listInfluencerDetail[index]
+                                          .inflName
+                                          .clear();
+                                      _listInfluencerDetail[index]
+                                          .inflTypeValue
+                                          .clear();
+                                      _listInfluencerDetail[index]
+                                          .inflCatValue
+                                          .clear();
+                                    }
+                                  } else if (value.length == 10) {
+                                    var bodyEncrypted = {
+                                      //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
+                                      "inflContact": value
+                                    };
+
+                                    for (int i = 0;
+                                        i < _listInfluencerDetail.length - 1;
+                                        i++) {
+                                      if (value ==
+                                          _listInfluencerDetail[i]
+                                              .inflContact
+                                              .text) {
+                                        match = true;
+                                        break;
+                                      }
+                                    }
+
+                                    if (match) {
+                                      Get.dialog(CustomDialogs().showMessage(
+                                          "Already added influencer : " +
+                                              value));
+                                    } else {
+                                      String empId;
+                                      String mobileNumber;
+                                      String name;
+                                      Future<SharedPreferences> _prefs =
+                                          SharedPreferences.getInstance();
+                                      await _prefs
+                                          .then((SharedPreferences prefs) {
+                                        empId = prefs.getString(
+                                                StringConstants.employeeId) ??
+                                            "empty";
+                                        mobileNumber = prefs.getString(
+                                                StringConstants.mobileNumber) ??
+                                            "empty";
+                                        name = prefs.getString(
+                                                StringConstants.employeeName) ??
+                                            "empty";
+                                        print(_comments.text);
+                                      });
+                                      AddLeadsController _addLeadsController =
+                                          Get.find();
+                                      _addLeadsController.phoneNumber = value;
+                                      AccessKeyModel accessKeyModel =
+                                          new AccessKeyModel();
+                                      await _addLeadsController
+                                          .getAccessKeyOnly()
+                                          .then((data) async {
+                                        accessKeyModel = data;
+                                        print("AccessKey :: " +
+                                            accessKeyModel.accessKey);
+                                        await _addLeadsController
+                                            .getInfNewData(
+                                                accessKeyModel.accessKey)
+                                            .then((data) {
+                                          InfluencerDetailModel
+                                              _infDetailModel = data;
+                                          if (_infDetailModel.respCode ==
+                                              "DM1002") {
+                                            InfluencerModel inflDetail =
+                                                _infDetailModel.influencerModel;
+                                            // print(inflDetail.inflName);
+                                            setState(() {
+                                              if (inflDetail.inflName !=
+                                                  "null") {
+                                                _listInfluencerDetail[index]
+                                                        .inflContact =
+                                                    new TextEditingController();
+                                                ;
+                                                _listInfluencerDetail[index]
+                                                        .inflName =
+                                                    new TextEditingController();
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                                //  print(inflDetail.inflName.text);
+                                                _listInfluencerDetail[index]
+                                                        .inflTypeId =
+                                                    new TextEditingController();
+                                                _listInfluencerDetail[index]
+                                                        .inflCatId =
+                                                    new TextEditingController();
+                                                _listInfluencerDetail[index]
+                                                        .inflTypeValue =
+                                                    new TextEditingController();
+                                                _listInfluencerDetail[index]
+                                                        .inflCatValue =
+                                                    new TextEditingController();
+                                                _listInfluencerDetail[index]
+                                                        .id =
+                                                    new TextEditingController();
+                                                _listInfluencerDetail[index]
+                                                        .ilpIntrested =
+                                                    new TextEditingController();
+
+                                                print(inflDetail.inflName);
+
+                                                _listInfluencerDetail[index]
+                                                        .inflContact
+                                                        .text =
+                                                    inflDetail.inflContact;
+                                                _listInfluencerDetail[index]
+                                                    .inflName
+                                                    .text = inflDetail.inflName;
+                                                _listInfluencerDetail[index]
+                                                        .id
+                                                        .text =
+                                                    inflDetail.inflId
+                                                        .toString();
+                                                _listInfluencerDetail[index]
+                                                        .ilpIntrested
+                                                        .text =
+                                                    inflDetail.ilpRegFlag;
+                                                // _listInfluencerDetail[
+                                                //             index]
+                                                //         .createdOn =
+                                                //     inflDetail.createdOn;
+                                                _listInfluencerDetail[index]
+                                                        .inflTypeValue
+                                                        .text =
+                                                    inflDetail
+                                                        .influencerTypeText;
+                                                _listInfluencerDetail[index]
+                                                        .inflCatValue
+                                                        .text =
+                                                    inflDetail
+                                                        .influencerCategoryText;
+                                                _listInfluencerDetail[index]
+                                                    .createdBy = empId;
+                                                print(
+                                                    _listInfluencerDetail[index]
+                                                        .inflName);
+                                                for (int i = 0;
+                                                    i <
+                                                        influencerTypeEntity
+                                                            .length;
+                                                    i++) {
+                                                  if (influencerTypeEntity[i]
+                                                          .inflTypeId
+                                                          .toString() ==
+                                                      inflDetail.inflTypeId
+                                                          .toString()) {
+                                                    _listInfluencerDetail[index]
+                                                            .inflTypeId
+                                                            .text =
+                                                        inflDetail.inflTypeId
+                                                            .toString();
+                                                    //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                    _listInfluencerDetail[index]
+                                                        .inflTypeValue
+                                                        .text = influencerTypeEntity[
+                                                            influencerTypeEntity[
+                                                                        i]
+                                                                    .inflTypeId -
+                                                                1]
+                                                        .inflTypeDesc;
+                                                    break;
+                                                  } else {
+                                                    // _listInfluencerDetail[
+                                                    // index]
+                                                    //     .inflContact
+                                                    //     .clear();
+                                                    // _listInfluencerDetail[
+                                                    // index]
+                                                    //     .inflName
+                                                    //     .clear();
+                                                    _listInfluencerDetail[index]
+                                                        .inflTypeId
+                                                        .clear();
+                                                    _listInfluencerDetail[index]
+                                                        .inflTypeValue
+                                                        .clear();
+                                                  }
+                                                }
+                                                print(
+                                                    _listInfluencerDetail[index]
+                                                        .inflName);
+                                                // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
+
+                                                for (int i = 0;
+                                                    i <
+                                                        influencerCategoryEntity
+                                                            .length;
+                                                    i++) {
+                                                  if (influencerCategoryEntity[
+                                                              i]
+                                                          .inflCatId
+                                                          .toString() ==
+                                                      inflDetail.inflCatId
+                                                          .toString()) {
+                                                    _listInfluencerDetail[index]
+                                                            .inflCatId
+                                                            .text =
+                                                        inflDetail.inflCatId
+                                                            .toString();
+                                                    //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                    _listInfluencerDetail[index]
+                                                        .inflCatValue
+                                                        .text = influencerCategoryEntity[
+                                                            influencerCategoryEntity[
+                                                                        i]
+                                                                    .inflCatId -
+                                                                1]
+                                                        .inflCatDesc;
+                                                    break;
+                                                  } else {
+                                                    _listInfluencerDetail[index]
+                                                        .inflCatId
+                                                        .clear();
+                                                    _listInfluencerDetail[index]
+                                                        .inflCatValue
+                                                        .clear();
+                                                  }
+                                                }
+                                              } else {
+                                                if (_listInfluencerDetail[index]
+                                                        .inflContact !=
+                                                    null) {
+                                                  _listInfluencerDetail[index]
+                                                      .inflContact
+                                                      .clear();
+                                                  _listInfluencerDetail[index]
+                                                      .inflName
+                                                      .clear();
+                                                }
+                                                return Get.dialog(
+                                                    CustomDialogs().showDialog(
+                                                        "No influencer registered with this number"));
+                                              }
+                                            });
+                                          } else {
+                                            if (_listInfluencerDetail[index]
+                                                    .inflContact !=
+                                                null) {
+                                              _listInfluencerDetail[index]
+                                                  .inflContact
+                                                  .clear();
+                                              _listInfluencerDetail[index]
+                                                  .inflName
+                                                  .clear();
+                                            }
+                                            return Get.dialog(CustomDialogs()
+                                                .showDialog(
+                                                    _infDetailModel.respMsg));
+                                          }
+                                          Get.back();
+                                        });
+                                      });
+
+                                      print("Dhawan :: ");
+                                    }
+                                  }
+                                  // setState(() {
+                                  //   _totalBags = value as int;
+                                  // });
+                                },
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter Influencer Number ';
+                                  }
+
+                                  return null;
+                                },
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            ColorConstants.backgroundColorBlue,
+                                        //color: HexColor("#0000001F"),
+                                        width: 1.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1.0),
+                                  ),
+                                  labelText: "Mobile Number",
+                                  filled: false,
+                                  focusColor: Colors.black,
+                                  labelStyle: TextStyle(
+                                      fontFamily: "Muli",
+                                      color:
+                                          ColorConstants.inputBoxHintColorDark,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16.0),
+                                  fillColor: ColorConstants.backgroundColor,
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextFormField(
+                                //  initialValue: _listInfluencerDetail[index].inflName,
+                                controller:
+                                    _listInfluencerDetail[index].inflName,
+
+                                // validator: (value) {
+                                //   if (value.isEmpty) {
+                                //     return 'Please enter Influencer Number ';
+                                //   }
+                                //
+                                //   return null;
+                                // },
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            ColorConstants.backgroundColorBlue,
+                                        //color: HexColor("#0000001F"),
+                                        width: 1.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1.0),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  labelText: "Name",
+                                  enabled: false,
+                                  filled: false,
+                                  focusColor: Colors.black,
+                                  labelStyle: TextStyle(
+                                      fontFamily: "Muli",
+                                      color:
+                                          ColorConstants.inputBoxHintColorDark,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16.0),
+                                  fillColor: ColorConstants.backgroundColor,
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextFormField(
+                                controller:
+                                    _listInfluencerDetail[index].inflTypeValue,
+                                // validator: (value) {
+                                //   if (value.isEmpty) {
+                                //     return 'Please enter Influencer Number ';
+                                //   }
+                                //
+                                //   return null;
+                                // },
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            ColorConstants.backgroundColorBlue,
+                                        //color: HexColor("#0000001F"),
+                                        width: 1.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1.0),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  enabled: false,
+                                  labelText: "Type",
+                                  filled: false,
+                                  focusColor: Colors.black,
+                                  labelStyle: TextStyle(
+                                      fontFamily: "Muli",
+                                      color:
+                                          ColorConstants.inputBoxHintColorDark,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16.0),
+                                  fillColor: ColorConstants.backgroundColor,
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextFormField(
+                                controller:
+                                    _listInfluencerDetail[index].inflCatValue,
+                                // validator: (value) {
+                                //   if (value.isEmpty) {
+                                //     return 'Please enter Influencer Number ';
+                                //   }
+                                //
+                                //   return null;
+                                // },
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            ColorConstants.backgroundColorBlue,
+                                        //color: HexColor("#0000001F"),
+                                        width: 1.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1.0),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.4),
+                                        width: 1.0),
+                                  ),
+                                  enabled: false,
+                                  labelText: "Category",
+                                  filled: false,
+                                  focusColor: Colors.black,
+                                  labelStyle: TextStyle(
+                                      fontFamily: "Muli",
+                                      color:
+                                          ColorConstants.inputBoxHintColorDark,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16.0),
+                                  fillColor: ColorConstants.backgroundColor,
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                      }),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Center(
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                    side: BorderSide(color: Colors.black26)),
+                color: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
+                  child: Text(
+                    "ADD MORE INFLUENCER",
+                    style: TextStyle(
+                        color: HexColor("#1C99D4"),
+                        fontWeight: FontWeight.bold,
+                        // letterSpacing: 2,
+                        fontSize: 17),
+                  ),
+                ),
+                onPressed: () async {
+                  // //  print(_listInfluencerDetail[
+                  //   _listInfluencerDetail.length - 1]
+                  //       .inflName);
+                  if (_listInfluencerDetail.length == 0) {
+                    setState(() {
+                      _listInfluencerDetail.add(new InfluencerDetail(
+                          isExpanded: true, isPrimarybool: true));
+                    });
+                  } else if (_listInfluencerDetail[
+                                  _listInfluencerDetail.length - 1]
+                              .inflName !=
+                          null &&
+                      _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                              .inflName
+                              .text !=
+                          "null" &&
+                      !_listInfluencerDetail[_listInfluencerDetail.length - 1]
+                          .inflName
+                          .text
+                          .isNullOrBlank) {
+                    InfluencerDetail infl = new InfluencerDetail(
+                        isExpanded: true, isPrimarybool: false);
+
+                    // Item item = new Item(
+                    //     headerValue: "agx ", expandedValue: "dnxcx");
+                    setState(() {
+                      // _data.add(item);
+                      _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                          .isExpanded = false;
+                      _listInfluencerDetail.add(infl);
+                    });
+                  } else {
+                    print("Error : Please fill previous influencer first");
+                    Get.dialog(CustomDialogs()
+                        .showMessage("Please fill previous influencer first"));
+                  }
+                },
+              ),
+            ),
+            SizedBox(height: 16),
+            Divider(
+              color: Colors.black26,
+              thickness: 1,
+            ),
+            SizedBox(height: 16),
+            Center(
+              child: RaisedButton(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                color: HexColor("#1C99D4"),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                  child: Text(
+                    "UPDATE",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                        fontSize: 17),
+                  ),
+                ),
+                onPressed: () async {
+                  UpdateRequest();
+                },
+              ),
+            ),
+            SizedBox(height: 40),
+          ],
+        )),
+      ),
+    );
+  }
+
+  Widget pastStageHistoryView() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+            child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: siteStageHistorys != null
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: siteStageHistorys.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            print(
+                                "00000000" + json.encode(siteStageHistorys[0]));
+                            final DateFormat formatter =
+                                DateFormat('dd-MMM-yyyy');
+                            String selectedDateString = formatter.format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    siteStageHistorys[index].createdOn));
+
+                            String constructionDateString =
+                                siteStageHistorys[index].constructionDate;
+
+                            if (!siteStageHistorys[index].isExpanded) {
+                              return Column(
+                                // mainAxisAlignment:
+                                // MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Visit Date:" + selectedDateString,
+                                        style: TextStyle(
+                                            //      fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      siteStageHistorys[index].isExpanded
+                                          ? FlatButton.icon(
+                                              // shape: RoundedRectangleBorder(
+                                              //     borderRadius: BorderRadius.circular(0),
+                                              //     side: BorderSide(color: Colors.black26)),
+                                              color: Colors.transparent,
+                                              icon: Icon(
+                                                Icons.remove,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "COLLAPSE",
+                                                style: TextStyle(
+                                                    color: HexColor("#F9A61A"),
+                                                    fontWeight: FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 17),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  siteStageHistorys[index]
+                                                          .isExpanded =
+                                                      !siteStageHistorys[index]
+                                                          .isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            )
+                                          : FlatButton.icon(
+                                              // shape: RoundedRectangleBorder(
+                                              //     borderRadius: BorderRadius.circular(0),
+                                              //     side: BorderSide(color: Colors.black26)),
+                                              color: Colors.transparent,
+                                              icon: Icon(
+                                                Icons.add,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "EXPAND",
+                                                style: TextStyle(
+                                                    color: HexColor("#F9A61A"),
+                                                    fontWeight: FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 17),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  siteStageHistorys[index]
+                                                          .isExpanded =
+                                                      !siteStageHistorys[index]
+                                                          .isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return Column(
+                                // mainAxisAlignment:
+                                // MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Visit Date:" + selectedDateString,
+                                        style: TextStyle(
+                                            //fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      siteStageHistorys[index].isExpanded
+                                          ? FlatButton.icon(
+                                              // shape: RoundedRectangleBorder(
+                                              //     borderRadius: BorderRadius.circular(0),
+                                              //     side: BorderSide(color: Colors.black26)),
+                                              color: Colors.transparent,
+                                              icon: Icon(
+                                                Icons.remove,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "COLLAPSE",
+                                                style: TextStyle(
+                                                    color: HexColor("#F9A61A"),
+                                                    fontWeight: FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 17),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  siteStageHistorys[index]
+                                                          .isExpanded =
+                                                      !siteStageHistorys[index]
+                                                          .isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            )
+                                          : FlatButton.icon(
+                                              // shape: RoundedRectangleBorder(
+                                              //     borderRadius: BorderRadius.circular(0),
+                                              //     side: BorderSide(color: Colors.black26)),
+                                              color: Colors.transparent,
+                                              icon: Icon(
+                                                Icons.add,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "EXPAND",
+                                                style: TextStyle(
+                                                    color: HexColor("#F9A61A"),
+                                                    fontWeight: FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 17),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  siteStageHistorys[index]
+                                                          .isExpanded =
+                                                      !siteStageHistorys[index]
+                                                          .isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 16),
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: selectedFloorText(
+                                        siteStageHistorys[index].floorId),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontFamily: "Muli"),
+                                    keyboardType: TextInputType.text,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                      labelText: "Floor",
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: constructionStageDesc(
+                                        siteStageHistorys[index]
+                                            .constructionStageId),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontFamily: "Muli"),
+                                    keyboardType: TextInputType.text,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                      labelText: "Stage of construction",
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        siteStageHistorys[index].stagePotential,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontFamily: "Muli"),
+                                    keyboardType: TextInputType.text,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                      labelText: "Stage Potential",
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        siteStageHistorys[index].stageStatus,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontFamily: "Muli"),
+                                    keyboardType: TextInputType.text,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                      labelText: "Stage Status",
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: constructionDateString,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontFamily: "Muli"),
+                                    keyboardType: TextInputType.text,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                      labelText: "Date of construction",
+                                    ),
+                                  ),
+                                  ..._getPastHistoryProductList(index),
+                                  // getPastHistoryProductDetails(siteVisitHistoryEntity[index],index),
+                                  // SizedBox(height: 16),
+                                  // TextFormField(
+                                  //   readOnly: true,
+                                  //   initialValue:
+                                  //   siteVisitHistoryEntity[index].shipToParty,
+                                  //   style: TextStyle(
+                                  //       fontSize: 18,
+                                  //       color: ColorConstants.inputBoxHintColor,
+                                  //       fontFamily: "Muli"),
+                                  //   keyboardType: TextInputType.text,
+                                  //   decoration: FormFieldStyle.buildInputDecoration(
+                                  //     labelText: "Next Visit Date",
+                                  //   ),
+                                  // ),
+                                ],
+                              );
+                            }
+                          })
+                      : Center(
+                          child: Text("No Data Found."),
+                        ),
+                ),
+              ],
+            ),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: ListView.builder(
+            //           shrinkWrap: true,
+            //           physics: NeverScrollableScrollPhysics(),
+            //           itemCount: siteVisitHistoryEntity.length,
+            //           itemBuilder: (BuildContext context, int index) {
+            //             print("00000000" +
+            //                 json.encode(siteVisitHistoryEntity[0]));
+            //             final DateFormat formatter = DateFormat('dd-MMM-yyyy');
+            //             String selectedDateString = formatter.format(
+            //                 DateTime.fromMillisecondsSinceEpoch(
+            //                     siteVisitHistoryEntity[index].createdOn));
+            //
+            //             String constructionDateString =
+            //                 siteVisitHistoryEntity[index].constructionDate;
+            //
+            //             if (!siteVisitHistoryEntity[index].isExpanded) {
+            //               return Column(
+            //                 // mainAxisAlignment:
+            //                 // MainAxisAlignment.spaceBetween,
+            //                 children: [
+            //                   Row(
+            //                     mainAxisAlignment:
+            //                         MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       Text(
+            //                         "Visit Date:" + selectedDateString,
+            //                         style: TextStyle(
+            //                             //      fontWeight: FontWeight.bold,
+            //                             fontSize: 16),
+            //                       ),
+            //                       siteVisitHistoryEntity[index].isExpanded
+            //                           ? FlatButton.icon(
+            //                               // shape: RoundedRectangleBorder(
+            //                               //     borderRadius: BorderRadius.circular(0),
+            //                               //     side: BorderSide(color: Colors.black26)),
+            //                               color: Colors.transparent,
+            //                               icon: Icon(
+            //                                 Icons.remove,
+            //                                 color: HexColor("#F9A61A"),
+            //                                 size: 18,
+            //                               ),
+            //                               label: Text(
+            //                                 "COLLAPSE",
+            //                                 style: TextStyle(
+            //                                     color: HexColor("#F9A61A"),
+            //                                     fontWeight: FontWeight.bold,
+            //                                     // letterSpacing: 2,
+            //                                     fontSize: 17),
+            //                               ),
+            //                               onPressed: () {
+            //                                 setState(() {
+            //                                   siteVisitHistoryEntity[index]
+            //                                           .isExpanded =
+            //                                       !siteVisitHistoryEntity[index]
+            //                                           .isExpanded;
+            //                                 });
+            //                                 // _getCurrentLocation();
+            //                               },
+            //                             )
+            //                           : FlatButton.icon(
+            //                               // shape: RoundedRectangleBorder(
+            //                               //     borderRadius: BorderRadius.circular(0),
+            //                               //     side: BorderSide(color: Colors.black26)),
+            //                               color: Colors.transparent,
+            //                               icon: Icon(
+            //                                 Icons.add,
+            //                                 color: HexColor("#F9A61A"),
+            //                                 size: 18,
+            //                               ),
+            //                               label: Text(
+            //                                 "EXPAND",
+            //                                 style: TextStyle(
+            //                                     color: HexColor("#F9A61A"),
+            //                                     fontWeight: FontWeight.bold,
+            //                                     // letterSpacing: 2,
+            //                                     fontSize: 17),
+            //                               ),
+            //                               onPressed: () {
+            //                                 setState(() {
+            //                                   siteVisitHistoryEntity[index]
+            //                                           .isExpanded =
+            //                                       !siteVisitHistoryEntity[index]
+            //                                           .isExpanded;
+            //                                 });
+            //                                 // _getCurrentLocation();
+            //                               },
+            //                             ),
+            //                     ],
+            //                   ),
+            //                 ],
+            //               );
+            //             } else {
+            //               // return Column(
+            //               //   // mainAxisAlignment:
+            //               //   // MainAxisAlignment.spaceBetween,
+            //               //   children: [
+            //               //     Row(
+            //               //       mainAxisAlignment:
+            //               //           MainAxisAlignment.spaceBetween,
+            //               //       children: [
+            //               //         Text(
+            //               //           "Visit Date:" + selectedDateString,
+            //               //           style: TextStyle(
+            //               //               //fontWeight: FontWeight.bold,
+            //               //               fontSize: 16),
+            //               //         ),
+            //               //         siteVisitHistoryEntity[index].isExpanded
+            //               //             ? FlatButton.icon(
+            //               //                 // shape: RoundedRectangleBorder(
+            //               //                 //     borderRadius: BorderRadius.circular(0),
+            //               //                 //     side: BorderSide(color: Colors.black26)),
+            //               //                 color: Colors.transparent,
+            //               //                 icon: Icon(
+            //               //                   Icons.remove,
+            //               //                   color: HexColor("#F9A61A"),
+            //               //                   size: 18,
+            //               //                 ),
+            //               //                 label: Text(
+            //               //                   "COLLAPSE",
+            //               //                   style: TextStyle(
+            //               //                       color: HexColor("#F9A61A"),
+            //               //                       fontWeight: FontWeight.bold,
+            //               //                       // letterSpacing: 2,
+            //               //                       fontSize: 17),
+            //               //                 ),
+            //               //                 onPressed: () {
+            //               //                   setState(() {
+            //               //                     siteVisitHistoryEntity[index]
+            //               //                             .isExpanded =
+            //               //                         !siteVisitHistoryEntity[index]
+            //               //                             .isExpanded;
+            //               //                   });
+            //               //                   // _getCurrentLocation();
+            //               //                 },
+            //               //               )
+            //               //             : FlatButton.icon(
+            //               //                 // shape: RoundedRectangleBorder(
+            //               //                 //     borderRadius: BorderRadius.circular(0),
+            //               //                 //     side: BorderSide(color: Colors.black26)),
+            //               //                 color: Colors.transparent,
+            //               //                 icon: Icon(
+            //               //                   Icons.add,
+            //               //                   color: HexColor("#F9A61A"),
+            //               //                   size: 18,
+            //               //                 ),
+            //               //                 label: Text(
+            //               //                   "EXPAND",
+            //               //                   style: TextStyle(
+            //               //                       color: HexColor("#F9A61A"),
+            //               //                       fontWeight: FontWeight.bold,
+            //               //                       // letterSpacing: 2,
+            //               //                       fontSize: 17),
+            //               //                 ),
+            //               //                 onPressed: () {
+            //               //                   setState(() {
+            //               //                     siteVisitHistoryEntity[index]
+            //               //                             .isExpanded =
+            //               //                         !siteVisitHistoryEntity[index]
+            //               //                             .isExpanded;
+            //               //                   });
+            //               //                   // _getCurrentLocation();
+            //               //                 },
+            //               //               ),
+            //               //       ],
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: siteVisitHistoryEntity[index]
+            //               //           .floorId
+            //               //           .toString(),
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Floor",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: constructionStageDesc(
+            //               //           siteVisitHistoryEntity[index]
+            //               //               .constructionStageId),
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Stage of construction",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: siteVisitHistoryEntity[index]
+            //               //           .stagePotential,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Stage Potential",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: brandValue(
+            //               //           siteVisitHistoryEntity[index].brandId),
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //           labelText: "Brand in use"),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].brandPrice,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //           labelText: "Brand Price"),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: brandProductValue(
+            //               //           siteVisitHistoryEntity[index].brandId),
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Product Sold",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].stageStatus,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Stage Status",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: constructionDateString,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Date of construction",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].receiptNumber,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Receipt Number",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue: siteVisitHistoryEntity[index]
+            //               //                   .isAuthorised
+            //               //                   .toLowerCase() ==
+            //               //               'y'
+            //               //           ? "Yes"
+            //               //           : "No",
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Is Authorized",
+            //               //       ),
+            //               //     ),
+            //               //
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].soldToParty,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Dealer",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].shipToParty,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Sub-Dealer",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].supplyQty,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Supplied Quantity",
+            //               //       ),
+            //               //     ),
+            //               //     SizedBox(height: 16),
+            //               //     TextFormField(
+            //               //       readOnly: true,
+            //               //       initialValue:
+            //               //           siteVisitHistoryEntity[index].supplyDate,
+            //               //       style: TextStyle(
+            //               //           fontSize: 18,
+            //               //           color: ColorConstants.inputBoxHintColor,
+            //               //           fontFamily: "Muli"),
+            //               //       keyboardType: TextInputType.text,
+            //               //       decoration: FormFieldStyle.buildInputDecoration(
+            //               //         labelText: "Supplied Date",
+            //               //       ),
+            //               //     ),
+            //               //     // SizedBox(height: 16),
+            //               //     // TextFormField(
+            //               //     //   readOnly: true,
+            //               //     //   initialValue:
+            //               //     //   siteVisitHistoryEntity[index].shipToParty,
+            //               //     //   style: TextStyle(
+            //               //     //       fontSize: 18,
+            //               //     //       color: ColorConstants.inputBoxHintColor,
+            //               //     //       fontFamily: "Muli"),
+            //               //     //   keyboardType: TextInputType.text,
+            //               //     //   decoration: FormFieldStyle.buildInputDecoration(
+            //               //     //     labelText: "Next Visit Date",
+            //               //     //   ),
+            //               //     // ),
+            //               //   ],
+            //               // );
+            //             }
+            //           }),
+            //     ),
+            //   ],
+            // ),
+
+            SizedBox(height: 16),
+            Divider(
+              color: Colors.black26,
+              thickness: 1,
+            ),
+            SizedBox(height: 16),
+            Center(
+              child: RaisedButton(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                color: HexColor("#1C99D4"),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                  child: Text(
+                    "UPDATE",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                        fontSize: 17),
+                  ),
+                ),
+                onPressed: () async {
+                  UpdateRequest();
+                },
+              ),
+            ),
+            SizedBox(height: 40),
+          ],
+        )),
+      ),
+    );
+  }
+
+  Widget addNextStageContainer() {
+    return Container(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Divider(
+            color: Colors.black26,
+            thickness: 1,
+          ),
+        ),
+        DropdownButtonFormField<ConstructionStageEntity>(
+          value: _selectedConstructionTypeVisitNextStage,
+          items: constructionStageEntityNewNextStage
+              .map((label) => DropdownMenuItem(
+                    child: Text(
+                      label.constructionStageText,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  ))
+              .toList(),
+
+          // hint: Text('Rating'),
+          onChanged: (value) {
+            setState(() {
+              _selectedConstructionTypeVisitNextStage = value;
+              print(_selectedConstructionTypeVisitNextStage.id);
+              siteFloorsEntityNewNextStage = new List();
+              _selectedSiteVisitFloorNextStage = null;
+              if (_selectedConstructionTypeVisitNextStage.id == 1 ||
+                  _selectedConstructionTypeVisitNextStage.id == 2 ||
+                  _selectedConstructionTypeVisitNextStage.id == 3) {
+                // siteFloorsEntityNew = new List();
+                siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(
+                    id: siteFloorsEntity[0].id,
+                    siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
+              } else {
+                for (int i = 1; i < siteFloorsEntity.length; i++) {
+                  siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(
+                      id: siteFloorsEntity[i].id,
+                      siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
+                }
+              }
+            });
+          },
+          decoration: FormFieldStyle.buildInputDecoration(
+              labelText: "Stage of Construction"),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            "Mandatory",
+            style: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        DropdownButtonFormField<SiteFloorsEntity>(
+          value: _selectedSiteVisitFloorNextStage,
+          items: siteFloorsEntityNewNextStage
+              .map((label) => DropdownMenuItem(
+                    child: Text(
+                      label.siteFloorTxt,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  ))
+              .toList(),
+
+          // hint: Text('Rating'),
+          onChanged: (value) {
+            setState(() {
+              _selectedSiteVisitFloorNextStage = value;
+
+              // constructionStageEntityNewNextStage = new List();
+              // _selectedConstructionTypeVisitNextStage= null;
+              // if(_selectedSiteVisitFloor.id == 1 ){
+              //   // siteFloorsEntityNew = new List();
+              //   for(int i=0;i<3;i++){
+              //     constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
+              //         id: constructionStageEntity[i].id,
+              //         constructionStageText: constructionStageEntity[i].constructionStageText
+              //     ));
+              //   }
+              // }
+              // else{
               //
-              //         _dateofConstructionNextStage.text = formattedDate;
-              //       });
-              //     },
-              //   ),
-              //   filled: false,
-              //   focusColor: Colors.black,
-              //   isDense: false,
-              //   labelStyle: TextStyle(
-              //       fontFamily: "Muli",
-              //       color: ColorConstants.inputBoxHintColorDark,
-              //       fontWeight: FontWeight.normal,
-              //       fontSize: 16.0),
-              //   fillColor: ColorConstants.backgroundColor,
-              // ),
+              //   for(int i=3;i<constructionStageEntity.length;i++){
+              //     constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
+              //         id: constructionStageEntity[i].id,
+              //         constructionStageText: constructionStageEntity[i].constructionStageText
+              //     ));
+              //   }
+              // }
+            });
+          },
+          decoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: ColorConstants.backgroundColorBlue,
+                  //color: HexColor("#0000001F"),
+                  width: 1.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black26, width: 1.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red, width: 1.0),
+            ),
+            labelText: "Floor",
+            filled: false,
+            focusColor: Colors.black,
+            isDense: false,
+            labelStyle: TextStyle(
+                fontFamily: "Muli",
+                color: ColorConstants.inputBoxHintColorDark,
+                fontWeight: FontWeight.normal,
+                fontSize: 16.0),
+            fillColor: ColorConstants.backgroundColor,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            "Mandatory",
+            style: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        TextFormField(
+          controller: _stagePotentialVisitNextStage,
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Please enter Site Built-Up Area ';
+            }
+
+            return null;
+          },
+          style: TextStyle(
+              fontSize: 18,
+              color: ColorConstants.inputBoxHintColor,
+              fontFamily: "Muli"),
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+            TextInputFormatter.withFunction((oldValue, newValue) {
+              try {
+                final text = newValue.text;
+                if (text.isNotEmpty) double.parse(text);
+                return newValue;
+              } catch (e) {}
+              return oldValue;
+            }),
+          ],
+          decoration: FormFieldStyle.buildInputDecoration(
+            labelText: "Stage Potential",
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            "Mandatory",
+            style: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        DropdownButtonFormField<BrandModelforDB>(
+          value: _siteBrandFromLocalDBNextStage,
+          items: siteBrandEntityfromLoaclDB
+              .map((label) => DropdownMenuItem(
+                    child: Text(
+                      label.brandName,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  ))
+              .toList(),
+          onChanged: (value) async {
+            siteProductEntityfromLoaclDBNextStage = new List();
+            _siteProductFromLocalDBNextStage = null;
+            List<BrandModelforDB> _siteProductEntityfromLoaclDB =
+                await db.fetchAllDistinctProduct(value.brandName);
+            setState(() {
+              _siteBrandFromLocalDBNextStage = value;
+
+              siteProductEntityfromLoaclDBNextStage =
+                  _siteProductEntityfromLoaclDB;
+              // _productSoldVisit.text = _siteBrand.productName;
+              if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
+                  "dalmia") {
+                _stageStatusNextStage.text = "WON";
+              } else {
+                _stageStatusNextStage.text = "LOST";
+              }
+            });
+          },
+          decoration:
+              FormFieldStyle.buildInputDecoration(labelText: "Brand in use"),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            "Mandatory",
+            style: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        TextFormField(
+          controller: _brandPriceVisitNextStage,
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Please enter Site Built-Up Area ';
+            }
+
+            return null;
+          },
+          style: TextStyle(
+              fontSize: 18,
+              color: ColorConstants.inputBoxHintColor,
+              fontFamily: "Muli"),
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+            TextInputFormatter.withFunction((oldValue, newValue) {
+              try {
+                final text = newValue.text;
+                if (text.isNotEmpty) double.parse(text);
+                return newValue;
+              } catch (e) {}
+              return oldValue;
+            }),
+          ],
+          decoration: FormFieldStyle.buildInputDecoration(
+            labelText: "Brand Price",
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            "Mandatory",
+            style: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        DropdownButtonFormField<BrandModelforDB>(
+          value: _siteProductFromLocalDBNextStage,
+          items: siteProductEntityfromLoaclDBNextStage
+              .map((label) => DropdownMenuItem(
+                    child: Text(
+                      label.productName,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    value: label,
+                  ))
+              .toList(),
+
+          // hint: Text('Rating'),
+          onChanged: (value) {
+            setState(() {
+              _siteProductFromLocalDBNextStage = value;
+              print(_siteProductFromLocalDBNextStage.id);
+            });
+          },
+          decoration: FormFieldStyle.buildInputDecoration(
+            labelText: "Product Sold",
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            "Mandatory",
+            style: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
+          child: Text(
+            "No. of Bags Supplied",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                // color: HexColor("#000000DE"),
+                fontFamily: "Muli"),
+          ),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: TextFormField(
+                  controller: _dateOfBagSuppliedNextStage,
+                  // validator: (value) {
+                  //   if (value.isEmpty) {
+                  //     return "Contact Name can't be empty";
+                  //   }
+                  //   //leagueSize = int.parse(value);
+                  //   return null;
+                  // },
+                  readOnly: true,
+                  onChanged: (data) {
+                    // setState(() {
+                    //   _contactName.text = data;
+                    // });
+                  },
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.inputBoxHintColor,
+                      fontFamily: "Muli"),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: ColorConstants.backgroundColorBlue,
+                          //color: HexColor("#0000001F"),
+                          width: 1.0),
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red, width: 1.0),
+                    ),
+                    labelText: "Date ",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        Icons.date_range_rounded,
+                        size: 22,
+                        color: ColorConstants.clearAllTextColor,
+                      ),
+                      onPressed: () async {
+                        print("here");
+                        final DateTime picked = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2001),
+                          lastDate: DateTime.now(),
+                        );
+
+                        setState(() {
+                          final DateFormat formatter = DateFormat("yyyy-MM-dd");
+                          if (picked != null) {
+                            final String formattedDate =
+                                formatter.format(picked);
+                            _dateOfBagSuppliedNextStage.text = formattedDate;
+                          }
+                        });
+                      },
+                    ),
+                    filled: false,
+                    focusColor: Colors.black,
+                    isDense: false,
+                    labelStyle: TextStyle(
+                        fontFamily: "Muli",
+                        color: ColorConstants.inputBoxHintColorDark,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16.0),
+                    fillColor: ColorConstants.backgroundColor,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: TextFormField(
+                  controller: _siteCurrentTotalBagsNextStage,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter Bags ';
+                    }
+                    return null;
+                  },
+                  onChanged: (v) {
+                    print(v);
+                    print('hi');
+                  },
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.inputBoxHintColor,
+                      fontFamily: "Muli"),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+                    TextInputFormatter.withFunction((oldValue, newValue) {
+                      try {
+                        final text = newValue.text;
+                        if (text.isNotEmpty) double.parse(text);
+                        return newValue;
+                      } catch (e) {}
+                      return oldValue;
+                    }),
+                  ],
+                  decoration: FormFieldStyle.buildInputDecoration(
+                      labelText: "No. Of Bags"),
+                ),
+              ),
             ),
           ],
-        ));
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            "Mandatory",
+            style: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        TextFormField(
+          controller: _stageStatusNextStage,
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Please enter Site Built-Up Area ';
+            }
+
+            return null;
+          },
+          style: TextStyle(
+              fontSize: 18,
+              color: ColorConstants.inputBoxHintColor,
+              fontFamily: "Muli"),
+          keyboardType: TextInputType.text,
+          enabled: false,
+          decoration:
+              FormFieldStyle.buildInputDecoration(labelText: "Stage Status"),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            "Mandatory",
+            style: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        TextFormField(
+          controller: _dateofConstructionNextStage,
+          // validator: (value) {
+          //   if (value.isEmpty) {
+          //     return "Contact Name can't be empty";
+          //   }
+          //   //leagueSize = int.parse(value);
+          //   return null;
+          // },
+          readOnly: true,
+          onChanged: (data) {
+            // setState(() {
+            //   _contactName.text = data;
+            // });
+          },
+          style: TextStyle(
+              fontSize: 18,
+              color: ColorConstants.inputBoxHintColor,
+              fontFamily: "Muli"),
+          keyboardType: TextInputType.text,
+          decoration: FormFieldStyle.buildInputDecoration(
+            labelText: "Planned Start Date of construction",
+            suffixIcon: IconButton(
+              icon: Icon(
+                Icons.date_range_rounded,
+                size: 22,
+                color: ColorConstants.clearAllTextColor,
+              ),
+              onPressed: () async {
+                print("here");
+                final DateTime picked = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2101));
+
+                setState(() {
+                  final DateFormat formatter = DateFormat("yyyy-MM-dd");
+                  if (picked != null) {
+                    final String formattedDate = formatter.format(picked);
+                    _dateofConstructionNextStage.text = formattedDate;
+                  }
+                });
+              },
+            ),
+          ),
+          // decoration: InputDecoration(
+          //   focusedBorder: OutlineInputBorder(
+          //     borderSide: BorderSide(
+          //         color: ColorConstants.backgroundColorBlue,
+          //         //color: HexColor("#0000001F"),
+          //         width: 1.0),
+          //   ),
+          //   disabledBorder: OutlineInputBorder(
+          //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
+          //   ),
+          //   enabledBorder: OutlineInputBorder(
+          //     borderSide: BorderSide(color: Colors.black26, width: 1.0),
+          //   ),
+          //   errorBorder: OutlineInputBorder(
+          //     borderSide: BorderSide(color: Colors.red, width: 1.0),
+          //   ),
+          //   labelText: "Planned Start Date of construction",
+          //   suffixIcon: IconButton(
+          //     icon: Icon(
+          //       Icons.date_range_rounded,
+          //       size: 22,
+          //       color: ColorConstants.clearAllTextColor,
+          //     ),
+          //     onPressed: () async {
+          //       print("here");
+          //       final DateTime picked = await showDatePicker(
+          //           context: context,
+          //           initialDate: DateTime.now(),
+          //           firstDate: DateTime.now(),
+          //           lastDate: DateTime(2101));
+          //
+          //       setState(() {
+          //         final DateFormat formatter = DateFormat("yyyy-MM-dd");
+          //         final String formattedDate = formatter.format(picked);
+          //
+          //         _dateofConstructionNextStage.text = formattedDate;
+          //       });
+          //     },
+          //   ),
+          //   filled: false,
+          //   focusColor: Colors.black,
+          //   isDense: false,
+          //   labelStyle: TextStyle(
+          //       fontFamily: "Muli",
+          //       color: ColorConstants.inputBoxHintColorDark,
+          //       fontWeight: FontWeight.normal,
+          //       fontSize: 16.0),
+          //   fillColor: ColorConstants.backgroundColor,
+          // ),
+        ),
+      ],
+    ));
   }
 
   _imgFromCamera() async {
@@ -6007,8 +6099,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         Get.back();
       }).catchError((e) {
         Get.back();
-        Get.dialog(CustomDialogs().errorDialog(
-            "Access to location data denied "));
+        Get.dialog(
+            CustomDialogs().errorDialog("Access to location data denied "));
         print(e);
       });
     }
@@ -6028,11 +6120,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         _taluk.text = place.locality;
         //txt.text = place.postalCode;
         _currentAddress =
-        "${place.locality}, ${place.postalCode}, ${place.country}";
+            "${place.locality}, ${place.postalCode}, ${place.country}";
 
         print(
             "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, "
-                "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+            "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
     } catch (e) {
       print(e);
@@ -6174,7 +6266,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   updateSiteLogic() async {
-
     // siteStageHistorys.sort((b, a) => a.siteStageHistoryId.compareTo(b.siteStageHistoryId));
     // int listLength = siteStageHistorys.length;
     // if (listLength > 0) {
@@ -6275,9 +6366,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       // }
 
       if (productDynamicList != null && productDynamicList.length > 0) {
-
         for (int i = 0; i < productDynamicList.length; i++) {
-          if(productDynamicList[i].brandId!=-1) {
+          if (productDynamicList[i].brandId != -1) {
             siteSupplyHistory.add(new SiteSupplyHistorys(
                 brandId: productDynamicList[i].brandId,
                 brandPrice: productDynamicList[i].brandPrice.text,
@@ -6296,9 +6386,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
 
       if (_selectedConstructionTypeVisit != null) {
-
         siteStageHistory.add(new SiteStageHistory(
-
             constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
             siteId: widget.siteId,
             floorId: _selectedSiteVisitFloor.id,
@@ -6306,8 +6394,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             constructionDate: _dateofConstruction.text,
             stageStatus: _stageStatus.text,
             createdBy: empId,
-            siteSupplyHistorys: siteSupplyHistory
-        ));
+            siteSupplyHistorys: siteSupplyHistory));
       }
 
       //
@@ -6370,9 +6457,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
       if (_listInfluencerDetail.length != 0) {
         if (_listInfluencerDetail[
-        _listInfluencerDetail.length - 1]
-            .inflName ==
-            null ||
+                        _listInfluencerDetail.length - 1]
+                    .inflName ==
+                null ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
                 null ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1]
@@ -6384,7 +6471,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       }
 
       List<updateResponse.SiteInfluencerEntityNew> newInfluencerEntity =
-      new List();
+          new List();
 
       for (int i = 0; i < _listInfluencerDetail.length; i++) {
         newInfluencerEntity.add(new updateResponse.SiteInfluencerEntityNew(
@@ -6429,17 +6516,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "productOralBriefing": _siteProductOralBriefing.text,
         "soCode": viewSiteDataResponse.sitesModal.siteSoId,
         "inactiveReasonText":
-        (_inactiveReasonText.text != "") ? _inactiveReasonText.text : null,
+            (_inactiveReasonText.text != "") ? _inactiveReasonText.text : null,
         "nextVisitDate":
-        (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
+            (_nextVisitDate.text != "") ? _nextVisitDate.text : null,
         "closureReasonText":
-        (closureReasonText.text != "") ? closureReasonText.text : null,
+            (closureReasonText.text != "") ? closureReasonText.text : null,
         "createdBy": "",
         "totalBalancePotential": _siteTotalBalanceBags.text,
         "siteCommentsEntity": newSiteCommentsEntity,
 
         // "siteVisitHistoryEntity": siteVisitHistoryEntity,
-        "siteStageHistorys":siteStageHistory,
+        "siteStageHistorys": siteStageHistory,
 
         // "siteVisitHistoryEntity": siteVisitHistoryEntity,
 
@@ -6459,7 +6546,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "dealerConfirmedChangedBy": "",
         "dealerConfirmedChangedOn": "",
         "isDealerConfirmedChangedBySo":
-        sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
+            sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
         "subdealerId": visitDataSubDealer,
       };
       // log('updateDataRequest---- $updateDataRequest');
@@ -6471,12 +6558,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   /// get _getProductListHistory
   List<Widget> _getPastHistoryProductList(int index) {
     List<Widget> productAddedList = [];
-    for (int i = 0; i < siteStageHistorys[index].siteSupplyHistorys.length; i++) {
+    for (int i = 0;
+        i < siteStageHistorys[index].siteSupplyHistorys.length;
+        i++) {
       productAddedList.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Stack(
           children: [
-            getPastHistoryProductDetails(siteStageHistorys[index].siteSupplyHistorys[i],i),
+            getPastHistoryProductDetails(
+                siteStageHistorys[index].siteSupplyHistorys[i], i),
           ],
         ),
       ));
@@ -6484,8 +6574,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     return productAddedList;
   }
 
-  Widget getPastHistoryProductDetails(SiteSupplyHistorys siteSupplyHistory,int index) {
-
+  Widget getPastHistoryProductDetails(
+      SiteSupplyHistorys siteSupplyHistory, int index) {
     return ExpandablePanel(
       header: Text(
         "Product " + (index + 1).toString(),
@@ -6508,7 +6598,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue: (siteSupplyHistory.receiptNumber!=null && siteSupplyHistory.receiptNumber!="null")?siteSupplyHistory.receiptNumber:"",
+                  initialValue: (siteSupplyHistory.receiptNumber != null &&
+                          siteSupplyHistory.receiptNumber != "null")
+                      ? siteSupplyHistory.receiptNumber
+                      : "",
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -6521,11 +6614,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue: siteSupplyHistory.isAuthorised
-                      .toLowerCase() ==
-                      'y'
-                      ? "Yes"
-                      : "No",
+                  initialValue:
+                      siteSupplyHistory.isAuthorised.toLowerCase() == 'y'
+                          ? "Yes"
+                          : "No",
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -6535,12 +6627,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                     labelText: "Is Authorized",
                   ),
                 ),
-
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue: brandValue(
-                      siteSupplyHistory.brandId),
+                  initialValue: brandValue(siteSupplyHistory.brandId),
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -6552,8 +6642,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue:
-                  siteSupplyHistory.brandPrice,
+                  initialValue: siteSupplyHistory.brandPrice,
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -6565,8 +6654,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue: brandProductValue(
-                      siteSupplyHistory.brandId),
+                  initialValue: brandProductValue(siteSupplyHistory.brandId),
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -6579,8 +6667,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 12),
                 TextFormField(
                   readOnly: true,
-                  initialValue:dealerValue(
-                      siteSupplyHistory.soldToParty),
+                  initialValue: dealerValue(siteSupplyHistory.soldToParty),
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -6593,8 +6680,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue:subDealerValue(
-                      siteSupplyHistory.shipToParty),
+                  initialValue: subDealerValue(siteSupplyHistory.shipToParty),
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -6607,8 +6693,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue:
-                  siteSupplyHistory.supplyQty,
+                  initialValue: siteSupplyHistory.supplyQty,
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -6640,8 +6725,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         children: [
           Expanded(
               flex: 1,
-              child: Text( siteSupplyHistory.brandId==-1? "Fill product Details":
-              brandProductValue(siteSupplyHistory.brandId)+",  Qty:"+siteSupplyHistory.supplyQty+", Price:"+siteSupplyHistory.brandPrice,
+              child: Text(
+                siteSupplyHistory.brandId == -1
+                    ? "Fill product Details"
+                    : brandProductValue(siteSupplyHistory.brandId) +
+                        ",  Qty:" +
+                        siteSupplyHistory.supplyQty +
+                        ", Price:" +
+                        siteSupplyHistory.brandPrice,
                 softWrap: true,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -6656,24 +6747,26 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     );
   }
 
-  int sumNoOfBagsSupplied(){
-   int totalSumBagsSupplied = 0;
-   if(productDynamicList.length>0){
-     for(int i=0;i<productDynamicList.length;i++){
-       if(productDynamicList[i].supplyQty!=null && (productDynamicList[i].supplyQty.text.isNotEmpty)) {
-         totalSumBagsSupplied = totalSumBagsSupplied + int.tryParse(productDynamicList[i].supplyQty.text) ?? 0;
-
-       }
-     }
-   }
+  int sumNoOfBagsSupplied() {
+    int totalSumBagsSupplied = 0;
+    if (productDynamicList.length > 0) {
+      for (int i = 0; i < productDynamicList.length; i++) {
+        if (productDynamicList[i].supplyQty != null &&
+            (productDynamicList[i].supplyQty.text.isNotEmpty)) {
+          totalSumBagsSupplied = totalSumBagsSupplied +
+                  int.tryParse(productDynamicList[i].supplyQty.text) ??
+              0;
+        }
+      }
+    }
     return totalSumBagsSupplied;
   }
 
-  String selectedFloorText(int floorId){
-    String floorText="";
-    if(siteFloorsEntity!=null && siteFloorsEntity.length>0){
-      for(int i=0;i< siteFloorsEntity.length;i++){
-        if(siteFloorsEntity[i].id==floorId){
+  String selectedFloorText(int floorId) {
+    String floorText = "";
+    if (siteFloorsEntity != null && siteFloorsEntity.length > 0) {
+      for (int i = 0; i < siteFloorsEntity.length; i++) {
+        if (siteFloorsEntity[i].id == floorId) {
           floorText = siteFloorsEntity[i].siteFloorTxt;
         }
       }

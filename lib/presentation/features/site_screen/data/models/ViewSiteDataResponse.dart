@@ -885,7 +885,7 @@ class InfluencerEntity {
   InfluencerEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     inflName = json['inflName'].toString() ?? "";
-    inflContact = json['inflContact'].toString() ?? "";
+    inflContact = json['inflContactNumber'].toString() ?? "";
     inflTypeId = json['inflTypeId'];
     inflCatId = json['inflCatId'];
     ilpIntrested = json['ilpIntrested'].toString() ?? "";
@@ -899,7 +899,7 @@ class InfluencerEntity {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['inflName'] = this.inflName;
-    data['inflContact'] = this.inflContact;
+    data['inflContactNumber'] = this.inflContact;
     data['inflTypeId'] = this.inflTypeId;
     data['inflCatId'] = this.inflCatId;
     data['ilpIntrested'] = this.ilpIntrested;

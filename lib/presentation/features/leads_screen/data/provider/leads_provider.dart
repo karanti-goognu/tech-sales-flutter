@@ -393,11 +393,10 @@ class MyApiClientLeads {
      try {
       version = VersionClass.getVersion();
        final response = await get(
-        Uri.parse(UrlConstants.getLeadData + "$leadId"+"&referenceID=$empID"),
+        Uri.parse(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"),
          headers:
          requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
       );
-     log('Response body is  : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         Get.back();
 
