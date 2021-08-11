@@ -69,22 +69,22 @@ class Response {
 
 class InfluencerTypeList {
   int inflTypeId;
-  String inflTypeText;
-  String ilpRegFlag;
+  String inflTypeDesc;
+  String infRegFlag;
 
-  InfluencerTypeList({this.inflTypeId, this.inflTypeText, this.ilpRegFlag});
+  InfluencerTypeList({this.inflTypeId, this.inflTypeDesc, this.infRegFlag});
 
   InfluencerTypeList.fromJson(Map<String, dynamic> json) {
-    inflTypeId = json['infl_type_id'];
-    inflTypeText = json['infl_type_text'];
-    ilpRegFlag = json['ilp_reg_flag'];
+    inflTypeId = json['inflTypeId'];
+    inflTypeDesc = json['inflTypeDesc'];
+    infRegFlag = json['infRegFlag'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['infl_type_id'] = this.inflTypeId;
-    data['infl_type_text'] = this.inflTypeText;
-    data['ilp_reg_flag'] = this.ilpRegFlag;
+    data['inflTypeId'] = this.inflTypeId;
+    data['inflTypeDesc'] = this.inflTypeDesc;
+    data['infRegFlag'] = this.infRegFlag;
     return data;
   }
 }

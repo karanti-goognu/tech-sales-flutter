@@ -48,7 +48,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                     _influencerListModel = data;
                     _influencerTypeList = _influencerListModel.response.influencerTypeList;
 
-                    List<InfluencerTypeList> infList = [InfluencerTypeList(inflTypeId: 0, inflTypeText: 'All', ilpRegFlag: 'Y')];
+                    List<InfluencerTypeList> infList = [InfluencerTypeList(inflTypeId: 0, inflTypeDesc: 'All', infRegFlag: 'Y')];
 
 
 
@@ -147,7 +147,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                         .size
                                                         .width /
                                                     3,
-                                                child: Text(e.inflTypeText)),
+                                                child: Text(e.inflTypeDesc)),
                                           ),
                                         ),
                                       ))

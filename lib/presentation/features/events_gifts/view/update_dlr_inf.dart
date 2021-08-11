@@ -650,7 +650,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                                         MediaQuery.of(context).size.width / 1.5,
                                     //250,
                                     child: Text(
-                                      '${e.inflTypeText}',
+                                      '${e.inflTypeDesc}',
                                       maxLines: null,
                                     ),
                                   ),
@@ -698,7 +698,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                                   .map((e) => DropdownMenuItem(
                                         value: e.inflCatId,
                                         child: Text(
-                                          e.inflCatText,
+                                          e.inflCatDesc,
                                           maxLines: null,
                                         ),
                                       ))

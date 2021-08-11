@@ -377,7 +377,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     value: e.inflTypeId,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.inflTypeText)),
+                        child: Text(e.inflTypeDesc)),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -598,7 +598,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           : _influencerTypeModel.response.influencerCategoryList
               .map((e) => DropdownMenuItem(
                     value: e.inflCatId,
-                    child: Text(e.inflCatText),
+                    child: Text(e.inflCatDesc),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,

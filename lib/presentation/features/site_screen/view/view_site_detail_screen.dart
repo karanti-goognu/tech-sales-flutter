@@ -4205,7 +4205,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                 _listInfluencerDetail[index]
                                                         .inflContact =
                                                     new TextEditingController();
-                                                ;
                                                 _listInfluencerDetail[index]
                                                         .inflName =
                                                     new TextEditingController();

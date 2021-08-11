@@ -457,7 +457,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         value: e,
         child: Container(
             width: MediaQuery.of(context).size.width / 1.5,
-            child: Text(e.inflTypeText)),
+            child: Text(e.inflTypeDesc)),
       ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -623,7 +623,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           : influencerCategoryEntitiesList
           .map((e) => DropdownMenuItem(
         value: e,
-        child: Text(e.inflCatText),
+        child: Text(e.inflCatDesc),
       ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
