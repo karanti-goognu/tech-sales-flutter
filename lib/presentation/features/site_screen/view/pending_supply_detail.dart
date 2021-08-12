@@ -79,7 +79,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     return Scaffold(
 //            resizeToAvoidBottomInset: true,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
@@ -407,23 +407,23 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         color: ColorConstants.clearAllTextColor,
                                       ),
                                       onPressed: () async {
-                                        print("here");
-                                        final DateTime picked = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(2001),
-                                          lastDate: DateTime.now(),
-                                        );
 
-                                        setState(() {
-                                          final DateFormat formatter =
-                                          DateFormat("yyyy-MM-dd");
-                                          if (picked != null) {
-                                            final String formattedDate =
-                                            formatter.format(picked);
-                                            // _supplyDate.text = formattedDate;
-                                          }
-                                        });
+                                        // final DateTime picked = await showDatePicker(
+                                        //   context: context,
+                                        //   initialDate: DateTime.now(),
+                                        //   firstDate: DateTime(2001),
+                                        //   lastDate: DateTime.now(),
+                                        // );
+                                        //
+                                        // setState(() {
+                                        //   final DateFormat formatter =
+                                        //   DateFormat("yyyy-MM-dd");
+                                        //   if (picked != null) {
+                                        //     final String formattedDate =
+                                        //     formatter.format(picked);
+                                        //     // _supplyDate.text = formattedDate;
+                                        //   }
+                                        // });
                                       },
                                     ),
                                     filled: false,
