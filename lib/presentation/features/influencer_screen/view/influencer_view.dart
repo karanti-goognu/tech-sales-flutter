@@ -59,6 +59,7 @@ class _InfluencerViewState extends State<InfluencerView> {
 
                     total =
                         '${(_influencerListModel.response.totalInfluencerCount == null) ? 0 : _influencerListModel.response.totalInfluencerCount}';
+                    print("count : ${_influencerListModel.response.totalInfluencerCount}");
                   }
                 });
                 print('RESPONSE, ${data}');
@@ -537,12 +538,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                     ),
                   ),
                   onTap: () {
-                    String num = "";
-                    // _leadsFilterController
-                    //     .leadsListResponse
-                    //     .leadsEntity[
-                    // index]
-                    //     .contactNumber;
+                    String num = contact;
                     launch('tel:$num');
                   },
                 ),

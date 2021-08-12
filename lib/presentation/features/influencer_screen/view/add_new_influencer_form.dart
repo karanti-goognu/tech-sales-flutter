@@ -144,6 +144,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       validator: (value) {
         if (value.isEmpty) {
           return 'Please enter mobile number ';
+        }else if (value.length!=10) {
+          return 'Mobile number must be of 10 digit';
         }
         if (!Validations.isValidPhoneNumber(value)) {
           return 'Enter valid mobile number';
@@ -182,10 +184,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final email = TextFormField(
       controller: _emailController,
       validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter email ';
-        }
-        if (!Validations.isEmail(value)) {
+        // if (value.isEmpty) {
+        //   return 'Please enter email ';
+        // }
+        if (value.isNotEmpty && !Validations.isEmail(value)) {
           return 'Enter valid email ';
         }
         return null;
@@ -193,14 +195,17 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.emailAddress,
       decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Email*",
+        labelText: "Email",
       ),
     );
 
     final name = TextFormField(
       controller: _nameController,
       validator: (value) {
-        if (value.isEmpty || value.length <=0 || value == null || value == " ") {
+        if (value.isEmpty ||
+            value.length <= 0 ||
+            value == null ||
+            value == " ") {
           return 'Please enter name';
         }
         return null;
@@ -370,7 +375,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           }
         });
       },
-      items: _influencerTypeModel == null
+      items: (_influencerTypeModel == null || _influencerTypeModel.response.influencerTypeList == null)
           ? []
           : _influencerTypeModel.response.influencerTypeList
               .map((e) => DropdownMenuItem(
@@ -574,9 +579,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           _source = value;
         });
       },
-      items: _influencerTypeModel == null
-          ? []
-          : _influencerTypeModel.response.influencerSourceList
+      items: (_influencerTypeModel == null ||_influencerTypeModel.response.influencerSourceList == null )?[]: _influencerTypeModel.response.influencerSourceList
               .map((e) => DropdownMenuItem(
                     value: e.inflSourceId,
                     child: Text(e.inflSourceText),
@@ -593,7 +596,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           _influencerCategory = value;
         });
       },
-      items: _influencerTypeModel == null
+      items: (_influencerTypeModel == null || _influencerTypeModel.response.influencerCategoryList == null)
           ? []
           : _influencerTypeModel.response.influencerCategoryList
               .map((e) => DropdownMenuItem(
@@ -602,11 +605,12 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
-      decoration:
-          FormFieldStyle.buildInputDecoration(labelText: "Influencer Category"),
-      // validator: (value) =>
-      //     value == null ? 'Please select Influencer Category' : null,
+      decoration: FormFieldStyle.buildInputDecoration(
+          labelText: "Influencer Category*"),
+      validator: (value) =>
+          value == null ? 'Please select Influencer Category' : null,
     );
+
 
     final btnSubmit = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -631,9 +635,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
             setState(() {
               if (_addInfluencerFormKeyNext.currentState.validate()) {
                 _addInfluencerFormKeyNext.currentState.save();
-                  _isVisible = false;
-                  _isSecondVisible = true;
-                  btnSubmitPresssed();
+                _isVisible = false;
+                _isSecondVisible = true;
+                btnSubmitPresssed();
               }
             });
           },
@@ -889,7 +893,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     );
   }
 
-  btnSubmitPresssed() async{
+  btnSubmitPresssed() async {
     String empId = await getEmpId();
     InfluencerRequestModel _influencerRequestModel =
         InfluencerRequestModel.fromJson({
@@ -961,8 +965,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     internetChecking().then((result) => {
           if (result == true)
             {
-              _infController
-                  .getAccessKeyAndSaveInfluencer(_influencerRequestModel, false)
+              _infController.getAccessKeyAndSaveInfluencer(
+                  _influencerRequestModel, false)
             }
           else
             {

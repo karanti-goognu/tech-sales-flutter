@@ -150,8 +150,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _giftPincodeController.text = _data.giftAddressPincode;
       _giftDistrictController.text = _data.giftAddressDistrict;
       _giftStateController.text = _data.giftAddressState;
-      _totalPotentialController.text = '${_data.monthlyPotentialVolumeMT}';
-      _potentialSiteController.text = '${_data.siteAssignedCount}';
+      _totalPotentialController.text = '${_data.monthlyPotentialVolumeMT}' == "null" ? "" : '${_data.monthlyPotentialVolumeMT}';
+      _potentialSiteController.text = '${_data.siteAssignedCount}'== "null" ? "" :'${_data.siteAssignedCount}';
       _enrollmentDateController.text = '${_data.inflJoiningDate}';
       _qualificationController.text = _data.inflQualification;
       _emailController.text = _data.email;
@@ -162,7 +162,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _memberType = _data.inflTypeId;
       _influencerCategory = _data.inflCategoryId;
       //_date = '${_data.inflDob}';
-      _dateController.text = '${_data.inflDob}';
+
+      _dateController.text = '${_data.inflDob}' == "null" ? "Birth Date" : '${_data.inflDob}';
 
       if(_data.ilpregFlag == "Y"){
         checkedValue = true;
@@ -452,7 +453,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           }
         });
       },
-      items:_influencerDetailDataModel == null ? [] :
+      items:(_influencerDetailDataModel == null || _influencerTypeEntitiesList == null) ? []:
           influencerTypeEntitiesList.map((e) => DropdownMenuItem(
         value: e,
         child: Container(
@@ -598,7 +599,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           _source = _influencerSourceList.inflSourceId;
         });
       },
-      items: _influencerDetailDataModel == null
+      items: (_influencerDetailDataModel == null || influencerSourceList == null)
           ? []
           : influencerSourceList.map((e) => DropdownMenuItem(
         value: e,
@@ -606,7 +607,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: _selecedSource),
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Source"),
       validator: (value) => value == null ? 'Please select Source' : null,
     );
 
@@ -618,7 +619,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           _influencerCategory = _influencerCategoryEntitiesList.inflCatId;
         });
       },
-      items: _influencerDetailDataModel == null
+      items: (_influencerDetailDataModel == null || influencerCategoryEntitiesList == null)
           ? []
           : influencerCategoryEntitiesList
           .map((e) => DropdownMenuItem(
