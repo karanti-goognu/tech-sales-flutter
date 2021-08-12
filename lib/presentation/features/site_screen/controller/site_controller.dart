@@ -176,6 +176,10 @@ class SiteController extends GetxController {
     _isFilterApplied.value = value;
   }
 
+   getAccessKey() {
+    return repository.getAccessKey();
+  }
+
   // set sitesListOffline(value) => this._sitesListOffline.assignAll(value);
 /*
   getSecretKey(int requestId) {
@@ -316,6 +320,7 @@ class SiteController extends GetxController {
       //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
        debugPrint('Url is : $url');
+       debugPrint('accessKey is : $accessKey');
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
