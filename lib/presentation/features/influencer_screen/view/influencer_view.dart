@@ -30,7 +30,7 @@ class _InfluencerViewState extends State<InfluencerView> {
   List<InfluencerTypeList> _influencerTypeList;
   List<InfluencerTypeList> _inf;
   int _selectedValue;
-  String total;
+  String total = " ";
 
   @override
   void initState() {

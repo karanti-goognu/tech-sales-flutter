@@ -47,7 +47,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   int _influencerCategory;
   int _source;
   int _memberType;
-  String _selecedSource, memberShipId;
+  String _selecedSource, memberShipId = "--";
   String _selectedEnrollValue;
   bool checkedValue = false;
 
@@ -73,6 +73,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   @override
   void initState() {
     super.initState();
+    memberShipId = widget.membershipId;
     getEmpId();
     getData();
     getDistrictData();
@@ -271,10 +272,10 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final email = TextFormField(
       controller: _emailController,
       validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter email ';
-        }
-        if (!Validations.isEmail(value)) {
+        // if (value.isEmpty) {
+        //   return 'Please enter email ';
+        // }
+        if (value.isNotEmpty && !Validations.isEmail(value)) {
           return 'Enter valid email ';
         }
         return null;
@@ -282,7 +283,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.emailAddress,
       decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Email*",
+        labelText: "Email",
       ),
     );
 
@@ -563,12 +564,12 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final totalPotential = TextFormField(
       controller: _totalPotentialController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter Total Monthly Potential (MT)';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter Total Monthly Potential (MT)';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: FormFieldStyle.buildInputDecoration(
@@ -578,12 +579,12 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final potentialSite = TextFormField(
       controller: _potentialSiteController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter Potential sites';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter Potential sites';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -608,7 +609,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Source"),
-      validator: (value) => value == null ? 'Please select Source' : null,
+     // validator: (value) => value == null ? 'Please select Source' : null,
     );
 
     final influencerCategoryDropDwn = DropdownButtonFormField<InfluencerCategoryEntitiesList>(
@@ -712,9 +713,17 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Membership ID : ${memberShipId}",
-                            style: TextStyles.welcomeMsgTextStyle20,
+                          Row(
+                            children: [
+                              Text(
+                                "Membership ID : ",
+                                style: TextStyles.welcomeMsgTextStyle20,
+                              ),
+                              Text(
+                                "${memberShipId}",
+                                style: TextStyles.welcomeMsgTextStyle20,
+                              ),
+                            ],
                           ),
                           SizedBox(height: _height),
                           mobileNumber,

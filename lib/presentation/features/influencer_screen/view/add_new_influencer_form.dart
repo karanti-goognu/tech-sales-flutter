@@ -216,8 +216,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
       // ],
       // inputFormatters: [
-      //   FilteringTextInputFormatter.deny(RegExp('[ ]')),
+      //   FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s")),
       // ],
+
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Name*",
       ),

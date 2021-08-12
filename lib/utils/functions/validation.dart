@@ -1,7 +1,7 @@
 class Validations{
   static bool isValidPhoneNumber(String string) {
     // Null or empty string is invalid phone number
-    if (string == null || string.isEmpty) {
+    if (string == null || string.isEmpty || string.length != 10) {
       return false;
     }
     const pattern = r'(^[5-9]{1}[0-9]{9}$)';
