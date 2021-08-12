@@ -41,6 +41,9 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
   ScrollController _scrollController;
 
   getData() async {
+    Future.delayed(Duration.zero,
+            () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     await _siteController.getAccessKey().then((value) async {
       await _siteController.getSitesData(value.accessKey, widget.influencerID);
     });
@@ -52,10 +55,10 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     _siteController.sitesListResponse.sitesEntity = null;
     internetChecking().then((result) async {
       if (result)
-        // await _siteController.getAccessKey().then((value) async {
-        //   _siteController.getSitesData(value.accessKey,widget.influencerID);
-        // });
-        getData();
+      getData().whenComplete(() {
+        Get.back();
+
+      });
       _siteController.offset = 0;
     });
 
@@ -71,7 +74,10 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
       // _siteController.getAccessKey().then((value) async {
       //   _siteController.getSitesData(value.accessKey,widget.influencerID);
       // });
-      getData();
+      // getData();
+      getData().whenComplete(() {
+        Get.back();
+      });
       // _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
     }
   }
@@ -297,16 +303,16 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Obx(
-                            () => Text(
+                            () => (_siteController.sitesListResponse.sitesEntity != null)?Text(
                           "Total Count : ${(_siteController.sitesListResponse.totalSiteCount == null) ? 0 : _siteController.sitesListResponse.totalSiteCount}",
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal * 3.7,
                             // color: HexColor("#FFFFFF99"),
                           ),
-                        ),
+                        ):SizedBox(),
                       ),
-                      Obx(() => Text(
+                      Obx(() => (_siteController.sitesListResponse.sitesEntity != null)?Text(
                         "Total Potential : ${(_siteController.sitesListResponse.totalSitePotential == null) ? 0 : _siteController.sitesListResponse.totalSitePotential}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -314,7 +320,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                           fontSize: SizeConfig.safeBlockHorizontal * 3.7,
                           // color: HexColor("#FFFFFF99"),
                         ),
-                      )),
+                      ):SizedBox()),
                     ],
                   ),
                 ),
@@ -411,7 +417,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
           : (_siteController.sitesListResponse.sitesEntity == null)
           ? Container(
         child: Center(
-          child: Text("Site list is empty!!"),
+          child: Text("Loading Site list ..."),
         ),
       )
           : (_siteController
@@ -429,7 +435,10 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
               RaisedButton(
                 onPressed: () {
                   _siteController.offset = 0;
-                  getData();
+                  // getData();
+                  getData().whenComplete(() {
+                    Get.back();
+                  });
                   // _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
                 },
                 color: ColorConstants.buttonNormalColor,

@@ -4714,8 +4714,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: siteStageHistorys.length,
                           itemBuilder: (BuildContext context, int index) {
-                            print(
-                                "00000000" + json.encode(siteStageHistorys[0]));
+                            print("00000000" + json.encode(siteStageHistorys[0]));
                             final DateFormat formatter =
                                 DateFormat('dd-MMM-yyyy');
                             String selectedDateString = formatter.format(
@@ -6641,7 +6640,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
-                  initialValue: siteSupplyHistory.brandPrice,
+                  initialValue: (siteSupplyHistory.brandPrice != null &&
+                      siteSupplyHistory.brandPrice != "null")
+                      ? siteSupplyHistory.brandPrice
+                      : "",
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,

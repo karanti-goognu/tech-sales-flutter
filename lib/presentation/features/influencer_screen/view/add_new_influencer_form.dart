@@ -200,7 +200,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final name = TextFormField(
       controller: _nameController,
       validator: (value) {
-        if (value.isEmpty || value.length <=0 || value == null || value == " ") {
+        if (value.isEmpty || value.length <=0 || value == null || value == " " || value.trim().isEmpty) {
           return 'Please enter name';
         }
         return null;
@@ -221,7 +221,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final fatherName = TextFormField(
       controller: _fatherNameController,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value.isEmpty || value.trim().isEmpty) {
           return 'Please enter name';
         }
         return null;
