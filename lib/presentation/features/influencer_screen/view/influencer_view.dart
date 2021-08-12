@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
@@ -420,7 +421,9 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                     children: [
                                                       GestureDetector(
                                                           onTap: (){
-                                                            Get.to(InfluencerNameList(influencerID:_influencerListModel.response.ilpInfluencerEntity[index].membershipId,influencerName:_influencerListModel.response.ilpInfluencerEntity[index].inflName));
+                                                            Get.to(
+                                                                    () => InfluencerNameList(influencerID:_influencerListModel.response.ilpInfluencerEntity[index].membershipId,influencerName:_influencerListModel.response.ilpInfluencerEntity[index].inflName),
+                                                                binding: InfBinding());
                                                           },
                                                           child: Chip(
                                                         shape: StadiumBorder(
