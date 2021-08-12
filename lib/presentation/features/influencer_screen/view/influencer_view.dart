@@ -422,7 +422,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                       GestureDetector(
                                                           onTap: (){
                                                             Get.to(
-                                                                    () => InfluencerNameList(influencerID:_influencerListModel.response.ilpInfluencerEntity[index].membershipId,influencerName:_influencerListModel.response.ilpInfluencerEntity[index].inflName),
+                                                                    () => InfluencerNameList(influencerID:'${_influencerListModel.response.ilpInfluencerEntity[index].membershipId}',influencerName:_influencerListModel.response.ilpInfluencerEntity[index].inflName),
                                                                 binding: InfBinding());
                                                           },
                                                           child: Chip(
@@ -466,7 +466,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                           Get.dialog(showContactDialog(
                                                               'Info',
                                                               '${_influencerListModel.response.ilpInfluencerEntity[index].mobileNumber}',
-                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress == null ? "-mobileNumbermobileNumbermobileNumber" : _influencerListModel.response.ilpInfluencerEntity[index].giftAddress}',
+                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].giftAddress}',
                                                               '${_influencerListModel.response.ilpInfluencerEntity[index].email == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].email}',
                                                               context));
                                                         },

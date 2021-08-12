@@ -170,7 +170,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                   _contactNumberController.text = value;
                 } else if (data.respCode == "DM1002") {
                   Get.dialog(
-                      CustomDialogs().showDialogInfPresent(data.respMsg));
+                      CustomDialogs().showDialogInfPresent(data.respMsg), barrierDismissible: false);
                   _contactNumberController.text = "";
                 }
               }
@@ -888,6 +888,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     String empId = await getEmpId();
     InfluencerRequestModel _influencerRequestModel =
         InfluencerRequestModel.fromJson({
+          "membershipId": null,
       "baseCity": _baseCityController.text,
       "createBy": empId,
       "dealership": "N",

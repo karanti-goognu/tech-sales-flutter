@@ -22,7 +22,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InfluencerDetailView extends StatefulWidget {
-  String membershipId;
+  int membershipId;
   InfluencerDetailView(this.membershipId);
   @override
   _InfluencerDetailViewState createState() => _InfluencerDetailViewState();
@@ -46,8 +46,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   bool _qualificationVisible = false;
   int _influencerCategory;
   int _source;
-  int _memberType;
-  String _selecedSource, memberShipId = "--";
+  int _memberType, memberShipId;
+  String _selecedSource;
   String _selectedEnrollValue;
   bool checkedValue = false;
 
@@ -85,6 +85,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
     });
+    print("*****${empID}");
     return empID;
   }
 
@@ -93,7 +94,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     {
       if (result == true)
         {
-          _infController.getInfDetailData(widget.membershipId).then((data) {
+          _infController.getInfDetailData('${widget.membershipId}').then((data) {
             setState(() {
               if (data != null) {
                  _influencerDetailDataModel = data;
@@ -142,7 +143,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   setData(){
     if(_influencerDetailDataModel != null || _influencerDetailDataModel.response != null || _influencerDetailDataModel.response.influencerDetails != null) {
       InfluencerDetails _data = _influencerDetailDataModel.response.influencerDetails;
-       memberShipId = '${_data.id}';
+       memberShipId = _data.id;
       _contactNumberController.text = _data.inflContactNumber;
       _nameController.text = _data.inflName;
       _fatherNameController.text = _data.fatherName;
@@ -231,42 +232,43 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final mobileNumber = TextFormField(
       controller: _contactNumberController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter mobile number ';
-        }
-        if (!Validations.isValidPhoneNumber(value)) {
-          return 'Enter valid mobile number';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter mobile number ';
+      //   }
+      //   if (!Validations.isValidPhoneNumber(value)) {
+      //     return 'Enter valid mobile number';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.phone,
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly
-      ],
-      maxLength: 10,
+      //keyboardType: TextInputType.phone,
+      // inputFormatters: <TextInputFormatter>[
+      //   FilteringTextInputFormatter.digitsOnly
+      // ],
+     // maxLength: 10,
+      readOnly: true,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Mobile number*",
       ),
-      onChanged: (value) {
-        if (value.length == 10) {
-          _infController.getInfData(value).then((data) {
-            setState(() {
-              if (data != null) {
-                if (data.respCode == "NUM404") {
-                  _contactNumberController.text = value;
-                } else if (data.respCode == "DM1002") {
-                  Get.dialog(
-                      CustomDialogs().showDialogInfPresent(data.respMsg));
-                  _contactNumberController.text = "";
-                }
-              }
-            });
-            print('RESPONSE, ${data}');
-          });
-        }
-      },
+      // onChanged: (value) {
+      //   if (value.length == 10) {
+      //     _infController.getInfData(value).then((data) {
+      //       setState(() {
+      //         if (data != null) {
+      //           if (data.respCode == "NUM404") {
+      //             _contactNumberController.text = value;
+      //           } else if (data.respCode == "DM1002") {
+      //             Get.dialog(
+      //                 CustomDialogs().showDialogInfPresent(data.respMsg));
+      //             _contactNumberController.text = "";
+      //           }
+      //         }
+      //       });
+      //       print('RESPONSE, ${data}');
+      //     });
+     //    }
+     // },
     );
 
     final email = TextFormField(
@@ -910,6 +912,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     String empId = await getEmpId();
     InfluencerRequestModel _influencerRequestModel =
     InfluencerRequestModel.fromJson({
+      "membershipId": memberShipId,
       "baseCity": _baseCityController.text,
       "createBy": empId,
       "dealership": "N",
