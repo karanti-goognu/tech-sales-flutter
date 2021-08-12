@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
+// ignore: must_be_immutable
 class InfluencerNameList extends StatefulWidget {
   String influencerName;
   String influencerID;
@@ -39,13 +40,22 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
   
   ScrollController _scrollController;
 
+  getData() async {
+    await _siteController.getAccessKey().then((value) async {
+      await _siteController.getSitesData(value.accessKey, widget.influencerID);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _siteController.sitesListResponse.sitesEntity = null;
-    internetChecking().then((result) {
+    internetChecking().then((result) async {
       if (result)
-        _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
+        // await _siteController.getAccessKey().then((value) async {
+        //   _siteController.getSitesData(value.accessKey,widget.influencerID);
+        // });
+        getData();
       _siteController.offset = 0;
     });
 
@@ -58,8 +68,11 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
         _scrollController.position.maxScrollExtent) {
       print('hello');
       _siteController.offset += 10;
-      print(_siteController.offset);
-      _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
+      // _siteController.getAccessKey().then((value) async {
+      //   _siteController.getSitesData(value.accessKey,widget.influencerID);
+      // });
+      getData();
+      // _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
     }
   }
 
@@ -416,7 +429,8 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
               RaisedButton(
                 onPressed: () {
                   _siteController.offset = 0;
-                  _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
+                  getData();
+                  // _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
                 },
                 color: ColorConstants.buttonNormalColor,
                 child: Text(
