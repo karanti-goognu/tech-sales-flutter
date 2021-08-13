@@ -21,7 +21,7 @@ class InfluencerResponseModel {
 class Response {
   String respCode;
   String respMsg;
-  String membershipId;
+  int membershipId;
   String influencerContact;
   String influencerName;
   String inFlTypeId;

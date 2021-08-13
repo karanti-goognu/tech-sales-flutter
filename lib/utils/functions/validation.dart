@@ -1,13 +1,10 @@
 class Validations{
   static bool isValidPhoneNumber(String string) {
     // Null or empty string is invalid phone number
-    if (string == null || string.isEmpty) {
+    if (string == null || string.isEmpty || string.length != 10) {
       return false;
     }
-
-    // You may need to change this pattern to fit your requirement.
-    // I just copied the pattern from here: https://regexr.com/3c53v
-    const pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    const pattern = r'(^[5-9]{1}[0-9]{9}$)';
     final regExp = RegExp(pattern);
 
     if (!regExp.hasMatch(string)) {
@@ -15,6 +12,19 @@ class Validations{
     }
     return true;
   }
+
+  // static String validateMobile(String value) {
+  //   String pattern = r'(^[5-9]{1}[0-9]{9}$)';
+  //   RegExp regExp = new RegExp(pattern);
+  //   if (value.length == 0) {
+  //     return 'Please enter mobile number';
+  //   }else if (value.length!=10) {
+  //     return 'Mobile number must be of 10 digit';
+  //   } else if (!regExp.hasMatch(value)) {
+  //     return 'Please enter valid mobile number';
+  //   }
+  //   return "Valid mobile number";
+  // }
 
   static bool isEmail(String em) {
     if (em.isEmpty) return false;

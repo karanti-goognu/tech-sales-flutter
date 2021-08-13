@@ -91,7 +91,7 @@ class InfluencerTypeList {
 
 class IlpInfluencerEntity {
   String joiningDate;
-  String membershipId;
+  int membershipId;
   String mobileNumber;
   String inflName;
   String inflTypeId;

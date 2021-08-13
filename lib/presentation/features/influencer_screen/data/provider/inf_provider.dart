@@ -50,6 +50,7 @@ class MyApiClientInf {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
+      print("-------$data");
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
@@ -158,6 +159,7 @@ class MyApiClientInf {
   Future<InfluencerListModel> getInfluencerList(String accessKey, String userSecretKey,
       String url) async {
     InfluencerListModel influencerListModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
 
@@ -165,10 +167,13 @@ class MyApiClientInf {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
+      Get.back();
       if(data["resp_code"] == "DM1005"){
+        //Get.back();
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
+        //Get.back();
         influencerListModel = InfluencerListModel.fromJson(json.decode(response.body));
         print('URL : ${response.request}');
         print('RESP: ${response.body}');

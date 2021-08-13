@@ -31,7 +31,7 @@ class _InfluencerViewState extends State<InfluencerView> {
   List<InfluencerTypeList> _influencerTypeList;
   List<InfluencerTypeList> _inf;
   int _selectedValue;
-  String total;
+  String total = " ";
 
   @override
   void initState() {
@@ -60,6 +60,7 @@ class _InfluencerViewState extends State<InfluencerView> {
 
                     total =
                         '${(_influencerListModel.response.totalInfluencerCount == null) ? 0 : _influencerListModel.response.totalInfluencerCount}';
+                    print("count : ${_influencerListModel.response.totalInfluencerCount}");
                   }
                 });
                 print('RESPONSE, ${data}');
@@ -421,7 +422,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                       GestureDetector(
                                                           onTap: (){
                                                             Get.to(
-                                                                    () => InfluencerNameList(influencerID:_influencerListModel.response.ilpInfluencerEntity[index].membershipId,influencerName:_influencerListModel.response.ilpInfluencerEntity[index].inflName),
+                                                                    () => InfluencerNameList(influencerID:'${_influencerListModel.response.ilpInfluencerEntity[index].membershipId}',influencerName:_influencerListModel.response.ilpInfluencerEntity[index].inflName),
                                                                 binding: InfBinding());
                                                           },
                                                           child: Chip(
@@ -465,7 +466,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                           Get.dialog(showContactDialog(
                                                               'Info',
                                                               '${_influencerListModel.response.ilpInfluencerEntity[index].mobileNumber}',
-                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress == null ? "-mobileNumbermobileNumbermobileNumber" : _influencerListModel.response.ilpInfluencerEntity[index].giftAddress}',
+                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].giftAddress}',
                                                               '${_influencerListModel.response.ilpInfluencerEntity[index].email == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].email}',
                                                               context));
                                                         },
@@ -540,12 +541,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                     ),
                   ),
                   onTap: () {
-                    String num = "";
-                    // _leadsFilterController
-                    //     .leadsListResponse
-                    //     .leadsEntity[
-                    // index]
-                    //     .contactNumber;
+                    String num = contact;
                     launch('tel:$num');
                   },
                 ),

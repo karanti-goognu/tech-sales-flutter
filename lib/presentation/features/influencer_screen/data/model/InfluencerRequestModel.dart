@@ -1,4 +1,5 @@
 class InfluencerRequestModel {
+  int membershipId;
   String baseCity;
   String createBy;
   String dealership;
@@ -30,7 +31,8 @@ class InfluencerRequestModel {
   String taluka;
 
   InfluencerRequestModel(
-      {this.baseCity,
+      {this.membershipId,
+        this.baseCity,
         this.createBy,
         this.dealership,
         this.districtId,
@@ -61,6 +63,7 @@ class InfluencerRequestModel {
         this.taluka});
 
   InfluencerRequestModel.fromJson(Map<String, dynamic> json) {
+    membershipId = json["membershipId"];
     baseCity = json['baseCity'];
     createBy = json['createBy'];
     dealership = json['dealership'];
@@ -94,6 +97,7 @@ class InfluencerRequestModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['membershipId'] = this.membershipId;
     data['baseCity'] = this.baseCity;
     data['createBy'] = this.createBy;
     data['dealership'] = this.dealership;

@@ -22,7 +22,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InfluencerDetailView extends StatefulWidget {
-  String membershipId;
+  int membershipId;
   InfluencerDetailView(this.membershipId);
   @override
   _InfluencerDetailViewState createState() => _InfluencerDetailViewState();
@@ -46,8 +46,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   bool _qualificationVisible = false;
   int _influencerCategory;
   int _source;
-  int _memberType;
-  String _selecedSource, memberShipId;
+  int _memberType, memberShipId;
+  String _selecedSource;
   String _selectedEnrollValue;
   bool checkedValue = false;
 
@@ -73,6 +73,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   @override
   void initState() {
     super.initState();
+    memberShipId = widget.membershipId;
     getEmpId();
     getData();
     getDistrictData();
@@ -84,6 +85,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
     });
+    print("*****${empID}");
     return empID;
   }
 
@@ -92,7 +94,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     {
       if (result == true)
         {
-          _infController.getInfDetailData(widget.membershipId).then((data) {
+          _infController.getInfDetailData('${widget.membershipId}').then((data) {
             setState(() {
               if (data != null) {
                  _influencerDetailDataModel = data;
@@ -141,7 +143,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   setData(){
     if(_influencerDetailDataModel != null || _influencerDetailDataModel.response != null || _influencerDetailDataModel.response.influencerDetails != null) {
       InfluencerDetails _data = _influencerDetailDataModel.response.influencerDetails;
-       memberShipId = '${_data.id}';
+       memberShipId = _data.id;
       _contactNumberController.text = _data.inflContactNumber;
       _nameController.text = _data.inflName;
       _fatherNameController.text = _data.fatherName;
@@ -150,8 +152,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _giftPincodeController.text = _data.giftAddressPincode;
       _giftDistrictController.text = _data.giftAddressDistrict;
       _giftStateController.text = _data.giftAddressState;
-      _totalPotentialController.text = '${_data.monthlyPotentialVolumeMT}';
-      _potentialSiteController.text = '${_data.siteAssignedCount}';
+      _totalPotentialController.text = '${_data.monthlyPotentialVolumeMT}' == "null" ? "" : '${_data.monthlyPotentialVolumeMT}';
+      _potentialSiteController.text = '${_data.siteAssignedCount}'== "null" ? "" :'${_data.siteAssignedCount}';
       _enrollmentDateController.text = '${_data.inflJoiningDate}';
       _qualificationController.text = _data.inflQualification;
       _emailController.text = _data.email;
@@ -162,7 +164,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _memberType = _data.inflTypeId;
       _influencerCategory = _data.inflCategoryId;
       //_date = '${_data.inflDob}';
-      _dateController.text = '${_data.inflDob}';
+
+      _dateController.text = '${_data.inflDob}' == "null" ? "Birth Date" : '${_data.inflDob}';
 
       if(_data.ilpregFlag == "Y"){
         checkedValue = true;
@@ -229,51 +232,52 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final mobileNumber = TextFormField(
       controller: _contactNumberController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter mobile number ';
-        }
-        if (!Validations.isValidPhoneNumber(value)) {
-          return 'Enter valid mobile number';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter mobile number ';
+      //   }
+      //   if (!Validations.isValidPhoneNumber(value)) {
+      //     return 'Enter valid mobile number';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.phone,
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly
-      ],
-      maxLength: 10,
+      //keyboardType: TextInputType.phone,
+      // inputFormatters: <TextInputFormatter>[
+      //   FilteringTextInputFormatter.digitsOnly
+      // ],
+     // maxLength: 10,
+      readOnly: true,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Mobile number*",
       ),
-      onChanged: (value) {
-        if (value.length == 10) {
-          _infController.getInfData(value).then((data) {
-            setState(() {
-              if (data != null) {
-                if (data.respCode == "NUM404") {
-                  _contactNumberController.text = value;
-                } else if (data.respCode == "DM1002") {
-                  Get.dialog(
-                      CustomDialogs().showDialogInfPresent(data.respMsg));
-                  _contactNumberController.text = "";
-                }
-              }
-            });
-            print('RESPONSE, ${data}');
-          });
-        }
-      },
+      // onChanged: (value) {
+      //   if (value.length == 10) {
+      //     _infController.getInfData(value).then((data) {
+      //       setState(() {
+      //         if (data != null) {
+      //           if (data.respCode == "NUM404") {
+      //             _contactNumberController.text = value;
+      //           } else if (data.respCode == "DM1002") {
+      //             Get.dialog(
+      //                 CustomDialogs().showDialogInfPresent(data.respMsg));
+      //             _contactNumberController.text = "";
+      //           }
+      //         }
+      //       });
+      //       print('RESPONSE, ${data}');
+      //     });
+     //    }
+     // },
     );
 
     final email = TextFormField(
       controller: _emailController,
       validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter email ';
-        }
-        if (!Validations.isEmail(value)) {
+        // if (value.isEmpty) {
+        //   return 'Please enter email ';
+        // }
+        if (value.isNotEmpty && !Validations.isEmail(value)) {
           return 'Enter valid email ';
         }
         return null;
@@ -281,7 +285,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.emailAddress,
       decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Email*",
+        labelText: "Email",
       ),
     );
 
@@ -452,7 +456,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           }
         });
       },
-      items:_influencerDetailDataModel == null ? [] :
+      items:(_influencerDetailDataModel == null || _influencerTypeEntitiesList == null) ? []:
           influencerTypeEntitiesList.map((e) => DropdownMenuItem(
         value: e,
         child: Container(
@@ -562,12 +566,12 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final totalPotential = TextFormField(
       controller: _totalPotentialController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter Total Monthly Potential (MT)';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter Total Monthly Potential (MT)';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: FormFieldStyle.buildInputDecoration(
@@ -577,12 +581,12 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final potentialSite = TextFormField(
       controller: _potentialSiteController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter Potential sites';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter Potential sites';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -598,7 +602,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           _source = _influencerSourceList.inflSourceId;
         });
       },
-      items: _influencerDetailDataModel == null
+      items: (_influencerDetailDataModel == null || influencerSourceList == null)
           ? []
           : influencerSourceList.map((e) => DropdownMenuItem(
         value: e,
@@ -606,8 +610,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: _selecedSource),
-      validator: (value) => value == null ? 'Please select Source' : null,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Source"),
+     // validator: (value) => value == null ? 'Please select Source' : null,
     );
 
     final influencerCategoryDropDwn = DropdownButtonFormField<InfluencerCategoryEntitiesList>(
@@ -618,7 +622,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           _influencerCategory = _influencerCategoryEntitiesList.inflCatId;
         });
       },
-      items: _influencerDetailDataModel == null
+      items: (_influencerDetailDataModel == null || influencerCategoryEntitiesList == null)
           ? []
           : influencerCategoryEntitiesList
           .map((e) => DropdownMenuItem(
@@ -711,9 +715,17 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Membership ID : ${memberShipId}",
-                            style: TextStyles.welcomeMsgTextStyle20,
+                          Row(
+                            children: [
+                              Text(
+                                "Membership ID : ",
+                                style: TextStyles.welcomeMsgTextStyle20,
+                              ),
+                              Text(
+                                "${memberShipId}",
+                                style: TextStyles.welcomeMsgTextStyle20,
+                              ),
+                            ],
                           ),
                           SizedBox(height: _height),
                           mobileNumber,
@@ -900,6 +912,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     String empId = await getEmpId();
     InfluencerRequestModel _influencerRequestModel =
     InfluencerRequestModel.fromJson({
+      "membershipId": memberShipId,
       "baseCity": _baseCityController.text,
       "createBy": empId,
       "dealership": "N",

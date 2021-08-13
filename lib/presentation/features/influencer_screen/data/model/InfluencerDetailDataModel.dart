@@ -92,7 +92,7 @@ class InfluencerDetails {
   String inflName;
   int inflTypeId;
   String isActive;
-  Null monthlyPotentialBags;
+  int monthlyPotentialBags;
   int monthlyPotentialVolumeMT;
   String pinCode;
   String taluka;

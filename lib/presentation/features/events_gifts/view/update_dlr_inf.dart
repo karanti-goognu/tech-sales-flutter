@@ -1050,6 +1050,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       String empId = await getEmpId();
       InfluencerRequestModel _influencerRequestModel =
       InfluencerRequestModel.fromJson({
+        "membershipId":null,
         "baseCity": "",
         "createBy": empId,
         "dealership": "N",
@@ -1190,7 +1191,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   eventId: widget.eventId,
                   inflContact: _influencerResponseModel.response.influencerContact,
                   inflTypeId: int.tryParse(_influencerResponseModel.response.inFlTypeId),
-                  inflId: int.tryParse(_influencerResponseModel.response.membershipId),
+                  inflId: _influencerResponseModel.response.membershipId,
                   inflName: _influencerResponseModel.response.influencerName,
                   eventInflId: 0));
             });
