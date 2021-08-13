@@ -209,6 +209,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Name*",
       ),
@@ -217,12 +218,13 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final fatherName = TextFormField(
       controller: _fatherNameController,
       validator: (value) {
-        if (value.isEmpty || value.trim().isEmpty) {
+        if (value.isEmpty) {
           return 'Please enter name';
         }
         return null;
       },
       style: FormFieldStyle.formFieldTextStyle,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Father Name*",
