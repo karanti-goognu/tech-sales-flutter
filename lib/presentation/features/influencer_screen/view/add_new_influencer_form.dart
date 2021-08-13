@@ -158,6 +158,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         FilteringTextInputFormatter.digitsOnly
       ],
       maxLength: 10,
+      //maxLengthEnforced: true,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Mobile number*",
       ),
@@ -209,7 +210,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9.a-zA-Z ]")), ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Name*",
       ),
@@ -217,17 +218,17 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final fatherName = TextFormField(
       controller: _fatherNameController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter name';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter name';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+      //inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Father Name*",
+        labelText: "Father Name",
       ),
     );
 
