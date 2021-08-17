@@ -132,6 +132,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   var _state = TextEditingController();
   var _district = TextEditingController();
   var _taluk = TextEditingController();
+  var _totalBathroomCount = TextEditingController();
+  var _totalKitchenCount = TextEditingController();
+
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
   LocationResult _pickedLocation;
@@ -1167,8 +1170,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               }
             }
           }
-
           _siteBuiltupArea.text = sitesModal.siteBuiltArea;
+
+          _totalKitchenCount.text = sitesModal.kitchenCount!=null?sitesModal.kitchenCount.toString():"";
+          _totalBathroomCount.text = sitesModal.bathroomCount!=null?sitesModal.kitchenCount.toString():"";
+
           myFocusNode = FocusNode();
           myFocusNode.requestFocus();
         });
@@ -2065,6 +2071,54 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                               ),
                             )
                           ],
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          controller: _totalBathroomCount,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+                            TextInputFormatter.withFunction((oldValue, newValue) {
+                              try {
+                                final text = newValue.text;
+                                if (text.isNotEmpty) double.parse(text);
+                                return newValue;
+                              } catch (e) {}
+                              return oldValue;
+                            }
+                            ),
+                          ],
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Bathroom Count",
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          controller: _totalKitchenCount,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+                            TextInputFormatter.withFunction((oldValue, newValue) {
+                              try {
+                                final text = newValue.text;
+                                if (text.isNotEmpty) double.parse(text);
+                                return newValue;
+                              } catch (e) {}
+                              return oldValue;
+                            }
+                            ),
+                          ],
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Kitchen Count",
+                          ),
                         ),
                         SizedBox(height: 16),
                         Padding(
@@ -6395,35 +6449,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             siteSupplyHistorys: siteSupplyHistory));
       }
 
-      //
-      // if (productDynamicList != null && productDynamicList.length > 0) {
-      //   for (int i = 0; i < productDynamicList.length; i++) {
-      //    if(productDynamicList[i].brandId!=-1) {
-      //      siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
-      //        // totalBalancePotential: _siteTotalBalancePt.text,
-      //          constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
-      //          floorId: _selectedSiteVisitFloor.id,
-      //          stagePotential: _stagePotentialVisit.text,
-      //          brandId: productDynamicList[i].brandId,
-      //          brandPrice: productDynamicList[i].brandPrice.text,
-      //          constructionDate: _dateofConstruction.text,
-      //          siteId: widget.siteId,
-      //          // id: widget.siteId,
-      //          supplyDate: productDynamicList[i].supplyDate.text,
-      //          supplyQty: productDynamicList[i].supplyQty.text,
-      //          stageStatus: _stageStatus.text,
-      //          createdBy: empId,
-      //          soldToParty: visitDataDealer,
-      //          shipToParty: visitDataSubDealer,
-      //          receiptNumber: "",
-      //          isAuthorised: "N",
-      //          authorisedBy: "",
-      //          authorisedOn: ""));
-      //    }
-      //   }
-      // }
-      //
-      // print("SiteHistory--->" + siteVisitHistoryEntity.length.toString());
 
       if (_selectedConstructionTypeVisitNextStage != null) {
         siteNextStageEntity.add(new SiteNextStageEntity(
@@ -6546,6 +6571,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "isDealerConfirmedChangedBySo":
             sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
         "subdealerId": visitDataSubDealer,
+        "kitchenCount": _totalKitchenCount.text!=null?int.parse(_totalKitchenCount.text):null,
+        "bathroomCount": _totalBathroomCount.text!=null?int.parse(_totalBathroomCount.text):null,
       };
       // log('updateDataRequest---- $updateDataRequest');
       _siteController.updateLeadData(
