@@ -204,6 +204,17 @@ class _FormAddEventState extends State<FormAddEvent> {
       controller: _dalmiaInflController,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+          TextInputFormatter.withFunction((oldValue, newValue) {
+            try {
+              final text = newValue.text;
+              if (text.isNotEmpty) double.parse(text);
+              return newValue;
+            } catch (e) {}
+            return oldValue;
+          }),
+        ],
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Dalmia influencers"),
     );
@@ -225,6 +236,17 @@ class _FormAddEventState extends State<FormAddEvent> {
 
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+          TextInputFormatter.withFunction((oldValue, newValue) {
+            try {
+              final text = newValue.text;
+              if (text.isNotEmpty) double.parse(text);
+              return newValue;
+            } catch (e) {}
+            return oldValue;
+          }),
+        ],
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Non-Dalmia influencers"),
     );
@@ -233,6 +255,17 @@ class _FormAddEventState extends State<FormAddEvent> {
       controller: _totalParticipantsController,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          try {
+            final text = newValue.text;
+            if (text.isNotEmpty) double.parse(text);
+            return newValue;
+          } catch (e) {}
+          return oldValue;
+        }),
+      ],
       readOnly: true,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Total participants"),

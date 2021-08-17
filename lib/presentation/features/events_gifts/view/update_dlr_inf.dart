@@ -493,7 +493,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     _newContactController.text = _infDetailModel.mobileNumber:"";
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.3,
+        height: SizeConfig.screenHeight / 1.0,
         color: Colors.white,
         child: Form(
           key: _newFormKey,
