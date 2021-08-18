@@ -1173,7 +1173,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           _siteBuiltupArea.text = sitesModal.siteBuiltArea;
 
           _totalKitchenCount.text = sitesModal.kitchenCount!=null?sitesModal.kitchenCount.toString():"";
-          _totalBathroomCount.text = sitesModal.bathroomCount!=null?sitesModal.kitchenCount.toString():"";
+          _totalBathroomCount.text = sitesModal.bathroomCount!=null?sitesModal.bathroomCount.toString():"";
 
           myFocusNode = FocusNode();
           myFocusNode.requestFocus();
@@ -6571,8 +6571,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "isDealerConfirmedChangedBySo":
             sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
         "subdealerId": visitDataSubDealer,
-        "kitchenCount": _totalKitchenCount.text!=null?int.parse(_totalKitchenCount.text):null,
-        "bathroomCount": _totalBathroomCount.text!=null?int.parse(_totalBathroomCount.text):null,
+        "kitchenCount": (_totalKitchenCount.text!=null && _totalKitchenCount.text.isNotEmpty)?int.parse(_totalKitchenCount.text):null,
+        "bathroomCount": (_totalBathroomCount.text!=null && _totalBathroomCount.text.isNotEmpty)?int.parse(_totalBathroomCount.text):null,
       };
       // log('updateDataRequest---- $updateDataRequest');
       _siteController.updateLeadData(
