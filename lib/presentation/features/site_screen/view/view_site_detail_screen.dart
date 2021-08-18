@@ -6396,8 +6396,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "dealerConfirmedChangedOn": "",
         "isDealerConfirmedChangedBySo": sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
         "subdealerId": visitDataSubDealer,
-        "bathroomCount": int.parse(_totalBathroomCount.text),
-        "kitchenCount": int.parse(_totalKitchenCount.text),
+        "kitchenCount": (_totalKitchenCount.text!=null && _totalKitchenCount.text.isNotEmpty)?int.parse(_totalKitchenCount.text):null,
+        "bathroomCount": (_totalBathroomCount.text!=null && _totalBathroomCount.text.isNotEmpty)?int.parse(_totalBathroomCount.text):null,
       };
       //  print(updateDataRequest);
       // log('updateDataRequest---- $updateDataRequest');
