@@ -24,6 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_redirect/store_redirect.dart';
 
 class CustomDialogs {
+
   Widget errorDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
