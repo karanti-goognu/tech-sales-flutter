@@ -290,6 +290,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.text,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z ]")), ],
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Venue address (if booked)"),
     );

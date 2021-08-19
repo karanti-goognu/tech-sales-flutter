@@ -232,43 +232,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final mobileNumber = TextFormField(
       controller: _contactNumberController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter mobile number ';
-      //   }
-      //   if (!Validations.isValidPhoneNumber(value)) {
-      //     return 'Enter valid mobile number';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
-      //keyboardType: TextInputType.phone,
-      // inputFormatters: <TextInputFormatter>[
-      //   FilteringTextInputFormatter.digitsOnly
-      // ],
-     // maxLength: 10,
       readOnly: true,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Mobile number*",
       ),
-      // onChanged: (value) {
-      //   if (value.length == 10) {
-      //     _infController.getInfData(value).then((data) {
-      //       setState(() {
-      //         if (data != null) {
-      //           if (data.respCode == "NUM404") {
-      //             _contactNumberController.text = value;
-      //           } else if (data.respCode == "DM1002") {
-      //             Get.dialog(
-      //                 CustomDialogs().showDialogInfPresent(data.respMsg));
-      //             _contactNumberController.text = "";
-      //           }
-      //         }
-      //       });
-      //       print('RESPONSE, ${data}');
-      //     });
-     //    }
-     // },
     );
 
     final email = TextFormField(
@@ -306,16 +274,16 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final fatherName = TextFormField(
       controller: _fatherNameController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter name';
-        }
-        return null;
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter name';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Father Name*",
+        labelText: "Father Name",
       ),
     );
 

@@ -672,6 +672,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     SizedBox(height: 16),
                     TextFormField(
                       //initialValue: _pincode.toString(),
+                      maxLength: 6,
                       controller: _pincode,
                       validator: (value) {
                         if (value.isEmpty) {

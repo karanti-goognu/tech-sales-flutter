@@ -156,8 +156,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   @override
   void dispose() {
     super.dispose();
-    // _addLeadsController.dispose();
-    //  myFocusNode.dispose();
     _addLeadsController?.dispose();
     myFocusNode?.dispose();
 
