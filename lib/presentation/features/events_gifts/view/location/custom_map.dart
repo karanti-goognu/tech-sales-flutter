@@ -1,0 +1,196 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:uuid/uuid.dart';
+
+class CustomMap extends StatefulWidget {
+  final List latLong;
+  CustomMap({this.latLong});
+  @override
+  _CustomMapState createState() => _CustomMapState();
+}
+
+class _CustomMapState extends State<CustomMap> {
+  GoogleMapController controller;
+  LatLng _markerPosition = LatLng(28.644800, 77.216721);
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  TextEditingController _locationController = TextEditingController();
+
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+          _markerPosition.latitude, _markerPosition.longitude);
+      Placemark place = p[0];
+      _locationController.text = place.name +
+          "${place.thoroughfare}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.locality}, ${place.postalCode}";
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      print(position);
+      setState(() {
+        _markerPosition = LatLng(position.latitude, position.longitude);
+        controller.animateCamera(CameraUpdate.newLatLng(_markerPosition));
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        GoogleMap(
+          initialCameraPosition:
+              CameraPosition(target: _markerPosition, zoom: 14),
+          circles: {
+            Circle(
+                circleId: CircleId('1'),
+                center: _markerPosition,
+                radius: 250,
+                fillColor: Colors.blue.withOpacity(0.4),
+                strokeColor: Colors.blueAccent,
+                strokeWidth: 1)
+          },
+          markers: {
+            Marker(
+              draggable: true,
+              markerId: MarkerId('1'),
+              position: _markerPosition,
+              infoWindow: InfoWindow(
+                title: _locationController.text,
+              ),
+            )
+          },
+          onMapCreated: (controller) {
+            this.controller = controller;
+          },
+          onTap: (loc) {
+            setState(() {
+              _markerPosition = loc;
+            });
+            _getAddressFromLatLng();
+          },
+        ),
+        Positioned(
+            top: 20,
+            left: 20,
+            child: FlatButton(
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            )),
+        Positioned(
+            left: 90,
+            right: 90,
+            bottom: 60,
+            child: MaterialButton(
+              onPressed: () => Get.bottomSheet(locationBottomSheet(context)),
+              child: Text(
+                "View Address".toUpperCase(),
+                style: TextStyles.btnWhite,
+              ),
+              color: Colors.blue,
+            ))
+      ],
+    );
+  }
+
+  Container locationBottomSheet(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      height: 300,
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Select Location",
+              style: TextStyles.welcomeMsgTextStyle20,
+            ),
+          ),
+          Divider(
+            color: Colors.black,
+          ),
+          TextFormField(
+            controller: _locationController,
+            decoration: InputDecoration(
+              labelText: "Your Location".toUpperCase(),
+              labelStyle: TextStyles.mulliBold14,
+              prefixIcon: Icon(
+                Icons.check_circle_outline,
+                color: Colors.blue,
+              ),
+              suffixIcon: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                child: GestureDetector(
+                  onTap: () async {
+                    final sessionToken = Uuid().v4();
+                    print('SSS: $sessionToken');
+                    final Suggestion result = await showSearch(
+                      context: context,
+                      delegate: AddressSearch(sessionToken),
+                    );
+
+                    if (result != null) {
+                      final placeDetails = await PlaceApiProvider(sessionToken)
+                          .getLatLong(result.placeId);
+                      // setState(() {
+                      _locationController.text = result.description;
+                      double lat = placeDetails.lat;
+                      double long = placeDetails.lng;
+                      setState(() {
+                        _markerPosition = LatLng(lat, long);
+                      });
+                      controller.animateCamera(
+                          CameraUpdate.newLatLng(_markerPosition));
+                    }
+                  },
+                  child: Text('Change', style: TextStyles.mulliBoldYellow18),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Container(
+            width: double.maxFinite,
+            child: Center(
+              child: MaterialButton(
+                onPressed: () {
+                  Get.back();
+                  Navigator.pop(context,
+                      [_markerPosition.latitude, _markerPosition.longitude]);
+                },
+                child: Text(
+                  "Confirm Location and Proceed".toUpperCase(),
+                  style: TextStyles.btnWhite,
+                ),
+                color: Colors.blue,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
@@ -2750,38 +2751,52 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                 ),
                               ),
                               onPressed: () async {
+                                var data = [];
+                                data = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CustomMap()));
+                                print(data);
+                                print(data.runtimeType);
                                 setState(() {
                                   geoTagType = "M";
                                 });
-                                LocationResult result =
-                                    await showLocationPicker(
-                                  context,
-                                  StringConstants.API_Key,
-                                  initialCenter: LatLng(31.1975844, 29.9598339),
-                                  automaticallyAnimateToCurrentLocation: true,
-//                      mapStylePath: 'assets/mapStyle.json',
-                                  myLocationButtonEnabled: true,
-                                  // requiredGPS: true,
-                                  layersButtonEnabled: false,
-                                  // countries: ['AE', 'NG']
-
-//                      resultCardAlignment: Alignment.bottomCenter,
-                                  // desiredAccuracy: LocationAccuracy.best,
-                                );
-                                print("result = $result");
-                                setState(() {
-                                  _pickedLocation = result;
-                                  _currentPosition = new Position(
-                                      latitude: _pickedLocation != null
-                                          ? _pickedLocation.latLng.latitude
-                                          : 0.0,
-                                      longitude: _pickedLocation != null
-                                          ? _pickedLocation.latLng.longitude
-                                          : 0.0);
-                                  _getAddressFromLatLng();
-                                  //print(_pickedLocation.latLng.latitude);
-                                });
-                              },
+                                _currentPosition = new Position(
+                                    latitude: data[0], longitude: data[1]);
+                                _getAddressFromLatLng();
+                              }
+//                                 setState(() {
+//                                   geoTagType = "M";
+//                                 });
+//                                 LocationResult result =
+//                                     await showLocationPicker(
+//                                   context,
+//                                   StringConstants.API_Key,
+//                                   initialCenter: LatLng(31.1975844, 29.9598339),
+//                                   automaticallyAnimateToCurrentLocation: true,
+// //                      mapStylePath: 'assets/mapStyle.json',
+//                                   myLocationButtonEnabled: true,
+//                                   // requiredGPS: true,
+//                                   layersButtonEnabled: false,
+//                                   // countries: ['AE', 'NG']
+//
+// //                      resultCardAlignment: Alignment.bottomCenter,
+//                                   // desiredAccuracy: LocationAccuracy.best,
+//                                 );
+//                                 print("result = $result");
+//                                 setState(() {
+//                                   _pickedLocation = result;
+//                                   _currentPosition = new Position(
+//                                       latitude: _pickedLocation != null
+//                                           ? _pickedLocation.latLng.latitude
+//                                           : 0.0,
+//                                       longitude: _pickedLocation != null
+//                                           ? _pickedLocation.latLng.longitude
+//                                           : 0.0);
+//                                   _getAddressFromLatLng();
+//                                   //print(_pickedLocation.latLng.latitude);
+//                                 });
+//                               },
                             ),
                           ],
                         ),

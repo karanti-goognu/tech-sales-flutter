@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -371,6 +372,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
+                      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -533,32 +535,45 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             ),
                           ),
                           onPressed: () async {
+                            var data = [];
+                            data = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CustomMap()));
+                            print(data);
+                            print(data.runtimeType);
                             setState(() {
                               geoTagType = "M";
                             });
-                            LocationResult result = await showLocationPicker(
-                              context,
-                              StringConstants.API_Key,
-                              initialCenter: LatLng(28.644800, 77.216721),
-                              automaticallyAnimateToCurrentLocation: true,
-//                      mapStylePath: 'assets/mapStyle.json',
-                              myLocationButtonEnabled: true,
-                              // requiredGPS: true,
-                              layersButtonEnabled: false,
-                              // countries: ['AE', 'NG']
-
-//                      resultCardAlignment: Alignment.bottomCenter,
-                              // desiredAccuracy: LocationAccuracy.best,
-                            );
-                            print("result = $result");
-                            setState(() {
-                              _pickedLocation = result;
-                              _currentPosition = new Position(
-                                  latitude: _pickedLocation.latLng.latitude,
-                                  longitude: _pickedLocation.latLng.longitude);
-//                              print(_currentPosition);
-                              _getAddressFromLatLng();
-                            });
+                            _currentPosition = new Position(
+                                latitude: data[0], longitude: data[1]);
+                            _getAddressFromLatLng();
+//                             setState(() {
+//                               geoTagType = "M";
+//                             });
+//                             LocationResult result = await showLocationPicker(
+//                               context,
+//                               StringConstants.API_Key,
+//                               initialCenter: LatLng(28.644800, 77.216721),
+//                               automaticallyAnimateToCurrentLocation: true,
+// //                      mapStylePath: 'assets/mapStyle.json',
+//                               myLocationButtonEnabled: true,
+//                               // requiredGPS: true,
+//                               layersButtonEnabled: false,
+//                               // countries: ['AE', 'NG']
+//
+// //                      resultCardAlignment: Alignment.bottomCenter,
+//                               // desiredAccuracy: LocationAccuracy.best,
+//                             );
+//                             print("result = $result");
+//                             setState(() {
+//                               _pickedLocation = result;
+//                               _currentPosition = new Position(
+//                                   latitude: _pickedLocation.latLng.latitude,
+//                                   longitude: _pickedLocation.latLng.longitude);
+// //                              print(_currentPosition);
+//                               _getAddressFromLatLng();
+//                             });
                           },
                         ),
                       ],
@@ -723,6 +738,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             color: ColorConstants.inputBoxHintColor,
                             fontFamily: "Muli"),
                         keyboardType: TextInputType.text,
+                        inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "State")),
                     Padding(
@@ -1993,6 +2009,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
+                      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z ]")), ],
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(

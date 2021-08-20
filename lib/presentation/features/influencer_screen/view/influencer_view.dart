@@ -201,7 +201,8 @@ class _InfluencerViewState extends State<InfluencerView> {
     return (_influencerListModel == null)
         ? Container(
             child: Center(
-              child: Text("Influencer controller  is empty!!"),
+              child:Text(""),
+              //Text("Influencer controller  is empty!!"),
             ),
           )
         : (_influencerListModel.response == null)
