@@ -17,7 +17,8 @@ class CustomMap extends StatefulWidget {
 
 class _CustomMapState extends State<CustomMap> {
   GoogleMapController controller;
-  LatLng _markerPosition = LatLng(28.644800, 77.216721);
+  LatLng _markerPosition;
+  //= LatLng(28.644800, 77.216721);
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   TextEditingController _locationController = TextEditingController();
 
@@ -35,22 +36,47 @@ class _CustomMapState extends State<CustomMap> {
 
   @override
   void initState() {
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      print(position);
-      setState(() {
-        _markerPosition = LatLng(position.latitude, position.longitude);
-        controller.animateCamera(CameraUpdate.newLatLng(_markerPosition));
-      });
-    });
+    _getCurrentLocation();
     super.initState();
   }
+
+
+  _getCurrentLocation() async {
+    if (!(await Geolocator().isLocationServiceEnabled())) {
+      Get.back();
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please enable your location service from device settings"));
+    } else {
+      geolocator
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .then((Position position) {
+        print(position);
+        setState(() {
+          _markerPosition = LatLng(position.latitude, position.longitude);
+        });
+
+      }
+      ).catchError((e) {
+        Get.back();
+        Get.dialog(
+            CustomDialogs().errorDialog("Access to location data denied "));
+        print(e);
+       });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        _markerPosition==null?
+        Positioned.fill(
+          child: Material(
+            color: Colors.white,
+            child: Center(child: CircularProgressIndicator()),),
+        )
+            :
         GoogleMap(
           initialCameraPosition:
               CameraPosition(target: _markerPosition, zoom: 14),

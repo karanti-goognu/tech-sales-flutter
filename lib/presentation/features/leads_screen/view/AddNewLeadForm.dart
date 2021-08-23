@@ -551,7 +551,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 //                             setState(() {
 //                               geoTagType = "M";
 //                             });
-//                             LocationResult result = await showLocationPicker(
+ //                            LocationResult result = await showLocationPicker(
 //                               context,
 //                               StringConstants.API_Key,
 //                               initialCenter: LatLng(28.644800, 77.216721),
@@ -767,6 +767,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
+                      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
                       decoration: FormFieldStyle.buildInputDecoration(
                           labelText: "District"),
                     ),
@@ -797,6 +798,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
+                      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
                       decoration: FormFieldStyle.buildInputDecoration(
                           labelText: "Taluk"),
                     ),

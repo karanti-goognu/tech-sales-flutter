@@ -2732,9 +2732,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                     }
                                                     return Get.dialog(
                                                         CustomDialogs()
-                                                            .showDialog(
+                                                            .showDialogRestrictSystemBack(
                                                                 _infDetailModel
-                                                                    .respMsg));
+                                                                    .respMsg), barrierDismissible: false);
                                                   }
                                                   // });
                                                   Get.back();
