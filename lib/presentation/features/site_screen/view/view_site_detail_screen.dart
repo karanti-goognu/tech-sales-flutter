@@ -766,6 +766,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                         return;
                       }
 
+
+
                       setState(() {
                         productDynamicList[index] = new ProductListModel(
                             brandId:
@@ -6590,8 +6592,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "bathroomCount": (_totalBathroomCount.text!=null && _totalBathroomCount.text.isNotEmpty)?int.parse(_totalBathroomCount.text):null,
       };
       // log('updateDataRequest---- $updateDataRequest');
-      _siteController.updateLeadData(
-          updateDataRequest, _imageList, context, widget.siteId);
+
+
+      isNoOfBagsSuppliedEntered(updateDataRequest);
+
+
+      // _siteController.updateLeadData(
+      //     updateDataRequest, _imageList, context, widget.siteId);
     });
   }
 
@@ -6801,8 +6808,26 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               0;
         }
       }
+
     }
     return totalSumBagsSupplied;
+  }
+
+  void isNoOfBagsSuppliedEntered(var updateDataRequest) {
+    if (productDynamicList.length > 0) {
+     int index = productDynamicList.length-1;
+
+     if(productDynamicList[index].supplyQty.text.isNotEmpty && (productDynamicList[index].supplyDate.text.isEmpty ||
+         productDynamicList[index].brandPrice.text.isEmpty ||
+         productDynamicList[index].brandId == -1)){
+       Get.dialog(CustomDialogs()
+           .showMessage("You have to click on Add Product to proceed !"));
+       return;
+     }else{
+       _siteController.updateLeadData(
+           updateDataRequest, _imageList, context, widget.siteId);
+     }
+    }
   }
 
   String selectedFloorText(int floorId) {
