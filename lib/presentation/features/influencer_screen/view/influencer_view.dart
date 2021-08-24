@@ -36,6 +36,7 @@ class _InfluencerViewState extends State<InfluencerView> {
   @override
   void initState() {
     super.initState();
+    _infController.inflTypeId = "";
     getData();
   }
 
@@ -302,8 +303,10 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                         flex: 3,
                                                         child: Text(
                                                             "Avg.Monthly Vol.:${_influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
-                                                            style: TextStyles
-                                                                .formfieldLabelText),
+                                                            style: TextStyles.formfieldLabelText,
+                                                         textAlign: TextAlign.end,
+                                                         // overflow: TextOverflow.ellipsis,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -317,7 +320,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                             .spaceBetween,
                                                     // crossAxisAlignment:
                                                     //     CrossAxisAlignment
-                                                    //         .baseline,
+                                                    //         .end,
                                                     children: [
                                                       Flexible(
                                                         child: Container(
@@ -330,40 +333,49 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Container(
-                                                        width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2 -
-                                                            10,
-                                                        child: Chip(
-                                                          shape: StadiumBorder(
-                                                              side: BorderSide(
-                                                                  color: HexColor(
-                                                                      "#6200EE"))),
-                                                          backgroundColor:
-                                                              HexColor(
-                                                                      "#6200EE")
-                                                                  .withOpacity(
-                                                                      0.1),
-                                                          label: Text(
-                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
-                                                            softWrap: true,
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#6200EE"),
-                                                                fontSize: 11,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold
-                                                                //fontWeight: FontWeight.normal
+                                                      // Container(
+                                                      //   width: MediaQuery.of(
+                                                      //                   context)
+                                                      //               .size
+                                                      //               .width /
+                                                      //           2-10,
+                                                      //   child:
+                                                      //       Row(
+                                                      //         mainAxisAlignment: MainAxisAlignment.end,
+                                                      //         children: [
+                                                                Flexible(
+                                                                  child: Chip(
+                                                                    shape: StadiumBorder(
+                                                                        side: BorderSide(
+                                                                            color: HexColor(
+                                                                                "#6200EE"))),
+                                                                    backgroundColor:
+                                                                        HexColor(
+                                                                                "#6200EE")
+                                                                            .withOpacity(
+                                                                                0.1),
+                                                                    label: Text(
+                                                                      "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
+                                                                      //softWrap: true,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      style: TextStyle(
+                                                                          color: HexColor(
+                                                                              "#6200EE"),
+                                                                          fontSize: 11,
+                                                                          fontFamily:
+                                                                              "Muli",
+                                                                          fontWeight:
+                                                                              FontWeight
+                                                                                  .bold
+                                                                          //fontWeight: FontWeight.normal
+                                                                          ),
+                                                                    ),
+                                                                  ),
                                                                 ),
-                                                          ),
-                                                        ),
-                                                      ),
+                                                      //         ],
+                                                      //       ),
+                                                      //
+                                                      // ),
                                                     ],
                                                   ),
                                                 ),

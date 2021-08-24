@@ -896,7 +896,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       "inflAddress": "",
       "inflCategoryId": _influencerCategory,
       "inflContactNumber": _contactNumberController.text,
-      "inflDob": _dateController.text,
+      "inflDob": _dateController.text == "Birth Date" ? "":_dateController.text,
       "inflEnrollmentSourceId": _source,
       "inflJoiningDate": _enrollmentDateController.text,
       "inflName": _nameController.text,

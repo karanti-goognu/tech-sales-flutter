@@ -37,6 +37,7 @@ class _CustomMapState extends State<CustomMap> {
   @override
   void initState() {
     _getCurrentLocation();
+
     super.initState();
   }
 
@@ -53,6 +54,7 @@ class _CustomMapState extends State<CustomMap> {
         print(position);
         setState(() {
           _markerPosition = LatLng(position.latitude, position.longitude);
+          _getAddressFromLatLng();
         });
 
       }
