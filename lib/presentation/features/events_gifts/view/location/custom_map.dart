@@ -159,6 +159,7 @@ class _CustomMapState extends State<CustomMap> {
           ),
           TextFormField(
             controller: _locationController,
+            readOnly: true,
             decoration: InputDecoration(
               labelText: "Your Location".toUpperCase(),
               labelStyle: TextStyles.mulliBold14,
