@@ -295,6 +295,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                         child: GestureDetector(
                           onTap: () {
                             _selectDate(context, "from", DateTime(2015, 8));
+                            _leadsFilterController.assignToDate = "";
                           },
                           child: Icon(
                             Icons.date_range_rounded,
