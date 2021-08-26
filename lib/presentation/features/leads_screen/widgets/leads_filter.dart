@@ -500,17 +500,19 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
+    (type == "to")? selectedDate = fromDate: selectedDate = DateTime.now();
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: fromDate,
-        lastDate: DateTime(2101));
+        lastDate: DateTime(2101)
+    );
     if (picked != null && picked != selectedDate)
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);
         if (type == "to") {
-          _leadsFilterController.assignToDate = formattedDate;
+            _leadsFilterController.assignToDate = formattedDate;
         } else {
           _leadsFilterController.assignFromDate = formattedDate;
         }

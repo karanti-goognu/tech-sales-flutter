@@ -371,7 +371,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           color: ColorConstants.inputBoxHintColor,
                           fontFamily: "Muli"),
                       keyboardType: TextInputType.text,
-                      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+                      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9.a-zA-Z ]")), ],
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -407,6 +407,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         }
                         if (value.length <= 9) {
                           return 'Mobile number is incorrect';
+                        }
+                        if (!Validations.isValidPhoneNumber(value)) {
+                          return 'Enter valid mobile number';
                         }
                         return null;
                       },
@@ -694,6 +697,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         }
                         if (value.length <= 6) {
                           return 'Pincode is incorrect';
+                        }
+                        if (!Validations.isValidPincode(value)) {
+                          return "Enter valid pincode";
                         }
 
                         return null;

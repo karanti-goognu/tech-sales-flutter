@@ -225,7 +225,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
-      //inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Father Name",
@@ -241,6 +241,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Base City",
@@ -256,6 +257,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Taluka",
@@ -343,6 +345,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         });
       },
       style: FormFieldStyle.formFieldTextStyle,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "District Name*",
         suffixIcon: Padding(
@@ -523,6 +526,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       controller: _giftDistrictController,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "District",
       ),
@@ -532,6 +536,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       controller: _giftStateController,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "State",
       ),
@@ -561,7 +566,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Potential sites",
       ),

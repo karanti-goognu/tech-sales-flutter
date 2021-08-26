@@ -345,6 +345,9 @@ class _FormAddEventState extends State<FormAddEvent> {
       // },
       controller: _expectedLeadsController,
       style: TextStyles.formfieldLabelText,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
       keyboardType: TextInputType.number,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Expected Leads"),
@@ -360,6 +363,9 @@ class _FormAddEventState extends State<FormAddEvent> {
       controller: _giftsDistributionController,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Gift distribution (proposed)"),
     );
