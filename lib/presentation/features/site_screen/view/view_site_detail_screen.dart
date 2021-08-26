@@ -2300,9 +2300,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                           _siteTotalPt.text == "") {
                                         _siteTotalBags.clear();
                                       } else {
-                                        _siteTotalBags.text =
-                                            (int.parse(_siteTotalPt.text) * 20)
-                                                .toString();
+                                        _siteTotalBags.text = (double.parse(_siteTotalPt.text) * 20).toInt().toString();
                                       }
                                     });
                                   },
@@ -2398,10 +2396,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                           _siteTotalBalancePt.text == "") {
                                         _siteTotalBalanceBags.clear();
                                       } else {
-                                        _siteTotalBalanceBags.text = (int.parse(
-                                                    _siteTotalBalancePt.text) *
-                                                20)
-                                            .toString();
+                                        _siteTotalBalanceBags.text = (double.parse(_siteTotalBalancePt.text) * 20).toInt().toString();
                                       }
                                     });
                                   },
