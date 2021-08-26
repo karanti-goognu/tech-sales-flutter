@@ -390,7 +390,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                 }
                 _leadsFilterController.selectedLeadStage = value;
                 _leadsFilterController.selectedLeadStageValue = leadStageValue;
-
+                _leadsFilterController.offset = 0;
+                _leadsFilterController.leadsListResponse.leadsEntity = null;
+                _leadsFilterController
+                    .getAccessKey(RequestIds.GET_LEADS_LIST);
                 ///filter issue
                // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
@@ -441,6 +444,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.selectedLeadStatus = value;
                 _leadsFilterController.selectedLeadStatusValue =
                     leadStatusValue;
+                _leadsFilterController.offset = 0;
+                _leadsFilterController.leadsListResponse.leadsEntity = null;
                 _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
@@ -485,6 +490,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.selectedLeadPotential = value;
                 _leadsFilterController.selectedLeadPotentialValue =
                     leadPotentialValue;
+                _leadsFilterController.offset = 0;
+                _leadsFilterController.leadsListResponse.leadsEntity = null;
                 _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
