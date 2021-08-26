@@ -63,8 +63,8 @@ class _LeadScreenState extends State<LeadScreen> {
     print(_leadsFilterController.offset);
     internetChecking().then((result) {
       if (result)
+        _leadsFilterController.offset = 0;
         _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
-      _leadsFilterController.offset = 0;
     });
 
     _scrollController = ScrollController();
