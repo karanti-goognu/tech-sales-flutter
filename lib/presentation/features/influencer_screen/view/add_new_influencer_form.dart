@@ -225,7 +225,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9.a-zA-Z ]")), ],
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Father Name",
@@ -552,6 +552,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.numberWithOptions(decimal: false),
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Total Monthly Potential (MT)",
       ),
@@ -566,6 +569,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
       keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Potential sites",
