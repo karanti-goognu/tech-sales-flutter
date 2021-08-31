@@ -3701,7 +3701,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       if (_listInfluencerDetail.length != 0) {
         if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
                 null ||
-            _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
+            _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName.text ==
                 "null" ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1]
                 .inflName
@@ -3964,7 +3964,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         _listInfluencerDetail
                                                                 .length -
                                                             1]
-                                                    .inflName ==
+                                                    .inflName.text ==
                                                 "null" ||
                                             _listInfluencerDetail[
                                                     _listInfluencerDetail
@@ -4075,7 +4075,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                           4);
 
 //                                      Get.back();
-                                    }).whenComplete(() => Get.back());
+                                    });
+                                        // .whenComplete(() => Get.back());
                                   }
                                 } else {
                                   Get.back();

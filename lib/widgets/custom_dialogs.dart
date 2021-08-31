@@ -546,6 +546,7 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
+
             if(from==3){
               Get.back();
                //Get.offAll(Routes.HOME_SCREEN);
@@ -555,13 +556,13 @@ class CustomDialogs {
               Get.back();
               Get.offAndToNamed(Routes.LEADS_SCREEN);
             }else if(from==2){
-    Get.back();
-    Get.back();
-    Get.back();
+             Get.back();
+             Get.back();
+             Get.back();
    // Get.offAndToNamed(Routes.LEADS_SCREEN);
     }
             else {
-               Get.back();
+               // Get.back();
               Get.offAndToNamed(Routes.LEADS_SCREEN);
             }
             //Below line was commented for leads screen, if it's being use somewhere else, please consider.. s s

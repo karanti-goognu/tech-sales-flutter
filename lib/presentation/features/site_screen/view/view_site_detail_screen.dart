@@ -6822,6 +6822,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
        _siteController.updateLeadData(
            updateDataRequest, _imageList, context, widget.siteId);
      }
+    }else{
+      _siteController.updateLeadData(
+          updateDataRequest, _imageList, context, widget.siteId);
     }
   }
 

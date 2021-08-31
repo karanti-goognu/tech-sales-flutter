@@ -429,8 +429,7 @@ class AddEventController extends GetxController {
           }
           this.visitSubType =
               this.visitResponseModel.mwpVisitModel.visitSubType.toString();
-          this.visitRemarks =
-              this.visitResponseModel.mwpVisitModel.remark.toString();
+          this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
         }
       });
     });
@@ -526,8 +525,10 @@ class AddEventController extends GetxController {
             this.visitSiteId);
         print('&&&&&&' + url);
         print('visitId' + this.visitId.toString());
-        print(json.encode(mwpVisitModelUpdate));
+        // print(json.encode(mwpVisitModelUpdate));@kum
         // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
+        print(json.encode(UpdateVisitResponseModel(
+            mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null)));
         repository
             .updateVisitPlan(
                 accessKey,
