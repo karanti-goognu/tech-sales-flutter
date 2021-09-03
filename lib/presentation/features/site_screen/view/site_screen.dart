@@ -58,14 +58,14 @@ class _SiteScreenState extends State<SiteScreen> {
   void dispose() {
     super.dispose();
     //_appController?.dispose();
-    _siteController?.dispose();
     _siteController.offset = 0;
+    _siteController?.dispose();
   }
 
   void disposeController(BuildContext context) {
 //or what you wnat to dispose/clear
-    _siteController?.dispose();
     _siteController.offset = 0;
+    _siteController?.dispose();
   }
 
   @override
