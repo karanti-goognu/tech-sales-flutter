@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
@@ -155,6 +156,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     SizeConfig().init(context);
     return WillPopScope(
       onWillPop: () async {
@@ -260,11 +263,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Positioned(
-                          bottom: 20,
-                          right: 10,
+                          bottom: ScreenUtil().setSp(18),
+                          right: ScreenUtil().setSp(10),
                           child: Container(
-                            height: 17,
-                            width: 17,
+                            height: ScreenUtil().setSp(16),
+                            width: ScreenUtil().setSp(16),
                             decoration: new BoxDecoration(
                               color: Colors.redAccent,
                               border:

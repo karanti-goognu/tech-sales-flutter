@@ -1232,7 +1232,9 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
+            //StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
+            StoreRedirect.redirect(androidAppId: "com.dalmia.techsales", iOSAppId: "1554988271");
+
           },
         ),
       ],
