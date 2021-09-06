@@ -93,7 +93,10 @@ class _SiteListScreenState extends State<SiteListScreen> {
       }
     }
   }
-
+  _getRequests()async{
+    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+    _siteController.offset = 0;
+  }
   @override
   void initState() {
     super.initState();
@@ -810,7 +813,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
                   context, new CupertinoPageRoute(
                   builder: (BuildContext context) =>
                       ViewSiteScreen(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
-              );
+              ).then((_) => {_getRequests()});
             },
             child: Card(
               clipBehavior: Clip.antiAlias,

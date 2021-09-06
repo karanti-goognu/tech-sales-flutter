@@ -2617,9 +2617,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                           //   return null;
                           // },
                           onChanged: (data) {
-                            setState(() {
-                              _ownerName.text = data;
-                            });
+                            // setState(() {
+                            //   _ownerName.text = data;
+                            // });
                           },
                           style: TextStyle(
                               fontSize: 18,
@@ -2642,9 +2642,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                             return null;
                           },
                           onChanged: (data) {
-                            setState(() {
-                              _contactNumber.text = data;
-                            });
+                            // setState(() {
+                            //   _contactNumber.text = data;
+                            // });
                           },
                           style: TextStyle(
                               fontSize: 18,
@@ -6332,30 +6332,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   }
 
   updateSiteLogic() async {
-    // siteStageHistorys.sort((b, a) => a.siteStageHistoryId.compareTo(b.siteStageHistoryId));
-    // int listLength = siteStageHistorys.length;
-    // if (listLength > 0) {
-    //   // SiteVisitHistoryEntity latestRecordData =
-    //   //     siteVisitHistoryEntity.elementAt(0);
-    //   SiteSupplyHistorys latestRecordData = siteStageHistorys[0].siteSupplyHistorys.elementAt(0);
-    //   if (latestRecordData.soldToParty !=
-    //       visitDataDealer) if (latestRecordData.isAuthorised == "N") {
-    //     return Get.dialog(CustomDialogs()
-    //         .showMessage("Your previous supplier not authorised."));
-    //   }
-    // }
-
-    // siteVisitHistoryEntity.sort((b, a) => a.id.compareTo(b.id));
-    // int listLength = siteVisitHistoryEntity.length;
-    // if (listLength > 0) {
-    //   SiteVisitHistoryEntity latestRecordData =
-    //       siteVisitHistoryEntity.elementAt(0);
-    //   if (latestRecordData.soldToParty !=
-    //       visitDataDealer) if (latestRecordData.isAuthorised == "N") {
-    //     return Get.dialog(CustomDialogs()
-    //         .showMessage("Your previous supplier not authorised."));
-    //   }
-    //}
 
     String empId;
     String mobileNumber;
@@ -6382,54 +6358,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           siteCommentText: _comments.text,
           creatorName: name,
           createdBy: empId));
-      // print("-------1234");
-      // print(newSiteCommentsEntity[0].siteId);
-
-      // if (_selectedConstructionTypeVisit != null) {
-      //   siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
-      //       // totalBalancePotential: _siteTotalBalancePt.text,
-      //       constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
-      //       floorId: _selectedSiteVisitFloor.id,
-      //       stagePotential: _stagePotentialVisit.text,
-      //       brandId: _siteProductFromLocalDB.id,
-      //       brandPrice: _brandPriceVisit.text,
-      //       constructionDate: _dateofConstruction.text,
-      //       siteId: widget.siteId,
-      //       // id: widget.siteId,
-      //       supplyDate: _dateOfBagSupplied.text,
-      //       supplyQty: _siteCurrentTotalBags.text,
-      //       stageStatus: _stageStatus.text,
-      //       createdBy: empId,
-      //       soldToParty: visitDataDealer,
-      //       shipToParty: visitDataSubDealer,
-      //       receiptNumber: "",
-      //       isAuthorised: "N",
-      //       authorisedBy: "",
-      //       authorisedOn: ""));
-      // }
-
-      // if (_selectedConstructionTypeVisit != null) {
-      //   siteVisitHistoryEntity.add(new SiteVisitHistoryEntity(
-      //       // totalBalancePotential: _siteTotalBalancePt.text,
-      //       constructionStageId: _selectedConstructionTypeVisit.id ?? 1,
-      //       floorId: _selectedSiteVisitFloor.id,
-      //       stagePotential: _stagePotentialVisit.text,
-      //       brandId: _siteProductFromLocalDB.id,
-      //       brandPrice: _brandPriceVisit.text,
-      //       constructionDate: _dateofConstruction.text,
-      //       siteId: widget.siteId,
-      //       // id: widget.siteId,
-      //       supplyDate: _dateOfBagSupplied.text,
-      //       supplyQty: _siteCurrentTotalBags.text,
-      //       stageStatus: _stageStatus.text,
-      //       createdBy: empId,
-      //       soldToParty: visitDataDealer,
-      //       shipToParty: visitDataSubDealer,
-      //       receiptNumber: "",
-      //       isAuthorised: "N",
-      //       authorisedBy: "",
-      //       authorisedOn: ""));
-      // }
 
       if (productDynamicList != null && productDynamicList.length > 0) {
         for (int i = 0; i < productDynamicList.length; i++) {
@@ -6488,10 +6416,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             createdBy: empId));
       }
 
-      // print("Sumit Length :: " + newSitePhotoEntity.length.toString());
-
-      //print(sitephotosEntity.)
-
       if (_listInfluencerDetail.length != 0) {
         if (_listInfluencerDetail[
                         _listInfluencerDetail.length - 1]
@@ -6519,12 +6443,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             isPrimary: _listInfluencerDetail[i].isPrimarybool ? "Y" : "N",
             createdBy: empId));
       }
-      // log("asdasda"+json.encode(newInfluencerEntity));
-      // print(newInfluencerEntity);
-
-      // if (_selectedSiteFloor == null) {
-      //   _selectedSiteFloor = new SiteFloorsEntity(id: 1, siteFloorTxt: "0");
-      // }
 
       var updateDataRequest = {
         "siteId": widget.siteId,
