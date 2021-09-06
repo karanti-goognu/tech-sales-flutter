@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
@@ -69,14 +70,26 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   TextEditingController _talukaController = TextEditingController();
   TextEditingController _pincodeController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
+  FocusNode myFocusNode;
+
+  //final ScrollController _scrollController = ScrollController();
+
 
   @override
   void initState() {
     super.initState();
     memberShipId = widget.membershipId;
+    myFocusNode = FocusNode();
     getEmpId();
     getData();
     getDistrictData();
+    // Future.delayed(const Duration(milliseconds: 300));
+    // SchedulerBinding.instance?.addPostFrameCallback((_) {
+    //   _scrollController.animateTo(
+    //       _scrollController.position.maxScrollExtent,
+    //       duration: const Duration(milliseconds: 400),
+    //       curve: Curves.fastOutSlowIn);
+    // });
   }
 
   Future getEmpId() async {
@@ -143,7 +156,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   setData(){
     if(_influencerDetailDataModel != null || _influencerDetailDataModel.response != null || _influencerDetailDataModel.response.influencerDetails != null) {
       InfluencerDetails _data = _influencerDetailDataModel.response.influencerDetails;
-       memberShipId = _data.id;
+      // memberShipId = _data.id;
       _contactNumberController.text = _data.inflContactNumber;
       _nameController.text = _data.inflName;
       _fatherNameController.text = _data.fatherName;
@@ -217,9 +230,18 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       districtId = _data.districtId;
       stateName = _data.stateName;
       stateId = _data.stateId;
-
+      myFocusNode = FocusNode();
+      myFocusNode.requestFocus();
     }
 
+
+  }
+
+  @override
+  void dispose() {
+    myFocusNode?.dispose();
+    myFocusNode = null;
+    super.dispose();
   }
 
 
@@ -232,6 +254,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final mobileNumber = TextFormField(
       controller: _contactNumberController,
+      focusNode: myFocusNode,
       style: FormFieldStyle.formFieldTextStyle,
       readOnly: true,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -631,6 +654,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         ),
       ],
     );
+
+
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
@@ -652,8 +677,12 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                       ),
                     ],
                   ))),
-          ListView(
-            reverse: false,
+          SingleChildScrollView(
+           // controller: _scrollController,
+           // shrinkWrap: true,
+            child: Column(
+
+
             children: [
               Container(
                 padding: EdgeInsets.all(ScreenUtil().setSp(12)),
@@ -675,6 +704,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                 height: ScreenUtil().setSp(1),
                 color: Colors.grey,
               ),
+
               //SizedBox(height: _height),
               Padding(
                   padding: EdgeInsets.all(ScreenUtil().setSp(16)),
@@ -755,8 +785,9 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           //     : Center(
           //   child: CircularProgressIndicator(),
           // ),
-          // ),
+          ),
         ],
+
       ),
     );
   }

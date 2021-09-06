@@ -276,7 +276,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         return null;
       },
       style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.numberWithOptions(signed: true),
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
@@ -512,7 +512,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         return null;
       },
       style: FormFieldStyle.formFieldTextStyle,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.numberWithOptions(signed: true),
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
@@ -655,136 +655,141 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Positioned(
-              top: 0,
-              left: 200,
-              right: 0,
-              child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/images/Container.png',
-                        fit: BoxFit.fitHeight,
+      body: GestureDetector(
+        onTap: (){
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Stack(
+          children: [
+            Positioned(
+                top: 0,
+                left: 200,
+                right: 0,
+                child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/images/Container.png',
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ],
+                    ))),
+            ListView(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                  height: 56,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Add Influencer Details',
+                        style: TextStyles.titleGreenStyle,
                       ),
                     ],
-                  ))),
-          ListView(
-            children: [
-              Container(
-                padding: EdgeInsets.all(ScreenUtil().setSp(12)),
-                height: 56,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Add Influencer Details',
-                      style: TextStyles.titleGreenStyle,
-                    ),
-                  ],
+                  ),
+                  // decoration: BoxDecoration(
+                  //     border: Border(bottom: BorderSide(width: 0.3))),
                 ),
-                // decoration: BoxDecoration(
-                //     border: Border(bottom: BorderSide(width: 0.3))),
-              ),
-              SizedBox(height: ScreenUtil().setSp(8)),
-              Divider(
-                height: ScreenUtil().setSp(1),
-                color: Colors.grey,
-              ),
-              SizedBox(height: _height),
-              Visibility(
-                visible: _isVisible,
-                child: Padding(
-                    padding: EdgeInsets.all(ScreenUtil().setSp(16)),
-                    child: Form(
-                      key: _addInfluencerFormKey,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            mobileNumber,
-                            SizedBox(height: _height),
-                            name,
-                            SizedBox(height: _height),
-                            email,
-                            SizedBox(height: _height),
-                            enrollmentCheckbox,
-                            SizedBox(height: _height),
-                            // enrollDropDwn,
-                            // SizedBox(height: _height),
-                            district,
-                            SizedBox(height: _height),
-                            baseCity,
-                            SizedBox(height: _height),
-                            taluka,
-                            SizedBox(height: _height),
-                            pincode,
-                            SizedBox(height: _height),
-                            memberDropDwn,
-                            SizedBox(height: _height),
-                            birthDate,
-                            SizedBox(height: _height),
-                            fatherName,
-                            SizedBox(height: _height),
-                            Visibility(
-                                visible: _qualificationVisible,
-                                child: qualification),
-                            SizedBox(height: _height),
-                            enrollmentDate,
-                            SizedBox(height: _height),
-                            btnNext,
-                            SizedBox(height: _height),
-                          ]),
-                    )),
-              ),
-              Visibility(
-                visible: _isSecondVisible,
-                child: Padding(
-                    padding: EdgeInsets.all(ScreenUtil().setSp(16)),
-                    child: Form(
-                      key: _addInfluencerFormKeyNext,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Address for gift disbursement",
-                              style: TextStyles.welcomeMsgTextStyle20,
-                            ),
-                            SizedBox(height: _height),
-                            giftAddress,
-                            SizedBox(height: _height),
-                            giftPincode,
-                            SizedBox(height: _height),
-                            giftDistrict,
-                            SizedBox(height: _height),
-                            giftState,
-                            SizedBox(height: _height),
-                            Divider(
-                              height: ScreenUtil().setSp(1),
-                              color: Colors.grey,
-                            ),
-                            SizedBox(height: _height),
-                            totalPotential,
-                            SizedBox(height: _height),
-                            potentialSite,
-                            SizedBox(height: _height),
-                            influencerCategoryDropDwn,
-                            SizedBox(height: _height),
-                            sourceDropDwn,
-                            SizedBox(height: _height),
-                            btnSubmit,
-                            SizedBox(height: _height),
-                          ]),
-                    )),
-              )
-            ],
-          )
-          //     : Center(
-          //   child: CircularProgressIndicator(),
-          // ),
-          // ),
-        ],
+                SizedBox(height: ScreenUtil().setSp(8)),
+                Divider(
+                  height: ScreenUtil().setSp(1),
+                  color: Colors.grey,
+                ),
+                SizedBox(height: _height),
+                Visibility(
+                  visible: _isVisible,
+                  child: Padding(
+                      padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+                      child: Form(
+                        key: _addInfluencerFormKey,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              mobileNumber,
+                              SizedBox(height: _height),
+                              name,
+                              SizedBox(height: _height),
+                              email,
+                              SizedBox(height: _height),
+                              enrollmentCheckbox,
+                              SizedBox(height: _height),
+                              // enrollDropDwn,
+                              // SizedBox(height: _height),
+                              district,
+                              SizedBox(height: _height),
+                              baseCity,
+                              SizedBox(height: _height),
+                              taluka,
+                              SizedBox(height: _height),
+                              pincode,
+                              SizedBox(height: _height),
+                              memberDropDwn,
+                              SizedBox(height: _height),
+                              birthDate,
+                              SizedBox(height: _height),
+                              fatherName,
+                              SizedBox(height: _height),
+                              Visibility(
+                                  visible: _qualificationVisible,
+                                  child: qualification),
+                              SizedBox(height: _height),
+                              enrollmentDate,
+                              SizedBox(height: _height),
+                              btnNext,
+                              SizedBox(height: _height),
+                            ]),
+                      )),
+                ),
+                Visibility(
+                  visible: _isSecondVisible,
+                  child: Padding(
+                      padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+                      child: Form(
+                        key: _addInfluencerFormKeyNext,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Address for gift disbursement",
+                                style: TextStyles.welcomeMsgTextStyle20,
+                              ),
+                              SizedBox(height: _height),
+                              giftAddress,
+                              SizedBox(height: _height),
+                              giftPincode,
+                              SizedBox(height: _height),
+                              giftDistrict,
+                              SizedBox(height: _height),
+                              giftState,
+                              SizedBox(height: _height),
+                              Divider(
+                                height: ScreenUtil().setSp(1),
+                                color: Colors.grey,
+                              ),
+                              SizedBox(height: _height),
+                              totalPotential,
+                              SizedBox(height: _height),
+                              potentialSite,
+                              SizedBox(height: _height),
+                              influencerCategoryDropDwn,
+                              SizedBox(height: _height),
+                              sourceDropDwn,
+                              SizedBox(height: _height),
+                              btnSubmit,
+                              SizedBox(height: _height),
+                            ]),
+                      )),
+                )
+              ],
+            )
+            //     : Center(
+            //   child: CircularProgressIndicator(),
+            // ),
+            // ),
+          ],
+        ),
       ),
     );
   }

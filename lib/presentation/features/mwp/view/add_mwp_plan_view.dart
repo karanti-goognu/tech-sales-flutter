@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/model/AddMWPPlanModel.dart';
@@ -98,109 +99,96 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       mwpPlanList.add(
           new AddMwpModel(mwpNames[i], 10, 10, new TextEditingController()));
     }
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[],
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[],
+                ),
+                flex: 5,
               ),
-              flex: 5,
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(0.0),
-                child: Text(
-                  "Target",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.roboto(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: ColorConstants.lightGreyColor,
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Text(
+                    "Target",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstants.lightGreyColor,
+                    ),
                   ),
                 ),
+                flex: 1,
               ),
-              flex: 1,
-            ),
-            SizedBox(
-              width: 4,
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(0.0),
-                child: Text(
-                  //_mwpPlanController.getMWPResponse.respCode,
-                  "Actual",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.roboto(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: ColorConstants.lightGreyColor,
+              SizedBox(
+                width: 4,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Text(
+                    //_mwpPlanController.getMWPResponse.respCode,
+                    "Actual",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstants.lightGreyColor,
+                    ),
                   ),
                 ),
+                flex: 1,
               ),
-              flex: 1,
-            ),
-          ],
-        ),
-        Obx(
-          () => (_mwpPlanController.isLoading)
-              ? Container(
-            height: SizeConfig.screenHeight,
-          )
-              : ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) =>
-                      SizedBox(height: 2),
-                  //  padding: const EdgeInsets.all(8.0),
-                  itemCount: mwpPlanList.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 64,
-                      child: new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Text(
-                                  mwpPlanList[index].title,
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 16,
-                                    color: ColorConstants.lightGreyColor,
+            ],
+          ),
+          Obx(
+            () => (_mwpPlanController.isLoading)
+                ? Container(
+              height: SizeConfig.screenHeight,
+            )
+                : ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(height: 2),
+                    //  padding: const EdgeInsets.all(8.0),
+                    itemCount: mwpPlanList.length,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 64,
+                        child: new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Text(
+                                    mwpPlanList[index].title,
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16,
+                                      color: ColorConstants.lightGreyColor,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                              flex: 5,
                             ),
-                            flex: 5,
-                          ),
-                          Flexible(
-                            child: Container(
-                              padding: const EdgeInsets.all(0.0),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(2),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      width: 1,
-                                      color: ColorConstants.lightOutlineColor)),
-                              child: returnTextField(index, mwpPlanList),
-                            ),
-                            flex: 1,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Obx(
-                            () => Flexible(
+                            Flexible(
                               child: Container(
                                 padding: const EdgeInsets.all(0.0),
                                 decoration: BoxDecoration(
@@ -208,44 +196,62 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                     color: Colors.white,
                                     border: Border.all(
                                         width: 1,
-                                        color: ColorConstants.lightOutlineColor),),
-                                child: TextFormField(
-                                    enabled: false,
-                                    maxLength: 4,
-                                    initialValue:
-                                        (_mwpPlanController.getMWPResponse !=null)
-                                            ? (_mwpPlanController.getMWPResponse.mwpplanModel !=null)
-                                            ? returnActualValue(index): "0" : "0",
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(border: InputBorder.none,  counterText: '',  counterStyle: TextStyle(fontSize: 0),),
-                                    style: TextStyle(fontSize: 14, color: ColorConstants.lightGreyColor, fontFamily: "Muli"),
-                                    keyboardType: TextInputType.number),
+                                        color: ColorConstants.lightOutlineColor)),
+                                child: returnTextField(index, mwpPlanList),
                               ),
                               flex: 1,
                             ),
-                          ),
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      ),
-                    );
-                  },
-                ),
-        ),
-        SizedBox(height: 16,),
-        Obx(() => (_mwpPlanController.getMWPResponse.mwpplanModel == null)
-            ? returnSaveRow(): (_mwpPlanController.getMWPResponse.mwpplanModel.status =="SAVE")
-            ? returnSaveRow()
-            : (_mwpPlanController.getMWPResponse.mwpplanModel.status == "APPROVE")
-            ? returnApprovedRow() : returnSubmitRow()
-            /*: (_mwpPlanController.getMWPResponse.mwpplanModel.status =="SUBMIT")
-                ? returnSubmitRow()
-                : (_mwpPlanController.getMWPResponse.mwpplanModel.status == "APPROVE")
-                    ?
-                 returnApprovedRow() : returnSaveRow()*/
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Obx(
+                              () => Flexible(
+                                child: Container(
+                                  padding: const EdgeInsets.all(0.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(2),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          width: 1,
+                                          color: ColorConstants.lightOutlineColor),),
+                                  child: TextFormField(
+                                      enabled: false,
+                                      maxLength: 4,
+                                      initialValue:
+                                          (_mwpPlanController.getMWPResponse !=null)
+                                              ? (_mwpPlanController.getMWPResponse.mwpplanModel !=null)
+                                              ? returnActualValue(index): "0" : "0",
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(border: InputBorder.none,  counterText: '',  counterStyle: TextStyle(fontSize: 0),),
+                                      style: TextStyle(fontSize: 14, color: ColorConstants.lightGreyColor, fontFamily: "Muli"),
+                                      keyboardType: TextInputType.number),
+                                ),
+                                flex: 1,
+                              ),
+                            ),
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          SizedBox(height: 16,),
+          Obx(() => (_mwpPlanController.getMWPResponse.mwpplanModel == null)
+              ? returnSaveRow(): (_mwpPlanController.getMWPResponse.mwpplanModel.status =="SAVE")
+              ? returnSaveRow()
+              : (_mwpPlanController.getMWPResponse.mwpplanModel.status == "APPROVE")
+              ? returnApprovedRow() : returnSubmitRow()
+              /*: (_mwpPlanController.getMWPResponse.mwpplanModel.status =="SUBMIT")
+                  ? returnSubmitRow()
+                  : (_mwpPlanController.getMWPResponse.mwpplanModel.status == "APPROVE")
+                      ?
+                   returnApprovedRow() : returnSaveRow()*/
 
-        ),
-        SizedBox(height: 30),
-      ],
+          ),
+          SizedBox(height: 30),
+        ],
+      ),
     );
   }
 
@@ -567,11 +573,16 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
               }
             }
           },
+
           style: TextStyle(
               fontSize: 14,
               color: ColorConstants.lightGreyColor,
               fontFamily: "Muli"),
-          keyboardType: TextInputType.number),
+          keyboardType: TextInputType.numberWithOptions(signed: true),
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
+      ),
     );
   }
 

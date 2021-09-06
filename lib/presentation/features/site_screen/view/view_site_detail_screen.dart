@@ -857,13 +857,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         TabController(vsync: this, length: 5, initialIndex: widget.tabIndex);
 
     //_controller.addListener(_handleTabSelection);
+    myFocusNode = FocusNode();
     getSiteData();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    // myFocusNode.dispose();
+     myFocusNode.dispose();
+     myFocusNode = null;
     super.dispose();
   }
 

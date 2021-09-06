@@ -145,12 +145,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   // int globalCreatedBy = 65579;
   // bool isCreatorInfluencerSame;
-
   @override
   void initState() {
     super.initState();
     _addLeadsController = Get.find();
-    // myFocusNode = FocusNode();
+     myFocusNode = FocusNode();
     _callGetAccessKeyAndGetLeadIdData();
   }
 
@@ -159,6 +158,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     super.dispose();
     _addLeadsController?.dispose();
     myFocusNode?.dispose();
+    myFocusNode = null;
   }
 
 //   void disposeController(BuildContext context){
