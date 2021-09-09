@@ -65,7 +65,8 @@ class SplashController extends GetxController {
             switch (requestId) {
               case RequestIds.REFRESH_DATA:
                 print("on splash_controller.dart :::: getAccessKey");
-                getRefreshData(this.accessKeyResponse.accessKey,RequestIds.GET_MASTER_DATA_FOR_SPLASH);
+                getRefreshData(this.accessKeyResponse.accessKey,
+                    RequestIds.GET_MASTER_DATA_FOR_SPLASH);
                 break;
             }
           }
@@ -84,7 +85,8 @@ class SplashController extends GetxController {
     String mobileNumber = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String isUserLoggedIn = prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
+      String isUserLoggedIn =
+          prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
       print('$empId$mobileNumber');
@@ -93,15 +95,19 @@ class SplashController extends GetxController {
       String mobileNumberEncrypted =
           encryptString(mobileNumber, StringConstants.encryptedKey);
       print('$empIdEncrypted \n$mobileNumberEncrypted');
-      repository.getSecretKey(empIdEncrypted, mobileNumberEncrypted).then((data) {
+      repository
+          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
+          .then((data) {
         Get.back();
         this.secretKeyResponse = data;
 
         print("DDD:$data");
         if (data != null) {
-          if(this.secretKeyResponse.respCode == "DM1005"){
-            Get.dialog(CustomDialogs().appUserInactiveDialog(
-                this.secretKeyResponse.respMsg), barrierDismissible: false);
+          if (this.secretKeyResponse.respCode == "DM1005") {
+            Get.dialog(
+                CustomDialogs()
+                    .appUserInactiveDialog(this.secretKeyResponse.respMsg),
+                barrierDismissible: false);
           }
           if (isUserLoggedIn == "false") {
             Get.offNamed(Routes.LOGIN);
@@ -116,19 +122,24 @@ class SplashController extends GetxController {
     });
   }
 
-   getRefreshData(String accessKey, int reqId ) async {
+  getRefreshData(String accessKey, int reqId) async {
+    List<VersionUpdateModel> versionUpdateModel = new List();
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId = encryptString(empId, StringConstants.encryptedKey).toString();
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      String encryptedEmpId =
+          encryptString(empId, StringConstants.encryptedKey).toString();
 
       //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.refreshSplashData}$empId";
       debugPrint('Url is : $url');
-    await  repository.getRefreshData(url, accessKey, userSecurityKey).then((data) {
+      await repository
+          .getRefreshData(url, accessKey, userSecurityKey)
+          .then((data) {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
@@ -138,32 +149,87 @@ class SplashController extends GetxController {
           // }
           this.splashDataModel = data;
           print('VERSION: ${splashDataModel.versionUpdateModel}');
-          if(splashDataModel.versionUpdateModel != null){
-            print("in");
-            if(splashDataModel.versionUpdateModel.oldVersion != splashDataModel.versionUpdateModel.newVersion && splashDataModel.versionUpdateModel.updateType == "SOFT"){
-              print("inin");
-              Get.dialog(CustomDialogs().appUpdateDialog(
-                  splashDataModel.versionUpdateModel.versionUpdateText),barrierDismissible: true).then((value) => openNextPage());
-            }else if(splashDataModel.versionUpdateModel.oldVersion != splashDataModel.versionUpdateModel.newVersion && splashDataModel.versionUpdateModel.updateType == "HARD"){
-              Get.dialog(CustomDialogs().appForceUpdateDialog(
-                  splashDataModel.versionUpdateModel.versionUpdateText), barrierDismissible: false);
+          versionUpdateModel = splashDataModel.versionUpdateModel;
+          if (versionUpdateModel != null) {
+            for (int i = 0; i < versionUpdateModel.length; i++) {
+              if (versionUpdateModel[i].platform == "ANDROID") {
+                if (versionUpdateModel[i].oldVersion !=
+                        versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].updateType == "SOFT") {
+                  print("in android");
+                  Get.dialog(
+                          CustomDialogs().appUpdateDialog(
+                              versionUpdateModel[i].versionUpdateText,
+                              versionUpdateModel[i].appId,
+                              "ANDROID"),
+                          barrierDismissible: true)
+                      .then((value) => openNextPage());
+                } else if (versionUpdateModel[i].oldVersion !=
+                        versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].updateType == "HARD") {
+                  Get.dialog(
+                      CustomDialogs().appForceUpdateDialog(
+                          versionUpdateModel[i].versionUpdateText,
+                          versionUpdateModel[i].appId,
+                          "ANDROID"),
+                      barrierDismissible: false);
+                }
+              }
+              if (versionUpdateModel[i].platform == "IOS") {
+                if (versionUpdateModel[i].oldVersion !=
+                        versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].updateType == "SOFT") {
+                  print("in ios");
+                  Get.dialog(
+                          CustomDialogs().appUpdateDialog(
+                              versionUpdateModel[i].versionUpdateText,
+                              versionUpdateModel[i].appId,
+                              "IOS"),
+                          barrierDismissible: true)
+                      .then((value) => openNextPage());
+                } else if (versionUpdateModel[i].oldVersion !=
+                        versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].updateType == "HARD") {
+                  Get.dialog(
+                      CustomDialogs().appForceUpdateDialog(
+                          versionUpdateModel[i].versionUpdateText,
+                          versionUpdateModel[i].appId,
+                          "IOS"),
+                      barrierDismissible: false);
+                }
+              }
             }
-          }else{
-            var journeyDate= splashDataModel.journeyDetails.journeyDate;
-            var journeyEndTime= splashDataModel.journeyDetails.journeyEndTime;
+
+            //    if (splashDataModel.versionUpdateModel.oldVersion !=
+            //        splashDataModel.versionUpdateModel.newVersion &&
+            //        splashDataModel.versionUpdateModel.updateType == "SOFT") {
+            //      print("inin");
+            //      Get.dialog(CustomDialogs().appUpdateDialog(
+            //          splashDataModel.versionUpdateModel.versionUpdateText),
+            //          barrierDismissible: true).then((value) => openNextPage());
+            //    } else if (splashDataModel.versionUpdateModel.oldVersion !=
+            //        splashDataModel.versionUpdateModel.newVersion &&
+            //        splashDataModel.versionUpdateModel.updateType == "HARD") {
+            //      Get.dialog(CustomDialogs().appForceUpdateDialog(
+            //          splashDataModel.versionUpdateModel.versionUpdateText),
+            //          barrierDismissible: false);
+            //    }
+
+          } else {
+            var journeyDate = splashDataModel.journeyDetails.journeyDate;
+            var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
             prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
             prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
-            if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
-              openNextPage();
+            if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH) openNextPage();
           }
 
-          var journeyDate= splashDataModel.journeyDetails.journeyDate;
-          var journeyEndTime= splashDataModel.journeyDetails.journeyEndTime;
+          var journeyDate = splashDataModel.journeyDetails.journeyDate;
+          var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
           prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
           prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
 
-         // if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
-        //  openNextPage();
+          // if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
+          // openNextPage();
 
         }
       });

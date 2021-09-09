@@ -26,9 +26,7 @@ class SplashDataModel {
 
   List<EventTypeModels> eventTypeModels;
   List<StatusEntitieList> statusEntitieList;
-  VersionUpdateModel versionUpdateModel;
-
- // List<VersionUpdate> versionUpdate;
+  List<VersionUpdateModel> versionUpdateModel;
 
   SplashDataModel(
       {
@@ -147,10 +145,13 @@ class SplashDataModel {
         statusEntitieList.add(new StatusEntitieList.fromJson(v));
       });
     }
+    if (json['versionUpdateModel'] != null) {
+      versionUpdateModel = new List<VersionUpdateModel>();
+      json['versionUpdateModel'].forEach((v) {
+        versionUpdateModel.add(new VersionUpdateModel.fromJson(v));
+      });
+    }
 
-    versionUpdateModel = json['versionUpdateModel'] != null
-        ? new VersionUpdateModel.fromJson(json['versionUpdateModel'])
-        : null;
     severity = json['severity'].cast<String>();
     userSecurityKey = json['user-security-key'];
     respCode = json['resp-code'];
@@ -230,7 +231,8 @@ class SplashDataModel {
     }
 
     if (this.versionUpdateModel != null) {
-      data['versionUpdateModel'] = this.versionUpdateModel.toJson();
+      data['versionUpdateModel'] =
+          this.versionUpdateModel.map((v) => v.toJson()).toList();
     }
     data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
@@ -600,22 +602,34 @@ class VersionUpdateModel {
   String newVersion;
   String versionUpdateText;
   String updateType;
+  String appId;
+  String platform;
 
-  VersionUpdateModel({this.oldVersion, this.newVersion, this.versionUpdateText, this.updateType});
+  VersionUpdateModel(
+      {this.oldVersion,
+        this.newVersion,
+        this.versionUpdateText,
+        this.updateType,
+        this.appId,
+        this.platform});
 
   VersionUpdateModel.fromJson(Map<String, dynamic> json) {
     oldVersion = json['oldVersion'];
     newVersion = json['newVersion'];
     versionUpdateText = json['versionUpdateText'];
     updateType = json['updateType'];
+    appId = json['appId'];
+    platform = json['platform'];
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['oldVersion'] = this.oldVersion;
     data['newVersion'] = this.newVersion;
     data['versionUpdateText'] = this.versionUpdateText;
     data['updateType'] = this.updateType;
+    data['appId'] = this.appId;
+    data['platform'] = this.platform;
     return data;
   }
 }

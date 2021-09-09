@@ -1137,7 +1137,7 @@ class CustomDialogs {
     );
   }
 
-  Widget appUpdateDialog(String message) {
+  Widget appUpdateDialog(String message, String appId, String platform) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1189,14 +1189,19 @@ class CustomDialogs {
           ),
           onPressed: () {
             print("Go To Store");
-            StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
+           // StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
+            if(platform == "IOS"){
+              StoreRedirect.redirect(androidAppId: "", iOSAppId: appId);
+            }else{
+              StoreRedirect.redirect(androidAppId: appId, iOSAppId: "");
+            }
           },
         ),
       ],
     );
   }
 
-  Widget appForceUpdateDialog(String message) {
+  Widget appForceUpdateDialog(String message, String appId, String platform) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1233,7 +1238,12 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
+           // StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
+            if(platform == "IOS"){
+              StoreRedirect.redirect(androidAppId: "", iOSAppId: appId);
+            }else{
+              StoreRedirect.redirect(androidAppId: appId, iOSAppId: "");
+            }
           },
         ),
       ],
