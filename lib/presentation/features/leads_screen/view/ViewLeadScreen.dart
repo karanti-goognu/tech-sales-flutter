@@ -150,6 +150,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     _addLeadsController = Get.find();
      myFocusNode = FocusNode();
     _callGetAccessKeyAndGetLeadIdData();
+
+    _controller = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.animateTo(0.0, duration: Duration(seconds: 1), curve: Curves.ease);
+    });
   }
 
   @override
@@ -413,6 +418,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     //});
   }
 
+
+  ScrollController _controller;
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
@@ -492,7 +500,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Row(
                       children: [
