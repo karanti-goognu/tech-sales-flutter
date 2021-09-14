@@ -38,7 +38,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   List<InfluencerTypeEntitiesList> influencerTypeEntitiesList = new List();
   InfluencerTypeEntitiesList _influencerTypeEntitiesList;
 
-  List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList = new List();
+  List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList =
+      new List();
   InfluencerCategoryEntitiesList _influencerCategoryEntitiesList;
 
   List<InfluencerSourceList> influencerSourceList = new List();
@@ -74,7 +75,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
   //final ScrollController _scrollController = ScrollController();
 
-
   @override
   void initState() {
     super.initState();
@@ -103,59 +103,62 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   }
 
   getData() {
-    internetChecking().then((result) =>
-    {
-      if (result == true)
-        {
-          _infController.getInfDetailData('${widget.membershipId}').then((data) {
-            setState(() {
-              if (data != null) {
-                 _influencerDetailDataModel = data;
-                 setData();
-              }
-            });
-            print('RESPONSE, ${data}');
-          })
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+    internetChecking().then((result) => {
+          if (result == true)
+            {
+              _infController
+                  .getInfDetailData('${widget.membershipId}')
+                  .then((data) {
+                setState(() {
+                  if (data != null) {
+                    _influencerDetailDataModel = data;
+                    setData();
+                  }
+                });
+                print('RESPONSE, ${data}');
+              })
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
   getDistrictData() {
-    internetChecking().then((result) =>
-    {
-      if (result == true)
-        {
-          _infController.getDistList().then((data) {
-            setState(() {
-              if (data != null) {
-                _stateDistrictListModel = data;
-              }
-            });
-            print('RESPONSE, ${data}');
-          })
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+    internetChecking().then((result) => {
+          if (result == true)
+            {
+              _infController.getDistList().then((data) {
+                setState(() {
+                  if (data != null) {
+                    _stateDistrictListModel = data;
+                  }
+                });
+                print('RESPONSE, ${data}');
+              })
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
-  setData(){
-    if(_influencerDetailDataModel != null || _influencerDetailDataModel.response != null || _influencerDetailDataModel.response.influencerDetails != null) {
-      InfluencerDetails _data = _influencerDetailDataModel.response.influencerDetails;
+  setData() {
+    if (_influencerDetailDataModel != null ||
+        _influencerDetailDataModel.response != null ||
+        _influencerDetailDataModel.response.influencerDetails != null) {
+      InfluencerDetails _data =
+          _influencerDetailDataModel.response.influencerDetails;
       // memberShipId = _data.id;
       _contactNumberController.text = _data.inflContactNumber;
       _nameController.text = _data.inflName;
@@ -165,8 +168,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _giftPincodeController.text = _data.giftAddressPincode;
       _giftDistrictController.text = _data.giftAddressDistrict;
       _giftStateController.text = _data.giftAddressState;
-      _totalPotentialController.text = '${_data.monthlyPotentialVolumeMT}' == "null" ? "" : '${_data.monthlyPotentialVolumeMT}';
-      _potentialSiteController.text = '${_data.siteAssignedCount}'== "null" ? "" :'${_data.siteAssignedCount}';
+      _totalPotentialController.text =
+          '${_data.monthlyPotentialVolumeMT}' == "null"
+              ? ""
+              : '${_data.monthlyPotentialVolumeMT}';
+      _potentialSiteController.text = '${_data.siteAssignedCount}' == "null"
+          ? ""
+          : '${_data.siteAssignedCount}';
       _enrollmentDateController.text = '${_data.inflJoiningDate}';
       _qualificationController.text = _data.inflQualification;
       _emailController.text = _data.email;
@@ -178,63 +186,65 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _influencerCategory = _data.inflCategoryId;
       //_date = '${_data.inflDob}';
 
-      _dateController.text = '${_data.inflDob}' == "null" ? "Birth Date" : '${_data.inflDob}';
+      _dateController.text =
+          '${_data.inflDob}' == "null" ? "Birth Date" : '${_data.inflDob}';
 
-      if(_data.ilpregFlag == "Y"){
+      if (_data.ilpregFlag == "Y") {
         checkedValue = true;
         _selectedEnrollValue = "Y";
-      }else{
+      } else {
         checkedValue = false;
         _selectedEnrollValue = "N";
       }
 
-
-      influencerTypeEntitiesList = _influencerDetailDataModel.response.influencerTypeEntitiesList;
-      if (_influencerDetailDataModel.response.influencerDetails.inflTypeId != null) {
+      influencerTypeEntitiesList =
+          _influencerDetailDataModel.response.influencerTypeEntitiesList;
+      if (_influencerDetailDataModel.response.influencerDetails.inflTypeId !=
+          null) {
         for (int i = 0; i < influencerTypeEntitiesList.length; i++) {
           if (_influencerDetailDataModel.response.influencerDetails.inflTypeId
-              .toString() ==
+                  .toString() ==
               influencerTypeEntitiesList[i].inflTypeId.toString()) {
             _influencerTypeEntitiesList = influencerTypeEntitiesList[i];
           }
         }
-      }else{
+      } else {}
 
-      }
-
-      influencerSourceList = _influencerDetailDataModel.response.influencerSourceList;
-      if (_influencerDetailDataModel.response.influencerDetails.inflEnrollmentSourceId != null) {
+      influencerSourceList =
+          _influencerDetailDataModel.response.influencerSourceList;
+      if (_influencerDetailDataModel
+              .response.influencerDetails.inflEnrollmentSourceId !=
+          null) {
         for (int i = 0; i < influencerSourceList.length; i++) {
-          if (_influencerDetailDataModel.response.influencerDetails.inflEnrollmentSourceId
-              .toString() ==
+          if (_influencerDetailDataModel
+                  .response.influencerDetails.inflEnrollmentSourceId
+                  .toString() ==
               influencerSourceList[i].inflSourceId.toString()) {
             _influencerSourceList = influencerSourceList[i];
           }
         }
-      }else{
+      } else {}
 
-      }
-
-      influencerCategoryEntitiesList = _influencerDetailDataModel.response.influencerCategoryEntitiesList;
-      if (_influencerDetailDataModel.response.influencerDetails.inflCategoryId != null) {
+      influencerCategoryEntitiesList =
+          _influencerDetailDataModel.response.influencerCategoryEntitiesList;
+      if (_influencerDetailDataModel
+              .response.influencerDetails.inflCategoryId !=
+          null) {
         for (int i = 0; i < influencerCategoryEntitiesList.length; i++) {
-          if (_influencerDetailDataModel.response.influencerDetails.inflCategoryId
-              .toString() ==
+          if (_influencerDetailDataModel
+                  .response.influencerDetails.inflCategoryId
+                  .toString() ==
               influencerCategoryEntitiesList[i].inflCatId.toString()) {
             _influencerCategoryEntitiesList = influencerCategoryEntitiesList[i];
           }
         }
-      }else{
-
-      }
+      } else {}
       districtId = _data.districtId;
       stateName = _data.stateName;
       stateId = _data.stateId;
       myFocusNode = FocusNode();
       myFocusNode.requestFocus();
     }
-
-
   }
 
   @override
@@ -244,12 +254,9 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     super.dispose();
   }
 
-
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()
-      ..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)
-      ..init(context);
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     double _height = ScreenUtil().setSp(16);
 
     final mobileNumber = TextFormField(
@@ -387,7 +394,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.all(
               Radius.circular(5.0) //                 <--- border radius here
-          ),
+              ),
         ),
         child: CheckboxListTile(
           title: Text(
@@ -408,7 +415,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
             });
           },
           controlAffinity:
-          ListTileControlAffinity.leading, //  <-- leading Checkbox
+              ListTileControlAffinity.leading, //  <-- leading Checkbox
         ));
 
     final district = TextFormField(
@@ -439,25 +446,28 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           _influencerTypeEntitiesList = value;
           _memberType = _influencerTypeEntitiesList.inflTypeId;
           if (_memberType == 2 || _memberType == 3 || _memberType == 4
-          //_memberType == 'Structural Consultant'
-          ) {
+              //_memberType == 'Structural Consultant'
+              ) {
             _qualificationVisible = true;
           } else {
             _qualificationVisible = false;
           }
         });
       },
-      items:(_influencerDetailDataModel == null || _influencerTypeEntitiesList == null) ? []:
-          influencerTypeEntitiesList.map((e) => DropdownMenuItem(
-        value: e,
-        child: Container(
-            width: MediaQuery.of(context).size.width / 1.5,
-            child: Text(e.inflTypeDesc)),
-      ))
-          .toList(),
+      items: (_influencerDetailDataModel == null ||
+              _influencerTypeEntitiesList == null)
+          ? []
+          : influencerTypeEntitiesList
+              .map((e) => DropdownMenuItem(
+                    value: e,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: Text(e.inflTypeDesc)),
+                  ))
+              .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
-      FormFieldStyle.buildInputDecoration(labelText: "Member Type*"),
+          FormFieldStyle.buildInputDecoration(labelText: "Member Type*"),
       validator: (value) => value == null ? 'Please select member type' : null,
     );
 
@@ -507,7 +517,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         labelText: "Enrollment Date",
       ),
     );
-
 
     final giftAddress = TextFormField(
       controller: _giftAddressController,
@@ -593,19 +602,22 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           _source = _influencerSourceList.inflSourceId;
         });
       },
-      items: (_influencerDetailDataModel == null || influencerSourceList == null)
-          ? []
-          : influencerSourceList.map((e) => DropdownMenuItem(
-        value: e,
-        child: Text(e.inflSourceText),
-      ))
-          .toList(),
+      items:
+          (_influencerDetailDataModel == null || influencerSourceList == null)
+              ? []
+              : influencerSourceList
+                  .map((e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e.inflSourceText),
+                      ))
+                  .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Source"),
-     // validator: (value) => value == null ? 'Please select Source' : null,
+      // validator: (value) => value == null ? 'Please select Source' : null,
     );
 
-    final influencerCategoryDropDwn = DropdownButtonFormField<InfluencerCategoryEntitiesList>(
+    final influencerCategoryDropDwn =
+        DropdownButtonFormField<InfluencerCategoryEntitiesList>(
       value: _influencerCategoryEntitiesList,
       onChanged: (value) {
         setState(() {
@@ -613,19 +625,20 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           _influencerCategory = _influencerCategoryEntitiesList.inflCatId;
         });
       },
-      items: (_influencerDetailDataModel == null || influencerCategoryEntitiesList == null)
+      items: (_influencerDetailDataModel == null ||
+              influencerCategoryEntitiesList == null)
           ? []
           : influencerCategoryEntitiesList
-          .map((e) => DropdownMenuItem(
-        value: e,
-        child: Text(e.inflCatDesc),
-      ))
-          .toList(),
+              .map((e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e.inflCatDesc),
+                  ))
+              .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
-      FormFieldStyle.buildInputDecoration(labelText: "Influencer Category"),
+          FormFieldStyle.buildInputDecoration(labelText: "Influencer Category"),
       validator: (value) =>
-      value == null ? 'Please select Influencer Category' : null,
+          value == null ? 'Please select Influencer Category' : null,
     );
 
     final btnSubmit = Row(
@@ -636,18 +649,18 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           child: Text(
             "UPDATE",
             style:
-            //TextStyles.btnWhite,
-            TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
-                fontSize: ScreenUtil().setSp(15)),
+                //TextStyles.btnWhite,
+                TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    // letterSpacing: 2,
+                    fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
             setState(() {
               if (_addInfluencerFormKey.currentState.validate()) {
                 _addInfluencerFormKey.currentState.save();
-                  btnUpdatePresssed();
+                btnUpdatePresssed();
               }
             });
           },
@@ -655,6 +668,105 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       ],
     );
 
+/*
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: BackFloatingButton(),
+      bottomNavigationBar: BottomNavigator(),
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: (_influencerDetailDataModel != null &&
+                _influencerDetailDataModel.response.influencerDetails != null)
+                ? ListView(
+              children: [
+              Padding(
+                              padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+                              child: Form(
+                                key: _addInfluencerFormKey,
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Membership ID : ",
+                                            style: TextStyles.welcomeMsgTextStyle20,
+                                          ),
+                                          Text(
+                                            "${memberShipId}",
+                                            style: TextStyles.welcomeMsgTextStyle20,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: _height),
+                                      mobileNumber,
+                                      SizedBox(height: _height),
+                                      name,
+                                      SizedBox(height: _height),
+                                      email,
+                                      SizedBox(height: _height),
+                                      //enrollDropDwn,
+                                      enrollmentCheckbox,
+                                      SizedBox(height: _height),
+                                      district,
+                                      SizedBox(height: _height),
+                                      baseCity,
+                                      SizedBox(height: _height),
+                                      taluka,
+                                      SizedBox(height: _height),
+                                      pincode,
+                                      SizedBox(height: _height),
+                                      memberDropDwn,
+                                      SizedBox(height: _height),
+                                      birthDate,
+                                      SizedBox(height: _height),
+                                      fatherName,
+                                      SizedBox(height: _height),
+                                      Visibility(
+                                          visible: _qualificationVisible,
+                                          child: qualification),
+                                      SizedBox(height: _height),
+                                      enrollmentDate,
+                                      SizedBox(height: _height),
+                                      giftAddress,
+                                      SizedBox(height: _height),
+                                      giftPincode,
+                                      SizedBox(height: _height),
+                                      giftDistrict,
+                                      SizedBox(height: _height),
+                                      giftState,
+                                      SizedBox(height: _height),
+                                      Divider(
+                                        height: ScreenUtil().setSp(1),
+                                        color: Colors.grey,
+                                      ),
+                                      SizedBox(height: _height),
+                                      totalPotential,
+                                      SizedBox(height: _height),
+                                      potentialSite,
+                                      SizedBox(height: _height),
+                                      influencerCategoryDropDwn,
+                                      SizedBox(height: _height),
+                                      sourceDropDwn,
+                                      SizedBox(height: _height),
+                                      btnSubmit,
+                                      SizedBox(height: _height),
+                                    ]),
+                    )),
+              ],
+            )
+                : Center(
+                child: Text("No Events !")
+              //CircularProgressIndicator(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  */
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -677,117 +789,221 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                       ),
                     ],
                   ))),
-          SingleChildScrollView(
-           // controller: _scrollController,
-           // shrinkWrap: true,
-            child: Column(
 
-
-            children: [
-              Container(
-                padding: EdgeInsets.all(ScreenUtil().setSp(12)),
-                height: 56,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Influencer Details',
-                      style: TextStyles.titleGreenStyle,
+          (_influencerDetailDataModel != null &&
+                  _influencerDetailDataModel.response.influencerDetails != null)
+              ? ListView(children: [
+                  Container(
+                    padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                    height: 56,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Influencer Details',
+                          style: TextStyles.titleGreenStyle,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                // decoration: BoxDecoration(
-                //     border: Border(bottom: BorderSide(width: 0.3))),
-              ),
-              SizedBox(height: ScreenUtil().setSp(8)),
-              Divider(
-                height: ScreenUtil().setSp(1),
-                color: Colors.grey,
-              ),
-
-              //SizedBox(height: _height),
-              Padding(
-                  padding: EdgeInsets.all(ScreenUtil().setSp(16)),
-                  child: Form(
-                    key: _addInfluencerFormKey,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                    // decoration: BoxDecoration(
+                    //     border: Border(bottom: BorderSide(width: 0.3))),
+                  ),
+                  //   ],
+                  // ),
+                  SizedBox(height: ScreenUtil().setSp(8)),
+                  Divider(
+                    height: ScreenUtil().setSp(1),
+                    color: Colors.grey,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+                      child: Form(
+                        key: _addInfluencerFormKey,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Membership ID : ",
-                                style: TextStyles.welcomeMsgTextStyle20,
+                              Row(
+                                children: [
+                                  Text(
+                                    "Membership ID : ",
+                                    style: TextStyles.welcomeMsgTextStyle20,
+                                  ),
+                                  Text(
+                                    "${memberShipId}",
+                                    style: TextStyles.welcomeMsgTextStyle20,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "${memberShipId}",
-                                style: TextStyles.welcomeMsgTextStyle20,
+                              SizedBox(height: _height),
+                              mobileNumber,
+                              SizedBox(height: _height),
+                              name,
+                              SizedBox(height: _height),
+                              email,
+                              SizedBox(height: _height),
+                              //enrollDropDwn,
+                              enrollmentCheckbox,
+                              SizedBox(height: _height),
+                              district,
+                              SizedBox(height: _height),
+                              baseCity,
+                              SizedBox(height: _height),
+                              taluka,
+                              SizedBox(height: _height),
+                              pincode,
+                              SizedBox(height: _height),
+                              memberDropDwn,
+                              SizedBox(height: _height),
+                              birthDate,
+                              SizedBox(height: _height),
+                              fatherName,
+                              SizedBox(height: _height),
+                              Visibility(
+                                  visible: _qualificationVisible,
+                                  child: qualification),
+                              SizedBox(height: _height),
+                              enrollmentDate,
+                              SizedBox(height: _height),
+                              giftAddress,
+                              SizedBox(height: _height),
+                              giftPincode,
+                              SizedBox(height: _height),
+                              giftDistrict,
+                              SizedBox(height: _height),
+                              giftState,
+                              SizedBox(height: _height),
+                              Divider(
+                                height: ScreenUtil().setSp(1),
+                                color: Colors.grey,
                               ),
-                            ],
-                          ),
-                          SizedBox(height: _height),
-                          mobileNumber,
-                          SizedBox(height: _height),
-                          name,
-                          SizedBox(height: _height),
-                          email,
-                          SizedBox(height: _height),
-                          //enrollDropDwn,
-                          enrollmentCheckbox,
-                          SizedBox(height: _height),
-                          district,
-                          SizedBox(height: _height),
-                          baseCity,
-                          SizedBox(height: _height),
-                          taluka,
-                          SizedBox(height: _height),
-                          pincode,
-                          SizedBox(height: _height),
-                          memberDropDwn,
-                          SizedBox(height: _height),
-                          birthDate,
-                          SizedBox(height: _height),
-                          fatherName,
-                          SizedBox(height: _height),
-                          Visibility(
-                              visible: _qualificationVisible,
-                              child: qualification),
-                          SizedBox(height: _height),
-                          enrollmentDate,
-                          SizedBox(height: _height),
-                          giftAddress,
-                          SizedBox(height: _height),
-                          giftPincode,
-                          SizedBox(height: _height),
-                          giftDistrict,
-                          SizedBox(height: _height),
-                          giftState,
-                          SizedBox(height: _height),
-                          Divider(
-                            height: ScreenUtil().setSp(1),
-                            color: Colors.grey,
-                          ),
-                          SizedBox(height: _height),
-                          totalPotential,
-                          SizedBox(height: _height),
-                          potentialSite,
-                          SizedBox(height: _height),
-                          influencerCategoryDropDwn,
-                          SizedBox(height: _height),
-                          sourceDropDwn,
-                          SizedBox(height: _height),
-                          btnSubmit,
-                          SizedBox(height: _height),
-                        ]),
-                  )),
-            ],
-          )
-          //     : Center(
-          //   child: CircularProgressIndicator(),
-          // ),
-          ),
-        ],
+                              SizedBox(height: _height),
+                              totalPotential,
+                              SizedBox(height: _height),
+                              potentialSite,
+                              SizedBox(height: _height),
+                              influencerCategoryDropDwn,
+                              SizedBox(height: _height),
+                              sourceDropDwn,
+                              SizedBox(height: _height),
+                              btnSubmit,
+                              SizedBox(height: _height),
+                            ]),
+                      )),
+                ])
+              : Center(
+                  child: Text(""),
+                ),
 
+          // SingleChildScrollView(
+          //  // controller: _scrollController,
+          //  // shrinkWrap: true,
+          //   child: Column(
+          //
+          //
+          //   children: [
+          //     // Container(
+          //     //   padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+          //     //   height: 56,
+          //     //   child: Row(
+          //     //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     //     children: [
+          //     //       Text(
+          //     //         'Influencer Details',
+          //     //         style: TextStyles.titleGreenStyle,
+          //     //       ),
+          //     //     ],
+          //     //   ),
+          //     //   // decoration: BoxDecoration(
+          //     //   //     border: Border(bottom: BorderSide(width: 0.3))),
+          //     // ),
+          //     // SizedBox(height: ScreenUtil().setSp(8)),
+          //     // Divider(
+          //     //   height: ScreenUtil().setSp(1),
+          //     //   color: Colors.grey,
+          //     // ),
+          //
+          //     //SizedBox(height: _height),
+          //     Padding(
+          //         padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+          //         child: Form(
+          //           key: _addInfluencerFormKey,
+          //           child: Column(
+          //               crossAxisAlignment: CrossAxisAlignment.start,
+          //               children: [
+          //                 Row(
+          //                   children: [
+          //                     Text(
+          //                       "Membership ID : ",
+          //                       style: TextStyles.welcomeMsgTextStyle20,
+          //                     ),
+          //                     Text(
+          //                       "${memberShipId}",
+          //                       style: TextStyles.welcomeMsgTextStyle20,
+          //                     ),
+          //                   ],
+          //                 ),
+          //                 SizedBox(height: _height),
+          //                 mobileNumber,
+          //                 SizedBox(height: _height),
+          //                 name,
+          //                 SizedBox(height: _height),
+          //                 email,
+          //                 SizedBox(height: _height),
+          //                 //enrollDropDwn,
+          //                 enrollmentCheckbox,
+          //                 SizedBox(height: _height),
+          //                 district,
+          //                 SizedBox(height: _height),
+          //                 baseCity,
+          //                 SizedBox(height: _height),
+          //                 taluka,
+          //                 SizedBox(height: _height),
+          //                 pincode,
+          //                 SizedBox(height: _height),
+          //                 memberDropDwn,
+          //                 SizedBox(height: _height),
+          //                 birthDate,
+          //                 SizedBox(height: _height),
+          //                 fatherName,
+          //                 SizedBox(height: _height),
+          //                 Visibility(
+          //                     visible: _qualificationVisible,
+          //                     child: qualification),
+          //                 SizedBox(height: _height),
+          //                 enrollmentDate,
+          //                 SizedBox(height: _height),
+          //                 giftAddress,
+          //                 SizedBox(height: _height),
+          //                 giftPincode,
+          //                 SizedBox(height: _height),
+          //                 giftDistrict,
+          //                 SizedBox(height: _height),
+          //                 giftState,
+          //                 SizedBox(height: _height),
+          //                 Divider(
+          //                   height: ScreenUtil().setSp(1),
+          //                   color: Colors.grey,
+          //                 ),
+          //                 SizedBox(height: _height),
+          //                 totalPotential,
+          //                 SizedBox(height: _height),
+          //                 potentialSite,
+          //                 SizedBox(height: _height),
+          //                 influencerCategoryDropDwn,
+          //                 SizedBox(height: _height),
+          //                 sourceDropDwn,
+          //                 SizedBox(height: _height),
+          //                 btnSubmit,
+          //                 SizedBox(height: _height),
+          //               ]),
+          //         )),
+          //   ],
+          // )
+          // //     : Center(
+          // //   child: CircularProgressIndicator(),
+          // // ),
+          // ),
+        ],
       ),
     );
   }
@@ -826,91 +1042,87 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     List<StateDistrictList> dist =
         _stateDistrictListModel.response.stateDistrictList;
     return StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) =>
-          Container(
-            color: Colors.white,
-            height: 300,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  'Please select district from the below list',
-                  style: TextStyles.mulliBoldYellow18,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Divider(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: TextFormField(
-                    controller: _query,
-                    onChanged: (value) {
-                      setState(() {
-                        dist =
-                            _stateDistrictListModel.response.stateDistrictList
-                                .where((element) {
-                              return element.districtName
-                                  .toString()
-                                  .toLowerCase()
-                                  .contains(value);
-                            }).toList();
-                      });
-                    },
-                    decoration: FormFieldStyle.buildInputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                        labelText: 'Search'),
-                  ),
-                ),
-                Divider(),
-                _stateDistrictListModel.response.stateDistrictList == null ||
-                    _stateDistrictListModel.response.stateDistrictList.isEmpty
-                    ? Center(
-                  child: CircularProgressIndicator(),
-                )
-                    : Expanded(
-                  child: ListView(
-                    children: dist
-                    //_stateDistrictListModel.response.stateDistrictList
-                        .map(
-                          (e) =>
-                          RadioListTile(
-                              value: e,
-                              title:
-                              Text('${e.districtName} (${e.stateName})'),
-                              // groupValue: customer,
-                              onChanged: (text) {
-                                setState(() {
-                                  _districtController.text =
-                                      text.districtName;
-                                  stateName = text.stateName;
-                                  stateId = text.stateId;
-                                  districtId = text.districtId;
-                                  // customer = text;
-                                });
-                                Get.back();
-                              }),
-                    )
-                        .toList(),
-                    shrinkWrap: true,
-                  ),
-                ),
-              ],
+      builder: (BuildContext context, StateSetter setState) => Container(
+        color: Colors.white,
+        height: 300,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 15,
             ),
-          ),
+            Text(
+              'Please select district from the below list',
+              style: TextStyles.mulliBoldYellow18,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextFormField(
+                controller: _query,
+                onChanged: (value) {
+                  setState(() {
+                    dist = _stateDistrictListModel.response.stateDistrictList
+                        .where((element) {
+                      return element.districtName
+                          .toString()
+                          .toLowerCase()
+                          .contains(value);
+                    }).toList();
+                  });
+                },
+                decoration: FormFieldStyle.buildInputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    ),
+                    labelText: 'Search'),
+              ),
+            ),
+            Divider(),
+            _stateDistrictListModel.response.stateDistrictList == null ||
+                    _stateDistrictListModel.response.stateDistrictList.isEmpty
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Expanded(
+                    child: ListView(
+                      children: dist
+                          //_stateDistrictListModel.response.stateDistrictList
+                          .map(
+                            (e) => RadioListTile(
+                                value: e,
+                                title:
+                                    Text('${e.districtName} (${e.stateName})'),
+                                // groupValue: customer,
+                                onChanged: (text) {
+                                  setState(() {
+                                    _districtController.text =
+                                        text.districtName;
+                                    stateName = text.stateName;
+                                    stateId = text.stateId;
+                                    districtId = text.districtId;
+                                    // customer = text;
+                                  });
+                                  Get.back();
+                                }),
+                          )
+                          .toList(),
+                      shrinkWrap: true,
+                    ),
+                  ),
+          ],
+        ),
+      ),
     );
   }
 
-
-  btnUpdatePresssed() async{
+  btnUpdatePresssed() async {
     String empId = await getEmpId();
     InfluencerRequestModel _influencerRequestModel =
-    InfluencerRequestModel.fromJson({
+        InfluencerRequestModel.fromJson({
       "membershipId": memberShipId,
       "baseCity": _baseCityController.text,
       "createBy": empId,
@@ -927,7 +1139,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       "inflAddress": "",
       "inflCategoryId": _influencerCategory,
       "inflContactNumber": _contactNumberController.text,
-      "inflDob": _dateController.text == "Birth Date" ? "":_dateController.text,
+      "inflDob":
+          _dateController.text == "Birth Date" ? "" : _dateController.text,
       "inflEnrollmentSourceId": _source,
       "inflJoiningDate": _enrollmentDateController.text,
       "inflName": _nameController.text,
@@ -946,19 +1159,19 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     print('PARAMS: ${json.encode(_influencerRequestModel)}');
 
     internetChecking().then((result) => {
-      if (result == true)
-        {
-          _infController
-              .getAccessKeyAndSaveInfluencer(_influencerRequestModel, true)
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+          if (result == true)
+            {
+              _infController.getAccessKeyAndSaveInfluencer(
+                  _influencerRequestModel, true)
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 }

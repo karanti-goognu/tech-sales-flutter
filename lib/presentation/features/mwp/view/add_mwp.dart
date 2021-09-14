@@ -51,7 +51,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.backgroundColor,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       body: _buildAddEventInterface(context),
       floatingActionButton: Container(
         height: 68.0,
@@ -69,7 +69,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
       child: SingleChildScrollView(
         child: GestureDetector(
           onTap: (){
-            FocusScopeNode currentFocus = FocusScope.of(context);
+            //FocusScopeNode currentFocus = FocusScope.of(context);
           },
           child: Padding(
               padding:
