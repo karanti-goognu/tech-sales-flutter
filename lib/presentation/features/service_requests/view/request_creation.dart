@@ -22,6 +22,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/presentation/common_widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SiteAreaDetailsModel.dart';
 
 class RequestCreation extends StatefulWidget {
@@ -48,14 +49,12 @@ class _RequestCreationState extends State<RequestCreation> {
 
   getDropdownData() async {
     await eventController.getAccessKey().then((value) async {
-      // print(value.accessKey);
       await eventController
           .getSrComplaintFormData(value.accessKey)
           .then((data) {
         setState(() {
           srComplaintModel = data;
         });
-        //   print(data.toJson());
       });
     });
   }
@@ -553,8 +552,8 @@ class _RequestCreationState extends State<RequestCreation> {
                                     ),
                                     onPressed: () async {
                                       if (_imageList.length < 5) {
-                                        _showPicker(context);
-                                        // _imgFromCamera();
+                                        // _showPicker(context);
+                                        _imageList=await UploadImageBottomSheet.showPicker(context);
                                       } else {
                                         Get.dialog(CustomDialogs().errorDialog(
                                             "You can add only upto 5 photos"));
@@ -1046,18 +1045,6 @@ class _RequestCreationState extends State<RequestCreation> {
     // print(serviceRequestComplaintType.serviceRequestTypeText);
   }
 
-  _imgFromCamera() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.camera,
-        imageQuality: 10,
-        maxWidth: 480,
-        maxHeight: 600);
-    if (image != null) {
-      setState(() {
-        _imageList.add(image);
-      });
-    }
-  }
 
   var customer;
   requestorDetails() {
@@ -1108,48 +1095,5 @@ class _RequestCreationState extends State<RequestCreation> {
         ),
       ),
     );
-  }
-
-  _imgFromGallery() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
-
-    setState(() {
-      // print(image.path);
-      if (image != null) {
-        _imageList.add(image);
-      }
-      // _imageList.insert(0,image);
-    });
-  }
-
-  void _showPicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Photo Library'),
-                      onTap: () {
-                        _imgFromGallery();
-                        Navigator.of(context).pop();
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
-                    onTap: () {
-                      _imgFromCamera();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
 }
