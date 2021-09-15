@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/common_widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
@@ -4247,7 +4249,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   List<String> _items = new List(); // to store comments
 
-
   List<Item> _data = generateItems(1);
   List<InfluencerDetail> _listInfluencerDetail = new List();
   List<InfluencerEntity> _listInfluencerEntity = new List();
@@ -4286,6 +4287,38 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 //     myFocusNode.dispose();
   // }
 
+
+  getData() {
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          _addLeadsController.getLeadDataNew(widget.leadId).then((data) {
+            setState(() {
+              if (data != null) {
+                viewLeadDataResponse = data;
+                setData();
+              }
+            });
+            print('RESPONSE, ${data}');
+          })
+        }
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
+  }
+
+  setData(){
+    if(viewLeadDataResponse != null){
+
+    }
+  }
+
   _callGetAccessKeyAndGetLeadIdData() async {
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _addLeadsController.getAccessKeyOnly().then((data) async {
@@ -4319,7 +4352,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         }
       dealerEntityForDb = await db.fetchAllDistinctDealers();
       dealerEntityForDb.forEach((e) => print(e.toMapForDb().toString()));
-      setState(() {
+     // setState(() {
         leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
         LeadStatusEntity list;
         print(viewLeadDataResponse.leadsEntity.leadStatusId);
@@ -4489,7 +4522,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
         _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
         _totalBags.text = (double.parse(_totalMT.text) * 20).round().toString();
-      });
+     // });
     });
   }
 
@@ -4891,7 +4924,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         ),
         onPressed: () async {
           if (_imgDetails.length < 5) {
-            _showPicker(context);
+            _imageList = await UploadImageBottomSheet.showPicker(context);
+            //_showPicker(context);
           } else {
             Get.dialog(
                 CustomDialogs().errorDialog("You can add only upto 5 photos"));
@@ -5481,7 +5515,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             Icons.add,
                                                             color: HexColor(
                                                                 "#F9A61A"),
-                                                            size: ScreenUtil().setSp(18),
+                                                            size: ScreenUtil()
+                                                                .setSp(18),
                                                           ),
                                                           label: Text(
                                                             "EXPAND",
@@ -5492,7 +5527,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                     FontWeight
                                                                         .bold,
                                                                 // letterSpacing: 2,
-                                                                fontSize: ScreenUtil().setSp(15)),
+                                                                fontSize:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            15)),
                                                           ),
                                                           onPressed: () {
                                                             setState(() {
@@ -5568,7 +5606,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             Icons.add,
                                                             color: HexColor(
                                                                 "#F9A61A"),
-                                                            size: ScreenUtil().setSp(18),
+                                                            size: ScreenUtil()
+                                                                .setSp(18),
                                                           ),
                                                           label: Text(
                                                             "EXPAND",
@@ -5578,7 +5617,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                fontSize: ScreenUtil().setSp(15)),
+                                                                fontSize:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            15)),
                                                           ),
                                                           onPressed: () {
                                                             setState(() {
@@ -6450,14 +6492,19 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       },
                                     ),
                                   ),
-SizedBox(height: _height,),
-                            SizedBox(height: _height,),
-
+                            SizedBox(
+                              height: _height,
+                            ),
+                            SizedBox(
+                              height: _height,
+                            ),
                             btnMoveToNextStage,
-                            SizedBox(height: _height,),
-
-                            SizedBox(height: _height,),
-
+                            SizedBox(
+                              height: _height,
+                            ),
+                            SizedBox(
+                              height: _height,
+                            ),
                           ],
                         ),
                       ),
@@ -6626,65 +6673,6 @@ SizedBox(height: _height,),
     });
   }
 
-  _imgFromCamera() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50);
-
-    setState(() {
-      if (image != null) {
-        listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-        _imageList.add(image);
-        _imgDetails.add(new ImageDetails("asset", image));
-      }
-    });
-  }
-
-  _imgFromGallery() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
-
-    setState(() {
-      // print(image.path);
-
-      if (image != null) {
-        listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-        _imageList.add(image);
-        _imgDetails.add(new ImageDetails("asset", image));
-      }
-      // _imageList.insert(0,image);
-    });
-  }
-
-  void _showPicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Photo Library'),
-                      onTap: () {
-                        _imgFromGallery();
-                        Navigator.of(context).pop();
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
-                    onTap: () {
-                      _imgFromCamera();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
   _getCurrentLocation() async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
       Get.back();
@@ -6723,7 +6711,8 @@ SizedBox(height: _height,),
         _pincode.text = place.postalCode;
         _taluk.text = place.locality;
         //txt.text = place.postalCode;
-        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
+        _currentAddress =
+            "${place.locality}, ${place.postalCode}, ${place.country}";
 
         print(
             "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");

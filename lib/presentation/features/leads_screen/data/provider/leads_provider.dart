@@ -417,6 +417,35 @@ class MyApiClientLeads {
     }
   }
 
+  Future<ViewLeadDataResponse>getLeadDataNew(String accessKey, String userSecurityKey, int leadId, String empID) async {
+    ViewLeadDataResponse viewLeadDataResponse;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+
+    try {
+      version = VersionClass.getVersion();
+      var response = await http.get(Uri.parse(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
+      );
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        Get.back();
+        print("======$data");
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          viewLeadDataResponse = ViewLeadDataResponse.fromJson(json.decode(response.body));
+          print('URL ${UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"}');
+        }} else {
+        print('error');
+      }
+    }
+    catch (e) {
+      print("Exception at INF Repo $e");
+    }
+  }
+
   updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
       List<File> imageList, BuildContext context, int leadId,int from) async {
     version = VersionClass.getVersion();
