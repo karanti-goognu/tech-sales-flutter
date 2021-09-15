@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
-import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:flutter_tech_sales/widgets/image_upload.dart';
+import 'package:get/get.dart';
 
 class RequestUpdateDetails extends StatefulWidget {
   final id;
@@ -14,65 +14,32 @@ class RequestUpdateDetails extends StatefulWidget {
 }
 
 class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
-  TextEditingController _complaintID = TextEditingController();
-  TextEditingController _allocatedToID = TextEditingController();
-  TextEditingController _allocatedToName = TextEditingController();
-  TextEditingController _dateOfComplaint = TextEditingController();
-  TextEditingController _daysOpen = TextEditingController();
-  TextEditingController _sitePotential = TextEditingController();
-  TextEditingController _department = TextEditingController();
-  TextEditingController _requestType = TextEditingController();
-  TextEditingController _requestSubType = TextEditingController();
-  TextEditingController _customerType = TextEditingController();
-  TextEditingController _severity = TextEditingController();
-  TextEditingController _customerID = TextEditingController();
-  TextEditingController _requestorContact = TextEditingController();
-  TextEditingController _requestorName = TextEditingController();
-  TextEditingController _description = TextEditingController();
-  TextEditingController _state = TextEditingController();
-  TextEditingController _district = TextEditingController();
-  TextEditingController _taluk = TextEditingController();
-  TextEditingController _pin = TextEditingController();
+  UpdateServiceRequestController updateServiceRequestController=Get.find();
 
-  // SRListController srListController= Get.find();
-  // ComplaintViewModel complaintViewModel;
-  //
-  // var data;
-  // getComplaintViewData() async {
-  //   await srListController.getAccessKey().then((value) async {
-  //     // print("id"+ widget.id.toString());
-  //     await srListController
-  //         .getComplaintViewData(value.accessKey, widget.id.toString()).then((value){
-  //       setState(() {
-  //         complaintViewModel = value;
-  //       });}
-  //     );
-  //
-  //   });
-  // }
+
 
   setValues() {
     setState(() {
-      _complaintID.text = widget.complaintViewModel.id.toString();
-      _allocatedToID.text = widget.complaintViewModel.referenceId;
-      _allocatedToName.text = widget.complaintViewModel.allocatedToName;
-      _dateOfComplaint.text = widget.complaintViewModel.srComplaintDate;
-      _daysOpen.text = widget.complaintViewModel.dayOpen.toString();
-      _sitePotential.text = widget.complaintViewModel.sitePotentialMt;
-      _department.text = widget.complaintViewModel.deaprtmentText;
-      _requestType.text = widget.complaintViewModel.requestText;
-      _requestSubType.text = widget.complaintViewModel.srcSubtypeMappingModal==null || widget.complaintViewModel.srcSubtypeMappingModal.isEmpty?' ': widget.complaintViewModel.srcSubtypeMappingModal[0].requestTypeText;
-      _customerType.text = widget.complaintViewModel.creatorType;
-      _severity.text = widget.complaintViewModel.severity;
-      _customerID.text = widget.complaintViewModel.creatorId.toString();
-      _requestorName.text = widget.complaintViewModel.creatorName ?? ' ';
-      _requestorContact.text = widget.complaintViewModel.creatorContactNumber;
-      _description.text = widget.complaintViewModel.description;
-      _state.text = widget.complaintViewModel.state;
-      _state.text = widget.complaintViewModel.state;
-      _district.text = widget.complaintViewModel.district;
-      _taluk.text = widget.complaintViewModel.taluk;
-      _pin.text = widget.complaintViewModel.pincode;
+      updateServiceRequestController.complaintID.text = widget.complaintViewModel.id.toString();
+      updateServiceRequestController. allocatedToID.text = widget.complaintViewModel.referenceId;
+      updateServiceRequestController. allocatedToName.text = widget.complaintViewModel.allocatedToName;
+      updateServiceRequestController. dateOfComplaint.text = widget.complaintViewModel.srComplaintDate;
+      updateServiceRequestController.daysOpen.text = widget.complaintViewModel.dayOpen.toString();
+      updateServiceRequestController.sitePotential.text = widget.complaintViewModel.sitePotentialMt;
+      updateServiceRequestController.department.text = widget.complaintViewModel.deaprtmentText;
+      updateServiceRequestController.requestType.text = widget.complaintViewModel.requestText;
+      updateServiceRequestController.requestSubType.text = widget.complaintViewModel.srcSubtypeMappingModal==null || widget.complaintViewModel.srcSubtypeMappingModal.isEmpty?' ': widget.complaintViewModel.srcSubtypeMappingModal[0].requestTypeText;
+      updateServiceRequestController.customerType.text = widget.complaintViewModel.creatorType;
+      updateServiceRequestController.severity.text = widget.complaintViewModel.severity;
+      updateServiceRequestController.customerID.text = widget.complaintViewModel.creatorId.toString();
+      updateServiceRequestController.requestorName.text = widget.complaintViewModel.creatorName ?? ' ';
+      updateServiceRequestController.requestorContact.text = widget.complaintViewModel.creatorContactNumber;
+      updateServiceRequestController.description.text = widget.complaintViewModel.description;
+      updateServiceRequestController.state.text = widget.complaintViewModel.state;
+      updateServiceRequestController.state.text = widget.complaintViewModel.state;
+      updateServiceRequestController.district.text = widget.complaintViewModel.district;
+      updateServiceRequestController.taluk.text = widget.complaintViewModel.taluk;
+      updateServiceRequestController.pin.text = widget.complaintViewModel.pincode;
     });
   }
 
@@ -88,7 +55,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
       child: Column(
         children: [
           TextFormField(
-            controller: _complaintID,
+            controller: updateServiceRequestController.complaintID,
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
@@ -99,7 +66,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           ),
           TextFormField(
             readOnly: true,
-            controller: _allocatedToID,
+            controller: updateServiceRequestController.allocatedToID,
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Allocated to ID"),
@@ -107,7 +74,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _allocatedToName,
+            controller: updateServiceRequestController.allocatedToName,
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Allocated to Name"),
@@ -116,14 +83,14 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           TextFormField(
             style: FormFieldStyle.formFieldTextStyle,
             readOnly: true,
-            controller: _dateOfComplaint,
+            controller: updateServiceRequestController.dateOfComplaint,
             decoration: FormFieldStyle.buildInputDecoration(
               labelText: "Date of complaint",
             ),
           ),
           SizedBox(height: 16),
           TextFormField(
-            controller: _daysOpen,
+            controller: updateServiceRequestController.daysOpen,
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
@@ -132,7 +99,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _sitePotential,
+            controller: updateServiceRequestController.sitePotential,
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Site Potential"),
@@ -140,14 +107,14 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _department,
+            controller: updateServiceRequestController.department,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
             FormFieldStyle.buildInputDecoration(labelText: "Department*"),
           ),
           SizedBox(height: 16),
           TextFormField(
-            controller: _requestType,
+            controller: updateServiceRequestController.requestType,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
             FormFieldStyle.buildInputDecoration(labelText: "Request Type*"),
@@ -155,14 +122,14 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _requestSubType,
+            controller: updateServiceRequestController.requestSubType,
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Request Sub-type*"),
           ),
           SizedBox(height: 16),
           TextFormField(
-            controller: _customerType,
+            controller: updateServiceRequestController.customerType,
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
@@ -170,7 +137,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           ),
           SizedBox(height: 16),
           TextFormField(
-            controller: _severity,
+            controller: updateServiceRequestController.severity,
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
@@ -178,7 +145,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           ),
           SizedBox(height: 16),
           TextFormField(
-            controller: _customerID,
+            controller: updateServiceRequestController.customerID,
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
@@ -187,7 +154,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _requestorContact,
+            controller: updateServiceRequestController.requestorContact,
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Requestor Contact*"),
@@ -195,7 +162,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _requestorName,
+            controller: updateServiceRequestController.requestorName,
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(
                 labelText: "Requestor Name"),
@@ -205,7 +172,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
             maxLines: 4,
-            controller: _description,
+            controller: updateServiceRequestController.description,
             decoration:
             FormFieldStyle.buildInputDecoration(labelText: "Description"),
           ),
@@ -213,14 +180,14 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _state,
+            controller: updateServiceRequestController.state,
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(labelText: "State"),
           ),
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _district,
+            controller: updateServiceRequestController.district,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
             FormFieldStyle.buildInputDecoration(labelText: "District"),
@@ -228,31 +195,19 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _taluk,
+            controller: updateServiceRequestController.taluk,
             style: FormFieldStyle.formFieldTextStyle,
             decoration: FormFieldStyle.buildInputDecoration(labelText: "Taluk"),
           ),
           SizedBox(height: 16),
           TextFormField(
             readOnly: true,
-            controller: _pin,
+            controller: updateServiceRequestController.pin,
             style: FormFieldStyle.formFieldTextStyle,
             decoration:
             FormFieldStyle.buildInputDecoration(labelText: "Pincode"),
           ),
           SizedBox(height: 16),
-          RaisedButton(
-            onPressed: () {},
-            color: HexColor("#1C99D4"),
-            child: Text(
-              "UPDATE",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  // letterSpacing: 2,
-                  fontSize: 17),
-            ),
-          ),
         ],
       ),
     );

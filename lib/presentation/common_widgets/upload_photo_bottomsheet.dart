@@ -4,10 +4,10 @@ import 'package:image_picker/image_picker.dart';
 
 class UploadImageBottomSheet{
   UploadImageBottomSheet._();
-  static List<File> imageList= List.empty(growable: true);
+  static File image;
 
-  static List<File> showPicker(context) {
-    showModalBottomSheet(
+  static Future<File> showPicker(context) async {
+    await showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
@@ -34,25 +34,27 @@ class UploadImageBottomSheet{
             ),
           );
         });
-    return imageList;
+    return image;
   }
 
 
    static imgFromCamera() async {
-    File image = await ImagePicker.pickImage(
+    File img = await ImagePicker.pickImage(
         source: ImageSource.camera,
         imageQuality: 10,
         maxWidth: 480,
         maxHeight: 600);
-    if (image != null)
-      imageList.add(image);
+    if (img != null)
+      image= img;
+      // imageList.add(image);
   }
 
 
   static imgFromGallery() async {
-    File image = await ImagePicker.pickImage(
+    File img = await ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
-      if (image != null)
-        imageList.add(image);
+    if (img != null)
+      image= img;
+    // imageList.add(image);
   }
 }
