@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
@@ -1336,6 +1337,66 @@ class CustomDialogs {
             Get.back();
             //Get.back();
             Get.offAllNamed(Routes.HOME_SCREEN);
+          },
+        ),
+      ],
+    );
+  }
+
+
+  Widget showCancelEventDialog(int eventId,String heading, String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              heading,
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontWeight: FontWeight.bold,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'NO',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        TextButton(
+          child: Text(
+            'YES',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            Get.to(() => CancelEvent(eventId), binding: EGBinding());
+            //Get.toNamed(Routes.CANCEL_EVENT);
           },
         ),
       ],

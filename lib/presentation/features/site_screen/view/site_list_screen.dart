@@ -94,6 +94,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
     }
   }
   _getRequests()async{
+    _siteController.sitesListResponse.sitesEntity = null;
     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     _siteController.offset = 0;
   }

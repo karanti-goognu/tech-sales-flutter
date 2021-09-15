@@ -119,7 +119,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           children: [
             FlatButton(
                 onPressed: () {
-                  Get.dialog(showCancelEventDialog('Confirmation',
+                  Get.dialog(CustomDialogs().showCancelEventDialog( widget.eventId,'Confirmation',
                       "You will not be able to undo this action, are you sure you want to Cancel this event?"));
                 },
                 child: Row(
@@ -453,64 +453,64 @@ class _DetailViewEventState extends State<DetailViewEvent> {
         ));
   }
 
-  Widget showCancelEventDialog(String heading, String message) {
-    return AlertDialog(
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text(
-              heading,
-              style: GoogleFonts.roboto(
-                  fontSize: 20,
-                  height: 1.4,
-                  letterSpacing: .25,
-                  fontWeight: FontWeight.bold,
-                  color: ColorConstants.inputBoxHintColorDark),
-            ),
-            Text(
-              message,
-              style: GoogleFonts.roboto(
-                  fontSize: 16,
-                  height: 1.4,
-                  letterSpacing: .25,
-                  fontStyle: FontStyle.normal,
-                  color: ColorConstants.inputBoxHintColorDark),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(
-            'NO',
-            style: GoogleFonts.roboto(
-                fontSize: 20,
-                letterSpacing: 1.25,
-                fontStyle: FontStyle.normal,
-                color: ColorConstants.buttonNormalColor),
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        TextButton(
-          child: Text(
-            'YES',
-            style: GoogleFonts.roboto(
-                fontSize: 20,
-                letterSpacing: 1.25,
-                fontStyle: FontStyle.normal,
-                color: ColorConstants.buttonNormalColor),
-          ),
-          onPressed: () {
-            Get.back();
-            Get.to(() => CancelEvent(widget.eventId), binding: EGBinding());
-            //Get.toNamed(Routes.CANCEL_EVENT);
-          },
-        ),
-      ],
-    );
-  }
+  // Widget showCancelEventDialog(int eventId, String heading, String message) {
+  //   return AlertDialog(
+  //     content: SingleChildScrollView(
+  //       child: ListBody(
+  //         children: <Widget>[
+  //           Text(
+  //             heading,
+  //             style: GoogleFonts.roboto(
+  //                 fontSize: 20,
+  //                 height: 1.4,
+  //                 letterSpacing: .25,
+  //                 fontWeight: FontWeight.bold,
+  //                 color: ColorConstants.inputBoxHintColorDark),
+  //           ),
+  //           Text(
+  //             message,
+  //             style: GoogleFonts.roboto(
+  //                 fontSize: 16,
+  //                 height: 1.4,
+  //                 letterSpacing: .25,
+  //                 fontStyle: FontStyle.normal,
+  //                 color: ColorConstants.inputBoxHintColorDark),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //     actions: <Widget>[
+  //       TextButton(
+  //         child: Text(
+  //           'NO',
+  //           style: GoogleFonts.roboto(
+  //               fontSize: 20,
+  //               letterSpacing: 1.25,
+  //               fontStyle: FontStyle.normal,
+  //               color: ColorConstants.buttonNormalColor),
+  //         ),
+  //         onPressed: () {
+  //           Get.back();
+  //         },
+  //       ),
+  //       TextButton(
+  //         child: Text(
+  //           'YES',
+  //           style: GoogleFonts.roboto(
+  //               fontSize: 20,
+  //               letterSpacing: 1.25,
+  //               fontStyle: FontStyle.normal,
+  //               color: ColorConstants.buttonNormalColor),
+  //         ),
+  //         onPressed: () {
+  //           Get.back();
+  //           Get.to(() => CancelEvent(eventId), binding: EGBinding());
+  //           //Get.toNamed(Routes.CANCEL_EVENT);
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
 
   _getCurrentLocation() async {
     if (!(await Geolocator().isLocationServiceEnabled())) {

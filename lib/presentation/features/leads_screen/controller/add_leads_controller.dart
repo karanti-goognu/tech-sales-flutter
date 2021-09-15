@@ -141,6 +141,24 @@ class AddLeadsController extends GetxController {
     return viewLeadDataResponse;
   }
 
+  Future<ViewLeadDataResponse>getLeadDataNew(int leadId) async {
+    ViewLeadDataResponse viewLeadDataResponse;
+    print(":::getLeadData()");
+    String userSecurityKey = "";
+    String empID = "";
+    String accessKey = await repository.getAccessKey();
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+      print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
+      viewLeadDataResponse = await repository.getLeadDataNew(accessKey, userSecurityKey, leadId, empID);
+    });
+    print(viewLeadDataResponse);
+
+    return viewLeadDataResponse;
+  }
+
   void updateLeadData(var updateRequestModel, List<File> imageList,
       BuildContext context, int leadId,int from) {
     Future.delayed(
