@@ -5085,13 +5085,20 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
-          if (_imgDetails.length < 5) {
-            _imageList = await UploadImageBottomSheet.showPicker(context);
-            //_showPicker(context);
-          } else {
-            Get.dialog(
-                CustomDialogs().errorDialog("You can add only upto 5 photos"));
-          }
+          // if (controller.imageList.length < 5) {
+          //   controller.updateImageList(await UploadImageBottomSheet.showPicker(context));
+          //   // _imageList= await UploadImageBottomSheet.showPicker(context);
+          // } else {
+          //   Get.dialog(CustomDialogs().errorDialog(
+          //       "You can add only upto 5 photos"));
+          // }
+          // if (_imgDetails.length < 5) {
+          //   _imageList = await UploadImageBottomSheet.showPicker(context);
+          //   //_showPicker(context);
+          // } else {
+          //   Get.dialog(
+          //       CustomDialogs().errorDialog("You can add only upto 5 photos"));
+          // }
         },
       ),
     );
