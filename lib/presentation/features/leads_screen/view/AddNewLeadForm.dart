@@ -54,6 +54,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   FocusNode myFocusNode;
   String _contactNumber;
   String _comment;
+  TextEditingController _nameController = TextEditingController();
   var _siteAddress = TextEditingController();
   var _pincode = TextEditingController();
   var _state = TextEditingController();
@@ -298,6 +299,60 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+
+    final name = TextFormField(
+      initialValue: _contactName,
+      focusNode: myFocusNode,
+      validator: (value) {
+        if (value.isEmpty || value.length <=0 || value == null || value == " " || value.trim().isEmpty) {
+          return 'Please enter name';
+        }
+        return null;
+      },
+      onChanged: (data) {
+        setState(() {
+          _contactName = data;
+        });
+      },
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9.a-zA-Z ]")), ],
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Name",
+      ),
+    );
+
+    final contact = TextFormField(
+      initialValue: _contactNumber,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter mobile number ';
+        }
+        if (value.length <= 9) {
+          return 'Mobile number is incorrect';
+        }
+        if (!Validations.isValidPhoneNumber(value)) {
+          return 'Enter valid mobile number';
+        }
+        return null;
+      },
+      onChanged: (data) {
+        setState(() {
+          _contactNumber = data;
+        });
+      },
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.phone,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      maxLength: 10,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Mobile Number",
+      ),
+    );
+
+    
     return Scaffold(
 //      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -350,7 +405,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     ),
 
                     SizedBox(height: 16),
-
+                    //name,
                     TextFormField(
                       initialValue: _contactName,
                       focusNode: myFocusNode,

@@ -21,6 +21,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -4189,6 +4190,7 @@ class ViewLeadScreen extends StatefulWidget {
 
 class _ViewLeadScreenState extends State<ViewLeadScreen>
     implements ChangeLeadToSiteDialogListener {
+  final _addLeadFormKey = GlobalKey<FormState>();
   final _formKeyForViewLeadScreen = GlobalKey();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
@@ -4264,21 +4266,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   AddLeadsController _addLeadsController = Get.find();
   final db = BrandNameDBHelper();
+  BuildContext _context;
 
   @override
   void initState() {
     super.initState();
-    _addLeadsController = Get.find();
     myFocusNode = FocusNode();
-    _callGetAccessKeyAndGetLeadIdData();
-  }
+    getData();
+    // _addLeadsController = Get.find();
 
-  @override
-  void dispose() {
-    super.dispose();
-    _addLeadsController?.dispose();
-    myFocusNode?.dispose();
-    myFocusNode = null;
+    //_callGetAccessKeyAndGetLeadIdData();
   }
 
 //   void disposeController(BuildContext context){
@@ -4287,38 +4284,164 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 //     myFocusNode.dispose();
   // }
 
-
   getData() {
     internetChecking().then((result) => {
-      if (result == true)
-        {
-          _addLeadsController.getLeadDataNew(widget.leadId).then((data) {
-            setState(() {
-              if (data != null) {
-                viewLeadDataResponse = data;
-                setData();
-              }
-            });
-            print('RESPONSE, ${data}');
-          })
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+          if (result == true)
+            {
+              _addLeadsController.getLeadDataNew(widget.leadId).then((data) {
+                setState(() {
+                  if (data != null) {
+                    viewLeadDataResponse = data;
+                    setData();
+                  }
+                });
+                print('RESPONSE, ${data}');
+              })
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
-  setData(){
-    if(viewLeadDataResponse != null){
+  setData() {
+    if (viewLeadDataResponse != null) {
+      checkStatus();
+      _contactName.text = viewLeadDataResponse.leadsEntity.contactName;
+      _contactNumber.text = viewLeadDataResponse.leadsEntity.contactNumber;
+      geoTagType.text = viewLeadDataResponse.leadsEntity.geotagType;
+      _siteAddress.text = viewLeadDataResponse.leadsEntity.leadAddress;
+      _pincode.text = viewLeadDataResponse.leadsEntity.leadPincode;
+      _state.text = viewLeadDataResponse.leadsEntity.leadStateName;
+      _district.text = viewLeadDataResponse.leadsEntity.leadDistrictName;
+      _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
 
+      leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
+      leadStageEntity = viewLeadDataResponse.leadStageEntity;
+
+      for (int i = 0; i < leadStageEntity.length; i++) {
+        if (viewLeadDataResponse.leadsEntity.leadStageId.toString() ==
+            leadStageEntity[i].id.toString()) {
+          leadStageVal.id = leadStageEntity[i].id;
+          leadStageVal.leadStageDesc = leadStageEntity[i].leadStageDesc;
+        }
+      }
+      leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
+      gv.leadRejectReasonEntity = leadRejectReasonEntity;
+      nextStageConstructionEntity =
+          viewLeadDataResponse.nextStageConstructionEntity;
+      gv.nextStageConstructionEntity = nextStageConstructionEntity;
+      dealerList = viewLeadDataResponse.dealerList;
+      print("Dealer List Length :: " + dealerList.length.toString());
+      gv.dealerList = dealerList;
+      influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+      influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
+      _currentPosition = new Position(
+          latitude: double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
+          longitude:
+              double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
+      listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
+
+      if (listLeadImagePhoto != null) {
+        for (int i = 0; i < listLeadImagePhoto.length; i++) {
+          File file = new File(UrlConstants.baseUrlforImages +
+              "/" +
+              listLeadImagePhoto[i].photoName);
+          _imgDetails.add(new ImageDetails("Network", file));
+        }
+      }
+      influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+
+      influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
+
+      _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
+      _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
+
+      if (_listInfluencerEntity.length != null) {
+        for (int i = 0; i < _listInfluencerEntity.length; i++) {
+          int originalId;
+          for (int j = 0; j < _listLeadInfluencerEntity.length; j++) {
+            if (_listInfluencerEntity[i].id ==
+                _listLeadInfluencerEntity[j].inflId) {
+              _listInfluencerEntity[i].isPrimary =
+                  _listLeadInfluencerEntity[j].isPrimary;
+              originalId = _listLeadInfluencerEntity[j].id;
+              break;
+            }
+          }
+
+          print(_listLeadInfluencerEntity[i].toJson());
+          InfluencerDetail inflDetail = new InfluencerDetail(
+            originalId: originalId,
+            isPrimary: _listInfluencerEntity[i].isPrimary,
+            isPrimarybool:
+                _listInfluencerEntity[i].isPrimary == "Y" ? true : false,
+            id: new TextEditingController(
+                text: _listInfluencerEntity[i].id.toString()),
+            inflName: new TextEditingController(
+                text: _listInfluencerEntity[i].inflName.toString()),
+            inflContact: new TextEditingController(
+                text: _listInfluencerEntity[i].inflContact.toString()),
+            inflTypeId: new TextEditingController(
+                text: _listInfluencerEntity[i].inflTypeId.toString()),
+            inflCatId: new TextEditingController(
+                text: _listInfluencerEntity[i].inflCatId.toString()),
+            ilpIntrested: new TextEditingController(
+                text: _listInfluencerEntity[i].ilpIntrested.toString()),
+            createdOn: new TextEditingController(
+                text: _listInfluencerEntity[i].createdOn.toString()),
+            isExpanded: false,
+          );
+          for (int j = 0; j < influencerTypeEntity.length; j++) {
+            if (influencerTypeEntity[j].inflTypeId.toString() ==
+                inflDetail.inflTypeId.text.toString()) {
+              inflDetail.inflTypeValue = new TextEditingController(
+                  text: influencerTypeEntity[j].inflTypeDesc);
+              break;
+            }
+          }
+          for (int j = 0; j < influencerCategoryEntity.length; j++) {
+            if (influencerCategoryEntity[j].inflCatId.toString() ==
+                inflDetail.inflCatId.text.toString()) {
+              inflDetail.inflCatValue = new TextEditingController(
+                  text: influencerCategoryEntity[j].inflCatDesc);
+              break;
+            }
+          }
+
+          _listInfluencerDetail.add(inflDetail);
+        }
+      } else {
+        _listInfluencerDetail
+            .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
+      }
+      initialInfluencerListLength = _listInfluencerDetail.length;
+
+      _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
+      final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
+      for (int i = 0; i < _commentsListEntity.length; i++) {
+        _commentsList.add(new CommentsDetail(
+          creatorName: _commentsListEntity[i].creatorName,
+          commentedAt: formatter.format(DateTime.fromMillisecondsSinceEpoch(
+              _commentsListEntity[i].createdOn)),
+          createdBy: _commentsListEntity[i].createdBy,
+          commentText: _commentsListEntity[i].commentText,
+        ));
+      }
+      _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
+      _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
+      _totalBags.text = (double.parse(_totalMT.text) * 20).round().toString();
+      myFocusNode = FocusNode();
+      myFocusNode.requestFocus();
     }
   }
 
+  /*
   _callGetAccessKeyAndGetLeadIdData() async {
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _addLeadsController.getAccessKeyOnly().then((data) async {
@@ -4352,178 +4475,232 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         }
       dealerEntityForDb = await db.fetchAllDistinctDealers();
       dealerEntityForDb.forEach((e) => print(e.toMapForDb().toString()));
-     // setState(() {
-        leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
-        LeadStatusEntity list;
-        print(viewLeadDataResponse.leadsEntity.leadStatusId);
+      checkStatus();
+      // setState(() {
+      //    leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
+      //    LeadStatusEntity list;
+      //    print(viewLeadDataResponse.leadsEntity.leadStatusId);
+      //
+      //    for (int i = 0; i < leadStatusEntity.length; i++) {
+      //      if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
+      //          leadStatusEntity[i].id.toString()) {
+      //        labelText = leadStatusEntity[i].leadStatusDesc;
+      //        labelId = leadStatusEntity[i].id;
+      //        if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
+      //          showDialog(
+      //            context: _formKeyForViewLeadScreen.currentState.context,
+      //            barrierDismissible: false,
+      //            builder: (BuildContext context) {
+      //              return WillPopScope(
+      //                onWillPop: () async => false,
+      //                child: AlertDialog(
+      //                  content: new Text(
+      //                    "Status of this lead is $labelText . You cannot edit or update it.",
+      //                  ),
+      //                  actions: <Widget>[
+      //                    // usually buttons at the bottom of the dialog
+      //                    new FlatButton(
+      //                      child: new Text("Close"),
+      //                      onPressed: () {
+      //                        Get.back();
+      //                        Get.back();
+      //                      },
+      //                    ),
+      //                  ],
+      //                ),
+      //              );
+      //            },
+      //          );
+      //        }
+      //        list = new LeadStatusEntity(
+      //            id: leadStatusEntity[i].id,
+      //            leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
+      //
+      //        print(labelText);
+      //      }
+      //    }
 
-        for (int i = 0; i < leadStatusEntity.length; i++) {
-          if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
-              leadStatusEntity[i].id.toString()) {
-            labelText = leadStatusEntity[i].leadStatusDesc;
-            labelId = leadStatusEntity[i].id;
-            if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
-              showDialog(
-                context: _formKeyForViewLeadScreen.currentState.context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return WillPopScope(
-                    onWillPop: () async => false,
-                    child: AlertDialog(
-                      content: new Text(
-                        "Status of this lead is $labelText . You cannot edit or update it.",
-                      ),
-                      actions: <Widget>[
-                        // usually buttons at the bottom of the dialog
-                        new FlatButton(
-                          child: new Text("Close"),
-                          onPressed: () {
-                            Get.back();
-                            Get.back();
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }
-            list = new LeadStatusEntity(
-                id: leadStatusEntity[i].id,
-                leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
-
-            print(labelText);
-          }
-        }
-
-        leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
-        leadStageEntity = viewLeadDataResponse.leadStageEntity;
-
-        for (int i = 0; i < leadStageEntity.length; i++) {
-          if (viewLeadDataResponse.leadsEntity.leadStageId.toString() ==
-              leadStageEntity[i].id.toString()) {
-            leadStageVal.id = leadStageEntity[i].id;
-            leadStageVal.leadStageDesc = leadStageEntity[i].leadStageDesc;
-          }
-        }
-        leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
-        gv.leadRejectReasonEntity = leadRejectReasonEntity;
-        nextStageConstructionEntity =
-            viewLeadDataResponse.nextStageConstructionEntity;
-        gv.nextStageConstructionEntity = nextStageConstructionEntity;
-        dealerList = viewLeadDataResponse.dealerList;
-        print("Dealer List Length :: " + dealerList.length.toString());
-        gv.dealerList = dealerList;
-        influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
-        influencerCategoryEntity =
-            viewLeadDataResponse.influencerCategoryEntity;
-        _contactName.text = viewLeadDataResponse.leadsEntity.contactName;
-        _contactNumber.text = viewLeadDataResponse.leadsEntity.contactNumber;
-        geoTagType.text = viewLeadDataResponse.leadsEntity.geotagType;
-        _siteAddress.text = viewLeadDataResponse.leadsEntity.leadAddress;
-        _pincode.text = viewLeadDataResponse.leadsEntity.leadPincode;
-        _state.text = viewLeadDataResponse.leadsEntity.leadStateName;
-        _district.text = viewLeadDataResponse.leadsEntity.leadDistrictName;
-        _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
-        _currentPosition = new Position(
-            latitude:
-                double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
-            longitude:
-                double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
-        listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
-
-        if (listLeadImagePhoto != null) {
-          for (int i = 0; i < listLeadImagePhoto.length; i++) {
-            File file = new File(UrlConstants.baseUrlforImages +
-                "/" +
-                listLeadImagePhoto[i].photoName);
-            _imgDetails.add(new ImageDetails("Network", file));
-          }
-        }
-        influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
-
-        influencerCategoryEntity =
-            viewLeadDataResponse.influencerCategoryEntity;
-
-        _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
-        _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
-
-        if (_listInfluencerEntity.length != null) {
-          for (int i = 0; i < _listInfluencerEntity.length; i++) {
-            int originalId;
-            for (int j = 0; j < _listLeadInfluencerEntity.length; j++) {
-              if (_listInfluencerEntity[i].id ==
-                  _listLeadInfluencerEntity[j].inflId) {
-                _listInfluencerEntity[i].isPrimary =
-                    _listLeadInfluencerEntity[j].isPrimary;
-                originalId = _listLeadInfluencerEntity[j].id;
-                break;
-              }
-            }
-
-            print(_listLeadInfluencerEntity[i].toJson());
-            InfluencerDetail inflDetail = new InfluencerDetail(
-              originalId: originalId,
-              isPrimary: _listInfluencerEntity[i].isPrimary,
-              isPrimarybool:
-                  _listInfluencerEntity[i].isPrimary == "Y" ? true : false,
-              id: new TextEditingController(
-                  text: _listInfluencerEntity[i].id.toString()),
-              inflName: new TextEditingController(
-                  text: _listInfluencerEntity[i].inflName.toString()),
-              inflContact: new TextEditingController(
-                  text: _listInfluencerEntity[i].inflContact.toString()),
-              inflTypeId: new TextEditingController(
-                  text: _listInfluencerEntity[i].inflTypeId.toString()),
-              inflCatId: new TextEditingController(
-                  text: _listInfluencerEntity[i].inflCatId.toString()),
-              ilpIntrested: new TextEditingController(
-                  text: _listInfluencerEntity[i].ilpIntrested.toString()),
-              createdOn: new TextEditingController(
-                  text: _listInfluencerEntity[i].createdOn.toString()),
-              isExpanded: false,
-            );
-            for (int j = 0; j < influencerTypeEntity.length; j++) {
-              if (influencerTypeEntity[j].inflTypeId.toString() ==
-                  inflDetail.inflTypeId.text.toString()) {
-                inflDetail.inflTypeValue = new TextEditingController(
-                    text: influencerTypeEntity[j].inflTypeDesc);
-                break;
-              }
-            }
-            for (int j = 0; j < influencerCategoryEntity.length; j++) {
-              if (influencerCategoryEntity[j].inflCatId.toString() ==
-                  inflDetail.inflCatId.text.toString()) {
-                inflDetail.inflCatValue = new TextEditingController(
-                    text: influencerCategoryEntity[j].inflCatDesc);
-                break;
-              }
-            }
-
-            _listInfluencerDetail.add(inflDetail);
-          }
-        } else {
-          _listInfluencerDetail
-              .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
-        }
-        initialInfluencerListLength = _listInfluencerDetail.length;
-
-        _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
-        final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
-        for (int i = 0; i < _commentsListEntity.length; i++) {
-          _commentsList.add(new CommentsDetail(
-            creatorName: _commentsListEntity[i].creatorName,
-            commentedAt: formatter.format(DateTime.fromMillisecondsSinceEpoch(
-                _commentsListEntity[i].createdOn)),
-            createdBy: _commentsListEntity[i].createdBy,
-            commentText: _commentsListEntity[i].commentText,
-          ));
-        }
-        _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
-        _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
-        _totalBags.text = (double.parse(_totalMT.text) * 20).round().toString();
-     // });
+      // leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
+      // leadStageEntity = viewLeadDataResponse.leadStageEntity;
+      //
+      // for (int i = 0; i < leadStageEntity.length; i++) {
+      //   if (viewLeadDataResponse.leadsEntity.leadStageId.toString() ==
+      //       leadStageEntity[i].id.toString()) {
+      //     leadStageVal.id = leadStageEntity[i].id;
+      //     leadStageVal.leadStageDesc = leadStageEntity[i].leadStageDesc;
+      //   }
+      // }
+      // leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
+      // gv.leadRejectReasonEntity = leadRejectReasonEntity;
+      // nextStageConstructionEntity =
+      //     viewLeadDataResponse.nextStageConstructionEntity;
+      // gv.nextStageConstructionEntity = nextStageConstructionEntity;
+      // dealerList = viewLeadDataResponse.dealerList;
+      // print("Dealer List Length :: " + dealerList.length.toString());
+      // gv.dealerList = dealerList;
+      // influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+      // influencerCategoryEntity =
+      //     viewLeadDataResponse.influencerCategoryEntity;
+      // _contactName.text = viewLeadDataResponse.leadsEntity.contactName;
+      // _contactNumber.text = viewLeadDataResponse.leadsEntity.contactNumber;
+      // geoTagType.text = viewLeadDataResponse.leadsEntity.geotagType;
+      // _siteAddress.text = viewLeadDataResponse.leadsEntity.leadAddress;
+      // _pincode.text = viewLeadDataResponse.leadsEntity.leadPincode;
+      // _state.text = viewLeadDataResponse.leadsEntity.leadStateName;
+      // _district.text = viewLeadDataResponse.leadsEntity.leadDistrictName;
+      // _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
+      // _currentPosition = new Position(
+      //     latitude:
+      //         double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
+      //     longitude:
+      //         double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
+      // listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
+      //
+      // if (listLeadImagePhoto != null) {
+      //   for (int i = 0; i < listLeadImagePhoto.length; i++) {
+      //     File file = new File(UrlConstants.baseUrlforImages +
+      //         "/" +
+      //         listLeadImagePhoto[i].photoName);
+      //     _imgDetails.add(new ImageDetails("Network", file));
+      //   }
+      // }
+      // influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+      //
+      // influencerCategoryEntity =
+      //     viewLeadDataResponse.influencerCategoryEntity;
+      //
+      // _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
+      // _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
+      //
+      // if (_listInfluencerEntity.length != null) {
+      //   for (int i = 0; i < _listInfluencerEntity.length; i++) {
+      //     int originalId;
+      //     for (int j = 0; j < _listLeadInfluencerEntity.length; j++) {
+      //       if (_listInfluencerEntity[i].id ==
+      //           _listLeadInfluencerEntity[j].inflId) {
+      //         _listInfluencerEntity[i].isPrimary =
+      //             _listLeadInfluencerEntity[j].isPrimary;
+      //         originalId = _listLeadInfluencerEntity[j].id;
+      //         break;
+      //       }
+      //     }
+      //
+      //     print(_listLeadInfluencerEntity[i].toJson());
+      //     InfluencerDetail inflDetail = new InfluencerDetail(
+      //       originalId: originalId,
+      //       isPrimary: _listInfluencerEntity[i].isPrimary,
+      //       isPrimarybool:
+      //           _listInfluencerEntity[i].isPrimary == "Y" ? true : false,
+      //       id: new TextEditingController(
+      //           text: _listInfluencerEntity[i].id.toString()),
+      //       inflName: new TextEditingController(
+      //           text: _listInfluencerEntity[i].inflName.toString()),
+      //       inflContact: new TextEditingController(
+      //           text: _listInfluencerEntity[i].inflContact.toString()),
+      //       inflTypeId: new TextEditingController(
+      //           text: _listInfluencerEntity[i].inflTypeId.toString()),
+      //       inflCatId: new TextEditingController(
+      //           text: _listInfluencerEntity[i].inflCatId.toString()),
+      //       ilpIntrested: new TextEditingController(
+      //           text: _listInfluencerEntity[i].ilpIntrested.toString()),
+      //       createdOn: new TextEditingController(
+      //           text: _listInfluencerEntity[i].createdOn.toString()),
+      //       isExpanded: false,
+      //     );
+      //     for (int j = 0; j < influencerTypeEntity.length; j++) {
+      //       if (influencerTypeEntity[j].inflTypeId.toString() ==
+      //           inflDetail.inflTypeId.text.toString()) {
+      //         inflDetail.inflTypeValue = new TextEditingController(
+      //             text: influencerTypeEntity[j].inflTypeDesc);
+      //         break;
+      //       }
+      //     }
+      //     for (int j = 0; j < influencerCategoryEntity.length; j++) {
+      //       if (influencerCategoryEntity[j].inflCatId.toString() ==
+      //           inflDetail.inflCatId.text.toString()) {
+      //         inflDetail.inflCatValue = new TextEditingController(
+      //             text: influencerCategoryEntity[j].inflCatDesc);
+      //         break;
+      //       }
+      //     }
+      //
+      //     _listInfluencerDetail.add(inflDetail);
+      //   }
+      // } else {
+      //   _listInfluencerDetail
+      //       .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
+      // }
+      // initialInfluencerListLength = _listInfluencerDetail.length;
+      //
+      // _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
+      // final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
+      // for (int i = 0; i < _commentsListEntity.length; i++) {
+      //   _commentsList.add(new CommentsDetail(
+      //     creatorName: _commentsListEntity[i].creatorName,
+      //     commentedAt: formatter.format(DateTime.fromMillisecondsSinceEpoch(
+      //         _commentsListEntity[i].createdOn)),
+      //     createdBy: _commentsListEntity[i].createdBy,
+      //     commentText: _commentsListEntity[i].commentText,
+      //   ));
+      // }
+      // _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
+      // _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
+      // _totalBags.text = (double.parse(_totalMT.text) * 20).round().toString();
+      // });
     });
+  }
+*/
+  checkStatus() {
+    leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
+    LeadStatusEntity list;
+    print(viewLeadDataResponse.leadsEntity.leadStatusId);
+
+    for (int i = 0; i < leadStatusEntity.length; i++) {
+      if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
+          leadStatusEntity[i].id.toString()) {
+        labelText = leadStatusEntity[i].leadStatusDesc;
+        labelId = leadStatusEntity[i].id;
+        if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
+          showDialog(
+            context: _formKeyForViewLeadScreen.currentState.context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return WillPopScope(
+                onWillPop: () async => false,
+                child: AlertDialog(
+                  content: new Text(
+                    "Status of this lead is $labelText . You cannot edit or update it.",
+                  ),
+                  actions: <Widget>[
+                    // usually buttons at the bottom of the dialog
+                    new FlatButton(
+                      child: new Text("Close"),
+                      onPressed: () {
+                        Get.back();
+                        Get.back();
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+        list = new LeadStatusEntity(
+            id: leadStatusEntity[i].id,
+            leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
+
+        print(labelText);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _addLeadsController?.dispose();
+    myFocusNode?.dispose();
+    myFocusNode = null;
   }
 
   @override
@@ -4553,12 +4730,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               .map((label) => DropdownMenuItem(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 2.0),
-                      child: SizedBox(
-                        width: 135,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2.7,
                         child: Text(
                           label.leadStatusDesc,
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: ScreenUtil().setSp(13),
                               color: ColorConstants.inputBoxHintColor,
                               fontFamily: "Muli"),
                         ),
@@ -4568,7 +4745,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   ))
               .toList(),
           //  elevation: 0,
-          iconSize: 40,
+          iconSize: 35,
           hint: Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: (labelText != null) ? Text(labelText) : Text(""),
@@ -4698,11 +4875,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
     final name = TextFormField(
       controller: _contactName,
-      readOnly: true,
       //autofocus: true,
       focusNode: myFocusNode,
-      style: TextStyle(
-          color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Name"),
     );
@@ -4710,10 +4886,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final contact = TextFormField(
         controller: _contactNumber,
         readOnly: true,
-        style: TextStyle(
-            fontSize: 18,
-            color: ColorConstants.inputBoxHintColor,
-            fontFamily: "Muli"),
+        style: FormFieldStyle.formFieldTextStyle,
         decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Mobile Number",
         ));
@@ -4803,10 +4976,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         }
         return null;
       },
-      style: TextStyle(
-          fontSize: 18,
-          color: ColorConstants.inputBoxHintColor,
-          fontFamily: "Muli"),
+      style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Address"),
     );
@@ -4814,24 +4984,17 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final pincode = TextFormField(
       controller: _pincode,
       validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter Pincode ';
+        if (!value.isEmpty && !Validations.isValidPincode(value)) {
+          return "Enter valid pincode";
         }
-        if (value.length <= 6) {
-          return 'Pincode is incorrect';
-        }
-
         return null;
       },
-      style: TextStyle(
-          fontSize: 18,
-          color: ColorConstants.inputBoxHintColor,
-          fontFamily: "Muli"),
+      style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.phone,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
-      //  maxLength: 6,
+      maxLength: 6,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Pincode",
       ),
@@ -4858,11 +5021,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
         return null;
       },
-      style: TextStyle(
-          fontSize: 18,
-          color: ColorConstants.inputBoxHintColor,
-          fontFamily: "Muli"),
+      style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "State",
       ),
@@ -4877,11 +5040,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
         return null;
       },
-      style: TextStyle(
-          fontSize: 18,
-          color: ColorConstants.inputBoxHintColor,
-          fontFamily: "Muli"),
+      style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "District",
       ),
@@ -4893,14 +5056,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         if (value.isEmpty) {
           return 'Please enter Taluk ';
         }
-
         return null;
       },
-      style: TextStyle(
-          fontSize: 18,
-          color: ColorConstants.inputBoxHintColor,
-          fontFamily: "Muli"),
+      style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+      ],
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Taluk"),
     );
 
@@ -4983,15 +5145,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 if (value.isEmpty) {
                   return 'Please enter Bags ';
                 }
-
                 return null;
               },
 
-              style: TextStyle(
-                  fontSize: 18,
-                  color: ColorConstants.inputBoxHintColor,
-                  fontFamily: "Muli"),
-              // keyboardType: TextInputType.text,
+              style: FormFieldStyle.formFieldTextStyle,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -5094,34 +5251,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
         return null;
       },
-      style: TextStyle(
-          fontSize: 18,
-          color: ColorConstants.inputBoxHintColor,
-          fontFamily: "Muli"),
+      style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: ColorConstants.backgroundColorBlue,
-              //color: HexColor("#0000001F"),
-              width: 1.0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 1.0),
-        ),
+      decoration: FormFieldStyle.buildInputDecoration(
         labelText: "RERA Number",
-        filled: false,
-        focusColor: Colors.black,
-        labelStyle: TextStyle(
-            fontFamily: "Muli",
-            color: ColorConstants.inputBoxHintColorDark,
-            fontWeight: FontWeight.normal,
-            fontSize: 16.0),
-        fillColor: ColorConstants.backgroundColor,
       ),
     );
 
@@ -5129,34 +5262,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       maxLines: 4,
       maxLength: 500,
       controller: _comments,
-      style: TextStyle(
-          fontSize: 18,
-          color: ColorConstants.inputBoxHintColor,
-          fontFamily: "Muli"),
+      style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: ColorConstants.backgroundColorBlue,
-              //color: HexColor("#0000001F"),
-              width: 1.0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: const Color(0xFF000000).withOpacity(0.4), width: 1.0),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 1.0),
-        ),
+      decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Comment",
-        filled: false,
-        focusColor: Colors.black,
-        labelStyle: TextStyle(
-            fontFamily: "Muli",
-            color: ColorConstants.inputBoxHintColorDark,
-            fontWeight: FontWeight.normal,
-            fontSize: 16.0),
-        fillColor: ColorConstants.backgroundColor,
       ),
     );
 
@@ -5207,7 +5316,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       ),
                     ],
                   ))),
-          (viewLeadDataResponse != null)
+          (viewLeadDataResponse != null &&
+                  viewLeadDataResponse.leadsEntity != null)
               ? ListView(
                   children: [
                     Row(
@@ -5257,7 +5367,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     Padding(
                       padding: EdgeInsets.all(ScreenUtil().setSp(16)),
                       child: Form(
-                        //key: _formKeyForViewLeadScreen,
+                        key: _addLeadFormKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -5425,9 +5535,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                   ),
                                                   Switch(
                                                     onChanged: (value) {
-                                                      // if(isCreatorInfluencerSame){
-                                                      //   Get.dialog(CustomDialogs().errorDialog("Primary Influencer can not be changed"));
-                                                      // }else {
                                                       setState(() {
                                                         if (value) {
                                                           for (int i = 0;
@@ -5718,10 +5825,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 onChanged: (value) async {
                                                   bool match = false;
                                                   if (value.length < 10) {
-                                                    // _listInfluencerDetail[
-                                                    // index]
-                                                    //     .inflContact
-                                                    //     .clear();
                                                     if (_listInfluencerDetail[
                                                                 index]
                                                             .inflName !=
@@ -5768,301 +5871,30 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                               "Already added influencer : " +
                                                                   value));
                                                     } else {
-                                                      String empId;
-                                                      String mobileNumber;
-                                                      String name;
-                                                      Future<SharedPreferences>
-                                                          _prefs =
-                                                          SharedPreferences
-                                                              .getInstance();
-                                                      await _prefs.then(
-                                                          (SharedPreferences
-                                                              prefs) {
-                                                        empId = prefs.getString(
-                                                                StringConstants
-                                                                    .employeeId) ??
-                                                            "empty";
-                                                        mobileNumber = prefs.getString(
-                                                                StringConstants
-                                                                    .mobileNumber) ??
-                                                            "empty";
-                                                        name = prefs.getString(
-                                                                StringConstants
-                                                                    .employeeName) ??
-                                                            "empty";
-                                                        print(_comments.text);
-                                                      });
-                                                      AddLeadsController
-                                                          _addLeadsController =
-                                                          Get.find();
-                                                      _addLeadsController
-                                                          .phoneNumber = value;
-                                                      AccessKeyModel
-                                                          accessKeyModel =
-                                                          new AccessKeyModel();
-                                                      await _addLeadsController
-                                                          .getAccessKeyOnly()
-                                                          .then((data) async {
-                                                        accessKeyModel = data;
-                                                        print("AccessKey :: " +
-                                                            accessKeyModel
-                                                                .accessKey);
-                                                        await _addLeadsController
-                                                            .getInfNewData(
-                                                                accessKeyModel
-                                                                    .accessKey)
-                                                            .then((data) {
-                                                          InfluencerDetailModel
-                                                              _infDetailModel =
-                                                              data;
-                                                          if (_infDetailModel
-                                                                  .respCode ==
-                                                              "DM1002") {
-                                                            InfluencerModel
-                                                                inflDetail =
-                                                                _infDetailModel
-                                                                    .influencerModel;
-
-                                                            if (inflDetail
-                                                                    .inflName !=
-                                                                "null") {
-                                                              setState(() {
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflContact =
-                                                                    new TextEditingController();
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflName =
-                                                                    new TextEditingController();
-                                                                FocusScope.of(
-                                                                        context)
-                                                                    .unfocus();
-                                                                //  print(inflDetail.inflName.text);
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflTypeId =
-                                                                    new TextEditingController();
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflCatId =
-                                                                    new TextEditingController();
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflTypeValue =
-                                                                    new TextEditingController();
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflCatValue =
-                                                                    new TextEditingController();
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .id =
-                                                                    new TextEditingController();
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .ilpIntrested =
-                                                                    new TextEditingController();
-
-                                                                print(inflDetail
-                                                                    .inflName);
-
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflContact
-                                                                        .text =
-                                                                    inflDetail
-                                                                        .inflContact;
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflName
-                                                                        .text =
-                                                                    inflDetail
-                                                                        .inflName;
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .id
-                                                                        .text =
-                                                                    inflDetail
-                                                                        .inflId
-                                                                        .toString();
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .ilpIntrested
-                                                                        .text =
-                                                                    inflDetail
-                                                                        .ilpRegFlag;
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflTypeValue
-                                                                        .text =
-                                                                    inflDetail
-                                                                        .influencerTypeText;
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflCatValue
-                                                                        .text =
-                                                                    inflDetail
-                                                                        .influencerCategoryText;
-                                                                _listInfluencerDetail[
-                                                                            index]
-                                                                        .createdBy =
-                                                                    empId;
-                                                                print(_listInfluencerDetail[
-                                                                        index]
-                                                                    .inflName);
-
-                                                                for (int i = 0;
-                                                                    i <
-                                                                        influencerTypeEntity
-                                                                            .length;
-                                                                    i++) {
-                                                                  if (influencerTypeEntity[
-                                                                              i]
-                                                                          .inflTypeId
-                                                                          .toString() ==
-                                                                      inflDetail
-                                                                          .inflTypeId
-                                                                          .toString()) {
-                                                                    _listInfluencerDetail[index]
-                                                                            .inflTypeId
-                                                                            .text =
-                                                                        inflDetail
-                                                                            .inflTypeId
-                                                                            .toString();
-                                                                    _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflTypeValue
-                                                                        .text = influencerTypeEntity[
-                                                                            influencerTypeEntity[i].inflTypeId -
-                                                                                1]
-                                                                        .inflTypeDesc;
-                                                                    break;
-                                                                  } else {
-                                                                    // _listInfluencerDetail[
-                                                                    // index]
-                                                                    //     .inflContact
-                                                                    //     .clear();
-                                                                    // _listInfluencerDetail[
-                                                                    // index]
-                                                                    //     .inflName
-                                                                    //     .clear();
-                                                                    _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflTypeId
-                                                                        .clear();
-                                                                    _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflTypeValue
-                                                                        .clear();
-                                                                  }
-                                                                }
-                                                                print(_listInfluencerDetail[
-                                                                        index]
-                                                                    .inflName);
-
-                                                                for (int i = 0;
-                                                                    i <
-                                                                        influencerCategoryEntity
-                                                                            .length;
-                                                                    i++) {
-                                                                  if (influencerCategoryEntity[
-                                                                              i]
-                                                                          .inflCatId
-                                                                          .toString() ==
-                                                                      inflDetail
-                                                                          .inflCatId
-                                                                          .toString()) {
-                                                                    _listInfluencerDetail[index]
-                                                                            .inflCatId
-                                                                            .text =
-                                                                        inflDetail
-                                                                            .inflCatId
-                                                                            .toString();
-                                                                    //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                                    _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflCatValue
-                                                                        .text = influencerCategoryEntity[
-                                                                            influencerCategoryEntity[i].inflCatId -
-                                                                                1]
-                                                                        .inflCatDesc;
-                                                                    break;
-                                                                  } else {
-                                                                    _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflCatId
-                                                                        .clear();
-                                                                    _listInfluencerDetail[
-                                                                            index]
-                                                                        .inflCatValue
-                                                                        .clear();
-                                                                  }
-                                                                }
-                                                              });
-                                                            } else {
-                                                              if (_listInfluencerDetail[
-                                                                          index]
-                                                                      .inflContact !=
-                                                                  null) {
-                                                                setState(() {
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflContact
-                                                                      .clear();
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflName
-                                                                      .clear();
-                                                                });
-                                                              }
-                                                              return Get.dialog(
-                                                                  CustomDialogs()
-                                                                      .showDialog(
-                                                                          "No influencer registered with this number"));
-                                                            }
-                                                          } else {
-                                                            if (_listInfluencerDetail[
-                                                                        index]
-                                                                    .inflContact !=
-                                                                null) {
-                                                              _listInfluencerDetail[
-                                                                      index]
-                                                                  .inflContact
-                                                                  .clear();
-                                                              _listInfluencerDetail[
-                                                                      index]
-                                                                  .inflName
-                                                                  .clear();
-                                                            }
-                                                            return Get.dialog(
-                                                                CustomDialogs()
-                                                                    .showDialogRestrictSystemBack(
-                                                                        _infDetailModel
-                                                                            .respMsg),
-                                                                barrierDismissible:
-                                                                    false);
-                                                          }
-                                                          // });
-                                                          Get.back();
-                                                        });
-                                                        // Get.back();
-                                                      });
+                                                      apiCallForInfContact(
+                                                          index,
+                                                          value,
+                                                          context);
                                                     }
                                                   }
                                                 },
                                                 validator: (value) {
                                                   if (value.isEmpty) {
                                                     return 'Please enter Influencer Number ';
+                                                  } else if (value.length !=
+                                                      10) {
+                                                    return 'Mobile number must be of 10 digit';
+                                                  }
+                                                  if (!Validations
+                                                      .isValidPhoneNumber(
+                                                          value)) {
+                                                    return 'Enter valid mobile number';
                                                   }
 
                                                   return null;
                                                 },
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: ColorConstants
-                                                        .inputBoxHintColor,
-                                                    fontFamily: "Muli"),
+                                                style: FormFieldStyle
+                                                    .formFieldTextStyle,
                                                 keyboardType:
                                                     TextInputType.phone,
                                                 inputFormatters: <
@@ -6070,48 +5902,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                   FilteringTextInputFormatter
                                                       .digitsOnly
                                                 ],
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: ColorConstants
-                                                            .backgroundColorBlue,
-                                                        width: 1.0),
-                                                  ),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: const Color(
-                                                                0xFF000000)
-                                                            .withOpacity(0.4),
-                                                        width: 1.0),
-                                                  ),
-                                                  errorBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.red,
-                                                        width: 1.0),
-                                                  ),
-                                                  labelText: "Infl. Contact",
-                                                  filled: false,
-                                                  focusColor: Colors.black,
-                                                  labelStyle: TextStyle(
-                                                      fontFamily: "Muli",
-                                                      color: ColorConstants
-                                                          .inputBoxHintColorDark,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 16.0),
-                                                  fillColor: ColorConstants
-                                                      .backgroundColor,
-                                                ),
+                                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Infl. Contact"),
+
                                               ),
                                               SizedBox(height: 16),
                                               TextFormField(
-                                                //  initialValue: _listInfluencerDetail[index].inflName,
-                                                controller:
-                                                    _listInfluencerDetail[index]
-                                                        .inflName,
+                                                controller: _listInfluencerDetail[index].inflName,
 
                                                 // validator: (value) {
                                                 //   if (value.isEmpty) {
@@ -6120,58 +5916,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 //
                                                 //   return null;
                                                 // },
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: ColorConstants
-                                                        .inputBoxHintColor,
-                                                    fontFamily: "Muli"),
+                                                style: FormFieldStyle
+                                                    .formFieldTextStyle,
                                                 keyboardType:
                                                     TextInputType.text,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: ColorConstants
-                                                            .backgroundColorBlue,
-                                                        //color: HexColor("#0000001F"),
-                                                        width: 1.0),
-                                                  ),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: const Color(
-                                                                0xFF000000)
-                                                            .withOpacity(0.4),
-                                                        width: 1.0),
-                                                  ),
-                                                  errorBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.red,
-                                                        width: 1.0),
-                                                  ),
-                                                  disabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: const Color(
-                                                                0xFF000000)
-                                                            .withOpacity(0.4),
-                                                        width: 1.0),
-                                                  ),
-                                                  labelText: "Infl. Name",
-                                                  enabled: false,
-                                                  filled: false,
-                                                  focusColor: Colors.black,
-                                                  labelStyle: TextStyle(
-                                                      fontFamily: "Muli",
-                                                      color: ColorConstants
-                                                          .inputBoxHintColorDark,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 16.0),
-                                                  fillColor: ColorConstants
-                                                      .backgroundColor,
-                                                ),
+                                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Infl. Name"),
                                               ),
                                               SizedBox(height: 16),
                                               TextFormField(
@@ -6185,58 +5934,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 //
                                                 //   return null;
                                                 // },
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: ColorConstants
-                                                        .inputBoxHintColor,
-                                                    fontFamily: "Muli"),
+                                                style: FormFieldStyle
+                                                    .formFieldTextStyle,
                                                 keyboardType:
                                                     TextInputType.text,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: ColorConstants
-                                                            .backgroundColorBlue,
-                                                        //color: HexColor("#0000001F"),
-                                                        width: 1.0),
-                                                  ),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: const Color(
-                                                                0xFF000000)
-                                                            .withOpacity(0.4),
-                                                        width: 1.0),
-                                                  ),
-                                                  errorBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.red,
-                                                        width: 1.0),
-                                                  ),
-                                                  disabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: const Color(
-                                                                0xFF000000)
-                                                            .withOpacity(0.4),
-                                                        width: 1.0),
-                                                  ),
-                                                  enabled: false,
-                                                  labelText: "Infl. Type",
-                                                  filled: false,
-                                                  focusColor: Colors.black,
-                                                  labelStyle: TextStyle(
-                                                      fontFamily: "Muli",
-                                                      color: ColorConstants
-                                                          .inputBoxHintColorDark,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 16.0),
-                                                  fillColor: ColorConstants
-                                                      .backgroundColor,
-                                                ),
+                                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Infl. Type"),
                                               ),
                                               SizedBox(height: 16),
                                               TextFormField(
@@ -6250,58 +5952,56 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 //
                                                 //   return null;
                                                 // },
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: ColorConstants
-                                                        .inputBoxHintColor,
-                                                    fontFamily: "Muli"),
+                                                style: FormFieldStyle
+                                                    .formFieldTextStyle,
                                                 keyboardType:
                                                     TextInputType.text,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: ColorConstants
-                                                            .backgroundColorBlue,
-                                                        //color: HexColor("#0000001F"),
-                                                        width: 1.0),
-                                                  ),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: const Color(
-                                                                0xFF000000)
-                                                            .withOpacity(0.4),
-                                                        width: 1.0),
-                                                  ),
-                                                  errorBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.red,
-                                                        width: 1.0),
-                                                  ),
-                                                  disabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: const Color(
-                                                                0xFF000000)
-                                                            .withOpacity(0.4),
-                                                        width: 1.0),
-                                                  ),
-                                                  enabled: false,
-                                                  labelText: "Infl. Category",
-                                                  filled: false,
-                                                  focusColor: Colors.black,
-                                                  labelStyle: TextStyle(
-                                                      fontFamily: "Muli",
-                                                      color: ColorConstants
-                                                          .inputBoxHintColorDark,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 16.0),
-                                                  fillColor: ColorConstants
-                                                      .backgroundColor,
-                                                ),
+                                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Infl. Category"),
+                                                // decoration: InputDecoration(
+                                                //   focusedBorder:
+                                                //       OutlineInputBorder(
+                                                //     borderSide: BorderSide(
+                                                //         color: ColorConstants
+                                                //             .backgroundColorBlue,
+                                                //         //color: HexColor("#0000001F"),
+                                                //         width: 1.0),
+                                                //   ),
+                                                //   enabledBorder:
+                                                //       OutlineInputBorder(
+                                                //     borderSide: BorderSide(
+                                                //         color: const Color(
+                                                //                 0xFF000000)
+                                                //             .withOpacity(0.4),
+                                                //         width: 1.0),
+                                                //   ),
+                                                //   errorBorder:
+                                                //       OutlineInputBorder(
+                                                //     borderSide: BorderSide(
+                                                //         color: Colors.red,
+                                                //         width: 1.0),
+                                                //   ),
+                                                //   disabledBorder:
+                                                //       OutlineInputBorder(
+                                                //     borderSide: BorderSide(
+                                                //         color: const Color(
+                                                //                 0xFF000000)
+                                                //             .withOpacity(0.4),
+                                                //         width: 1.0),
+                                                //   ),
+                                                //   enabled: false,
+                                                //   labelText: "Infl. Category",
+                                                //   filled: false,
+                                                //   focusColor: Colors.black,
+                                                //   labelStyle: TextStyle(
+                                                //       fontFamily: "Muli",
+                                                //       color: ColorConstants
+                                                //           .inputBoxHintColorDark,
+                                                //       fontWeight:
+                                                //           FontWeight.normal,
+                                                //       fontSize: 16.0),
+                                                //   fillColor: ColorConstants
+                                                //       .backgroundColor,
+                                                // ),
                                               ),
                                             ],
                                           );
@@ -6517,6 +6217,135 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         ],
       ),
     );
+  }
+
+  apiCallForInfContact(int index, String value, BuildContext context) async {
+    String empId;
+    String mobileNumber;
+    String name;
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
+      name = prefs.getString(StringConstants.employeeName) ?? "empty";
+      print(_comments.text);
+    });
+    AddLeadsController _addLeadsController = Get.find();
+    _addLeadsController.phoneNumber = value;
+    AccessKeyModel accessKeyModel = new AccessKeyModel();
+    await _addLeadsController.getAccessKeyOnly().then((data) async {
+      accessKeyModel = data;
+      print("AccessKey :: " + accessKeyModel.accessKey);
+      await _addLeadsController
+          .getInfNewData(accessKeyModel.accessKey)
+          .then((data) {
+        InfluencerDetailModel _infDetailModel = data;
+        if (_infDetailModel.respCode == "DM1002") {
+          InfluencerModel inflDetail = _infDetailModel.influencerModel;
+
+          if (inflDetail.inflName != "null") {
+            setState(() {
+              _listInfluencerDetail[index].inflContact =
+                  new TextEditingController();
+              _listInfluencerDetail[index].inflName =
+                  new TextEditingController();
+              FocusScope.of(context).unfocus();
+              //  print(inflDetail.inflName.text);
+              _listInfluencerDetail[index].inflTypeId =
+                  new TextEditingController();
+              _listInfluencerDetail[index].inflCatId =
+                  new TextEditingController();
+              _listInfluencerDetail[index].inflTypeValue =
+                  new TextEditingController();
+              _listInfluencerDetail[index].inflCatValue =
+                  new TextEditingController();
+              _listInfluencerDetail[index].id = new TextEditingController();
+              _listInfluencerDetail[index].ilpIntrested =
+                  new TextEditingController();
+
+              print(inflDetail.inflName);
+
+              _listInfluencerDetail[index].inflContact.text =
+                  inflDetail.inflContact;
+              _listInfluencerDetail[index].inflName.text = inflDetail.inflName;
+              _listInfluencerDetail[index].id.text =
+                  inflDetail.inflId.toString();
+              _listInfluencerDetail[index].ilpIntrested.text =
+                  inflDetail.ilpRegFlag;
+              _listInfluencerDetail[index].inflTypeValue.text =
+                  inflDetail.influencerTypeText;
+              _listInfluencerDetail[index].inflCatValue.text =
+                  inflDetail.influencerCategoryText;
+              _listInfluencerDetail[index].createdBy = empId;
+              print(_listInfluencerDetail[index].inflName);
+
+              for (int i = 0; i < influencerTypeEntity.length; i++) {
+                if (influencerTypeEntity[i].inflTypeId.toString() ==
+                    inflDetail.inflTypeId.toString()) {
+                  _listInfluencerDetail[index].inflTypeId.text =
+                      inflDetail.inflTypeId.toString();
+                  _listInfluencerDetail[index].inflTypeValue.text =
+                      influencerTypeEntity[
+                              influencerTypeEntity[i].inflTypeId - 1]
+                          .inflTypeDesc;
+                  break;
+                } else {
+                  // _listInfluencerDetail[
+                  // index]
+                  //     .inflContact
+                  //     .clear();
+                  // _listInfluencerDetail[
+                  // index]
+                  //     .inflName
+                  //     .clear();
+                  _listInfluencerDetail[index].inflTypeId.clear();
+                  _listInfluencerDetail[index].inflTypeValue.clear();
+                }
+              }
+              print(_listInfluencerDetail[index].inflName);
+
+              for (int i = 0; i < influencerCategoryEntity.length; i++) {
+                if (influencerCategoryEntity[i].inflCatId.toString() ==
+                    inflDetail.inflCatId.toString()) {
+                  _listInfluencerDetail[index].inflCatId.text =
+                      inflDetail.inflCatId.toString();
+                  //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                  _listInfluencerDetail[index].inflCatValue.text =
+                      influencerCategoryEntity[
+                              influencerCategoryEntity[i].inflCatId - 1]
+                          .inflCatDesc;
+                  break;
+                } else {
+                  _listInfluencerDetail[index].inflCatId.clear();
+                  _listInfluencerDetail[index].inflCatValue.clear();
+                }
+              }
+            });
+          } else {
+            if (_listInfluencerDetail[index].inflContact != null) {
+              setState(() {
+                _listInfluencerDetail[index].inflContact.clear();
+                _listInfluencerDetail[index].inflName.clear();
+              });
+            }
+            return Get.dialog(CustomDialogs()
+                .showDialog("No influencer registered with this number"));
+          }
+        } else {
+          if (_listInfluencerDetail[index].inflContact != null) {
+            _listInfluencerDetail[index].inflContact.clear();
+            _listInfluencerDetail[index].inflName.clear();
+          }
+          return Get.dialog(
+              CustomDialogs()
+                  .showDialogRestrictSystemBack(_infDetailModel.respMsg),
+              barrierDismissible: false);
+        }
+        // });
+        Get.back();
+      });
+      // Get.back();
+    });
   }
 
   btnAddMoreInfClicked() {
