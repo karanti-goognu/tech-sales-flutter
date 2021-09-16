@@ -7,30 +7,63 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/r
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
 
 class UpdateServiceRequestController extends GetxController {
+
+  List<File> imageList = List<File>();
+
+  // List<File> get imageList => _imageList;
+
+   updateImageList(File value) {
+    imageList.add(value);
+    print(imageList.length);
+    print(":::::::::::::::");
+    update();
+  }
+
   @override
   void onInit() {
+
     super.onInit();
   }
 
+  @override
+  void onClose(){
+     print("onClose called");
+    imageList.clear();
+    super.dispose();
+  }
+
+
   final SrRepository repository;
+  /// Request Update Details
+  TextEditingController complaintID = TextEditingController();
+  TextEditingController allocatedToID = TextEditingController();
+  TextEditingController allocatedToName = TextEditingController();
+  TextEditingController dateOfComplaint = TextEditingController();
+  TextEditingController daysOpen = TextEditingController();
+  TextEditingController sitePotential = TextEditingController();
+  TextEditingController department = TextEditingController();
+  TextEditingController requestType = TextEditingController();
+  TextEditingController requestSubType = TextEditingController();
+  TextEditingController customerType = TextEditingController();
+  TextEditingController severity = TextEditingController();
+  TextEditingController customerID = TextEditingController();
+  TextEditingController requestorContact = TextEditingController();
+  TextEditingController requestorName = TextEditingController();
+  TextEditingController description = TextEditingController();
+  TextEditingController state = TextEditingController();
+  TextEditingController district = TextEditingController();
+  TextEditingController taluk = TextEditingController();
+  TextEditingController pin = TextEditingController();
 
   UpdateServiceRequestController({@required this.repository})
       : assert(repository != null);
   final _updateRequestData = UpdateSRModel().obs;
-  // final _siteId = StringConstants.empty.obs;
-
   get updateRequestData => _updateRequestData.value;
-
-  // get siteId => this._siteId.value;
-  //
-  // set siteId(value) => this._siteId.value = value;
-
   set updateRequestData(value) => _updateRequestData.value = value;
-  String responseForDialog = '';
-  List<File> imageList;
+  bool responseReceived = false;
+  // List<File> imageList = List<File>();
 
   Future<AccessKeyModel> getAccessKey() {
     return repository.getAccessKey();
@@ -82,9 +115,9 @@ class UpdateServiceRequestController extends GetxController {
 
   Future<Map> updateServiceRequest(List<File> imageList, String accessKey,
       String userSecurityKey, UpdateSRModel updateRequestModel) {
-    return repository
-        .updateServiceRequest(
-            imageList, accessKey, userSecurityKey, updateRequestModel)
-        .whenComplete(() => responseForDialog = 'Test');
+    return repository.updateServiceRequest(imageList, accessKey, userSecurityKey, updateRequestModel).whenComplete(() => responseReceived = true);
   }
+
+
+
 }
