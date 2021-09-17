@@ -16,6 +16,7 @@ abstract class ColorConstants {
   static Color cancelRed = HexColor('#B00020');
   static Color btnBlue = HexColor('#1C99D4');
   static Color greenTitle = HexColor('#006838');
+  static Color btnOrange = HexColor("#F9A61A");
 
 
   ///events and gifts

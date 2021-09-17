@@ -21,9 +21,11 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -4441,215 +4443,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     }
   }
 
-  /*
-  _callGetAccessKeyAndGetLeadIdData() async {
-    AccessKeyModel accessKeyModel = new AccessKeyModel();
-    await _addLeadsController.getAccessKeyOnly().then((data) async {
-      accessKeyModel = data;
-      print("AccessKey :: " + accessKeyModel.accessKey);
 
-      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      _prefs.then((SharedPreferences prefs) {
-        String empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-
-        getLeadData(accessKeyModel.accessKey, empId);
-      });
-    });
-  }
-
-  getLeadData(String accessKey, String empId) async {
-    await _addLeadsController
-        .getLeadData(accessKey, widget.leadId)
-        .then((data) async {
-      print("here");
-      print(data);
-      viewLeadDataResponse = data;
-      counterListModel = viewLeadDataResponse.counterListModel;
-      int listLength = counterListModel.length;
-      if (listLength > 0)
-        for (int i = 0; i < listLength; i++) {
-          int id = await db.addDealer(DealerForDb(
-              counterListModel[i].soldToParty,
-              counterListModel[i].soldToPartyName));
-          //print("ADDED :  $id");
-        }
-      dealerEntityForDb = await db.fetchAllDistinctDealers();
-      dealerEntityForDb.forEach((e) => print(e.toMapForDb().toString()));
-      checkStatus();
-      // setState(() {
-      //    leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
-      //    LeadStatusEntity list;
-      //    print(viewLeadDataResponse.leadsEntity.leadStatusId);
-      //
-      //    for (int i = 0; i < leadStatusEntity.length; i++) {
-      //      if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
-      //          leadStatusEntity[i].id.toString()) {
-      //        labelText = leadStatusEntity[i].leadStatusDesc;
-      //        labelId = leadStatusEntity[i].id;
-      //        if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
-      //          showDialog(
-      //            context: _formKeyForViewLeadScreen.currentState.context,
-      //            barrierDismissible: false,
-      //            builder: (BuildContext context) {
-      //              return WillPopScope(
-      //                onWillPop: () async => false,
-      //                child: AlertDialog(
-      //                  content: new Text(
-      //                    "Status of this lead is $labelText . You cannot edit or update it.",
-      //                  ),
-      //                  actions: <Widget>[
-      //                    // usually buttons at the bottom of the dialog
-      //                    new FlatButton(
-      //                      child: new Text("Close"),
-      //                      onPressed: () {
-      //                        Get.back();
-      //                        Get.back();
-      //                      },
-      //                    ),
-      //                  ],
-      //                ),
-      //              );
-      //            },
-      //          );
-      //        }
-      //        list = new LeadStatusEntity(
-      //            id: leadStatusEntity[i].id,
-      //            leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
-      //
-      //        print(labelText);
-      //      }
-      //    }
-
-      // leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
-      // leadStageEntity = viewLeadDataResponse.leadStageEntity;
-      //
-      // for (int i = 0; i < leadStageEntity.length; i++) {
-      //   if (viewLeadDataResponse.leadsEntity.leadStageId.toString() ==
-      //       leadStageEntity[i].id.toString()) {
-      //     leadStageVal.id = leadStageEntity[i].id;
-      //     leadStageVal.leadStageDesc = leadStageEntity[i].leadStageDesc;
-      //   }
-      // }
-      // leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
-      // gv.leadRejectReasonEntity = leadRejectReasonEntity;
-      // nextStageConstructionEntity =
-      //     viewLeadDataResponse.nextStageConstructionEntity;
-      // gv.nextStageConstructionEntity = nextStageConstructionEntity;
-      // dealerList = viewLeadDataResponse.dealerList;
-      // print("Dealer List Length :: " + dealerList.length.toString());
-      // gv.dealerList = dealerList;
-      // influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
-      // influencerCategoryEntity =
-      //     viewLeadDataResponse.influencerCategoryEntity;
-      // _contactName.text = viewLeadDataResponse.leadsEntity.contactName;
-      // _contactNumber.text = viewLeadDataResponse.leadsEntity.contactNumber;
-      // geoTagType.text = viewLeadDataResponse.leadsEntity.geotagType;
-      // _siteAddress.text = viewLeadDataResponse.leadsEntity.leadAddress;
-      // _pincode.text = viewLeadDataResponse.leadsEntity.leadPincode;
-      // _state.text = viewLeadDataResponse.leadsEntity.leadStateName;
-      // _district.text = viewLeadDataResponse.leadsEntity.leadDistrictName;
-      // _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
-      // _currentPosition = new Position(
-      //     latitude:
-      //         double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
-      //     longitude:
-      //         double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
-      // listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
-      //
-      // if (listLeadImagePhoto != null) {
-      //   for (int i = 0; i < listLeadImagePhoto.length; i++) {
-      //     File file = new File(UrlConstants.baseUrlforImages +
-      //         "/" +
-      //         listLeadImagePhoto[i].photoName);
-      //     _imgDetails.add(new ImageDetails("Network", file));
-      //   }
-      // }
-      // influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
-      //
-      // influencerCategoryEntity =
-      //     viewLeadDataResponse.influencerCategoryEntity;
-      //
-      // _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
-      // _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
-      //
-      // if (_listInfluencerEntity.length != null) {
-      //   for (int i = 0; i < _listInfluencerEntity.length; i++) {
-      //     int originalId;
-      //     for (int j = 0; j < _listLeadInfluencerEntity.length; j++) {
-      //       if (_listInfluencerEntity[i].id ==
-      //           _listLeadInfluencerEntity[j].inflId) {
-      //         _listInfluencerEntity[i].isPrimary =
-      //             _listLeadInfluencerEntity[j].isPrimary;
-      //         originalId = _listLeadInfluencerEntity[j].id;
-      //         break;
-      //       }
-      //     }
-      //
-      //     print(_listLeadInfluencerEntity[i].toJson());
-      //     InfluencerDetail inflDetail = new InfluencerDetail(
-      //       originalId: originalId,
-      //       isPrimary: _listInfluencerEntity[i].isPrimary,
-      //       isPrimarybool:
-      //           _listInfluencerEntity[i].isPrimary == "Y" ? true : false,
-      //       id: new TextEditingController(
-      //           text: _listInfluencerEntity[i].id.toString()),
-      //       inflName: new TextEditingController(
-      //           text: _listInfluencerEntity[i].inflName.toString()),
-      //       inflContact: new TextEditingController(
-      //           text: _listInfluencerEntity[i].inflContact.toString()),
-      //       inflTypeId: new TextEditingController(
-      //           text: _listInfluencerEntity[i].inflTypeId.toString()),
-      //       inflCatId: new TextEditingController(
-      //           text: _listInfluencerEntity[i].inflCatId.toString()),
-      //       ilpIntrested: new TextEditingController(
-      //           text: _listInfluencerEntity[i].ilpIntrested.toString()),
-      //       createdOn: new TextEditingController(
-      //           text: _listInfluencerEntity[i].createdOn.toString()),
-      //       isExpanded: false,
-      //     );
-      //     for (int j = 0; j < influencerTypeEntity.length; j++) {
-      //       if (influencerTypeEntity[j].inflTypeId.toString() ==
-      //           inflDetail.inflTypeId.text.toString()) {
-      //         inflDetail.inflTypeValue = new TextEditingController(
-      //             text: influencerTypeEntity[j].inflTypeDesc);
-      //         break;
-      //       }
-      //     }
-      //     for (int j = 0; j < influencerCategoryEntity.length; j++) {
-      //       if (influencerCategoryEntity[j].inflCatId.toString() ==
-      //           inflDetail.inflCatId.text.toString()) {
-      //         inflDetail.inflCatValue = new TextEditingController(
-      //             text: influencerCategoryEntity[j].inflCatDesc);
-      //         break;
-      //       }
-      //     }
-      //
-      //     _listInfluencerDetail.add(inflDetail);
-      //   }
-      // } else {
-      //   _listInfluencerDetail
-      //       .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
-      // }
-      // initialInfluencerListLength = _listInfluencerDetail.length;
-      //
-      // _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
-      // final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
-      // for (int i = 0; i < _commentsListEntity.length; i++) {
-      //   _commentsList.add(new CommentsDetail(
-      //     creatorName: _commentsListEntity[i].creatorName,
-      //     commentedAt: formatter.format(DateTime.fromMillisecondsSinceEpoch(
-      //         _commentsListEntity[i].createdOn)),
-      //     createdBy: _commentsListEntity[i].createdBy,
-      //     commentText: _commentsListEntity[i].commentText,
-      //   ));
-      // }
-      // _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
-      // _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
-      // _totalBags.text = (double.parse(_totalMT.text) * 20).round().toString();
-      // });
-    });
-  }
-*/
   checkStatus() {
     leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
     LeadStatusEntity list;
@@ -4697,10 +4491,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   @override
   void dispose() {
-    super.dispose();
-    _addLeadsController?.dispose();
+    _addLeadsController.imageList.clear();
     myFocusNode?.dispose();
     myFocusNode = null;
+    super.dispose();
+    //_addLeadsController?.dispose();
+
   }
 
   @override
@@ -4920,16 +4716,26 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   fontSize: 17),
             ),
           ),
-          onPressed: () {
+          onPressed: () async{
             setState(() {
               geoTagType.text = "A";
             });
             Get.dialog(Center(
               child: CircularProgressIndicator(),
             ));
-
-            _getCurrentLocation();
-          },
+            List result;
+            result = await GetCurrentLocation.getCurrentLocation();
+            _currentPosition = result[1];
+            List<String>loc = result[0];
+            print("ADD: ${result[0]}");
+            _siteAddress.text = "${loc[7]}, ${loc[6]}, ${loc[4]}";
+            _district.text = "${loc[2]}";
+            _state.text = "${loc[1]}";
+            _pincode.text = "${loc[5]}";
+            _taluk.text = "${loc[3]}";
+            _currentAddress =
+            "${loc[3]}, ${loc[5]}, ${loc[1]}";
+            },
         ),
         Text(
           "Or",
@@ -5092,13 +4898,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           //   Get.dialog(CustomDialogs().errorDialog(
           //       "You can add only upto 5 photos"));
           // }
-          // if (_imgDetails.length < 5) {
-          //   _imageList = await UploadImageBottomSheet.showPicker(context);
-          //   //_showPicker(context);
-          // } else {
-          //   Get.dialog(
-          //       CustomDialogs().errorDialog("You can add only upto 5 photos"));
-          // }
+          if (_imgDetails.length < 5) {
+           // _imageList = await UploadImageBottomSheet.showPicker(context);
+            _showPicker(context);
+          } else {
+            Get.dialog(
+                CustomDialogs().errorDialog("You can add only upto 5 photos"));
+          }
         },
       ),
     );
@@ -5156,31 +4962,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               },
 
               style: FormFieldStyle.formFieldTextStyle,
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: const Color(0xFF000000).withOpacity(0.4),
-                      width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Bags",
-                filled: false,
-                focusColor: Colors.black,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "Bags"),
             ),
           ),
         ),
@@ -5207,42 +4989,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
                 return null;
               },
-              style: TextStyle(
-                  fontSize: 18,
-                  color: ColorConstants.inputBoxHintColor,
-                  fontFamily: "Muli"),
+              style: FormFieldStyle.formFieldTextStyle,
+              decoration: FormFieldStyle.buildInputDecoration(labelText: "MT"),
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: const Color(0xFF000000).withOpacity(0.4),
-                      width: 1.0),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: const Color(0xFF000000).withOpacity(0.4),
-                      width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "MT",
-                filled: false,
-                //enabled: false,
-                focusColor: Colors.black,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
+
             ),
           ),
         )
@@ -5323,9 +5073,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       ),
                     ],
                   ))),
+          Positioned.fill(child:
           (viewLeadDataResponse != null &&
                   viewLeadDataResponse.leadsEntity != null)
-              ? ListView(
+              ? GetBuilder<AddLeadsController>(
+              builder: (controller) {
+                return ListView(
                   children: [
                     Row(
                       children: [
@@ -5415,89 +5168,138 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                             txtMandatory,
                             SizedBox(height: _height),
                             btnUploadPhoto,
+                            // Container(
+                            //   width: MediaQuery.of(context).size.width,
+                            //   child: FlatButton(
+                            //     shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(0),
+                            //         side: BorderSide(color: Colors.black26)),
+                            //     color: Colors.transparent,
+                            //     child: Padding(
+                            //       padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                            //       child: Text(
+                            //         "UPLOAD PHOTOS",
+                            //         style: TextStyle(
+                            //             color: HexColor("#1C99D4"),
+                            //             fontWeight: FontWeight.bold,
+                            //             // letterSpacing: 2,
+                            //             fontSize: 17),
+                            //       ),
+                            //     ),
+                            //     onPressed: () async {
+                            //       // if (controller.imageList.length < 5) {
+                            //       //   controller.updateImageList(await UploadImageBottomSheet.showPicker(context));
+                            //       //   // _imageList= await UploadImageBottomSheet.showPicker(context);
+                            //       // } else {
+                            //       //   Get.dialog(CustomDialogs().errorDialog(
+                            //       //       "You can add only upto 5 photos"));
+                            //       // }
+                            //       if (_imgDetails.length < 5) {
+                            //         //_imageList = await UploadImageBottomSheet.showPicker(context);
+                            //         _showPicker(context);
+                            //       } else {
+                            //         Get.dialog(
+                            //             CustomDialogs().errorDialog("You can add only upto 5 photos"));
+                            //       }
+                            //     },
+                            //   ),
+                            // ),
                             SizedBox(height: _height),
-                            _imgDetails != null
+                            //controller.imageList != null
+                            _imageList != null
                                 ? Row(
-                                    children: [
-                                      Expanded(
-                                        child: ListView.builder(
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: _imgDetails.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  return showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertDialog(
-                                                          content:
-                                                              new Container(
-                                                            // width: 500,
-                                                            // height: 500,
-                                                            child: _imgDetails[
-                                                                            index]
-                                                                        .from
-                                                                        .toLowerCase() ==
-                                                                    "network"
-                                                                ? Image.network(
-                                                                    _imgDetails[
-                                                                            index]
-                                                                        .file
-                                                                        .path)
-                                                                : Image.file(
-                                                                    _imgDetails[
-                                                                            index]
-                                                                        .file),
-                                                          ),
-                                                        );
-                                                      });
-                                                },
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "Picture ${(index + 1)}. ",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 15),
-                                                        ),
-                                                        Text(
-                                                          "Image_${(index + 1)}.jpg",
-                                                          style: TextStyle(
-                                                              color: HexColor(
-                                                                  "#007CBF"),
-                                                              fontSize: 15),
-                                                        ),
-                                                      ],
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                      physics:
+                                      NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: _imageList.length,
+                                      itemBuilder: (BuildContext context,
+                                          int index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            return showDialog(
+                                                context: context,
+                                                builder: (BuildContext
+                                                context) {
+                                                  return AlertDialog(
+                                                    content:
+                                                    new Container(
+                                                      // width: 500,
+                                                      // height: 500,
+                                                      child: _imgDetails[
+                                                      index]
+                                                          .from
+                                                          .toLowerCase() ==
+                                                          "network"
+                                                          ? Image.network(
+                                                          _imgDetails[
+                                                          index]
+                                                              .file
+                                                              .path)
+                                                          : Image.file(
+                                                          _imgDetails[
+                                                          index]
+                                                              .file),
                                                     ),
-                                                    /* GestureDetector(
+                                                  );
+                                                  // return AlertDialog(
+                                                  //   content:
+                                                  //   new Container(
+                                                  //     // width: 500,
+                                                  //     // height: 500,
+                                                  //     child: Image.file(
+                                                  //         controller.imageList[
+                                                  //         index]),
+                                                  //   ),
+                                                  // );
+                                                });
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Picture ${(index + 1)}. ",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
+                                                        fontSize: 15),
+                                                  ),
+                                                  Text(
+                                                    "Image_${(index + 1)}.jpg",
+                                                    style: TextStyle(
+                                                        color: HexColor(
+                                                            "#007CBF"),
+                                                        fontSize: 15),
+                                                  ),
+                                                ],
+                                              ),
+                                              /* GestureDetector(
                                                 child: Icon(
                                                   Icons.delete,
                                                   color: HexColor("#FFCD00"),
                                                 ),
                                                 onTap: () {
-                                                  setState(() {
-                                                    _imgDetails.removeAt(index);
-                                                  });
+                                                 setState(() {
+                                                                  controller.imageList
+                                                                      .removeAt(
+                                                                          index);
+                                                                });
                                                 },
                                               )*/
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                                    ],
-                                  )
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              ],
+                            )
                                 : Container(),
                             SizedBox(height: _height),
                             Divider(
@@ -5509,10 +5311,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                   top: 10.0, bottom: 20, left: 5),
                               child: Text(
                                 "Influencer Details",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
-                                    fontFamily: "Muli"),
+                                style: TextStyles.muliBold25,
                               ),
                             ),
                             Row(
@@ -5530,134 +5329,111 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             children: [
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                MainAxisAlignment
+                                                    .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "Influencer Details ${(index + 1)} ",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 18),
+                                                    "Influencer Details ${(index +
+                                                        1)} ",
+                                                    style: TextStyles.mulliBold18,
                                                   ),
                                                   Switch(
                                                     onChanged: (value) {
                                                       setState(() {
                                                         if (value) {
                                                           for (int i = 0;
-                                                              i <
-                                                                  _listInfluencerDetail
-                                                                      .length;
-                                                              i++) {
+                                                          i <
+                                                              _listInfluencerDetail
+                                                                  .length;
+                                                          i++) {
                                                             if (i == index) {
                                                               _listInfluencerDetail[
-                                                                          i]
-                                                                      .isPrimarybool =
+                                                              i]
+                                                                  .isPrimarybool =
                                                                   value;
                                                             } else {
                                                               _listInfluencerDetail[
-                                                                          i]
-                                                                      .isPrimarybool =
-                                                                  !value;
+                                                              i]
+                                                                  .isPrimarybool =
+                                                              !value;
                                                             }
                                                           }
                                                         } else {
-                                                          Get.dialog(CustomDialogs()
-                                                              .errorDialog(
+                                                          Get.dialog(
+                                                              CustomDialogs()
+                                                                  .errorDialog(
                                                                   "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                         }
                                                       });
                                                     },
                                                     value:
-                                                        _listInfluencerDetail[
-                                                                index]
-                                                            .isPrimarybool,
+                                                    _listInfluencerDetail[
+                                                    index]
+                                                        .isPrimarybool,
                                                     activeColor:
-                                                        HexColor("#009688"),
+                                                    HexColor("#009688"),
                                                     activeTrackColor:
-                                                        HexColor("#009688")
-                                                            .withOpacity(0.5),
+                                                    HexColor("#009688")
+                                                        .withOpacity(0.5),
                                                     inactiveThumbColor:
-                                                        HexColor("#F1F1F1"),
+                                                    HexColor("#F1F1F1"),
                                                     inactiveTrackColor:
-                                                        Colors.black26,
+                                                    Colors.black26,
                                                   ),
                                                   _listInfluencerDetail[index]
-                                                          .isExpanded
+                                                      .isExpanded
                                                       ? FlatButton.icon(
-                                                          // shape: RoundedRectangleBorder(
-                                                          //     borderRadius: BorderRadius.circular(0),
-                                                          //     side: BorderSide(color: Colors.black26)),
-                                                          color: Colors
-                                                              .transparent,
-                                                          icon: Icon(
-                                                            Icons.remove,
-                                                            color: HexColor(
-                                                                "#F9A61A"),
-                                                            size: 18,
-                                                          ),
-                                                          label: Text(
-                                                            "COLLAPSE",
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#F9A61A"),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                // letterSpacing: 2,
-                                                                fontSize: 17),
-                                                          ),
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded =
-                                                                  !_listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded;
-                                                            });
-                                                            // _getCurrentLocation();
-                                                          },
-                                                        )
+                                                    // shape: RoundedRectangleBorder(
+                                                    //     borderRadius: BorderRadius.circular(0),
+                                                    //     side: BorderSide(color: Colors.black26)),
+                                                    color: Colors
+                                                        .transparent,
+                                                    icon: Icon(
+                                                      Icons.remove,
+                                                      color: ColorConstants.btnOrange,
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "COLLAPSE",
+                                                      style: TextStyles.muliBoldOrange17,
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .isExpanded =
+                                                        !_listInfluencerDetail[
+                                                        index]
+                                                            .isExpanded;
+                                                      });
+                                                    },
+                                                  )
                                                       : FlatButton.icon(
-                                                          // shape: RoundedRectangleBorder(
-                                                          //     borderRadius: BorderRadius.circular(0),
-                                                          //     side: BorderSide(color: Colors.black26)),
-                                                          color: Colors
-                                                              .transparent,
-                                                          icon: Icon(
-                                                            Icons.add,
-                                                            color: HexColor(
-                                                                "#F9A61A"),
-                                                            size: ScreenUtil()
-                                                                .setSp(18),
-                                                          ),
-                                                          label: Text(
-                                                            "EXPAND",
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#F9A61A"),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                // letterSpacing: 2,
-                                                                fontSize:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            15)),
-                                                          ),
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded =
-                                                                  !_listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded;
-                                                            });
-                                                            // _getCurrentLocation();
-                                                          },
-                                                        ),
+
+                                                    color: Colors
+                                                        .transparent,
+                                                    icon: Icon(
+                                                      Icons.add,
+                                                      color: ColorConstants.btnOrange,
+                                                      size: ScreenUtil()
+                                                          .setSp(18),
+                                                    ),
+                                                    label: Text(
+                                                      "EXPAND",
+                                                      style: TextStyles.muliBoldOrange17,
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .isExpanded =
+                                                        !_listInfluencerDetail[
+                                                        index]
+                                                            .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  ),
                                                 ],
                                               ),
                                             ],
@@ -5669,97 +5445,77 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             children: [
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                MainAxisAlignment
+                                                    .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "Influencer Details ${(index + 1)} ",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 18),
+                                                    "Influencer Details ${(index +
+                                                        1)} ",
+                                                    style: TextStyles.mulliBold18
                                                   ),
                                                   _listInfluencerDetail[index]
-                                                          .isExpanded
+                                                      .isExpanded
                                                       ? FlatButton.icon(
-                                                          color: Colors
-                                                              .transparent,
-                                                          icon: Icon(
-                                                            Icons.remove,
-                                                            color: HexColor(
-                                                                "#F9A61A"),
-                                                            size: 18,
-                                                          ),
-                                                          label: Text(
-                                                            "COLLAPSE",
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#F9A61A"),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                // letterSpacing: 2,
-                                                                fontSize: 17),
-                                                          ),
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded =
-                                                                  !_listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded;
-                                                            });
-                                                            // _getCurrentLocation();
-                                                          },
-                                                        )
+                                                    color: Colors
+                                                        .transparent,
+                                                    icon: Icon(
+                                                      Icons.remove,
+                                                      color: ColorConstants.btnOrange,
+                                                      size: 18,
+                                                    ),
+                                                    label: Text(
+                                                      "COLLAPSE",
+                                                      style: TextStyles.muliBoldOrange17,
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .isExpanded =
+                                                        !_listInfluencerDetail[
+                                                        index]
+                                                            .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  )
                                                       : FlatButton.icon(
-                                                          color: Colors
-                                                              .transparent,
-                                                          icon: Icon(
-                                                            Icons.add,
-                                                            color: HexColor(
-                                                                "#F9A61A"),
-                                                            size: ScreenUtil()
-                                                                .setSp(18),
-                                                          ),
-                                                          label: Text(
-                                                            "EXPAND",
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#F9A61A"),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            15)),
-                                                          ),
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded =
-                                                                  !_listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded;
-                                                            });
-                                                            // _getCurrentLocation();
-                                                          },
-                                                        ),
+                                                    color: Colors
+                                                        .transparent,
+                                                    icon: Icon(
+                                                      Icons.add,
+                                                      color:ColorConstants.btnOrange,
+                                                      size: ScreenUtil()
+                                                          .setSp(18),
+                                                    ),
+                                                    label: Text(
+                                                      "EXPAND",
+                                                      style: TextStyles.muliBoldOrange17,
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .isExpanded =
+                                                        !_listInfluencerDetail[
+                                                        index]
+                                                            .isExpanded;
+                                                      });
+                                                      // _getCurrentLocation();
+                                                    },
+                                                  ),
                                                 ],
                                               ),
                                               SizedBox(height: 16),
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                MainAxisAlignment.center,
                                                 children: [
                                                   Text(
                                                     "Secondary",
                                                     style: TextStyle(
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         fontSize: 18,
                                                         // color: HexColor("#000000DE"),
                                                         fontFamily: "Muli"),
@@ -5769,56 +5525,57 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                       setState(() {
                                                         if (value) {
                                                           for (int i = 0;
-                                                              i <
-                                                                  _listInfluencerDetail
-                                                                      .length;
-                                                              i++) {
+                                                          i <
+                                                              _listInfluencerDetail
+                                                                  .length;
+                                                          i++) {
                                                             if (i == index) {
                                                               _listInfluencerDetail[
-                                                                          i]
-                                                                      .isPrimarybool =
+                                                              i]
+                                                                  .isPrimarybool =
                                                                   value;
                                                             } else {
                                                               _listInfluencerDetail[
-                                                                          i]
-                                                                      .isPrimarybool =
-                                                                  !value;
+                                                              i]
+                                                                  .isPrimarybool =
+                                                              !value;
                                                             }
                                                           }
                                                         } else {
-                                                          Get.dialog(CustomDialogs()
-                                                              .errorDialog(
+                                                          Get.dialog(
+                                                              CustomDialogs()
+                                                                  .errorDialog(
                                                                   "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                         }
                                                       });
                                                     },
                                                     value:
-                                                        _listInfluencerDetail[
-                                                                index]
-                                                            .isPrimarybool,
+                                                    _listInfluencerDetail[
+                                                    index]
+                                                        .isPrimarybool,
                                                     activeColor:
-                                                        HexColor("#009688"),
+                                                    HexColor("#009688"),
                                                     activeTrackColor:
-                                                        HexColor("#009688")
-                                                            .withOpacity(0.5),
+                                                    HexColor("#009688")
+                                                        .withOpacity(0.5),
                                                     inactiveThumbColor:
-                                                        HexColor("#F1F1F1"),
+                                                    HexColor("#F1F1F1"),
                                                     inactiveTrackColor:
-                                                        Colors.black26,
+                                                    Colors.black26,
                                                   ),
                                                   Text(
                                                     "Primary",
                                                     style: TextStyle(
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         fontSize: 18,
                                                         color:
-                                                            _listInfluencerDetail[
-                                                                        index]
-                                                                    .isPrimarybool
-                                                                ? HexColor(
-                                                                    "#009688")
-                                                                : Colors.black,
+                                                        _listInfluencerDetail[
+                                                        index]
+                                                            .isPrimarybool
+                                                            ? HexColor(
+                                                            "#009688")
+                                                            : Colors.black,
                                                         // color: HexColor("#000000DE"),
                                                         fontFamily: "Muli"),
                                                   ),
@@ -5826,26 +5583,26 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                               ),
                                               TextFormField(
                                                 controller:
-                                                    _listInfluencerDetail[index]
-                                                        .inflContact,
+                                                _listInfluencerDetail[index]
+                                                    .inflContact,
                                                 maxLength: 10,
                                                 onChanged: (value) async {
                                                   bool match = false;
                                                   if (value.length < 10) {
                                                     if (_listInfluencerDetail[
-                                                                index]
-                                                            .inflName !=
+                                                    index]
+                                                        .inflName !=
                                                         null) {
                                                       _listInfluencerDetail[
-                                                              index]
+                                                      index]
                                                           .inflName
                                                           .clear();
                                                       _listInfluencerDetail[
-                                                              index]
+                                                      index]
                                                           .inflTypeValue
                                                           .clear();
                                                       _listInfluencerDetail[
-                                                              index]
+                                                      index]
                                                           .inflCatValue
                                                           .clear();
                                                     }
@@ -5857,14 +5614,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                     };
 
                                                     for (int i = 0;
-                                                        i <
-                                                            _listInfluencerDetail
-                                                                    .length -
-                                                                1;
-                                                        i++) {
+                                                    i <
+                                                        _listInfluencerDetail
+                                                            .length -
+                                                            1;
+                                                    i++) {
                                                       if (value ==
                                                           _listInfluencerDetail[
-                                                                  i]
+                                                          i]
                                                               .inflContact
                                                               .text) {
                                                         match = true;
@@ -5875,8 +5632,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                     if (match) {
                                                       Get.dialog(CustomDialogs()
                                                           .errorDialog(
-                                                              "Already added influencer : " +
-                                                                  value));
+                                                          "Already added influencer : " +
+                                                              value));
                                                     } else {
                                                       apiCallForInfContact(
                                                           index,
@@ -5894,7 +5651,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                   }
                                                   if (!Validations
                                                       .isValidPhoneNumber(
-                                                          value)) {
+                                                      value)) {
                                                     return 'Enter valid mobile number';
                                                   }
 
@@ -5903,18 +5660,21 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 style: FormFieldStyle
                                                     .formFieldTextStyle,
                                                 keyboardType:
-                                                    TextInputType.phone,
+                                                TextInputType.phone,
                                                 inputFormatters: <
                                                     TextInputFormatter>[
                                                   FilteringTextInputFormatter
                                                       .digitsOnly
                                                 ],
-                                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Infl. Contact"),
+                                                decoration: FormFieldStyle
+                                                    .buildInputDecoration(
+                                                    labelText: "Infl. Contact"),
 
                                               ),
-                                              SizedBox(height: 16),
+                                              SizedBox(height: _height),
                                               TextFormField(
-                                                controller: _listInfluencerDetail[index].inflName,
+                                                controller: _listInfluencerDetail[index]
+                                                    .inflName,
 
                                                 // validator: (value) {
                                                 //   if (value.isEmpty) {
@@ -5926,14 +5686,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 style: FormFieldStyle
                                                     .formFieldTextStyle,
                                                 keyboardType:
-                                                    TextInputType.text,
-                                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Infl. Name"),
+                                                TextInputType.text,
+                                                decoration: FormFieldStyle
+                                                    .buildInputDecoration(
+                                                    labelText: "Infl. Name"),
                                               ),
                                               SizedBox(height: 16),
                                               TextFormField(
                                                 controller:
-                                                    _listInfluencerDetail[index]
-                                                        .inflTypeValue,
+                                                _listInfluencerDetail[index]
+                                                    .inflTypeValue,
                                                 // validator: (value) {
                                                 //   if (value.isEmpty) {
                                                 //     return 'Please enter Influencer Number ';
@@ -5944,14 +5706,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 style: FormFieldStyle
                                                     .formFieldTextStyle,
                                                 keyboardType:
-                                                    TextInputType.text,
-                                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Infl. Type"),
+                                                TextInputType.text,
+                                                decoration: FormFieldStyle
+                                                    .buildInputDecoration(
+                                                    labelText: "Infl. Type"),
                                               ),
                                               SizedBox(height: 16),
                                               TextFormField(
                                                 controller:
-                                                    _listInfluencerDetail[index]
-                                                        .inflCatValue,
+                                                _listInfluencerDetail[index]
+                                                    .inflCatValue,
                                                 // validator: (value) {
                                                 //   if (value.isEmpty) {
                                                 //     return 'Please enter Influencer Number ';
@@ -5962,8 +5726,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 style: FormFieldStyle
                                                     .formFieldTextStyle,
                                                 keyboardType:
-                                                    TextInputType.text,
-                                                decoration: FormFieldStyle.buildInputDecoration(labelText: "Infl. Category"),
+                                                TextInputType.text,
+                                                decoration: FormFieldStyle
+                                                    .buildInputDecoration(
+                                                    labelText: "Infl. Category"),
                                                 // decoration: InputDecoration(
                                                 //   focusedBorder:
                                                 //       OutlineInputBorder(
@@ -6029,11 +5795,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                   top: 10.0, bottom: 20, left: 5),
                               child: Text(
                                 "Total Site Potential",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
-                                    // color: HexColor("#000000DE"),
-                                    fontFamily: "Muli"),
+                                style: TextStyles.muliBold25,
                               ),
                             ),
                             totalSitePotential,
@@ -6044,161 +5806,161 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                             SizedBox(height: _height),
                             _commentsList != null && _commentsList.length != 0
                                 ? viewMoreActive
-                                    ? Row(
-                                        children: [
-                                          Expanded(
-                                            child: ListView.builder(
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                reverse: true,
-                                                shrinkWrap: true,
-                                                itemCount: _commentsList.length,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  return Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            _commentsList[index]
-                                                                .creatorName,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 25),
-                                                          ),
-                                                          Text(
-                                                            _commentsList[index]
-                                                                .commentText,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                fontSize: 25),
-                                                          ),
-                                                          Text(
-                                                            _commentsList[index]
-                                                                .commentedAt
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                fontSize: 15),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 20,
-                                                      )
-                                                    ],
-                                                  );
-                                                }),
-                                          ),
-                                        ],
-                                      )
-                                    : Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                              Text(
-                                                _commentsList[
-                                                        _commentsList.length -
-                                                            1]
-                                                    .creatorName,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 25),
-                                              ),
-                                              Text(
-                                                _commentsList[
-                                                        _commentsList.length -
-                                                            1]
-                                                    .commentText,
-                                                style: TextStyle(
-                                                    color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    fontSize: 25),
-                                              ),
-                                              Text(
-                                                _commentsList[
-                                                        _commentsList.length -
-                                                            1]
-                                                    .commentedAt
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          )
-                                        ],
-                                      )
+                                ? Row(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                      physics:
+                                      NeverScrollableScrollPhysics(),
+                                      reverse: true,
+                                      shrinkWrap: true,
+                                      itemCount: _commentsList.length,
+                                      itemBuilder:
+                                          (BuildContext context,
+                                          int index) {
+                                        return Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment
+                                              .start,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                Text(
+                                                  _commentsList[index]
+                                                      .creatorName,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .bold,
+                                                      fontSize: 25),
+                                                ),
+                                                Text(
+                                                  _commentsList[index]
+                                                      .commentText,
+                                                  style: TextStyle(
+                                                      color: Colors
+                                                          .black
+                                                          .withOpacity(
+                                                          0.5),
+                                                      fontSize: 25),
+                                                ),
+                                                Text(
+                                                  _commentsList[index]
+                                                      .commentedAt
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      color: Colors
+                                                          .black
+                                                          .withOpacity(
+                                                          0.5),
+                                                      fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            )
+                                          ],
+                                        );
+                                      }),
+                                ),
+                              ],
+                            )
+                                : Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                      _commentsList[
+                                      _commentsList.length -
+                                          1]
+                                          .creatorName,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25),
+                                    ),
+                                    Text(
+                                      _commentsList[
+                                      _commentsList.length -
+                                          1]
+                                          .commentText,
+                                      style: TextStyle(
+                                          color: Colors.black
+                                              .withOpacity(0.5),
+                                          fontSize: 25),
+                                    ),
+                                    Text(
+                                      _commentsList[
+                                      _commentsList.length -
+                                          1]
+                                          .commentedAt
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Colors.black
+                                              .withOpacity(0.5),
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                )
+                              ],
+                            )
                                 : Container(),
                             _commentsList.length == 1
                                 ? Container()
                                 : Center(
-                                    child: FlatButton(
-                                      color: Colors.transparent,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 5, bottom: 8, top: 5),
-                                        child: !viewMoreActive
-                                            ? Text(
-                                                "VIEW MORE COMMENT (" +
-                                                    _commentsList.length
-                                                        .toString() +
-                                                    ")",
-                                                style: TextStyle(
-                                                    color: HexColor("##F9A61A"),
-                                                    fontWeight: FontWeight.bold,
-                                                    // letterSpacing: 2,
-                                                    fontSize: 17),
-                                              )
-                                            : Text(
-                                                "VIEW LESS COMMENT (" +
-                                                    _commentsList.length
-                                                        .toString() +
-                                                    ")",
-                                                style: TextStyle(
-                                                    color: HexColor("##F9A61A"),
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17),
-                                              ),
-                                      ),
-                                      onPressed: () async {
-                                        setState(() {
-                                          viewMoreActive = !viewMoreActive;
-                                        });
-                                      },
-                                    ),
+                              child: FlatButton(
+                                color: Colors.transparent,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 5, bottom: 8, top: 5),
+                                  child: !viewMoreActive
+                                      ? Text(
+                                    "VIEW MORE COMMENT (" +
+                                        _commentsList.length
+                                            .toString() +
+                                        ")",
+                                    style: TextStyle(
+                                        color: HexColor("##F9A61A"),
+                                        fontWeight: FontWeight.bold,
+                                        // letterSpacing: 2,
+                                        fontSize: 17),
+                                  )
+                                      : Text(
+                                    "VIEW LESS COMMENT (" +
+                                        _commentsList.length
+                                            .toString() +
+                                        ")",
+                                    style: TextStyle(
+                                        color: HexColor("##F9A61A"),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17),
                                   ),
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    viewMoreActive = !viewMoreActive;
+                                  });
+                                },
+                              ),
+                            ),
                             SizedBox(
                               height: _height,
                             ),
@@ -6206,6 +5968,29 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                               height: _height,
                             ),
                             btnMoveToNextStage,
+                           //  Center(
+                           //    child: RaisedButton(
+                           //      elevation: 5,
+                           //      shape: RoundedRectangleBorder(
+                           //        borderRadius: BorderRadius.circular(5.0),
+                           //      ),
+                           //      color: HexColor("#1C99D4"),
+                           //      child: Padding(
+                           //        padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                           //        child: Text(
+                           //          "MOVE TO NEXT STAGE",
+                           //          style: TextStyle(
+                           //              color: Colors.white,
+                           //              fontWeight: FontWeight.bold,
+                           //              letterSpacing: 1,
+                           //              fontSize: 17),
+                           //        ),
+                           //      ),
+                           //      onPressed: () async {
+                           //        nextStageModalBottomSheet(context, controller.imageList);
+                           //      },
+                           //    ),
+                           //  ),
                             SizedBox(
                               height: _height,
                             ),
@@ -6217,11 +6002,15 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       ),
                     )
                   ],
-                )
+                );
+              })
               : Center(
                   child: Text(""),
                 ),
+          )
+
         ],
+
       ),
     );
   }
@@ -6507,30 +6296,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
       Get.back();
     });
-  }
-
-  _getCurrentLocation() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
-      Get.back();
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
-    } else {
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-        });
-
-        _getAddressFromLatLng();
-        Get.back();
-      }).catchError((e) {
-        Get.back();
-        Get.dialog(
-            CustomDialogs().errorDialog("Access to location data denied "));
-        print(e);
-      });
-    }
   }
 
   _getAddressFromLatLng() async {
@@ -7120,6 +6885,65 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         ),
       ],
     );
+  }
+
+  _imgFromCamera() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
+
+    setState(() {
+      //print(image.path);
+      if (image != null) {
+        // print(basename(image.path));
+
+        listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
+        _imageList.add(image);
+      }
+    });
+  }
+
+  _imgFromGallery() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      // print(image.path);
+      if (image != null) {
+        listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
+        _imageList.add(image);
+      }
+      // _imageList.insert(0,image);
+    });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
