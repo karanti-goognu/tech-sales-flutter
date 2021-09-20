@@ -35,7 +35,6 @@ class _RequestCreationState extends State<RequestCreation> {
   RequestorDetailsModel requestorDetailsModel;
   SrFormDataController srFormDataController = Get.find();
   SaveServiceRequestController saveRequest = Get.find();
-  // List<File> _imageList = List<File>();
   SaveServiceRequest saveServiceRequest;
   UpdateServiceRequestController updateRequest = Get.find();
 

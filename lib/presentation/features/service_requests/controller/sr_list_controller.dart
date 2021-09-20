@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -32,15 +31,7 @@ class SRListController extends GetxController {
   var _filteredListData = ServiceRequestComplaintListModel();
   get filteredListData => _filteredListData;
   set filteredListData(value) => _filteredListData = value;
-//*****
-  final _complaintListData = ComplaintViewModel().obs;
 
-  get complaintListData => _complaintListData.value;
-
-  set complaintListData(value) {
-    _complaintListData.value = value;
-  }
-//*****
 
   showNoInternetSnack() {
     Get.snackbar(
@@ -191,19 +182,19 @@ class SRListController extends GetxController {
   }
 
   //*****
-  Future getComplaintViewData(String accessKey, String id) async {
-    String userSecurityKey = "";
-    String empID = "";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) async {
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      empID = prefs.getString(StringConstants.employeeId);
-      complaintListData = await repository.getComplaintViewData(
-          accessKey, userSecurityKey, empID, id);
-      print(complaintListData);
-    });
-    return complaintListData;
-  }
+  // Future getComplaintViewData(String accessKey, String id) async {
+  //   String userSecurityKey = "";
+  //   String empID = "";
+  //   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  //   await _prefs.then((SharedPreferences prefs) async {
+  //     userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+  //     empID = prefs.getString(StringConstants.employeeId);
+  //     complaintListData = await repository.getComplaintViewData(
+  //         accessKey, userSecurityKey, empID, id);
+  //     print(complaintListData);
+  //   });
+  //   return complaintListData;
+  // }
   //*****
 
 }

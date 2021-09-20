@@ -3307,246 +3307,245 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         ),
                       ],
                     ))),
-            Positioned.fill(
-              child: GetBuilder<AddLeadsController>(
-                builder: (controller) {
-                  return Form(
-                    key: _formKeyForNewLeadForm,
-                    child: Padding(
-                      padding: const EdgeInsets.all(13.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 30.0, bottom: 20, left: 5),
-                            child: Text(
-                              "Add a new Trade lead",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 25,
-                                  color: HexColor("#006838"),
-                                  fontFamily: "Muli"),
-                            ),
-                          ),
-                          Container(
-                            child: widget.eventId != null
-                                ? Text('Event ID: ${widget.eventId}')
-                                : null,
-                          ),
-
-                          SizedBox(height: 16),
-                          //name,
-                          TextFormField(
-                            initialValue: _contactName,
-                            focusNode: myFocusNode,
-                            // validator: (value) {
-                            //   if (value.isEmpty) {
-                            //     return "Contact Name can't be empty";
-                            //   }
-                            //   //leagueSize = int.parse(value);
-                            //   return null;
-                            // },
-                            onChanged: (data) {
-                              setState(() {
-                                _contactName = data;
-                              });
-                            },
+            GetBuilder<AddLeadsController>(
+              builder: (controller) {
+                return Form(
+                  key: _formKeyForNewLeadForm,
+                  child: Padding(
+                    padding: const EdgeInsets.all(13.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 30.0, bottom: 20, left: 5),
+                          child: Text(
+                            "Add a new Trade lead",
                             style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 25,
+                                color: HexColor("#006838"),
                                 fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9.a-zA-Z ]")),
-                            ],
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorConstants.backgroundColorBlue,
-                                    //color: HexColor("#0000001F"),
-                                    width: 1.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.black26, width: 1.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.red, width: 1.0),
-                              ),
-                              labelText: "Name",
-                              filled: false,
-                              focusColor: Colors.black,
-                              isDense: false,
-                              labelStyle: TextStyle(
-                                  fontFamily: "Muli",
-                                  color: ColorConstants.inputBoxHintColorDark,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.0),
-                              fillColor: ColorConstants.backgroundColor,
-                            ),
                           ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            initialValue: _contactNumber,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter mobile number ';
-                              }
-                              if (value.length <= 9) {
-                                return 'Mobile number is incorrect';
-                              }
-                              if (!Validations.isValidPhoneNumber(value)) {
-                                return 'Enter valid mobile number';
-                              }
-                              return null;
-                            },
-                            onChanged: (data) {
-                              setState(() {
-                                _contactNumber = data;
-                              });
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.phone,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            maxLength: 10,
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorConstants.backgroundColorBlue,
-                                    //color: HexColor("#0000001F"),
-                                    width: 1.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.black26, width: 1.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.red, width: 1.0),
-                              ),
-                              labelText: "Mobile Number",
-                              filled: false,
-                              focusColor: Colors.black,
-                              labelStyle: TextStyle(
-                                  fontFamily: "Muli",
-                                  color: ColorConstants.inputBoxHintColorDark,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.0),
-                              fillColor: ColorConstants.backgroundColor,
-                            ),
-                          ),
-                          // SizedBox(height: 16),
-                          Divider(
-                            color: Colors.black26,
-                            thickness: 1,
-                          ),
+                        ),
+                        Container(
+                          child: widget.eventId != null
+                              ? Text('Event ID: ${widget.eventId}')
+                              : null,
+                        ),
 
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, bottom: 20, left: 5),
-                            child: Text(
-                              "Geo Tag",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  // color: HexColor("#000000DE"),
-                                  fontFamily: "Muli"),
+                        SizedBox(height: 16),
+                        //name,
+                        TextFormField(
+                          initialValue: _contactName,
+                          focusNode: myFocusNode,
+                          // validator: (value) {
+                          //   if (value.isEmpty) {
+                          //     return "Contact Name can't be empty";
+                          //   }
+                          //   //leagueSize = int.parse(value);
+                          //   return null;
+                          // },
+                          onChanged: (data) {
+                            setState(() {
+                              _contactName = data;
+                            });
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp("[0-9.a-zA-Z ]")),
+                          ],
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: ColorConstants.backgroundColorBlue,
+                                  //color: HexColor("#0000001F"),
+                                  width: 1.0),
                             ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.black26, width: 1.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.red, width: 1.0),
+                            ),
+                            labelText: "Name",
+                            filled: false,
+                            focusColor: Colors.black,
+                            isDense: false,
+                            labelStyle: TextStyle(
+                                fontFamily: "Muli",
+                                color: ColorConstants.inputBoxHintColorDark,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16.0),
+                            fillColor: ColorConstants.backgroundColor,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              FlatButton.icon(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                    side: BorderSide(color: Colors.black26)),
-                                color: Colors.transparent,
-                                icon: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Icon(
-                                    Icons.location_searching,
-                                    color: HexColor("#F9A61A"),
-                                    size: 18,
-                                  ),
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          initialValue: _contactNumber,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter mobile number ';
+                            }
+                            if (value.length <= 9) {
+                              return 'Mobile number is incorrect';
+                            }
+                            if (!Validations.isValidPhoneNumber(value)) {
+                              return 'Enter valid mobile number';
+                            }
+                            return null;
+                          },
+                          onChanged: (data) {
+                            setState(() {
+                              _contactNumber = data;
+                            });
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          maxLength: 10,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: ColorConstants.backgroundColorBlue,
+                                  //color: HexColor("#0000001F"),
+                                  width: 1.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.black26, width: 1.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.red, width: 1.0),
+                            ),
+                            labelText: "Mobile Number",
+                            filled: false,
+                            focusColor: Colors.black,
+                            labelStyle: TextStyle(
+                                fontFamily: "Muli",
+                                color: ColorConstants.inputBoxHintColorDark,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16.0),
+                            fillColor: ColorConstants.backgroundColor,
+                          ),
+                        ),
+                        // SizedBox(height: 16),
+                        Divider(
+                          color: Colors.black26,
+                          thickness: 1,
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, bottom: 20, left: 5),
+                          child: Text(
+                            "Geo Tag",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                // color: HexColor("#000000DE"),
+                                fontFamily: "Muli"),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            FlatButton.icon(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                  side: BorderSide(color: Colors.black26)),
+                              color: Colors.transparent,
+                              icon: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Icon(
+                                  Icons.location_searching,
+                                  color: HexColor("#F9A61A"),
+                                  size: 18,
                                 ),
-                                label: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 5, bottom: 8, top: 5),
-                                  child: Text(
-                                    "DETECT",
-                                    style: TextStyle(
-                                        color: HexColor("#F9A61A"),
-                                        fontWeight: FontWeight.bold,
-                                        // letterSpacing: 2,
-                                        fontSize: 17),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    geoTagType = "A";
-                                  });
-                                  Get.dialog(Center(
-                                    child: CircularProgressIndicator(),
-                                  ));
-                                  _getCurrentLocation();
-                                },
                               ),
-                              Text(
-                                "Or",
-                                style: TextStyle(
-                                    fontFamily: "Muli",
-                                    //color: HexColor("#F9A61A"),
-                                    // fontWeight: FontWeight.bold,
-                                    // letterSpacing: 2,
-                                    fontSize: 17),
-                              ),
-                              FlatButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                    side: BorderSide(color: Colors.black26)),
-                                color: Colors.transparent,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 5, bottom: 8, top: 5),
-                                  child: Text(
-                                    "MANUAL",
-                                    style: TextStyle(
-                                        color: HexColor("#F9A61A"),
-                                        fontWeight: FontWeight.bold,
-                                        // letterSpacing: 2,
-                                        fontSize: 17),
-                                  ),
+                              label: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 5, bottom: 8, top: 5),
+                                child: Text(
+                                  "DETECT",
+                                  style: TextStyle(
+                                      color: HexColor("#F9A61A"),
+                                      fontWeight: FontWeight.bold,
+                                      // letterSpacing: 2,
+                                      fontSize: 17),
                                 ),
-                                onPressed: () async {
-                                  var data = [];
-                                  data = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => CustomMap()));
-                                  print(data);
-                                  print(data.runtimeType);
-                                  setState(() {
-                                    geoTagType = "M";
-                                  });
-                                  _currentPosition = new Position(
-                                      latitude: data[0], longitude: data[1]);
-                                  _getAddressFromLatLng();
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  geoTagType = "A";
+                                });
+                                Get.dialog(Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                                _getCurrentLocation();
+                              },
+                            ),
+                            Text(
+                              "Or",
+                              style: TextStyle(
+                                  fontFamily: "Muli",
+                                  //color: HexColor("#F9A61A"),
+                                  // fontWeight: FontWeight.bold,
+                                  // letterSpacing: 2,
+                                  fontSize: 17),
+                            ),
+                            FlatButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                  side: BorderSide(color: Colors.black26)),
+                              color: Colors.transparent,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 5, bottom: 8, top: 5),
+                                child: Text(
+                                  "MANUAL",
+                                  style: TextStyle(
+                                      color: HexColor("#F9A61A"),
+                                      fontWeight: FontWeight.bold,
+                                      // letterSpacing: 2,
+                                      fontSize: 17),
+                                ),
+                              ),
+                              onPressed: () async {
+                                var data = [];
+                                data = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CustomMap()));
+                                print(data);
+                                print(data.runtimeType);
+                                setState(() {
+                                  geoTagType = "M";
+                                });
+                                _currentPosition = new Position(
+                                    latitude: data[0], longitude: data[1]);
+                                _getAddressFromLatLng();
 //                             setState(() {
 //                               geoTagType = "M";
 //                             });
-                                  //                            LocationResult result = await showLocationPicker(
+                                //                            LocationResult result = await showLocationPicker(
 //                               context,
 //                               StringConstants.API_Key,
 //                               initialCenter: LatLng(28.644800, 77.216721),
@@ -3569,10 +3568,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 // //                              print(_currentPosition);
 //                               _getAddressFromLatLng();
 //                             });
-                                },
-                              ),
-                            ],
-                          ),
+                              },
+                            ),
+                          ],
+                        ),
 //                     Column(
 //                       mainAxisAlignment: MainAxisAlignment.center,
 //                       children: <Widget>[
@@ -3637,129 +3636,97 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 //                             ],
 //                           ),
 //                         ])),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _siteAddress,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter Address ';
-                              }
+                        SizedBox(height: 16),
+                        TextFormField(
+                          controller: _siteAddress,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter Address ';
+                            }
 
-                              return null;
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorConstants.backgroundColorBlue,
-                                    //color: HexColor("#0000001F"),
-                                    width: 1.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: const Color(0xFF000000)
-                                        .withOpacity(0.4),
-                                    width: 1.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.red, width: 1.0),
-                              ),
-                              labelText: "Address",
-                              filled: false,
-                              focusColor: Colors.black,
-                              labelStyle: TextStyle(
-                                  fontFamily: "Muli",
-                                  color: ColorConstants.inputBoxHintColorDark,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.0),
-                              fillColor: ColorConstants.backgroundColor,
+                            return null;
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: ColorConstants.backgroundColorBlue,
+                                  //color: HexColor("#0000001F"),
+                                  width: 1.0),
                             ),
-                          ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            //initialValue: _pincode.toString(),
-                            maxLength: 6,
-                            controller: _pincode,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter Pincode ';
-                              }
-                              if (value.length <= 6) {
-                                return 'Pincode is incorrect';
-                              }
-                              if (!Validations.isValidPincode(value)) {
-                                return "Enter valid pincode";
-                              }
-
-                              return null;
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.phone,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            //  maxLength: 6,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Pincode",
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: const Color(0xFF000000)
+                                      .withOpacity(0.4),
+                                  width: 1.0),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
+                            errorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.red, width: 1.0),
+                            ),
+                            labelText: "Address",
+                            filled: false,
+                            focusColor: Colors.black,
+                            labelStyle: TextStyle(
                                 fontFamily: "Muli",
                                 color: ColorConstants.inputBoxHintColorDark,
                                 fontWeight: FontWeight.normal,
-                              ),
-                            ),
+                                fontSize: 16.0),
+                            fillColor: ColorConstants.backgroundColor,
                           ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                              controller: _state,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter State ';
-                                }
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          //initialValue: _pincode.toString(),
+                          maxLength: 6,
+                          controller: _pincode,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter Pincode ';
+                            }
+                            if (value.length <= 6) {
+                              return 'Pincode is incorrect';
+                            }
+                            if (!Validations.isValidPincode(value)) {
+                              return "Enter valid pincode";
+                            }
 
-                                return null;
-                              },
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                              keyboardType: TextInputType.text,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[a-zA-Z ]")),
-                              ],
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "State")),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
+                            return null;
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          //  maxLength: 6,
+                          decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Pincode",
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            "Mandatory",
+                            style: TextStyle(
+                              fontFamily: "Muli",
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _district,
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                            controller: _state,
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Please enter District ';
+                                return 'Please enter State ';
                               }
 
                               return null;
@@ -3774,267 +3741,403 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   RegExp("[a-zA-Z ]")),
                             ],
                             decoration: FormFieldStyle.buildInputDecoration(
-                                labelText: "District"),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 16),
-
-                          TextFormField(
-                            controller: _taluk,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter Taluk ';
-                              }
-
-                              return null;
-                            },
+                                labelText: "State")),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            "Mandatory",
                             style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[a-zA-Z ]")),
-                            ],
-                            decoration: FormFieldStyle.buildInputDecoration(
-                                labelText: "Taluk"),
+                              fontFamily: "Muli",
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          controller: _district,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter District ';
+                            }
+
+                            return null;
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp("[a-zA-Z ]")),
+                          ],
+                          decoration: FormFieldStyle.buildInputDecoration(
+                              labelText: "District"),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            "Mandatory",
+                            style: TextStyle(
+                              fontFamily: "Muli",
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+
+                        TextFormField(
+                          controller: _taluk,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter Taluk ';
+                            }
+
+                            return null;
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp("[a-zA-Z ]")),
+                          ],
+                          decoration: FormFieldStyle.buildInputDecoration(
+                              labelText: "Taluk"),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            "Mandatory",
+                            style: TextStyle(
+                              fontFamily: "Muli",
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                                side: BorderSide(color: Colors.black26)),
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 5, bottom: 10, top: 10),
+                              child: Text(
+                                "UPLOAD PHOTOS",
+                                style: TextStyle(
+                                    color: HexColor("#1C99D4"),
+                                    fontWeight: FontWeight.bold,
+                                    // letterSpacing: 2,
+                                    fontSize: 17),
                               ),
                             ),
+                            onPressed: () async {
+                              if (controller.imageList.length < 5) {
+                                controller.updateImageList(await UploadImageBottomSheet.showPicker(context));
+                                // _imageList= await UploadImageBottomSheet.showPicker(context);
+                              } else {
+                                Get.dialog(CustomDialogs().errorDialog(
+                                    "You can add only upto 5 photos"));
+                              }
+                              // if (_imageList.length < 5) {
+                              //   _showPicker(context);
+                              // } else {
+                              //   Get.dialog(CustomDialogs().errorDialog(
+                              //       "You can add only upto 5 photos"));
+                              // }
+                            },
                           ),
-                          SizedBox(height: 16),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                  side: BorderSide(color: Colors.black26)),
-                              color: Colors.transparent,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 5, bottom: 10, top: 10),
-                                child: Text(
-                                  "UPLOAD PHOTOS",
-                                  style: TextStyle(
-                                      color: HexColor("#1C99D4"),
-                                      fontWeight: FontWeight.bold,
-                                      // letterSpacing: 2,
-                                      fontSize: 17),
-                                ),
-                              ),
-                              onPressed: () async {
-                                if (controller.imageList.length < 5) {
-                                  controller.updateImageList(await UploadImageBottomSheet.showPicker(context));
-                                  // _imageList= await UploadImageBottomSheet.showPicker(context);
-                                } else {
-                                  Get.dialog(CustomDialogs().errorDialog(
-                                      "You can add only upto 5 photos"));
-                                }
-                                // if (_imageList.length < 5) {
-                                //   _showPicker(context);
-                                // } else {
-                                //   Get.dialog(CustomDialogs().errorDialog(
-                                //       "You can add only upto 5 photos"));
-                                // }
-                              },
-                            ),
-                          ),
+                        ),
 
-                          controller.imageList != null
-                              ? Row(
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: controller.imageList.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                return showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        content: new Container(
-                                                          // width: 500,
-                                                          // height: 500,
-                                                          child: Image.file(
-                                                              controller.imageList[
-                                                                  index]),
-                                                        ),
-                                                      );
-                                                    });
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        "Picture ${(index + 1)}. ",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 15),
+                        controller.imageList != null
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: controller.imageList.length,
+                                        itemBuilder: (BuildContext context,
+                                            int index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              return showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      content: new Container(
+                                                        // width: 500,
+                                                        // height: 500,
+                                                        child: Image.file(
+                                                            controller.imageList[
+                                                                index]),
                                                       ),
-                                                      Text(
-                                                        "Image_${(index + 1)}.jpg",
-                                                        style: TextStyle(
-                                                            color: HexColor(
-                                                                "#007CBF"),
-                                                            fontSize: 15),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  GestureDetector(
-                                                    child: Icon(
-                                                      Icons.delete,
-                                                      color:
-                                                          HexColor("#FFCD00"),
-                                                    ),
-                                                    onTap: () {
-                                                      setState(() {
-                                                        controller.imageList
-                                                            .removeAt(index);
-                                                      });
-                                                    },
-                                                  )
-                                                ],
-                                              ),
-                                            );
-                                          }),
-                                    ),
-                                  ],
-                                )
-                              : Container(),
-
-                          SizedBox(height: 16),
-                          Divider(
-                            color: Colors.black26,
-                            thickness: 1,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, bottom: 20, left: 5),
-                            child: Text(
-                              "Influencer Details",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  // color: HexColor("#000000DE"),
-                                  fontFamily: "Muli"),
-                            ),
-                          ),
-                          // Container(
-                          //   child: _buildPanel(),
-                          // ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: _listInfluencerDetail.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      if (!_listInfluencerDetail[index]
-                                          .isExpanded) {
-                                        return Column(
-                                          // mainAxisAlignment:
-                                          // MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
+                                                    );
+                                                  });
+                                            },
+                                            child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                // (index == 0)
-                                                //     ? Text(
-                                                //         "Influencer Details",
-                                                //         style: TextStyle(
-                                                //             fontWeight:
-                                                //                 FontWeight.bold,
-                                                //             fontSize: 18),
-                                                //       )
-                                                //     :
-                                                Text(
-                                                  "Influencer Details ${(index + 1)} ",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "Picture ${(index + 1)}. ",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                    ),
+                                                    Text(
+                                                      "Image_${(index + 1)}.jpg",
+                                                      style: TextStyle(
+                                                          color: HexColor(
+                                                              "#007CBF"),
+                                                          fontSize: 15),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Switch(
-                                                  onChanged: (value) {
+                                                GestureDetector(
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    color:
+                                                        HexColor("#FFCD00"),
+                                                  ),
+                                                  onTap: () {
                                                     setState(() {
-                                                      if (value) {
-                                                        for (int i = 0;
-                                                            i <
-                                                                _listInfluencerDetail
-                                                                    .length;
-                                                            i++) {
-                                                          if (i == index) {
-                                                            _listInfluencerDetail[
-                                                                        i]
-                                                                    .isPrimarybool =
-                                                                value;
-                                                          } else {
-                                                            _listInfluencerDetail[
-                                                                        i]
-                                                                    .isPrimarybool =
-                                                                !value;
-                                                          }
-                                                        }
-                                                      } else {
-                                                        Get.dialog(CustomDialogs()
-                                                            .errorDialog(
-                                                                "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-                                                      }
+                                                      controller.imageList
+                                                          .removeAt(index);
                                                     });
                                                   },
-                                                  value: _listInfluencerDetail[
-                                                          index]
-                                                      .isPrimarybool,
-                                                  activeColor:
-                                                      HexColor("#009688"),
-                                                  activeTrackColor:
-                                                      HexColor("#009688")
-                                                          .withOpacity(0.5),
-                                                  inactiveThumbColor:
-                                                      HexColor("#F1F1F1"),
-                                                  inactiveTrackColor:
-                                                      Colors.black26,
-                                                ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ],
+                              )
+                            : Container(),
+
+                        SizedBox(height: 16),
+                        Divider(
+                          color: Colors.black26,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, bottom: 20, left: 5),
+                          child: Text(
+                            "Influencer Details",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                // color: HexColor("#000000DE"),
+                                fontFamily: "Muli"),
+                          ),
+                        ),
+                        // Container(
+                        //   child: _buildPanel(),
+                        // ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: _listInfluencerDetail.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    if (!_listInfluencerDetail[index]
+                                        .isExpanded) {
+                                      return Column(
+                                        // mainAxisAlignment:
+                                        // MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceBetween,
+                                            children: [
+                                              // (index == 0)
+                                              //     ? Text(
+                                              //         "Influencer Details",
+                                              //         style: TextStyle(
+                                              //             fontWeight:
+                                              //                 FontWeight.bold,
+                                              //             fontSize: 18),
+                                              //       )
+                                              //     :
+                                              Text(
+                                                "Influencer Details ${(index + 1)} ",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                    fontSize: 18),
+                                              ),
+                                              Switch(
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (value) {
+                                                      for (int i = 0;
+                                                          i <
+                                                              _listInfluencerDetail
+                                                                  .length;
+                                                          i++) {
+                                                        if (i == index) {
+                                                          _listInfluencerDetail[
+                                                                      i]
+                                                                  .isPrimarybool =
+                                                              value;
+                                                        } else {
+                                                          _listInfluencerDetail[
+                                                                      i]
+                                                                  .isPrimarybool =
+                                                              !value;
+                                                        }
+                                                      }
+                                                    } else {
+                                                      Get.dialog(CustomDialogs()
+                                                          .errorDialog(
+                                                              "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                                    }
+                                                  });
+                                                },
+                                                value: _listInfluencerDetail[
+                                                        index]
+                                                    .isPrimarybool,
+                                                activeColor:
+                                                    HexColor("#009688"),
+                                                activeTrackColor:
+                                                    HexColor("#009688")
+                                                        .withOpacity(0.5),
+                                                inactiveThumbColor:
+                                                    HexColor("#F1F1F1"),
+                                                inactiveTrackColor:
+                                                    Colors.black26,
+                                              ),
+                                              _listInfluencerDetail[index]
+                                                      .isExpanded
+                                                  ? FlatButton.icon(
+                                                      // shape: RoundedRectangleBorder(
+                                                      //     borderRadius: BorderRadius.circular(0),
+                                                      //     side: BorderSide(color: Colors.black26)),
+                                                      color:
+                                                          Colors.transparent,
+                                                      icon: Icon(
+                                                        Icons.remove,
+                                                        color: HexColor(
+                                                            "#F9A61A"),
+                                                        size: 18,
+                                                      ),
+                                                      label: Text(
+                                                        "COLLAPSE",
+                                                        style: TextStyle(
+                                                            color: HexColor(
+                                                                "#F9A61A"),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                            // letterSpacing: 2,
+                                                            fontSize: 17),
+                                                      ),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _listInfluencerDetail[
+                                                                      index]
+                                                                  .isExpanded =
+                                                              !_listInfluencerDetail[
+                                                                      index]
+                                                                  .isExpanded;
+                                                        });
+                                                        // _getCurrentLocation();
+                                                      },
+                                                    )
+                                                  : FlatButton.icon(
+                                                      // shape: RoundedRectangleBorder(
+                                                      //     borderRadius: BorderRadius.circular(0),
+                                                      //     side: BorderSide(color: Colors.black26)),
+                                                      color:
+                                                          Colors.transparent,
+                                                      icon: Icon(
+                                                        Icons.add,
+                                                        color: HexColor(
+                                                            "#F9A61A"),
+                                                        size: 18,
+                                                      ),
+                                                      label: Text(
+                                                        "EXPAND",
+                                                        style: TextStyle(
+                                                            color: HexColor(
+                                                                "#F9A61A"),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                            // letterSpacing: 2,
+                                                            fontSize: 17),
+                                                      ),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _listInfluencerDetail[
+                                                                      index]
+                                                                  .isExpanded =
+                                                              !_listInfluencerDetail[
+                                                                      index]
+                                                                  .isExpanded;
+                                                        });
+                                                        // _getCurrentLocation();
+                                                      },
+                                                    ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    } else {
+                                      return Column(
+                                        // mainAxisAlignment:
+                                        // MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          FittedBox(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                (index == 0)
+                                                    ? Text(
+                                                        "Influencer Details",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                            fontSize: 18),
+                                                      )
+                                                    : Text(
+                                                        "Influencer Details ${(index + 1)} ",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                            fontSize: 18),
+                                                      ),
                                                 _listInfluencerDetail[index]
                                                         .isExpanded
                                                     ? FlatButton.icon(
                                                         // shape: RoundedRectangleBorder(
                                                         //     borderRadius: BorderRadius.circular(0),
                                                         //     side: BorderSide(color: Colors.black26)),
-                                                        color:
-                                                            Colors.transparent,
+                                                        color: Colors
+                                                            .transparent,
                                                         icon: Icon(
                                                           Icons.remove,
                                                           color: HexColor(
@@ -4068,8 +4171,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                         // shape: RoundedRectangleBorder(
                                                         //     borderRadius: BorderRadius.circular(0),
                                                         //     side: BorderSide(color: Colors.black26)),
-                                                        color:
-                                                            Colors.transparent,
+                                                        color: Colors
+                                                            .transparent,
                                                         icon: Icon(
                                                           Icons.add,
                                                           color: HexColor(
@@ -4101,795 +4204,1236 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       ),
                                               ],
                                             ),
-                                          ],
-                                        );
-                                      } else {
-                                        return Column(
-                                          // mainAxisAlignment:
-                                          // MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            FittedBox(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  (index == 0)
-                                                      ? Text(
-                                                          "Influencer Details",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 18),
-                                                        )
-                                                      : Text(
-                                                          "Influencer Details ${(index + 1)} ",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 18),
-                                                        ),
-                                                  _listInfluencerDetail[index]
-                                                          .isExpanded
-                                                      ? FlatButton.icon(
-                                                          // shape: RoundedRectangleBorder(
-                                                          //     borderRadius: BorderRadius.circular(0),
-                                                          //     side: BorderSide(color: Colors.black26)),
-                                                          color: Colors
-                                                              .transparent,
-                                                          icon: Icon(
-                                                            Icons.remove,
-                                                            color: HexColor(
-                                                                "#F9A61A"),
-                                                            size: 18,
-                                                          ),
-                                                          label: Text(
-                                                            "COLLAPSE",
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#F9A61A"),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                // letterSpacing: 2,
-                                                                fontSize: 17),
-                                                          ),
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded =
-                                                                  !_listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded;
-                                                            });
-                                                            // _getCurrentLocation();
-                                                          },
-                                                        )
-                                                      : FlatButton.icon(
-                                                          // shape: RoundedRectangleBorder(
-                                                          //     borderRadius: BorderRadius.circular(0),
-                                                          //     side: BorderSide(color: Colors.black26)),
-                                                          color: Colors
-                                                              .transparent,
-                                                          icon: Icon(
-                                                            Icons.add,
-                                                            color: HexColor(
-                                                                "#F9A61A"),
-                                                            size: 18,
-                                                          ),
-                                                          label: Text(
-                                                            "EXPAND",
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#F9A61A"),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                // letterSpacing: 2,
-                                                                fontSize: 17),
-                                                          ),
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded =
-                                                                  !_listInfluencerDetail[
-                                                                          index]
-                                                                      .isExpanded;
-                                                            });
-                                                            // _getCurrentLocation();
-                                                          },
-                                                        ),
-                                                ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Secondary",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                    fontSize: 18,
+                                                    // color: HexColor("#000000DE"),
+                                                    fontFamily: "Muli"),
                                               ),
-                                            ),
-                                            SizedBox(height: 10),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Secondary",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18,
-                                                      // color: HexColor("#000000DE"),
-                                                      fontFamily: "Muli"),
-                                                ),
-                                                Switch(
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      if (value) {
-                                                        for (int i = 0;
-                                                            i <
-                                                                _listInfluencerDetail
-                                                                    .length;
-                                                            i++) {
-                                                          if (i == index) {
-                                                            _listInfluencerDetail[
-                                                                        i]
-                                                                    .isPrimarybool =
-                                                                value;
-                                                          } else {
-                                                            _listInfluencerDetail[
-                                                                        i]
-                                                                    .isPrimarybool =
-                                                                !value;
-                                                          }
+                                              Switch(
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (value) {
+                                                      for (int i = 0;
+                                                          i <
+                                                              _listInfluencerDetail
+                                                                  .length;
+                                                          i++) {
+                                                        if (i == index) {
+                                                          _listInfluencerDetail[
+                                                                      i]
+                                                                  .isPrimarybool =
+                                                              value;
+                                                        } else {
+                                                          _listInfluencerDetail[
+                                                                      i]
+                                                                  .isPrimarybool =
+                                                              !value;
                                                         }
-                                                      } else {
-                                                        Get.dialog(CustomDialogs()
-                                                            .errorDialog(
-                                                                "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                       }
-                                                    });
-                                                  },
-                                                  value: _listInfluencerDetail[
-                                                          index]
-                                                      .isPrimarybool,
-                                                  activeColor:
-                                                      HexColor("#009688"),
-                                                  activeTrackColor:
-                                                      HexColor("#009688")
-                                                          .withOpacity(0.5),
-                                                  inactiveThumbColor:
-                                                      HexColor("#F1F1F1"),
-                                                  inactiveTrackColor:
-                                                      Colors.black26,
-                                                ),
-                                                Text(
-                                                  "Primary",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight
-                                                          .bold,
-                                                      fontSize: 18,
-                                                      color:
-                                                          _listInfluencerDetail[
-                                                                      index]
-                                                                  .isPrimarybool
-                                                              ? HexColor(
-                                                                  "#009688")
-                                                              : Colors.black,
-                                                      // color: HexColor("#000000DE"),
-                                                      fontFamily: "Muli"),
-                                                ),
-                                              ],
-                                            ),
-                                            TextFormField(
-                                              controller:
+                                                    } else {
+                                                      Get.dialog(CustomDialogs()
+                                                          .errorDialog(
+                                                              "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                                    }
+                                                  });
+                                                },
+                                                value: _listInfluencerDetail[
+                                                        index]
+                                                    .isPrimarybool,
+                                                activeColor:
+                                                    HexColor("#009688"),
+                                                activeTrackColor:
+                                                    HexColor("#009688")
+                                                        .withOpacity(0.5),
+                                                inactiveThumbColor:
+                                                    HexColor("#F1F1F1"),
+                                                inactiveTrackColor:
+                                                    Colors.black26,
+                                              ),
+                                              Text(
+                                                "Primary",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight
+                                                        .bold,
+                                                    fontSize: 18,
+                                                    color:
+                                                        _listInfluencerDetail[
+                                                                    index]
+                                                                .isPrimarybool
+                                                            ? HexColor(
+                                                                "#009688")
+                                                            : Colors.black,
+                                                    // color: HexColor("#000000DE"),
+                                                    fontFamily: "Muli"),
+                                              ),
+                                            ],
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                _listInfluencerDetail[index]
+                                                    .inflContact,
+                                            maxLength: 10,
+                                            onChanged: (value) async {
+                                              bool match = false;
+                                              if (value.length < 10) {
+                                                // _listInfluencerDetail[
+                                                // index]
+                                                //     .inflContact
+                                                //     .clear();
+                                                if (_listInfluencerDetail[
+                                                            index]
+                                                        .inflName !=
+                                                    null) {
                                                   _listInfluencerDetail[index]
-                                                      .inflContact,
-                                              maxLength: 10,
-                                              onChanged: (value) async {
-                                                bool match = false;
-                                                if (value.length < 10) {
-                                                  // _listInfluencerDetail[
-                                                  // index]
-                                                  //     .inflContact
-                                                  //     .clear();
-                                                  if (_listInfluencerDetail[
-                                                              index]
-                                                          .inflName !=
-                                                      null) {
-                                                    _listInfluencerDetail[index]
-                                                        .inflName
-                                                        .clear();
-                                                    _listInfluencerDetail[index]
-                                                        .inflTypeValue
-                                                        .clear();
-                                                    _listInfluencerDetail[index]
-                                                        .inflCatValue
-                                                        .clear();
-                                                  }
-                                                } else if (value.length == 10) {
-                                                  var bodyEncrypted = {
-                                                    //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
-                                                    "inflContact": value
-                                                  };
+                                                      .inflName
+                                                      .clear();
+                                                  _listInfluencerDetail[index]
+                                                      .inflTypeValue
+                                                      .clear();
+                                                  _listInfluencerDetail[index]
+                                                      .inflCatValue
+                                                      .clear();
+                                                }
+                                              } else if (value.length == 10) {
+                                                var bodyEncrypted = {
+                                                  //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
+                                                  "inflContact": value
+                                                };
 
-                                                  if (_listInfluencerDetail
-                                                          .length !=
-                                                      0) {
-                                                    for (int i = 0;
-                                                        i <
-                                                            _listInfluencerDetail
-                                                                    .length -
-                                                                1;
-                                                        i++) {
-                                                      if (value ==
-                                                          _listInfluencerDetail[
-                                                                  i]
-                                                              .inflContact
-                                                              .text) {
-                                                        match = true;
-                                                        break;
-                                                      }
+                                                if (_listInfluencerDetail
+                                                        .length !=
+                                                    0) {
+                                                  for (int i = 0;
+                                                      i <
+                                                          _listInfluencerDetail
+                                                                  .length -
+                                                              1;
+                                                      i++) {
+                                                    if (value ==
+                                                        _listInfluencerDetail[
+                                                                i]
+                                                            .inflContact
+                                                            .text) {
+                                                      match = true;
+                                                      break;
                                                     }
                                                   }
+                                                }
 
-                                                  if (match) {
-                                                    Get.dialog(CustomDialogs()
-                                                        .errorDialog(
-                                                            "Already added influencer : " +
-                                                                value));
-                                                  } else {
-                                                    String empId;
-                                                    String mobileNumber;
-                                                    String name;
-                                                    Future<SharedPreferences>
-                                                        _prefs =
-                                                        SharedPreferences
-                                                            .getInstance();
-                                                    await _prefs.then(
-                                                        (SharedPreferences
-                                                            prefs) {
-                                                      empId = prefs.getString(
-                                                              StringConstants
-                                                                  .employeeId) ??
-                                                          "empty";
-                                                      mobileNumber = prefs.getString(
-                                                              StringConstants
-                                                                  .mobileNumber) ??
-                                                          "empty";
-                                                      name = prefs.getString(
-                                                              StringConstants
-                                                                  .employeeName) ??
-                                                          "empty";
-                                                      print(_comments.text);
-                                                    });
-                                                    AddLeadsController
-                                                        _addLeadsController =
-                                                        Get.find();
-                                                    _addLeadsController
-                                                        .phoneNumber = value;
-                                                    AccessKeyModel
-                                                        accessKeyModel =
-                                                        new AccessKeyModel();
+                                                if (match) {
+                                                  Get.dialog(CustomDialogs()
+                                                      .errorDialog(
+                                                          "Already added influencer : " +
+                                                              value));
+                                                } else {
+                                                  String empId;
+                                                  String mobileNumber;
+                                                  String name;
+                                                  Future<SharedPreferences>
+                                                      _prefs =
+                                                      SharedPreferences
+                                                          .getInstance();
+                                                  await _prefs.then(
+                                                      (SharedPreferences
+                                                          prefs) {
+                                                    empId = prefs.getString(
+                                                            StringConstants
+                                                                .employeeId) ??
+                                                        "empty";
+                                                    mobileNumber = prefs.getString(
+                                                            StringConstants
+                                                                .mobileNumber) ??
+                                                        "empty";
+                                                    name = prefs.getString(
+                                                            StringConstants
+                                                                .employeeName) ??
+                                                        "empty";
+                                                    print(_comments.text);
+                                                  });
+                                                  AddLeadsController
+                                                      _addLeadsController =
+                                                      Get.find();
+                                                  _addLeadsController
+                                                      .phoneNumber = value;
+                                                  AccessKeyModel
+                                                      accessKeyModel =
+                                                      new AccessKeyModel();
+                                                  await _addLeadsController
+                                                      .getAccessKeyOnly()
+                                                      .then((data) async {
+                                                    accessKeyModel = data;
+                                                    print("AccessKey :: " +
+                                                        accessKeyModel
+                                                            .accessKey);
                                                     await _addLeadsController
-                                                        .getAccessKeyOnly()
-                                                        .then((data) async {
-                                                      accessKeyModel = data;
-                                                      print("AccessKey :: " +
-                                                          accessKeyModel
-                                                              .accessKey);
-                                                      await _addLeadsController
-                                                          .getInfNewData(
-                                                              accessKeyModel
-                                                                  .accessKey)
-                                                          .then((data) {
-                                                        InfluencerDetailModel
-                                                            _infDetailModel =
-                                                            data;
-                                                        if (_infDetailModel
-                                                                .respCode ==
-                                                            "DM1002") {
-                                                          InfluencerModel
-                                                              inflDetail =
-                                                              _infDetailModel
-                                                                  .influencerModel;
+                                                        .getInfNewData(
+                                                            accessKeyModel
+                                                                .accessKey)
+                                                        .then((data) {
+                                                      InfluencerDetailModel
+                                                          _infDetailModel =
+                                                          data;
+                                                      if (_infDetailModel
+                                                              .respCode ==
+                                                          "DM1002") {
+                                                        InfluencerModel
+                                                            inflDetail =
+                                                            _infDetailModel
+                                                                .influencerModel;
 
-                                                          if (inflDetail
-                                                                  .inflName !=
-                                                              "null") {
-                                                            setState(() {
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflContact =
-                                                                  new TextEditingController();
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflName =
-                                                                  new TextEditingController();
-                                                              FocusScope.of(
-                                                                      context)
-                                                                  .unfocus();
-                                                              //  print(inflDetail.inflName.text);
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflTypeId =
-                                                                  new TextEditingController();
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflCatId =
-                                                                  new TextEditingController();
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflTypeValue =
-                                                                  new TextEditingController();
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflCatValue =
-                                                                  new TextEditingController();
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .id =
-                                                                  new TextEditingController();
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .ilpIntrested =
-                                                                  new TextEditingController();
-
-                                                              print(inflDetail
-                                                                  .inflName);
-
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflContact
-                                                                      .text =
-                                                                  inflDetail
-                                                                      .inflContact;
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflName
-                                                                      .text =
-                                                                  inflDetail
-                                                                      .inflName;
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .id
-                                                                      .text =
-                                                                  inflDetail
-                                                                      .inflId
-                                                                      .toString();
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .ilpIntrested
-                                                                      .text =
-                                                                  inflDetail
-                                                                      .ilpRegFlag;
-                                                              // _listInfluencerDetail[
-                                                              //             index]
-                                                              //         .createdOn =
-                                                              //     inflDetail.createdOn;
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflTypeValue
-                                                                      .text =
-                                                                  inflDetail
-                                                                      .influencerTypeText;
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflCatValue
-                                                                      .text =
-                                                                  inflDetail
-                                                                      .influencerCategoryText;
-                                                              _listInfluencerDetail[
-                                                                          index]
-                                                                      .createdBy =
-                                                                  empId;
-                                                              print(
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflName);
-
-                                                              for (int i = 0;
-                                                                  i <
-                                                                      influencerTypeEntity
-                                                                          .length;
-                                                                  i++) {
-                                                                if (influencerTypeEntity[
-                                                                            i]
-                                                                        .inflTypeId
-                                                                        .toString() ==
-                                                                    inflDetail
-                                                                        .inflTypeId
-                                                                        .toString()) {
-                                                                  _listInfluencerDetail[
-                                                                              index]
-                                                                          .inflTypeId
-                                                                          .text =
-                                                                      inflDetail
-                                                                          .inflTypeId
-                                                                          .toString();
-                                                                  //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflTypeValue
-                                                                      .text = influencerTypeEntity[
-                                                                          influencerTypeEntity[i].inflTypeId -
-                                                                              1]
-                                                                      .inflTypeDesc;
-                                                                  break;
-                                                                } else {
-                                                                  // _listInfluencerDetail[
-                                                                  // index]
-                                                                  //     .inflContact
-                                                                  //     .clear();
-                                                                  // _listInfluencerDetail[
-                                                                  // index]
-                                                                  //     .inflName
-                                                                  //     .clear();
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflTypeId
-                                                                      .clear();
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflTypeValue
-                                                                      .clear();
-                                                                }
-                                                              }
-                                                              print(
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflName);
-                                                              // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
-
-                                                              for (int i = 0;
-                                                                  i <
-                                                                      influencerCategoryEntity
-                                                                          .length;
-                                                                  i++) {
-                                                                if (influencerCategoryEntity[
-                                                                            i]
-                                                                        .inflCatId
-                                                                        .toString() ==
-                                                                    inflDetail
-                                                                        .inflCatId
-                                                                        .toString()) {
-                                                                  _listInfluencerDetail[
-                                                                              index]
-                                                                          .inflCatId
-                                                                          .text =
-                                                                      inflDetail
-                                                                          .inflCatId
-                                                                          .toString();
-                                                                  //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflCatValue
-                                                                      .text = influencerCategoryEntity[
-                                                                          influencerCategoryEntity[i].inflCatId -
-                                                                              1]
-                                                                      .inflCatDesc;
-                                                                  break;
-                                                                } else {
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflCatId
-                                                                      .clear();
-                                                                  _listInfluencerDetail[
-                                                                          index]
-                                                                      .inflCatValue
-                                                                      .clear();
-                                                                }
-                                                              }
-                                                            });
-                                                          } else {
-                                                            if (_listInfluencerDetail[
+                                                        if (inflDetail
+                                                                .inflName !=
+                                                            "null") {
+                                                          setState(() {
+                                                            _listInfluencerDetail[
                                                                         index]
-                                                                    .inflContact !=
-                                                                null) {
-                                                              setState(() {
-                                                                _listInfluencerDetail[
+                                                                    .inflContact =
+                                                                new TextEditingController();
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflName =
+                                                                new TextEditingController();
+                                                            FocusScope.of(
+                                                                    context)
+                                                                .unfocus();
+                                                            //  print(inflDetail.inflName.text);
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflTypeId =
+                                                                new TextEditingController();
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflCatId =
+                                                                new TextEditingController();
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflTypeValue =
+                                                                new TextEditingController();
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflCatValue =
+                                                                new TextEditingController();
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .id =
+                                                                new TextEditingController();
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .ilpIntrested =
+                                                                new TextEditingController();
+
+                                                            print(inflDetail
+                                                                .inflName);
+
+                                                            _listInfluencerDetail[
                                                                         index]
                                                                     .inflContact
+                                                                    .text =
+                                                                inflDetail
+                                                                    .inflContact;
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflName
+                                                                    .text =
+                                                                inflDetail
+                                                                    .inflName;
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .id
+                                                                    .text =
+                                                                inflDetail
+                                                                    .inflId
+                                                                    .toString();
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .ilpIntrested
+                                                                    .text =
+                                                                inflDetail
+                                                                    .ilpRegFlag;
+                                                            // _listInfluencerDetail[
+                                                            //             index]
+                                                            //         .createdOn =
+                                                            //     inflDetail.createdOn;
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflTypeValue
+                                                                    .text =
+                                                                inflDetail
+                                                                    .influencerTypeText;
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflCatValue
+                                                                    .text =
+                                                                inflDetail
+                                                                    .influencerCategoryText;
+                                                            _listInfluencerDetail[
+                                                                        index]
+                                                                    .createdBy =
+                                                                empId;
+                                                            print(
+                                                                _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflName);
+
+                                                            for (int i = 0;
+                                                                i <
+                                                                    influencerTypeEntity
+                                                                        .length;
+                                                                i++) {
+                                                              if (influencerTypeEntity[
+                                                                          i]
+                                                                      .inflTypeId
+                                                                      .toString() ==
+                                                                  inflDetail
+                                                                      .inflTypeId
+                                                                      .toString()) {
+                                                                _listInfluencerDetail[
+                                                                            index]
+                                                                        .inflTypeId
+                                                                        .text =
+                                                                    inflDetail
+                                                                        .inflTypeId
+                                                                        .toString();
+                                                                //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                                _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflTypeValue
+                                                                    .text = influencerTypeEntity[
+                                                                        influencerTypeEntity[i].inflTypeId -
+                                                                            1]
+                                                                    .inflTypeDesc;
+                                                                break;
+                                                              } else {
+                                                                // _listInfluencerDetail[
+                                                                // index]
+                                                                //     .inflContact
+                                                                //     .clear();
+                                                                // _listInfluencerDetail[
+                                                                // index]
+                                                                //     .inflName
+                                                                //     .clear();
+                                                                _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflTypeId
                                                                     .clear();
                                                                 _listInfluencerDetail[
                                                                         index]
-                                                                    .inflName
+                                                                    .inflTypeValue
                                                                     .clear();
-                                                              });
+                                                              }
                                                             }
-                                                            return Get.dialog(
-                                                                CustomDialogs()
-                                                                    .showDialog(
-                                                                        "No influencer registered with this number"));
-                                                          }
+                                                            print(
+                                                                _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflName);
+                                                            // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
+
+                                                            for (int i = 0;
+                                                                i <
+                                                                    influencerCategoryEntity
+                                                                        .length;
+                                                                i++) {
+                                                              if (influencerCategoryEntity[
+                                                                          i]
+                                                                      .inflCatId
+                                                                      .toString() ==
+                                                                  inflDetail
+                                                                      .inflCatId
+                                                                      .toString()) {
+                                                                _listInfluencerDetail[
+                                                                            index]
+                                                                        .inflCatId
+                                                                        .text =
+                                                                    inflDetail
+                                                                        .inflCatId
+                                                                        .toString();
+                                                                //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
+                                                                _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflCatValue
+                                                                    .text = influencerCategoryEntity[
+                                                                        influencerCategoryEntity[i].inflCatId -
+                                                                            1]
+                                                                    .inflCatDesc;
+                                                                break;
+                                                              } else {
+                                                                _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflCatId
+                                                                    .clear();
+                                                                _listInfluencerDetail[
+                                                                        index]
+                                                                    .inflCatValue
+                                                                    .clear();
+                                                              }
+                                                            }
+                                                          });
                                                         } else {
                                                           if (_listInfluencerDetail[
                                                                       index]
                                                                   .inflContact !=
                                                               null) {
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflContact
-                                                                .clear();
-                                                            _listInfluencerDetail[
-                                                                    index]
-                                                                .inflName
-                                                                .clear();
+                                                            setState(() {
+                                                              _listInfluencerDetail[
+                                                                      index]
+                                                                  .inflContact
+                                                                  .clear();
+                                                              _listInfluencerDetail[
+                                                                      index]
+                                                                  .inflName
+                                                                  .clear();
+                                                            });
                                                           }
                                                           return Get.dialog(
                                                               CustomDialogs()
                                                                   .showDialog(
-                                                                      _infDetailModel
-                                                                          .respMsg));
+                                                                      "No influencer registered with this number"));
                                                         }
-                                                        Get.back();
-                                                      });
+                                                      } else {
+                                                        if (_listInfluencerDetail[
+                                                                    index]
+                                                                .inflContact !=
+                                                            null) {
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflContact
+                                                              .clear();
+                                                          _listInfluencerDetail[
+                                                                  index]
+                                                              .inflName
+                                                              .clear();
+                                                        }
+                                                        return Get.dialog(
+                                                            CustomDialogs()
+                                                                .showDialog(
+                                                                    _infDetailModel
+                                                                        .respMsg));
+                                                      }
+                                                      Get.back();
                                                     });
-                                                  }
+                                                  });
                                                 }
-                                                // setState(() {
-                                                //   _totalBags = value as int;
-                                                // });
-                                              },
-                                              validator: (value) {
-                                                if (value.isEmpty) {
-                                                  return 'Please enter Influencer Number ';
-                                                }
-                                                if (!Validations
-                                                    .isValidPhoneNumber(
-                                                        value)) {
-                                                  return "Enter valid Contact number";
-                                                }
+                                              }
+                                              // setState(() {
+                                              //   _totalBags = value as int;
+                                              // });
+                                            },
+                                            validator: (value) {
+                                              if (value.isEmpty) {
+                                                return 'Please enter Influencer Number ';
+                                              }
+                                              if (!Validations
+                                                  .isValidPhoneNumber(
+                                                      value)) {
+                                                return "Enter valid Contact number";
+                                              }
 
-                                                return null;
-                                              },
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: ColorConstants
-                                                      .inputBoxHintColor,
-                                                  fontFamily: "Muli"),
-                                              keyboardType: TextInputType.phone,
-                                              inputFormatters: <
-                                                  TextInputFormatter>[
-                                                FilteringTextInputFormatter
-                                                    .digitsOnly
-                                              ],
-                                              decoration: InputDecoration(
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: ColorConstants
-                                                          .backgroundColorBlue,
-                                                      //color: HexColor("#0000001F"),
-                                                      width: 1.0),
-                                                ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: const Color(
-                                                              0xFF000000)
-                                                          .withOpacity(0.4),
-                                                      width: 1.0),
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.red,
-                                                      width: 1.0),
-                                                ),
-                                                labelText: "Mobile Number",
-                                                filled: false,
-                                                focusColor: Colors.black,
-                                                labelStyle: TextStyle(
-                                                    fontFamily: "Muli",
+                                              return null;
+                                            },
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: ColorConstants
+                                                    .inputBoxHintColor,
+                                                fontFamily: "Muli"),
+                                            keyboardType: TextInputType.phone,
+                                            inputFormatters: <
+                                                TextInputFormatter>[
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            decoration: InputDecoration(
+                                              focusedBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
                                                     color: ColorConstants
-                                                        .inputBoxHintColorDark,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16.0),
-                                                fillColor: ColorConstants
-                                                    .backgroundColor,
+                                                        .backgroundColorBlue,
+                                                    //color: HexColor("#0000001F"),
+                                                    width: 1.0),
                                               ),
+                                              enabledBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: const Color(
+                                                            0xFF000000)
+                                                        .withOpacity(0.4),
+                                                    width: 1.0),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.red,
+                                                    width: 1.0),
+                                              ),
+                                              labelText: "Mobile Number",
+                                              filled: false,
+                                              focusColor: Colors.black,
+                                              labelStyle: TextStyle(
+                                                  fontFamily: "Muli",
+                                                  color: ColorConstants
+                                                      .inputBoxHintColorDark,
+                                                  fontWeight:
+                                                      FontWeight.normal,
+                                                  fontSize: 16.0),
+                                              fillColor: ColorConstants
+                                                  .backgroundColor,
                                             ),
-                                            SizedBox(height: 16),
-                                            TextFormField(
-                                              //  initialValue: _listInfluencerDetail[index].inflName,
-                                              controller:
-                                                  _listInfluencerDetail[index]
-                                                      .inflName,
+                                          ),
+                                          SizedBox(height: 16),
+                                          TextFormField(
+                                            //  initialValue: _listInfluencerDetail[index].inflName,
+                                            controller:
+                                                _listInfluencerDetail[index]
+                                                    .inflName,
 
-                                              // validator: (value) {
-                                              //   if (value.isEmpty) {
-                                              //     return 'Please enter Influencer Number ';
-                                              //   }
-                                              //
-                                              //   return null;
-                                              // },
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: ColorConstants
-                                                      .inputBoxHintColor,
-                                                  fontFamily: "Muli"),
-                                              keyboardType: TextInputType.text,
-                                              decoration: InputDecoration(
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: ColorConstants
-                                                          .backgroundColorBlue,
-                                                      //color: HexColor("#0000001F"),
-                                                      width: 1.0),
-                                                ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: const Color(
-                                                              0xFF000000)
-                                                          .withOpacity(0.4),
-                                                      width: 1.0),
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.red,
-                                                      width: 1.0),
-                                                ),
-                                                disabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: const Color(
-                                                              0xFF000000)
-                                                          .withOpacity(0.4),
-                                                      width: 1.0),
-                                                ),
-                                                labelText: "Name",
-                                                enabled: false,
-                                                filled: false,
-                                                focusColor: Colors.black,
-                                                labelStyle: TextStyle(
-                                                    fontFamily: "Muli",
+                                            // validator: (value) {
+                                            //   if (value.isEmpty) {
+                                            //     return 'Please enter Influencer Number ';
+                                            //   }
+                                            //
+                                            //   return null;
+                                            // },
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: ColorConstants
+                                                    .inputBoxHintColor,
+                                                fontFamily: "Muli"),
+                                            keyboardType: TextInputType.text,
+                                            decoration: InputDecoration(
+                                              focusedBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
                                                     color: ColorConstants
-                                                        .inputBoxHintColorDark,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16.0),
-                                                fillColor: ColorConstants
-                                                    .backgroundColor,
+                                                        .backgroundColorBlue,
+                                                    //color: HexColor("#0000001F"),
+                                                    width: 1.0),
                                               ),
-                                            ),
-                                            SizedBox(height: 16),
-                                            TextFormField(
-                                              controller:
-                                                  _listInfluencerDetail[index]
-                                                      .inflTypeValue,
-                                              // validator: (value) {
-                                              //   if (value.isEmpty) {
-                                              //     return 'Please enter Influencer Number ';
-                                              //   }
-                                              //
-                                              //   return null;
-                                              // },
-                                              style: TextStyle(
-                                                  fontSize: 18,
+                                              enabledBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: const Color(
+                                                            0xFF000000)
+                                                        .withOpacity(0.4),
+                                                    width: 1.0),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.red,
+                                                    width: 1.0),
+                                              ),
+                                              disabledBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: const Color(
+                                                            0xFF000000)
+                                                        .withOpacity(0.4),
+                                                    width: 1.0),
+                                              ),
+                                              labelText: "Name",
+                                              enabled: false,
+                                              filled: false,
+                                              focusColor: Colors.black,
+                                              labelStyle: TextStyle(
+                                                  fontFamily: "Muli",
                                                   color: ColorConstants
-                                                      .inputBoxHintColor,
-                                                  fontFamily: "Muli"),
-                                              keyboardType: TextInputType.text,
-                                              decoration: InputDecoration(
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: ColorConstants
-                                                          .backgroundColorBlue,
-                                                      //color: HexColor("#0000001F"),
-                                                      width: 1.0),
-                                                ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: const Color(
-                                                              0xFF000000)
-                                                          .withOpacity(0.4),
-                                                      width: 1.0),
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.red,
-                                                      width: 1.0),
-                                                ),
-                                                disabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: const Color(
-                                                              0xFF000000)
-                                                          .withOpacity(0.4),
-                                                      width: 1.0),
-                                                ),
-                                                enabled: false,
-                                                labelText: "Type",
-                                                filled: false,
-                                                focusColor: Colors.black,
-                                                labelStyle: TextStyle(
-                                                    fontFamily: "Muli",
-                                                    color: ColorConstants
-                                                        .inputBoxHintColorDark,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16.0),
-                                                fillColor: ColorConstants
-                                                    .backgroundColor,
-                                              ),
+                                                      .inputBoxHintColorDark,
+                                                  fontWeight:
+                                                      FontWeight.normal,
+                                                  fontSize: 16.0),
+                                              fillColor: ColorConstants
+                                                  .backgroundColor,
                                             ),
-                                            SizedBox(height: 16),
-                                            TextFormField(
-                                              controller:
-                                                  _listInfluencerDetail[index]
-                                                      .inflCatValue,
-                                              // validator: (value) {
-                                              //   if (value.isEmpty) {
-                                              //     return 'Please enter Influencer Number ';
-                                              //   }
-                                              //
-                                              //   return null;
-                                              // },
-                                              style: TextStyle(
-                                                  fontSize: 18,
+                                          ),
+                                          SizedBox(height: 16),
+                                          TextFormField(
+                                            controller:
+                                                _listInfluencerDetail[index]
+                                                    .inflTypeValue,
+                                            // validator: (value) {
+                                            //   if (value.isEmpty) {
+                                            //     return 'Please enter Influencer Number ';
+                                            //   }
+                                            //
+                                            //   return null;
+                                            // },
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: ColorConstants
+                                                    .inputBoxHintColor,
+                                                fontFamily: "Muli"),
+                                            keyboardType: TextInputType.text,
+                                            decoration: InputDecoration(
+                                              focusedBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: ColorConstants
+                                                        .backgroundColorBlue,
+                                                    //color: HexColor("#0000001F"),
+                                                    width: 1.0),
+                                              ),
+                                              enabledBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: const Color(
+                                                            0xFF000000)
+                                                        .withOpacity(0.4),
+                                                    width: 1.0),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.red,
+                                                    width: 1.0),
+                                              ),
+                                              disabledBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: const Color(
+                                                            0xFF000000)
+                                                        .withOpacity(0.4),
+                                                    width: 1.0),
+                                              ),
+                                              enabled: false,
+                                              labelText: "Type",
+                                              filled: false,
+                                              focusColor: Colors.black,
+                                              labelStyle: TextStyle(
+                                                  fontFamily: "Muli",
                                                   color: ColorConstants
-                                                      .inputBoxHintColor,
-                                                  fontFamily: "Muli"),
-                                              keyboardType: TextInputType.text,
-                                              decoration: InputDecoration(
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: ColorConstants
-                                                          .backgroundColorBlue,
-                                                      //color: HexColor("#0000001F"),
-                                                      width: 1.0),
-                                                ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: const Color(
-                                                              0xFF000000)
-                                                          .withOpacity(0.4),
-                                                      width: 1.0),
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.red,
-                                                      width: 1.0),
-                                                ),
-                                                disabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: const Color(
-                                                              0xFF000000)
-                                                          .withOpacity(0.4),
-                                                      width: 1.0),
-                                                ),
-                                                enabled: false,
-                                                labelText: "Category",
-                                                filled: false,
-                                                focusColor: Colors.black,
-                                                labelStyle: TextStyle(
-                                                    fontFamily: "Muli",
-                                                    color: ColorConstants
-                                                        .inputBoxHintColorDark,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16.0),
-                                                fillColor: ColorConstants
-                                                    .backgroundColor,
-                                              ),
+                                                      .inputBoxHintColorDark,
+                                                  fontWeight:
+                                                      FontWeight.normal,
+                                                  fontSize: 16.0),
+                                              fillColor: ColorConstants
+                                                  .backgroundColor,
                                             ),
-                                          ],
-                                        );
-                                      }
-                                    }),
+                                          ),
+                                          SizedBox(height: 16),
+                                          TextFormField(
+                                            controller:
+                                                _listInfluencerDetail[index]
+                                                    .inflCatValue,
+                                            // validator: (value) {
+                                            //   if (value.isEmpty) {
+                                            //     return 'Please enter Influencer Number ';
+                                            //   }
+                                            //
+                                            //   return null;
+                                            // },
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: ColorConstants
+                                                    .inputBoxHintColor,
+                                                fontFamily: "Muli"),
+                                            keyboardType: TextInputType.text,
+                                            decoration: InputDecoration(
+                                              focusedBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: ColorConstants
+                                                        .backgroundColorBlue,
+                                                    //color: HexColor("#0000001F"),
+                                                    width: 1.0),
+                                              ),
+                                              enabledBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: const Color(
+                                                            0xFF000000)
+                                                        .withOpacity(0.4),
+                                                    width: 1.0),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.red,
+                                                    width: 1.0),
+                                              ),
+                                              disabledBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: const Color(
+                                                            0xFF000000)
+                                                        .withOpacity(0.4),
+                                                    width: 1.0),
+                                              ),
+                                              enabled: false,
+                                              labelText: "Category",
+                                              filled: false,
+                                              focusColor: Colors.black,
+                                              labelStyle: TextStyle(
+                                                  fontFamily: "Muli",
+                                                  color: ColorConstants
+                                                      .inputBoxHintColorDark,
+                                                  fontWeight:
+                                                      FontWeight.normal,
+                                                  fontSize: 16.0),
+                                              fillColor: ColorConstants
+                                                  .backgroundColor,
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                  }),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+
+                        Center(
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                                side: BorderSide(color: Colors.black26)),
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 5, bottom: 8, top: 5),
+                              child: Text(
+                                "ADD MORE INFLUENCER",
+                                style: TextStyle(
+                                    color: HexColor("#1C99D4"),
+                                    fontWeight: FontWeight.bold,
+                                    // letterSpacing: 2,
+                                    fontSize: 17),
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
+                            ),
+                            onPressed: () async {
+                              // //  print(_listInfluencerDetail[
+                              //   _listInfluencerDetail.length - 1]
+                              //       .inflName);
+                              if (_listInfluencerDetail[
+                                              _listInfluencerDetail.length -
+                                                  1]
+                                          .inflName !=
+                                      null &&
+                                  _listInfluencerDetail[
+                                              _listInfluencerDetail.length -
+                                                  1]
+                                          .inflName !=
+                                      "null" &&
+                                  !_listInfluencerDetail[
+                                          _listInfluencerDetail.length - 1]
+                                      .inflName
+                                      .text
+                                      .isNullOrBlank) {
+                                InfluencerDetail infl = new InfluencerDetail(
+                                    isExpanded: true, isPrimarybool: false);
 
-                          Center(
-                            child: FlatButton(
+                                // Item item = new Item(
+                                //     headerValue: "agx ", expandedValue: "dnxcx");
+                                setState(() {
+                                  // _data.add(item);
+                                  _listInfluencerDetail[
+                                          _listInfluencerDetail.length - 1]
+                                      .isExpanded = false;
+                                  _listInfluencerDetail.add(infl);
+                                });
+                              } else {
+                                print(
+                                    "Error : Please fill previous influencer first");
+                                Get.dialog(CustomDialogs().errorDialog(
+                                    "Please fill previous influencer first"));
+                              }
+                            },
+                          ),
+                        ),
+
+                        Divider(
+                          color: Colors.black26,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, bottom: 20, left: 5),
+                          child: Text(
+                            "Total Site Potential",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                // color: HexColor("#000000DE"),
+                                fontFamily: "Muli"),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: TextFormField(
+                                  // initialValue: _totalBags.toString(),
+                                  controller: _totalBags,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      // _totalBags.text = value ;
+                                      if (_totalBags.text == null ||
+                                          _totalBags.text == "") {
+                                        _totalMT.clear();
+                                      } else {
+                                        _totalMT.text =
+                                            (int.parse(_totalBags.text) / 20)
+                                                .toString();
+                                      }
+                                    });
+                                  },
+                                  keyboardType: TextInputType.phone,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter Bags ';
+                                    }
+
+                                    return null;
+                                  },
+
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                  // keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: ColorConstants
+                                              .backgroundColorBlue,
+                                          //color: HexColor("#0000001F"),
+                                          width: 1.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: const Color(0xFF000000)
+                                              .withOpacity(0.4),
+                                          width: 1.0),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.red, width: 1.0),
+                                    ),
+                                    labelText: "Bags",
+                                    filled: false,
+                                    focusColor: Colors.black,
+                                    labelStyle: TextStyle(
+                                        fontFamily: "Muli",
+                                        color: ColorConstants
+                                            .inputBoxHintColorDark,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 16.0),
+                                    fillColor: ColorConstants.backgroundColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: TextFormField(
+                                  controller: _totalMT,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      // _totalBags.text = value ;
+                                      if (_totalMT.text == null ||
+                                          _totalMT.text == "") {
+                                        _totalBags.clear();
+                                      } else {
+                                        _totalBags.text =
+                                            (double.parse(_totalMT.text) * 20)
+                                                .toInt()
+                                                .toString();
+                                      }
+                                    });
+                                  },
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter MT ';
+                                    }
+
+                                    return null;
+                                  },
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                  keyboardType:
+                                      TextInputType.numberWithOptions(
+                                          decimal: false),
+                                  decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: ColorConstants
+                                              .backgroundColorBlue,
+                                          //color: HexColor("#0000001F"),
+                                          width: 1.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: const Color(0xFF000000)
+                                              .withOpacity(0.4),
+                                          width: 1.0),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: const Color(0xFF000000)
+                                              .withOpacity(0.4),
+                                          width: 1.0),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.red, width: 1.0),
+                                    ),
+                                    labelText: "MT",
+                                    filled: false,
+                                    //enabled: false,
+                                    focusColor: Colors.black,
+                                    labelStyle: TextStyle(
+                                        fontFamily: "Muli",
+                                        color: ColorConstants
+                                            .inputBoxHintColorDark,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 16.0),
+                                    fillColor: ColorConstants.backgroundColor,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Divider(
+                          color: Colors.black26,
+                          thickness: 1,
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          controller: _rera,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter RERA Number ';
+                            }
+
+                            return null;
+                          },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp("[0-9a-zA-Z ]")),
+                          ],
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: ColorConstants.backgroundColorBlue,
+                                  //color: HexColor("#0000001F"),
+                                  width: 1.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: const Color(0xFF000000)
+                                      .withOpacity(0.4),
+                                  width: 1.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.red, width: 1.0),
+                            ),
+                            labelText: "RERA Number",
+                            filled: false,
+                            focusColor: Colors.black,
+                            labelStyle: TextStyle(
+                                fontFamily: "Muli",
+                                color: ColorConstants.inputBoxHintColorDark,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16.0),
+                            fillColor: ColorConstants.backgroundColor,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+
+                        TextFormField(
+                          maxLines: 4,
+                          maxLength: 500,
+                          // initialValue: _comments.text,
+                          controller: _comments,
+
+                          // validator: (value) {
+                          //   if (value.isEmpty) {
+                          //     return 'Please enter RERA Number ';
+                          //   }
+                          //
+                          //   return null;
+                          // },
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: ColorConstants.inputBoxHintColor,
+                              fontFamily: "Muli"),
+                          keyboardType: TextInputType.text,
+                          onChanged: (value) {
+                            print(_comments.text);
+                            // setState(() {
+                            //   _comments.text = value;
+                            // });
+                          },
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: ColorConstants.backgroundColorBlue,
+                                  //color: HexColor("#0000001F"),
+                                  width: 1.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: const Color(0xFF000000)
+                                      .withOpacity(0.4),
+                                  width: 1.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.red, width: 1.0),
+                            ),
+                            labelText: "Comment",
+                            filled: false,
+                            focusColor: Colors.black,
+                            labelStyle: TextStyle(
+                                fontFamily: "Muli",
+                                color: ColorConstants.inputBoxHintColorDark,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16.0),
+                            fillColor: ColorConstants.backgroundColor,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+
+                        // Center(
+                        //   child: FlatButton(
+                        //     shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(0),
+                        //         side: BorderSide(color: Colors.black26)),
+                        //     color: Colors.transparent,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.only(
+                        //           right: 5, bottom: 8, top: 5),
+                        //       child: Text(
+                        //         "ADD COMMENT",
+                        //         style: TextStyle(
+                        //             color: HexColor("#1C99D4"),
+                        //             fontWeight: FontWeight.bold,
+                        //             // letterSpacing: 2,
+                        //             fontSize: 17),
+                        //       ),
+                        //     ),
+                        //     onPressed: () async {
+                        //       if (_comments.value.text != null &&
+                        //           _comments.value.text != '') {
+                        //         print("here");
+                        //         setState(() {
+                        //           _commentsList.add(
+                        //             new CommentsDetail(
+                        //                 commentedBy: "XYZNAME",
+                        //                 comment: _comments.value.text,
+                        //                 commentedAt: DateTime.now()),
+                        //           );
+                        //           _comments.clear();
+                        //         });
+                        //       }
+                        //       SystemChannels.textInput
+                        //           .invokeMethod('TextInput.hide');
+                        //     },
+                        //   ),
+                        // ),
+                        _commentsList != null && _commentsList.length != 0
+                            ? viewMoreActive
+                                ? Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            reverse: true,
+                                            shrinkWrap: true,
+                                            itemCount: _commentsList.length,
+                                            itemBuilder:
+                                                (BuildContext context,
+                                                    int index) {
+                                              return Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        _commentsList[index]
+                                                            .creatorName,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                            fontSize: 25),
+                                                      ),
+                                                      Text(
+                                                        _commentsList[index]
+                                                            .commentText,
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .black
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            fontSize: 25),
+                                                      ),
+                                                      Text(
+                                                        _commentsList[index]
+                                                            .commentedAt
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .black
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            fontSize: 15),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  )
+                                                ],
+                                              );
+                                            }),
+                                      ),
+                                    ],
+                                  )
+                                : Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            _commentsList[
+                                                    _commentsList.length - 1]
+                                                .creatorName,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 25),
+                                          ),
+                                          Text(
+                                            _commentsList[
+                                                    _commentsList.length - 1]
+                                                .commentText,
+                                            style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                fontSize: 25),
+                                          ),
+                                          Text(
+                                            _commentsList[
+                                                    _commentsList.length - 1]
+                                                .commentedAt
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      )
+                                    ],
+                                  )
+                            : Container(),
+                        // Padding(
+                        //   padding:
+                        //       const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
+                        //   child: Text(
+                        //     "XYZ Kumar",
+                        //     style: TextStyle(
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize: 25,
+                        //         // color: HexColor("#000000DE"),
+                        //         fontFamily: "Muli"),
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding:
+                        //       const EdgeInsets.only(top: 5.0, bottom: 20, left: 5),
+                        //   child: Text(
+                        //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                        //     style: TextStyle(
+                        //         //fontWeight: FontWeight.bold,
+                        //         fontSize: 20,
+                        //         // color: HexColor("#000000DE"),
+                        //         fontFamily: "Muli"),
+                        //   ),
+                        // ),
+                        Center(
+                          child: FlatButton(
+                            // shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(0),
+                            //     side: BorderSide(color: Colors.black26)),
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 5, bottom: 8, top: 5),
+                              child: !viewMoreActive
+                                  ? Text(
+                                      "VIEW MORE COMMENT (" +
+                                          _commentsList.length.toString() +
+                                          ")",
+                                      style: TextStyle(
+                                          color: HexColor("##F9A61A"),
+                                          fontWeight: FontWeight.bold,
+                                          // letterSpacing: 2,
+                                          fontSize: 17),
+                                    )
+                                  : Text(
+                                      "VIEW LESS COMMENT (" +
+                                          _commentsList.length.toString() +
+                                          ")",
+                                      style: TextStyle(
+                                          color: HexColor("##F9A61A"),
+                                          fontWeight: FontWeight.bold,
+                                          // letterSpacing: 2,
+                                          fontSize: 17),
+                                    ),
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                viewMoreActive = !viewMoreActive;
+                              });
+                            },
+                          ),
+                        ),
+
+                        SizedBox(height: 35),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FlatButton(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0),
                                   side: BorderSide(color: Colors.black26)),
@@ -4898,7 +5442,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 padding: const EdgeInsets.only(
                                     right: 5, bottom: 8, top: 5),
                                 child: Text(
-                                  "ADD MORE INFLUENCER",
+                                  "SAVE AND CLOSE",
                                   style: TextStyle(
                                       color: HexColor("#1C99D4"),
                                       fontWeight: FontWeight.bold,
@@ -4907,596 +5451,288 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 ),
                               ),
                               onPressed: () async {
-                                // //  print(_listInfluencerDetail[
-                                //   _listInfluencerDetail.length - 1]
-                                //       .inflName);
-                                if (_listInfluencerDetail[
-                                                _listInfluencerDetail.length -
-                                                    1]
-                                            .inflName !=
-                                        null &&
-                                    _listInfluencerDetail[
-                                                _listInfluencerDetail.length -
-                                                    1]
-                                            .inflName !=
-                                        "null" &&
-                                    !_listInfluencerDetail[
-                                            _listInfluencerDetail.length - 1]
-                                        .inflName
-                                        .text
-                                        .isNullOrBlank) {
-                                  InfluencerDetail infl = new InfluencerDetail(
-                                      isExpanded: true, isPrimarybool: false);
+                                // print(_comments.text);
+                                if (!_isSaveButtonDisabled) {
+                                  _isSaveButtonDisabled = true;
+                                  _isSubmitButtonDisabled = false;
 
-                                  // Item item = new Item(
-                                  //     headerValue: "agx ", expandedValue: "dnxcx");
-                                  setState(() {
-                                    // _data.add(item);
-                                    _listInfluencerDetail[
-                                            _listInfluencerDetail.length - 1]
-                                        .isExpanded = false;
-                                    _listInfluencerDetail.add(infl);
-                                  });
-                                } else {
-                                  print(
-                                      "Error : Please fill previous influencer first");
-                                  Get.dialog(CustomDialogs().errorDialog(
-                                      "Please fill previous influencer first"));
+                                  if (_contactNumber != null &&
+                                      _contactNumber != '' &&
+                                      _contactNumber.length == 10) {
+                                    print("here");
+                                    setState(() {
+                                      String empId;
+                                      String mobileNumber;
+                                      String name;
+                                      Future<SharedPreferences> _prefs =
+                                          SharedPreferences.getInstance();
+                                      _prefs.then(
+                                          (SharedPreferences prefs) async {
+                                        empId = prefs.getString(
+                                                StringConstants.employeeId) ??
+                                            "empty";
+                                        mobileNumber = prefs.getString(
+                                                StringConstants
+                                                    .mobileNumber) ??
+                                            "empty";
+                                        name = prefs.getString(StringConstants
+                                                .employeeName) ??
+                                            "empty";
+                                        print("DHAWAM ::::" + _comments.text);
+
+                                        if (_comments.text != null &&
+                                            _comments.text != '') {
+                                          await _commentsListNew.add(
+                                            new CommentsDetail(
+                                                createdBy: empId,
+                                                commentText: _comments.text,
+                                                // commentedAt: DateTime.now(),
+                                                creatorName: name),
+                                          );
+                                        }
+
+                                        // print("DHAWAM " + _commentsListNew[0].commentText);
+
+                                        if (_listInfluencerDetail.length !=
+                                            0) {
+                                          if (_listInfluencerDetail[
+                                                          _listInfluencerDetail
+                                                                  .length -
+                                                              1]
+                                                      .inflName ==
+                                                  null ||
+                                              _listInfluencerDetail[
+                                                          _listInfluencerDetail
+                                                                  .length -
+                                                              1]
+                                                      .inflName ==
+                                                  "null" ||
+                                              _listInfluencerDetail[
+                                                      _listInfluencerDetail
+                                                              .length -
+                                                          1]
+                                                  .inflName
+                                                  .text
+                                                  .isNullOrBlank) {
+                                            print("here1234");
+                                            _listInfluencerDetail.removeAt(
+                                                _listInfluencerDetail.length -
+                                                    1);
+                                          }
+                                        }
+
+                                        List<InfluencerDetailDraft>
+                                            influencerDetailDraft =
+                                            new List();
+                                        for (int i = 0;
+                                            i < _listInfluencerDetail.length;
+                                            i++) {
+                                          influencerDetailDraft.add(
+                                              new InfluencerDetailDraft(
+                                                  id: _listInfluencerDetail[i]
+                                                      .id
+                                                      .text,
+                                                  inflName:
+                                                      _listInfluencerDetail[i]
+                                                          .inflName
+                                                          .text,
+                                                  inflContact:
+                                                      _listInfluencerDetail[i]
+                                                          .inflContact
+                                                          .text,
+                                                  inflTypeId: _listInfluencerDetail[i]
+                                                      .inflTypeId
+                                                      .text,
+                                                  inflTypeValue:
+                                                      _listInfluencerDetail[i]
+                                                          .inflTypeValue
+                                                          .text,
+                                                  inflCatId:
+                                                      _listInfluencerDetail[i]
+                                                          .inflCatId
+                                                          .text,
+                                                  inflCatValue: _listInfluencerDetail[i]
+                                                      .inflCatValue
+                                                      .text,
+                                                  ilpIntrested: _listInfluencerDetail[i]
+                                                      .ilpIntrested
+                                                      .text,
+                                                  isExpanded:
+                                                      _listInfluencerDetail[i]
+                                                          .isExpanded,
+                                                  isPrimarybool:
+                                                      _listInfluencerDetail[i]
+                                                          .isPrimarybool,
+                                                  isPrimary:
+                                                      _listInfluencerDetail[i]
+                                                          .isPrimary));
+                                        }
+
+                                        List<ListLeadImageDraft>
+                                            listLeadImageDraft = new List();
+
+                                        for (int i = 0;
+                                            i < controller.imageList.length;
+                                            i++) {
+                                          listLeadImageDraft.add(
+                                              new ListLeadImageDraft(
+                                                  photoPath:
+                                                  controller.imageList[i].path));
+                                        }
+
+                                        final DateFormat formatter =
+                                            DateFormat("dd-MM-yyyy");
+
+                                        SaveLeadRequestDraftModel
+                                            saveLeadRequestDraftModel =
+                                            new SaveLeadRequestDraftModel(
+                                                siteSubTypeId: "2",
+                                                contactName: _contactName,
+                                                contactNumber: _contactNumber,
+                                                geotagType: geoTagType,
+                                                leadLatitude: _currentPosition
+                                                    .latitude
+                                                    .toString(),
+                                                leadLongitude:
+                                                    _currentPosition.longitude
+                                                        .toString(),
+                                                leadAddress:
+                                                    _siteAddress.text,
+                                                leadPincode: _pincode.text,
+                                                leadStateName: _state.text,
+                                                leadDistrictName:
+                                                    _district.text,
+                                                leadTalukName: _taluk.text,
+                                                leadSalesPotentialMt:
+                                                    _totalMT.text ?? "0",
+                                                leadBags: _totalBags.text,
+                                                leadReraNumber: _rera.text,
+                                                isStatus: "false",
+                                                // listLeadImage: new List(),
+                                                //  influencerList: new List(),
+                                                // comments: new List(),
+                                                listLeadImage:
+                                                    listLeadImageDraft,
+                                                influencerList:
+                                                    influencerDetailDraft,
+                                                comments: _commentsListNew,
+                                                assignDate: formatter
+                                                    .format(DateTime.now()));
+
+//
+//                                   SaveLeadRequestModel saveLeadRequestModel1 = json.decode(draftLeadModelforDB.leadModel);
+
+                                        print(saveLeadRequestDraftModel
+                                            .toJson());
+                                        print(gv.fromLead);
+                                        if (!gv.fromLead) {
+                                          DraftLeadModelforDB
+                                              draftLeadModelforDB =
+                                              new DraftLeadModelforDB(
+                                                  null,
+                                                  json.encode(
+                                                      saveLeadRequestDraftModel));
+                                          print(
+                                              draftLeadModelforDB.leadModel);
+                                          await db.addLeadInDraft(
+                                              draftLeadModelforDB);
+                                        } else {
+                                          print(json.encode(
+                                              saveLeadRequestDraftModel));
+                                          DraftLeadModelforDB
+                                              draftLeadModelforDB =
+                                              new DraftLeadModelforDB(
+                                                  gv.draftID,
+                                                  json.encode(
+                                                      saveLeadRequestDraftModel));
+
+                                          await db.updateLeadInDraft(
+                                              draftLeadModelforDB);
+                                        }
+
+                                        gv.fromLead = false;
+                                        gv.saveLeadRequestModel =
+                                            new SaveLeadRequestDraftModel();
+                                        Navigator.pushReplacement(
+                                            context,
+                                            new CupertinoPageRoute(
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    DraftLeadListScreen()));
+                                      });
+
+                                      //  _comments.clear();
+                                    });
+                                  } else {
+                                    Get.dialog(CustomDialogs().errorDialog(
+                                        "Please fill atleast a contact number"));
+                                  }
                                 }
                               },
                             ),
-                          ),
-
-                          Divider(
-                            color: Colors.black26,
-                            thickness: 1,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, bottom: 20, left: 5),
-                            child: Text(
-                              "Total Site Potential",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  // color: HexColor("#000000DE"),
-                                  fontFamily: "Muli"),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 10.0),
-                                  child: TextFormField(
-                                    // initialValue: _totalBags.toString(),
-                                    controller: _totalBags,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        // _totalBags.text = value ;
-                                        if (_totalBags.text == null ||
-                                            _totalBags.text == "") {
-                                          _totalMT.clear();
-                                        } else {
-                                          _totalMT.text =
-                                              (int.parse(_totalBags.text) / 20)
-                                                  .toString();
-                                        }
-                                      });
-                                    },
-                                    keyboardType: TextInputType.phone,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'Please enter Bags ';
-                                      }
-
-                                      return null;
-                                    },
-
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    // keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: ColorConstants
-                                                .backgroundColorBlue,
-                                            //color: HexColor("#0000001F"),
-                                            width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1.0),
-                                      ),
-                                      labelText: "Bags",
-                                      filled: false,
-                                      focusColor: Colors.black,
-                                      labelStyle: TextStyle(
-                                          fontFamily: "Muli",
-                                          color: ColorConstants
-                                              .inputBoxHintColorDark,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 16.0),
-                                      fillColor: ColorConstants.backgroundColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: TextFormField(
-                                    controller: _totalMT,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        // _totalBags.text = value ;
-                                        if (_totalMT.text == null ||
-                                            _totalMT.text == "") {
-                                          _totalBags.clear();
-                                        } else {
-                                          _totalBags.text =
-                                              (double.parse(_totalMT.text) * 20)
-                                                  .toInt()
-                                                  .toString();
-                                        }
-                                      });
-                                    },
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'Please enter MT ';
-                                      }
-
-                                      return null;
-                                    },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(
-                                            decimal: false),
-                                    decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: ColorConstants
-                                                .backgroundColorBlue,
-                                            //color: HexColor("#0000001F"),
-                                            width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1.0),
-                                      ),
-                                      labelText: "MT",
-                                      filled: false,
-                                      //enabled: false,
-                                      focusColor: Colors.black,
-                                      labelStyle: TextStyle(
-                                          fontFamily: "Muli",
-                                          color: ColorConstants
-                                              .inputBoxHintColorDark,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 16.0),
-                                      fillColor: ColorConstants.backgroundColor,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          Divider(
-                            color: Colors.black26,
-                            thickness: 1,
-                          ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _rera,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter RERA Number ';
-                              }
-
-                              return null;
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9a-zA-Z ]")),
-                            ],
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorConstants.backgroundColorBlue,
-                                    //color: HexColor("#0000001F"),
-                                    width: 1.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: const Color(0xFF000000)
-                                        .withOpacity(0.4),
-                                    width: 1.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.red, width: 1.0),
-                              ),
-                              labelText: "RERA Number",
-                              filled: false,
-                              focusColor: Colors.black,
-                              labelStyle: TextStyle(
-                                  fontFamily: "Muli",
-                                  color: ColorConstants.inputBoxHintColorDark,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.0),
-                              fillColor: ColorConstants.backgroundColor,
-                            ),
-                          ),
-                          SizedBox(height: 16),
-
-                          TextFormField(
-                            maxLines: 4,
-                            maxLength: 500,
-                            // initialValue: _comments.text,
-                            controller: _comments,
-
-                            // validator: (value) {
-                            //   if (value.isEmpty) {
-                            //     return 'Please enter RERA Number ';
-                            //   }
-                            //
-                            //   return null;
-                            // },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            onChanged: (value) {
-                              print(_comments.text);
-                              // setState(() {
-                              //   _comments.text = value;
-                              // });
-                            },
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorConstants.backgroundColorBlue,
-                                    //color: HexColor("#0000001F"),
-                                    width: 1.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: const Color(0xFF000000)
-                                        .withOpacity(0.4),
-                                    width: 1.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.red, width: 1.0),
-                              ),
-                              labelText: "Comment",
-                              filled: false,
-                              focusColor: Colors.black,
-                              labelStyle: TextStyle(
-                                  fontFamily: "Muli",
-                                  color: ColorConstants.inputBoxHintColorDark,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.0),
-                              fillColor: ColorConstants.backgroundColor,
-                            ),
-                          ),
-                          SizedBox(height: 16),
-
-                          // Center(
-                          //   child: FlatButton(
-                          //     shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(0),
-                          //         side: BorderSide(color: Colors.black26)),
-                          //     color: Colors.transparent,
-                          //     child: Padding(
-                          //       padding: const EdgeInsets.only(
-                          //           right: 5, bottom: 8, top: 5),
-                          //       child: Text(
-                          //         "ADD COMMENT",
-                          //         style: TextStyle(
-                          //             color: HexColor("#1C99D4"),
-                          //             fontWeight: FontWeight.bold,
-                          //             // letterSpacing: 2,
-                          //             fontSize: 17),
-                          //       ),
-                          //     ),
-                          //     onPressed: () async {
-                          //       if (_comments.value.text != null &&
-                          //           _comments.value.text != '') {
-                          //         print("here");
-                          //         setState(() {
-                          //           _commentsList.add(
-                          //             new CommentsDetail(
-                          //                 commentedBy: "XYZNAME",
-                          //                 comment: _comments.value.text,
-                          //                 commentedAt: DateTime.now()),
-                          //           );
-                          //           _comments.clear();
-                          //         });
-                          //       }
-                          //       SystemChannels.textInput
-                          //           .invokeMethod('TextInput.hide');
-                          //     },
-                          //   ),
-                          // ),
-                          _commentsList != null && _commentsList.length != 0
-                              ? viewMoreActive
-                                  ? Row(
-                                      children: [
-                                        Expanded(
-                                          child: ListView.builder(
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              reverse: true,
-                                              shrinkWrap: true,
-                                              itemCount: _commentsList.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          _commentsList[index]
-                                                              .creatorName,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 25),
-                                                        ),
-                                                        Text(
-                                                          _commentsList[index]
-                                                              .commentText,
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                              fontSize: 25),
-                                                        ),
-                                                        Text(
-                                                          _commentsList[index]
-                                                              .commentedAt
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                              fontSize: 15),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    )
-                                                  ],
-                                                );
-                                              }),
-                                        ),
-                                      ],
-                                    )
-                                  : Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Text(
-                                              _commentsList[
-                                                      _commentsList.length - 1]
-                                                  .creatorName,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25),
-                                            ),
-                                            Text(
-                                              _commentsList[
-                                                      _commentsList.length - 1]
-                                                  .commentText,
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 25),
-                                            ),
-                                            Text(
-                                              _commentsList[
-                                                      _commentsList.length - 1]
-                                                  .commentedAt
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 15),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        )
-                                      ],
-                                    )
-                              : Container(),
-                          // Padding(
-                          //   padding:
-                          //       const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
-                          //   child: Text(
-                          //     "XYZ Kumar",
-                          //     style: TextStyle(
-                          //         fontWeight: FontWeight.bold,
-                          //         fontSize: 25,
-                          //         // color: HexColor("#000000DE"),
-                          //         fontFamily: "Muli"),
-                          //   ),
-                          // ),
-                          // Padding(
-                          //   padding:
-                          //       const EdgeInsets.only(top: 5.0, bottom: 20, left: 5),
-                          //   child: Text(
-                          //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                          //     style: TextStyle(
-                          //         //fontWeight: FontWeight.bold,
-                          //         fontSize: 20,
-                          //         // color: HexColor("#000000DE"),
-                          //         fontFamily: "Muli"),
-                          //   ),
-                          // ),
-                          Center(
-                            child: FlatButton(
-                              // shape: RoundedRectangleBorder(
-                              //     borderRadius: BorderRadius.circular(0),
-                              //     side: BorderSide(color: Colors.black26)),
-                              color: Colors.transparent,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 5, bottom: 8, top: 5),
-                                child: !viewMoreActive
-                                    ? Text(
-                                        "VIEW MORE COMMENT (" +
-                                            _commentsList.length.toString() +
-                                            ")",
-                                        style: TextStyle(
-                                            color: HexColor("##F9A61A"),
-                                            fontWeight: FontWeight.bold,
-                                            // letterSpacing: 2,
-                                            fontSize: 17),
-                                      )
-                                    : Text(
-                                        "VIEW LESS COMMENT (" +
-                                            _commentsList.length.toString() +
-                                            ")",
-                                        style: TextStyle(
-                                            color: HexColor("##F9A61A"),
-                                            fontWeight: FontWeight.bold,
-                                            // letterSpacing: 2,
-                                            fontSize: 17),
-                                      ),
+                            RaisedButton(
+                              color: HexColor("#1C99D4"),
+                              child: Text(
+                                "SUBMIT",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    // letterSpacing: 2,
+                                    fontSize: 17),
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  viewMoreActive = !viewMoreActive;
-                                });
-                              },
-                            ),
-                          ),
+                                //print(_comments.text);
+                                if (!_isSubmitButtonDisabled) {
+                                  _isSubmitButtonDisabled = true;
+                                  _isSaveButtonDisabled = false;
+                                  if (_contactNumber != null &&
+                                          _contactNumber.length == 10 &&
+                                          _contactNumber != '' &&
+                                          _currentPosition.latitude != null &&
+                                          _currentPosition.latitude != '' &&
+                                          _pincode.text != null &&
+                                          _pincode.text != ''
+                                      //&&
+                                      // _listInfluencerDetail.length != 0
+                                      ) {
+                                    // print(_comments.text);
+                                    print("here");
+                                    setState(() {
+                                      String empId;
+                                      String mobileNumber;
+                                      String name;
+                                      Future<SharedPreferences> _prefs =
+                                          SharedPreferences.getInstance();
+                                      _prefs.then(
+                                          (SharedPreferences prefs) async {
+                                        empId = prefs.getString(
+                                                StringConstants.employeeId) ??
+                                            "empty";
+                                        mobileNumber = prefs.getString(
+                                                StringConstants
+                                                    .mobileNumber) ??
+                                            "empty";
+                                        name = prefs.getString(StringConstants
+                                                .employeeName) ??
+                                            "empty";
+                                        //   print("DHAWAM " + _comments.text);
+                                        if (_comments.text == "" ||
+                                            _comments.text == "null" ||
+                                            _comments.text == null) {
+                                          _comments.text = "Added New Lead";
+                                        }
+                                        await _commentsListNew.add(
+                                          new CommentsDetail(
+                                              createdBy: empId,
+                                              commentText: _comments.text,
+                                              // commentedAt: DateTime.now(),
+                                              creatorName: name),
+                                        );
+                                        // print("DHAWAM " + _commentsListNew[0].commentText);
 
-                          SizedBox(height: 35),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              FlatButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                    side: BorderSide(color: Colors.black26)),
-                                color: Colors.transparent,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 5, bottom: 8, top: 5),
-                                  child: Text(
-                                    "SAVE AND CLOSE",
-                                    style: TextStyle(
-                                        color: HexColor("#1C99D4"),
-                                        fontWeight: FontWeight.bold,
-                                        // letterSpacing: 2,
-                                        fontSize: 17),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  // print(_comments.text);
-                                  if (!_isSaveButtonDisabled) {
-                                    _isSaveButtonDisabled = true;
-                                    _isSubmitButtonDisabled = false;
-
-                                    if (_contactNumber != null &&
-                                        _contactNumber != '' &&
-                                        _contactNumber.length == 10) {
-                                      print("here");
-                                      setState(() {
-                                        String empId;
-                                        String mobileNumber;
-                                        String name;
-                                        Future<SharedPreferences> _prefs =
-                                            SharedPreferences.getInstance();
-                                        _prefs.then(
-                                            (SharedPreferences prefs) async {
-                                          empId = prefs.getString(
-                                                  StringConstants.employeeId) ??
-                                              "empty";
-                                          mobileNumber = prefs.getString(
-                                                  StringConstants
-                                                      .mobileNumber) ??
-                                              "empty";
-                                          name = prefs.getString(StringConstants
-                                                  .employeeName) ??
-                                              "empty";
-                                          print("DHAWAM ::::" + _comments.text);
-
-                                          if (_comments.text != null &&
-                                              _comments.text != '') {
-                                            await _commentsListNew.add(
-                                              new CommentsDetail(
-                                                  createdBy: empId,
-                                                  commentText: _comments.text,
-                                                  // commentedAt: DateTime.now(),
-                                                  creatorName: name),
-                                            );
-                                          }
-
-                                          // print("DHAWAM " + _commentsListNew[0].commentText);
-
-                                          if (_listInfluencerDetail.length !=
-                                              0) {
-                                            if (_listInfluencerDetail[
+                                        if (_listInfluencerDetail.length !=
+                                                0 &&
+                                            (_listInfluencerDetail[
                                                             _listInfluencerDetail
                                                                     .length -
                                                                 1]
@@ -5514,338 +5750,100 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                             1]
                                                     .inflName
                                                     .text
-                                                    .isNullOrBlank) {
-                                              print("here1234");
-                                              _listInfluencerDetail.removeAt(
-                                                  _listInfluencerDetail.length -
-                                                      1);
-                                            }
-                                          }
+                                                    .isNullOrBlank)) {
+                                          print("here1234");
+                                          _listInfluencerDetail.removeAt(
+                                              _listInfluencerDetail.length -
+                                                  1);
+                                        }
+                                        //  print(22112);
+                                        // print(_listInfluencerDetail[1].toJson());
+                                        SaveLeadRequestModel
+                                            saveLeadRequestModel =
+                                            new SaveLeadRequestModel(
+                                                eventId: widget.eventId,
+                                                siteSubTypeId: "2",
+                                                contactName: _contactName,
+                                                contactNumber: _contactNumber,
+                                                geotagType: geoTagType,
+                                                leadLatitude:
+                                                    (_currentPosition != null)
+                                                        ? _currentPosition
+                                                            .latitude
+                                                            .toString()
+                                                        : "0",
+                                                leadLongitude:
+                                                    (_currentPosition != null)
+                                                        ? _currentPosition
+                                                            .longitude
+                                                            .toString()
+                                                        : "0",
+                                                leadAddress:
+                                                    _siteAddress.text,
+                                                leadPincode: _pincode.text,
+                                                leadStateName: _state.text,
+                                                leadDistrictName:
+                                                    _district.text,
+                                                leadTalukName: _taluk.text,
+                                                leadSalesPotentialMt:
+                                                    _totalMT.text,
+                                                leadReraNumber: _rera.text,
+                                                isStatus: "false",
+                                                listLeadImage: listLeadImage,
+                                                influencerList:
+                                                    _listInfluencerDetail,
+                                                comments: _commentsListNew);
 
-                                          List<InfluencerDetailDraft>
-                                              influencerDetailDraft =
-                                              new List();
-                                          for (int i = 0;
-                                              i < _listInfluencerDetail.length;
-                                              i++) {
-                                            influencerDetailDraft.add(
-                                                new InfluencerDetailDraft(
-                                                    id: _listInfluencerDetail[i]
-                                                        .id
-                                                        .text,
-                                                    inflName:
-                                                        _listInfluencerDetail[i]
-                                                            .inflName
-                                                            .text,
-                                                    inflContact:
-                                                        _listInfluencerDetail[i]
-                                                            .inflContact
-                                                            .text,
-                                                    inflTypeId: _listInfluencerDetail[i]
-                                                        .inflTypeId
-                                                        .text,
-                                                    inflTypeValue:
-                                                        _listInfluencerDetail[i]
-                                                            .inflTypeValue
-                                                            .text,
-                                                    inflCatId:
-                                                        _listInfluencerDetail[i]
-                                                            .inflCatId
-                                                            .text,
-                                                    inflCatValue: _listInfluencerDetail[i]
-                                                        .inflCatValue
-                                                        .text,
-                                                    ilpIntrested: _listInfluencerDetail[i]
-                                                        .ilpIntrested
-                                                        .text,
-                                                    isExpanded:
-                                                        _listInfluencerDetail[i]
-                                                            .isExpanded,
-                                                    isPrimarybool:
-                                                        _listInfluencerDetail[i]
-                                                            .isPrimarybool,
-                                                    isPrimary:
-                                                        _listInfluencerDetail[i]
-                                                            .isPrimary));
-                                          }
+                                        if (!gv.fromLead) {
+                                          gv.draftID = 0;
+                                        }
 
-                                          List<ListLeadImageDraft>
-                                              listLeadImageDraft = new List();
-
-                                          for (int i = 0;
-                                              i < controller.imageList.length;
-                                              i++) {
-                                            listLeadImageDraft.add(
-                                                new ListLeadImageDraft(
-                                                    photoPath:
-                                                    controller.imageList[i].path));
-                                          }
-
-                                          final DateFormat formatter =
-                                              DateFormat("dd-MM-yyyy");
-
-                                          SaveLeadRequestDraftModel
-                                              saveLeadRequestDraftModel =
-                                              new SaveLeadRequestDraftModel(
-                                                  siteSubTypeId: "2",
-                                                  contactName: _contactName,
-                                                  contactNumber: _contactNumber,
-                                                  geotagType: geoTagType,
-                                                  leadLatitude: _currentPosition
-                                                      .latitude
-                                                      .toString(),
-                                                  leadLongitude:
-                                                      _currentPosition.longitude
-                                                          .toString(),
-                                                  leadAddress:
-                                                      _siteAddress.text,
-                                                  leadPincode: _pincode.text,
-                                                  leadStateName: _state.text,
-                                                  leadDistrictName:
-                                                      _district.text,
-                                                  leadTalukName: _taluk.text,
-                                                  leadSalesPotentialMt:
-                                                      _totalMT.text ?? "0",
-                                                  leadBags: _totalBags.text,
-                                                  leadReraNumber: _rera.text,
-                                                  isStatus: "false",
-                                                  // listLeadImage: new List(),
-                                                  //  influencerList: new List(),
-                                                  // comments: new List(),
-                                                  listLeadImage:
-                                                      listLeadImageDraft,
-                                                  influencerList:
-                                                      influencerDetailDraft,
-                                                  comments: _commentsListNew,
-                                                  assignDate: formatter
-                                                      .format(DateTime.now()));
-
-//
-//                                   SaveLeadRequestModel saveLeadRequestModel1 = json.decode(draftLeadModelforDB.leadModel);
-
-                                          print(saveLeadRequestDraftModel
-                                              .toJson());
-                                          print(gv.fromLead);
-                                          if (!gv.fromLead) {
-                                            DraftLeadModelforDB
-                                                draftLeadModelforDB =
-                                                new DraftLeadModelforDB(
-                                                    null,
-                                                    json.encode(
-                                                        saveLeadRequestDraftModel));
-                                            print(
-                                                draftLeadModelforDB.leadModel);
-                                            await db.addLeadInDraft(
-                                                draftLeadModelforDB);
-                                          } else {
-                                            print(json.encode(
-                                                saveLeadRequestDraftModel));
-                                            DraftLeadModelforDB
-                                                draftLeadModelforDB =
-                                                new DraftLeadModelforDB(
-                                                    gv.draftID,
-                                                    json.encode(
-                                                        saveLeadRequestDraftModel));
-
-                                            await db.updateLeadInDraft(
-                                                draftLeadModelforDB);
-                                          }
-
-                                          gv.fromLead = false;
-                                          gv.saveLeadRequestModel =
-                                              new SaveLeadRequestDraftModel();
-                                          Navigator.pushReplacement(
-                                              context,
-                                              new CupertinoPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      DraftLeadListScreen()));
-                                        });
-
-                                        //  _comments.clear();
+                                        internetChecking().then((result) => {
+                                              if (result == true)
+                                                {
+                                                  _addLeadsController
+                                                      .getAccessKeyAndSaveLead(
+                                                          saveLeadRequestModel,
+                                                      controller.imageList,
+                                                          context),
+                                                  _commentsListNew =
+                                                      new List()
+                                                }
+                                              else
+                                                {
+                                                  Get.snackbar(
+                                                      "No internet connection.",
+                                                      "Make sure that your wifi or mobile data is turned on.",
+                                                      colorText: Colors.white,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      snackPosition:
+                                                          SnackPosition
+                                                              .BOTTOM),
+                                                  // fetchSiteList()
+                                                }
+                                            });
                                       });
-                                    } else {
-                                      Get.dialog(CustomDialogs().errorDialog(
-                                          "Please fill atleast a contact number"));
-                                    }
+
+                                      //  _comments.clear();
+                                    });
+                                  } else {
+                                    _isSubmitButtonDisabled = false;
+                                    Get.dialog(CustomDialogs().errorDialog(
+                                        "Please fill the mandotary fields. i.e. Contact Number , Address  . "));
                                   }
-                                },
-                              ),
-                              RaisedButton(
-                                color: HexColor("#1C99D4"),
-                                child: Text(
-                                  "SUBMIT",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      // letterSpacing: 2,
-                                      fontSize: 17),
-                                ),
-                                onPressed: () async {
-                                  //print(_comments.text);
-                                  if (!_isSubmitButtonDisabled) {
-                                    _isSubmitButtonDisabled = true;
-                                    _isSaveButtonDisabled = false;
-                                    if (_contactNumber != null &&
-                                            _contactNumber.length == 10 &&
-                                            _contactNumber != '' &&
-                                            _currentPosition.latitude != null &&
-                                            _currentPosition.latitude != '' &&
-                                            _pincode.text != null &&
-                                            _pincode.text != ''
-                                        //&&
-                                        // _listInfluencerDetail.length != 0
-                                        ) {
-                                      // print(_comments.text);
-                                      print("here");
-                                      setState(() {
-                                        String empId;
-                                        String mobileNumber;
-                                        String name;
-                                        Future<SharedPreferences> _prefs =
-                                            SharedPreferences.getInstance();
-                                        _prefs.then(
-                                            (SharedPreferences prefs) async {
-                                          empId = prefs.getString(
-                                                  StringConstants.employeeId) ??
-                                              "empty";
-                                          mobileNumber = prefs.getString(
-                                                  StringConstants
-                                                      .mobileNumber) ??
-                                              "empty";
-                                          name = prefs.getString(StringConstants
-                                                  .employeeName) ??
-                                              "empty";
-                                          //   print("DHAWAM " + _comments.text);
-                                          if (_comments.text == "" ||
-                                              _comments.text == "null" ||
-                                              _comments.text == null) {
-                                            _comments.text = "Added New Lead";
-                                          }
-                                          await _commentsListNew.add(
-                                            new CommentsDetail(
-                                                createdBy: empId,
-                                                commentText: _comments.text,
-                                                // commentedAt: DateTime.now(),
-                                                creatorName: name),
-                                          );
-                                          // print("DHAWAM " + _commentsListNew[0].commentText);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
 
-                                          if (_listInfluencerDetail.length !=
-                                                  0 &&
-                                              (_listInfluencerDetail[
-                                                              _listInfluencerDetail
-                                                                      .length -
-                                                                  1]
-                                                          .inflName ==
-                                                      null ||
-                                                  _listInfluencerDetail[
-                                                              _listInfluencerDetail
-                                                                      .length -
-                                                                  1]
-                                                          .inflName ==
-                                                      "null" ||
-                                                  _listInfluencerDetail[
-                                                          _listInfluencerDetail
-                                                                  .length -
-                                                              1]
-                                                      .inflName
-                                                      .text
-                                                      .isNullOrBlank)) {
-                                            print("here1234");
-                                            _listInfluencerDetail.removeAt(
-                                                _listInfluencerDetail.length -
-                                                    1);
-                                          }
-                                          //  print(22112);
-                                          // print(_listInfluencerDetail[1].toJson());
-                                          SaveLeadRequestModel
-                                              saveLeadRequestModel =
-                                              new SaveLeadRequestModel(
-                                                  eventId: widget.eventId,
-                                                  siteSubTypeId: "2",
-                                                  contactName: _contactName,
-                                                  contactNumber: _contactNumber,
-                                                  geotagType: geoTagType,
-                                                  leadLatitude:
-                                                      (_currentPosition != null)
-                                                          ? _currentPosition
-                                                              .latitude
-                                                              .toString()
-                                                          : "0",
-                                                  leadLongitude:
-                                                      (_currentPosition != null)
-                                                          ? _currentPosition
-                                                              .longitude
-                                                              .toString()
-                                                          : "0",
-                                                  leadAddress:
-                                                      _siteAddress.text,
-                                                  leadPincode: _pincode.text,
-                                                  leadStateName: _state.text,
-                                                  leadDistrictName:
-                                                      _district.text,
-                                                  leadTalukName: _taluk.text,
-                                                  leadSalesPotentialMt:
-                                                      _totalMT.text,
-                                                  leadReraNumber: _rera.text,
-                                                  isStatus: "false",
-                                                  listLeadImage: listLeadImage,
-                                                  influencerList:
-                                                      _listInfluencerDetail,
-                                                  comments: _commentsListNew);
-
-                                          if (!gv.fromLead) {
-                                            gv.draftID = 0;
-                                          }
-
-                                          internetChecking().then((result) => {
-                                                if (result == true)
-                                                  {
-                                                    _addLeadsController
-                                                        .getAccessKeyAndSaveLead(
-                                                            saveLeadRequestModel,
-                                                        controller.imageList,
-                                                            context),
-                                                    _commentsListNew =
-                                                        new List()
-                                                  }
-                                                else
-                                                  {
-                                                    Get.snackbar(
-                                                        "No internet connection.",
-                                                        "Make sure that your wifi or mobile data is turned on.",
-                                                        colorText: Colors.white,
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        snackPosition:
-                                                            SnackPosition
-                                                                .BOTTOM),
-                                                    // fetchSiteList()
-                                                  }
-                                              });
-                                        });
-
-                                        //  _comments.clear();
-                                      });
-                                    } else {
-                                      _isSubmitButtonDisabled = false;
-                                      Get.dialog(CustomDialogs().errorDialog(
-                                          "Please fill the mandotary fields. i.e. Contact Number , Address  . "));
-                                    }
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-
-                          SizedBox(height: 70),
-                        ],
-                      ),
+                        SizedBox(height: 70),
+                      ],
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ],
         ),

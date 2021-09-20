@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/sr_list_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/sitedetails.dart';
@@ -31,9 +30,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   ServiceRequestComplaintListModel serviceRequestComplaintListModel;
   SRListController eventController = Get.find();
-  UpdateServiceRequestController _updateServiceRequestController = Get.find();
   int totalFilters;
   var data;
+
   getSRListData() async {
     // Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     await eventController.getAccessKey().then((value) async {
@@ -246,9 +245,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        // _updateServiceRequestController.siteId = serviceRequestComplaintListModel
-                        //     .srComplaintListModal[index]
-                        //     .srComplaintId;
                         Get.to(
                           RequestUpdation(
                               id: serviceRequestComplaintListModel
@@ -282,19 +278,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                             mainAxisAlignment:
                             MainAxisAlignment.start,
                             children: [
-//                              Flexible(
-//                                flex: 1,
-//                                child: Container(
-//                                  color: serviceRequestComplaintListModel
-//                                      .srComplaintListModal[
-//                                  index]
-//                                      .request !=
-//                                      'SERVICE REQUEST'
-//                                      ? HexColor('#9E3A0D')
-//                                      : HexColor('#F9A61A'),
-//                                  height: 175,
-//                                ),
-//                              ),
                               Expanded(
                                 flex: 50,
                                 child: Column(

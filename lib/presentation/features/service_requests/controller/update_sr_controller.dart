@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -11,6 +12,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UpdateServiceRequestController extends GetxController {
 
   List<File> imageList = List<File>();
+
+  String id;
+  ComplaintViewModel complaintViewModel;
+  int option = 1;
+  String dropdownValue = 'Select visit sub-types';
+
+  setTabOption(int value){
+    this.option=value;
+    update();
+  }
 
   // List<File> get imageList => _imageList;
 
@@ -34,6 +45,16 @@ class UpdateServiceRequestController extends GetxController {
     super.dispose();
   }
 
+
+  //*****
+  final _complaintListData = ComplaintViewModel().obs;
+
+  get complaintListData => _complaintListData.value;
+
+  set complaintListData(value) {
+    _complaintListData.value = value;
+  }
+//*****
 
   final SrRepository repository;
   /// Request Update Details
@@ -113,11 +134,27 @@ class UpdateServiceRequestController extends GetxController {
     });
   }
 
+
   Future<Map> updateServiceRequest(List<File> imageList, String accessKey,
       String userSecurityKey, UpdateSRModel updateRequestModel) {
     return repository.updateServiceRequest(imageList, accessKey, userSecurityKey, updateRequestModel).whenComplete(() => responseReceived = true);
   }
 
 
+  //*****
+  Future getRequestUpdateDetailsData(String accessKey) async {
+    String userSecurityKey = "";
+    String empID = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+      complaintListData = await repository.getComplaintViewData(accessKey, userSecurityKey, empID, this.id);
+      update();
+    });
+    // return complaintListData;
+
+  }
+//*****
 
 }
