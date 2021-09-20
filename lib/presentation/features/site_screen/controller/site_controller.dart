@@ -414,10 +414,8 @@ class SiteController extends GetxController {
   }
 
   getAccessKeyOnly() {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(Duration.zero, () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
 
     return repository.getAccessKey();
     //   return this.accessKeyResponse;

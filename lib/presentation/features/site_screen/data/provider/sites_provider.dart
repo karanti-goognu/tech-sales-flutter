@@ -188,7 +188,7 @@ class MyApiClientSites {
       // print(
       //     'Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
       if (response.statusCode == 200) {
-        Get.back();
+        // Get.back();
         var data = json.decode(response.body);
         // print('@@@@');
         //print(data);
@@ -196,8 +196,8 @@ class MyApiClientSites {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else{
-        ViewSiteDataResponse viewSiteDataResponse =
-        ViewSiteDataResponse.fromJson(data);
+        ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse.fromJson(data);
+
         // print('@@@@');
         // print(viewSiteDataResponse.counterListModel[0].soldToParty);
         print('SITE VISIT: ${json.encode(viewSiteDataResponse.mwpVisitModel)}');

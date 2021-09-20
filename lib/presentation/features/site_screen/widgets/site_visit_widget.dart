@@ -21,7 +21,6 @@ class SiteVisitWidget extends StatefulWidget {
   MwpVisitModel mwpVisitModel;
   int siteId;
   String siteDate;
-
   int visitSubTypeId;
   SiteOpportunityStatusEntity selectedOpportunitStatusEnity;
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity;

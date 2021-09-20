@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
@@ -813,7 +814,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
               Navigator.push(
                   context, new CupertinoPageRoute(
                   builder: (BuildContext context) =>
-                      ViewSiteScreen(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
+                      ViewSiteScreenNew(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
               ).then((_) => {_getRequests()});
             },
             child: Card(
