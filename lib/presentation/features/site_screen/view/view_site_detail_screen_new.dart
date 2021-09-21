@@ -1,3 +1,6 @@
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,13 +57,16 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
   var _inactiveReasonText = new TextEditingController();
   SiteOpportunityStatusEntity _siteOpportunitStatusEnityVisit;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  String empCode;
+  String empCode,name;
 
   Future<ViewSiteDataResponse> getSiteData() async {
     AccessKeyModel accessKeyModel = new AccessKeyModel();
 
     await _prefs.then((SharedPreferences prefs) {
       empCode = prefs.getString(StringConstants.employeeId) ?? "empty";
+      name = prefs.getString(StringConstants.employeeName) ?? "empty";
+      UpdatedValues.setEmpCode(empCode);
+      UpdatedValues.setEmpName(name);
     });
 
     await _siteController.getAccessKeyOnly().then((data) async {
@@ -104,6 +110,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
 
     return viewSiteDataResponse;
   }
+  List<File> _imageList = new List();
 
   @override
   void initState() {
@@ -113,7 +120,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     _tabController =
         TabController(vsync: this, length: 5, initialIndex: widget.tabIndex);
     _getSiteData = getSiteData();
-    UpdatedValues.setEmpCode(empCode);
+    UpdatedValues.setSiteProgressData(null,null,null,null,null);
+    UpdatedValues.setAddNextButtonDisable(false);
+    UpdatedValues.setFromDropDown(fromDropDown);
+    UpdatedValues.setImageList(_imageList);
+    UpdatedValues.setSiteCommentsEntity(null);
 
   }
 
@@ -425,6 +436,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                               labelText = _siteStage.siteStageDesc;
                                                                               setState(() {
                                                                                 fromDropDown = true;
+                                                                                UpdatedValues.setFromDropDown(fromDropDown);
                                                                               });
                                                                               // UpdateRequest();
                                                                             } else {
@@ -673,6 +685,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                               labelText = _siteStage.siteStageDesc;
                                                                               setState(() {
                                                                                 fromDropDown = true;
+                                                                                UpdatedValues.setFromDropDown(fromDropDown);
                                                                               });
                                                                               // UpdateRequest();
                                                                             } else {
@@ -804,7 +817,4 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     );
   }
 }
-//
-// final UpdateDataRequest update = new UpdateDataRequest(siteBuiltArea:SiteDataValue.siteBuiltArea );
-// final String requestBody = json.encoder.convert(update);
-// print("Data---->"+_siteController.viewSiteDataResponse.sitesModal.siteBuiltArea.text+"\n"+requestBody);
+

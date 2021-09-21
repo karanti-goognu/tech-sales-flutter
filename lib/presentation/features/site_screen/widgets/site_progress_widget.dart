@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/UpdateDataRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/updated_values.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -16,7 +17,6 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SiteProgressWidget extends StatefulWidget {
   ViewSiteDataResponse viewSiteDataResponse;
@@ -26,7 +26,6 @@ class SiteProgressWidget extends StatefulWidget {
 
 class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTickerProviderStateMixin{
   final db = BrandNameDBHelper();
-  bool fromDropDown = false;
   FocusNode myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
@@ -115,6 +114,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
   ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
   TabController _tabController;
+  SiteController _siteController = Get.find();
 
   CounterListModel selectedSubDealer = CounterListModel();
 
@@ -775,7 +775,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
   }
 
   int selectedTabIndex;
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   setSiteProgressData() async{
     setState(() {
       viewSiteDataResponse = widget.viewSiteDataResponse;
@@ -795,6 +794,36 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
       } else {
         siteStageHistorys = [];
       }
+
+      if(UpdatedValues.getSiteProgressConstructionId()!=null){
+        _selectedConstructionTypeVisit = UpdatedValues.getSiteProgressConstructionId();
+      }
+
+      if(UpdatedValues.getConstructionTypeVisitNextStage()!=null){
+        _selectedConstructionTypeVisitNextStage = UpdatedValues.getConstructionTypeVisitNextStage();
+      }
+
+      if(UpdatedValues.getSiteProgressNoOfFloors()!=null){
+        _selectedSiteVisitFloor = siteFloorsEntity.firstWhere((item) => item.id == UpdatedValues.getSiteProgressNoOfFloors().id);
+      }
+
+      if(UpdatedValues.getSiteProgressStagePotential()!=null){
+        _stagePotentialVisit.text = UpdatedValues.getSiteProgressStagePotential();
+      }
+
+      if(UpdatedValues.getSiteProgressStageStatus()!=null){
+        _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
+      }
+
+      if(UpdatedValues.getSiteProgressDateOfConstruction()!=null){
+        _dateofConstruction.text = UpdatedValues.getSiteProgressDateOfConstruction();
+      }
+
+      if(UpdatedValues.getAddNextButtonDisable()!=null){
+        addNextButtonDisable = UpdatedValues.getAddNextButtonDisable();
+      }
+
+
     });
 
     await db.clearTable();
@@ -815,7 +844,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
     dealerEntityForDb = await db.fetchAllDistinctDealers();
     dealerEntityForDb.forEach((e) => print(e.toMapForDb().toString()));
 
-    UpdatedValues.setSiteProgressData(null,null,_stagePotentialVisit.text,_stageStatus.text,_dateofConstruction.text);
+    // UpdatedValues.setSiteProgressData(null,null,_stagePotentialVisit.text,_stageStatus.text,_dateofConstruction.text);
 
   }
 
@@ -913,7 +942,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                             siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
                       }
                     }
-                    UpdatedValues.setSiteProgressConstructionId(_selectedConstructionTypeVisit.id);
+                    UpdatedValues.setSiteProgressConstructionId(_selectedConstructionTypeVisit);
                   });
                 },
                 decoration: FormFieldStyle.buildInputDecoration(
@@ -952,7 +981,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                 onChanged: (value) {
                   setState(() {
                     _selectedSiteVisitFloor = value;
-                    UpdatedValues.setSiteProgressNoOfFloors(_selectedSiteVisitFloor.id);
+                    UpdatedValues.setSiteProgressNoOfFloors(_selectedSiteVisitFloor);
                   });
                 },
                 decoration: FormFieldStyle.buildInputDecoration(
@@ -1189,6 +1218,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                           onPressed: () async {
                             setState(() {
                               addNextButtonDisable = !addNextButtonDisable;
+                              UpdatedValues.setAddNextButtonDisable(addNextButtonDisable);
                             });
                           },
                         )
@@ -1212,6 +1242,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                           onPressed: () async {
                             setState(() {
                               addNextButtonDisable = !addNextButtonDisable;
+                              UpdatedValues.setAddNextButtonDisable(addNextButtonDisable);
                             });
                           },
                         ),
@@ -1245,6 +1276,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                 keyboardType: TextInputType.text,
                 onChanged: (value) {
                   print(_comments.text);
+                  UpdatedValues.setSiteCommentsEntity(_comments.text);
                   // setState(() {
                   //   _comments.text = value;
                   // });
@@ -1446,56 +1478,104 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                     ),
                   ),
                   onPressed: () async {
-                    UpdatedValues.getSiteStageHistory1();
-                    UpdateDataRequest updateDataRequest  = new UpdateDataRequest(siteId:UpdatedValues.getSiteId(),
-                        siteSegment:UpdatedValues.getSiteSegment(),
-                        assignedTo:UpdatedValues.getAssignedTo(),
-                        siteStatusId:UpdatedValues.getSiteStatusId(),
-                        siteStageId:UpdatedValues.getSiteStageId(),
-                        contactName:UpdatedValues.getContactName(),
-                        contactNumber:UpdatedValues.getContactNumber(),
-                        siteGeotag:UpdatedValues.siteGeotag,
-                        siteGeotagLat:UpdatedValues.siteGeotagLat,
-                        siteGeotagLong:UpdatedValues.siteGeotagLong,
-                        siteAddress:UpdatedValues.siteAddress,
-                        sitePincode:UpdatedValues.sitePincode,
-                        siteState:UpdatedValues.siteState,
-                        siteDistrict:UpdatedValues.siteDistrict,
-                        siteTaluk:UpdatedValues.siteTaluk,
-                        sitePotentialMt:UpdatedValues.sitePotentialMt,
-                        reraNumber:UpdatedValues.reraNumber,
-                        siteCreationDate:UpdatedValues.siteCreationDate,
-                        dealerId:UpdatedValues.dealerId,
-                        siteBuiltArea:UpdatedValues.siteBuiltArea,
-                        noOfFloors:UpdatedValues.noOfFloors,
-                        productDemo:UpdatedValues.productDemo,
-                        productOralBriefing:UpdatedValues.productOralBriefing,
-                        soCode:UpdatedValues.soCode,
-                        plotNumber:UpdatedValues.plotNumber,
-                        inactiveReasonText:UpdatedValues.inactiveReasonText,
-                        nextVisitDate:UpdatedValues.nextVisitDate,
-                        closureReasonText:UpdatedValues.closureReasonText,
-                        createdBy:UpdatedValues.createdBy,
-                        totalBalancePotential: UpdatedValues.totalBalancePotential,
-                        siteCommentsEntity:UpdatedValues.siteCommentsEntity,
-                        siteStageHistory:UpdatedValues.getSiteStageHistory1(),
-                        siteNextStageEntity:UpdatedValues.siteNextStageEntity,
-                        sitePhotosEntity:null,
-                        siteInfluencerEntity:UpdatedValues.getSiteInfluencerEntity(),
-                        siteConstructionId:UpdatedValues.siteConstructionId,
-                        siteCompetitionId:UpdatedValues.siteCompetitionId,
-                        siteOppertunityId:UpdatedValues.siteOppertunityId,
-                        siteProbabilityWinningId: UpdatedValues.siteProbabilityWinningId,
-                        dealerConfirmedChangedBy:UpdatedValues.dealerConfirmedChangedBy,
-                        dealerConfirmedChangedOn: UpdatedValues.dealerConfirmedChangedOn,
-                        isDealerConfirmedChangedBySo:UpdatedValues.isDealerConfirmedChangedBySo,
-                        subdealerId: UpdatedValues.subdealerId,
-                        kitchenCount:UpdatedValues.kitchenCount,
-                        bathroomCount:UpdatedValues.bathroomCount);
+                    // UpdatedValues.getSiteStageHistory1();
+                    // UpdateDataRequest updateDataRequest  = new UpdateDataRequest(
+                    //     siteId:UpdatedValues.getSiteId(),
+                    //     siteSegment:UpdatedValues.getSiteSegment(),
+                    //     assignedTo:UpdatedValues.getAssignedTo(),
+                    //     siteStatusId:UpdatedValues.getSiteStatusId(),
+                    //     siteStageId:UpdatedValues.getSiteStageId(),
+                    //     contactName:UpdatedValues.getContactName(),
+                    //     contactNumber:UpdatedValues.getContactNumber(),
+                    //     siteGeotag:UpdatedValues.siteGeotag,
+                    //     siteGeotagLat:UpdatedValues.siteGeotagLat,
+                    //     siteGeotagLong:UpdatedValues.siteGeotagLong,
+                    //     siteAddress:UpdatedValues.siteAddress,
+                    //     sitePincode:UpdatedValues.sitePincode,
+                    //     siteState:UpdatedValues.siteState,
+                    //     siteDistrict:UpdatedValues.siteDistrict,
+                    //     siteTaluk:UpdatedValues.siteTaluk,
+                    //     sitePotentialMt:UpdatedValues.sitePotentialMt,
+                    //     reraNumber:UpdatedValues.reraNumber,
+                    //     siteCreationDate:UpdatedValues.siteCreationDate,
+                    //     dealerId:UpdatedValues.dealerId,
+                    //     siteBuiltArea:UpdatedValues.siteBuiltArea,
+                    //     noOfFloors:UpdatedValues.noOfFloors,
+                    //     productDemo:UpdatedValues.productDemo,
+                    //     productOralBriefing:UpdatedValues.productOralBriefing,
+                    //     soCode:UpdatedValues.soCode,
+                    //     plotNumber:UpdatedValues.plotNumber,
+                    //     inactiveReasonText:UpdatedValues.inactiveReasonText,
+                    //     nextVisitDate:UpdatedValues.nextVisitDate,
+                    //     closureReasonText:UpdatedValues.closureReasonText,
+                    //     createdBy:UpdatedValues.createdBy,
+                    //     totalBalancePotential: UpdatedValues.totalBalancePotential,
+                    //     siteCommentsEntity:UpdatedValues.siteCommentsEntity,
+                    //     siteStageHistory:UpdatedValues.getSiteStageHistory1(),
+                    //     siteNextStageEntity:UpdatedValues.siteNextStageEntity,
+                    //     sitePhotosEntity:null,
+                    //     siteInfluencerEntity:UpdatedValues.getSiteInfluencerEntity(),
+                    //     siteConstructionId:UpdatedValues.siteConstructionId,
+                    //     siteCompetitionId:UpdatedValues.siteCompetitionId,
+                    //     siteOppertunityId:UpdatedValues.siteOppertunityId,
+                    //     siteProbabilityWinningId: UpdatedValues.siteProbabilityWinningId,
+                    //     dealerConfirmedChangedBy:UpdatedValues.dealerConfirmedChangedBy,
+                    //     dealerConfirmedChangedOn: UpdatedValues.dealerConfirmedChangedOn,
+                    //     isDealerConfirmedChangedBySo:UpdatedValues.isDealerConfirmedChangedBySo,
+                    //     subdealerId: UpdatedValues.subdealerId,
+                    //     kitchenCount:UpdatedValues.kitchenCount,
+                    //     bathroomCount:UpdatedValues.bathroomCount);
 
 
-                    final String requestBody = json.encoder.convert(updateDataRequest);
-                    log("Data1---> "+UpdatedValues.getSiteSupplyHistory().length.toString()+"\n"+requestBody);
+                    var update ={
+                      "siteId":UpdatedValues.getSiteId(),
+                      "siteSegment":UpdatedValues.getSiteSegment(),
+                      "assignedTo":UpdatedValues.getAssignedTo(),
+                      "siteStatusId":UpdatedValues.getSiteStatusId(),
+                      "siteStageId":UpdatedValues.getSiteStageId(),
+                      "contactName":UpdatedValues.getContactName(),
+                      "contactNumber":UpdatedValues.getContactNumber(),
+                      "siteGeotag":UpdatedValues.siteGeotag,
+                      "siteGeotagLat":UpdatedValues.siteGeotagLat,
+                      "siteGeotagLong":UpdatedValues.siteGeotagLong,
+                      "siteAddress":UpdatedValues.siteAddress,
+                      "sitePincode":UpdatedValues.sitePincode,
+                      "siteState":UpdatedValues.siteState,
+                      "siteDistrict":UpdatedValues.siteDistrict,
+                      "siteTaluk":UpdatedValues.siteTaluk,
+                      "sitePotentialMt":UpdatedValues.sitePotentialMt,
+                      "reraNumber":UpdatedValues.reraNumber,
+                      "siteCreationDate":UpdatedValues.siteCreationDate,
+                      "dealerId":UpdatedValues.dealerId,
+                      "siteBuiltArea":UpdatedValues.siteBuiltArea,
+                      'noOfFloors':UpdatedValues.noOfFloors,
+                      "productDemo":UpdatedValues.productDemo,
+                      "productOralBriefing":UpdatedValues.productOralBriefing,
+                      'soCode':UpdatedValues.soCode,
+                      "plotNumber":UpdatedValues.plotNumber,
+                      "inactiveReasonText":UpdatedValues.inactiveReasonText,
+                      "nextVisitDate":UpdatedValues.nextVisitDate,
+                      "closureReasonText":UpdatedValues.closureReasonText,
+                      "createdBy":UpdatedValues.createdBy,
+                      "totalBalancePotential": UpdatedValues.totalBalancePotential,
+                      "siteCommentsEntity":UpdatedValues.getSiteCommentsEntity(),
+                      "siteStageHistorys":UpdatedValues.getSiteStageHistory1(),
+                      "siteNextStageEntity":UpdatedValues.getSiteNextStageEntity(),
+                      "sitePhotosEntity":UpdatedValues.getSitePhotosEntity(),
+                      "siteInfluencerEntity":UpdatedValues.getSiteInfluencerEntity(),
+                      "siteConstructionId":UpdatedValues.siteConstructionId,
+                      "siteCompetitionId":UpdatedValues.siteCompetitionId,
+                      "siteOppertunityId":UpdatedValues.siteOppertunityId,
+                      "siteProbabilityWinningId": UpdatedValues.siteProbabilityWinningId,
+                      "dealerConfirmedChangedBy":"",
+                      "dealerConfirmedChangedOn": "",
+                      "isDealerConfirmedChangedBySo":sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
+                      "subdealerId": UpdatedValues.subdealerId,
+                      "kitchenCount":UpdatedValues.kitchenCount,
+                      "bathroomCount":UpdatedValues.bathroomCount
+                    };
+                    UpdateRequest(update);
+                    // log("Data1---> "+UpdatedValues.getSiteSupplyHistory().length.toString()+"\n"+update.toString());
                   },
                 ),
               ),
@@ -1569,7 +1649,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                       siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
                 }
               }
-            });
+              UpdatedValues.setConstructionTypeVisitNextStage(_selectedConstructionTypeVisitNextStage);
+            }
+            );
           },
           decoration: FormFieldStyle.buildInputDecoration(
               labelText: "Stage of Construction"),
@@ -1605,27 +1687,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
           onChanged: (value) {
             setState(() {
               _selectedSiteVisitFloorNextStage = value;
-
-              // constructionStageEntityNewNextStage = new List();
-              // _selectedConstructionTypeVisitNextStage= null;
-              // if(_selectedSiteVisitFloor.id == 1 ){
-              //   // siteFloorsEntityNew = new List();
-              //   for(int i=0;i<3;i++){
-              //     constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
-              //         id: constructionStageEntity[i].id,
-              //         constructionStageText: constructionStageEntity[i].constructionStageText
-              //     ));
-              //   }
-              // }
-              // else{
-              //
-              //   for(int i=3;i<constructionStageEntity.length;i++){
-              //     constructionStageEntityNewNextStage.add(new ConstructionStageEntity(
-              //         id: constructionStageEntity[i].id,
-              //         constructionStageText: constructionStageEntity[i].constructionStageText
-              //     ));
-              //   }
-              // }
             });
           },
           decoration: InputDecoration(
@@ -2077,4 +2138,70 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
     }
     UpdatedValues.updateSiteSupplyHistory(siteSupplyHistory);
   }
+
+  void isNoOfBagsSuppliedEntered(var updateDataRequest) {
+    List<File> _imageList = new List();
+    if (productDynamicList.length > 0) {
+      int index = productDynamicList.length-1;
+
+      if(productDynamicList[index].supplyQty.text.isNotEmpty && (productDynamicList[index].supplyDate.text.isEmpty ||
+          productDynamicList[index].brandPrice.text.isEmpty ||
+          productDynamicList[index].brandId == -1)){
+        Get.dialog(CustomDialogs()
+            .showMessage("You have to click on Add Product to proceed !"));
+        return;
+      }else{
+        _siteController.updateLeadData(
+            updateDataRequest, _imageList, context,UpdatedValues.getSiteId());
+      }
+    }else{
+      _siteController.updateLeadData(
+          updateDataRequest, _imageList, context,UpdatedValues.getSiteId());
+    }
+  }
+
+  Future<void> UpdateRequest(var updateDataRequest) async {
+    if (UpdatedValues.getFromDropDown() == true) {
+      if (UpdatedValues.siteBuiltArea == "" ||
+          UpdatedValues.siteBuiltArea == null ||
+          UpdatedValues.siteBuiltArea == "null") {
+        Get.dialog(CustomDialogs()
+            .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
+      } else {
+        isNoOfBagsSuppliedEntered(updateDataRequest);
+        setState(() {
+          UpdatedValues.setFromDropDown(false);
+        });
+      }
+    } else if (UpdatedValues.siteBuiltArea == "" ||
+        UpdatedValues.siteBuiltArea == null ||
+        UpdatedValues.siteBuiltArea == "null") {
+      Get.dialog(CustomDialogs()
+          .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
+    }
+
+    else if (UpdatedValues.getAddNextButtonDisable() &&
+        (_selectedConstructionTypeVisitNextStage == null ||
+            _stagePotentialVisitNextStage.text == null ||
+            _stagePotentialVisitNextStage.text == "" ||
+            _siteProductFromLocalDBNextStage == null ||
+            _selectedSiteVisitFloorNextStage == null ||
+            _brandPriceVisitNextStage.text == "" ||
+            _brandPriceVisitNextStage.text == null
+            // && _dateofConstruction.text == "" && _dateofConstruction.text == null
+            ||
+            _dateOfBagSuppliedNextStage.text == "" ||
+            _dateOfBagSuppliedNextStage.text == null ||
+            _stagePotentialVisitNextStage.text == "" ||
+            _stagePotentialVisitNextStage.text == null ||
+            _stageStatusNextStage.text == "" ||
+            _stageStatusNextStage.text == null)) {
+      Get.dialog(CustomDialogs().showMessage(
+          "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+    } else {
+      isNoOfBagsSuppliedEntered(updateDataRequest);
+    }
+  }
+
+
 }

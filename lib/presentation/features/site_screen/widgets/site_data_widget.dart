@@ -223,7 +223,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
            _siteProductDemo.text,_siteProductOralBriefing.text,_siteTotalPt.text,_siteTotalBalanceBags.text,_siteProbabilityWinningEntity.id.toString(),_siteCompetitionStatusEntity.id.toString(),_siteOpportunitStatusEnity.id.toString(),
            _ownerName.text,_contactNumber.text, _plotNumber.text,_siteAddress.text,_pincode.text,_state.text,
            _district.text,_taluk.text,_rera.text,sitesModal.siteDealerId, sitesModal.subdealerId,_so.text,sitesModal.assignedTo,sitesModal.siteStatusId.toString(),sitesModal.siteStageId.toString(),
-      geoTagType,_currentPosition.latitude,_currentPosition.longitude,sitesModal.siteCreationDate);
+      geoTagType,_currentPosition.latitude,_currentPosition.longitude,sitesModal.siteCreationDate,"TRADE");
 
       UpdatedValues.setSiteInfluencerEntity(viewSiteDataResponse.siteInfluencerEntity);
 
@@ -1798,8 +1798,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
         // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
         _imageList.add(image);
-
         _imgDetails.add(new ImageDetails("asset", image));
+        UpdatedValues.setImageList(_imageList);
       }
     });
   }
@@ -1816,6 +1816,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         _imageList.add(image);
 
         _imgDetails.add(new ImageDetails("asset", image));
+        UpdatedValues.setImageList(_imageList);
       }
       // _imageList.insert(0,image);
     });

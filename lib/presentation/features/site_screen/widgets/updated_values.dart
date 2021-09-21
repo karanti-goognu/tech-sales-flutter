@@ -1,11 +1,9 @@
 
-
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
-
-
+import 'package:path/path.dart' as path;
 
 
 class UpdatedValues{
@@ -40,7 +38,7 @@ class UpdatedValues{
   static String closureReasonText;
   static String createdBy;
   static String totalBalancePotential;
-  static List<SiteCommentsEntity> siteCommentsEntity;
+  static String siteCommentsEntity;
   static List<SiteStageHistory> siteStageHistory;
 
   static String siteProbabilityWinningId;
@@ -60,17 +58,45 @@ class UpdatedValues{
   static int bathroomCount;
   static List<SiteSupplyHistorys> siteSupplyHistory ;
 
-
-  static int siteProgressConstructionId;
-  static int siteProgressnoOfFloors;
+  static ConstructionStageEntity siteProgressConstructionId;
+  static ConstructionStageEntity constructionTypeVisitNextStage;
+  static SiteFloorsEntity siteProgressnoOfFloors;
   static String siteProgressStagePotential;
   static String siteProgressStageStatus;
   static String siteProgressDateOfConstruction;
-
   static List<InfluencerDetail> listInfluencerDetail;
 
+  static List<File> imageList;
   static String empCode;
+  static String empName;
 
+  static bool addNextButtonDisable;
+  static bool fromDropDown;
+
+
+  static  bool getFromDropDown() {
+    return fromDropDown;
+  }
+
+  static  void setFromDropDown(bool fromDropDown) {
+    UpdatedValues.fromDropDown = fromDropDown;
+  }
+
+  static  bool getAddNextButtonDisable() {
+    return addNextButtonDisable;
+  }
+
+  static  void setAddNextButtonDisable(bool addNextButtonDisable) {
+    UpdatedValues.addNextButtonDisable = addNextButtonDisable;
+  }
+
+  static  String getEmpName() {
+    return empName;
+  }
+
+  static  void setEmpName(String empName) {
+    UpdatedValues.empName = empName;
+  }
 
   static  String getEmpCode() {
     return empCode;
@@ -86,6 +112,14 @@ class UpdatedValues{
 
   static  void setSiteId(int siteId) {
     UpdatedValues.siteId = siteId;
+  }
+
+  static  List<File> getImageList() {
+    return imageList;
+  }
+
+  static  void setImageList(List<File> imageList) {
+    UpdatedValues.imageList = imageList;
   }
 
   static  String getSiteSegment() {
@@ -321,10 +355,23 @@ class UpdatedValues{
   }
 
   static  List<SiteCommentsEntity> getSiteCommentsEntity() {
-    return siteCommentsEntity;
+    if (siteCommentsEntity == null ||
+        siteCommentsEntity == "null" ||
+        siteCommentsEntity == "") {
+        siteCommentsEntity = "Site updated";
+    }
+    // print('${widget.siteId}=============');
+
+    List<SiteCommentsEntity> newSiteCommentsEntity = new List();
+    newSiteCommentsEntity.add(new SiteCommentsEntity(
+        siteId: siteId,
+        siteCommentText: siteCommentsEntity,
+        creatorName:getEmpName(),
+        createdBy: getEmpCode()));
+    return newSiteCommentsEntity;
   }
 
-  static  void setSiteCommentsEntity(List<SiteCommentsEntity> siteCommentsEntity) {
+  static  void setSiteCommentsEntity(String siteCommentsEntity) {
     UpdatedValues.siteCommentsEntity = siteCommentsEntity;
   }
 
@@ -340,9 +387,9 @@ class UpdatedValues{
     List<SiteStageHistory> siteStageHistory = new List();
     if (siteProgressConstructionId != null) {
       siteStageHistory.add(new SiteStageHistory(
-          constructionStageId: siteProgressConstructionId ?? 1,
+          constructionStageId: siteProgressConstructionId.id ?? 1,
           siteId: getSiteId(),
-          floorId: siteProgressnoOfFloors,
+          floorId: siteProgressnoOfFloors.id,
           stagePotential: siteProgressStagePotential,
           constructionDate: siteProgressDateOfConstruction,
           stageStatus: siteProgressStageStatus,
@@ -399,6 +446,7 @@ class UpdatedValues{
   }
 
   static  List<SiteNextStageEntity> getSiteNextStageEntity() {
+    List<SiteNextStageEntity> siteNextStageEntity = new List();
     return siteNextStageEntity;
   }
 
@@ -407,7 +455,17 @@ class UpdatedValues{
   }
 
   static  List<SitephotosEntity> getSitePhotosEntity() {
-    return sitePhotosEntity;
+    List<SitephotosEntity> newSitePhotoEntity = new List();
+    // sitephotosEntity.clear();
+    if(imageList.length>0) {
+      for (int i = 0; i < imageList.length; i++) {
+        newSitePhotoEntity.add(SitephotosEntity(
+            photoName: path.basename(imageList[i].path),
+            siteId: getSiteId(),
+            createdBy: empCode));
+      }
+    }
+    return newSitePhotoEntity;
   }
 
   static  void setSitePhotosEntity(List<SitephotosEntity> sitePhotosEntity) {
@@ -416,6 +474,19 @@ class UpdatedValues{
 
   static  List<SiteInfluencerEntity> getSiteInfluencerEntity() {
     if(listInfluencerDetail!=null) {
+      if (listInfluencerDetail.length != 0) {
+        if (listInfluencerDetail[
+        listInfluencerDetail.length - 1]
+            .inflName ==
+            null ||
+            listInfluencerDetail[listInfluencerDetail.length - 1].inflName ==
+                null ||
+            listInfluencerDetail[listInfluencerDetail.length - 1]
+                .inflName
+                .text.isEmpty) {
+          listInfluencerDetail.removeAt(listInfluencerDetail.length - 1);
+        }
+      }
       List<SiteInfluencerEntity> newInfluencerEntity = new List();
       for (int i = 0; i < listInfluencerDetail.length; i++) {
         newInfluencerEntity.add(SiteInfluencerEntity(
@@ -491,19 +562,27 @@ class UpdatedValues{
     UpdatedValues.bathroomCount = bathroomCount;
   }
 
-  static  int getSiteProgressConstructionId() {
+  static  ConstructionStageEntity getSiteProgressConstructionId() {
     return siteProgressConstructionId;
   }
 
-  static  void setSiteProgressConstructionId(int siteProgressConstructionId) {
+  static  void setSiteProgressConstructionId(ConstructionStageEntity siteProgressConstructionId) {
     UpdatedValues.siteProgressConstructionId = siteProgressConstructionId;
   }
 
-  static  int getSiteProgressNoOfFloors() {
+  static  ConstructionStageEntity getConstructionTypeVisitNextStage() {
+    return constructionTypeVisitNextStage;
+  }
+
+  static  void setConstructionTypeVisitNextStage(ConstructionStageEntity constructionTypeVisitNextStage) {
+    UpdatedValues.constructionTypeVisitNextStage = constructionTypeVisitNextStage;
+  }
+
+  static  SiteFloorsEntity getSiteProgressNoOfFloors() {
     return siteProgressnoOfFloors;
   }
 
-  static  void setSiteProgressNoOfFloors(int siteProgressnoOfFloors) {
+  static  void setSiteProgressNoOfFloors(SiteFloorsEntity siteProgressnoOfFloors) {
     UpdatedValues.siteProgressnoOfFloors = siteProgressnoOfFloors;
   }
 
@@ -531,7 +610,7 @@ class UpdatedValues{
     UpdatedValues.siteProgressDateOfConstruction = siteProgressDateOfConstruction;
   }
 
-  static void setSiteProgressData(int siteProgressConstructionId,int siteProgressnoOfFloors,String siteProgressStagePotential,String siteProgressStageStatus,String siteProgressDateOfConstruction){
+  static void setSiteProgressData(ConstructionStageEntity siteProgressConstructionId,SiteFloorsEntity siteProgressnoOfFloors,String siteProgressStagePotential,String siteProgressStageStatus,String siteProgressDateOfConstruction){
     UpdatedValues.siteProgressConstructionId = siteProgressConstructionId;
     UpdatedValues.siteProgressnoOfFloors = siteProgressnoOfFloors;
     UpdatedValues.siteProgressStagePotential = siteProgressStagePotential;
@@ -544,7 +623,7 @@ class UpdatedValues{
   static  void setSiteData(int siteId,int siteConstructionId,String siteBuiltArea,String noOfFloors,int bathroomCount,int kitchenCount,
       String productDemo,String productOralBriefing,String sitePotentialMt,String totalBalancePotential,String siteProbabilityWinningId,String siteCompetitionId,String siteOppertunityId,
       String contactName,String contactNumber,String plotNumber,String siteAddress,String sitePincode,String siteState,
-      String siteDistrict,String siteTaluk,String reraNumber,String dealerId,String subdealerId,String soCode,String assignedTo,String siteStatusId,String siteStageId,String siteGeotag,double siteGeotagLat,double siteGeotagLong,String siteCreationDate) {
+      String siteDistrict,String siteTaluk,String reraNumber,String dealerId,String subdealerId,String soCode,String assignedTo,String siteStatusId,String siteStageId,String siteGeotag,double siteGeotagLat,double siteGeotagLong,String siteCreationDate,String siteSegment) {
     UpdatedValues.siteId = siteId;
     UpdatedValues.siteConstructionId = siteConstructionId;
     UpdatedValues.siteBuiltArea = siteBuiltArea;
@@ -577,5 +656,6 @@ class UpdatedValues{
     UpdatedValues.siteGeotagLat = siteGeotagLat;
     UpdatedValues.siteGeotagLong = siteGeotagLong;
     UpdatedValues.siteCreationDate = siteCreationDate;
+    UpdatedValues.siteSegment = siteSegment;
   }
 }
