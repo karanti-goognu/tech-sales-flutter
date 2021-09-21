@@ -5,6 +5,7 @@ import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/updated_values.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -952,7 +953,11 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                         fontSize: 17),
                   ),
                 ),
-                onPressed: () async {},
+                onPressed: () async {
+
+                  UpdatedValues updateRequest = new UpdatedValues();
+                  updateRequest.UpdateRequest(context);
+                },
               ),
             ),
             SizedBox(height: 40),

@@ -1,8 +1,12 @@
 
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 
 
@@ -41,10 +45,10 @@ class UpdatedValues{
   static String siteCommentsEntity;
   static List<SiteStageHistory> siteStageHistory;
 
-  static String siteProbabilityWinningId;
-  static String siteCompetitionId;
-  static String siteOppertunityId;
-  static int siteConstructionId;
+  static SiteProbabilityWinningEntity siteProbabilityWinningId;
+  static SiteCompetitionStatusEntity siteCompetitionId;
+  static SiteOpportunityStatusEntity siteOppertunityId;
+  static ConstructionStageEntity siteConstructionId;
   // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
   static List<SiteNextStageEntity> siteNextStageEntity;
   static List<SitephotosEntity> sitePhotosEntity;
@@ -65,6 +69,7 @@ class UpdatedValues{
   static String siteProgressStageStatus;
   static String siteProgressDateOfConstruction;
   static List<InfluencerDetail> listInfluencerDetail;
+  static List<ProductListModel> productDynamicList;
 
   static List<File> imageList;
   static String empCode;
@@ -73,6 +78,15 @@ class UpdatedValues{
   static bool addNextButtonDisable;
   static bool fromDropDown;
 
+
+  UpdatedValues();
+
+  static  void setProductDynamicList(List<ProductListModel> productDynamicList) {
+    UpdatedValues.productDynamicList = productDynamicList;
+  }
+  static  List<ProductListModel> getProductDynamicList() {
+    return productDynamicList;
+  }
 
   static  bool getFromDropDown() {
     return fromDropDown;
@@ -413,35 +427,35 @@ class UpdatedValues{
 
 
 
-  static  String getSiteProbabilityWinningId() {
+  static  SiteProbabilityWinningEntity getSiteProbabilityWinningId() {
     return siteProbabilityWinningId;
   }
 
-  static  void setSiteProbabilityWinningId(String siteProbabilityWinningId) {
+  static  void setSiteProbabilityWinningId(SiteProbabilityWinningEntity siteProbabilityWinningId) {
     UpdatedValues.siteProbabilityWinningId = siteProbabilityWinningId;
   }
 
-  static  String getSiteCompetitionId() {
+  static  SiteCompetitionStatusEntity getSiteCompetitionId() {
     return siteCompetitionId;
   }
 
-  static  void setSiteCompetitionId(String siteCompetitionId) {
+  static  void setSiteCompetitionId(SiteCompetitionStatusEntity siteCompetitionId) {
     UpdatedValues.siteCompetitionId = siteCompetitionId;
   }
 
-  static  String getSiteOppertunityId() {
+  static  SiteOpportunityStatusEntity getSiteOppertunityId() {
     return siteOppertunityId;
   }
 
-  static  void setSiteOppertunityId(String siteOppertunityId) {
+  static  void setSiteOppertunityId(SiteOpportunityStatusEntity siteOppertunityId) {
     UpdatedValues.siteOppertunityId = siteOppertunityId;
   }
 
-  static  int getSiteConstructionId() {
+  static  ConstructionStageEntity getSiteConstructionId() {
     return siteConstructionId;
   }
 
-  static  void setSiteConstructionId(int siteConstructionId) {
+  static  void setSiteConstructionId(ConstructionStageEntity siteConstructionId) {
     UpdatedValues.siteConstructionId = siteConstructionId;
   }
 
@@ -521,6 +535,7 @@ class UpdatedValues{
   static  void setDealerConfirmedChangedBy(String dealerConfirmedChangedBy) {
     UpdatedValues.dealerConfirmedChangedBy = dealerConfirmedChangedBy;
   }
+
 
   static  String getDealerConfirmedChangedOn() {
     return dealerConfirmedChangedOn;
@@ -620,8 +635,8 @@ class UpdatedValues{
 
 
 
-  static  void setSiteData(int siteId,int siteConstructionId,String siteBuiltArea,String noOfFloors,int bathroomCount,int kitchenCount,
-      String productDemo,String productOralBriefing,String sitePotentialMt,String totalBalancePotential,String siteProbabilityWinningId,String siteCompetitionId,String siteOppertunityId,
+  static  void setSiteData(int siteId,ConstructionStageEntity siteConstructionId,String siteBuiltArea,String noOfFloors,int bathroomCount,int kitchenCount,
+      String productDemo,String productOralBriefing,String sitePotentialMt,String totalBalancePotential,SiteProbabilityWinningEntity siteProbabilityWinningId,SiteCompetitionStatusEntity siteCompetitionId,SiteOpportunityStatusEntity siteOppertunityId,
       String contactName,String contactNumber,String plotNumber,String siteAddress,String sitePincode,String siteState,
       String siteDistrict,String siteTaluk,String reraNumber,String dealerId,String subdealerId,String soCode,String assignedTo,String siteStatusId,String siteStageId,String siteGeotag,double siteGeotagLat,double siteGeotagLong,String siteCreationDate,String siteSegment) {
     UpdatedValues.siteId = siteId;
@@ -658,4 +673,102 @@ class UpdatedValues{
     UpdatedValues.siteCreationDate = siteCreationDate;
     UpdatedValues.siteSegment = siteSegment;
   }
+
+  Future<void> UpdateRequest(BuildContext context ) async {
+    var responseBody ={
+      "siteId":UpdatedValues.getSiteId(),
+      "siteSegment":UpdatedValues.getSiteSegment(),
+      "assignedTo":UpdatedValues.getAssignedTo(),
+      "siteStatusId":UpdatedValues.getSiteStatusId(),
+      "siteStageId":UpdatedValues.getSiteStageId(),
+      "contactName":UpdatedValues.getContactName(),
+      "contactNumber":UpdatedValues.getContactNumber(),
+      "siteGeotag":UpdatedValues.siteGeotag,
+      "siteGeotagLat":UpdatedValues.siteGeotagLat,
+      "siteGeotagLong":UpdatedValues.siteGeotagLong,
+      "siteAddress":UpdatedValues.siteAddress,
+      "sitePincode":UpdatedValues.sitePincode,
+      "siteState":UpdatedValues.siteState,
+      "siteDistrict":UpdatedValues.siteDistrict,
+      "siteTaluk":UpdatedValues.siteTaluk,
+      "sitePotentialMt":UpdatedValues.sitePotentialMt,
+      "reraNumber":UpdatedValues.reraNumber,
+      "siteCreationDate":UpdatedValues.siteCreationDate,
+      "dealerId":UpdatedValues.dealerId,
+      "siteBuiltArea":UpdatedValues.siteBuiltArea,
+      'noOfFloors':UpdatedValues.noOfFloors,
+      "productDemo":UpdatedValues.productDemo,
+      "productOralBriefing":UpdatedValues.productOralBriefing,
+      'soCode':UpdatedValues.soCode,
+      "plotNumber":UpdatedValues.plotNumber,
+      "inactiveReasonText":UpdatedValues.inactiveReasonText,
+      "nextVisitDate":UpdatedValues.nextVisitDate,
+      "closureReasonText":UpdatedValues.closureReasonText,
+      "createdBy":UpdatedValues.createdBy,
+      "totalBalancePotential": UpdatedValues.totalBalancePotential,
+      "siteCommentsEntity":UpdatedValues.getSiteCommentsEntity(),
+      "siteStageHistorys":UpdatedValues.getSiteStageHistory1(),
+      "siteNextStageEntity":UpdatedValues.getSiteNextStageEntity(),
+      "sitePhotosEntity":UpdatedValues.getSitePhotosEntity(),
+      "siteInfluencerEntity":UpdatedValues.getSiteInfluencerEntity(),
+      "siteConstructionId":UpdatedValues.getSiteConstructionId().id,
+      "siteCompetitionId":UpdatedValues.getSiteCompetitionId().id,
+      "siteOppertunityId":UpdatedValues.getSiteOppertunityId().id,
+      "siteProbabilityWinningId": UpdatedValues.getSiteProbabilityWinningId().id,
+      "dealerConfirmedChangedBy":"",
+      "dealerConfirmedChangedOn": "",
+      "isDealerConfirmedChangedBySo":getIsDealerConfirmedChangedBySo(),
+      "subdealerId": UpdatedValues.subdealerId,
+      "kitchenCount":UpdatedValues.kitchenCount,
+      "bathroomCount":UpdatedValues.bathroomCount
+    };
+
+    if (UpdatedValues.getFromDropDown() == true) {
+      if (UpdatedValues.siteBuiltArea == "" ||
+          UpdatedValues.siteBuiltArea == null ||
+          UpdatedValues.siteBuiltArea == "null") {
+        Get.dialog(CustomDialogs()
+            .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
+      } else {
+        isNoOfBagsSuppliedEntered(responseBody,context);
+        UpdatedValues.setFromDropDown(false);
+      }
+    } else if (UpdatedValues.siteBuiltArea == "" ||
+        UpdatedValues.siteBuiltArea == null ||
+        UpdatedValues.siteBuiltArea == "null") {
+      Get.dialog(CustomDialogs()
+          .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
+    }
+
+    else if (UpdatedValues.getAddNextButtonDisable() &&
+        (UpdatedValues.getConstructionTypeVisitNextStage() == null
+        )) {
+      Get.dialog(CustomDialogs().showMessage(
+          "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
+    } else {
+      isNoOfBagsSuppliedEntered(responseBody,context);
+    }
+  }
+
+  void isNoOfBagsSuppliedEntered(var responseBody,BuildContext context) {
+    SiteController _siteController = Get.find();
+    if (productDynamicList.length > 0) {
+      int index = productDynamicList.length-1;
+
+      if(productDynamicList[index].supplyQty.text.isNotEmpty && (productDynamicList[index].supplyDate.text.isEmpty ||
+          productDynamicList[index].brandPrice.text.isEmpty ||
+          productDynamicList[index].brandId == -1)){
+        Get.dialog(CustomDialogs()
+            .showMessage("You have to click on Add Product to proceed !"));
+        return;
+      }else{
+        _siteController.updateLeadData(
+            responseBody, getImageList(), context,UpdatedValues.getSiteId());
+      }
+    }else{
+      _siteController.updateLeadData(
+          responseBody, getImageList(), context,UpdatedValues.getSiteId());
+    }
+  }
+
 }

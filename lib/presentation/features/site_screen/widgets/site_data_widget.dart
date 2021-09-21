@@ -219,8 +219,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           }
         }
       }
-      UpdatedValues.setSiteData(widget.siteId,_selectedConstructionType.id,siteBuiltupArea.text,_selectedSiteFloor.id.toString(),int.parse(_totalBathroomCount.text), int.parse(_totalKitchenCount.text),
-           _siteProductDemo.text,_siteProductOralBriefing.text,_siteTotalPt.text,_siteTotalBalanceBags.text,_siteProbabilityWinningEntity.id.toString(),_siteCompetitionStatusEntity.id.toString(),_siteOpportunitStatusEnity.id.toString(),
+      UpdatedValues.setSiteData(widget.siteId,_selectedConstructionType,siteBuiltupArea.text,_selectedSiteFloor.id.toString(),int.parse(_totalBathroomCount.text), int.parse(_totalKitchenCount.text),
+           _siteProductDemo.text,_siteProductOralBriefing.text,_siteTotalPt.text,_siteTotalBalanceBags.text,_siteProbabilityWinningEntity,_siteCompetitionStatusEntity,_siteOpportunitStatusEnity,
            _ownerName.text,_contactNumber.text, _plotNumber.text,_siteAddress.text,_pincode.text,_state.text,
            _district.text,_taluk.text,_rera.text,sitesModal.siteDealerId, sitesModal.subdealerId,_so.text,sitesModal.assignedTo,sitesModal.siteStatusId.toString(),sitesModal.siteStageId.toString(),
       geoTagType,_currentPosition.latitude,_currentPosition.longitude,sitesModal.siteCreationDate,"TRADE");
@@ -291,7 +291,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   onChanged: (value) {
                                     setState(() {
                                       _selectedConstructionType = value;
-                                      UpdatedValues.setSiteConstructionId(value.id);
+                                      UpdatedValues.setSiteConstructionId(_selectedConstructionType);
                                     });
                                     print(_selectedConstructionType.id);
                                   },
@@ -922,7 +922,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                           value.siteProbabilityStatus;
                                       labelProbabilityId = value.id;
                                       _siteProbabilityWinningEntity = value;
-                                      UpdatedValues.setSiteProbabilityWinningId(_siteProbabilityWinningEntity.id.toString());
+                                      UpdatedValues.setSiteProbabilityWinningId(_siteProbabilityWinningEntity);
                                     });
                                   },
                                   decoration:
@@ -986,7 +986,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   onChanged: (value) {
                                     setState(() {
                                       _siteCompetitionStatusEntity = value;
-                                      UpdatedValues.setSiteCompetitionId(_siteCompetitionStatusEntity.id.toString());
+                                      UpdatedValues.setSiteCompetitionId(_siteCompetitionStatusEntity);
 
                                     });
                                   },
@@ -1051,7 +1051,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   onChanged: (value) {
                                     setState(() {
                                       _siteOpportunitStatusEnity = value;
-                                      UpdatedValues.setSiteOppertunityId(_siteOpportunitStatusEnity.id.toString());
+                                      UpdatedValues.setSiteOppertunityId(_siteOpportunitStatusEnity);
                                     });
                                   },
                                   decoration:
@@ -1234,40 +1234,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                               latitude: data[0],
                                               longitude: data[1]);
                                           _getAddressFromLatLng();
-                                        }
-//                                 setState(() {
-//                                   geoTagType = "M";
-//                                 });
-//                                 LocationResult result =
-//                                     await showLocationPicker(
-//                                   context,
-//                                   StringConstants.API_Key,
-//                                   initialCenter: LatLng(31.1975844, 29.9598339),
-//                                   automaticallyAnimateToCurrentLocation: true,
-// //                      mapStylePath: 'assets/mapStyle.json',
-//                                   myLocationButtonEnabled: true,
-//                                   // requiredGPS: true,
-//                                   layersButtonEnabled: false,
-//                                   // countries: ['AE', 'NG']
-//
-// //                      resultCardAlignment: Alignment.bottomCenter,
-//                                   // desiredAccuracy: LocationAccuracy.best,
-//                                 );
-//                                 print("result = $result");
-//                                 setState(() {
-//                                   _pickedLocation = result;
-//                                   _currentPosition = new Position(
-//                                       latitude: _pickedLocation != null
-//                                           ? _pickedLocation.latLng.latitude
-//                                           : 0.0,
-//                                       longitude: _pickedLocation != null
-//                                           ? _pickedLocation.latLng.longitude
-//                                           : 0.0);
-//                                   _getAddressFromLatLng();
-//                                   //print(_pickedLocation.latLng.latitude);
-//                                 });
-//                               },
-                                        ),
+                                        }),
                                   ],
                                 ),
                                 SizedBox(height: 16),
@@ -1699,7 +1666,10 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                             fontSize: 17),
                                       ),
                                     ),
-                                    onPressed: () async {},
+                                    onPressed: () async {
+                                      UpdatedValues updateRequest = new UpdatedValues();
+                                      updateRequest.UpdateRequest(context);
+                                    },
                                   ),
                                 ),
                                 SizedBox(height: 40),

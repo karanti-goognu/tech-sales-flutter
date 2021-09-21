@@ -11,6 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/controller
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/updated_values.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/constant_function.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -293,8 +294,10 @@ class _SitePastStageHistoryWidgetState extends State<SitePastStageHistoryWidget>
                                   SizedBox(height: 16),
                                   TextFormField(
                                     readOnly: true,
-                                    initialValue:
-                                    siteStageHistorys[index].stageStatus,
+                                    initialValue:(siteStageHistorys[index].stageStatus != null &&
+                                        siteStageHistorys[index].stageStatus != "null")
+                                        ? siteStageHistorys[index].stageStatus
+                                        : "",
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
@@ -356,7 +359,8 @@ class _SitePastStageHistoryWidgetState extends State<SitePastStageHistoryWidget>
                       ),
                     ),
                     onPressed: () async {
-
+                      UpdatedValues updateRequest = new UpdatedValues();
+                      updateRequest.UpdateRequest(context);
                     },
                   ),
                 ),

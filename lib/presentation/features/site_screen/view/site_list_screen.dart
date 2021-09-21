@@ -19,6 +19,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
+import 'package:flutter_tech_sales/widgets/custom_simmer_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -96,7 +97,10 @@ class _SiteListScreenState extends State<SiteListScreen> {
   }
   _getRequests()async{
     _siteController.sitesListResponse.sitesEntity = null;
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+    // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+    await _siteController.getAccessKey().then((value) async {
+      await _siteController.getSitesData(value.accessKey,"");
+    });
     _siteController.offset = 0;
   }
   @override
@@ -107,7 +111,10 @@ class _SiteListScreenState extends State<SiteListScreen> {
     internetChecking().then((result) => {
       if (result == true)
         {
-          _appController.getAccessKey(RequestIds.GET_SITES_LIST),
+          // _appController.getAccessKey(RequestIds.GET_SITES_LIST),
+          _siteController.getAccessKey().then((value) async {
+            _siteController.getSitesData(value.accessKey,"");
+          }),
           //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
 
           _siteController.offset = 0,
@@ -171,221 +178,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
         child: Scaffold(
           extendBody: true,
           backgroundColor: ColorConstants.backgroundColorGrey,
-//           appBar: AppBar(
-//             // titleSpacing: 50,
-//             // leading: new Container(),
-//             backgroundColor: ColorConstants.appBarColor,
-//             toolbarHeight: SizeConfig.screenHeight*.14,
-// //            toolbarHeight: 120,
-//             centerTitle: false,
-//             title: Column(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               children: [
-//                 Row(
-//                   // mainAxisSize: MainAxisSize.max,
-//                   // crossAxisAlignment: CrossAxisAlignment.center,
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                   children: [
-//                     Text(
-//                       "OPEN SITES",
-//                       style: TextStyle(
-//                           fontWeight: FontWeight.normal,
-//                           fontSize: 22,
-//                           color: Colors.white,
-//                           fontFamily: "Muli"),
-//                     ),
-//                     Expanded(
-//                       child: Container(),
-//                     ),
-//                     FlatButton(
-//                       onPressed: () {
-//                         _settingModalBottomSheet(context);
-//                       },
-//                       shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(18.0),
-//                           side: BorderSide(color: Colors.white)),
-//                       color: Colors.transparent,
-//                       child: Padding(
-//                         padding: const EdgeInsets.only(bottom: 5),
-//                         child: Row(
-//                           children: [
-//                             //  Icon(Icons.exposure_zero_outlined),
-//                             Container(
-//                                 height: 18,
-//                                 width: 18,
-//                                 // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-//                                 decoration: new BoxDecoration(
-//                                   color: Colors.white,
-//                                   border: Border.all(
-//                                       color: Colors.black, width: 0.0),
-//                                   borderRadius:
-//                                   new BorderRadius.all(Radius.circular(3)),
-//                                 ),
-//                                 child: Center(
-//                                     child: Obx(() => Text(
-//                                         "${_siteController.selectedFilterCount}",
-//                                         style: TextStyle(
-//                                             color: Colors.black,
-//                                             //fontFamily: 'Raleway',
-//                                             fontSize: 12,
-//                                             fontWeight: FontWeight.normal))))),
-//                             Padding(
-//                               padding: const EdgeInsets.only(left: 8.0),
-//                               child: Text(
-//                                 'FILTER',
-//                                 style: TextStyle(
-//                                     color: Colors.white, fontSize: 18),
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                     IconButton(
-//                       icon: Icon(Icons.search),
-//                       onPressed: () => Get.toNamed(Routes.SEARCH_SITES_SCREEN),
-//                     )
-//                   ],
-//                 ),
-//                 SingleChildScrollView(
-//                     scrollDirection: Axis.horizontal,
-//                     child: Row(
-//                       children: [
-//                         SizedBox(
-//                           width: 8,
-//                         ),
-//                         Obx(() => (_siteController.assignToDate ==
-//                             StringConstants.empty)
-//                             ? Container()
-//                             : FilterChip(
-//                           label: Row(
-//                             children: [
-//                               Icon(
-//                                 Icons.check,
-//                                 color: Colors.black,
-//                               ),
-//                               SizedBox(
-//                                 width: 4,
-//                               ),
-//                               Text(
-//                                   "${_siteController.assignFromDate} to ${_siteController.assignToDate}")
-//                             ],
-//                           ),
-//                           backgroundColor: Colors.transparent,
-//                           shape: StadiumBorder(side: BorderSide()),
-//                           onSelected: (bool value) {
-//                             print("selected");
-//                           },
-//                         )),
-//                         SizedBox(
-//                           width: 8,
-//                         ),
-//                         Obx(() => (_siteController.selectedSiteStatus ==
-//                             StringConstants.empty)
-//                             ? Container()
-//                             : FilterChip(
-//                           label: Row(
-//                             children: [
-//                               Icon(
-//                                 Icons.check,
-//                                 color: Colors.black,
-//                               ),
-//                               SizedBox(
-//                                 width: 4,
-//                               ),
-//                               Text(
-//                                   "${_siteController.selectedSiteStatus}")
-//                             ],
-//                           ),
-//                           backgroundColor: Colors.transparent,
-//                           shape: StadiumBorder(side: BorderSide()),
-//                           onSelected: (bool value) {
-//                             print("selected");
-//                           },
-//                         )),
-//                         SizedBox(
-//                           width: 8,
-//                         ),
-//                         Obx(() => (_siteController.selectedSiteStage ==
-//                             StringConstants.empty)
-//                             ? Container()
-//                             : FilterChip(
-//                           label: Row(
-//                             children: [
-//                               Icon(
-//                                 Icons.check,
-//                                 color: Colors.black,
-//                               ),
-//                               SizedBox(
-//                                 width: 4,
-//                               ),
-//                               Text("${_siteController.selectedSiteStage}")
-//                             ],
-//                           ),
-//                           backgroundColor: Colors.transparent,
-//                           shape: StadiumBorder(side: BorderSide()),
-//                           onSelected: (bool value) {
-//                             print("selected");
-//                           },
-//                         )),
-//                         SizedBox(
-//                           width: 8,
-//                         ),
-//                         Obx(() => (_siteController.selectedSitePincode ==
-//                             StringConstants.empty)
-//                             ? Container()
-//                             : FilterChip(
-//                           label: Row(
-//                             children: [
-//                               Icon(
-//                                 Icons.check,
-//                                 color: Colors.black,
-//                               ),
-//                               SizedBox(
-//                                 width: 4,
-//                               ),
-//                               Text(
-//                                   "${_siteController.selectedSitePincode}")
-//                             ],
-//                           ),
-//                           backgroundColor: Colors.transparent,
-//                           shape: StadiumBorder(side: BorderSide()),
-//                           onSelected: (bool value) {
-//                             print("selected");
-//                           },
-//                         )),
-//                         SizedBox(
-//                           width: 8,
-//                         ),
-//                         Obx(() => (_siteController.selectedSiteInfluencerCat ==
-//                             StringConstants.empty)
-//                             ? Container()
-//                             : FilterChip(
-//                           label: Row(
-//                             children: [
-//                               Icon(
-//                                 Icons.check,
-//                                 color: Colors.black,
-//                               ),
-//                               SizedBox(
-//                                 width: 4,
-//                               ),
-//                               Text(
-//                                   "${_siteController.selectedSiteInfluencerCat}")
-//                             ],
-//                           ),
-//                           backgroundColor: Colors.transparent,
-//                           shape: StadiumBorder(side: BorderSide()),
-//                           onSelected: (bool value) {
-//                             print("selected");
-//                           },
-//                         )),
-//                       ],
-//                     ))
-//               ],
-//             ),
-//             automaticallyImplyLeading: false,
-//           ),
+
           body: Container(
             child: Column(
               children: [
@@ -421,337 +214,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
                   ),
                 ),
                 Expanded(child: leadsDetailWidget()),
-                // Expanded(child:FutureBuilder<List<SitesEntity>>(
-                //   future: db.fetchAllSites(),
-                //   builder: (BuildContext context, AsyncSnapshot<List<SitesEntity>> snapshot) {
-                //     if (snapshot.hasData) {
-                //       return ListView.builder(
-                //           itemCount: _siteController.sitesListOffline,
-                //           padding: const EdgeInsets.only(
-                //               left: 10.0, right: 10, bottom: 10),
-                //           // itemExtent: 125.0,
-                //           itemBuilder: (context, index) {
-                //             SitesEntity siteList = snapshot.data[index];
-                //             return GestureDetector(
-                //               onTap: () {
-                //                 Navigator.push(
-                //                     context,
-                //                     new CupertinoPageRoute(
-                //                         builder: (BuildContext context) =>
-                //                             ViewSiteScreen(
-                //                                 siteList.siteId)));
-                //               },
-                //               child: Card(
-                //                 clipBehavior: Clip.antiAlias,
-                //                 borderOnForeground: true,
-                //                 //shadowColor: colornew,
-                //                 elevation: 6,
-                //                 margin: EdgeInsets.all(5.0),
-                //                 color: Colors.white,
-                //                 child: Container(
-                //                   padding: EdgeInsets.all(8),
-                //                   /*decoration: BoxDecoration(
-                //                   border: Border(
-                //                       left: BorderSide(
-                //                     color: (_siteController
-                //                                 .sitesListResponse
-                //                                 .sitesEntity[index]
-                //                                 .siteStageId ==
-                //                             1)
-                //                         ? HexColor("#F9A61A")
-                //                         : HexColor("#007CBF"),
-                //                     width: 6,
-                //                   )),
-                //                 ),*/
-                //                   child: Column(
-                //                     children: [
-                //                       Row(
-                //                         mainAxisAlignment:
-                //                         MainAxisAlignment.spaceBetween,
-                //                         children: [
-                //                           Expanded(
-                //                             child: Padding(
-                //                               padding: const EdgeInsets.only(
-                //                                   left: 5.0),
-                //                               child: Column(
-                //                                 mainAxisAlignment:
-                //                                 MainAxisAlignment.start,
-                //                                 crossAxisAlignment:
-                //                                 CrossAxisAlignment.start,
-                //                                 children: [
-                //                                   /* Padding(
-                //                                 padding:
-                //                                     const EdgeInsets.all(2.0),
-                //                                 child: Text(
-                //                                   "Follow-up Date XXXX",
-                //                                   style: TextStyle(
-                //                                       fontSize: 12,
-                //                                       fontFamily: "Muli",
-                //                                       fontWeight:
-                //                                           FontWeight.normal
-                //                                       //fontWeight: FontWeight.normal
-                //                                       ),
-                //                                 ),
-                //                               ),*/
-                //                                   Padding(
-                //                                     padding:
-                //                                     const EdgeInsets.all(2.0),
-                //                                     child: Text(
-                //                                       "Site ID (${siteList.siteId})",
-                //                                       style: TextStyle(
-                //                                           fontSize: 18,
-                //                                           fontFamily: "Muli",
-                //                                           fontWeight:
-                //                                           FontWeight.bold
-                //                                         //fontWeight: FontWeight.normal
-                //                                       ),
-                //                                     ),
-                //                                   ),
-                //                                   Padding(
-                //                                     padding:
-                //                                     const EdgeInsets.all(2.0),
-                //                                     child: Text(
-                //                                       "District: ${siteList.siteDistrict} ",
-                //                                       style: TextStyle(
-                //                                           color: Colors.black38,
-                //                                           fontSize: 12,
-                //                                           fontFamily: "Muli",
-                //                                           fontWeight:
-                //                                           FontWeight.bold
-                //                                         //fontWeight: FontWeight.normal
-                //                                       ),
-                //                                     ),
-                //                                   ),
-                //                                   Row(
-                //                                     children: [
-                //                                       Padding(
-                //                                         padding:
-                //                                         const EdgeInsets.only(
-                //                                             left: 1.0),
-                //                                         child: Chip(
-                //                                           shape: StadiumBorder(
-                //                                               side: BorderSide(
-                //                                                   color: HexColor(
-                //                                                       "#39B54A"))),
-                //                                           backgroundColor:
-                //                                           HexColor("#39B54A")
-                //                                               .withOpacity(
-                //                                               0.1),
-                //                                           label: Text(
-                //                                             (printSiteStage(
-                //                                                 siteList
-                //                                                     .siteStageId)),
-                //                                             style: TextStyle(
-                //                                                 color: HexColor(
-                //                                                     "#39B54A"),
-                //                                                 fontSize: 12,
-                //                                                 fontFamily:
-                //                                                 "Muli",
-                //                                                 fontWeight:
-                //                                                 FontWeight
-                //                                                     .bold
-                //                                               //fontWeight: FontWeight.normal
-                //                                             ),
-                //                                           ),
-                //                                         ),
-                //                                       ),
-                //                                       Padding(
-                //                                         padding: EdgeInsets.only(
-                //                                             left: 10.0),
-                //                                         child: Text(
-                //                                           " ${siteList.siteCreationDate}",
-                //                                           //  textAlign: TextAlign.start,
-                //                                           style: TextStyle(
-                //                                             fontSize: 10,
-                //                                             fontFamily: "Muli",
-                //                                             fontWeight:
-                //                                             FontWeight.bold,
-                //
-                //                                             //fontWeight: FontWeight.normal
-                //                                           ),
-                //                                         ),
-                //                                       ),
-                //                                     ],
-                //                                   )
-                //                                 ],
-                //                               ),
-                //                             ),
-                //                           ),
-                //                           Expanded(
-                //                             child: Padding(
-                //                               padding: const EdgeInsets.only(
-                //                                   right: 15.0, bottom: 10),
-                //                               child: Column(
-                //                                 mainAxisSize: MainAxisSize.max,
-                //                                 mainAxisAlignment:
-                //                                 MainAxisAlignment.spaceEvenly,
-                //                                 crossAxisAlignment:
-                //                                 CrossAxisAlignment.end,
-                //                                 children: [
-                //                                   Padding(
-                //                                     padding:
-                //                                     const EdgeInsets.only(
-                //                                         top: 8.0),
-                //                                     child: Row(
-                //                                       children: [
-                //                                         Expanded(
-                //                                           child: Container(),
-                //                                         ),
-                //                                         Text(
-                //                                           "Site-Pt: ",
-                //                                           style: TextStyle(
-                //                                               color:
-                //                                               Colors.black38,
-                //                                               fontSize: 15,
-                //                                               fontFamily: "Muli",
-                //                                               fontWeight:
-                //                                               FontWeight.bold
-                //                                             //fontWeight: FontWeight.normal
-                //                                           ),
-                //                                         ),
-                //                                         Text(
-                //                                           "${siteList.sitePotentialMt}MT",
-                //                                           style: TextStyle(
-                //                                             // color: Colors.black38,
-                //                                               fontSize: 15,
-                //                                               fontFamily:
-                //                                               "Muli",
-                //                                               fontWeight:
-                //                                               FontWeight
-                //                                                   .bold
-                //                                             //fontWeight: FontWeight.normal
-                //                                           ),
-                //                                         ),
-                //                                       ],
-                //                                     ),
-                //                                   ),
-                //                                   Text(
-                //                                     (siteList
-                //                                         .siteOppertunityId ==
-                //                                         null)
-                //                                         ? ""
-                //                                         : printOpportuityStatus(
-                //                                         siteList
-                //                                             .siteOppertunityId),
-                //                                     style: TextStyle(
-                //                                         color: Colors.blue,
-                //                                         fontSize: 10,
-                //                                         fontFamily: "Muli",
-                //                                         fontWeight:
-                //                                         FontWeight.bold
-                //                                       //fontWeight: FontWeight.normal
-                //                                     ),
-                //                                     textAlign: TextAlign.right,
-                //                                   ),
-                //                                   SizedBox(
-                //                                     height: 8,
-                //                                   ),
-                //                                   Text(
-                //                                     "Site Score - ${siteList.siteScore}",
-                //                                     style: TextStyles
-                //                                         .robotoRegular14,
-                //                                     textAlign: TextAlign.right,
-                //                                   ),
-                //                                   SizedBox(
-                //                                     height: 30,
-                //                                   ),
-                //                                   Row(
-                //                                     children: [
-                //                                       Expanded(
-                //                                         child: Container(),
-                //                                       ),
-                //                                       Icon(
-                //                                         Icons.call,
-                //                                         color:
-                //                                         HexColor("#8DC63F"),
-                //                                       ),
-                //                                       GestureDetector(
-                //                                         child: Text(
-                //                                           "${siteList.contactNumber}",
-                //                                           style: TextStyle(
-                //                                               color: Colors.black,
-                //                                               fontSize: 15,
-                //                                               fontFamily: "Muli",
-                //                                               fontWeight:
-                //                                               FontWeight.bold,
-                //                                               fontStyle:
-                //                                               FontStyle.italic
-                //                                             //fontWeight: FontWeight.normal
-                //                                           ),
-                //                                         ),
-                //                                         onTap: () {
-                //                                           String num =
-                //                                               siteList
-                //                                                   .contactNumber;
-                //                                           launch('tel:$num');
-                //                                         },
-                //                                       ),
-                //                                     ],
-                //                                   ),
-                //                                 ],
-                //                               ),
-                //                             ),
-                //                           ),
-                //                         ],
-                //                       ),
-                //                       Padding(
-                //                         padding:
-                //                         const EdgeInsets.fromLTRB(8, 4, 8, 0),
-                //                         child: Container(
-                //                           color: Colors.grey,
-                //                           width: double.infinity,
-                //                           height: 1,
-                //                         ),
-                //                       ),
-                //                       Padding(
-                //                         padding: const EdgeInsets.all(8.0),
-                //                         child: Row(
-                //                           mainAxisAlignment:
-                //                           MainAxisAlignment.spaceBetween,
-                //                           children: [
-                //                             /*Text(
-                //                             "Exclusive Dalmia ",
-                //                             style: TextStyle(
-                //                                 color: Colors.blue,
-                //                                 fontSize: 12,
-                //                                 fontFamily: "Muli",
-                //                                 fontWeight: FontWeight.bold
-                //                                 //fontWeight: FontWeight.normal
-                //                                 ),
-                //                           ),*/
-                //                             Text(
-                //                               (siteList
-                //                                   .siteProbabilityWinningId ==
-                //                                   null)
-                //                                   ? ""
-                //                                   : printProbabilityOfWinning(
-                //                                   siteList
-                //                                       .siteProbabilityWinningId),
-                //                               style: TextStyle(
-                //                                   color: Colors.blue,
-                //                                   fontSize: 12,
-                //                                   fontFamily: "Muli",
-                //                                   fontWeight: FontWeight.bold
-                //                                 //fontWeight: FontWeight.normal
-                //                               ),
-                //                             ),
-                //                           ],
-                //                         ),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //             );
-                //           });
-                //     } else {
-                //       return Center(child: CircularProgressIndicator());
-                //     }
-                //   },
-                // ), ),
-                // SizedBox(
-                //   height: 30,
-                // ),
               ],
             ),
           ),
@@ -773,34 +235,11 @@ class _SiteListScreenState extends State<SiteListScreen> {
     )
         : (_siteController.sitesListResponse.sitesEntity == null)
         ? Container(
-      child: Center(
-        child: Text("Sites list is empty!!"),
-      ),
+      child: simmerWidget(),
     )
         : (_siteController.sitesListResponse.sitesEntity.length == 0)
         ? Container(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("You don't have any Sites..!!"),
-            SizedBox(
-              height: 10,
-            ),
-            RaisedButton(
-              onPressed: () {
-                _appController
-                    .getAccessKey(RequestIds.GET_LEADS_LIST);
-              },
-              color: ColorConstants.buttonNormalColor,
-              child: Text(
-                "TRY AGAIN",
-                style: TextStyle(color: Colors.white),
-              ),
-            )
-          ],
-        ),
-      ),
+      child: simmerWidget(),
     )
         : ListView.builder(
         controller: _scrollController,
@@ -826,19 +265,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
               color: Colors.white,
               child: Container(
                 padding: EdgeInsets.all(8),
-                /*decoration: BoxDecoration(
-                                  border: Border(
-                                      left: BorderSide(
-                                    color: (_siteController
-                                                .sitesListResponse
-                                                .sitesEntity[index]
-                                                .siteStageId ==
-                                            1)
-                                        ? HexColor("#F9A61A")
-                                        : HexColor("#007CBF"),
-                                    width: 6,
-                                  )),
-                                ),*/
                 child: Column(
                   children: [
                     Row(
@@ -855,20 +281,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
                               crossAxisAlignment:
                               CrossAxisAlignment.start,
                               children: [
-                                /* Padding(
-                                                padding:
-                                                    const EdgeInsets.all(2.0),
-                                                child: Text(
-                                                  "Follow-up Date XXXX",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontFamily: "Muli",
-                                                      fontWeight:
-                                                          FontWeight.normal
-                                                      //fontWeight: FontWeight.normal
-                                                      ),
-                                                ),
-                                              ),*/
                                 Padding(
                                     padding:
                                     const EdgeInsets.all(2.0),
@@ -1141,24 +553,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
         }));
   }
 
-  void _settingModalBottomSheet(context) {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext bc) {
-          return SiteFilterWidget();
-        });
-    //     .whenComplete(() {
-    //
-    // });
-  }
-
-
-  Widget SiteFilter (){
-
-  }
-
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(
         border: Border.all(color: ColorConstants.dateBorderColor),
@@ -1204,5 +598,157 @@ class _SiteListScreenState extends State<SiteListScreen> {
       print("size is 0");
       return "";
     }
+  }
+
+  Widget simmerWidget(){
+    return ListView.builder(
+        itemCount: 2,
+        itemBuilder: (context, index) {
+          return Card(
+            clipBehavior: Clip.antiAlias,
+            borderOnForeground: true,
+            //shadowColor: colornew,
+            elevation: 6,
+            margin: EdgeInsets.all(5.0),
+            color: Colors.white,
+            child: Container(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 5.0),
+                          child: Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.start,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                  padding:
+                                  const EdgeInsets.all(2.0),
+                                  child:  CustomSimmerWidget.rectangular(height: 12,
+                                    width: MediaQuery.of(context).size.width*0.3,)),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Padding(
+                                  padding:
+                                  const EdgeInsets.all(2.0),
+                                  child:  CustomSimmerWidget.rectangular(height: 12,
+                                    width: MediaQuery.of(context).size.width*0.3,)),
+                              FittedBox(
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.only(
+                                          left: 1.0),
+                                      child: CustomSimmerWidget.circular(height: 54, width: 54),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 8.0),
+                                      child: CustomSimmerWidget.rectangular(height: 12,
+                                        width: MediaQuery.of(context).size.width*0.3,),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 15.0, bottom: 10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(
+                                    top: 8.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(),
+                                    ),
+                                    CustomSimmerWidget.rectangular(height: 12,
+                                      width: MediaQuery.of(context).size.width*0.2,),
+                                    CustomSimmerWidget.rectangular(height: 12,
+                                      width: MediaQuery.of(context).size.width*0.2,),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              CustomSimmerWidget.rectangular(height: 12,
+                                width: MediaQuery.of(context).size.width*0.3,),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              CustomSimmerWidget.rectangular(height: 12,
+                                width: MediaQuery.of(context).size.width*0.3,),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              CustomSimmerWidget.rectangular(height: 12,
+                                width: MediaQuery.of(context).size.width*0.3,),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(),
+                                  ),
+                                  CustomSimmerWidget.rectangular(height: 12,
+                                    width: MediaQuery.of(context).size.width*0.3,),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                    child: Container(
+                      color: Colors.grey,
+                      width: double.infinity,
+                      height: 1,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomSimmerWidget.rectangular(height: 12,
+                          width: MediaQuery.of(context).size.width*0.3,)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
   }
 }

@@ -1084,6 +1084,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                         } else {
                           index = productDynamicList.length;
                         }
+
                         print("index1" + index.toString());
                         if (index == 0) {
                           setState(() {
@@ -1478,104 +1479,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                     ),
                   ),
                   onPressed: () async {
-                    // UpdatedValues.getSiteStageHistory1();
-                    // UpdateDataRequest updateDataRequest  = new UpdateDataRequest(
-                    //     siteId:UpdatedValues.getSiteId(),
-                    //     siteSegment:UpdatedValues.getSiteSegment(),
-                    //     assignedTo:UpdatedValues.getAssignedTo(),
-                    //     siteStatusId:UpdatedValues.getSiteStatusId(),
-                    //     siteStageId:UpdatedValues.getSiteStageId(),
-                    //     contactName:UpdatedValues.getContactName(),
-                    //     contactNumber:UpdatedValues.getContactNumber(),
-                    //     siteGeotag:UpdatedValues.siteGeotag,
-                    //     siteGeotagLat:UpdatedValues.siteGeotagLat,
-                    //     siteGeotagLong:UpdatedValues.siteGeotagLong,
-                    //     siteAddress:UpdatedValues.siteAddress,
-                    //     sitePincode:UpdatedValues.sitePincode,
-                    //     siteState:UpdatedValues.siteState,
-                    //     siteDistrict:UpdatedValues.siteDistrict,
-                    //     siteTaluk:UpdatedValues.siteTaluk,
-                    //     sitePotentialMt:UpdatedValues.sitePotentialMt,
-                    //     reraNumber:UpdatedValues.reraNumber,
-                    //     siteCreationDate:UpdatedValues.siteCreationDate,
-                    //     dealerId:UpdatedValues.dealerId,
-                    //     siteBuiltArea:UpdatedValues.siteBuiltArea,
-                    //     noOfFloors:UpdatedValues.noOfFloors,
-                    //     productDemo:UpdatedValues.productDemo,
-                    //     productOralBriefing:UpdatedValues.productOralBriefing,
-                    //     soCode:UpdatedValues.soCode,
-                    //     plotNumber:UpdatedValues.plotNumber,
-                    //     inactiveReasonText:UpdatedValues.inactiveReasonText,
-                    //     nextVisitDate:UpdatedValues.nextVisitDate,
-                    //     closureReasonText:UpdatedValues.closureReasonText,
-                    //     createdBy:UpdatedValues.createdBy,
-                    //     totalBalancePotential: UpdatedValues.totalBalancePotential,
-                    //     siteCommentsEntity:UpdatedValues.siteCommentsEntity,
-                    //     siteStageHistory:UpdatedValues.getSiteStageHistory1(),
-                    //     siteNextStageEntity:UpdatedValues.siteNextStageEntity,
-                    //     sitePhotosEntity:null,
-                    //     siteInfluencerEntity:UpdatedValues.getSiteInfluencerEntity(),
-                    //     siteConstructionId:UpdatedValues.siteConstructionId,
-                    //     siteCompetitionId:UpdatedValues.siteCompetitionId,
-                    //     siteOppertunityId:UpdatedValues.siteOppertunityId,
-                    //     siteProbabilityWinningId: UpdatedValues.siteProbabilityWinningId,
-                    //     dealerConfirmedChangedBy:UpdatedValues.dealerConfirmedChangedBy,
-                    //     dealerConfirmedChangedOn: UpdatedValues.dealerConfirmedChangedOn,
-                    //     isDealerConfirmedChangedBySo:UpdatedValues.isDealerConfirmedChangedBySo,
-                    //     subdealerId: UpdatedValues.subdealerId,
-                    //     kitchenCount:UpdatedValues.kitchenCount,
-                    //     bathroomCount:UpdatedValues.bathroomCount);
-
-
-                    var update ={
-                      "siteId":UpdatedValues.getSiteId(),
-                      "siteSegment":UpdatedValues.getSiteSegment(),
-                      "assignedTo":UpdatedValues.getAssignedTo(),
-                      "siteStatusId":UpdatedValues.getSiteStatusId(),
-                      "siteStageId":UpdatedValues.getSiteStageId(),
-                      "contactName":UpdatedValues.getContactName(),
-                      "contactNumber":UpdatedValues.getContactNumber(),
-                      "siteGeotag":UpdatedValues.siteGeotag,
-                      "siteGeotagLat":UpdatedValues.siteGeotagLat,
-                      "siteGeotagLong":UpdatedValues.siteGeotagLong,
-                      "siteAddress":UpdatedValues.siteAddress,
-                      "sitePincode":UpdatedValues.sitePincode,
-                      "siteState":UpdatedValues.siteState,
-                      "siteDistrict":UpdatedValues.siteDistrict,
-                      "siteTaluk":UpdatedValues.siteTaluk,
-                      "sitePotentialMt":UpdatedValues.sitePotentialMt,
-                      "reraNumber":UpdatedValues.reraNumber,
-                      "siteCreationDate":UpdatedValues.siteCreationDate,
-                      "dealerId":UpdatedValues.dealerId,
-                      "siteBuiltArea":UpdatedValues.siteBuiltArea,
-                      'noOfFloors':UpdatedValues.noOfFloors,
-                      "productDemo":UpdatedValues.productDemo,
-                      "productOralBriefing":UpdatedValues.productOralBriefing,
-                      'soCode':UpdatedValues.soCode,
-                      "plotNumber":UpdatedValues.plotNumber,
-                      "inactiveReasonText":UpdatedValues.inactiveReasonText,
-                      "nextVisitDate":UpdatedValues.nextVisitDate,
-                      "closureReasonText":UpdatedValues.closureReasonText,
-                      "createdBy":UpdatedValues.createdBy,
-                      "totalBalancePotential": UpdatedValues.totalBalancePotential,
-                      "siteCommentsEntity":UpdatedValues.getSiteCommentsEntity(),
-                      "siteStageHistorys":UpdatedValues.getSiteStageHistory1(),
-                      "siteNextStageEntity":UpdatedValues.getSiteNextStageEntity(),
-                      "sitePhotosEntity":UpdatedValues.getSitePhotosEntity(),
-                      "siteInfluencerEntity":UpdatedValues.getSiteInfluencerEntity(),
-                      "siteConstructionId":UpdatedValues.siteConstructionId,
-                      "siteCompetitionId":UpdatedValues.siteCompetitionId,
-                      "siteOppertunityId":UpdatedValues.siteOppertunityId,
-                      "siteProbabilityWinningId": UpdatedValues.siteProbabilityWinningId,
-                      "dealerConfirmedChangedBy":"",
-                      "dealerConfirmedChangedOn": "",
-                      "isDealerConfirmedChangedBySo":sitesModal != null ? sitesModal.isDealerConfirmedChangedBySo : "",
-                      "subdealerId": UpdatedValues.subdealerId,
-                      "kitchenCount":UpdatedValues.kitchenCount,
-                      "bathroomCount":UpdatedValues.bathroomCount
-                    };
-                    UpdateRequest(update);
-                    // log("Data1---> "+UpdatedValues.getSiteSupplyHistory().length.toString()+"\n"+update.toString());
+                    UpdatedValues updateRequest = new UpdatedValues();
+                    updateRequest.UpdateRequest(context);
                   },
                 ),
               ),
@@ -2116,6 +2021,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
   }
 
   updateSiteSupplyHistory(){
+
     List<SiteSupplyHistorys> siteSupplyHistory = new List();
     if (productDynamicList != null && productDynamicList.length > 0) {
       for (int i = 0; i < productDynamicList.length; i++) {
@@ -2136,72 +2042,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
         }
       }
     }
+    UpdatedValues.setProductDynamicList(productDynamicList);
     UpdatedValues.updateSiteSupplyHistory(siteSupplyHistory);
   }
-
-  void isNoOfBagsSuppliedEntered(var updateDataRequest) {
-    List<File> _imageList = new List();
-    if (productDynamicList.length > 0) {
-      int index = productDynamicList.length-1;
-
-      if(productDynamicList[index].supplyQty.text.isNotEmpty && (productDynamicList[index].supplyDate.text.isEmpty ||
-          productDynamicList[index].brandPrice.text.isEmpty ||
-          productDynamicList[index].brandId == -1)){
-        Get.dialog(CustomDialogs()
-            .showMessage("You have to click on Add Product to proceed !"));
-        return;
-      }else{
-        _siteController.updateLeadData(
-            updateDataRequest, _imageList, context,UpdatedValues.getSiteId());
-      }
-    }else{
-      _siteController.updateLeadData(
-          updateDataRequest, _imageList, context,UpdatedValues.getSiteId());
-    }
-  }
-
-  Future<void> UpdateRequest(var updateDataRequest) async {
-    if (UpdatedValues.getFromDropDown() == true) {
-      if (UpdatedValues.siteBuiltArea == "" ||
-          UpdatedValues.siteBuiltArea == null ||
-          UpdatedValues.siteBuiltArea == "null") {
-        Get.dialog(CustomDialogs()
-            .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
-      } else {
-        isNoOfBagsSuppliedEntered(updateDataRequest);
-        setState(() {
-          UpdatedValues.setFromDropDown(false);
-        });
-      }
-    } else if (UpdatedValues.siteBuiltArea == "" ||
-        UpdatedValues.siteBuiltArea == null ||
-        UpdatedValues.siteBuiltArea == "null") {
-      Get.dialog(CustomDialogs()
-          .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
-    }
-
-    else if (UpdatedValues.getAddNextButtonDisable() &&
-        (_selectedConstructionTypeVisitNextStage == null ||
-            _stagePotentialVisitNextStage.text == null ||
-            _stagePotentialVisitNextStage.text == "" ||
-            _siteProductFromLocalDBNextStage == null ||
-            _selectedSiteVisitFloorNextStage == null ||
-            _brandPriceVisitNextStage.text == "" ||
-            _brandPriceVisitNextStage.text == null
-            // && _dateofConstruction.text == "" && _dateofConstruction.text == null
-            ||
-            _dateOfBagSuppliedNextStage.text == "" ||
-            _dateOfBagSuppliedNextStage.text == null ||
-            _stagePotentialVisitNextStage.text == "" ||
-            _stagePotentialVisitNextStage.text == null ||
-            _stageStatusNextStage.text == "" ||
-            _stageStatusNextStage.text == null)) {
-      Get.dialog(CustomDialogs().showMessage(
-          "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
-    } else {
-      isNoOfBagsSuppliedEntered(updateDataRequest);
-    }
-  }
-
-
 }

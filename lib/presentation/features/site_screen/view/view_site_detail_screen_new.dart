@@ -1,6 +1,4 @@
-import 'dart:ffi';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +20,7 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:flutter_tech_sales/widgets/custom_simmer_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -111,6 +110,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     return viewSiteDataResponse;
   }
   List<File> _imageList = new List();
+  List<ProductListModel> prdduct = new List();
 
   @override
   void initState() {
@@ -125,6 +125,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     UpdatedValues.setFromDropDown(fromDropDown);
     UpdatedValues.setImageList(_imageList);
     UpdatedValues.setSiteCommentsEntity(null);
+    UpdatedValues.setProductDynamicList(prdduct);
 
   }
 
@@ -438,6 +439,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                                 fromDropDown = true;
                                                                                 UpdatedValues.setFromDropDown(fromDropDown);
                                                                               });
+                                                                              UpdatedValues updateRequest = new UpdatedValues();
+                                                                              updateRequest.UpdateRequest(context);
                                                                               // UpdateRequest();
                                                                             } else {
                                                                               Get.dialog(CustomDialogs().showMessage("Please fill all details !!!"));
@@ -606,6 +609,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                                     _nextVisitDate.text = formattedDate;
                                                                                   }
                                                                                 });
+
                                                                               },
                                                                             ),
                                                                             filled:
@@ -687,6 +691,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                                 fromDropDown = true;
                                                                                 UpdatedValues.setFromDropDown(fromDropDown);
                                                                               });
+                                                                              UpdatedValues updateRequest = new UpdatedValues();
+                                                                              updateRequest.UpdateRequest(context);
                                                                               // UpdateRequest();
                                                                             } else {
                                                                               Get.dialog(CustomDialogs().showMessage("Please fill all details !!!"));
@@ -762,19 +768,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                 builder: (context, snapshot) {
                   print(snapshot.data.toString());
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircularProgressIndicator(),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text('Please wait data loading...')
-                          ],
-                        ));
+                    // return Align(
+                    //     alignment: Alignment.center,
+                    //     child: Column(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       children: [
+                    //         CircularProgressIndicator(),
+                    //         SizedBox(
+                    //           height: 5,
+                    //         ),
+                    //         Text('Please wait data loading...')
+                    //       ],
+                    //     ));
+                    return simmerWidget(context);
                   } else {
                     if (snapshot.hasError)
                       return Center(child: Text('Error: ${snapshot.error}'));
@@ -814,6 +821,57 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
             bottomNavigationBar: BottomNavigator(),
             //child:Text("classroomName")
           )),
+    );
+  }
+
+  Widget simmerWidget(BuildContext context){
+    return  Container(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          mainAxisAlignment:
+          MainAxisAlignment.start,
+          crossAxisAlignment:
+          CrossAxisAlignment.start,
+          children: [
+            Padding(
+                padding:
+                const EdgeInsets.all(2.0),
+                child:  CustomSimmerWidget.rectangular(height: 40,
+                  width: double.infinity,)),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+                padding:
+                const EdgeInsets.all(2.0),
+                child:  CustomSimmerWidget.rectangular(height: 40,
+                  width: double.infinity)),
+            SizedBox(
+              height: 24,
+            ),
+            Padding(
+                padding:
+                const EdgeInsets.all(2.0),
+                child:  CustomSimmerWidget.rectangular(height: 40,
+                  width: double.infinity,)),
+            SizedBox(
+              height: 24,
+            ),
+            Padding(
+                padding:
+                const EdgeInsets.all(2.0),
+                child:  CustomSimmerWidget.rectangular(height: 40,
+                  width: double.infinity,)),
+            SizedBox(
+              height: 24,
+            ),
+            Padding(
+                padding:
+                const EdgeInsets.all(2.0),
+                child:  CustomSimmerWidget.rectangular(height: 40,
+                  width: double.infinity,)),
+          ],
+        ),
     );
   }
 }

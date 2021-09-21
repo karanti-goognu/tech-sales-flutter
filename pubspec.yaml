@@ -87,7 +87,7 @@ dependencies:
   month_picker_dialog:
   dropdown_search: ^0.4.9
   store_redirect: ^1.0.2
-
+  shimmer: ^1.1.2
 
 
   #  autocomplete_textfield: ^1.7.3
