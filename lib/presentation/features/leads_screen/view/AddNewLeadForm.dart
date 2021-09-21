@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/common_widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
@@ -3402,20 +3403,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Positioned(
-                top: 0,
-                left: 200,
-                right: 0,
-                child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/images/Container.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ],
-                    ))),
+            BackgroundContainerImage(),
             GetBuilder<AddLeadsController>(
               builder: (controller) {
                 return Form(

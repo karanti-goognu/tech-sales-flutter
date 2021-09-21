@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
@@ -775,21 +776,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Positioned(
-              top: 0,
-              left: 200,
-              right: 0,
-              child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/images/Container.png',
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ],
-                  ))),
-
+          BackgroundContainerImage(),
           (_influencerDetailDataModel != null &&
                   _influencerDetailDataModel.response.influencerDetails != null)
               ? ListView(children: [

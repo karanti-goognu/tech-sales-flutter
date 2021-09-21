@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -22,8 +23,6 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController controller = new TextEditingController();
   LeadsFilterController _leadsFilterController = Get.find();
   SplashController _splashController = Get.find();
-
-
 
 
 
@@ -190,20 +189,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                                 child: Stack(
                                   children: [
-                                    Positioned(
-                                        top: 0,
-                                        left: 250,
-                                        right: 0,
-                                        child: Container(
-                                            color: Colors.white,
-                                            child: Column(
-                                              children: <Widget>[
-                                                Image.asset(
-                                                  'assets/images/Container.png',
-                                                  fit: BoxFit.fitHeight,
-                                                ),
-                                              ],
-                                            ))),
+                                    BackgroundContainerImage(),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
