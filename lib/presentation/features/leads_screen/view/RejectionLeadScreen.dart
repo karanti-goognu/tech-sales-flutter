@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
@@ -43,20 +44,7 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Positioned(
-                top: 0,
-                left: 200,
-                right: 0,
-                child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/images/Container.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ],
-                    ))),
+            BackgroundContainerImage(),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

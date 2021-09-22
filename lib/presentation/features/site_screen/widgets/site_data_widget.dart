@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/updated_values.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
@@ -1185,7 +1186,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                         Get.dialog(Center(
                                           child: CircularProgressIndicator(),
                                         ));
-
                                         _getCurrentLocation();
                                       },
                                     ),
@@ -1241,7 +1241,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 TextFormField(
                                   controller: _plotNumber,
                                   onChanged: (String data){
-                                    UpdatedValues.setPlotNumber(data);
+                                    UpdatedValues.setPlotNumber(_plotNumber.text);
                                   },
                                   validator: (value) {
                                     if (value.isEmpty) {
@@ -1270,7 +1270,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       return null;
                                     },
                                     onChanged: (String data){
-                                      UpdatedValues.setSiteAddress(data);
+                                      UpdatedValues.setSiteAddress(_siteAddress.text);
                                     },
                                     style: TextStyle(
                                         fontSize: 18,
@@ -1296,7 +1296,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     return null;
                                   },
                                   onChanged: (String data){
-                                    UpdatedValues.setSitePincode(data);
+                                    UpdatedValues.setSitePincode(_pincode.text);
                                   },
                                   style: TextStyle(
                                       fontSize: 18,
@@ -1335,7 +1335,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     return null;
                                   },
                                   onChanged: (String data){
-                                    UpdatedValues.setSiteState(data);
+                                    UpdatedValues.setSiteState(_state.text);
                                   },
                                   style: TextStyle(
                                       fontSize: 18,
@@ -1370,7 +1370,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     return null;
                                   },
                                   onChanged: (String data){
-                                    UpdatedValues.setSiteDistrict(data);
+                                    UpdatedValues.setSiteDistrict(_district.text);
                                   },
                                   style: TextStyle(
                                       fontSize: 18,
@@ -1406,7 +1406,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     return null;
                                   },
                                   onChanged: (String data){
-                                    UpdatedValues.setSiteTaluk(data);
+                                    UpdatedValues.setSiteTaluk(_taluk.text);
                                   },
                                   style: TextStyle(
                                       fontSize: 18,
@@ -1716,21 +1716,26 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       Get.dialog(CustomDialogs().showMessage(
           "Please enable your location service from device settings"));
     } else {
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-        });
+       List result;result = await GetCurrentLocation.getCurrentLocation();
+       setState(() {
+         _currentPosition = result[1];
+         List<String> loc = result[0];
+         _siteAddress.text = "${loc[7]}, ${loc[6]}, ${loc[4]}";
+         _district.text = "${loc[2]}";
+         _state.text = "${loc[1]}";
+         _pincode.text = "${loc[5]}";
+         _taluk.text = "${loc[3]}";
+         UpdatedValues.setSiteAddress(_siteAddress.text);
+         UpdatedValues.setSiteDistrict(_district.text);
+         UpdatedValues.setSiteState(_state.text);
+         UpdatedValues.setSitePincode(_pincode.text);
+         UpdatedValues.setSiteTaluk(_taluk.text);
+         UpdatedValues.setSiteTaluk(_taluk.text);
+         UpdatedValues.setSiteGeotagLat(_currentPosition.latitude);
+         UpdatedValues.setSiteGeotagLong(_currentPosition.longitude);
 
-        _getAddressFromLatLng();
-        Get.back();
-      }).catchError((e) {
-        Get.back();
-        Get.dialog(
-            CustomDialogs().errorDialog("Access to location data denied "));
-        print(e);
-      });
+       });
+
     }
   }
 
@@ -1746,6 +1751,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         _state.text = place.administrativeArea;
         _pincode.text = place.postalCode;
         _taluk.text = place.locality;
+        UpdatedValues.setSiteAddress(_siteAddress.text);
+        UpdatedValues.setSiteDistrict(_district.text);
+        UpdatedValues.setSiteState(_state.text);
+        UpdatedValues.setSitePincode(_pincode.text);
+        UpdatedValues.setSiteTaluk(_taluk.text);
+        UpdatedValues.setSiteGeotagLat(_currentPosition.latitude);
+        UpdatedValues.setSiteGeotagLong(_currentPosition.longitude);
         //txt.text = place.postalCode;
 
         print(

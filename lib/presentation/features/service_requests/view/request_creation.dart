@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -19,7 +20,6 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/common_widgets/upload_photo_bottomsheet.dart';
@@ -33,10 +33,11 @@ class RequestCreation extends StatefulWidget {
 class _RequestCreationState extends State<RequestCreation> {
   SrComplaintModel srComplaintModel;
   RequestorDetailsModel requestorDetailsModel;
-  SrFormDataController eventController = Get.find();
+  SrFormDataController srFormDataController = Get.find();
   SaveServiceRequestController saveRequest = Get.find();
-  List<File> _imageList = List<File>();
   SaveServiceRequest saveServiceRequest;
+  UpdateServiceRequestController updateRequest = Get.find();
+
 
   Future getEmpId() async {
     String empID = "";
@@ -48,8 +49,8 @@ class _RequestCreationState extends State<RequestCreation> {
   }
 
   getDropdownData() async {
-    await eventController.getAccessKey().then((value) async {
-      await eventController
+    await srFormDataController.getAccessKey().then((value) async {
+      await srFormDataController
           .getSrComplaintFormData(value.accessKey)
           .then((data) {
         setState(() {
@@ -64,8 +65,8 @@ class _RequestCreationState extends State<RequestCreation> {
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    await eventController.getAccessKey().then((value) async {
-      await eventController
+    await srFormDataController.getAccessKey().then((value) async {
+      await srFormDataController
           .getRequestorDetails(value.accessKey, requestorType)
           .then((data) {
         if (data != null) {
@@ -124,7 +125,7 @@ class _RequestCreationState extends State<RequestCreation> {
 
   @override
   void dispose() {
-    // _connectivity?.disposeStream();
+    updateRequest.imageList.clear();
     super.dispose();
   }
 
@@ -159,636 +160,544 @@ class _RequestCreationState extends State<RequestCreation> {
           ),
           Positioned.fill(
             child: srComplaintModel != null
-                ? ListView(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(12),
-                        height: 56,
-                        child: Text(
-                          'Request Creation',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: HexColor('#006838'),
-                              fontFamily: "Muli"),
-                        ),
-                        decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(width: 0.3))),
-                      ),
-                      // SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Form(
-                            key: _srCreationFormKey,
-                            child: Column(
-                              children: [
-                                DropdownButtonFormField(
-                                  onChanged: (value) {
-                                    setState(() {
-                                      requestDepartmentId = value;
-                                    });
-                                  },
-                                  items: srComplaintModel
-                                      .serviceRequestComplaintDepartmentEntity
-                                      .map((e) => DropdownMenuItem(
-                                            value: e.id,
-                                            child: Text(e.departmentText),
-                                          ))
-                                      .toList(),
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Department*"),
-                                  validator: (value) => value == null
-                                      ? 'Please select the Department'
-                                      : null,
-                                ),
-                                SizedBox(height: 16),
-                                DropdownButtonFormField(
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedRequestSubtypeSeverity = [];
-                                      selectedRequestSubtypeObjectList = [];
-                                      selectedRequestSubtype = [];
-                                      _severity.text = '';
-                                      requestId = value;
-                                      requestId == 2
-                                          ? isComplaint = true
-                                          : isComplaint = false;
-                                    });
-                                  },
-                                  items: srComplaintModel
-                                      .serviceRequestComplaintRequestEntity
-                                      .map((e) => DropdownMenuItem(
-                                            value: e.id,
-                                            child: Text(e.requestText),
-                                          ))
-                                      .toList(),
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Request Type*"),
-                                  validator: (value) => value == null
-                                      ? 'Please select the Request Type'
-                                      : null,
-                                ),
-                                SizedBox(height: 16),
-                                GestureDetector(
-                                  onTap: () => requestId == null
-                                      ? Get.rawSnackbar(
-                                          titleText: Text("Message"),
-                                          messageText: Text(
-                                              "Please select a Request type"),
-                                          backgroundColor: Colors.white,
-                                        )
-                                      : getBottomSheet(),
-                                  child: FormField(
-                                    validator: (value) => value,
-                                    builder: (state) {
-                                      return InputDecorator(
-                                        decoration:
-                                            FormFieldStyle.buildInputDecoration(
-                                          labelText: 'Request Sub-type*',
-                                          suffixIcon: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10.0, horizontal: 12),
-                                            child: Text(
-                                              'Select',
-                                              style: TextStyle(
-                                                color: HexColor('#F9A61A'),
+                ? GetBuilder<UpdateServiceRequestController>(
+                  builder: (controller) {
+                    return ListView(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(12),
+                            height: 56,
+                            child: Text(
+                              'Request Creation',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: HexColor('#006838'),
+                                  fontFamily: "Muli"),
+                            ),
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(width: 0.3))),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Form(
+                                key: _srCreationFormKey,
+                                child: Column(
+                                  children: [
+                                    DropdownButtonFormField(
+                                      onChanged: (value) {
+                                        setState(() {
+                                          requestDepartmentId = value;
+                                        });
+                                      },
+                                      items: srComplaintModel
+                                          .serviceRequestComplaintDepartmentEntity
+                                          .map((e) => DropdownMenuItem(
+                                                value: e.id,
+                                                child: Text(e.departmentText),
+                                              ))
+                                          .toList(),
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "Department*"),
+                                      validator: (value) => value == null
+                                          ? 'Please select the Department'
+                                          : null,
+                                    ),
+                                    SizedBox(height: 16),
+                                    DropdownButtonFormField(
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedRequestSubtypeSeverity = [];
+                                          selectedRequestSubtypeObjectList = [];
+                                          selectedRequestSubtype = [];
+                                          _severity.text = '';
+                                          requestId = value;
+                                          requestId == 2
+                                              ? isComplaint = true
+                                              : isComplaint = false;
+                                        });
+                                      },
+                                      items: srComplaintModel
+                                          .serviceRequestComplaintRequestEntity
+                                          .map((e) => DropdownMenuItem(
+                                                value: e.id,
+                                                child: Text(e.requestText),
+                                              ))
+                                          .toList(),
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "Request Type*"),
+                                      validator: (value) => value == null
+                                          ? 'Please select the Request Type'
+                                          : null,
+                                    ),
+                                    SizedBox(height: 16),
+                                    GestureDetector(
+                                      onTap: () => requestId == null
+                                          ? Get.rawSnackbar(
+                                              titleText: Text("Message"),
+                                              messageText: Text(
+                                                  "Please select a Request type"),
+                                              backgroundColor: Colors.white,
+                                            )
+                                          : getBottomSheet(),
+                                      child: FormField(
+                                        validator: (value) => value,
+                                        builder: (state) {
+                                          return InputDecorator(
+                                            decoration:
+                                                FormFieldStyle.buildInputDecoration(
+                                              labelText: 'Request Sub-type*',
+                                              suffixIcon: Padding(
+                                                padding: const EdgeInsets.symmetric(
+                                                    vertical: 10.0, horizontal: 12),
+                                                child: Text(
+                                                  'Select',
+                                                  style: TextStyle(
+                                                    color: HexColor('#F9A61A'),
+                                                  ),
+                                                ),
                                               ),
+                                            ),
+                                            child:
+                                                selectedRequestSubtypeObjectList
+                                                        .isEmpty
+                                                    ? Text('')
+                                                    : Container(
+                                                        height: 30,
+                                                        child: ListView(
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          children:
+                                                              selectedRequestSubtypeObjectList
+                                                                  .map(
+                                                                      (e) =>
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.symmetric(horizontal: 4.0),
+                                                                            child:
+                                                                                Chip(
+                                                                              label:
+                                                                                  Text(
+                                                                                e.serviceRequestTypeText,
+                                                                                style:
+                                                                                    TextStyle(fontSize: 10),
+                                                                              ),
+                                                                              backgroundColor: Colors
+                                                                                  .lightGreen
+                                                                                  .withOpacity(0.2),
+                                                                            ),
+                                                                          ))
+                                                                  .toList(),
+                                                        ),
+                                                      ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(height: 16),
+                                    TextFormField(
+                                      controller: _severity,
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      keyboardType: TextInputType.text,
+                                      readOnly: true,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "Severity"),
+                                    ),
+                                    SizedBox(height: 16),
+                                    DropdownSearch<ActiveSiteTSOListsEntity>(
+                                      mode: Mode.BOTTOM_SHEET,
+                                      items: srComplaintModel.activeSiteTSOLists,
+                                      itemAsString: (ActiveSiteTSOListsEntity u) =>
+                                          '${toBeginningOfSentenceCase(u.contact_name)} (${u.site_id})',
+                                      maxHeight: 240,
+                                      label: "Site Id *",
+                                      validator: (value) => value == null
+                                          ? "Site id is required "
+                                          : null,
+                                      onChanged: (value) async {
+                                        siteId = value.site_id;
+                                        SiteAreaModel siteDetails =
+                                            await srFormDataController
+                                                .getSiteAreaDetails(
+                                                    siteId.toString());
+                                        siteDetails.siteAreaDetailsModel != null
+                                            ? setState(() {
+                                                _pin.text = siteDetails
+                                                    .siteAreaDetailsModel
+                                                    .sitePincode;
+                                                _state.text = siteDetails
+                                                    .siteAreaDetailsModel.siteState;
+                                                _taluk.text = siteDetails
+                                                    .siteAreaDetailsModel.siteTaluk;
+                                                _district.text = siteDetails
+                                                    .siteAreaDetailsModel
+                                                    .siteDistrict;
+                                              })
+                                            : Get.rawSnackbar(
+                                                title: "Message",
+                                                message: siteDetails.respMsg);
+                                      },
+                                      showSearchBox: true,
+                                    ),
+
+
+                                    SizedBox(height: 16),
+                                    DropdownButtonFormField(
+                                      validator: (value) => value == null
+                                          ? 'Please select Customer Type'
+                                          : null,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+                                          creatorType = value;
+                                        });
+                                        getRequestorData(value);
+                                      },
+                                      items: [
+                                        'IHB',
+                                        'Dealer',
+                                        'SUBDEALER',
+                                        'SALESOFFICER'
+                                      ]
+                                          .map((e) => DropdownMenuItem(
+                                                child: Text(
+                                                  e.toUpperCase(),
+                                                ),
+                                                value: e,
+                                              ))
+                                          .toList(),
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "Customer Type"),
+                                    ),
+                                    SizedBox(height: 16),
+                                    TextFormField(
+                                      validator: (value) => value.isEmpty
+                                          ? 'Please select the Customer ID'
+                                          : null,
+                                      controller: _customerID,
+                                      readOnly: true,
+                                      onTap: () {
+                                        requestorDetailsModel == null
+                                            ? Get.rawSnackbar(
+                                                titleText: Text("Message"),
+                                                messageText: Text(
+                                                    "Please select a customer type"),
+                                                backgroundColor: Colors.white,
+                                              )
+                                            : Get.bottomSheet(requestorDetails());
+                                      },
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                        labelText: "Customer ID*",
+                                        suffixIcon: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 12),
+                                          child: Text(
+                                            'Select',
+                                            style: TextStyle(
+                                              color: HexColor('#F9A61A'),
                                             ),
                                           ),
                                         ),
-                                        child:
-                                            selectedRequestSubtypeObjectList
-                                                    .isEmpty
-                                                ? Text('')
-                                                : Container(
-                                                    height: 30,
-                                                    child: ListView(
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      children:
-                                                          selectedRequestSubtypeObjectList
-                                                              .map(
-                                                                  (e) =>
-                                                                      Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.symmetric(horizontal: 4.0),
-                                                                        child:
-                                                                            Chip(
-                                                                          label:
-                                                                              Text(
-                                                                            e.serviceRequestTypeText,
-                                                                            style:
-                                                                                TextStyle(fontSize: 10),
-                                                                          ),
-                                                                          backgroundColor: Colors
-                                                                              .lightGreen
-                                                                              .withOpacity(0.2),
-                                                                        ),
-                                                                      ))
-                                                              .toList(),
-                                                    ),
-                                                  ),
-                                      );
-                                    },
-                                    // controller: _requestSubType,
-                                    // onTap: getBottomSheet,
-                                    // style: FormFieldStyle.formFieldTextStyle,
-                                    // decoration:
-                                    //     FormFieldStyle.buildInputDecoration(
-                                    //   labelText: "Request Sub-type*",
-                                    //   suffixIcon: Padding(
-                                    //     padding: const EdgeInsets.symmetric(
-                                    //         vertical: 10.0, horizontal: 12),
-                                    //     child: Text(
-                                    //       'Select',
-                                    //       style: TextStyle(
-                                    //         color: HexColor('#F9A61A'),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // readOnly: true,
-                                    // validator: (value)=> value.isEmpty? 'Please select the Request subtype': null,
-                                  ),
-                                ),
-                                SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _severity,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  keyboardType: TextInputType.text,
-                                  readOnly: true,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Severity"),
-                                ),
-                                SizedBox(height: 16),
-                                DropdownSearch<ActiveSiteTSOListsEntity>(
-                                  mode: Mode.BOTTOM_SHEET,
-                                  items: srComplaintModel.activeSiteTSOLists,
-                                  itemAsString: (ActiveSiteTSOListsEntity u) =>
-                                      '${toBeginningOfSentenceCase(u.contact_name)} (${u.site_id})',
-                                  maxHeight: 240,
-                                  // onFind: (String filter) => getData(filter),
-                                  label: "Site Id *",
-                                  validator: (value) => value == null
-                                      ? "Site id is required "
-                                      : null,
-                                  onChanged: (value) async {
-                                    siteId = value.site_id;
-                                    SiteAreaModel siteDetails =
-                                        await eventController
-                                            .getSiteAreaDetails(
-                                                siteId.toString());
-                                    siteDetails.siteAreaDetailsModel != null
-                                        ? setState(() {
-                                            _pin.text = siteDetails
-                                                .siteAreaDetailsModel
-                                                .sitePincode;
-                                            _state.text = siteDetails
-                                                .siteAreaDetailsModel.siteState;
-                                            _taluk.text = siteDetails
-                                                .siteAreaDetailsModel.siteTaluk;
-                                            _district.text = siteDetails
-                                                .siteAreaDetailsModel
-                                                .siteDistrict;
-                                          })
-                                        : Get.rawSnackbar(
-                                            title: "Message",
-                                            message: siteDetails.respMsg);
-                                  },
-                                  showSearchBox: true,
-                                ),
-
-                                // SizedBox(height: 16),
-                                // TextFormField(
-                                //   onChanged: (val) async {
-                                //     if (val.length == 6) {
-                                //       SiteAreaModel siteDetails =
-                                //           await eventController
-                                //               .getSiteAreaDetails(_siteID.text);
-                                //       siteDetails.siteAreaDetailsModel != null
-                                //           ? setState(() {
-                                //               _pin.text = siteDetails
-                                //                   .siteAreaDetailsModel
-                                //                   .sitePincode;
-                                //               _state.text = siteDetails
-                                //                   .siteAreaDetailsModel
-                                //                   .siteState;
-                                //               _taluk.text = siteDetails
-                                //                   .siteAreaDetailsModel
-                                //                   .siteTaluk;
-                                //               _district.text = siteDetails
-                                //                   .siteAreaDetailsModel
-                                //                   .siteDistrict;
-                                //             })
-                                //           : Get.rawSnackbar(
-                                //               title: "Message",
-                                //               message: siteDetails.respMsg);
-                                //     }
-                                //   },
-                                //   controller: _siteID,
-                                //   maxLength: 6,
-                                //   validator: (value) => value.isEmpty
-                                //       ? 'Please enter the Site ID'
-                                //       : null,
-                                //   style: FormFieldStyle.formFieldTextStyle,
-                                //   keyboardType: TextInputType.phone,
-                                //   decoration:
-                                //       FormFieldStyle.buildInputDecoration(
-                                //           labelText: "Site ID*"),
-                                // ),
-
-                                SizedBox(height: 16),
-                                DropdownButtonFormField(
-                                  validator: (value) => value == null
-                                      ? 'Please select Customer Type'
-                                      : null,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
-                                      creatorType = value;
-                                    });
-                                    getRequestorData(value);
-                                  },
-                                  items: [
-                                    'IHB',
-                                    'Dealer',
-                                    'SUBDEALER',
-                                    'SALESOFFICER'
-                                  ]
-                                      .map((e) => DropdownMenuItem(
-                                            child: Text(
-                                              e.toUpperCase(),
-                                            ),
-                                            value: e,
-                                          ))
-                                      .toList(),
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Customer Type"),
-                                ),
-                                SizedBox(height: 16),
-                                TextFormField(
-                                  validator: (value) => value.isEmpty
-                                      ? 'Please select the Customer ID'
-                                      : null,
-                                  controller: _customerID,
-                                  readOnly: true,
-                                  onTap: () {
-                                    requestorDetailsModel == null
-                                        ? Get.rawSnackbar(
-                                            titleText: Text("Message"),
-                                            messageText: Text(
-                                                "Please select a customer type"),
-                                            backgroundColor: Colors.white,
-                                          )
-                                        : Get.bottomSheet(requestorDetails());
-                                  },
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                    labelText: "Customer ID*",
-                                    suffixIcon: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 12),
-                                      child: Text(
-                                        'Select',
-                                        style: TextStyle(
-                                          color: HexColor('#F9A61A'),
-                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                SizedBox(height: 16),
-                                // SimpleAutoCompleteTextField(
-                                //   key: key,
-                                //   decoration: FormFieldStyle.buildInputDecoration(
-                                //       labelText: "Customer ID*"),
-                                //   controller: _customerID,
-                                //   suggestions: suggestions,
-                                //   // textChanged: (text) => setState(() {
-                                //   //   _customerID.text = text;
-                                //   // }),
-                                //   clearOnSubmit: false,
-                                //   textSubmitted: (text) => setState(() {
-                                //     _requestorName.text = text
-                                //         .replaceAll('(', '.')
-                                //         .replaceAll(')', '')
-                                //         .split('.')
-                                //         .first;
-                                //     _customerID.text = text
-                                //         .replaceAll(' ', '')
-                                //         .replaceAll('(', '.')
-                                //         .replaceAll(')', '')
-                                //         .split('.')
-                                //         .last;
-                                //     print(_customerID.text);
-                                //   }),
-                                // ),
-                                // SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _requestorContact,
-                                  enableInteractiveSelection: true,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  keyboardType: TextInputType.phone,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  maxLength: 10,
-                                  validator: (value) => value.isEmpty ||
-                                          value.length != 10 || (!Validations.isValidPhoneNumber(value))
+                                    SizedBox(height: 16),
+                                    TextFormField(
+                                      controller: _requestorContact,
+                                      enableInteractiveSelection: true,
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      keyboardType: TextInputType.phone,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      maxLength: 10,
+                                      validator: (value) => value.isEmpty ||
+                                              value.length != 10 || (!Validations.isValidPhoneNumber(value))
 
-                                      ? 'Please enter a valid Contact Number'
-                                      : null,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Requestor Contact*"),
-                                ),
-                                SizedBox(height: 2),
-                                TextFormField(
-                                  controller: _requestorName,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  readOnly: true,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Requestor Name"),
-                                ),
-                                SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _description,
-                                  maxLines: 4,
-                                  maxLength: 500,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  keyboardType: TextInputType.text,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Description"),
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: FlatButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0),
-                                      side: BorderSide(color: Colors.black26),
+                                          ? 'Please enter a valid Contact Number'
+                                          : null,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "Requestor Contact*"),
                                     ),
-                                    color: Colors.transparent,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 5, bottom: 10, top: 10),
+                                    SizedBox(height: 2),
+                                    TextFormField(
+                                      controller: _requestorName,
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      readOnly: true,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "Requestor Name"),
+                                    ),
+                                    SizedBox(height: 16),
+                                    TextFormField(
+                                      controller: _description,
+                                      maxLines: 4,
+                                      maxLength: 500,
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      keyboardType: TextInputType.text,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "Description"),
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: FlatButton(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(0),
+                                          side: BorderSide(color: Colors.black26),
+                                        ),
+                                        color: Colors.transparent,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 5, bottom: 10, top: 10),
+                                          child: Text(
+                                            "UPLOAD PHOTOS",
+                                            style: TextStyle(
+                                                color: HexColor("#1C99D4"),
+                                                fontWeight: FontWeight.bold,
+                                                // letterSpacing: 2,
+                                                fontSize: 17),
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          if (controller.imageList.length < 5) {
+                                            controller.updateImageList(await UploadImageBottomSheet.showPicker(context));
+                                            // _imageList= await UploadImageBottomSheet.showPicker(context);
+                                          } else {
+                                            Get.dialog(CustomDialogs().errorDialog(
+                                                "You can add only upto 5 photos"));
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    controller.imageList != null
+                                        ? Row(
+                                            children: [
+                                              Expanded(
+                                                child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    itemCount: controller.imageList.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          return showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext
+                                                                  context) {
+                                                                return AlertDialog(
+                                                                  content:
+                                                                      new Container(
+                                                                    // width: 500,
+                                                                    // height: 500,
+                                                                    child: Image.file(
+                                                                        controller.imageList[
+                                                                            index]),
+                                                                  ),
+                                                                );
+                                                              });
+                                                        },
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                  "Picture ${(index + 1)}. ",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize: 15),
+                                                                ),
+                                                                Text(
+                                                                  "Image_${(index + 1)}.jpg",
+                                                                  style: TextStyle(
+                                                                      color: HexColor(
+                                                                          "#007CBF"),
+                                                                      fontSize: 15),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            GestureDetector(
+                                                              child: Icon(
+                                                                Icons.delete,
+                                                                color: HexColor(
+                                                                    "#FFCD00"),
+                                                              ),
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  controller.imageList
+                                                                      .removeAt(
+                                                                          index);
+                                                                });
+                                                              },
+                                                            )
+                                                          ],
+                                                        ),
+                                                      );
+                                                    }),
+                                              ),
+                                            ],
+                                          )
+                                        : Container(
+                                            color: Colors.blue,
+                                            height: 10,
+                                          ),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    controller.imageList.length != 0
+                                        ? Divider(
+                                            color: Colors.black26,
+                                            thickness: 1,
+                                          )
+                                        : Container(),
+                                    TextFormField(
+                                      controller: _state,
+                                      readOnly: true,
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      // validator: (value)=> value.isEmpty? 'Please select the Customer ID': null,
+                                      keyboardType: TextInputType.text,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "State"),
+                                    ),
+                                    SizedBox(height: 16),
+                                    TextFormField(
+                                      controller: _district,
+                                      readOnly: true,
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      keyboardType: TextInputType.text,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "District"),
+                                    ),
+                                    SizedBox(height: 16),
+                                    TextFormField(
+                                      controller: _taluk,
+                                      readOnly: true,
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      keyboardType: TextInputType.text,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "Taluk"),
+                                    ),
+                                    SizedBox(height: 16),
+                                    TextFormField(
+                                      controller: _pin,
+                                      readOnly: true,
+                                      style: FormFieldStyle.formFieldTextStyle,
+                                      keyboardType: TextInputType.phone,
+                                      decoration:
+                                          FormFieldStyle.buildInputDecoration(
+                                              labelText: "Pincode"),
+                                    ),
+                                    SizedBox(height: 16),
+                                    RaisedButton(
+                                      onPressed: () async {
+                                        if (!_srCreationFormKey.currentState.validate())
+                                          Get.dialog(CustomDialogs().errorDialog(
+                                              'Please enter the mandatory details'));
+                                        else if (_severity.text == "")
+                                          Get.defaultDialog(
+                                              title: "Message",
+                                              middleText:
+                                                  "Request Sub-type and Severity cannot be empty");
+                                        else {
+                                          String empId = await getEmpId();
+                                          List imageDetails = List();
+                                          List subTypeDetails = List();
+                                          selectedRequestSubtypeObjectList
+                                              .forEach((element) {
+                                            setState(() {
+                                              subTypeDetails.add({
+                                                "createdBy": empId,
+                                                "serviceRequestComplaintId": null,
+                                                "serviceRequestComplaintTypeId":
+                                                    element.id
+                                              });
+                                            });
+                                          });
+
+                                          controller.imageList.forEach((element) {
+                                            setState(() {
+                                              imageDetails.add({
+                                                //ToDo: Change srComplaint Id to some dynamic value
+                                                'srComplaintId': null,
+                                                'photoName':
+                                                    element.path.split('/').last,
+                                                'createdBy': empId
+                                              });
+                                            });
+                                          });
+                                          SaveServiceRequest _saveServiceRequest =
+                                              SaveServiceRequest.fromJson({
+                                            "createdBy": empId,
+                                            "creatorContactNumber":
+                                                _requestorContact.text,
+                                            "creatorId": _customerID.text,
+                                            "creatorType": creatorType,
+                                            "description": _description.text,
+                                            "district": _district.text,
+                                            "pincode": _pin.text,
+                                            "requestDepartmentId":
+                                                requestDepartmentId,
+                                            "requestId": requestId,
+                                            "resolutionStatusId": 1,
+                                            "siteId": siteId,
+                                            "severity": _severity.text,
+                                            "srComplaintPhotosEntity": imageDetails,
+                                            "srComplaintSubtypeMappingEntity":
+                                                subTypeDetails,
+                                            "state": _state.text,
+                                            "taluk": _taluk.text
+                                          });
+
+                                          internetChecking().then((result) => {
+                                                if (result == true)
+                                                    saveRequest.getAccessKeyAndSaveRequest(controller.imageList, _saveServiceRequest)
+                                                else
+                                                    Get.snackbar(
+                                                        "No internet connection.",
+                                                        "Make sure that your wifi or mobile data is turned on.",
+                                                        colorText: Colors.white,
+                                                        backgroundColor: Colors.red,
+                                                        snackPosition: SnackPosition.BOTTOM),
+
+                                              });
+                                        }
+                                      },
+                                      color: HexColor("#1C99D4"),
                                       child: Text(
-                                        "UPLOAD PHOTOS",
+                                        "SUBMIT",
                                         style: TextStyle(
-                                            color: HexColor("#1C99D4"),
+                                            color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                             // letterSpacing: 2,
                                             fontSize: 17),
                                       ),
                                     ),
-                                    onPressed: () async {
-                                      if (_imageList.length < 5) {
-                                        // _showPicker(context);
-                                        _imageList=await UploadImageBottomSheet.showPicker(context);
-                                      } else {
-                                        Get.dialog(CustomDialogs().errorDialog(
-                                            "You can add only upto 5 photos"));
-                                      }
-                                    },
-                                  ),
-                                ),
-                                _imageList != null
-                                    ? Row(
-                                        children: [
-                                          Expanded(
-                                            child: ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: _imageList.length,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      return showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                              content:
-                                                                  new Container(
-                                                                // width: 500,
-                                                                // height: 500,
-                                                                child: Image.file(
-                                                                    _imageList[
-                                                                        index]),
-                                                              ),
-                                                            );
-                                                          });
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              "Picture ${(index + 1)}. ",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 15),
-                                                            ),
-                                                            Text(
-                                                              "Image_${(index + 1)}.jpg",
-                                                              style: TextStyle(
-                                                                  color: HexColor(
-                                                                      "#007CBF"),
-                                                                  fontSize: 15),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        GestureDetector(
-                                                          child: Icon(
-                                                            Icons.delete,
-                                                            color: HexColor(
-                                                                "#FFCD00"),
-                                                          ),
-                                                          onTap: () {
-                                                            setState(() {
-                                                              _imageList
-                                                                  .removeAt(
-                                                                      index);
-                                                            });
-                                                          },
-                                                        )
-                                                      ],
-                                                    ),
-                                                  );
-                                                }),
-                                          ),
-                                        ],
-                                      )
-                                    : Container(
-                                        color: Colors.blue,
-                                        height: 10,
-                                      ),
-                                SizedBox(
-                                  height: 16,
-                                ),
-                                _imageList.length != 0
-                                    ? Divider(
-                                        color: Colors.black26,
-                                        thickness: 1,
-                                      )
-                                    : Container(),
-                                TextFormField(
-                                  controller: _state,
-                                  readOnly: true,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  // validator: (value)=> value.isEmpty? 'Please select the Customer ID': null,
-                                  keyboardType: TextInputType.text,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "State"),
-                                ),
-                                SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _district,
-                                  readOnly: true,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  keyboardType: TextInputType.text,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "District"),
-                                ),
-                                SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _taluk,
-                                  readOnly: true,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  keyboardType: TextInputType.text,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Taluk"),
-                                ),
-                                SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _pin,
-                                  readOnly: true,
-                                  style: FormFieldStyle.formFieldTextStyle,
-                                  keyboardType: TextInputType.phone,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                          labelText: "Pincode"),
-                                ),
-                                SizedBox(height: 16),
-                                RaisedButton(
-                                  onPressed: () async {
-                                    if (!_srCreationFormKey.currentState
-                                        .validate()) {
-                                      //  print("Error");
-                                      Get.dialog(CustomDialogs().errorDialog(
-                                          'Please enter the mandatory details'));
-                                    } else if (_severity.text == "") {
-                                      Get.defaultDialog(
-                                          title: "Message",
-                                          middleText:
-                                              "Request Sub-type and Severity cannot be empty");
-                                    } else {
-                                      String empId = await getEmpId();
-                                      List imageDetails = List();
-                                      List subTypeDetails = List();
-                                      selectedRequestSubtypeObjectList
-                                          .forEach((element) {
-                                        setState(() {
-                                          subTypeDetails.add({
-                                            "createdBy": empId,
-                                            "serviceRequestComplaintId": null,
-                                            "serviceRequestComplaintTypeId":
-                                                element.id
-                                          });
-                                        });
-                                      });
-
-                                      _imageList.forEach((element) {
-                                        setState(() {
-                                          imageDetails.add({
-                                            //ToDo: Change srComplaint Id to some dynamic value
-                                            'srComplaintId': null,
-                                            'photoName':
-                                                element.path.split('/').last,
-                                            'createdBy': empId
-                                          });
-                                        });
-                                      });
-                                      SaveServiceRequest _saveServiceRequest =
-                                          SaveServiceRequest.fromJson({
-                                        "createdBy": empId,
-                                        "creatorContactNumber":
-                                            _requestorContact.text,
-                                        "creatorId": _customerID.text,
-                                        "creatorType": creatorType,
-                                        "description": _description.text,
-                                        "district": _district.text,
-                                        "pincode": _pin.text,
-                                        "requestDepartmentId":
-                                            requestDepartmentId,
-                                        "requestId": requestId,
-                                        "resolutionStatusId": 1,
-                                        "siteId": siteId,
-                                        "severity": _severity.text,
-                                        "srComplaintPhotosEntity": imageDetails,
-                                        "srComplaintSubtypeMappingEntity":
-                                            subTypeDetails,
-                                        "state": _state.text,
-                                        "taluk": _taluk.text
-                                      });
-
-                                      // print(_saveServiceRequest);
-                                      internetChecking().then((result) => {
-                                            if (result == true)
-                                              {
-                                                saveRequest
-                                                    .getAccessKeyAndSaveRequest(
-                                                        _imageList,
-                                                        _saveServiceRequest)
-                                              }
-                                            else
-                                              {
-                                                Get.snackbar(
-                                                    "No internet connection.",
-                                                    "Make sure that your wifi or mobile data is turned on.",
-                                                    colorText: Colors.white,
-                                                    backgroundColor: Colors.red,
-                                                    snackPosition:
-                                                        SnackPosition.BOTTOM),
-                                                // fetchSiteList()
-                                              }
-                                          });
-                                    }
-                                  },
-                                  color: HexColor("#1C99D4"),
-                                  child: Text(
-                                    "SUBMIT",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        // letterSpacing: 2,
-                                        fontSize: 17),
-                                  ),
-                                ),
-                                SizedBox(height: 50),
-                              ],
-                            )),
-                      )
-                    ],
-                  )
+                                    SizedBox(height: 50),
+                                  ],
+                                )),
+                          )
+                        ],
+                      );
+                  }
+                )
                 : Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -846,12 +755,7 @@ class _RequestCreationState extends State<RequestCreation> {
                               _severity.text = 'LOW';
                             });
                           } else {
-                            //  print('No request sub type selected');
                           }
-                          // dataToBeSentBack.isEmpty
-                          //     ? widget.customFunction(dataToBeSentBack)
-                          //     : null;
-                          // print(dataToBeSentBack);
                           Get.back();
                         } else {
                           Get.back();
@@ -933,13 +837,6 @@ class _RequestCreationState extends State<RequestCreation> {
                               checkedValues[index] = newValue;
                               // dataToBeSentBack = requestSubtype[index];
                             });
-                            // } else {
-                            //   Get.snackbar(
-                            //     'Please uncheck the previous option',
-                            //     '',
-                            //     snackPosition: SnackPosition.BOTTOM,
-                            //   );
-                            // }
                           },
                           controlAffinity: ListTileControlAffinity.leading,
                         )
@@ -965,19 +862,9 @@ class _RequestCreationState extends State<RequestCreation> {
                   Container(
                     width: 40,
                   ),
-                  // Text(
-                  //   'Clear All',
-                  //   style: TextStyle(
-                  //     fontSize: 16,
-                  //     fontWeight: FontWeight.bold,
-                  //     color: HexColor('#F6A902'),
-                  //   ),
-                  // ),
                   MaterialButton(
                     color: HexColor('#1C99D4'),
                     onPressed: () {
-                      //  print(selectedRequestSubtype);
-                      //   print(selectedRequestSubtypeSeverity);
                       if (selectedRequestSubtypeSeverity.contains('HIGH')) {
                         setState(() {
                           _severity.text = 'HIGH';
@@ -995,10 +882,6 @@ class _RequestCreationState extends State<RequestCreation> {
                       } else {
                         //  print('No request sub type selected');
                       }
-                      // dataToBeSentBack.isEmpty
-                      //     ? widget.customFunction(dataToBeSentBack)
-                      //     : null;
-                      // print(dataToBeSentBack);
                       Get.back();
                     },
                     child: Text(
@@ -1018,18 +901,11 @@ class _RequestCreationState extends State<RequestCreation> {
   getBottomSheet() {
     Get.bottomSheet(
       requestSubTypeBottomSheetWidget(),
-      // SRRequestSubTypeBottomSheet(
-      //   requestID: requestId,
-      //   srComplaintModel: srComplaintModel,
-      //   customFunction: customFunction,
-      //   isComplaint: isComplaint,
-      // ),
       isScrollControlled: true,
     ).then((value) => setState(() {}));
   }
 
   int serviceRequestComplaintTypeId;
-  // List<ServiceRequestComplaintTypeEntity> serviceRequestComplaintType;
   ServiceRequestComplaintTypeEntity serviceRequestComplaintType;
   customFunction(dataFromOtherClass) {
     setState(() {
@@ -1038,11 +914,7 @@ class _RequestCreationState extends State<RequestCreation> {
       _severity.text = serviceRequestComplaintType.complaintSeverity;
       serviceRequestComplaintTypeId = serviceRequestComplaintType.id;
     });
-    // serviceRequestComplaintType.map((e) {
-    //   print('hi');
-    // }).toList();
-    //  print(serviceRequestComplaintTypeId);
-    // print(serviceRequestComplaintType.serviceRequestTypeText);
+
   }
 
 

@@ -14,6 +14,7 @@ class ViewLeadDataResponse {
   List<CounterListModel> counterListModel;
   LeadsEntity leadsEntity;
   List<DealerList> dealerList;
+  List<LeadFloorsEntity> leadFloorsEntity;
 
   ViewLeadDataResponse(
       {this.respCode,
@@ -31,6 +32,7 @@ class ViewLeadDataResponse {
         this.counterListModel,
       this.leadsEntity,
       this.dealerList,
+      this.leadFloorsEntity
         });
 
   ViewLeadDataResponse.fromJson(Map<String, dynamic> json) {
@@ -108,10 +110,18 @@ class ViewLeadDataResponse {
     leadsEntity = json['leadsEntity'] != null
         ? new LeadsEntity.fromJson(json['leadsEntity'])
         : null;
+
     if (json['dealerList'] != null) {
       dealerList = new List<DealerList>();
       json['dealerList'].forEach((v) {
         dealerList.add(new DealerList.fromJson(v));
+      });
+    }
+
+    if (json['leadFloorsEntity'] != null) {
+      leadFloorsEntity = new List<LeadFloorsEntity>();
+      json['leadFloorsEntity'].forEach((v) {
+        leadFloorsEntity.add(new LeadFloorsEntity.fromJson(v));
       });
     }
   }
@@ -169,6 +179,10 @@ class ViewLeadDataResponse {
     }
     if (this.dealerList != null) {
       data['dealerList'] = this.dealerList.map((v) => v.toJson()).toList();
+    }
+
+    if (this.leadFloorsEntity != null) {
+      data['leadFloorsEntity'] = this.leadFloorsEntity.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -620,6 +634,25 @@ class LeadsEntity {
     data['nextStageConstruction'] = this.nextStageConstruction;
     data['siteDealerId'] = this.siteDealerId;
     data['subdealerId'] = this.subdealerId;
+    return data;
+  }
+}
+
+class LeadFloorsEntity {
+  int id;
+  String leadFloorTxt;
+
+  LeadFloorsEntity({this.id, this.leadFloorTxt});
+
+  LeadFloorsEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    leadFloorTxt = json['leadFloorTxt'].toString() ?? "";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['leadFloorTxt'] = this.leadFloorTxt;
     return data;
   }
 }

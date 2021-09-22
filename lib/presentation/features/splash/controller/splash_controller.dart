@@ -223,10 +223,10 @@ class SplashController extends GetxController {
             if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH) openNextPage();
           }
 
-          var journeyDate = splashDataModel.journeyDetails.journeyDate;
-          var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
-          prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
-          prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+          // var journeyDate = splashDataModel.journeyDetails.journeyDate;
+          // var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
+          // prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+          // prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
 
           // if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
            openNextPage();

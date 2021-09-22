@@ -34,7 +34,6 @@ class SaveServiceRequestController extends GetxController {
   getAccessKeyAndSaveRequest(
       List<File> imageList, SaveServiceRequest saveRequestModel) {
     String userSecurityKey = "";
-    String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     Future.delayed(

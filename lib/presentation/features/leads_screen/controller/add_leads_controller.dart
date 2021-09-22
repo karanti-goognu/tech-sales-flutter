@@ -17,10 +17,28 @@ import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddLeadsController extends GetxController {
+
+  List<File> imageList = List<File>();
+
+  updateImageList(File value) {
+    imageList.add(value);
+    print(imageList.length);
+    print(":::::::::::::::");
+    update();
+  }
+
+
   @override
   void onInit() {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     super.onInit();
+  }
+
+  @override
+  void onClose(){
+    print("onClose called");
+    imageList.clear();
+    super.dispose();
   }
 
   final MyRepositoryLeads repository;
@@ -146,7 +164,7 @@ class AddLeadsController extends GetxController {
     print(":::getLeadData()");
     String userSecurityKey = "";
     String empID = "";
-    String accessKey = await repository.getAccessKey();
+    String accessKey = await repository.getAccessKeyNew();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);

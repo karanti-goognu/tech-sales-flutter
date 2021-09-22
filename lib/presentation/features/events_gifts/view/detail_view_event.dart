@@ -8,7 +8,6 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/controller
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
@@ -50,7 +49,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
   setVisibility() {
     if (detailEventModel.mwpEventModel.eventStatusText ==
-            StringConstants.approved &&
+        StringConstants.approved &&
         isEventStarted == 'N') {
       isVisible = true;
     } else {
@@ -94,9 +93,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
     final btnAddLead = FlatButton(
       onPressed: () {
         Get.to(
-            () => AddNewLeadForm(
-                  eventId: widget.eventId,
-                ),
+                () => AddNewLeadForm(
+              eventId: widget.eventId,
+            ),
             binding: AddLeadsBinding());
       },
       shape: RoundedRectangleBorder(
@@ -138,7 +137,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             FlatButton(
                 onPressed: () {
                   Get.to(
-                      () => DetailPending(
+                          () => DetailPending(
                           detailEventModel.mwpEventModel.eventId,
                           ColorConstants.eventApproved),
                       binding: EGBinding());
@@ -192,7 +191,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             FlatButton(
                 onPressed: () async {
                   Map results =
-                      await Navigator.of(context).push(new MaterialPageRoute(
+                  await Navigator.of(context).push(new MaterialPageRoute(
                     builder: (BuildContext context) {
                       return UpdateDlrInf(
                         detailEventModel.mwpEventModel.eventId,
@@ -234,113 +233,113 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             children: [
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
               (detailEventModel != null &&
-                      detailEventModel.mwpEventModel != null)
+                  detailEventModel.mwpEventModel != null)
                   ? (detailEventModel.mwpEventModel.eventStatusText ==
-                              StringConstants.approved &&
-                          isEventStarted == "Y")
-                      ? btnAddLead
-                      : Visibility(visible: isVisible, child: btnStartEvent)
+                  StringConstants.approved &&
+                  isEventStarted == "Y")
+                  ? btnAddLead
+                  : Visibility(visible: isVisible, child: btnStartEvent)
                   : Container(child: Text(''))
             ],
           ),
           bottom: (isEventStarted == "N" &&
-                  detailEventModel.mwpEventModel.eventStatusText ==
-                      StringConstants.approved)
+              detailEventModel.mwpEventModel.eventStatusText ==
+                  StringConstants.approved)
               ? editRow
               : (isEventStarted == "Y" &&
-                      detailEventModel.mwpEventModel.eventStatusText ==
-                          StringConstants.approved)
-                  ? endRow
-                  : PreferredSize(
-                      preferredSize: Size.fromHeight(0),
-                      child: Container(),
-                    )),
+              detailEventModel.mwpEventModel.eventStatusText ==
+                  StringConstants.approved)
+              ? endRow
+              : PreferredSize(
+            preferredSize: Size.fromHeight(0),
+            child: Container(),
+          )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
       body: (detailEventModel != null && detailEventModel.mwpEventModel != null)
-          // && detailEventModel.eventDealersModelList != null)
+      // && detailEventModel.eventDealersModelList != null)
           ? ListView(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              left: ScreenUtil().setSp(10),
+              right: ScreenUtil().setSp(10),
+              top: ScreenUtil().setSp(20),
+              bottom: ScreenUtil().setSp(20),
+            ),
+            child: Text(
+              '${detailEventModel.mwpEventModel.eventDate} | ${detailEventModel.mwpEventModel.eventTime}',
+              style: TextStyles.mulliBoldBlue,
+            ),
+          ),
+          displayInfo('Event Type',
+              detailEventModel.mwpEventModel.eventTypeText ?? ''),
+          displayInfo('Dalmia Influencers',
+              '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0'),
+          displayInfo(
+              'Non-Dalmia Influencers',
+              '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ??
+                  '0'),
+          displayInfo(
+              'Total Participants',
+              '${(detailEventModel.mwpEventModel.dalmiaInflCount) + (detailEventModel.mwpEventModel.nonDalmiaInflCount)}' ??
+                  '0'),
+          displayInfo('Venue Address',
+              detailEventModel.mwpEventModel.venueAddress),
+          displayChip('Dealer(s) Detail'),
+          displayInfo(
+              'Expected Leads',
+              '${detailEventModel.mwpEventModel.expectedLeadsCount}' ??
+                  '0'),
+          displayInfo(
+              'Gift distribution',
+              '${detailEventModel.mwpEventModel.giftDistributionCount}' ??
+                  '0'),
+          displayInfo('Event location',
+              detailEventModel.mwpEventModel.eventLocation ?? ''),
+          Padding(
+            padding: EdgeInsets.only(
+                left: ScreenUtil().setSp(15),
+                right: ScreenUtil().setSp(15),
+                top: ScreenUtil().setSp(5),
+                bottom: ScreenUtil().setSp(5)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
+                Text(
+                  'Comment',
+                  style: TextStyles.formfieldLabelTextDark,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
                   padding: EdgeInsets.only(
-                    left: ScreenUtil().setSp(10),
-                    right: ScreenUtil().setSp(10),
-                    top: ScreenUtil().setSp(20),
-                    bottom: ScreenUtil().setSp(20),
+                      top: 10, bottom: 10, left: 8, right: 8),
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Colors.grey, // Set border color
+                        width: 1.0), // Set border width
                   ),
                   child: Text(
-                    '${detailEventModel.mwpEventModel.eventDate} | ${detailEventModel.mwpEventModel.eventTime}',
-                    style: TextStyles.mulliBoldBlue,
+                    detailEventModel.mwpEventModel.eventComment,
+                    maxLines: null,
                   ),
                 ),
-                displayInfo('Event Type',
-                    detailEventModel.mwpEventModel.eventTypeText ?? ''),
-                displayInfo('Dalmia Influencers',
-                    '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0'),
-                displayInfo(
-                    'Non-Dalmia Influencers',
-                    '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ??
-                        '0'),
-                displayInfo(
-                    'Total Participants',
-                    '${(detailEventModel.mwpEventModel.dalmiaInflCount) + (detailEventModel.mwpEventModel.nonDalmiaInflCount)}' ??
-                        '0'),
-                displayInfo('Venue Address',
-                    detailEventModel.mwpEventModel.venueAddress),
-                displayChip('Dealer(s) Detail'),
-                displayInfo(
-                    'Expected Leads',
-                    '${detailEventModel.mwpEventModel.expectedLeadsCount}' ??
-                        '0'),
-                displayInfo(
-                    'Gift distribution',
-                    '${detailEventModel.mwpEventModel.giftDistributionCount}' ??
-                        '0'),
-                displayInfo('Event location',
-                    detailEventModel.mwpEventModel.eventLocation ?? ''),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: ScreenUtil().setSp(15),
-                      right: ScreenUtil().setSp(15),
-                      top: ScreenUtil().setSp(5),
-                      bottom: ScreenUtil().setSp(5)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Comment',
-                        style: TextStyles.formfieldLabelTextDark,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
-                        padding: EdgeInsets.only(
-                            top: 10, bottom: 10, left: 8, right: 8),
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.grey, // Set border color
-                              width: 1.0), // Set border width
-                        ),
-                        child: Text(
-                          detailEventModel.mwpEventModel.eventComment,
-                          maxLines: null,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setSp(40),
-                )
               ],
-            )
-          : Container(
-              child: Center(
-                child: Text("No data!!"),
-              ),
             ),
+          ),
+          SizedBox(
+            height: ScreenUtil().setSp(40),
+          )
+        ],
+      )
+          : Container(
+        child: Center(
+          child: Text("No data!!"),
+        ),
+      ),
     );
   }
 
@@ -408,39 +407,39 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             Container(
                 height: ScreenUtil().setSp(30),
                 child: (detailEventModel != null &&
-                        detailEventModel.eventDealersModelList != null &&
-                        detailEventModel.eventDealersModelList.length > 0)
+                    detailEventModel.eventDealersModelList != null &&
+                    detailEventModel.eventDealersModelList.length > 0)
                     ? ListView(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        children: detailEventModel.eventDealersModelList
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0),
-                                  child: Chip(
-                                    label: Text(
-                                      e.dealerName,
-                                      style: TextStyle(
-                                          fontFamily: "Muli",
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 14.0),
-                                    ),
-                                    backgroundColor: Colors.white,
-                                    // elevation: 3,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(15),
-                                      ),
-                                      side: BorderSide(
-                                        width: 1,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ))
-                            .toList(),
-                      )
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children: detailEventModel.eventDealersModelList
+                      .map((e) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0),
+                    child: Chip(
+                      label: Text(
+                        e.dealerName,
+                        style: TextStyle(
+                            fontFamily: "Muli",
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14.0),
+                      ),
+                      backgroundColor: Colors.white,
+                      // elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                        side: BorderSide(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ))
+                      .toList(),
+                )
                     : Container()),
             Padding(
               padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
@@ -549,41 +548,41 @@ class _DetailViewEventState extends State<DetailViewEvent> {
     });
 
     internetChecking().then((result) => {
-          if (result == true)
-            {
-              _eventsFilterController
-                  .getAccessKeyAndStartEvent(_startEventModel)
-                  .then((data) {
-                      _startEventResponse = data;
-                      print('DD: $_startEventResponse');
-                      if(_startEventResponse.respCode == "DM2044") {
-                        Get.dialog(
-                            redirectToEventDetailPg(data.respMsg, data.eventID),
-                          barrierDismissible: false);
+      if (result == true)
+        {
+          _eventsFilterController
+              .getAccessKeyAndStartEvent(_startEventModel)
+              .then((data) {
+            _startEventResponse = data;
+            print('DD: $_startEventResponse');
+            if(_startEventResponse.respCode == "DM2044") {
+              Get.dialog(
+                  redirectToEventDetailPg(data.respMsg, data.eventID),
+                  barrierDismissible: false);
 
-                      }else if(_startEventResponse.respCode == "DM2043") {
-                        Get.dialog(
-                            CustomDialogs()
-                                .errorDialogForEvent(data.respMsg.toString()),
-                            barrierDismissible: false);
-                      }
-                      else{
-                          Get.dialog(
-                              CustomDialogs()
-                                  .messageDialogMWP(data.respMsg.toString()),
-                              barrierDismissible: false);
-                        }
-              })
+            }else if(_startEventResponse.respCode == "DM2043") {
+              Get.dialog(
+                  CustomDialogs()
+                      .errorDialogForEvent(data.respMsg.toString()),
+                  barrierDismissible: false);
             }
-          else
-            {
-              Get.snackbar("No internet connection.",
-                  "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
+            else{
+              Get.dialog(
+                  CustomDialogs()
+                      .messageDialogMWP(data.respMsg.toString()),
+                  barrierDismissible: false);
             }
-        });
+          })
+        }
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
   }
 
   Widget redirectToEventDetailPg(String message, int eventId) {

@@ -31,25 +31,15 @@ class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
                 String selectedDateString = formatter.format(
                     DateTime.fromMillisecondsSinceEpoch(
                         widget.srComplaintActionList[index].createdOn));
-
-                List<TextEditingController> _commentList = List.generate(
-                    widget.srComplaintActionList.length,
-                    (index) => TextEditingController(
-                        text: widget.srComplaintActionList[index].comment));
+                List<TextEditingController> _commentList = List.generate(widget.srComplaintActionList.length,
+                    (index) => TextEditingController(text: widget.srComplaintActionList[index].comment));
                 List<dynamic> _nextVisitDate = List.generate(
                     widget.srComplaintActionList.length,
-                    (index) =>
-                        widget.srComplaintActionList[index].nextVisitDate);
+                    (index) => widget.srComplaintActionList[index].nextVisitDate);
                 String visitDate = formatter.format(
                     DateTime.fromMillisecondsSinceEpoch(_nextVisitDate[index]));
                 TextEditingController _visitDate =
                     TextEditingController(text: visitDate);
-                // String updateDate = formatter.format(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.updatedOn)));
-                // print(widget.updatedOn);
-                // print(widget.srComplaintActionList[index].nextVisitDate);
-                String updateDate='';
-               // print(widget.requestStatus);
-
                 return Theme(
                   data: ThemeData(
                       splashColor: Colors.transparent,
@@ -83,23 +73,6 @@ class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
                       ),
                     ),
                     children: <Widget>[
-                      // TextFormField(
-                      //   controller: TextEditingController(text: updateDate),
-                      //   readOnly: true,
-                      //   decoration: FormFieldStyle.buildInputDecoration(
-                      //     labelText: 'Update Date',
-                      //   ),
-                      // ),
-                      // SizedBox(height: 16,),
-                      // TextFormField(
-                      //   controller: TextEditingController(text: widget.requestStatus),
-                      //   readOnly: true,
-                      //   decoration: FormFieldStyle.buildInputDecoration(
-                      //     labelText: 'Request Status',
-                      //   ),
-                      // ),
-                      //
-                      // SizedBox(height: 16,),
                       TextFormField(
                         maxLines: 4,
                         controller: _commentList[index],
@@ -124,18 +97,6 @@ class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
                   ),
                 );
               }),
-        ),
-        RaisedButton(
-          onPressed: () {},
-          color: HexColor("#1C99D4"),
-          child: Text(
-            "UPDATE",
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
-                fontSize: 17),
-          ),
         ),
       ],
     );

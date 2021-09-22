@@ -60,6 +60,7 @@ class MyApiClientLeads {
     }
   }
 
+
   Future getAccessKeyNew() async {
     try {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -444,6 +445,7 @@ class MyApiClientLeads {
     catch (e) {
       print("Exception at INF Repo $e");
     }
+    return viewLeadDataResponse;
   }
 
   updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
