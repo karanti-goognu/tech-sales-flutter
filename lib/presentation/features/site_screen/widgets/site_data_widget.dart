@@ -111,7 +111,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         _siteTotalBags.text =
             (double.parse(_siteTotalPt.text) * 20).round().toString();
       }
-
+      print("sads->"+ sitesModal.totalBalancePotential);
       _siteTotalBalanceBags.text = sitesModal.totalBalancePotential;
       if (_siteTotalBalanceBags.text == null ||
           _siteTotalBalanceBags.text == "") {
@@ -220,7 +220,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           }
         }
       }
-      UpdatedValues.setSiteData(widget.siteId,_selectedConstructionType,siteBuiltupArea.text,_selectedSiteFloor.id.toString(),int.parse(_totalBathroomCount.text), int.parse(_totalKitchenCount.text),
+      UpdatedValues.setSiteData(widget.siteId,_selectedConstructionType,siteBuiltupArea.text,_selectedSiteFloor,_totalBathroomCount, _totalKitchenCount,
            _siteProductDemo.text,_siteProductOralBriefing.text,_siteTotalPt.text,_siteTotalBalanceBags.text,_siteProbabilityWinningEntity,_siteCompetitionStatusEntity,_siteOpportunitStatusEnity,
            _ownerName.text,_contactNumber.text, _plotNumber.text,_siteAddress.text,_pincode.text,_state.text,
            _district.text,_taluk.text,_rera.text,sitesModal.siteDealerId, sitesModal.subdealerId,_so.text,sitesModal.assignedTo,sitesModal.siteStatusId.toString(),sitesModal.siteStageId.toString(),
@@ -455,7 +455,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                                   .requestFocus(
                                                       new FocusNode());
                                               _selectedSiteFloor = value;
-                                              UpdatedValues.setNoOfFloors(value.id.toString());
+                                              UpdatedValues.setNoOfFloors(_selectedSiteFloor);
 
                                             });
                                           },
@@ -472,7 +472,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   controller: _totalBathroomCount,
                                   onChanged: (String text){
                                     setState(() {
-                                      UpdatedValues.setBathroomCount(int.parse(text));
+                                      UpdatedValues.setBathroomCount(_totalBathroomCount);
                                     });
                                   },
                                   style: TextStyle(
@@ -503,7 +503,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   controller: _totalKitchenCount,
                                   onChanged: (String text){
                                     setState(() {
-                                      UpdatedValues.setKitchenCount(int.parse(text));
+                                      UpdatedValues.setKitchenCount(_totalKitchenCount);
                                     });
                                   },
                                   style: TextStyle(
@@ -1833,6 +1833,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           );
         });
   }
+
 }
 
 class ImageDetails {

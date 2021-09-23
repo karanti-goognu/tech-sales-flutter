@@ -177,10 +177,10 @@ class MyApiClientSites {
       String empID) async {
     try {
       version = VersionClass.getVersion();
-      String url = UrlConstants.getSiteDataVersion3 + "$siteId&referenceID=$empID";
+      String url = UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID";
       print(url);
       final response = await get(
-        Uri.parse(UrlConstants.getSiteDataVersion3 + "$siteId&referenceID=$empID"),
+        Uri.parse(UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"),
         headers: requestHeadersWithAccessKeyAndSecretKey(
             accessKey, userSecurityKey, version),
       );

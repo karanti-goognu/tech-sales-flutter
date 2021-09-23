@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart'
     as updateRequest;
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
@@ -121,9 +123,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   List<InfluencerTypeEntity> influencerTypeEntity;
 
   List<InfluencerCategoryEntity> influencerCategoryEntity;
-  List<LeadFloorsEntity> leadFloorsEntity = [LeadFloorsEntity(id: 1,leadFloorTxt: "0"),
-    LeadFloorsEntity(id: 2,leadFloorTxt: "1"),LeadFloorsEntity(id: 3,leadFloorTxt: "2"),LeadFloorsEntity(id: 4,leadFloorTxt: "3")];
-
+  List<SiteFloorsEntity> _siteFloorsEntity ;
   AddLeadsController _addLeadsController = Get.find();
   final db = BrandNameDBHelper();
   BuildContext _context;
@@ -196,7 +196,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           viewLeadDataResponse.nextStageConstructionEntity;
       gv.nextStageConstructionEntity = nextStageConstructionEntity;
       dealerList = viewLeadDataResponse.dealerList;
-      // leadFloorsEntity = viewLeadDataResponse.leadFloorsEntity;
+      _siteFloorsEntity = viewLeadDataResponse.siteFloorsEntity;
       print("Dealer List Length :: " + dealerList.length.toString());
       gv.dealerList = dealerList;
       influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
@@ -435,7 +435,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 _selectedNextStageConstructionEntity,
                             dealerEntityForDb: dealerEntityForDb,
                             counterListModel: counterListModel,
-                            leadFloorsEntity:leadFloorsEntity,
+                            siteFloorsEntity:_siteFloorsEntity,
                             mListener: this,
                           ));
                 } else if (_selectedValuedummy.id == 4) {
@@ -2044,8 +2044,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'leadStateName': viewLeadDataResponse.leadsEntity.leadStateName,
         'leadDistrictName': viewLeadDataResponse.leadsEntity.leadDistrictName,
         'leadTalukName': viewLeadDataResponse.leadsEntity.leadTalukName,
-        'leadSalesPotentialMt':
-            viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
+        'leadSalesPotentialMt': viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
         'leadReraNumber': viewLeadDataResponse.leadsEntity.leadReraNumber,
         'isStatus': "false",
         'updatedBy': empId,
@@ -2059,10 +2058,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         "subdealerId": subDealerId, //need to pass selected value
         'listLeadcomments': commentsList,
         'listLeadImage': viewLeadDataResponse.leadphotosEntity,
-        'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity
+        'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity,
+        'nosFloors':_floorId,
+        'totalFloorSqftArea':int.parse(_noOfBagSupplied)
       };
 
-      print("$updateRequestModel");
+      print("Update Data-->"+"$updateRequestModel");
+      var body = jsonEncode(updateRequestModel);
+      print("Update Data1-->"+body);
 
       _addLeadsController.updateLeadData(updateRequestModel, new List<File>(),
           context, viewLeadDataResponse.leadsEntity.leadId, 3);
@@ -2336,7 +2339,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             .leadsEntity.siteDealerId,
                                         'listLeadcomments': commentsList,
                                         'listLeadImage': imageList,
-                                        'leadInfluencerEntity': listInfluencer
+                                        'leadInfluencerEntity': listInfluencer,
                                       };
 
                                       leadStageVal.id =

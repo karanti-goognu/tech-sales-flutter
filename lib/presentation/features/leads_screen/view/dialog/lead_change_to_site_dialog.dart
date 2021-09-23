@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -16,7 +17,7 @@ class ChangeLeadToSiteDialog extends StatefulWidget {
   NextStageConstructionEntity selectedNextStageConstructionEntity;
   final List<DealerForDb> dealerEntityForDb;
   final List<CounterListModel> counterListModel;
-  final List<LeadFloorsEntity> leadFloorsEntity;
+  final List<SiteFloorsEntity> siteFloorsEntity;
   final ChangeLeadToSiteDialogListener mListener;
 
 
@@ -25,7 +26,7 @@ class ChangeLeadToSiteDialog extends StatefulWidget {
       this.selectedNextStageConstructionEntity,
       this.dealerEntityForDb,
       this.counterListModel,
-      this.leadFloorsEntity,
+      this.siteFloorsEntity,
       this.mListener})
       : super(key: key);
 
@@ -41,7 +42,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
   String leadDataDealer;
   String leadDataSubDealer;
   NextStageConstructionEntity _selectedNextStageConstructionEntity;
-  LeadFloorsEntity _selectedLeadFloorEntity;
+  SiteFloorsEntity _selectedLeadFloorEntity;
   var _noOfBagsSupplied = TextEditingController();
 
   @override
@@ -167,11 +168,11 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                     height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   /*DropDown for dealer*/
-                  DropdownButtonFormField<LeadFloorsEntity>(
+                  DropdownButtonFormField<SiteFloorsEntity>(
                     value: _selectedLeadFloorEntity,
-                    items: widget.leadFloorsEntity
+                    items: widget.siteFloorsEntity
                         .map((label) => DropdownMenuItem(
-                      child: Text(label.leadFloorTxt,
+                      child: Text(label.siteFloorTxt,
                         style: TextStyle(
                             fontSize: 15,
                             color: ColorConstants.inputBoxHintColor,
@@ -331,6 +332,6 @@ abstract class ChangeLeadToSiteDialogListener {
       String nextStageConstructionPickedDate,
       String dealerId,
       String subDealerId,
-      int floorId,
+      int siteFloorId,
       String numOfBagsSupplied);
 }

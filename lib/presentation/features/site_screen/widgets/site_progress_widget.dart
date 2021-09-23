@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -942,6 +938,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                             siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
                       }
                     }
+                    _stagePotentialVisit.clear();
                     UpdatedValues.setSiteProgressConstructionId(_selectedConstructionTypeVisit);
                   });
                 },
@@ -982,6 +979,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                   setState(() {
                     _selectedSiteVisitFloor = value;
                     UpdatedValues.setSiteProgressNoOfFloors(_selectedSiteVisitFloor);
+                    if(viewSiteDataResponse.siteStagePotentialEntity!=null && viewSiteDataResponse.siteStagePotentialEntity.length>0){
+                      int siteTotalSitePotential = viewSiteDataResponse.sitesModal.siteTotalSitePotential!=null?int.parse(viewSiteDataResponse.sitesModal.siteTotalSitePotential):0;
+                      _stagePotentialVisit.clear();
+                      _stagePotentialVisit.text = calculateStagePotential(siteTotalSitePotential,viewSiteDataResponse.siteStagePotentialEntity,_selectedConstructionTypeVisit.id,_selectedSiteVisitFloor.id).toString();
+                    }
+
                   });
                 },
                 decoration: FormFieldStyle.buildInputDecoration(
@@ -2019,6 +2022,20 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
       ],
     ));
   }
+
+  String calculateStagePotential(int siteTotalSitePotential,List<SiteStagePotentialEntity> siteStagePotentialEntity,int selectedConstructionStageId,int selectedFloorId){
+    String stagePt = "";
+    SiteStagePotentialEntity siteStagePotentialEntity1 = siteStagePotentialEntity.firstWhere((item) => (item.constructionStageId == selectedConstructionStageId && item.nosFloors == selectedFloorId) ,orElse: () => null);
+
+    if(siteStagePotentialEntity1!=null){
+      double potentialPercentage = siteStagePotentialEntity1.potentialPercentage;
+      stagePt = (((siteTotalSitePotential*potentialPercentage)/100).round()).toString();
+      UpdatedValues.setSiteProgressStagePotential(stagePt);
+      UpdatedValues.setSiteProgressStagePotentialAuto(stagePt);
+    }
+    return stagePt;
+  }
+
 
   updateSiteSupplyHistory(){
 

@@ -33,7 +33,7 @@ class UpdatedValues{
   static String siteCreationDate;
   static String dealerId;
   static String siteBuiltArea;
-  static String noOfFloors;
+  static SiteFloorsEntity noOfFloors;
   static String productDemo;
   static String productOralBriefing;
   static String soCode;
@@ -58,14 +58,15 @@ class UpdatedValues{
   static String dealerConfirmedChangedOn;
   static String isDealerConfirmedChangedBySo;
   static String subdealerId;
-  static int kitchenCount;
-  static int bathroomCount;
+  static TextEditingController kitchenCount;
+  static TextEditingController bathroomCount;
   static List<SiteSupplyHistorys> siteSupplyHistory ;
 
   static ConstructionStageEntity siteProgressConstructionId;
   static ConstructionStageEntity constructionTypeVisitNextStage;
   static SiteFloorsEntity siteProgressnoOfFloors;
   static String siteProgressStagePotential;
+  static String siteProgressStagePotentialAuto;
   static String siteProgressStageStatus;
   static String siteProgressDateOfConstruction;
   static List<InfluencerDetail> listInfluencerDetail;
@@ -296,11 +297,11 @@ class UpdatedValues{
     UpdatedValues.siteBuiltArea = siteBuiltArea;
   }
 
-  static  String getNoOfFloors() {
+  static  SiteFloorsEntity getNoOfFloors() {
     return noOfFloors;
   }
 
-  static  void setNoOfFloors(String noOfFloors) {
+  static  void setNoOfFloors(SiteFloorsEntity noOfFloors) {
     UpdatedValues.noOfFloors = noOfFloors;
   }
 
@@ -405,6 +406,7 @@ class UpdatedValues{
           siteId: getSiteId(),
           floorId: siteProgressnoOfFloors.id,
           stagePotential: siteProgressStagePotential,
+          stagePotentialAutoCalc: siteProgressStagePotential==siteProgressStagePotentialAuto?siteProgressStagePotentialAuto:"",
           constructionDate: siteProgressDateOfConstruction,
           stageStatus: siteProgressStageStatus,
           createdBy: empCode,
@@ -561,19 +563,19 @@ class UpdatedValues{
     UpdatedValues.subdealerId = subdealerId;
   }
 
-  static  int getKitchenCount() {
+  static  TextEditingController getKitchenCount() {
     return kitchenCount;
   }
 
-  static  void setKitchenCount(int kitchenCount) {
+  static  void setKitchenCount(TextEditingController kitchenCount) {
     UpdatedValues.kitchenCount = kitchenCount;
   }
 
-  static  int getBathroomCount() {
+  static  TextEditingController getBathroomCount() {
     return bathroomCount;
   }
 
-  static  void setBathroomCount(int bathroomCount) {
+  static  void setBathroomCount(TextEditingController bathroomCount) {
     UpdatedValues.bathroomCount = bathroomCount;
   }
 
@@ -609,6 +611,14 @@ class UpdatedValues{
     UpdatedValues.siteProgressStagePotential = siteProgressStagePotential;
   }
 
+  static  String getSiteProgressStagePotentialAuto() {
+    return siteProgressStagePotentialAuto;
+  }
+
+  static  void setSiteProgressStagePotentialAuto(String siteProgressStagePotentialAuto) {
+    UpdatedValues.siteProgressStagePotentialAuto = siteProgressStagePotentialAuto;
+  }
+
   static  String getSiteProgressStageStatus() {
     return siteProgressStageStatus;
   }
@@ -635,7 +645,7 @@ class UpdatedValues{
 
 
 
-  static  void setSiteData(int siteId,ConstructionStageEntity siteConstructionId,String siteBuiltArea,String noOfFloors,int bathroomCount,int kitchenCount,
+  static  void setSiteData(int siteId,ConstructionStageEntity siteConstructionId,String siteBuiltArea,SiteFloorsEntity noOfFloors,TextEditingController bathroomCount,TextEditingController kitchenCount,
       String productDemo,String productOralBriefing,String sitePotentialMt,String totalBalancePotential,SiteProbabilityWinningEntity siteProbabilityWinningId,SiteCompetitionStatusEntity siteCompetitionId,SiteOpportunityStatusEntity siteOppertunityId,
       String contactName,String contactNumber,String plotNumber,String siteAddress,String sitePincode,String siteState,
       String siteDistrict,String siteTaluk,String reraNumber,String dealerId,String subdealerId,String soCode,String assignedTo,String siteStatusId,String siteStageId,String siteGeotag,double siteGeotagLat,double siteGeotagLong,String siteCreationDate,String siteSegment) {
@@ -696,7 +706,7 @@ class UpdatedValues{
       "siteCreationDate":UpdatedValues.siteCreationDate,
       "dealerId":UpdatedValues.dealerId,
       "siteBuiltArea":UpdatedValues.siteBuiltArea,
-      'noOfFloors':UpdatedValues.noOfFloors,
+      'noOfFloors':UpdatedValues.getNoOfFloors().id,
       "productDemo":UpdatedValues.productDemo,
       "productOralBriefing":UpdatedValues.productOralBriefing,
       'soCode':UpdatedValues.soCode,
@@ -719,8 +729,8 @@ class UpdatedValues{
       "dealerConfirmedChangedOn": "",
       "isDealerConfirmedChangedBySo":getIsDealerConfirmedChangedBySo(),
       "subdealerId": UpdatedValues.subdealerId,
-      "kitchenCount":UpdatedValues.kitchenCount,
-      "bathroomCount":UpdatedValues.bathroomCount
+      "kitchenCount": (UpdatedValues.getKitchenCount().text!=null && UpdatedValues.getKitchenCount().text.isNotEmpty)?int.parse(UpdatedValues.getKitchenCount().text):null,
+      "bathroomCount": (UpdatedValues.getBathroomCount().text!=null && UpdatedValues.getBathroomCount().text.isNotEmpty)?int.parse(UpdatedValues.getBathroomCount().text):null,
     };
 
     if (UpdatedValues.getFromDropDown() == true) {
@@ -752,22 +762,52 @@ class UpdatedValues{
 
   void isNoOfBagsSuppliedEntered(var responseBody,BuildContext context) {
     SiteController _siteController = Get.find();
+    double balancePT = getTotalBalancePotential()!=null ||getTotalBalancePotential()==""?double.parse(getTotalBalancePotential()):0.0;
+    double stagePT = getSiteProgressStagePotential()!=null ||getSiteProgressStagePotential()==""?double.parse(getSiteProgressStagePotential()):0.0;
     if (productDynamicList.length > 0) {
       int index = productDynamicList.length-1;
 
       if(productDynamicList[index].supplyQty.text.isNotEmpty && (productDynamicList[index].supplyDate.text.isEmpty ||
           productDynamicList[index].brandPrice.text.isEmpty ||
           productDynamicList[index].brandId == -1)){
-        Get.dialog(CustomDialogs()
-            .showMessage("You have to click on Add Product to proceed !"));
+        Get.dialog(CustomDialogs().showMessage("You have to click on Add Product to proceed !"));
         return;
       }else{
-        _siteController.updateLeadData(
-            responseBody, getImageList(), context,UpdatedValues.getSiteId());
+        if((getSitePotentialMt()!=null || getSitePotentialMt()!="") && double.parse(getSitePotentialMt())< 0.0 ){
+          Get.dialog(CustomDialogs().showMessage("Site Total Potential can't be negative!"));
+          return;
+        }else{
+          if((getTotalBalancePotential()!=null || getTotalBalancePotential()!="") && double.parse(getTotalBalancePotential())< 0.0){
+            Get.dialog(CustomDialogs().showMessage("Total Balance Potential can't be negative!"));
+            return;
+          }else if(balancePT>stagePT){
+            Get.dialog(CustomDialogs().showMessage("Total Balance Potential can't be greater than Site Stage Potential"));
+            return;
+          }else {
+            _siteController.updateLeadData(
+                responseBody, getImageList(), context,
+                UpdatedValues.getSiteId());
+          }
+        }
+
       }
     }else{
-      _siteController.updateLeadData(
-          responseBody, getImageList(), context,UpdatedValues.getSiteId());
+      if((getSitePotentialMt()!=null || getSitePotentialMt()!="") && double.parse(getSitePotentialMt())< 0.0 ){
+        Get.dialog(CustomDialogs().showMessage("Site Total Potential can't be negative!"));
+        return;
+      }else{
+        if((getTotalBalancePotential()!=null || getTotalBalancePotential()!="") && double.parse(getTotalBalancePotential())< 0.0){
+          Get.dialog(CustomDialogs().showMessage("Total Balance Potential can't be negative!"));
+          return;
+        }else if(balancePT>stagePT){
+          Get.dialog(CustomDialogs().showMessage("Total Balance Potential can't be greater than Site Stage Potential"));
+          return;
+        }else {
+          _siteController.updateLeadData(
+              responseBody, getImageList(), context,
+              UpdatedValues.getSiteId());
+        }
+      }
     }
   }
 
