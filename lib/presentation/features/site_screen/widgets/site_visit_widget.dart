@@ -143,7 +143,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           color: ColorConstants.buttonNormalColor,
           highlightColor: ColorConstants.buttonPressedColor,
           onPressed: () {
-            if(!_isStartButtonDisabled) {
+            if (!_isStartButtonDisabled) {
               _isStartButtonDisabled = true;
               _isEndButtonDisabled = false;
               if (_formKey.currentState.validate()) {
@@ -190,9 +190,13 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       ],
     );
     return SingleChildScrollView(
-      //reverse: true,
+        //reverse: true,
         child: Padding(
-            padding: EdgeInsets.only(left:16, right: 16, top: 16, bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16,
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -606,7 +610,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     } else {
       Future.delayed(
           Duration.zero,
-              () => Get.dialog(Center(child: CircularProgressIndicator()),
+          () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
       geolocator
           .getCurrentPosition(
@@ -642,8 +646,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     SiteVisitRequestModel _siteVisitRequestModel =
         SiteVisitRequestModel.fromJson({
       "docId": widget.siteId,
+      "dspAvailableQty": "",
       "eventType": "",
       "id": id,
+      "isDspAvailable": "",
       "nextVisitDate": selectedDateStringNext,
       "referenceId": empId,
       "remark": _remark,
@@ -683,7 +689,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     } else {
       Future.delayed(
           Duration.zero,
-              () => Get.dialog(Center(child: CircularProgressIndicator()),
+          () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
       geolocator
           .getCurrentPosition(
@@ -713,8 +719,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     SiteVisitRequestModel _siteVisitRequestModel =
         SiteVisitRequestModel.fromJson({
       "docId": widget.siteId,
+      "dspAvailableQty": "",
       "eventType": "",
       "id": widget.mwpVisitModel.id,
+      "isDspAvailable": "",
       "nextVisitDate": selectedDateStringNext,
       "referenceId": empId,
       "remark": widget.mwpVisitModel.remark,
@@ -748,14 +756,13 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocationEnd() async {
-
     if (!(await Geolocator().isLocationServiceEnabled())) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
       Future.delayed(
           Duration.zero,
-              () => Get.dialog(Center(child: CircularProgressIndicator()),
+          () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
       geolocator
           .getCurrentPosition(
@@ -786,8 +793,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     SiteVisitRequestModel _siteVisitRequestModel =
         SiteVisitRequestModel.fromJson({
       "docId": widget.siteId,
+      "dspAvailableQty": "",
       "eventType": "",
       "id": widget.mwpVisitModel.id,
+      "isDspAvailable": "",
       "nextVisitDate": selectedDateStringNext,
       "referenceId": empId,
       "remark": widget.mwpVisitModel.remark,

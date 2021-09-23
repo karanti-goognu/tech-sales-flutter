@@ -38,6 +38,8 @@ class MwpVisitModelUpdate {
   String remark;
   String visitSubType;
   String docId;
+  String dspAvailableQty;
+  String isDspAvailable;
 
 
   MwpVisitModelUpdate(this.id,
@@ -53,7 +55,9 @@ class MwpVisitModelUpdate {
       this.visitOutcomes,
       this.remark,
       this.visitSubType,
-      this.docId);
+      this.docId,
+      this.dspAvailableQty,
+      this.isDspAvailable);
 
 
   MwpVisitModelUpdate.fromJson(Map<String, dynamic> json) {
@@ -71,6 +75,8 @@ class MwpVisitModelUpdate {
     remark = json['remark'];
     visitSubType = json['visitSubType'];
     docId = json['docId'];
+    dspAvailableQty = json['dspAvailableQty'];
+    isDspAvailable = json['isDspAvailable'];
   }
 
   Map<String, dynamic> toJson() {
@@ -89,6 +95,8 @@ class MwpVisitModelUpdate {
     data['remark'] = this.remark;
     data['visitSubType'] = this.visitSubType;
     data['docId'] = this.docId;
+    data['dspAvailableQty'] = this.dspAvailableQty;
+    data['isDspAvailable'] = this.isDspAvailable;
     return data;
   }
 }

@@ -193,6 +193,7 @@ class CalendarEventController extends GetxController {
           debugPrint('MWP Data Response is null');
         } else {
           debugPrint('MWP Data Response is not null');
+          debugPrint("VISIT DATA: ${json.encode(data)}");
           this.calendarDataByDay = data;
           this.listOfEvents =
               this.calendarDataByDay.listOfEventDetails;

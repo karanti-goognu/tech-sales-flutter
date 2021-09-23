@@ -76,6 +76,8 @@ class AddEventController extends GetxController {
   final _isSaveDraft = StringConstants.empty.obs;
   final _createdBy = StringConstants.empty.obs;
   final _meetInitiatorName = StringConstants.empty.obs;
+  final _dspAvailableQty = StringConstants.empty.obs;
+  final _isDspAvailable = StringConstants.empty.obs;
 
   get isLoading => this._isLoading.value;
 
@@ -154,6 +156,10 @@ class AddEventController extends GetxController {
 
   get meetInitiatorName => this._meetInitiatorName.value;
 
+  get dspAvailableQty => this._dspAvailableQty.value;
+
+  get isDspAvailable => this._isDspAvailable.value;
+
   set isLoading(value) => this._isLoading.value = value;
 
   set siteIdText(value) => this._siteIdText.value = value;
@@ -231,6 +237,10 @@ class AddEventController extends GetxController {
   set selectedVenueTypeMeet(value) => this._selectedVenueTypeMeet.value = value;
 
   set meetInitiatorName(value) => this._meetInitiatorName.value = value;
+
+  set dspAvailableQty(value) => this._dspAvailableQty.value = value;
+
+  set isDspAvailable(value) => this._isDspAvailable.value = value;
 
   saveVisit(String accessKey) {
     Future.delayed(Duration.zero,
@@ -357,6 +367,7 @@ class AddEventController extends GetxController {
           debugPrint('Dealer List Response is null');
         } else {
           debugPrint('Dealer List Response is not null');
+          debugPrint("Data: ${json.encode(data)}");
           this.dealerListResponse = data;
           this.isLoading = false;
           if (this.dealerListResponse.dealerList.length != 0) {
@@ -427,9 +438,10 @@ class AddEventController extends GetxController {
             this.visitType =
                 this.visitResponseModel.mwpVisitModel.visitType.toString();
           }
-          this.visitSubType =
-              this.visitResponseModel.mwpVisitModel.visitSubType.toString();
+          this.visitSubType = this.visitResponseModel.mwpVisitModel.visitSubType.toString();
           this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
+          this.dspAvailableQty = this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString();
+          this.isDspAvailable = this.visitResponseModel.mwpVisitModel.isDspAvailable.toString();
         }
       });
     });
@@ -505,7 +517,7 @@ class AddEventController extends GetxController {
       MwpVisitModelUpdate mwpVisitModelUpdate;
       String url = "${UrlConstants.updateVisit}";
       print('=============================');
-      //debugPrint('Url is : $url');
+      debugPrint('Url is : $url');
       if (this.visitActionType == "UPDATE") {
         print('update');
         mwpVisitModelUpdate = new MwpVisitModelUpdate(
@@ -522,13 +534,14 @@ class AddEventController extends GetxController {
             this.visitOutcomes,
             this.visitRemarks,
             this.visitSubType,
-            this.visitSiteId);
+            this.visitSiteId,
+        this.dspAvailableQty,
+        this.isDspAvailable);
         print('&&&&&&' + url);
         print('visitId' + this.visitId.toString());
         // print(json.encode(mwpVisitModelUpdate));@kum
         // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
-        print(json.encode(UpdateVisitResponseModel(
-            mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null)));
+        //print(json.encode(mwpVisitModelUpdate));
         repository
             .updateVisitPlan(
                 accessKey,
@@ -591,7 +604,9 @@ class AddEventController extends GetxController {
                   this.visitOutcomes,
                   this.visitRemarks,
                   this.visitSubType,
-                  this.visitSiteId);
+                  this.visitSiteId,
+                  this.dspAvailableQty,
+                  this.isDspAvailable);
               print(json.encode(mwpVisitModelUpdate));
               // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
               repository
@@ -608,6 +623,7 @@ class AddEventController extends GetxController {
                 } else {
                   debugPrint('Save Visit Response is not null');
                   this.saveVisitResponse = data;
+                  print("DATA: ${json.encode(data)}");
                   if (saveVisitResponse.respCode == "MWP2028") {
                     Get.dialog(CustomDialogs()
                         .messageDialogMWP(saveVisitResponse.respMsg));
@@ -666,7 +682,9 @@ class AddEventController extends GetxController {
                 this.visitOutcomes,
                 this.visitRemarks,
                 this.visitSubType,
-                this.visitSiteId);
+                this.visitSiteId,
+                this.dspAvailableQty,
+                this.isDspAvailable);
             // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
             repository
                 .updateVisitPlan(
@@ -716,7 +734,9 @@ class AddEventController extends GetxController {
             this.visitOutcomes,
             this.visitRemarks,
             this.visitSubType,
-            this.visitSiteId);
+            this.visitSiteId,
+            this.dspAvailableQty,
+            this.isDspAvailable);
       }
     });
   }

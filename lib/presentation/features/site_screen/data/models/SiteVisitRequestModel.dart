@@ -1,7 +1,9 @@
 class SiteVisitRequestModel {
   int docId;
+  String dspAvailableQty;
   String eventType;
   int id;
+  String isDspAvailable;
   String nextVisitDate;
   String referenceId;
   String remark;
@@ -18,8 +20,10 @@ class SiteVisitRequestModel {
 
   SiteVisitRequestModel(
       {this.docId,
+        this.dspAvailableQty,
         this.eventType,
         this.id,
+        this.isDspAvailable,
         this.nextVisitDate,
         this.referenceId,
         this.remark,
@@ -36,8 +40,10 @@ class SiteVisitRequestModel {
 
   SiteVisitRequestModel.fromJson(Map<String, dynamic> json) {
     docId = json['docId'];
+    dspAvailableQty = json['dspAvailableQty'];
     eventType = json['eventType'];
     id = json['id'];
+    isDspAvailable = json['isDspAvailable'];
     nextVisitDate = json['nextVisitDate'];
     referenceId = json['referenceId'];
     remark = json['remark'];
@@ -56,8 +62,10 @@ class SiteVisitRequestModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['docId'] = this.docId;
+    data['dspAvailableQty'] = this.dspAvailableQty;
     data['eventType'] = this.eventType;
     data['id'] = this.id;
+    data['isDspAvailable'] = this.isDspAvailable;
     data['nextVisitDate'] = this.nextVisitDate;
     data['referenceId'] = this.referenceId;
     data['remark'] = this.remark;
