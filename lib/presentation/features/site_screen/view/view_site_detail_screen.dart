@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
@@ -1216,20 +1217,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
               titleSpacing: 0,
               title: Stack(
                 children: [
-                  Positioned(
-                      top: 0,
-                      left: 200,
-                      right: 0,
-                      child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/images/Container.png',
-                                fit: BoxFit.fill,
-                              ),
-                            ],
-                          ))),
+                  BackgroundContainerImage(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -1382,24 +1370,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
                                                         child:
                                                             SingleChildScrollView(
                                                           child: Stack(
-                                                            //
-
                                                             children: [
-                                                              // Positioned(
-                                                              //     top: 0,
-                                                              //     left: 175,
-                                                              //     right: 0,
-                                                              //     child: Container(
-                                                              //         color: Colors.white,
-                                                              //         child: Column(
-                                                              //           children: <Widget>[
-                                                              //             Image.asset(
-                                                              //               'assets/images/Container.png',
-                                                              //               fit: BoxFit.fitHeight,
-                                                              //             ),
-                                                              //           ],
-                                                              //         ))),
-
                                                               Center(
                                                                 child: Padding(
                                                                   padding:

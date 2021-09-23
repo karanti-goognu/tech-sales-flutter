@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/common_widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
@@ -917,20 +918,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       bottomNavigationBar: BottomNavigator(),
       body: Stack(
         children: [
-          Positioned(
-              top: 0,
-              left: 200,
-              right: 0,
-              child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/images/Container.png',
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ],
-                  ))),
+          BackgroundContainerImage(),
           Positioned.fill(
             child: (viewLeadDataResponse != null &&
                     viewLeadDataResponse.leadsEntity != null)

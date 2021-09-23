@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeModel.dart';
@@ -144,7 +145,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       validator: (value) {
         if (value.isEmpty) {
           return 'Please enter mobile number ';
-        }else if (value.length!=10) {
+        } else if (value.length != 10) {
           return 'Mobile number must be of 10 digit';
         }
         if (!Validations.isValidPhoneNumber(value)) {
@@ -170,8 +171,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 if (data.respCode == "NUM404") {
                   _contactNumberController.text = value;
                 } else if (data.respCode == "DM1002") {
-                  Get.dialog(
-                      CustomDialogs().showDialogInfPresent(data.respMsg), barrierDismissible: false);
+                  Get.dialog(CustomDialogs().showDialogInfPresent(data.respMsg),
+                      barrierDismissible: false);
                   _contactNumberController.text = "";
                 }
               }
@@ -203,14 +204,20 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final name = TextFormField(
       controller: _nameController,
       validator: (value) {
-        if (value.isEmpty || value.length <=0 || value == null || value == " " || value.trim().isEmpty) {
+        if (value.isEmpty ||
+            value.length <= 0 ||
+            value == null ||
+            value == " " ||
+            value.trim().isEmpty) {
           return 'Please enter name';
         }
         return null;
       },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9.a-zA-Z ]")), ],
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[0-9.a-zA-Z ]")),
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Name*",
       ),
@@ -225,7 +232,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9.a-zA-Z ]")), ],
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[0-9.a-zA-Z ]")),
+      ],
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Father Name",
@@ -241,7 +250,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+      ],
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Base City",
@@ -257,7 +268,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       //   return null;
       // },
       style: FormFieldStyle.formFieldTextStyle,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+      ],
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Taluka",
@@ -345,7 +358,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         });
       },
       style: FormFieldStyle.formFieldTextStyle,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "District Name*",
         suffixIcon: Padding(
@@ -372,7 +387,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           }
         });
       },
-      items: (_influencerTypeModel == null || _influencerTypeModel.response.influencerTypeList == null)
+      items: (_influencerTypeModel == null ||
+              _influencerTypeModel.response.influencerTypeList == null)
           ? []
           : _influencerTypeModel.response.influencerTypeList
               .map((e) => DropdownMenuItem(
@@ -526,7 +542,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       controller: _giftDistrictController,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "District",
       ),
@@ -536,7 +554,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       controller: _giftStateController,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")), ],
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "State",
       ),
@@ -584,7 +604,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           _source = value;
         });
       },
-      items: (_influencerTypeModel == null ||_influencerTypeModel.response.influencerSourceList == null )?[]: _influencerTypeModel.response.influencerSourceList
+      items: (_influencerTypeModel == null ||
+              _influencerTypeModel.response.influencerSourceList == null)
+          ? []
+          : _influencerTypeModel.response.influencerSourceList
               .map((e) => DropdownMenuItem(
                     value: e.inflSourceId,
                     child: Text(e.inflSourceText),
@@ -601,7 +624,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           _influencerCategory = value;
         });
       },
-      items: (_influencerTypeModel == null || _influencerTypeModel.response.influencerCategoryList == null)
+      items: (_influencerTypeModel == null ||
+              _influencerTypeModel.response.influencerCategoryList == null)
           ? []
           : _influencerTypeModel.response.influencerCategoryList
               .map((e) => DropdownMenuItem(
@@ -615,7 +639,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       validator: (value) =>
           value == null ? 'Please select Influencer Category' : null,
     );
-
 
     final btnSubmit = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -656,25 +679,12 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
         child: Stack(
           children: [
-            Positioned(
-                top: 0,
-                left: 200,
-                right: 0,
-                child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/images/Container.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ],
-                    ))),
+            BackgroundContainerImage(),
             ListView(
               children: [
                 Container(
@@ -907,7 +917,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     String empId = await getEmpId();
     InfluencerRequestModel _influencerRequestModel =
         InfluencerRequestModel.fromJson({
-          "membershipId": null,
+      "membershipId": null,
       "baseCity": _baseCityController.text,
       "createBy": empId,
       "dealership": "N",
