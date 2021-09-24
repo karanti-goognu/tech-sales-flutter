@@ -223,7 +223,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       UpdatedValues.setSiteData(widget.siteId,_selectedConstructionType,siteBuiltupArea.text,_selectedSiteFloor,_totalBathroomCount, _totalKitchenCount,
            _siteProductDemo.text,_siteProductOralBriefing.text,_siteTotalPt.text,_siteTotalBalanceBags.text,_siteProbabilityWinningEntity,_siteCompetitionStatusEntity,_siteOpportunitStatusEnity,
            _ownerName.text,_contactNumber.text, _plotNumber.text,_siteAddress.text,_pincode.text,_state.text,
-           _district.text,_taluk.text,_rera.text,sitesModal.siteDealerId, sitesModal.subdealerId,_so.text,sitesModal.assignedTo,sitesModal.siteStatusId.toString(),sitesModal.siteStageId.toString(),
+           _district.text,_taluk.text,_rera.text,sitesModal.siteDealerId, sitesModal.subdealerId,_so.text,sitesModal.assignedTo,sitesModal.siteTotalSitePotential.toString(),sitesModal.siteStageId.toString(),
       geoTagType,_currentPosition.latitude,_currentPosition.longitude,sitesModal.siteCreationDate,"TRADE");
 
       UpdatedValues.setSiteInfluencerEntity(viewSiteDataResponse.siteInfluencerEntity);

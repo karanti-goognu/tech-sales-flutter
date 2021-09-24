@@ -1179,18 +1179,21 @@ class CounterListModel {
   String soldToPartyName;
   String shipToParty;
   String shipToPartyName;
+  String availableKittyPoint;
 
   CounterListModel(
       {this.soldToParty,
         this.soldToPartyName,
         this.shipToParty,
-        this.shipToPartyName});
+        this.shipToPartyName,
+        this.availableKittyPoint});
 
   CounterListModel.fromJson(Map<String, dynamic> json) {
     soldToParty = json['soldToParty'].toString() ?? "";
     soldToPartyName = json['soldToPartyName'].toString() ?? "";
     shipToParty = json['shipToParty'].toString() ?? "";
     shipToPartyName = json['shipToPartyName'].toString() ?? "";
+    availableKittyPoint = json['availableKittyPoint']?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -1199,6 +1202,7 @@ class CounterListModel {
     data['soldToPartyName'] = this.soldToPartyName;
     data['shipToParty'] = this.shipToParty;
     data['shipToPartyName'] = this.shipToPartyName;
+    data['availableKittyPoint'] = this.availableKittyPoint;
     return data;
   }
 }

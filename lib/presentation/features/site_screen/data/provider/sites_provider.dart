@@ -301,8 +301,8 @@ class MyApiClientSites {
       List<File> list, BuildContext context, int siteId) async {
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
-        'POST', Uri.parse(UrlConstants.updateVersion3SiteData));
-    print(UrlConstants.updateVersion3SiteData);
+        'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
+    print(UrlConstants.updateVersion4SiteData);
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));

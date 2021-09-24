@@ -116,6 +116,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
 
   List<ProductListModel> productDynamicList = new List();
 
+  String availableKittyPoint;
+
 
 
   /// get _getProductList
@@ -335,6 +337,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                                         visitDataSubDealer =
                                             subDealerList[0].shipToParty;
                                         _dealerName.text = value.dealerName;
+                                        availableKittyPoint= subDealerList[0].availableKittyPoint;
                                       });
                                     },
                                     style: FormFieldStyle.formFieldTextStyle,
@@ -411,8 +414,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                                 : null,
                             onChanged: (value) {
                               setState(() {
-                                visitDataSubDealer =
-                                    value.shipToParty.toString();
+                                selectedSubDealer = value;
+                                visitDataSubDealer = value.shipToParty.toString();
+                                availableKittyPoint= selectedSubDealer.availableKittyPoint;
                               });
                             },
                             style: FormFieldStyle.formFieldTextStyle,
@@ -420,6 +424,35 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                                 labelText: "Sub-Dealer"),
                           )
                         : Container(),
+                subDealerList.isEmpty
+                    ? Container()
+                    : (_siteBrandFromLocalDB != null &&
+                    _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                        "dalmia")
+                    ?Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 20, left: 5,right: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Available Kitty Point",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                            color: HexColor("#168A08"),
+                            fontFamily: "Muli"),
+                      ),
+                     Text("${availableKittyPoint1()}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: HexColor("#168A08"),
+                              fontFamily: "Muli"),
+                        ),
+                    ],
+                  ),
+                ):Container(),
                 (_siteBrandFromLocalDB != null &&
                         _siteBrandFromLocalDB.brandName.toLowerCase() ==
                             "dalmia")
@@ -1508,6 +1541,15 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
     return totalSumBagsSupplied;
   }
 
+  String availableKittyPoint1() {
+    String availableKittyPoint = "";
+    if(selectedSubDealer!=null){
+      availableKittyPoint = selectedSubDealer.availableKittyPoint;
+    }
+    return availableKittyPoint;
+  }
+
+
   Widget addNextStageContainer() {
     return Container(
         child: Column(
@@ -2035,7 +2077,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
     }
     return stagePt;
   }
-
 
   updateSiteSupplyHistory(){
 

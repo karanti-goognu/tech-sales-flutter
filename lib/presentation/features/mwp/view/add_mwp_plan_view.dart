@@ -69,7 +69,9 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "Tech Van Service",
        "Slab services",
        "Technocrat meet",
-      "Block Level meet"
+      "Block Level meet",
+      "Head Mason meet",
+      "New Influencer"
     ];
 
     /*List<String> mwpNames = [

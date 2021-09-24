@@ -26,6 +26,8 @@ class SaveMWPModel {
   int slabServices;
   int technocratMeet;
   int blockLevelMeet;
+  int headMasonMeet;
+  int newInfluencer;
 
 
   SaveMWPModel(
@@ -54,7 +56,9 @@ class SaveMWPModel {
       this.techVanService,
       this.slabServices,
       this.technocratMeet,
-      this.blockLevelMeet
+      this.blockLevelMeet,
+      this.headMasonMeet,
+      this.newInfluencer
       );
 
   SaveMWPModel.fromJson(Map<String, dynamic> json) {
@@ -84,6 +88,8 @@ class SaveMWPModel {
     slabServices = json['slabServices'];
     technocratMeet = json['technocratMeet'];
     blockLevelMeet = json['blockLevelMeet'];
+    headMasonMeet = json['headMasonMeet'];
+    newInfluencer = json['newInfluencer'];
   }
 
   Map<String, dynamic> toJson() {
@@ -114,6 +120,8 @@ class SaveMWPModel {
     data['slabServices'] = this.slabServices;
     data['technocratMeet'] = this.technocratMeet;
     data['blockLevelMeet'] = this.blockLevelMeet;
+    data['headMasonMeet'] = this.headMasonMeet;
+    data['newInfluencer'] = this.newInfluencer;
     return data;
   }
 }

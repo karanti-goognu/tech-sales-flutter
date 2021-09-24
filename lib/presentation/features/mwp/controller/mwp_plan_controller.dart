@@ -47,6 +47,8 @@ class MWPPlanController extends GetxController {
   final _slabServices = 0.obs;
   final _technocratMeet = 0.obs;
   final _blockLevelMeet = 0.obs;
+  final _headMasonMeet = 0.obs;
+  final _newInfluencer = 0.obs;
 
   get contractorVisit => _contractorVisit;
 
@@ -136,6 +138,12 @@ class MWPPlanController extends GetxController {
 
   set consumerMeet(value) => _consumerMeet.value = value;
 
+  get headMasonMeet => _headMasonMeet.value;
+
+  set headMasonMeet(value) {
+    _headMasonMeet.value = value;
+  }
+
   saveMWPPlan(String accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
@@ -169,7 +177,10 @@ class MWPPlanController extends GetxController {
           int.parse(this.contractorVisit.toString()),
           int.parse(this.technocratVisit.toString()),
           int.parse(this.techVanDemo.toString()),int.parse(this.techVanService.toString()),int.parse(this.slabServices.toString()),
-          int.parse(this.technocratMeet.toString()), int.parse(this.blockLevelMeet.toString()));
+          int.parse(this.technocratMeet.toString()),
+          int.parse(this.blockLevelMeet.toString()),
+          this.headMasonMeet,
+          this.newInfluencer);
 
       debugPrint('Save MWP Model : ${json.encode(saveMWPModel)}');
       String url = "${UrlConstants.saveMWPData}";
@@ -244,6 +255,8 @@ class MWPPlanController extends GetxController {
           this.technocratVisit=0;
           this.contractorVisit=0;
           this.contractorMeet=0;
+          this.headMasonMeet=0;
+          this.newInfluencer=0;
 
 
         } else {
@@ -274,6 +287,8 @@ class MWPPlanController extends GetxController {
              this.techVanService=this.getMWPResponse.mwpplanModel.techVanService;
             this.techVanDemo=this.getMWPResponse.mwpplanModel.techVanDemo;
             this.technocratVisit=this.getMWPResponse.mwpplanModel.technocratVisit;
+            this.contractorVisit=this.getMWPResponse.mwpplanModel.contractorVisit;
+            this.headMasonMeet=this.getMWPResponse.mwpplanModel.headMasonMeet;
             this.contractorVisit=this.getMWPResponse.mwpplanModel.contractorVisit;
            } else {
             Get.dialog(CustomDialogs().errorDialog(saveMWPResponse.respMsg),barrierDismissible: false);
@@ -319,5 +334,11 @@ class MWPPlanController extends GetxController {
 
   set blockLevelMeet(value) {
     this._blockLevelMeet.value = value;
+  }
+
+  get newInfluencer => _newInfluencer.value;
+
+  set newInfluencer(value) {
+    _newInfluencer.value = value;
   }
 }

@@ -84,6 +84,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                 siteStageEntity[i].id.toString()) {
               labelText = siteStageEntity[i].siteStageDesc;
               labelId = siteStageEntity[i].id;
+              UpdatedValues.setSiteStageId(labelId);
             }
           }
 
@@ -300,10 +301,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                     // hint: Text('Rating'),
                                     onChanged: (value) {
                                       setState(() {
-                                        // _siteStage = value;
+                                         _siteStage = value;
                                         // labelId = _siteStage.id;
                                         // labelText = _siteStage.siteStageDesc;
                                         // print(labelId);
+                                        UpdatedValues.setSiteStageId(value.id);
 
                                         if (value.id == 2) {
                                           showDialog(

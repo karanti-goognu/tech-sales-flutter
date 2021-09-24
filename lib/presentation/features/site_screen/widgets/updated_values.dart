@@ -16,7 +16,7 @@ class UpdatedValues{
   static String siteSegment;
   static String assignedTo;
   static String siteStatusId;
-  static String siteStageId;
+  static int siteStageId;
   static String contactName;
   static String contactNumber;
   static String siteGeotag;
@@ -79,8 +79,21 @@ class UpdatedValues{
   static bool addNextButtonDisable;
   static bool fromDropDown;
 
+  static String totalSitePotentialAutoCalc;
 
   UpdatedValues();
+
+
+
+
+
+  static  String getTotalSitePotentialAutoCalc() {
+    return totalSitePotentialAutoCalc;
+  }
+
+  static  void setTotalSitePotentialAutoCalc(String totalSitePotentialAutoCalc) {
+    UpdatedValues.totalSitePotentialAutoCalc = totalSitePotentialAutoCalc;
+  }
 
   static  void setProductDynamicList(List<ProductListModel> productDynamicList) {
     UpdatedValues.productDynamicList = productDynamicList;
@@ -161,11 +174,11 @@ class UpdatedValues{
     UpdatedValues.siteStatusId = siteStatusId;
   }
 
-  static  String getSiteStageId() {
+  static  int getSiteStageId() {
     return siteStageId;
   }
 
-  static  void setSiteStageId(String siteStageId) {
+  static  void setSiteStageId(int siteStageId) {
     UpdatedValues.siteStageId = siteStageId;
   }
 
@@ -406,7 +419,7 @@ class UpdatedValues{
           siteId: getSiteId(),
           floorId: siteProgressnoOfFloors.id,
           stagePotential: siteProgressStagePotential,
-          stagePotentialAutoCalc: siteProgressStagePotential==siteProgressStagePotentialAuto?siteProgressStagePotentialAuto:"",
+          stagePotentialAutoCalc: siteProgressStagePotentialAuto,
           constructionDate: siteProgressDateOfConstruction,
           stageStatus: siteProgressStageStatus,
           createdBy: empCode,
@@ -648,7 +661,7 @@ class UpdatedValues{
   static  void setSiteData(int siteId,ConstructionStageEntity siteConstructionId,String siteBuiltArea,SiteFloorsEntity noOfFloors,TextEditingController bathroomCount,TextEditingController kitchenCount,
       String productDemo,String productOralBriefing,String sitePotentialMt,String totalBalancePotential,SiteProbabilityWinningEntity siteProbabilityWinningId,SiteCompetitionStatusEntity siteCompetitionId,SiteOpportunityStatusEntity siteOppertunityId,
       String contactName,String contactNumber,String plotNumber,String siteAddress,String sitePincode,String siteState,
-      String siteDistrict,String siteTaluk,String reraNumber,String dealerId,String subdealerId,String soCode,String assignedTo,String siteStatusId,String siteStageId,String siteGeotag,double siteGeotagLat,double siteGeotagLong,String siteCreationDate,String siteSegment) {
+      String siteDistrict,String siteTaluk,String reraNumber,String dealerId,String subdealerId,String soCode,String assignedTo,String siteStatusId,String totalSitePotentialAutoCalc,String siteGeotag,double siteGeotagLat,double siteGeotagLong,String siteCreationDate,String siteSegment) {
     UpdatedValues.siteId = siteId;
     UpdatedValues.siteConstructionId = siteConstructionId;
     UpdatedValues.siteBuiltArea = siteBuiltArea;
@@ -676,7 +689,7 @@ class UpdatedValues{
     UpdatedValues.soCode = soCode;
     UpdatedValues.assignedTo = assignedTo;
     UpdatedValues.siteStatusId = siteStatusId;
-    UpdatedValues.siteStageId = siteStageId;
+    UpdatedValues.totalSitePotentialAutoCalc = totalSitePotentialAutoCalc;
     UpdatedValues.siteGeotag = siteGeotag;
     UpdatedValues.siteGeotagLat = siteGeotagLat;
     UpdatedValues.siteGeotagLong = siteGeotagLong;
@@ -702,11 +715,12 @@ class UpdatedValues{
       "siteDistrict":UpdatedValues.siteDistrict,
       "siteTaluk":UpdatedValues.siteTaluk,
       "sitePotentialMt":UpdatedValues.sitePotentialMt,
+      "totalSitePotentialAutoCalc":"",
       "reraNumber":UpdatedValues.reraNumber,
       "siteCreationDate":UpdatedValues.siteCreationDate,
       "dealerId":UpdatedValues.dealerId,
       "siteBuiltArea":UpdatedValues.siteBuiltArea,
-      'noOfFloors':UpdatedValues.getNoOfFloors().id,
+      'noOfFloors':UpdatedValues.getNoOfFloors()!=null?UpdatedValues.getNoOfFloors().id:null,
       "productDemo":UpdatedValues.productDemo,
       "productOralBriefing":UpdatedValues.productOralBriefing,
       'soCode':UpdatedValues.soCode,
@@ -762,52 +776,75 @@ class UpdatedValues{
 
   void isNoOfBagsSuppliedEntered(var responseBody,BuildContext context) {
     SiteController _siteController = Get.find();
-    double balancePT = getTotalBalancePotential()!=null ||getTotalBalancePotential()==""?double.parse(getTotalBalancePotential()):0.0;
-    double stagePT = getSiteProgressStagePotential()!=null ||getSiteProgressStagePotential()==""?double.parse(getSiteProgressStagePotential()):0.0;
-    if (productDynamicList.length > 0) {
-      int index = productDynamicList.length-1;
+    if(getSiteStageId()==1) {
+      double balancePT = getTotalBalancePotential() != null ||
+          getTotalBalancePotential() == "" ? double.parse(
+          getTotalBalancePotential()) : 0.0;
+      double stagePT = getSiteProgressStagePotential() != null ||
+          getSiteProgressStagePotential() == "" ? double.parse(
+          getSiteProgressStagePotential()) : 0.0;
+      if (productDynamicList.length > 0) {
+        int index = productDynamicList.length - 1;
 
-      if(productDynamicList[index].supplyQty.text.isNotEmpty && (productDynamicList[index].supplyDate.text.isEmpty ||
-          productDynamicList[index].brandPrice.text.isEmpty ||
-          productDynamicList[index].brandId == -1)){
-        Get.dialog(CustomDialogs().showMessage("You have to click on Add Product to proceed !"));
-        return;
-      }else{
-        if((getSitePotentialMt()!=null || getSitePotentialMt()!="") && double.parse(getSitePotentialMt())< 0.0 ){
-          Get.dialog(CustomDialogs().showMessage("Site Total Potential can't be negative!"));
+        if (productDynamicList[index].supplyQty.text.isNotEmpty &&
+            (productDynamicList[index].supplyDate.text.isEmpty ||
+                productDynamicList[index].brandPrice.text.isEmpty ||
+                productDynamicList[index].brandId == -1)) {
+          Get.dialog(CustomDialogs().showMessage(
+              "You have to click on Add Product to proceed !"));
           return;
-        }else{
-          if((getTotalBalancePotential()!=null || getTotalBalancePotential()!="") && double.parse(getTotalBalancePotential())< 0.0){
-            Get.dialog(CustomDialogs().showMessage("Total Balance Potential can't be negative!"));
+        } else {
+          if ((getSitePotentialMt() != null || getSitePotentialMt() != "") &&
+              double.parse(getSitePotentialMt()) < 0.0) {
+            Get.dialog(CustomDialogs().showMessage(
+                "Site Total Potential can't be negative!"));
             return;
-          }else if(balancePT>stagePT){
-            Get.dialog(CustomDialogs().showMessage("Total Balance Potential can't be greater than Site Stage Potential"));
+          } else {
+            if ((getTotalBalancePotential() != null ||
+                getTotalBalancePotential() != "") &&
+                double.parse(getTotalBalancePotential()) < 0.0) {
+              Get.dialog(CustomDialogs().showMessage(
+                  "Total Balance Potential can't be negative!"));
+              return;
+            } else if (balancePT > stagePT) {
+              Get.dialog(CustomDialogs().showMessage(
+                  "Total Balance Potential can't be greater than Site Stage Potential"));
+              return;
+            } else {
+              _siteController.updateLeadData(
+                  responseBody, getImageList(), context,
+                  UpdatedValues.getSiteId());
+            }
+          }
+        }
+      } else {
+        if ((getSitePotentialMt() != null || getSitePotentialMt() != "") &&
+            double.parse(getSitePotentialMt()) < 0.0) {
+          Get.dialog(CustomDialogs().showMessage(
+              "Site Total Potential can't be negative!"));
+          return;
+        } else {
+          if ((getTotalBalancePotential() != null ||
+              getTotalBalancePotential() != "") &&
+              double.parse(getTotalBalancePotential()) < 0.0) {
+            Get.dialog(CustomDialogs().showMessage(
+                "Total Balance Potential can't be negative!"));
             return;
-          }else {
+          } else if (balancePT > stagePT) {
+            Get.dialog(CustomDialogs().showMessage(
+                "Total Balance Potential can't be greater than Site Stage Potential"));
+            return;
+          } else {
             _siteController.updateLeadData(
                 responseBody, getImageList(), context,
                 UpdatedValues.getSiteId());
           }
         }
-
       }
     }else{
-      if((getSitePotentialMt()!=null || getSitePotentialMt()!="") && double.parse(getSitePotentialMt())< 0.0 ){
-        Get.dialog(CustomDialogs().showMessage("Site Total Potential can't be negative!"));
-        return;
-      }else{
-        if((getTotalBalancePotential()!=null || getTotalBalancePotential()!="") && double.parse(getTotalBalancePotential())< 0.0){
-          Get.dialog(CustomDialogs().showMessage("Total Balance Potential can't be negative!"));
-          return;
-        }else if(balancePT>stagePT){
-          Get.dialog(CustomDialogs().showMessage("Total Balance Potential can't be greater than Site Stage Potential"));
-          return;
-        }else {
-          _siteController.updateLeadData(
-              responseBody, getImageList(), context,
-              UpdatedValues.getSiteId());
-        }
-      }
+      _siteController.updateLeadData(
+          responseBody, getImageList(), context,
+          UpdatedValues.getSiteId());
     }
   }
 
