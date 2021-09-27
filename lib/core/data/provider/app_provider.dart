@@ -16,7 +16,6 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitReque
 import 'package:flutter_tech_sales/presentation/features/mwp/data/TargetVsActualModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';

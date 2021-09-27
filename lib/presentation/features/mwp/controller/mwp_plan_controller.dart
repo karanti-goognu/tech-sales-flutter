@@ -290,6 +290,8 @@ class MWPPlanController extends GetxController {
             this.contractorVisit=this.getMWPResponse.mwpplanModel.contractorVisit;
             this.headMasonMeet=this.getMWPResponse.mwpplanModel.headMasonMeet;
             this.contractorVisit=this.getMWPResponse.mwpplanModel.contractorVisit;
+            this.headMasonMeet=this.getMWPResponse.mwpplanModel.headMasonMeet;
+            this.newInfluencer=this.getMWPResponse.mwpplanModel.newInfluencer;
            } else {
             Get.dialog(CustomDialogs().errorDialog(saveMWPResponse.respMsg),barrierDismissible: false);
           }
