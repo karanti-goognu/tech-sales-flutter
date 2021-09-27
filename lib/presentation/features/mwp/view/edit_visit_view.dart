@@ -59,6 +59,15 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   @override
   void initState() {
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
+    // setState(() {
+    //   if (_addEventController.isDspAvailable == "Y") {
+    //     checkedValue = true;
+    //     _dspAvailableQty = true;
+    //   } else {
+    //     checkedValue = false;
+    //     _dspAvailableQty = false;
+    //   }
+    // });
 
     super.initState();
   }
@@ -249,81 +258,104 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                   ),
                                   SizedBox(height: 16),
 
-
                                   ////Only in case of counter
-                  Obx(
-                        () => (_addEventController.visitSubType == "COUNTER")?
-
-                                      Column(
-                                        children: [
-                                          Container(
-                                              padding: const EdgeInsets.only(
-                                                  left: 3.0, right: 3, bottom: 5),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(color: Colors.grey),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(
-                                                        5.0) //                 <--- border radius here
-                                                ),
-                                              ),
-                                              child:
-                                              CheckboxListTile(
-                                                title: Text(
-                                                  "DSP Available",
-                                                  style: TextStyles.formfieldLabelText,
-                                                ),
-                                                activeColor: Colors.black,
-                                                dense: true,
-                                                value: checkedValue,
-                                                onChanged: (newValue) {
-                                                  setState(() {
-                                                    checkedValue = newValue;
-                                                    if (checkedValue == true) {
-                                                      _addEventController.isDspAvailable = "Y";
-                                                     // _dspAvailbleValue = "Y";
-                                                      _dspAvailableQty = true;
-                                                    } else {
-                                                      _addEventController.isDspAvailable = "N";
-                                                     // _dspAvailbleValue = "N";
-                                                      _dspAvailableQty = false;
+                                  Obx(
+                                    () => (_addEventController.visitSubType ==
+                                            "COUNTER")
+                                        ? Column(
+                                            children: [
+                                              Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 3.0,
+                                                          right: 3,
+                                                          bottom: 5),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.grey),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(
+                                                            5.0) //                 <--- border radius here
+                                                        ),
+                                                  ),
+                                                  child: CheckboxListTile(
+                                                    title: Text(
+                                                      "DSP Available",
+                                                      style: TextStyles
+                                                          .formfieldLabelText,
+                                                    ),
+                                                    activeColor: Colors.black,
+                                                    dense: true,
+                                                    value: (_addEventController.isDspAvailable == "Y")?true:false,
+                                                    onChanged: (newValue) {
+                                                      setState(() {
+                                                        //checkedValue = newValue;
+                                                        if (newValue ==
+                                                            true) {
+                                                          _addEventController
+                                                                  .isDspAvailable =
+                                                              "Y";
+                                                          _dspAvailableQty = true;
+                                                        } else {
+                                                          _addEventController
+                                                                  .isDspAvailable =
+                                                              "N";
+                                                          _dspAvailableQty = false;
+                                                        }
+                                                      });
+                                                    },
+                                                    controlAffinity:
+                                                        ListTileControlAffinity
+                                                            .leading, //  <-- leading Checkbox
+                                                  )),
+                                              SizedBox(height: 16),
+                                              Visibility(
+                                                visible: (_addEventController.isDspAvailable == "Y")?true:false,
+                                                child: TextFormField(
+                                                  key: Key(_addEventController
+                                                      .dspAvailableQty),
+                                                  initialValue: (_addEventController
+                                                              .dspAvailableQty ==
+                                                          null)
+                                                      ? ""
+                                                      : _addEventController
+                                                          .dspAvailableQty,
+                                                  validator: (value) {
+                                                    if (value.isEmpty) {
+                                                      return 'Please enter DSP availble quantity';
                                                     }
-                                                  });
-                                                },
-                                                controlAffinity: ListTileControlAffinity
-                                                      .leading, //  <-- leading Checkbox
-                                               )),
-                                           SizedBox(height: 16),
-                                          Visibility(
-                                            visible: _dspAvailableQty,
-                                            child: TextFormField(
-                                              key: Key(_addEventController.dspAvailableQty),
-                                              initialValue:
-                                              (_addEventController.dspAvailableQty == null)? "":_addEventController.dspAvailableQty,
-                                              validator: (value) {
-                                                if (value.isEmpty) {
-                                                  return 'Please enter DSP availble quantity';
-                                                }
-                                                return null;
-                                              },
-                                              onChanged: (_) {
-                                                _addEventController.dspAvailableQty =
-                                                    _.toString();
-                                              },
-                                              style: FormFieldStyle.formFieldTextStyle,
-                                              keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
-                                              inputFormatters: <TextInputFormatter>[
-                                                FilteringTextInputFormatter.digitsOnly
-                                              ],
-                                              decoration:
-                                              FormFieldStyle.buildInputDecoration(
-                                                labelText: "DSP Availble Quantity*",
+                                                    return null;
+                                                  },
+                                                  onChanged: (_) {
+                                                    _addEventController
+                                                            .dspAvailableQty =
+                                                        _.toString();
+                                                  },
+                                                  style: FormFieldStyle
+                                                      .formFieldTextStyle,
+                                                  keyboardType: TextInputType
+                                                      .numberWithOptions(
+                                                          signed: true,
+                                                          decimal: false),
+                                                  inputFormatters: <
+                                                      TextInputFormatter>[
+                                                    FilteringTextInputFormatter
+                                                        .digitsOnly
+                                                  ],
+                                                  decoration: FormFieldStyle
+                                                      .buildInputDecoration(
+                                                    labelText:
+                                                        "DSP Availble Quantity*",
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              SizedBox(height: 16),
+                                            ],
+                                          )
+                                        : SizedBox(
+                                            height: 0,
                                           ),
-                                           SizedBox(height: 16),
-                                        ],
-                                      ): SizedBox(height: 0,),),
-
+                                  ),
 
                                   Container(
                                       width: double.infinity,

@@ -15,15 +15,15 @@ abstract class UrlConstants {
 
  // QA
 
- //
- static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
- static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
- static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
+
+ // static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+ // static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
+ // static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
  //Development
- // static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
- // static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
- // static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
+ static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
+ static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
+ static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
 
 
  //End points
@@ -34,7 +34,8 @@ abstract class UrlConstants {
  static const String validateOtp = '$baseUrl/login/login-otp-validate';
  static const String getFilterData = '$baseUrl/leads/lead-filter-data';
  static const String getLeadsData = '$baseUrl/leads/lead-list-view?referenceID=';
- static const String addLeadsData = '$baseUrl/leads/lead-new';
+ //static const String addLeadsData = '$baseUrl/leads/lead-new';
+ static const String addLeadsData = '$baseUrl/leads/v2/lead-new';
  static const String getInflData = '$baseUrl/influencer/getDetails';
  static const String saveLeadsData = '$baseUrl/leads/lead-save';
  static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';

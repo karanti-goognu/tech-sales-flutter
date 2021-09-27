@@ -608,6 +608,7 @@ class AddEventController extends GetxController {
                   this.dspAvailableQty,
                   this.isDspAvailable);
               print(json.encode(mwpVisitModelUpdate));
+              //print(json.encode(UpdateVisitResponseModel));
               // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
               repository
                   .updateVisitPlan(

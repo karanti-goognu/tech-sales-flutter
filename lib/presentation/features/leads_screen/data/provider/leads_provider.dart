@@ -183,11 +183,16 @@ class MyApiClientLeads {
   }
 
   getAddLeadsData(String accessKey, String userSecurityKey) async {
+
     try {
       version = VersionClass.getVersion();
+      // var response = await httpClient.get(UrlConstants.addLeadsData,
+      //     headers: requestHeadersWithAccessKeyAndSecretKey(
+      //         accessKey, userSecurityKey,version));
       var response = await httpClient.get(UrlConstants.addLeadsData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
+      print("URL: ${UrlConstants.addLeadsData}");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AddLeadInitialModel addLeadInitialModel =
@@ -302,7 +307,9 @@ class MyApiClientLeads {
         'leadIsDuplicate': "N",
         'listLeadImage': saveLeadRequestModel.listLeadImage ?? 'null',
         'listLeadcomments': saveLeadRequestModel.comments ?? 'null',
-        'leadInfluencerEntity': saveLeadRequestModel.influencerList ?? 'null'
+        'leadInfluencerEntity': saveLeadRequestModel.influencerList ?? 'null',
+        'leadSourceUser': saveLeadRequestModel.leadSourceUser,
+        'leadSource' : saveLeadRequestModel.leadSource
       };
 
       request.fields['uploadImageWithLeadModel'] =
@@ -486,9 +493,10 @@ class MyApiClientLeads {
           json.encode(updateRequestModel);
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
-//      print("Request headers :: " + request.headers.toString());
-//      print("Request Body/Fields :: " + request.fields.toString());
-      // print("Files:: " + request.files.toString());
+     print("Request headers :: " + request.headers.toString());
+     print("Request Body/Fields :: " + request.fields.toString());
+      print("Files:: " + request.files.toString());
+
       try {
         request
             .send()
@@ -497,7 +505,7 @@ class MyApiClientLeads {
                 print(response.statusCode);
 
                 var data = json.decode(response.body);
-//                print(data);
+                print(data);
                 UpdateLeadResponseModel updateLeadResponseModel =
                 UpdateLeadResponseModel.fromJson(data);
 
@@ -539,6 +547,7 @@ class MyApiClientLeads {
       } catch (_) {
         print('exception ${_.toString()}');
       }
+
     });
   }
 
