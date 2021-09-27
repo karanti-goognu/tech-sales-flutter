@@ -152,7 +152,7 @@ class UpdateServiceRequestController extends GetxController {
       complaintListData = await repository.getComplaintViewData(accessKey, userSecurityKey, empID, this.id);
       update();
     });
-    // return complaintListData;
+     return complaintListData;
 
   }
 //*****
