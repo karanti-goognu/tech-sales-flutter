@@ -135,50 +135,89 @@ class _LeadScreenState extends State<LeadScreen> {
                           color: Colors.white,
                           fontFamily: "Muli"),
                     ),
-                    FlatButton(
-                      onPressed: () {
-                        _settingModalBottomSheet(context);
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.white)),
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: Row(
-                          children: [
-                            //  Icon(Icons.exposure_zero_outlined),
-                            Container(
-                                height: 18,
-                                width: 18,
-                                // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                                decoration: new BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Colors.black, width: 0.0),
-                                  borderRadius:
-                                      new BorderRadius.all(Radius.circular(3)),
+                    Row(
+                      children: [
+                        FlatButton(
+                          onPressed: () {
+                            _settingModalBottomSheet(context);
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.white)),
+                          color: Colors.transparent,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Row(
+                              children: [
+                                //  Icon(Icons.exposure_zero_outlined),
+                                Container(
+                                    height: 18,
+                                    width: 18,
+                                    // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                                    decoration: new BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.0),
+                                      borderRadius:
+                                          new BorderRadius.all(Radius.circular(3)),
+                                    ),
+                                    child: Center(
+                                        child: Obx(() => Text(
+                                            "${_leadsFilterController.selectedFilterCount}",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                //fontFamily: 'Raleway',
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.normal))))),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'FILTER',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
                                 ),
-                                child: Center(
-                                    child: Obx(() => Text(
-                                        "${_leadsFilterController.selectedFilterCount}",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            //fontFamily: 'Raleway',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.normal))))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                'FILTER',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    )
+
+                        Obx(() => Visibility(
+                          visible: (_leadsFilterController.selectedFilterCount == 0)?false:true,
+                          child: IconButton(
+                                icon: Icon(Icons.close, color: Colors.white,),
+                                onPressed: (){
+                                  setState(() {
+                                    _leadsFilterController.selectedLeadStage =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadStageValue =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadStatus =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadStatusValue =
+                                        StringConstants.empty;
+                                    _leadsFilterController.assignToDate =
+                                        StringConstants.empty;
+                                    _leadsFilterController.assignFromDate =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadPotential =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadPotentialValue =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedFilterCount = 0;
+                                    _leadsFilterController.offset = 0;
+                                    _leadsFilterController.leadsListResponse.leadsEntity = null;
+                                    _leadsFilterController
+                                        .getAccessKey(RequestIds.GET_LEADS_LIST);
+                                  });
+                                },
+                          ),
+
+                          ),
+                        ),
+                      ],
+                    ),
+
                   ],
                 ),
                 SingleChildScrollView(
@@ -523,6 +562,32 @@ class _LeadScreenState extends State<LeadScreen> {
                               ],
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Container(
+                                    width: 15,
+                                    height: 15,
+                                    child: Image.asset("assets/images/callcenter.png"),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 3.0),
+                                  child: Text(
+                                    "Call Center Leads",
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontSize: 14,
+                                      // color: HexColor("#FFFFFF99"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                       scrollDirection: Axis.horizontal,
@@ -667,15 +732,32 @@ class _LeadScreenState extends State<LeadScreen> {
                                                         const EdgeInsets.all(
                                                             2.0),
                                                     child: Obx(
-                                                      () => Text(
-                                                        "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontFamily: "Muli",
-                                                            fontWeight:
-                                                                FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
-                                                            ),
+                                                      () => Row(
+                                                        children: [
+                                                          Visibility(
+                                                            visible: (_leadsFilterController.leadsListResponse.leadsEntity[index].leadSource == "CALL CENTER")? true:false,
+                                                              child: Container(
+                                                                width: 15,
+                                                                height: 15,
+                                                                child: Image.asset("assets/images/callcenter.png"),
+                                                              ),),
+                                                          // Container(
+                                                          //   margin: EdgeInsets.only(left: 5, right: 8),
+                                                          //   width: 15,
+                                                          //   height: 15,
+                                                          //   child: Image.asset("assets/images/callcenter.png"),
+                                                          // ),
+                                                          Text(
+                                                            "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontFamily: "Muli",
+                                                                fontWeight:
+                                                                    FontWeight.bold
+                                                                //fontWeight: FontWeight.normal
+                                                                ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     )),
                                                 Padding(

@@ -31,7 +31,8 @@ class SaveLeadRequestDraftModel {
       this.listLeadImage,
       this.leadBags,
         this.leadSource,
-        this.leadSourceUser
+        this.leadSourceUser,
+        this.leadSourcePlatform
       });
 
   // String leadSegmane;
@@ -61,6 +62,7 @@ class SaveLeadRequestDraftModel {
 
   String leadSource;
   String leadSourceUser;
+  String leadSourcePlatform;
 
   SaveLeadRequestDraftModel.fromJson(Map<String, dynamic> json) {
     siteSubTypeId = json['siteSubTypeId'];
@@ -85,6 +87,7 @@ class SaveLeadRequestDraftModel {
 
     leadSource = json['leadSource'];
     leadSourceUser = json['leadSourceUser'];
+    leadSourcePlatform = json['leadSourcePlatform'];
     // photos = json['photos'];
     if (json['comments'] != null) {
       comments = new List<CommentsDetail>();
@@ -135,6 +138,7 @@ class SaveLeadRequestDraftModel {
     data['listLeadImage'] = this.listLeadImage.map((e) => e.toJson()).toList();
     data['leadSource'] = this.leadSource;
     data['leadSourceUser'] = this.leadSourceUser;
+    data['leadSourcePlatform'] = this.leadSourcePlatform;
     return data;
   }
 }

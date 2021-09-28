@@ -3055,8 +3055,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   List<SalesOfficerList> salesOfficerList;
   List<EventList> eventList;
 
-  String _dealerId, _subDealerId, _salesOfficerId, _leadSourceUser;
-  int _eventId;
+  String _dealerId, _subDealerId, _salesOfficerId, _eventId, _leadSourceUser;
 
   AddLeadsController _addLeadsController = Get.find();
   SaveLeadRequestDraftModel saveLeadRequestModelFromDraft =
@@ -3128,11 +3127,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
           leadSource = saveLeadRequestModelFromDraft.leadSource;
           _leadSourceUser = saveLeadRequestModelFromDraft.leadSourceUser;
-          sourceMobile.text = saveLeadRequestModelFromDraft.leadSourceUser;
-          _other.text = saveLeadRequestModelFromDraft.leadSourceUser;
           displayLeadSourceUser();
-          print("=======$leadSource");
-          print("=======${saveLeadRequestModelFromDraft.leadSourceUser}");
+          // print("=======$leadSource");
+          //print("=======${saveLeadRequestModelFromDraft.leadSourceUser}");
 
           // listLeadImage = saveLeadRequestModelFromDraft.listLeadImage;
           //print(saveLeadRequestModelFromDraft.influencerList[0].toJson());
@@ -3264,29 +3261,32 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   displayLeadSourceUser() {
     if (leadSource == "DEALER") {
+      _dealerId = _leadSourceUser;
       _isDropdownVisible = true;
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "SUB-DEALER") {
+      _subDealerId = _leadSourceUser;
       _isDropdownVisible = true;
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "SALES OFFICER") {
-      _isDropdownVisible = true;
-      _isInfTextfieldVisible = false;
-      _isOtherTextfieldVisible = false;
-    } else if (leadSource == "EVENT") {
-      // _salesOfficerId = null;
-      // _dealerId = null;
-      // _subDealerId = null;
+      _salesOfficerId = _leadSourceUser;
       _isDropdownVisible = true;
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "INFLUENCER") {
+      sourceMobile.text = _leadSourceUser;
       _isInfTextfieldVisible = true;
       _isDropdownVisible = false;
       _isOtherTextfieldVisible = false;
+    } else if (leadSource == "EVENT") {
+      _eventId = _leadSourceUser;
+      _isDropdownVisible = true;
+      _isInfTextfieldVisible = false;
+      _isOtherTextfieldVisible = false;
     } else if (leadSource == "OTHER") {
+      _other.text = _leadSourceUser;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
@@ -3307,7 +3307,15 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       onChanged: (value) {
         setState(() {
           leadSource = value;
+
           print("DROPDOWN : $leadSource");
+          // _dealerId = null;
+          // _subDealerId = null;
+          // _eventId = null;
+          // _salesOfficerId = null;
+          // sourceMobile.text = null;
+          // _other.text = null;
+          _leadSourceUser = null;
           displayLeadSourceUser();
         });
       },
@@ -3337,18 +3345,19 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           print("DEALER : $value");
 
           _dealerId = value;
-
-          //_leadSourceUser = value;
         });
       },
-      // selectedItemBuilder: (BuildContext context) {
-      //   return dealerList.map<Widget>((item) {
-      //     return Container(
-      //         width: MediaQuery.of(context).size.width / 1.5,
-      //         child: Text(item.dealerName));
-      //   }).toList();
-      // },
-      // value: (_leadSourceUser != null)?_leadSourceUser:"Select Dealer",
+
+      selectedItemBuilder: (BuildContext context) {
+        return dealerList == null
+            ? []
+            : dealerList.map<Widget>((item) {
+                return Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(item.dealerName));
+              }).toList();
+      },
+      value: _dealerId,
       items: dealerList == null
           ? []
           : dealerList
@@ -3362,28 +3371,25 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Select Dealer"),
-      //validator: (value) => value == null ? 'Please select member type' : null,
+      validator: (value) => value == null ? 'Please select dealer' : null,
     );
 
     final subDealerDropDwn = DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
-          // _eventId = null;
-          // _salesOfficerId = null;
-          // _dealerId = null;
           _subDealerId = value;
-
-          //_leadSourceUser = value;
         });
       },
-      // selectedItemBuilder: (BuildContext context) {
-      //   return subDealerList.map<Widget>((item) {
-      //     return Container(
-      //         width: MediaQuery.of(context).size.width / 1.5,
-      //         child: Text(item.dealerName));
-      //   }).toList();
-      // },
-      //value: (_leadSourceUser != null)?_leadSourceUser:"Select Subdealer",
+      selectedItemBuilder: (BuildContext context) {
+        return subDealerList == null
+            ? []
+            : subDealerList.map<Widget>((item) {
+                return Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(item.dealerName));
+              }).toList();
+      },
+      value: _subDealerId,
       items: subDealerList == null
           ? []
           : subDealerList
@@ -3397,28 +3403,23 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Select Subdealer"),
-      //validator: (value) => value == null ? 'Please select member type' : null,
+      validator: (value) => value == null ? 'Please select subdealer' : null,
     );
 
     final eventDropDwn = DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
-          // _subDealerId = null;
-          // _salesOfficerId = null;
-          // _dealerId = null;
           _eventId = value;
-
-          //_leadSourceUser = value;
         });
       },
-      // selectedItemBuilder: (BuildContext context) {
-      //   return eventList.map<Widget>((item) {
-      //     return Container(
-      //         width: MediaQuery.of(context).size.width / 1.5,
-      //         child: Text('${item.eventId}'));
-      //   }).toList();
-      // },
-      //value: (_leadSourceUser != null)?_leadSourceUser:"Select Event",
+      selectedItemBuilder: (BuildContext context) {
+        return eventList.map<Widget>((item) {
+          return Container(
+              width: MediaQuery.of(context).size.width / 1.5,
+              child: Text(item.eventId));
+        }).toList();
+      },
+      value: _eventId,
       items: eventList == null
           ? []
           : eventList
@@ -3426,34 +3427,30 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     value: e.eventId != null ? e.eventId : null,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text("${e.eventId}")),
+                        child: Text(e.eventId)),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Select Event"),
-      //validator: (value) => value == null ? 'Please select member type' : null,
+      validator: (value) => value == null ? 'Please select event' : null,
     );
 
     final salesOfficerDropDwn = DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
-          _subDealerId = null;
-          _eventId = null;
-          _dealerId = null;
           _salesOfficerId = value;
 
-          //_leadSourceUser = value;
         });
       },
-      // selectedItemBuilder: (BuildContext context) {
-      //   return salesOfficerList.map<Widget>((item) {
-      //     return Container(
-      //         width: MediaQuery.of(context).size.width / 1.5,
-      //         child: Text(item.salesOfficerId));
-      //   }).toList();
-      // },
-      //value: (_leadSourceUser != null)?_leadSourceUser:"Select Sales Officer",
+      selectedItemBuilder: (BuildContext context) {
+        return salesOfficerList.map<Widget>((item) {
+          return Container(
+              width: MediaQuery.of(context).size.width / 1.5,
+              child: Text(item.salesOfficerId));
+        }).toList();
+      },
+      value: _salesOfficerId,
       items: (salesOfficerList == null)
           ? []
           : salesOfficerList
@@ -3467,7 +3464,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Select Sales Officer"),
-      //validator: (value) => value == null ? 'Please select member type' : null,
+      validator: (value) => value == null ? 'Please select Sales Office' : null,
     );
 
     final sourceMobileNumber = TextFormField(
@@ -3495,6 +3492,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         ),
         onChanged: (value) async {
           if (value.length == 10) {
+            _addLeadsController.phoneNumber = value;
             AccessKeyModel accessKeyModel = new AccessKeyModel();
             await _addLeadsController.getAccessKeyOnly().then((data) async {
               accessKeyModel = data;
@@ -3502,12 +3500,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   .getInfNewData(accessKeyModel.accessKey)
                   .then((data) {
                 InfluencerDetailModel _infDetailModel = data;
-                if (_infDetailModel.respCode == "DM1002") {
-                  sourceMobile.text = value;
-                } else {
-                  Get.dialog(CustomDialogs().showDialogInfPresent(data.respMsg),
-                      barrierDismissible: false);
+                if (data.respCode == "NUM404") {
                   sourceMobile.text = "";
+                  Get.dialog(CustomDialogs()
+                      .showDialog("No influencer registered with this number"));
+                } else if (data.respCode == "DM1002") {
+                  sourceMobile.text = value;
                   Get.back();
                 }
               });
@@ -4587,15 +4585,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             DateFormat("dd-MM-yyyy");
 
                                         String leadSourceUser;
-                                        if (leadSource == "DEALER") {
-                                          leadSourceUser = _leadSourceUser;
+                                        if(leadSource == "SELF"){
+                                          leadSourceUser = empId;
+                                        }else if (leadSource == "DEALER") {
+                                          leadSourceUser = _dealerId;
                                         } else if (leadSource == "SUB-DEALER") {
-                                          leadSourceUser = _leadSourceUser;
+                                          leadSourceUser = _subDealerId;
                                         } else if (leadSource ==
                                             "SALES OFFICER") {
-                                          leadSourceUser = _leadSourceUser;
+                                          leadSourceUser = _salesOfficerId;
                                         } else if (leadSource == "EVENT") {
-                                          leadSourceUser = _leadSourceUser;
+                                          leadSourceUser = _eventId;
                                         } else if (leadSource == "INFLUENCER") {
                                           leadSourceUser = sourceMobile.text;
                                         } else if (leadSource == "OTHER") {
@@ -4639,7 +4639,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 assignDate: formatter
                                                     .format(DateTime.now()),
                                                 leadSource: leadSource,
-                                                leadSourceUser: leadSourceUser);
+                                                leadSourceUser: leadSourceUser,
+                                                leadSourcePlatform: "TSO",
+                                            );
 
 //
 //                                   SaveLeadRequestModel saveLeadRequestModel1 = json.decode(draftLeadModelforDB.leadModel);
@@ -4775,15 +4777,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                               _listInfluencerDetail.length - 1);
                                         }
                                         String leadSourceUser;
-                                        if (leadSource == "DEALER") {
-                                          leadSourceUser = _leadSourceUser;
+                                        if(leadSource == "SELF"){
+                                          leadSourceUser = empId;
+                                        }else if (leadSource == "DEALER") {
+                                          leadSourceUser = _dealerId;
                                         } else if (leadSource == "SUB-DEALER") {
-                                          leadSourceUser = _leadSourceUser;
+                                          leadSourceUser = _subDealerId;
                                         } else if (leadSource ==
                                             "SALES OFFICER") {
-                                          leadSourceUser = _leadSourceUser;
+                                          leadSourceUser = _salesOfficerId;
                                         } else if (leadSource == "EVENT") {
-                                          leadSourceUser = _leadSourceUser;
+                                          leadSourceUser = _eventId;
                                         } else if (leadSource == "INFLUENCER") {
                                           leadSourceUser = sourceMobile.text;
                                         } else if (leadSource == "OTHER") {
@@ -4828,7 +4832,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                     _listInfluencerDetail,
                                                 comments: _commentsListNew,
                                                 leadSource: leadSource,
-                                                leadSourceUser: leadSourceUser);
+                                                leadSourceUser: leadSourceUser,
+                                               leadSourcePlatform: "TSO");
 
                                         if (!gv.fromLead) {
                                           gv.draftID = 0;

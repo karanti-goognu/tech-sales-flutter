@@ -34,7 +34,8 @@ class SaveLeadRequestModel {
       this.listLeadImage,
       this.leadBags,
       this.leadSource,
-      this.leadSourceUser});
+      this.leadSourceUser,
+      this.leadSourcePlatform});
 
   // String leadSegmane;
   int eventId;
@@ -64,6 +65,7 @@ class SaveLeadRequestModel {
 
   String leadSource;
   String leadSourceUser;
+  String leadSourcePlatform;
 
   SaveLeadRequestModel.fromJson(Map<String, dynamic> json) {
     siteSubTypeId = json['siteSubTypeId'];
@@ -90,6 +92,7 @@ class SaveLeadRequestModel {
 
     leadSource = json['leadSource'];
     leadSourceUser = json['leadSourceUser'];
+    leadSourcePlatform = json['leadSourcePlatform'];
 
     // photos = json['photos'];
     if (json['comments'] != null) {
@@ -143,6 +146,7 @@ class SaveLeadRequestModel {
 
     data['leadSource'] = this.leadSource;
     data['leadSourceUser'] = this.leadSourceUser;
+    data['leadSourcePlatform'] = this.leadSourcePlatform;
 
     return data;
   }

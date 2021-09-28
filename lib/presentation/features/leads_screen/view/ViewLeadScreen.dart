@@ -82,6 +82,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   var _totalMT = TextEditingController();
   final myController = TextEditingController();
   var _originalLeadID = TextEditingController();
+  var _leadSource = TextEditingController();
+  var _leadSourceUser = TextEditingController();
 
   var leadCreatedBy;
   bool isEditable = false;
@@ -179,6 +181,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       _state.text = viewLeadDataResponse.leadsEntity.leadStateName;
       _district.text = viewLeadDataResponse.leadsEntity.leadDistrictName;
       _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
+
+      ////Need to change after change in api response
+      _leadSource.text = viewLeadDataResponse.leadsEntity.leadSource;
+      _leadSourceUser.text = viewLeadDataResponse.leadsEntity.leadSourceUser;
 
       leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
       leadStageEntity = viewLeadDataResponse.leadStageEntity;
@@ -552,6 +558,27 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Mobile Number",
         ));
+
+    final leadSource = TextFormField(
+      controller: _leadSource,
+      //autofocus: true,
+      //focusNode: myFocusNode,
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source"),
+    );
+
+    final leadSourceUser = TextFormField(
+      controller: _leadSourceUser,
+      //autofocus: true,
+      focusNode: myFocusNode,
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source User"),
+    );
+
 
     final btnGeo = Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -977,6 +1004,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                leadSource,
+                                SizedBox(height: _height),
+                                leadSourceUser,
+                                SizedBox(height: _height),
                                 name,
                                 SizedBox(height: _height),
                                 contact,
@@ -1234,10 +1265,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 Icons.add,
                                                                 color: ColorConstants
                                                                     .btnOrange,
-                                                                size:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            16),
+                                                                size:18
+                                                                    // ScreenUtil()
+                                                                    //     .setSp(
+                                                                    //         16),
                                                               ),
                                                               label: Text(
                                                                 "EXPAND",
@@ -1308,10 +1339,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 Icons.add,
                                                                 color: ColorConstants
                                                                     .btnOrange,
-                                                                size:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            16),
+                                                                size:18
+                                                                    // ScreenUtil()
+                                                                    //     .setSp(
+                                                                    //         16),
                                                               ),
                                                               label: Text(
                                                                 "EXPAND",
@@ -2056,7 +2087,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         "subdealerId": subDealerId, //need to pass selected value
         'listLeadcomments': commentsList,
         'listLeadImage': viewLeadDataResponse.leadphotosEntity,
-        'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity
+        'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity,
+        'leadSource':_leadSource.text,
+        'leadSourceUser': _leadSourceUser.text,
+        'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform
       };
 
       print("$updateRequestModel");
@@ -2333,7 +2367,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             .leadsEntity.siteDealerId,
                                         'listLeadcomments': commentsList,
                                         'listLeadImage': imageList,
-                                        'leadInfluencerEntity': listInfluencer
+                                        'leadInfluencerEntity': listInfluencer,
+                                        'leadSource':_leadSource.text,
+                                        'leadSourceUser': _leadSourceUser.text,
+                                        'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform
                                       };
 
                                       leadStageVal.id =
@@ -2477,7 +2514,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   'listLeadcomments': viewLeadDataResponse.leadcommentsEnitiy,
                   'listLeadImage': viewLeadDataResponse.leadphotosEntity,
                   'leadInfluencerEntity':
-                      viewLeadDataResponse.leadInfluencerEntity
+                      viewLeadDataResponse.leadInfluencerEntity,
+                  'leadSource':_leadSource.text,
+                  'leadSourceUser': _leadSourceUser.text,
+                  'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform
                 };
 
                 _addLeadsController.updateLeadData(

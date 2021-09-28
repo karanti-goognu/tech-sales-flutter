@@ -54,6 +54,7 @@ class MyApiClientSplash {
       var response = await httpClient.get(UrlConstants.getSecretKey,
           headers: requestHeadersEmpIdAndNo);
       print('Response body is : ${json.decode(response.body)}');
+      print("Hraders: ${requestHeadersEmpIdAndNo}");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);

@@ -504,8 +504,11 @@ class LeadsEntity {
   int nextStageConstruction;
   String siteDealerId;
 
-
   String subdealerId;
+
+  String leadSource;
+  String leadSourceUser;
+  String leadSourcePlatform;
 
 
 
@@ -544,7 +547,10 @@ class LeadsEntity {
       this.nextDateCconstruction,
       this.nextStageConstruction,
       this.siteDealerId,
-      this.subdealerId
+      this.subdealerId,
+        this.leadSource,
+        this.leadSourceUser,
+        this.leadSourcePlatform,
       });
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
@@ -582,6 +588,10 @@ class LeadsEntity {
     nextStageConstruction = json['nextStageConstruction'];
     siteDealerId = json['siteDealerId'];
     subdealerId = json['subdealerId'];
+    leadSource = json['leadSource'];
+    leadSourceUser = json['leadSourceUser'];
+    leadSourcePlatform = json['leadSourcePlatform'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -620,6 +630,9 @@ class LeadsEntity {
     data['nextStageConstruction'] = this.nextStageConstruction;
     data['siteDealerId'] = this.siteDealerId;
     data['subdealerId'] = this.subdealerId;
+    data['leadSource'] = this.leadSource;
+    data['leadSourceUser'] = this.leadSourceUser;
+    data['leadSourcePlatform'] = this.leadSourcePlatform;
     return data;
   }
 }
