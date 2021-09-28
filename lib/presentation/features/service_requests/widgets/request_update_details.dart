@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class RequestUpdateDetails extends StatefulWidget {
   final id;
@@ -15,6 +18,7 @@ class RequestUpdateDetails extends StatefulWidget {
 
 class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
   UpdateServiceRequestController updateServiceRequestController=Get.find();
+
 
 
 
@@ -128,6 +132,102 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
                 labelText: "Request Sub-type*"),
           ),
           SizedBox(height: 16),
+          (updateServiceRequestController.requestType.text=='SERVICE REQUEST') && (updateServiceRequestController.requestSubType.text=="SLAB SUPERVISION")?
+          Column(children: [
+            TextFormField(
+              controller: updateServiceRequestController.coverBlockProvidedNo,
+              style: FormFieldStyle.formFieldTextStyle,
+              keyboardType: TextInputType.number,
+              maxLength: 3,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                TextInputFormatter.withFunction((oldValue, newValue) {
+                  try {
+                    final text = newValue.text;
+                    if (text.isNotEmpty) double.parse(text);
+                    return newValue;
+                  } catch (e) {}
+                  return oldValue;
+                }),
+              ],
+              decoration: FormFieldStyle.buildInputDecoration(
+                  labelText: "No. of Cover Blocks",),
+
+            ),
+            SizedBox(height: 1),
+            TextFormField(
+              controller: updateServiceRequestController.formwarkRemovalDate,
+              readOnly: true,
+              onChanged: (data) {
+                // setState(() {
+                //   _contactName.text = data;
+                // });
+              },
+              style: TextStyle(
+                  fontSize: 18,
+                  color: ColorConstants.inputBoxHintColor,
+                  fontFamily: "Muli"),
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: ColorConstants.backgroundColorBlue,
+                      //color: HexColor("#0000001F"),
+                      width: 1.0),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderSide:
+                  BorderSide(color: Colors.black26, width: 1.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide:
+                  BorderSide(color: Colors.black26, width: 1.0),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide:
+                  BorderSide(color: Colors.red, width: 1.0),
+                ),
+                labelText: "Form Work Removal Date",
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.date_range_rounded,
+                    size: 22,
+                    color: ColorConstants.clearAllTextColor,
+                  ),
+                  onPressed: () async {
+                    print("here");
+                    final DateTime picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2001),
+                      lastDate: DateTime.now(),
+                    );
+                    setState(() {
+                      final DateFormat formatter =
+                      DateFormat("yyyy-MM-dd");
+                      if (picked != null) {
+                        final String formattedDate =
+                        formatter.format(picked);
+                        updateServiceRequestController.formwarkRemovalDate.text = formattedDate;
+                      }
+                    });
+                  },
+                ),
+                filled: false,
+                focusColor: Colors.black,
+                isDense: false,
+                labelStyle: TextStyle(
+                    fontFamily: "Muli",
+                    color: ColorConstants.inputBoxHintColorDark,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 16.0),
+                fillColor: ColorConstants.backgroundColor,
+              ),
+            ),
+            SizedBox(height: 18),
+          ],) :Container(),
+
+
           TextFormField(
             controller: updateServiceRequestController.customerType,
             readOnly: true,

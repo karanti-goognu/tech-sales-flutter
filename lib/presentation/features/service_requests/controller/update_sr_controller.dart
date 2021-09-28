@@ -78,6 +78,9 @@ class UpdateServiceRequestController extends GetxController {
   TextEditingController taluk = TextEditingController();
   TextEditingController pin = TextEditingController();
 
+  TextEditingController coverBlockProvidedNo = TextEditingController();
+  TextEditingController formwarkRemovalDate = TextEditingController();
+
   UpdateServiceRequestController({@required this.repository})
       : assert(repository != null);
   final _updateRequestData = UpdateSRModel().obs;

@@ -67,6 +67,19 @@ class SrComplaintAction {
   String comment;
   String nextVisitDate;
 
+  String coverBlockProvidedNo;
+  String formwarkRemovalDate;
+  String typeOfComplaint;
+  String productVariety;
+  String balanceQtyinBags;
+  String billNumber;
+  String weekNo;
+  String bestBeforeDate;
+  String sampleCollected;
+  String sampleTOBeSentTo;
+  String demoConducted;
+  String detailsOfDemo;
+
   SrComplaintAction(
       {this.srComplaintId,
         this.requestNature,
@@ -81,7 +94,21 @@ class SrComplaintAction {
         this.bagsCount,
         this.resolutionStatusId,
         this.comment,
-        this.nextVisitDate});
+        this.nextVisitDate,
+
+        this.coverBlockProvidedNo,
+        this.formwarkRemovalDate,
+        this.typeOfComplaint,
+        this.productVariety,
+        this.balanceQtyinBags,
+        this.billNumber,
+        this.weekNo,
+        this.bestBeforeDate,
+        this.sampleCollected,
+        this.sampleTOBeSentTo,
+        this.demoConducted,
+        this.detailsOfDemo
+      });
 
   SrComplaintAction.fromJson(Map<String, dynamic> json) {
     srComplaintId = json['srComplaintId'];
@@ -98,6 +125,19 @@ class SrComplaintAction {
     resolutionStatusId = json['resolutionStatusId'];
     comment = json['comment'];
     nextVisitDate = json['nextVisitDate'];
+
+    coverBlockProvidedNo = json['coverBlockProvidedNo'];
+    formwarkRemovalDate = json['formwarkRemovalDate'];
+    typeOfComplaint = json['typeOfComplaint'];
+    productVariety = json['productVariety'];
+    balanceQtyinBags = json['balanceQtyinBags'];
+    billNumber = json['billNumber'];
+    weekNo = json['weekNo'];
+    bestBeforeDate = json['bestBeforeDate'];
+    sampleCollected = json['sampleCollected'];
+    sampleTOBeSentTo = json['sampleTOBeSentTo'];
+    demoConducted = json['demoConducted'];
+    detailsOfDemo = json['detailsOfDemo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -116,6 +156,19 @@ class SrComplaintAction {
     data['resolutionStatusId'] = this.resolutionStatusId;
     data['comment'] = this.comment;
     data['nextVisitDate'] = this.nextVisitDate;
+
+    data['coverBlockProvidedNo'] = this.coverBlockProvidedNo;
+    data['formwarkRemovalDate'] = this.formwarkRemovalDate;
+    data['typeOfComplaint'] = this.typeOfComplaint;
+    data['productVariety'] = this.productVariety;
+    data['balanceQtyinBags'] = this.balanceQtyinBags;
+    data['billNumber'] = this.billNumber;
+    data['weekNo'] = this.weekNo;
+    data['bestBeforeDate'] = this.bestBeforeDate;
+    data['sampleCollected'] = this.sampleCollected;
+    data['sampleTOBeSentTo'] = this.sampleTOBeSentTo;
+    data['demoConducted'] = this.demoConducted;
+    data['detailsOfDemo'] = this.detailsOfDemo;
     return data;
   }
 }

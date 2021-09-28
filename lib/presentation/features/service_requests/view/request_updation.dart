@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/widgets/request_update_action.dart';
@@ -268,6 +267,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                             id: snapshot.data.id,
                                             severity:
                                             snapshot.data.severity,
+                                            requestType: snapshot.data.requestText,
                                           )
                                               : RequestUpdateHistory(
                                             srComplaintActionList:

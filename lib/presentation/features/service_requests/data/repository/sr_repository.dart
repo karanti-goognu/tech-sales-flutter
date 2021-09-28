@@ -22,8 +22,8 @@ class SrRepository{
     return apiClient.getSrComplaintData(accessKey, userSecretKey,empId);
   }
 
-  Future<RequestorDetailsModel> getRequestorDetails(String accessKey, String userSecretKey, String empID, String requesterType) async{
-    return apiClient.getRequestorDetails(accessKey, userSecretKey, empID, requesterType);
+  Future<RequestorDetailsModel> getRequestorDetails(String accessKey, String userSecretKey, String empID, String requesterType,String siteId) async{
+    return apiClient.getRequestorDetails(accessKey, userSecretKey, empID, requesterType,siteId);
   }
 
   Future<ServiceRequestComplaintListModel> getSrListData(String accessKey, String userSecretKey,String empID, int offset) async{
