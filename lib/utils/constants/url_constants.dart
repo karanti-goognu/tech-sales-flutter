@@ -36,7 +36,7 @@ abstract class UrlConstants {
  //static const String addLeadsData = '$baseUrl/leads/lead-new';
  static const String addLeadsData = '$baseUrl/leads/v2/lead-new';
  static const String getInflData = '$baseUrl/influencer/getDetails';
- static const String saveLeadsData = '$baseUrl/leads/lead-save';
+ static const String saveLeadsData = '$baseUrl/leads/v2/lead-save';
  static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';
  static const String getLeadData = '$baseUrl/leads/view-lead?leadId=';
  static const String getSiteData = '$baseUrl/sites/view-site?siteId=';

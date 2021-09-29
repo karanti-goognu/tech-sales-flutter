@@ -3127,7 +3127,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
           leadSource = saveLeadRequestModelFromDraft.leadSource;
           _leadSourceUser = saveLeadRequestModelFromDraft.leadSourceUser;
-          displayLeadSourceUser();
+          displayLeadSourceUserForDraft();
           // print("=======$leadSource");
           //print("=======${saveLeadRequestModelFromDraft.leadSourceUser}");
 
@@ -3259,7 +3259,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     });
   }
 
-  displayLeadSourceUser() {
+  displayLeadSourceUserForDraft() {
     if (leadSource == "DEALER") {
       _dealerId = _leadSourceUser;
       _isDropdownVisible = true;
@@ -3287,6 +3287,44 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "OTHER") {
       _other.text = _leadSourceUser;
+      _isOtherTextfieldVisible = true;
+      _isDropdownVisible = false;
+      _isInfTextfieldVisible = false;
+    } else {
+      _isDropdownVisible = false;
+      _isInfTextfieldVisible = false;
+      _isOtherTextfieldVisible = false;
+    }
+  }
+
+  displayLeadSourceUser() {
+    if (leadSource == "DEALER") {
+      //_dealerId = _leadSourceUser;
+      _isDropdownVisible = true;
+      _isInfTextfieldVisible = false;
+      _isOtherTextfieldVisible = false;
+    } else if (leadSource == "SUB-DEALER") {
+      //_subDealerId = _leadSourceUser;
+      _isDropdownVisible = true;
+      _isInfTextfieldVisible = false;
+      _isOtherTextfieldVisible = false;
+    } else if (leadSource == "SALES OFFICER") {
+      //_salesOfficerId = _leadSourceUser;
+      _isDropdownVisible = true;
+      _isInfTextfieldVisible = false;
+      _isOtherTextfieldVisible = false;
+    } else if (leadSource == "INFLUENCER") {
+      //sourceMobile.text = _leadSourceUser;
+      _isInfTextfieldVisible = true;
+      _isDropdownVisible = false;
+      _isOtherTextfieldVisible = false;
+    } else if (leadSource == "EVENT") {
+      //_eventId = _leadSourceUser;
+      _isDropdownVisible = true;
+      _isInfTextfieldVisible = false;
+      _isOtherTextfieldVisible = false;
+    } else if (leadSource == "OTHER") {
+      //_other.text = _leadSourceUser;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
@@ -4601,7 +4639,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             } else if (leadSource == "OTHER") {
                                               leadSourceUser = _other.text;
                                             } else {
-                                              leadSourceUser = _leadSourceUser;
+                                              leadSource = "SELF";
+                                              leadSourceUser = empId;
                                             }
 
                                             SaveLeadRequestDraftModel
@@ -4777,7 +4816,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   _listInfluencerDetail.length - 1);
                                             }
                                             String leadSourceUser;
-                                            if(leadSource == "SELF"){
+                                            if(leadSource == "SELF" || leadSource == null){
+                                              leadSource = "SELF";
                                               leadSourceUser = empId;
                                             }else if (leadSource == "DEALER") {
                                               leadSourceUser = _dealerId;
@@ -4793,7 +4833,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             } else if (leadSource == "OTHER") {
                                               leadSourceUser = _other.text;
                                             } else {
-                                              leadSourceUser = _leadSourceUser;
+                                              leadSource = "SELF";
+                                              leadSourceUser = empId;
                                             }
                                             //  print(22112);
                                             // print(_listInfluencerDetail[1].toJson());
