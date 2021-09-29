@@ -5273,16 +5273,16 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _listInfluencerDetail[index].createdBy = empId;
               print(_listInfluencerDetail[index].inflName);
 
+
               for (int i = 0; i < influencerTypeEntity.length; i++) {
                 if (influencerTypeEntity[i].inflTypeId.toString() ==
                     inflDetail.inflTypeId.toString()) {
                   _listInfluencerDetail[index].inflTypeId.text =
                       inflDetail.inflTypeId.toString();
                   //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                  _listInfluencerDetail[index].inflTypeValue.text =
-                      influencerTypeEntity[
-                      influencerTypeEntity[i].inflTypeId - 1]
-                          .inflTypeDesc;
+                  //  _listInfluencerDetail[index].inflTypeValue.text =
+                  //      influencerTypeEntity[influencerTypeEntity[i].inflTypeId - 1].inflTypeDesc;
+                  _listInfluencerDetail[index].inflTypeValue.text = inflDetail.influencerTypeText.toString();
                   break;
                 } else {
                   // _listInfluencerDetail[
