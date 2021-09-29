@@ -232,6 +232,11 @@ class _SiteListScreenState extends State<SiteListScreen> {
       child: Center(
         child: Text("Sites list response  is empty!!"),
       ),
+        ):(_siteController.sitesListResponse.respCode == "ST2036")
+        ? Container(
+      child: Center(
+        child: Text("No Sites records available!!"),
+      ),
     )
         : (_siteController.sitesListResponse.sitesEntity == null)
         ? Container(

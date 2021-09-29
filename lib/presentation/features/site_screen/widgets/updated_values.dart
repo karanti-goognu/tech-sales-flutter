@@ -806,9 +806,9 @@ class UpdatedValues{
               Get.dialog(CustomDialogs().showMessage(
                   "Total Balance Potential can't be negative!"));
               return;
-            } else if (balancePT > stagePT) {
+            } else if (stagePT > balancePT) {
               Get.dialog(CustomDialogs().showMessage(
-                  "Total Balance Potential can't be greater than Site Stage Potential"));
+                  "Total Site Stage Potential can't be greater than Balance Potential"));
               return;
             } else {
               _siteController.updateLeadData(
@@ -830,9 +830,9 @@ class UpdatedValues{
             Get.dialog(CustomDialogs().showMessage(
                 "Total Balance Potential can't be negative!"));
             return;
-          } else if (balancePT > stagePT) {
+          } else if (stagePT > balancePT) {
             Get.dialog(CustomDialogs().showMessage(
-                "Total Balance Potential can't be greater than Site Stage Potential"));
+                "Total Site Stage Potential can't be greater than Balance Potential"));
             return;
           } else {
             _siteController.updateLeadData(
