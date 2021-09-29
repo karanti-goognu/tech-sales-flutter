@@ -229,6 +229,7 @@ class MyApiClientSites {
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));
     print(json.encode(updateDataRequest));
+
     updateDataRequest['siteVisitHistoryEntity'].forEach((e) => print(e));
 
     for (var file in list) {
@@ -260,17 +261,17 @@ class MyApiClientSites {
           json.encode(updateDataRequest);
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
-      print("Request headers :: " + request.headers.toString());
-      print("Request Body/Fields :: " +
-          request.fields['siteInfluencerEntity'].toString());
-      print("Files:: " + request.files.toString());
+      // print("Request headers :: " + request.headers.toString());
+      // print("Request Body/Fields :: " +
+      //     request.fields['siteInfluencerEntity'].toString());
+      // print("Files:: " + request.files.toString());
       try {
         request
             .send()
             .then((result) async {
           http.Response.fromStream(result).then((response) {
-            print("---@@---");
-            print(response.body);
+            // print("---@@---");
+            // print(response.body);
 
             var data = json.decode(response.body);
             //    print(data);
@@ -306,7 +307,7 @@ class MyApiClientSites {
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));
-    log(""+json.encode(updateDataRequest));
+
     updateDataRequest['siteStageHistorys'].forEach((e) => print(e));
 
     for (var file in list) {
@@ -334,21 +335,21 @@ class MyApiClientSites {
 
       gv.currentId = empId;
 
-      request.fields['uploadImageWithUpdateSiteModel'] =
-          json.encode(updateDataRequest);
+      request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
-      print("Request headers :: " + request.headers.toString());
-      print("Request Body/Fields :: " +
-          request.fields['siteInfluencerEntity'].toString());
-      print("Files:: " + request.files.toString());
+      // print("Request headers :: " + request.headers.toString());
+      // print("Request Body/Fields :: " +
+      //     request.fields['siteInfluencerEntity'].toString());
+      // print("Files:: " + request.files.toString());
+      log("Site Body--> "+json.encode(updateDataRequest));
       try {
         request
             .send()
             .then((result) async {
           http.Response.fromStream(result).then((response) {
-            print("---@@---");
-            print(response.body);
+            // print("---@@---");
+            // print(response.body);
 
             var data = json.decode(response.body);
             //    print(data);

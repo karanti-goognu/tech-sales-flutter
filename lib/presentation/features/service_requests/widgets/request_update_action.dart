@@ -582,6 +582,8 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                 SizedBox(height: 10),
                 TextFormField(
                   controller: _sampleToBeSent,
+                  maxLength: 50,
+                  maxLines: 2,
                   style: FormFieldStyle.formFieldTextStyle,
                   keyboardType: TextInputType.text,
                   decoration: FormFieldStyle.buildInputDecoration(
@@ -648,6 +650,8 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                 SizedBox(height: 10),
                 TextFormField(
                   controller: _detailsOfDemoConducted,
+                  maxLength: 100,
+                  maxLines: 3,
                   style: FormFieldStyle.formFieldTextStyle,
                   keyboardType: TextInputType.text,
                   decoration: FormFieldStyle.buildInputDecoration(
