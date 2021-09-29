@@ -14,6 +14,7 @@ class ViewLeadDataResponse {
   List<CounterListModel> counterListModel;
   LeadsEntity leadsEntity;
   List<DealerList> dealerList;
+  List<SiteFloorsEntity> siteFloorsEntity;
 
   ViewLeadDataResponse(
       {this.respCode,
@@ -31,6 +32,7 @@ class ViewLeadDataResponse {
         this.counterListModel,
       this.leadsEntity,
       this.dealerList,
+      this.siteFloorsEntity
         });
 
   ViewLeadDataResponse.fromJson(Map<String, dynamic> json) {
@@ -108,10 +110,18 @@ class ViewLeadDataResponse {
     leadsEntity = json['leadsEntity'] != null
         ? new LeadsEntity.fromJson(json['leadsEntity'])
         : null;
+
     if (json['dealerList'] != null) {
       dealerList = new List<DealerList>();
       json['dealerList'].forEach((v) {
         dealerList.add(new DealerList.fromJson(v));
+      });
+    }
+
+    if (json['siteFloorsEntity'] != null) {
+      siteFloorsEntity = new List<SiteFloorsEntity>();
+      json['siteFloorsEntity'].forEach((v) {
+        siteFloorsEntity.add(new SiteFloorsEntity.fromJson(v));
       });
     }
   }
@@ -169,6 +179,10 @@ class ViewLeadDataResponse {
     }
     if (this.dealerList != null) {
       data['dealerList'] = this.dealerList.map((v) => v.toJson()).toList();
+    }
+
+    if (this.siteFloorsEntity != null) {
+      data['siteFloorsEntity'] = this.siteFloorsEntity.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -636,6 +650,26 @@ class LeadsEntity {
     return data;
   }
 }
+
+class SiteFloorsEntity {
+  int id;
+  String siteFloorTxt;
+
+  SiteFloorsEntity({this.id, this.siteFloorTxt});
+
+  SiteFloorsEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    siteFloorTxt = json['siteFloorTxt'].toString() ?? "";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['siteFloorTxt'] = this.siteFloorTxt;
+    return data;
+  }
+}
+
 
 // class ViewLeadDataResponse {
 //   String respCode;

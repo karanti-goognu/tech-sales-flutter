@@ -267,9 +267,9 @@ class SiteController extends GetxController {
   }
 */
   getSitesData(String accessKey,String influencer_id) {
-    Future.delayed(Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(Duration.zero,
+    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -324,7 +324,7 @@ class SiteController extends GetxController {
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
-            Get.back();
+            // Get.back();
         if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
@@ -376,6 +376,7 @@ class SiteController extends GetxController {
     });
   }
 
+
   searchSites(String accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
@@ -414,10 +415,8 @@ class SiteController extends GetxController {
   }
 
   getAccessKeyOnly() {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(Duration.zero, () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
 
     return repository.getAccessKey();
     //   return this.accessKeyResponse;

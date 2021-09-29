@@ -24,8 +24,6 @@ class _SiteScreenState extends State<SiteScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
   // Instantiate your class using Get.put() to make it available for all "child" routes there.
   SiteController _siteController = Get.find();
-  AppController _appController = Get.find();
-  SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
   int selectedPosition = 0;

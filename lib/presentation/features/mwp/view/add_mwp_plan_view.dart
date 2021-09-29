@@ -69,7 +69,9 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "Tech Van Service",
        "Slab services",
        "Technocrat meet",
-      "Block Level meet"
+      "Block Level meet",
+      "Head Mason meet",
+      "New Influencer"
     ];
 
     /*List<String> mwpNames = [
@@ -500,7 +502,12 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                 case 19:
                   _mwpPlanController.blockLevelMeet = int.parse(_);
                   break;
-
+                case 20:
+                  _mwpPlanController.headMasonMeet = int.parse(_);
+                  break;
+                case 21:
+                  _mwpPlanController.newInfluencer = int.parse(_);
+                  break;
               }
             } catch (_) {
               print('In exception   $index');
@@ -568,6 +575,12 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                   break;
                   case 19:
                   _mwpPlanController.blockLevelMeet = 0;
+                  break;
+                case 20:
+                  _mwpPlanController.headMasonMeet = 0;
+                  break;
+                case 21:
+                  _mwpPlanController.newInfluencer = 0;
                   break;
 
               }
@@ -683,15 +696,17 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
           .mwpplanModel
           .actualTechnocratMeet
           .toString()
-          : (index == 19)
-          ? _mwpPlanController
+          : (index == 19) ? _mwpPlanController
           .getMWPResponse
           .mwpplanModel
           .actualBlockLevelMeet
-          .toString():
-
-
-      "0";}
+          .toString():(index == 20) ? _mwpPlanController
+          .getMWPResponse
+          .mwpplanModel.headMasonMeet.toString():
+          (index == 21) ? _mwpPlanController.getMWPResponse
+          .mwpplanModel
+          .newInfluencer
+          .toString(): "0";}
     else {
       return "0";
     }
@@ -802,8 +817,15 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                                               .mwpplanModel
                                                               .blockLevelMeet
                                                               .toString()
-                                                          : "0"
-      ;
+                                                    :(index == 20) ? _mwpPlanController
+          .getMWPResponse
+          .mwpplanModel.headMasonMeet.toString():
+      (index == 21) ? _mwpPlanController.getMWPResponse
+          .mwpplanModel
+          .newInfluencer
+          .toString()
+
+                                                          : "0";
     } else {
       return "0";
     }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,12 +34,8 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'dialog/lead_change_to_site_dialog.dart';
 
 class ViewLeadScreen extends StatefulWidget {
@@ -127,7 +124,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   List<InfluencerTypeEntity> influencerTypeEntity;
 
   List<InfluencerCategoryEntity> influencerCategoryEntity;
-
+  List<SiteFloorsEntity> _siteFloorsEntity ;
   AddLeadsController _addLeadsController = Get.find();
   final db = BrandNameDBHelper();
   BuildContext _context;
@@ -182,9 +179,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       _district.text = viewLeadDataResponse.leadsEntity.leadDistrictName;
       _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
 
-      ////Need to change after change in api response
       _leadSource.text = viewLeadDataResponse.leadsEntity.leadSource;
       _leadSourceUser.text = viewLeadDataResponse.leadsEntity.leadSourceUser;
+
 
       leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
       leadStageEntity = viewLeadDataResponse.leadStageEntity;
@@ -202,6 +199,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           viewLeadDataResponse.nextStageConstructionEntity;
       gv.nextStageConstructionEntity = nextStageConstructionEntity;
       dealerList = viewLeadDataResponse.dealerList;
+
+      _siteFloorsEntity = viewLeadDataResponse.siteFloorsEntity;
       print("Dealer List Length :: " + dealerList.length.toString());
       gv.dealerList = dealerList;
       influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
@@ -440,6 +439,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 _selectedNextStageConstructionEntity,
                             dealerEntityForDb: dealerEntityForDb,
                             counterListModel: counterListModel,
+                            siteFloorsEntity:_siteFloorsEntity,
                             mListener: this,
                           ));
                 } else if (_selectedValuedummy.id == 4) {
@@ -1265,10 +1265,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 Icons.add,
                                                                 color: ColorConstants
                                                                     .btnOrange,
-                                                                size:18
-                                                                    // ScreenUtil()
-                                                                    //     .setSp(
-                                                                    //         16),
+                                                                size:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            16),
                                                               ),
                                                               label: Text(
                                                                 "EXPAND",
@@ -1339,10 +1339,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 Icons.add,
                                                                 color: ColorConstants
                                                                     .btnOrange,
-                                                                size:18
-                                                                    // ScreenUtil()
-                                                                    //     .setSp(
-                                                                    //         16),
+
+                                                                size:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            16),
                                                               ),
                                                               label: Text(
                                                                 "EXPAND",
@@ -1976,7 +1977,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   }
 
   updateStatusForNextStage(BuildContext context, int statusId,
-      {String dealerId, String subDealerId}) {
+      {String dealerId, String subDealerId,int floorId,
+      String noOfBagSupplied}) {
     String empId;
     String mobileNumber;
     String name;
@@ -2072,8 +2074,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'leadStateName': viewLeadDataResponse.leadsEntity.leadStateName,
         'leadDistrictName': viewLeadDataResponse.leadsEntity.leadDistrictName,
         'leadTalukName': viewLeadDataResponse.leadsEntity.leadTalukName,
-        'leadSalesPotentialMt':
-            viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
+        'leadSalesPotentialMt': viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
         'leadReraNumber': viewLeadDataResponse.leadsEntity.leadReraNumber,
         'isStatus': "false",
         'updatedBy': empId,
@@ -2090,10 +2091,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity,
         'leadSource':_leadSource.text,
         'leadSourceUser': _leadSourceUser.text,
-        'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform
+        'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform,
+        'nosFloors':_floorId,
+        'totalFloorSqftArea':int.parse(_noOfBagSupplied)
       };
 
-      print("$updateRequestModel");
+      print("Update Data-->"+"$updateRequestModel");
+      var body = jsonEncode(updateRequestModel);
+      print("Update Data1-->"+body);
 
       _addLeadsController.updateLeadData(updateRequestModel, new List<File>(),
           context, viewLeadDataResponse.leadsEntity.leadId, 3);
@@ -2767,6 +2772,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   String selectedDealerId = "";
   String selectedDealerSubId = "";
   String selectedDate = "";
+  int _floorId;
+  String _noOfBagSupplied = "";
 
   @override
   updateStatusForNextStageAllow(
@@ -2775,7 +2782,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       NextStageConstructionEntity selectedNextStageConstructionEntity,
       String nextStageConstructionPicked,
       String dealerId,
-      String subDealerId) {
+      String subDealerId,
+      int selectedFloorId,
+      String noOfBagsSupplied) {
     // TODO: implement updateStatusForNextStageAllow
     selectedDealerId = dealerId;
     selectedDealerSubId = subDealerId;
@@ -2784,11 +2793,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     // print("_selectedNextStageConstructionEntity  $nextStageConstructionPicked    ${_selectedNextStageConstructionEntity.nextStageConsId}");
     // nextStageConstructionPickedDate=nextStageConstructionPicked;
     _nextDateofConstruction.text = nextStageConstructionPicked;
+    _floorId = selectedFloorId;
+    _noOfBagSupplied = noOfBagsSupplied;
     print(
         "_selectedNextStageConstructionEntity    ${nextStageConstructionPickedDate}");
 
     updateStatusForNextStage(context, statusId,
-        dealerId: selectedDealerId, subDealerId: selectedDealerSubId);
+        dealerId: selectedDealerId, subDealerId: selectedDealerSubId,floorId:selectedFloorId,
+        noOfBagSupplied:noOfBagsSupplied);
   }
 }
 

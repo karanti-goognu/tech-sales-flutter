@@ -316,7 +316,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                       .dspAvailableQty),
                                                   initialValue: (_addEventController
                                                               .dspAvailableQty ==
-                                                          null)
+                                                          null || _addEventController
+                                                      .dspAvailableQty == "null")
                                                       ? ""
                                                       : _addEventController
                                                           .dspAvailableQty,

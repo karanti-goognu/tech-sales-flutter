@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +29,6 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
@@ -95,19 +95,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   var _stagePotentialVisit = new TextEditingController();
   var _stagePotentialVisitNextStage = new TextEditingController();
   var _selectedBrand = new TextEditingController();
-  var _brandPriceVisit1 = new TextEditingController();
   var _brandPriceVisitNextStage = new TextEditingController();
-  var _productSoldVisit = new TextEditingController();
-  var _productSoldVisitNextStage = new TextEditingController();
-  var _numberBagSuppliedVisit = new TextEditingController();
   var _dateofConstruction = new TextEditingController();
   var _dateofConstructionNextStage = new TextEditingController();
   var _nextVisitDate = new TextEditingController();
-  var _dateOfBagSupplied = new TextEditingController();
-  var _dateOfBagSupplied1 = new TextEditingController();
   var _dateOfBagSuppliedNextStage = new TextEditingController();
   var _siteCurrentTotalBags = new TextEditingController();
-  var _siteCurrentTotalBags1 = new TextEditingController();
   var _siteCurrentTotalBagsNextStage = new TextEditingController();
   var _comments = new TextEditingController();
   var _inactiveReasonText = new TextEditingController();
@@ -170,6 +163,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
   List<BrandModelforDB> siteBrandEntityfromLoaclDB = new List();
   List<BrandModelforDB> siteProductEntityfromLoaclDB = new List();
   List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage = new List();
+
   List<SiteInfluencerEntity> siteInfluencerEntity = new List();
   List<InfluencerTypeEntity> influencerTypeEntity = new List();
   List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
@@ -882,12 +876,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         viewSiteDataResponse = data;
         // print(json.encode(viewSiteDataResponse));
         await db.clearTable();
-        siteBrandEntity = viewSiteDataResponse != null
-            ? viewSiteDataResponse.siteBrandEntity
+        siteBrandEntity = viewSiteDataResponse != null ? viewSiteDataResponse.siteBrandEntity
             : new List();
         counterListModel = viewSiteDataResponse.counterListModel;
-
-        // print("aaaaaaaaaaaaaaa");
 
         for (int i = 0; i < siteBrandEntity.length; i++) {
           await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
@@ -1105,13 +1096,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
             }
           }
 
-          constructionStageEntityNew =
-              viewSiteDataResponse.constructionStageEntity;
-          constructionStageEntityNewNextStage =
-              viewSiteDataResponse.constructionStageEntity;
+          constructionStageEntityNew = viewSiteDataResponse.constructionStageEntity;
+          constructionStageEntityNewNextStage = viewSiteDataResponse.constructionStageEntity;
 
-          constructionStageEntity =
-              viewSiteDataResponse.constructionStageEntity;
+          constructionStageEntity = viewSiteDataResponse.constructionStageEntity;
 
           for (int i = 0; i < constructionStageEntity.length; i++) {
             if (viewSiteDataResponse.sitesModal.siteConstructionId.toString() ==
@@ -1152,6 +1140,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
 
           siteOpportunityStatusEntity =
               viewSiteDataResponse.siteOpportunityStatusEntity;
+
           if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
             for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
               if (viewSiteDataResponse.sitesModal.siteOppertunityId
@@ -6257,6 +6246,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
       Get.dialog(CustomDialogs()
           .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
     }
+
     // else if (_selectedConstructionTypeVisit == null ||
     //     _stagePotentialVisit.text == null ||
     //     _stagePotentialVisit.text == "" ||
@@ -6477,7 +6467,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         "kitchenCount": (_totalKitchenCount.text!=null && _totalKitchenCount.text.isNotEmpty)?int.parse(_totalKitchenCount.text):null,
         "bathroomCount": (_totalBathroomCount.text!=null && _totalBathroomCount.text.isNotEmpty)?int.parse(_totalBathroomCount.text):null,
       };
-      // log('updateDataRequest---- $updateDataRequest');
+      log('updateDataRequest---- $updateDataRequest');
 
 
       isNoOfBagsSuppliedEntered(updateDataRequest);

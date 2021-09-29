@@ -77,6 +77,8 @@ class UpdateServiceRequestController extends GetxController {
   TextEditingController district = TextEditingController();
   TextEditingController taluk = TextEditingController();
   TextEditingController pin = TextEditingController();
+  TextEditingController coverBlockProvidedNo = TextEditingController();
+  TextEditingController formwarkRemovalDate = TextEditingController();
 
   UpdateServiceRequestController({@required this.repository})
       : assert(repository != null);
@@ -152,8 +154,8 @@ class UpdateServiceRequestController extends GetxController {
       complaintListData = await repository.getComplaintViewData(accessKey, userSecurityKey, empID, this.id);
       update();
     });
-    // return complaintListData;
 
+     return complaintListData;
   }
 //*****
 

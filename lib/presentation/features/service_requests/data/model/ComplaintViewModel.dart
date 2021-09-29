@@ -34,6 +34,8 @@ class ComplaintViewModel {
   List<SrcResolutionEntity> srcResolutionEntity;
   List<SrComplaintActionList> srComplaintActionList;
 
+
+
   ComplaintViewModel(
       {this.resCode,
         this.resMsg,

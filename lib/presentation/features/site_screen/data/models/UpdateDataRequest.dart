@@ -9,8 +9,9 @@ class UpdateDataRequest {
   String contactName;
   String contactNumber;
   String siteGeotag;
-  String siteGeotagLat;
-  String siteGeotagLong;
+  double siteGeotagLat;
+  double siteGeotagLong;
+  String plotNumber;
   String siteAddress;
   String sitePincode;
   String siteState;
@@ -25,20 +26,29 @@ class UpdateDataRequest {
   String productDemo;
   String productOralBriefing;
   String soCode;
-  String plotNumber;
   String inactiveReasonText;
   String nextVisitDate;
   String closureReasonText;
   String createdBy;
+  String totalBalancePotential;
+  List<SiteCommentsEntity> siteCommentsEntity;
+  List<SiteStageHistory> siteStageHistory;
+
   String siteProbabilityWinningId;
   String siteCompetitionId;
   String siteOppertunityId;
-  String siteConstructionId;
-  List<SiteCommentsEntity> siteCommentsEntity;
+  int siteConstructionId;
  // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
   List<SiteNextStageEntity> siteNextStageEntity;
   List<SitePhotosEntity> sitePhotosEntity;
   List<SiteInfluencerEntity> siteInfluencerEntity;
+
+  String dealerConfirmedChangedBy;
+  String dealerConfirmedChangedOn;
+  String isDealerConfirmedChangedBySo;
+  String subdealerId;
+  int kitchenCount;
+  int bathroomCount;
 
 
   UpdateDataRequest(
@@ -71,8 +81,9 @@ class UpdateDataRequest {
       this.nextVisitDate,
       this.closureReasonText,
       this.createdBy,
+      this.totalBalancePotential,
       this.siteCommentsEntity,
-     // this.siteVisitHistoryEntity,
+      this.siteStageHistory,
       this.siteNextStageEntity,
       this.sitePhotosEntity,
       this.siteInfluencerEntity,
@@ -80,6 +91,12 @@ class UpdateDataRequest {
       this.siteCompetitionId,
       this.siteOppertunityId,
       this.siteProbabilityWinningId,
+      this.dealerConfirmedChangedBy,
+      this.dealerConfirmedChangedOn,
+      this.isDealerConfirmedChangedBySo,
+      this.subdealerId,
+      this.kitchenCount,
+      this.bathroomCount
 
       });
 
@@ -113,6 +130,7 @@ class UpdateDataRequest {
     nextVisitDate = json['nextVisitDate'];
     closureReasonText = json['closureReasonText'];
     createdBy = json['createdBy'];
+    totalBalancePotential = json['totalBalancePotential'];
     siteConstructionId = json['siteConstructionId'];
     siteCompetitionId = json['siteCompetitionId'];
     siteOppertunityId = json['siteOppertunityId'];
@@ -126,12 +144,13 @@ class UpdateDataRequest {
         siteCommentsEntity.add(new SiteCommentsEntity.fromJson(v));
       });
     }
-    // if (json['siteVisitHistoryEntity'] != null) {
-    //   siteVisitHistoryEntity = new List<SiteVisitHistoryEntity>();
-    //   json['siteVisitHistoryEntity'].forEach((v) {
-    //     siteVisitHistoryEntity.add(new SiteVisitHistoryEntity.fromJson(v));
-    //   });
-    // }
+    if (json['siteStageHistorys'] != null) {
+      siteStageHistory = new List<SiteStageHistory>();
+      json['siteStageHistorys'].forEach((v) {
+        siteStageHistory.add(new SiteStageHistory.fromJson(v));
+      });
+    }
+
     if (json['siteNextStageEntity'] != null) {
       siteNextStageEntity = new List<SiteNextStageEntity>();
       json['siteNextStageEntity'].forEach((v) {
@@ -150,6 +169,14 @@ class UpdateDataRequest {
         siteInfluencerEntity.add(new SiteInfluencerEntity.fromJson(v));
       });
     }
+
+    dealerConfirmedChangedBy = json['dealerConfirmedChangedBy'];
+    dealerConfirmedChangedOn = json['dealerConfirmedChangedOn'];
+    isDealerConfirmedChangedBySo = json['isDealerConfirmedChangedBySo'];
+    subdealerId = json['subdealerId'];
+    kitchenCount = json['kitchenCount'];
+    bathroomCount = json['bathroomCount'];
+
 
   }
 
@@ -195,10 +222,12 @@ class UpdateDataRequest {
       data['siteCommentsEntity'] =
           this.siteCommentsEntity.map((v) => v.toJson()).toList();
     }
-    // if (this.siteVisitHistoryEntity != null) {
-    //   data['siteVisitHistoryEntity'] =
-    //       this.siteVisitHistoryEntity.map((v) => v.toJson()).toList();
-    // }
+
+    if (this.siteStageHistory != null) {
+      data['siteStageHistorys'] =
+          this.siteStageHistory.map((v) => v.toJson()).toList();
+    }
+
     if (this.siteNextStageEntity != null) {
       data['siteNextStageEntity'] =
           this.siteNextStageEntity.map((v) => v.toJson()).toList();
@@ -211,6 +240,13 @@ class UpdateDataRequest {
       data['siteInfluencerEntity'] =
           this.siteInfluencerEntity.map((v) => v.toJson()).toList();
     }
+
+    data['dealerConfirmedChangedBy']= this.dealerConfirmedChangedBy;
+    data['dealerConfirmedChangedOn']= this.dealerConfirmedChangedOn;
+    data['isDealerConfirmedChangedBySo']= this.isDealerConfirmedChangedBySo;
+    data['subdealerId']= this.subdealerId;
+    data['kitchenCount']= this.kitchenCount;
+    data['bathroomCount']= this.bathroomCount;
 
     return data;
   }

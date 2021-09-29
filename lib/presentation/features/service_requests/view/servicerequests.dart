@@ -31,12 +31,15 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   ServiceRequestComplaintListModel serviceRequestComplaintListModel;
   SRListController eventController = Get.find();
   int totalFilters;
-  var data;
 
   getSRListData() async {
     // Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     await eventController.getAccessKey().then((value) async {
-      data = await eventController.getSrListData(value.accessKey, 0);
+      await eventController.getSrListData(value.accessKey, 0).then((data){
+        setState(() {
+          serviceRequestComplaintListModel = data;
+        });
+      });
     });
     // Get.back();
   }
@@ -48,11 +51,11 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       eventController.offset += 10;
       // print('offset new value ${eventController.offset}');
       await eventController.getAccessKey().then((value) async {
-        data = await eventController.getSrListData(
-            value.accessKey, eventController.offset);
-      });
-      setState(() {
-        serviceRequestComplaintListModel = data;
+        await eventController.getSrListData(value.accessKey, eventController.offset).then((data) {
+          setState(() {
+            serviceRequestComplaintListModel = data;
+          });
+        });
       });
     }
   }
@@ -60,13 +63,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   @override
   void initState() {
     super.initState();
-    getSRListData().whenComplete(() {
-      setState(() {
-        if(data!=null) {
-          serviceRequestComplaintListModel = data;
-        }
-      });
-    });
+    eventController.srListData.srComplaintListModal = null;
+    getSRListData();
     //  print("scroll controller init");
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
@@ -189,7 +187,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       floatingActionButton:
       SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
       bottomNavigationBar: BottomNavigator(),
-      body: data == null
+      body: serviceRequestComplaintListModel == null
           ? Center(
         child: CircularProgressIndicator(),
       )

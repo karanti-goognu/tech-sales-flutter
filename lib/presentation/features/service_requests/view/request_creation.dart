@@ -60,14 +60,14 @@ class _RequestCreationState extends State<RequestCreation> {
     });
   }
 
-  getRequestorData(String requestorType) async {
+  getRequestorData(String requestorType,String siteId) async {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     await srFormDataController.getAccessKey().then((value) async {
       await srFormDataController
-          .getRequestorDetails(value.accessKey, requestorType)
+          .getRequestorDetails(value.accessKey, requestorType,siteId)
           .then((data) {
         if (data != null) {
           setState(() {
@@ -356,10 +356,11 @@ class _RequestCreationState extends State<RequestCreation> {
                                               .requestFocus(new FocusNode());
                                           creatorType = value;
                                         });
-                                        getRequestorData(value);
+
+                                        getRequestorData(value,siteId.toString());
                                       },
-                                      items: [
-                                        'IHB',
+                                      items:siteId==null?[]:
+                                        ['IHB',
                                         'Dealer',
                                         'SUBDEALER',
                                         'SALESOFFICER'

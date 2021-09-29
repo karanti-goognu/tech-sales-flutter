@@ -109,43 +109,38 @@ class SRListController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       print("offset is ${this.offset}");
-      ServiceRequestComplaintListModel requestComplaintListModel;
 
-      requestComplaintListModel = await repository.getSrListData(
-          accessKey, userSecurityKey, empID, this.offset);
-      if (requestComplaintListModel == null) {
-        debugPrint('SR Data Response is null');
-      } else {
-        // if (srListData.respCode == "DM1005") {
-        //   print("RESPCODE4: ${srListData.respCode}");
-        //   srListData = requestComplaintListModel;
-        //   Get.dialog(CustomDialogs().appUserInactiveDialog(srListData.respMsg),
-        //       barrierDismissible: false);
-        // }
-        if (srListData.srComplaintListModal == null ||
-            srListData.srComplaintListModal.isEmpty) {
-          srListData = requestComplaintListModel;
-        } else {
-          if (requestComplaintListModel.srComplaintListModal != null &&
-              requestComplaintListModel.srComplaintListModal.isNotEmpty) {
-            requestComplaintListModel.srComplaintListModal.addAll(srListData.srComplaintListModal);
-            this.srListData = requestComplaintListModel;
-            this.srListData.srComplaintListModal.sort((SrComplaintListModal a, SrComplaintListModal b) => b.createdOn.compareTo(a.createdOn));
 
-            Get.rawSnackbar(
-              titleText: Text("Note"),
-              messageText: Text("Loading more .."),
-              backgroundColor: Colors.white,
-            );
-          } else {
-            Get.rawSnackbar(
-              titleText: Text("Note"),
-              messageText: Text("No more SR Data..."),
-              backgroundColor: Colors.white,
-            );
-          }
-        }
-      }
+       await repository.getSrListData(accessKey, userSecurityKey, empID, this.offset).then((data){
+         if (data == null) {
+
+           debugPrint('SR Data Response is null');
+         } else {
+           if (srListData.srComplaintListModal == null ||
+               srListData.srComplaintListModal.isEmpty) {
+               srListData = data;
+           } else {
+             ServiceRequestComplaintListModel requestComplaintListModel = data;
+             if (requestComplaintListModel.srComplaintListModal.isNotEmpty) {
+               requestComplaintListModel.srComplaintListModal.addAll(srListData.srComplaintListModal);
+               this.srListData = requestComplaintListModel;
+               this.srListData.srComplaintListModal.sort((SrComplaintListModal a, SrComplaintListModal b) => b.createdOn.compareTo(a.createdOn));
+               Get.rawSnackbar(
+                 titleText: Text("Note"),
+                 messageText: Text("Loading more .."),
+                 backgroundColor: Colors.white,
+               );
+             } else {
+               Get.rawSnackbar(
+                 titleText: Text("Note"),
+                 messageText: Text("No more SR Data..."),
+                 backgroundColor: Colors.white,
+               );
+             }
+           }
+         }
+       });
+
     });
     return srListData;
   }

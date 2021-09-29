@@ -7,7 +7,8 @@ class GetCurrentLocation{
   static Geolocator geoLocator = Geolocator()..forceAndroidLocationManager;
   static Position _currentPosition = new Position();
 
-  static Future<List>getCurrentLocation() async {
+
+  static Future<List> getCurrentLocation() async {
     //String loc;
     List<String> loc;
     if (!(await Geolocator().isLocationServiceEnabled())) {

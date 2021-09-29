@@ -177,10 +177,10 @@ class MyApiClientSites {
       String empID) async {
     try {
       version = VersionClass.getVersion();
-      String url = UrlConstants.getSiteDataVersion3 + "$siteId&referenceID=$empID";
+      String url = UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID";
       print(url);
       final response = await get(
-        Uri.parse(UrlConstants.getSiteDataVersion3 + "$siteId&referenceID=$empID"),
+        Uri.parse(UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"),
         headers: requestHeadersWithAccessKeyAndSecretKey(
             accessKey, userSecurityKey, version),
       );
@@ -188,7 +188,7 @@ class MyApiClientSites {
       // print(
       //     'Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
       if (response.statusCode == 200) {
-        Get.back();
+        // Get.back();
         var data = json.decode(response.body);
         // print('@@@@');
         //print(data);
@@ -196,8 +196,8 @@ class MyApiClientSites {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else{
-        ViewSiteDataResponse viewSiteDataResponse =
-        ViewSiteDataResponse.fromJson(data);
+        ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse.fromJson(data);
+
         // print('@@@@');
         // print(viewSiteDataResponse.counterListModel[0].soldToParty);
         print('SITE VISIT: ${json.encode(viewSiteDataResponse.mwpVisitModel)}');
@@ -301,8 +301,8 @@ class MyApiClientSites {
       List<File> list, BuildContext context, int siteId) async {
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
-        'POST', Uri.parse(UrlConstants.updateVersion3SiteData));
-    print(UrlConstants.updateVersion3SiteData);
+        'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
+    print(UrlConstants.updateVersion4SiteData);
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));

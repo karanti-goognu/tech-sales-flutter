@@ -27,6 +27,7 @@ class ViewSiteDataResponse {
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity;
   List<SiteInfluencerEntity> siteInfluencerEntity;
   List<CounterListModel> counterListModel;
+  List<SiteStagePotentialEntity> siteStagePotentialEntity;
 
 
 
@@ -56,7 +57,8 @@ class ViewSiteDataResponse {
       this.influencerCategoryEntity,
       this.siteOpportunityStatusEntity,
       this.siteInfluencerEntity,
-      this.counterListModel});
+      this.counterListModel,
+      this.siteStagePotentialEntity});
 
   ViewSiteDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -173,6 +175,13 @@ class ViewSiteDataResponse {
         counterListModel.add(new CounterListModel.fromJson(v));
       });
     }
+
+    if (json['siteStagePotentialEntity'] != null) {
+      siteStagePotentialEntity = new List<SiteStagePotentialEntity>();
+      json['siteStagePotentialEntity'].forEach((v) {
+        siteStagePotentialEntity.add(new SiteStagePotentialEntity.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -252,6 +261,40 @@ class ViewSiteDataResponse {
       data['siteInfluencerEntity'] =
           this.siteInfluencerEntity.map((v) => v.toJson()).toList();
     }
+
+    if (this.siteStagePotentialEntity != null) {
+      data['siteStagePotentialEntity'] =
+          this.siteStagePotentialEntity.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+
+class SiteStagePotentialEntity {
+  int id;
+  int nosFloors;
+  int siteFloorsId;
+  int constructionStageId;
+  double potentialPercentage;
+
+  SiteStagePotentialEntity({this.id, this.nosFloors,this.siteFloorsId,this.constructionStageId,this.potentialPercentage});
+
+  SiteStagePotentialEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    nosFloors = json['nosFloors'];
+    siteFloorsId = json['siteFloorsId'];
+    constructionStageId = json['constructionStageId'];
+    potentialPercentage = json['potentialPercentage'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['nosFloors'] = this.nosFloors;
+    data['siteFloorsId'] = this.siteFloorsId;
+    data['constructionStageId'] = this.constructionStageId;
+    data['potentialPercentage'] = this.potentialPercentage;
     return data;
   }
 }
@@ -1136,18 +1179,21 @@ class CounterListModel {
   String soldToPartyName;
   String shipToParty;
   String shipToPartyName;
+  String availableKittyPoint;
 
   CounterListModel(
       {this.soldToParty,
         this.soldToPartyName,
         this.shipToParty,
-        this.shipToPartyName});
+        this.shipToPartyName,
+        this.availableKittyPoint});
 
   CounterListModel.fromJson(Map<String, dynamic> json) {
     soldToParty = json['soldToParty'].toString() ?? "";
     soldToPartyName = json['soldToPartyName'].toString() ?? "";
     shipToParty = json['shipToParty'].toString() ?? "";
     shipToPartyName = json['shipToPartyName'].toString() ?? "";
+    availableKittyPoint = json['availableKittyPoint']?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -1156,6 +1202,7 @@ class CounterListModel {
     data['soldToPartyName'] = this.soldToPartyName;
     data['shipToParty'] = this.shipToParty;
     data['shipToPartyName'] = this.shipToPartyName;
+    data['availableKittyPoint'] = this.availableKittyPoint;
     return data;
   }
 }
@@ -1213,6 +1260,7 @@ class SiteStageHistory {
   int createdOn;
   List<SiteSupplyHistorys> siteSupplyHistorys;
   bool isExpanded;
+  String stagePotentialAutoCalc;
 
 
   SiteStageHistory(
@@ -1226,7 +1274,8 @@ class SiteStageHistory {
         this.createdOn,
         this.createdBy,
         this.siteSupplyHistorys,
-        this.isExpanded
+        this.isExpanded,
+        this.stagePotentialAutoCalc
         });
 
   SiteStageHistory.fromJson(Map<String, dynamic> json) {
@@ -1239,6 +1288,7 @@ class SiteStageHistory {
     stageStatus = json['stageStatus'].toString() ?? "";
     createdOn = json['createdOn'];
     createdBy = json['createdBy'].toString() ?? "";
+    stagePotentialAutoCalc = json['stagePotentialAutoCalc'].toString() ?? "";
 
     if (json['siteSupplyHistorys'] != null) {
       siteSupplyHistorys = new List<SiteSupplyHistorys>();
@@ -1260,6 +1310,7 @@ class SiteStageHistory {
     data['stageStatus'] = this.stageStatus;
     data['createdOn'] = this.createdOn;
     data['createdBy'] = this.createdBy;
+    data['stagePotentialAutoCalc'] = this.stagePotentialAutoCalc;
     if (this.siteSupplyHistorys != null) {
       data['siteSupplyHistorys'] =
           this.siteSupplyHistorys.map((v) => v.toJson()).toList();
