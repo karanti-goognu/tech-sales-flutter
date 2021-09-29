@@ -3485,7 +3485,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         return salesOfficerList.map<Widget>((item) {
           return Container(
               width: MediaQuery.of(context).size.width / 1.5,
-              child: Text(item.salesOfficerId));
+              child: Text(item.salesOfficerName));
         }).toList();
       },
       value: _salesOfficerId,
