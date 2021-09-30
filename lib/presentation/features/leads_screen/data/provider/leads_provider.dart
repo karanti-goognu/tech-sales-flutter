@@ -309,7 +309,8 @@ class MyApiClientLeads {
         'listLeadcomments': saveLeadRequestModel.comments ?? 'null',
         'leadInfluencerEntity': saveLeadRequestModel.influencerList ?? 'null',
         'leadSourceUser': saveLeadRequestModel.leadSourceUser,
-        'leadSource' : saveLeadRequestModel.leadSource
+        'leadSource' : saveLeadRequestModel.leadSource,
+        'leadSourcePlatform': saveLeadRequestModel.leadSourcePlatform
       };
 
       request.fields['uploadImageWithLeadModel'] =

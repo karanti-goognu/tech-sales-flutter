@@ -3451,7 +3451,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         });
       },
       selectedItemBuilder: (BuildContext context) {
-        return eventList.map<Widget>((item) {
+        return eventList == null
+            ? []
+            :eventList.map<Widget>((item) {
           return Container(
               width: MediaQuery.of(context).size.width / 1.5,
               child: Text(item.eventId));
@@ -3482,7 +3484,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         });
       },
       selectedItemBuilder: (BuildContext context) {
-        return salesOfficerList.map<Widget>((item) {
+        return (salesOfficerList == null)
+            ? []
+            :salesOfficerList.map<Widget>((item) {
           return Container(
               width: MediaQuery.of(context).size.width / 1.5,
               child: Text(item.salesOfficerName));

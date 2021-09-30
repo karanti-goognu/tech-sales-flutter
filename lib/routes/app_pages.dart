@@ -102,7 +102,7 @@ class AppPages {
     GetPage(
         name: Routes.ADD_EVENT_SCREEN,
         page: () => AddEvent(),
-        binding: AppBinding()),
+        bindings: [AppBinding(), InfBinding()]),
     GetPage(
         name: Routes.ADD_CALENDER_SCREEN,
         page: () => AddCalenderEventPage(),

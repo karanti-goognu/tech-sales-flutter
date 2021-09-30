@@ -64,6 +64,10 @@ class InfluencerModel {
   String influencerTypeText;
   int inflCatId;
   String influencerCategoryText;
+  String ilpMember;
+  int sitesCount;
+  int monthlyPotential;
+  int monthlyLifting;
 
   InfluencerModel(
       {this.ilpRegFlag,
@@ -73,7 +77,11 @@ class InfluencerModel {
         this.inflTypeId,
         this.influencerTypeText,
         this.inflCatId,
-        this.influencerCategoryText});
+        this.influencerCategoryText,
+        this.ilpMember,
+      this.sitesCount,
+      this.monthlyPotential,
+      this.monthlyLifting});
 
   InfluencerModel.fromJson(Map<String, dynamic> json) {
     ilpRegFlag = json['ilp_reg_flag'];
@@ -84,6 +92,10 @@ class InfluencerModel {
     influencerTypeText = json['influencer_type_text'];
     inflCatId = json['infl_cat_id'];
     influencerCategoryText = json['influencer_category_text'];
+    ilpMember = json['ilpMember'];
+    sitesCount = json['sitesCount'];
+    monthlyPotential = json['monthlyPotential'];
+    monthlyLifting = json['monthlyLifting'];
   }
 
   Map<String, dynamic> toJson() {
@@ -96,6 +108,10 @@ class InfluencerModel {
     data['influencer_type_text'] = this.influencerTypeText;
     data['infl_cat_id'] = this.inflCatId;
     data['influencer_category_text'] = this.influencerCategoryText;
+    data['ilpMember'] = this.ilpMember;
+    data['sitesCount'] = this.sitesCount;
+    data['monthlyPotential'] = this.monthlyPotential;
+    data['monthlyLifting'] = this.monthlyLifting;
     return data;
   }
 }

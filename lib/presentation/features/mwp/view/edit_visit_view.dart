@@ -32,9 +32,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
 
-  bool checkedValue = false;
-  String _dspAvailbleValue = "N";
-  bool _dspAvailableQty = false;
 
   TextEditingController _remarks = new TextEditingController();
 
@@ -59,15 +56,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   @override
   void initState() {
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
-    // setState(() {
-    //   if (_addEventController.isDspAvailable == "Y") {
-    //     checkedValue = true;
-    //     _dspAvailableQty = true;
-    //   } else {
-    //     checkedValue = false;
-    //     _dspAvailableQty = false;
-    //   }
-    // });
 
     super.initState();
   }
@@ -289,18 +277,15 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                     value: (_addEventController.isDspAvailable == "Y")?true:false,
                                                     onChanged: (newValue) {
                                                       setState(() {
-                                                        //checkedValue = newValue;
                                                         if (newValue ==
                                                             true) {
                                                           _addEventController
                                                                   .isDspAvailable =
                                                               "Y";
-                                                          _dspAvailableQty = true;
                                                         } else {
                                                           _addEventController
                                                                   .isDspAvailable =
                                                               "N";
-                                                          _dspAvailableQty = false;
                                                         }
                                                       });
                                                     },
@@ -312,8 +297,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                               Visibility(
                                                 visible: (_addEventController.isDspAvailable == "Y")?true:false,
                                                 child: TextFormField(
-                                                  key: Key(_addEventController
-                                                      .dspAvailableQty),
+                                                  // key: Key(_addEventController
+                                                  //     .dspAvailableQty),
                                                   initialValue: (_addEventController
                                                               .dspAvailableQty ==
                                                           null || _addEventController

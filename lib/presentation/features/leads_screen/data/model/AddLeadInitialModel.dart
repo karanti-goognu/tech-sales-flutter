@@ -14,7 +14,8 @@ class AddLeadInitialModel {
         this.dealerList,
         this.subDealerList,
         this.salesOfficerList,
-        this.eventList});
+        this.eventList
+      });
 
   AddLeadInitialModel.fromJson(Map<String, dynamic> json) {
     if (json['siteSubTypeEntity'] != null) {
