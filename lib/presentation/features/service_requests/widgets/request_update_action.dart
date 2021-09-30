@@ -10,7 +10,6 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/datepicker.dart';
 import 'package:geolocator/geolocator.dart';
@@ -549,7 +548,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   groupValue: _selectedSampleCollected,
                                   onChanged: (value) {
                                     setState(() {
-                                      _selectedSampleCollected=value;
+                                      _selectedSampleCollected="Yes";
                                     });
                                   }),
                               Expanded(
@@ -567,7 +566,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   groupValue: _selectedSampleCollected,
                                   onChanged: (value) {
                                     setState(() {
-                                      _selectedSampleCollected=value;
+                                      _selectedSampleCollected="No";
                                     });
                                   }),
                               Expanded(child: Text('No'.toUpperCase()))
@@ -617,7 +616,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   groupValue: _selectedDemoConducted,
                                   onChanged: (value) {
                                     setState(() {
-                                      _selectedDemoConducted=value;
+                                      _selectedDemoConducted="Yes";
                                     });
                                   }),
                               Expanded(
@@ -635,7 +634,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   groupValue: _selectedDemoConducted,
                                   onChanged: (value) {
                                     setState(() {
-                                      _selectedDemoConducted=value;
+                                      _selectedDemoConducted="No";
                                     });
                                   }),
                               Expanded(child: Text('No'.toUpperCase()))
@@ -850,11 +849,14 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       });
                     });
                   });
+
                   _updateSRModel = UpdateSRModel.fromJson({
                     "id": widget.id,
                     "severity": widget.severity,
                     "resoulutionStatus": _resolutionStatus,
                     "updatedBy": empId,
+                    "coverBlockProvidedNo": updateServiceRequestController.coverBlockProvidedNo.text,
+                    "formwarkRemovalDate": updateServiceRequestController.formwarkRemovalDate.text,
                     "srComplaintAction": [
                       {
                         "srComplaintId": widget.id,
@@ -874,8 +876,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         "comment": _comment.text,
                         "nextVisitDate": _nextVisitDate.text,
 
-                        "coverBlockProvidedNo": updateServiceRequestController.coverBlockProvidedNo.text,
-                        "formwarkRemovalDate": updateServiceRequestController.formwarkRemovalDate.text,
                         "typeOfComplaint": _selectedTypeOfComplain,
                         "productVariety": getCheckboxItems().toString(),
                         "balanceQtyinBags":_balanceQuantity.text,

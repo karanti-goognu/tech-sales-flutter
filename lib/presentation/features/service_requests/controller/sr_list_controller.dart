@@ -121,7 +121,7 @@ class SRListController extends GetxController {
                srListData = data;
            } else {
              ServiceRequestComplaintListModel requestComplaintListModel = data;
-             if (requestComplaintListModel.srComplaintListModal.isNotEmpty) {
+             if (requestComplaintListModel!=null && requestComplaintListModel.srComplaintListModal.isNotEmpty) {
                requestComplaintListModel.srComplaintListModal.addAll(srListData.srComplaintListModal);
                this.srListData = requestComplaintListModel;
                this.srListData.srComplaintListModal.sort((SrComplaintListModal a, SrComplaintListModal b) => b.createdOn.compareTo(a.createdOn));

@@ -34,6 +34,9 @@ class ComplaintViewModel {
   List<SrcResolutionEntity> srcResolutionEntity;
   List<SrComplaintActionList> srComplaintActionList;
 
+  String coverBlockProvidedNo;
+  String formwarkRemovalDate;
+
 
 
   ComplaintViewModel(
@@ -70,7 +73,11 @@ class ComplaintViewModel {
         this.updatedOn,
         this.srcSubtypeMappingModal,
         this.srcResolutionEntity,
-        this.srComplaintActionList});
+        this.srComplaintActionList,
+
+        this.coverBlockProvidedNo,
+        this.formwarkRemovalDate
+      });
 
   ComplaintViewModel.fromJson(Map<String, dynamic> json) {
     resCode = json['resCode'];
@@ -122,6 +129,9 @@ class ComplaintViewModel {
         srComplaintActionList.add(new SrComplaintActionList.fromJson(v));
       });
     }
+
+    coverBlockProvidedNo = json['coverBlockProvidedNo'];
+    formwarkRemovalDate = json['formwarkRemovalDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -167,6 +177,10 @@ class ComplaintViewModel {
       data['srComplaintActionList'] =
           this.srComplaintActionList.map((v) => v.toJson()).toList();
     }
+
+    data['coverBlockProvidedNo'] = this.coverBlockProvidedNo;
+    data['formwarkRemovalDate'] = this.formwarkRemovalDate;
+
     return data;
   }
 }
@@ -228,6 +242,17 @@ class SrComplaintActionList {
   String createdBy;
   int createdOn;
 
+  String typeOfComplaint;
+  String productVariety;
+  String balanceQtyinBags;
+  String billNumber;
+  String weekNo;
+  String bestBeforeDate;
+  String sampleCollected;
+  String sampleTOBeSentTo;
+  String demoConducted;
+  String detailsOfDemo;
+
   SrComplaintActionList(
       {this.id,
         this.srComplaintId,
@@ -245,7 +270,18 @@ class SrComplaintActionList {
         this.comment,
         this.nextVisitDate,
         this.createdBy,
-        this.createdOn});
+        this.createdOn,
+
+        this.typeOfComplaint,
+        this.productVariety,
+        this.balanceQtyinBags,
+        this.billNumber,
+        this.weekNo,
+        this.bestBeforeDate,
+        this.sampleCollected,
+        this.sampleTOBeSentTo,
+        this.demoConducted,
+        this.detailsOfDemo});
 
   SrComplaintActionList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -265,6 +301,17 @@ class SrComplaintActionList {
     nextVisitDate = json['nextVisitDate'];
     createdBy = json['createdBy'];
     createdOn = json['createdOn'];
+
+    typeOfComplaint = json['typeOfComplaint'];
+    productVariety = json['productVariety'];
+    balanceQtyinBags = json['balanceQtyinBags'];
+    billNumber = json['billNumber'];
+    weekNo = json['weekNo'];
+    bestBeforeDate = json['bestBeforeDate'];
+    sampleCollected = json['sampleCollected'];
+    sampleTOBeSentTo = json['sampleTOBeSentTo'];
+    demoConducted = json['demoConducted'];
+    detailsOfDemo = json['detailsOfDemo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -286,6 +333,17 @@ class SrComplaintActionList {
     data['nextVisitDate'] = this.nextVisitDate;
     data['createdBy'] = this.createdBy;
     data['createdOn'] = this.createdOn;
+
+    data['typeOfComplaint'] = this.typeOfComplaint;
+    data['productVariety'] = this.productVariety;
+    data['balanceQtyinBags'] = this.balanceQtyinBags;
+    data['billNumber'] = this.billNumber;
+    data['weekNo'] = this.weekNo;
+    data['bestBeforeDate'] = this.bestBeforeDate;
+    data['sampleCollected'] = this.sampleCollected;
+    data['sampleTOBeSentTo'] = this.sampleTOBeSentTo;
+    data['demoConducted'] = this.demoConducted;
+    data['detailsOfDemo'] = this.detailsOfDemo;
     return data;
   }
 }

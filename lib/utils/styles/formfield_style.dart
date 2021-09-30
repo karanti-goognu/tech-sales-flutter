@@ -14,6 +14,7 @@ abstract class FormFieldStyle {
     String hintText,
     Widget suffixIcon,
     Widget prefixIcon,
+    String counterText,
   }) {
     return InputDecoration(
       focusedBorder: InputBordersDecorations.outLineInputBorderFocused,
@@ -29,6 +30,7 @@ abstract class FormFieldStyle {
       fillColor: ColorConstants.backgroundColor,
       suffixIcon: suffixIcon != null ? suffixIcon : null,
       prefixIcon: prefixIcon != null? prefixIcon :null,
+      counterText: counterText!=null?counterText:null
     );
   }
 }

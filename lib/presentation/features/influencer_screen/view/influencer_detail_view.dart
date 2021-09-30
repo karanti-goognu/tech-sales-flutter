@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
@@ -18,14 +17,15 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InfluencerDetailView extends StatefulWidget {
   int membershipId;
+
   InfluencerDetailView(this.membershipId);
+
   @override
   _InfluencerDetailViewState createState() => _InfluencerDetailViewState();
 }
@@ -45,6 +45,12 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
   List<InfluencerSourceList> influencerSourceList = new List();
   InfluencerSourceList _influencerSourceList;
+
+  List<SiteBrandList> siteBrandList = new List();
+  SiteBrandList _siteBrandList;
+
+
+
   //var _date = 'Date of Birth*';
   bool _qualificationVisible = false;
   int _influencerCategory;
@@ -75,6 +81,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   FocusNode myFocusNode;
 
   //final ScrollController _scrollController = ScrollController();
+
+  // If Engineer Type
+  TextEditingController _designationController = TextEditingController();
+  TextEditingController _departmentNameController = TextEditingController();
+  int _preferredBrandId;
+  TextEditingController _dateMarriageAnnController = TextEditingController();
+  TextEditingController _firmNameController = TextEditingController();
 
   @override
   void initState() {
@@ -240,11 +253,30 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           }
         }
       } else {}
+
+      siteBrandList = _influencerDetailDataModel.response.siteBrandList;
+      if (_influencerDetailDataModel.response.influencerDetails.preferredBrandId !=
+          null) {
+        for (int i = 0; i < siteBrandList.length; i++) {
+          if (_influencerDetailDataModel.response.influencerDetails.preferredBrandId
+              .toString() ==
+              siteBrandList[i].id.toString()) {
+            _siteBrandList = siteBrandList[i];
+          }
+        }
+      } else {}
+
       districtId = _data.districtId;
       stateName = _data.stateName;
       stateId = _data.stateId;
+      _designationController.text = _data.designation;
+      _departmentNameController.text = _data.departmentName;
+      _preferredBrandId=_influencerDetailDataModel.response.influencerDetails.preferredBrandId;
+      _dateMarriageAnnController.text = _data.dateOfMarriageAnniversary;
+      _firmNameController.text = _data.firmName;
       myFocusNode = FocusNode();
       myFocusNode.requestFocus();
+
     }
   }
 
@@ -669,6 +701,91 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       ],
     );
 
+    Widget engineersFields() {
+      return _memberType == 4
+          ? Column(
+              children: [
+                TextFormField(
+                  controller: _designationController,
+                  style: FormFieldStyle.formFieldTextStyle,
+                  maxLength: 50,
+                  keyboardType: TextInputType.text,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Designation",
+                  ),
+                ),
+                SizedBox(height: _height),
+                TextFormField(
+                  controller: _departmentNameController,
+                  style: FormFieldStyle.formFieldTextStyle,
+                  maxLength: 50,
+                  keyboardType: TextInputType.text,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Department Name",
+                  ),
+                ),
+                SizedBox(height: _height),
+                DropdownButtonFormField<SiteBrandList>(
+                  value: _siteBrandList,
+                  onChanged: (value) {
+                    setState(() {
+                      _siteBrandList = value;
+                      _preferredBrandId = _siteBrandList.id;
+                    });
+                  },
+                  items: siteBrandList
+                          .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.5,
+                                    child: Text(e.brandName+" - "+e.productName)),
+                              ))
+                          .toList(),
+                  style: FormFieldStyle.formFieldTextStyle,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                      labelText: "Preferred Brand"),
+                ),
+                SizedBox(height: _height),
+                TextFormField(
+                  controller: _dateMarriageAnnController,
+                  readOnly: true,
+                  onTap: () {
+                    setState(() {
+                      _selectMarriageAnniversaryDate();
+                    });
+                  },
+                  style: FormFieldStyle.formFieldTextStyle,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Marriage Anniversary Date",
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 12),
+                      child: Icon(
+                        Icons.calendar_today,
+                        size: 20,
+                        color: HexColor('#F9A61A'),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: _height),
+              ],
+            )
+          : Container();
+    }
+
+    ;
+
+    final firmName = TextFormField(
+      controller: _firmNameController,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Firm Name",
+      ),
+    );
+
 /*
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -841,7 +958,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                               SizedBox(height: _height),
                               memberDropDwn,
                               SizedBox(height: _height),
+                              engineersFields(),
+                              SizedBox(height: _height),
                               birthDate,
+                              SizedBox(height: _height),
+                              firmName,
                               SizedBox(height: _height),
                               fatherName,
                               SizedBox(height: _height),
@@ -1010,6 +1131,20 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     });
   }
 
+  Future _selectMarriageAnniversaryDate() async {
+    DateTime _picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(1950),
+        lastDate: new DateTime.now());
+    setState(() {
+      var _date;
+      _date = new DateFormat('yyyy-MM-dd').format(_picked);
+      _dateMarriageAnnController.text = _date;
+      // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
+    });
+  }
+
   // Future _selectEnrollmentDate() async {
   //   DateTime _picked = await showDatePicker(
   //       context: context,
@@ -1140,7 +1275,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       "siteAssignedCount": int.tryParse(_potentialSiteController.text),
       "stateId": stateId,
       "stateName": stateName,
-      "taluka": _talukaController.text
+      "taluka": _talukaController.text,
+
+      "designation": _designationController.text,
+      "departmentName": _departmentNameController.text,
+      "preferredBrandId": _preferredBrandId,
+      "dateOfMarriageAnniversary": _dateMarriageAnnController.text,
+      "firmName": _firmNameController.text
     });
 
     print('PARAMS: ${json.encode(_influencerRequestModel)}');

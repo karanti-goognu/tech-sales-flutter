@@ -54,7 +54,15 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   TextEditingController _pincodeController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
 
+  // If Engineer Type
+  TextEditingController _designationController = TextEditingController();
+  TextEditingController _departmentNameController = TextEditingController();
+  int _preferredBrandId;
+  TextEditingController _dateMarriageAnnController = TextEditingController();
+  TextEditingController _firmNameController = TextEditingController();
+
   var _date = 'Date of Birth*';
+
   //var _enrollmentDate = 'Enrollment Date';
   bool _isVisible = true;
   bool _isSecondVisible = false;
@@ -404,6 +412,90 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       validator: (value) => value == null ? 'Please select member type' : null,
     );
 
+    Widget engineersFields() {
+      return _memberType == 4
+          ? Column(
+              children: [
+                TextFormField(
+                  controller: _designationController,
+                  style: FormFieldStyle.formFieldTextStyle,
+                  maxLength: 50,
+                  keyboardType: TextInputType.text,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Designation",
+                  ),
+                ),
+                SizedBox(height: _height),
+                TextFormField(
+                  controller: _departmentNameController,
+                  style: FormFieldStyle.formFieldTextStyle,
+                  maxLength: 50,
+                  keyboardType: TextInputType.text,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Department Name",
+                  ),
+                ),
+                SizedBox(height: _height),
+                DropdownButtonFormField(
+                  onChanged: (value) {
+                    setState(() {
+                     _preferredBrandId = value;
+                    });
+                  },
+                  items: (_influencerTypeModel == null ||
+                          _influencerTypeModel.response.siteBrandList ==
+                              null)
+                      ? []
+                      : _influencerTypeModel.response.siteBrandList
+                          .map((e) => DropdownMenuItem(
+                                value: e.id,
+                                child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.5,
+                                    child: Text(e.brandName+" - "+e.productName)),
+                              ))
+                          .toList(),
+                  style: FormFieldStyle.formFieldTextStyle,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                      labelText: "Preferred Brand"),
+                ),
+                SizedBox(height: _height),
+                TextFormField(
+                  controller: _dateMarriageAnnController,
+                  readOnly: true,
+                  onTap: () {
+                    setState(() {
+                      _selectMarriageAnniversaryDate();
+                    });
+                  },
+                  style: FormFieldStyle.formFieldTextStyle,
+                  decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Marriage Anniversary Date",
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                      child: Icon(
+                        Icons.calendar_today,
+                        size: 20,
+                        color: HexColor('#F9A61A'),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: _height),
+              ],
+            )
+          : Container();
+    };
+
+    final firmName = TextFormField(
+      controller: _firmNameController,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Firm Name",
+      ),
+    );
+
     final qualification = TextFormField(
       controller: _qualificationController,
       // validator: (value) {
@@ -737,7 +829,11 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                               SizedBox(height: _height),
                               memberDropDwn,
                               SizedBox(height: _height),
+                              engineersFields(),
+                              SizedBox(height: _height),
                               birthDate,
+                              SizedBox(height: _height),
+                              firmName,
                               SizedBox(height: _height),
                               fatherName,
                               SizedBox(height: _height),
@@ -816,6 +912,21 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
     });
   }
+
+  Future _selectMarriageAnniversaryDate() async {
+    DateTime _picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(1950),
+        lastDate: new DateTime.now());
+    setState(() {
+      var _date;
+      _date = new DateFormat('yyyy-MM-dd').format(_picked);
+      _dateMarriageAnnController.text = _date;
+      // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
+    });
+  }
+
 
   // Future _selectEnrollmentDate() async {
   //   DateTime _picked = await showDatePicker(
@@ -946,7 +1057,13 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       "siteAssignedCount": int.tryParse(_potentialSiteController.text),
       "stateId": stateId,
       "stateName": stateName,
-      "taluka": _talukaController.text
+      "taluka": _talukaController.text,
+
+      "designation": _designationController.text,
+      "departmentName": _departmentNameController.text,
+      "preferredBrandId": _preferredBrandId,
+      "dateOfMarriageAnniversary": _dateMarriageAnnController.text,
+      "firmName": _firmNameController.text
     });
 
     //  InfluencerRequestModel _request = InfluencerRequestModel(

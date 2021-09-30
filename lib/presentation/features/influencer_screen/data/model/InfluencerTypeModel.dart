@@ -24,13 +24,15 @@ class Response {
   List<InfluencerTypeList> influencerTypeList;
   List<InfluencerCategoryList> influencerCategoryList;
   List<InfluencerSourceList> influencerSourceList;
+  List<SiteBrandList> siteBrandList;
 
   Response(
       {this.respCode,
         this.respMsg,
         this.influencerTypeList,
         this.influencerCategoryList,
-        this.influencerSourceList});
+        this.influencerSourceList,
+        this.siteBrandList});
 
   Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -53,6 +55,13 @@ class Response {
         influencerSourceList.add(new InfluencerSourceList.fromJson(v));
       });
     }
+
+    if (json['siteBrandList'] != null) {
+      siteBrandList = new List<SiteBrandList>();
+      json['siteBrandList'].forEach((v) {
+        siteBrandList.add(new SiteBrandList.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -67,10 +76,17 @@ class Response {
       data['influencerCategoryList'] =
           this.influencerCategoryList.map((v) => v.toJson()).toList();
     }
+
     if (this.influencerSourceList != null) {
       data['influencerSourceList'] =
           this.influencerSourceList.map((v) => v.toJson()).toList();
     }
+
+    if (this.siteBrandList != null) {
+      data['siteBrandList'] =
+          this.siteBrandList.map((v) => v.toJson()).toList();
+    }
+
     return data;
   }
 }
@@ -131,6 +147,31 @@ class InfluencerSourceList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['inflSourceId'] = this.inflSourceId;
     data['inflSourceText'] = this.inflSourceText;
+    return data;
+  }
+}
+
+class SiteBrandList {
+  int id;
+  String brandName;
+  String productName;
+  String isPrimary;
+
+  SiteBrandList({this.id, this.brandName,this.productName,this.isPrimary});
+
+  SiteBrandList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    brandName = json['brandName'];
+    productName = json['productName'];
+    isPrimary = json['isPrimary'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['brandName'] = this.brandName;
+    data['productName'] = this.productName;
+    data['isPrimary'] = this.isPrimary;
     return data;
   }
 }

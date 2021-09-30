@@ -199,7 +199,8 @@ class MyApiClient {
       request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       // print("Request Body/Fields :: " + request.fields.toString());
-      // print("Headers"+ request.headers.toString());
+       //print("Headers"+ request.headers.toString());
+       print("Headers "+ json.encode(updateServiceRequest));
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
@@ -236,7 +237,7 @@ class MyApiClient {
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.srComplaintView+empID+'&id='+id;
-      // print(userSecretKey);
+      print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);

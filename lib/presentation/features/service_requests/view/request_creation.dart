@@ -94,7 +94,6 @@ class _RequestCreationState extends State<RequestCreation> {
   final _srCreationFormKey = GlobalKey<FormState>();
   TextEditingController _requestSubType = TextEditingController();
   TextEditingController _severity = TextEditingController();
-  TextEditingController _siteID = TextEditingController();
   TextEditingController _customerID = TextEditingController();
   TextEditingController _requestorContact = TextEditingController();
   TextEditingController _requestorName = TextEditingController();

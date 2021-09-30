@@ -25,6 +25,7 @@ class Response {
   List<InfluencerTypeEntitiesList> influencerTypeEntitiesList;
   List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList;
   List<InfluencerSourceList> influencerSourceList;
+  List<SiteBrandList> siteBrandList;
 
   Response(
       {this.respCode,
@@ -32,7 +33,8 @@ class Response {
         this.influencerDetails,
         this.influencerTypeEntitiesList,
         this.influencerCategoryEntitiesList,
-        this.influencerSourceList});
+        this.influencerSourceList,
+        this.siteBrandList});
 
   Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -61,6 +63,14 @@ class Response {
         influencerSourceList.add(new InfluencerSourceList.fromJson(v));
       });
     }
+
+    if (json['siteBrandList'] != null) {
+      siteBrandList = new List<SiteBrandList>();
+      json['siteBrandList'].forEach((v) {
+        siteBrandList.add(new SiteBrandList.fromJson(v));
+      });
+    }
+
   }
 
   Map<String, dynamic> toJson() {
@@ -82,6 +92,12 @@ class Response {
       data['influencerSourceList'] =
           this.influencerSourceList.map((v) => v.toJson()).toList();
     }
+
+    if (this.siteBrandList != null) {
+      data['siteBrandList'] =
+          this.siteBrandList.map((v) => v.toJson()).toList();
+    }
+
     return data;
   }
 }
@@ -119,6 +135,12 @@ class InfluencerDetails {
   String email;
   String ilpregFlag;
 
+  String designation;
+  String departmentName;
+  int preferredBrandId;
+  String dateOfMarriageAnniversary;
+  String firmName;
+
   InfluencerDetails(
       {this.id,
         this.inflContactNumber,
@@ -150,7 +172,13 @@ class InfluencerDetails {
         this.inflEnrollmentSourceId,
         this.baseCity,
         this.email,
-        this.ilpregFlag});
+        this.ilpregFlag,
+
+        this.designation,
+        this.departmentName,
+        this.preferredBrandId,
+        this.dateOfMarriageAnniversary,
+        this.firmName});
 
   InfluencerDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -184,6 +212,12 @@ class InfluencerDetails {
     baseCity = json['baseCity'];
     email = json['email'];
     ilpregFlag = json['ilpregFlag'];
+
+    designation = json['designation'];
+    departmentName = json['departmentName'];
+    preferredBrandId = json['preferredBrandId'];
+    dateOfMarriageAnniversary = json['dateOfMarriageAnniversary'];
+    firmName = json['firmName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -219,6 +253,12 @@ class InfluencerDetails {
     data['baseCity'] = this.baseCity;
     data['email'] = this.email;
     data['ilpregFlag'] = this.ilpregFlag;
+
+    data['designation'] = this.designation;
+    data['departmentName'] = this.departmentName;
+    data['preferredBrandId'] = this.preferredBrandId;
+    data['dateOfMarriageAnniversary'] = this.dateOfMarriageAnniversary;
+    data['firmName'] = this.firmName;
     return data;
   }
 }
@@ -280,6 +320,31 @@ class InfluencerSourceList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['inflSourceId'] = this.inflSourceId;
     data['inflSourceText'] = this.inflSourceText;
+    return data;
+  }
+}
+
+class SiteBrandList {
+  int id;
+  String brandName;
+  String productName;
+  String isPrimary;
+
+  SiteBrandList({this.id, this.brandName,this.productName,this.isPrimary});
+
+  SiteBrandList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    brandName = json['brandName'];
+    productName = json['productName'];
+    isPrimary = json['isPrimary'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['brandName'] = this.brandName;
+    data['productName'] = this.productName;
+    data['isPrimary'] = this.isPrimary;
     return data;
   }
 }

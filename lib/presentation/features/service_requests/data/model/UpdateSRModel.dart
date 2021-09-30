@@ -5,6 +5,8 @@ class UpdateSRModel {
   String updatedBy;
   List<SrComplaintAction> srComplaintAction;
   List<SrcActionPhotosEntity> srcActionPhotosEntity;
+  String coverBlockProvidedNo;
+  String formwarkRemovalDate;
 
   UpdateSRModel(
       {this.id,
@@ -12,7 +14,9 @@ class UpdateSRModel {
         this.resoulutionStatus,
         this.updatedBy,
         this.srComplaintAction,
-        this.srcActionPhotosEntity});
+        this.srcActionPhotosEntity,
+        this.coverBlockProvidedNo,
+        this.formwarkRemovalDate});
 
   UpdateSRModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -31,6 +35,9 @@ class UpdateSRModel {
         srcActionPhotosEntity.add(new SrcActionPhotosEntity.fromJson(v));
       });
     }
+
+    coverBlockProvidedNo = json['coverBlockProvidedNo'];
+    formwarkRemovalDate = json['formwarkRemovalDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +54,9 @@ class UpdateSRModel {
       data['srcActionPhotosEntity'] =
           this.srcActionPhotosEntity.map((v) => v.toJson()).toList();
     }
+
+    data['coverBlockProvidedNo'] = this.coverBlockProvidedNo;
+    data['formwarkRemovalDate'] = this.formwarkRemovalDate;
     return data;
   }
 }
@@ -67,8 +77,6 @@ class SrComplaintAction {
   String comment;
   String nextVisitDate;
 
-  String coverBlockProvidedNo;
-  String formwarkRemovalDate;
   String typeOfComplaint;
   String productVariety;
   String balanceQtyinBags;
@@ -96,8 +104,6 @@ class SrComplaintAction {
         this.comment,
         this.nextVisitDate,
 
-        this.coverBlockProvidedNo,
-        this.formwarkRemovalDate,
         this.typeOfComplaint,
         this.productVariety,
         this.balanceQtyinBags,
@@ -126,8 +132,6 @@ class SrComplaintAction {
     comment = json['comment'];
     nextVisitDate = json['nextVisitDate'];
 
-    coverBlockProvidedNo = json['coverBlockProvidedNo'];
-    formwarkRemovalDate = json['formwarkRemovalDate'];
     typeOfComplaint = json['typeOfComplaint'];
     productVariety = json['productVariety'];
     balanceQtyinBags = json['balanceQtyinBags'];
@@ -157,8 +161,6 @@ class SrComplaintAction {
     data['comment'] = this.comment;
     data['nextVisitDate'] = this.nextVisitDate;
 
-    data['coverBlockProvidedNo'] = this.coverBlockProvidedNo;
-    data['formwarkRemovalDate'] = this.formwarkRemovalDate;
     data['typeOfComplaint'] = this.typeOfComplaint;
     data['productVariety'] = this.productVariety;
     data['balanceQtyinBags'] = this.balanceQtyinBags;
