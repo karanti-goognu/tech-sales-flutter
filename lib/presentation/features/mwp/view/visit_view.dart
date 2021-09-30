@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +30,16 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   String selectedDateString;
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
+
+  var _contactController = TextEditingController();
+  var _nameController = TextEditingController();
+  var _typeController = TextEditingController();
+  var _categoryController = TextEditingController();
+  var _ilpController = TextEditingController();
+  var _siteCountController = TextEditingController();
+  var _mPotentialController = TextEditingController();
+  var _mLiftingController = TextEditingController();
+  bool _isVisibleContact = false;
 
   @override
   void initState() {
@@ -48,6 +60,63 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+
+    final name = TextFormField(
+      controller: _nameController,
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Influencer Name  "),
+    );
+
+    final type = TextFormField(
+      controller: _typeController,
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Member Type"),
+    );
+
+    final category = TextFormField(
+      controller: _categoryController,
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Influencer category"),
+    );
+
+    final iplMember = TextFormField(
+      controller: _ilpController,
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Membership "),
+    );
+
+    final sitesCount = TextFormField(
+      controller: _siteCountController,
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "No. of active sites "),
+    );
+
+    final mPotential = TextFormField(
+      controller: _mPotentialController,
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Monthly potential"),
+    );
+
+    final mLifting = TextFormField(
+      controller: _mLiftingController,
+      readOnly: true,
+      style: FormFieldStyle.formFieldTextStyle,
+      keyboardType: TextInputType.text,
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Monthly Lifting"),
+    );
+
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,12 +163,15 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                                 _addEventController.siteIdText = "Site ID";
                                 break;
                               case "LEADS":
+                                _isVisibleContact = false;
                                 _addEventController.siteIdText = "Lead ID";
                                 break;
                               case "CONVERSION OPPORTUNITY":
+                                _isVisibleContact = false;
                                 _addEventController.siteIdText = "Site ID";
                                 break;
                               case "COUNTER":
+                                _isVisibleContact = false;
                                 _addEventController.siteIdText = "Counter Code";
                                 break;
                               case "CONTRACTOR":
@@ -148,6 +220,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                           _addEventController.visitSiteId = val.dealerId;
                         })
                     : TextFormField(
+                        controller: _contactController,
                         validator: (value) {
                           if (value.isEmpty) {
                             return "${_addEventController.siteIdText} can't be empty";
@@ -161,7 +234,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                           return null;
                         },
                         onChanged: (_) {
-                          _addEventController.visitSiteId = _.toString();
+                          //_addEventController.visitSiteId = _.toString();
+                            apiCallForGetInf(_);
+
                         },
                         maxLength: _addEventController.siteIdText ==
                                 "Influencer Contact"
@@ -173,7 +248,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                             fontFamily: "Muli"),
                         keyboardType: _addEventController.siteIdText ==
                                 "Influencer Contact"
-                            ? TextInputType.phone
+                            ? TextInputType.numberWithOptions(signed: true)
                             : TextInputType.text,
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly
@@ -182,6 +257,30 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                             "${_addEventController.siteIdText}", false),
                       ),
                 SizedBox(height: 16),
+    // Obx(
+    // () =>
+                Visibility(
+                  visible: _isVisibleContact,
+                  child: Column(
+                    children: [
+                      name,
+                      SizedBox(height: 16),
+                      category,
+                      SizedBox(height: 16),
+                      iplMember,
+                      SizedBox(height: 16),
+                      type,
+                      SizedBox(height: 16),
+                      sitesCount,
+                      SizedBox(height: 16),
+                      mPotential,
+                      SizedBox(height: 16),
+                      mLifting,
+                      SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+                    //),
                 Obx(
                   () => TextFormField(
                     decoration: FormFieldStyle.buildInputDecoration(
@@ -295,6 +394,46 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
             ),
           ),
         ]);
+  }
+
+  apiCallForGetInf(String value) async {
+    InfController _infController = Get.find();
+    if(value.length < 10){
+      _nameController.text = "";
+      _typeController.text = "";
+      _categoryController.text = "";
+      _ilpController.text = "";
+      _siteCountController.text = "";
+      _mPotentialController.text = "";
+      _mLiftingController.text = "";
+      _isVisibleContact = false;
+    }
+    else if (value.length == 10) {
+      _infController.getInfData(value).then((data) {
+        setState(() {
+          if (data != null) {
+            if (data.respCode == "NUM404") {
+              _addEventController.visitSiteId = "";
+              _contactController.text = "";
+              Get.dialog(CustomDialogs().showDialogInfNotPresent("register this influencer to proceed"),
+                  barrierDismissible: false);
+
+            } else if (data.respCode == "DM1002") {
+              _addEventController.visitSiteId = data.influencerModel.inflContact;
+              _nameController.text = data.influencerModel.inflName;
+              _typeController.text = data.influencerModel.influencerTypeText;
+              _categoryController.text = data.influencerModel.influencerCategoryText;
+              _ilpController.text = data.influencerModel.ilpMember;
+              _siteCountController.text = '${data.influencerModel.sitesCount}';
+              _mPotentialController.text = '${data.influencerModel.monthlyPotential}';
+              _mLiftingController.text = '${data.influencerModel.monthlyLifting}';
+              _isVisibleContact = true;
+            }
+          }
+        });
+        print('RESPONSE, ${data}');
+      });
+    }
   }
 
   InputDecoration _inputDecoration(String labelText, bool suffixStatus) {
