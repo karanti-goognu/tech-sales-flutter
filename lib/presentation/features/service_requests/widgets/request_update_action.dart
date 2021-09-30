@@ -35,7 +35,7 @@ class RequestUpdateAction extends StatefulWidget {
 }
 
 class _RequestUpdateActionState extends State<RequestUpdateAction> {
-  UpdateServiceRequestController updateServiceRequestController=Get.find();
+  UpdateServiceRequestController updateServiceRequestController = Get.find();
   UpdateSRModel _updateSRModel;
   UpdateServiceRequestController updateRequest = Get.find();
   Position _currentPosition = new Position();
@@ -61,9 +61,9 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   var _sampleToBeSent = new TextEditingController();
   var _detailsOfDemoConducted = new TextEditingController();
   var _bestBeforeDate = new TextEditingController();
+  var _mtController = new TextEditingController();
   String _selectedSampleCollected;
   String _selectedDemoConducted;
-
 
   Map<String, bool> values = {
     'OPC': false,
@@ -274,14 +274,13 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          padding: EdgeInsets.only(top: 5,left: 2),
-                          child: Text(
-                            "Type of complaint",
+                          padding: EdgeInsets.only(top: 5, left: 2),
+                          child: Text("Type of complaint",
                               style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "Muli",
-                                fontWeight: FontWeight.w500,)
-                          ),
+                                fontWeight: FontWeight.w500,
+                              )),
                         ),
                       ),
                       Row(
@@ -295,7 +294,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     groupValue: _selectedTypeOfComplain,
                                     onChanged: (value) {
                                       setState(() {
-                                        _selectedTypeOfComplain=value;
+                                        _selectedTypeOfComplain = value;
                                       });
                                     }),
                                 Expanded(
@@ -313,7 +312,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     groupValue: _selectedTypeOfComplain,
                                     onChanged: (value) {
                                       setState(() {
-                                        _selectedTypeOfComplain=value;
+                                        _selectedTypeOfComplain = value;
                                       });
                                     }),
                                 Expanded(child: Text('Verbal'.toUpperCase()))
@@ -349,318 +348,427 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                   value == null ? 'This field cannot be empty' : null,
             ),
             SizedBox(height: 16),
-            widget.requestType == "Complaint".toUpperCase() && _productComplaint == "YES"
+            widget.requestType == "Complaint".toUpperCase() &&
+                    _productComplaint == "YES"
                 ? Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 5,left: 2),
-                    child: Text(
-                        "Variety",
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          padding: EdgeInsets.only(top: 5, left: 2),
+                          child: Text("Variety",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontFamily: "Muli",
+                                fontWeight: FontWeight.w500,
+                              )),
+                        ),
+                      ),
+                      Container(
+                        height: 40,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: values.keys.map((String key) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 0.23,
+                              child: new CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                dense: true,
+                                contentPadding:
+                                    EdgeInsets.only(top: 0, left: 0, right: 0),
+                                title: new Text(
+                                  key,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                value: values[key],
+                                checkColor: Colors.white,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    values[key] = value;
+                                  });
+                                },
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Column(
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10.0, bottom: 20, left: 5),
+                            child: Text(
+                              "Balance quantity",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  // color: HexColor("#000000DE"),
+                                  fontFamily: "Muli"),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: TextFormField(
+                                    controller: _balanceQuantity,
+                                    onChanged: (_) {
+                                      setState(() {
+                                        if (_balanceQuantity.text == null ||
+                                            _balanceQuantity.text == "") {
+                                          _mtController.clear();
+                                        } else {
+                                          _mtController.text = (int.parse(
+                                                      _balanceQuantity.text) /
+                                                  20)
+                                              .toString();
+                                        }
+                                      });
+                                    },
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r"[0-9.]")),
+                                      TextInputFormatter.withFunction(
+                                          (oldValue, newValue) {
+                                        try {
+                                          final text = newValue.text;
+                                          if (text.isNotEmpty)
+                                            double.parse(text);
+                                          return newValue;
+                                        } catch (e) {}
+                                        return oldValue;
+                                      }),
+                                    ],
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                      labelText: "Bags",
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: TextFormField(
+                                    controller: _mtController,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (_mtController.text == null ||
+                                            _mtController.text == "") {
+                                          _balanceQuantity.clear();
+                                        } else {
+                                          _balanceQuantity.text = (double.parse(
+                                                      _mtController.text) *
+                                                  20)
+                                              .toInt()
+                                              .toString();
+                                        }
+                                      });
+                                    },
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r"[0-9.]")),
+                                      TextInputFormatter.withFunction(
+                                              (oldValue, newValue) {
+                                            try {
+                                              final text = newValue.text;
+                                              if (text.isNotEmpty)
+                                                double.parse(text);
+                                              return newValue;
+                                            } catch (e) {}
+                                            return oldValue;
+                                          }),
+                                    ],
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                      labelText: "MT",
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      // TextFormField(
+                      //   controller: _balanceQuantity,
+                      //   style: FormFieldStyle.formFieldTextStyle,
+                      //   keyboardType: TextInputType.number,
+                      //   inputFormatters: [
+                      //     FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                      //     TextInputFormatter.withFunction((oldValue, newValue) {
+                      //       try {
+                      //         final text = newValue.text;
+                      //         if (text.isNotEmpty) double.parse(text);
+                      //         return newValue;
+                      //       } catch (e) {}
+                      //       return oldValue;
+                      //     }),
+                      //   ],
+                      //   decoration: FormFieldStyle.buildInputDecoration(
+                      //     labelText: "Balance quantity",
+                      //   ),
+                      // ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _billNo,
+                        style: FormFieldStyle.formFieldTextStyle,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                          TextInputFormatter.withFunction((oldValue, newValue) {
+                            try {
+                              final text = newValue.text;
+                              if (text.isNotEmpty) double.parse(text);
+                              return newValue;
+                            } catch (e) {}
+                            return oldValue;
+                          }),
+                        ],
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Bill No.",
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _weekNo,
+                        style: FormFieldStyle.formFieldTextStyle,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                          TextInputFormatter.withFunction((oldValue, newValue) {
+                            try {
+                              final text = newValue.text;
+                              if (text.isNotEmpty) double.parse(text);
+                              return newValue;
+                            } catch (e) {}
+                            return oldValue;
+                          }),
+                        ],
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Week No.",
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _bestBeforeDate,
+                        readOnly: true,
+                        onChanged: (data) {
+                          // setState(() {
+                          //   _contactName.text = data;
+                          // });
+                        },
                         style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: "Muli",
-                          fontWeight: FontWeight.w500,)
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 40,
-                  child:
-                  ListView(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    physics:const NeverScrollableScrollPhysics() ,
-                    children: values.keys.map((String key) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width * 0.23,
-                        child: new CheckboxListTile(
-                          controlAffinity: ListTileControlAffinity.leading,
-                          dense: true,
-                          contentPadding: EdgeInsets.only(top:0,left:0,right:0),
-                          title: new Text(key,style: TextStyle(fontSize:12,fontWeight: FontWeight.w700),),
-                          value: values[key],
-                          checkColor: Colors.white,
-                          onChanged: (bool value) {
-                            setState(() {
-                              values[key] = value;
-                            });
-                          },
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                SizedBox(height: 15),
-                TextFormField(
-                  controller: _balanceQuantity,
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                    TextInputFormatter.withFunction((oldValue, newValue) {
-                      try {
-                        final text = newValue.text;
-                        if (text.isNotEmpty) double.parse(text);
-                        return newValue;
-                      } catch (e) {}
-                      return oldValue;
-                    }),
-                  ],
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Balance quantity",),
-
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: _billNo,
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                    TextInputFormatter.withFunction((oldValue, newValue) {
-                      try {
-                        final text = newValue.text;
-                        if (text.isNotEmpty) double.parse(text);
-                        return newValue;
-                      } catch (e) {}
-                      return oldValue;
-                    }),
-                  ],
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Bill No.",),
-
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: _weekNo,
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                    TextInputFormatter.withFunction((oldValue, newValue) {
-                      try {
-                        final text = newValue.text;
-                        if (text.isNotEmpty) double.parse(text);
-                        return newValue;
-                      } catch (e) {}
-                      return oldValue;
-                    }),
-                  ],
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Week No.",),
-
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: _bestBeforeDate,
-                  readOnly: true,
-                  onChanged: (data) {
-                    // setState(() {
-                    //   _contactName.text = data;
-                    // });
-                  },
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: ColorConstants.backgroundColorBlue,
-                          //color: HexColor("#0000001F"),
-                          width: 1.0),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: Colors.black26, width: 1.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: Colors.black26, width: 1.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: Colors.red, width: 1.0),
-                    ),
-                    labelText: "Best Before Date",
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        Icons.date_range_rounded,
-                        size: 22,
-                        color: ColorConstants.clearAllTextColor,
-                      ),
-                      onPressed: () async {
-                        print("here");
-                        final DateTime picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2001),
-                          lastDate: DateTime.now(),
-                        );
-                        setState(() {
-                          final DateFormat formatter =
-                          DateFormat("yyyy-MM-dd");
-                          if (picked != null) {
-                            final String formattedDate =
-                            formatter.format(picked);
-                            _bestBeforeDate.text = formattedDate;
-                          }
-                        });
-                      },
-                    ),
-                    filled: false,
-                    focusColor: Colors.black,
-                    isDense: false,
-                    labelStyle: TextStyle(
-                        fontFamily: "Muli",
-                        color: ColorConstants.inputBoxHintColorDark,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16.0),
-                    fillColor: ColorConstants.backgroundColor,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: EdgeInsets.only(top: 5,left: 2),
-                        child: Text(
-                            "Sample Collected",
-                            style: TextStyle(
-                              fontSize: 15,
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: ColorConstants.backgroundColorBlue,
+                                //color: HexColor("#0000001F"),
+                                width: 1.0),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black26, width: 1.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black26, width: 1.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
+                          ),
+                          labelText: "Best Before Date",
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              Icons.date_range_rounded,
+                              size: 22,
+                              color: ColorConstants.clearAllTextColor,
+                            ),
+                            onPressed: () async {
+                              print("here");
+                              final DateTime picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2001),
+                                lastDate: DateTime.now(),
+                              );
+                              setState(() {
+                                final DateFormat formatter =
+                                    DateFormat("yyyy-MM-dd");
+                                if (picked != null) {
+                                  final String formattedDate =
+                                      formatter.format(picked);
+                                  _bestBeforeDate.text = formattedDate;
+                                }
+                              });
+                            },
+                          ),
+                          filled: false,
+                          focusColor: Colors.black,
+                          isDense: false,
+                          labelStyle: TextStyle(
                               fontFamily: "Muli",
-                              fontWeight: FontWeight.w500,)
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16.0),
+                          fillColor: ColorConstants.backgroundColor,
                         ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Expanded(
-                          child: Row(
+                      SizedBox(height: 10),
+                      Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              padding: EdgeInsets.only(top: 5, left: 2),
+                              child: Text("Sample Collected",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Radio(
-                                  value: 'Yes'.toUpperCase(),
-                                  groupValue: _selectedSampleCollected,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedSampleCollected=value;
-                                    });
-                                  }),
                               Expanded(
-                                child: Text('Yes'.toUpperCase()),
-                              )
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                        value: 'Yes'.toUpperCase(),
+                                        groupValue: _selectedSampleCollected,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _selectedSampleCollected = value;
+                                          });
+                                        }),
+                                    Expanded(
+                                      child: Text('Yes'.toUpperCase()),
+                                    )
+                                  ],
+                                ),
+                                flex: 1,
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                        value: 'No'.toUpperCase(),
+                                        groupValue: _selectedSampleCollected,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _selectedSampleCollected = value;
+                                          });
+                                        }),
+                                    Expanded(child: Text('No'.toUpperCase()))
+                                  ],
+                                ),
+                                flex: 1,
+                              ),
                             ],
                           ),
-                          flex: 1,
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Radio(
-                                  value: 'No'.toUpperCase(),
-                                  groupValue: _selectedSampleCollected,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedSampleCollected=value;
-                                    });
-                                  }),
-                              Expanded(child: Text('No'.toUpperCase()))
-                            ],
-                          ),
-                          flex: 1,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: _sampleToBeSent,
-                  maxLength: 50,
-                  maxLines: 2,
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.text,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Sample to be sent",),
-
-                ),
-                SizedBox(height: 10),
-                Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: EdgeInsets.only(top: 5,left: 2),
-                        child: Text(
-                            "Demo Conducted",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "Muli",
-                              fontWeight: FontWeight.w500,)
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _sampleToBeSent,
+                        maxLength: 50,
+                        maxLines: 2,
+                        style: FormFieldStyle.formFieldTextStyle,
+                        keyboardType: TextInputType.text,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Sample to be sent",
                         ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Expanded(
-                          child: Row(
+                      SizedBox(height: 10),
+                      Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              padding: EdgeInsets.only(top: 5, left: 2),
+                              child: Text("Demo Conducted",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Radio(
-                                  value: 'Yes'.toUpperCase(),
-                                  groupValue: _selectedDemoConducted,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedDemoConducted=value;
-                                    });
-                                  }),
                               Expanded(
-                                child: Text('Yes'.toUpperCase()),
-                              )
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                        value: 'Yes'.toUpperCase(),
+                                        groupValue: _selectedDemoConducted,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _selectedDemoConducted = value;
+                                          });
+                                        }),
+                                    Expanded(
+                                      child: Text('Yes'.toUpperCase()),
+                                    )
+                                  ],
+                                ),
+                                flex: 1,
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                        value: 'No'.toUpperCase(),
+                                        groupValue: _selectedDemoConducted,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _selectedDemoConducted = value;
+                                          });
+                                        }),
+                                    Expanded(child: Text('No'.toUpperCase()))
+                                  ],
+                                ),
+                                flex: 1,
+                              ),
                             ],
                           ),
-                          flex: 1,
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _detailsOfDemoConducted,
+                        maxLength: 100,
+                        maxLines: 3,
+                        style: FormFieldStyle.formFieldTextStyle,
+                        keyboardType: TextInputType.text,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Details of demo conducted",
                         ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Radio(
-                                  value: 'No'.toUpperCase(),
-                                  groupValue: _selectedDemoConducted,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedDemoConducted=value;
-                                    });
-                                  }),
-                              Expanded(child: Text('No'.toUpperCase()))
-                            ],
-                          ),
-                          flex: 1,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: _detailsOfDemoConducted,
-                  maxLength: 100,
-                  maxLines: 3,
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.text,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Details of demo conducted",),
-
-                ),
-                SizedBox(height: 10),
-              ],
-            )
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  )
                 : Container(),
             widget.dept == 'TECHNICAL SERVICES'
                 ? DropdownButtonFormField(
@@ -873,12 +981,13 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         "resolutionStatusId": _resolutionStatus,
                         "comment": _comment.text,
                         "nextVisitDate": _nextVisitDate.text,
-
-                        "coverBlockProvidedNo": updateServiceRequestController.coverBlockProvidedNo.text,
-                        "formwarkRemovalDate": updateServiceRequestController.formwarkRemovalDate.text,
+                        "coverBlockProvidedNo": updateServiceRequestController
+                            .coverBlockProvidedNo.text,
+                        "formwarkRemovalDate": updateServiceRequestController
+                            .formwarkRemovalDate.text,
                         "typeOfComplaint": _selectedTypeOfComplain,
                         "productVariety": getCheckboxItems().toString(),
-                        "balanceQtyinBags":_balanceQuantity.text,
+                        "balanceQtyinBags": _balanceQuantity.text,
                         "billNumber": _billNo.text,
                         "weekNo": _weekNo.text,
                         "bestBeforeDate": _bestBeforeDate.text,
@@ -890,7 +999,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     ],
                     "srcActionPhotosEntity": imageDetails
                   });
-                  print("Data--> "+_updateSRModel.toJson().toString());
+                  print("Data--> " + _updateSRModel.toJson().toString());
                   updateRequest.getAccessKeyAndUpdateRequest(
                       _imageList, _updateSRModel);
                 }

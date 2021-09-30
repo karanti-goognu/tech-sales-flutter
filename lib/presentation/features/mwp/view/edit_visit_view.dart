@@ -32,8 +32,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
 
-
   TextEditingController _remarks = new TextEditingController();
+  TextEditingController _bagsController = new TextEditingController();
+  TextEditingController _mtController = new TextEditingController();
 
   VisitResponseModel visitResponseModel;
 
@@ -56,6 +57,12 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   @override
   void initState() {
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
+    _bagsController.text = _addEventController.dspAvailableQty;
+    if (_bagsController.text == null || _bagsController.text == "") {
+      _mtController.clear();
+    } else {
+      _mtController.text = (int.parse(_bagsController.text) / 20).toString();
+    }
 
     super.initState();
   }
@@ -274,11 +281,14 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                     ),
                                                     activeColor: Colors.black,
                                                     dense: true,
-                                                    value: (_addEventController.isDspAvailable == "Y")?true:false,
+                                                    value: (_addEventController
+                                                                .isDspAvailable ==
+                                                            "Y")
+                                                        ? true
+                                                        : false,
                                                     onChanged: (newValue) {
                                                       setState(() {
-                                                        if (newValue ==
-                                                            true) {
+                                                        if (newValue == true) {
                                                           _addEventController
                                                                   .isDspAvailable =
                                                               "Y";
@@ -295,45 +305,214 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                   )),
                                               SizedBox(height: 16),
                                               Visibility(
-                                                visible: (_addEventController.isDspAvailable == "Y")?true:false,
-                                                child: TextFormField(
-                                                  // key: Key(_addEventController
-                                                  //     .dspAvailableQty),
-                                                  initialValue: (_addEventController
-                                                              .dspAvailableQty ==
-                                                          null || _addEventController
-                                                      .dspAvailableQty == "null")
-                                                      ? ""
-                                                      : _addEventController
-                                                          .dspAvailableQty,
-                                                  validator: (value) {
-                                                    if (value.isEmpty) {
-                                                      return 'Please enter DSP availble quantity';
-                                                    }
-                                                    return null;
-                                                  },
-                                                  onChanged: (_) {
-                                                    _addEventController
-                                                            .dspAvailableQty =
-                                                        _.toString();
-                                                  },
-                                                  style: FormFieldStyle
-                                                      .formFieldTextStyle,
-                                                  keyboardType: TextInputType
-                                                      .numberWithOptions(
-                                                          signed: true,
-                                                          decimal: false),
-                                                  inputFormatters: <
-                                                      TextInputFormatter>[
-                                                    FilteringTextInputFormatter
-                                                        .digitsOnly
+                                                visible: (_addEventController
+                                                            .isDspAvailable ==
+                                                        "Y")
+                                                    ? true
+                                                    : false,
+                                                child: Column(
+                                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 10.0,
+                                                              bottom: 20,
+                                                              left: 5),
+                                                      child: Text(
+                                                        "DSP Availble Quantity",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                            fontSize: 15,
+                                                            // color: HexColor("#000000DE"),
+                                                            fontFamily: "Muli"),
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right:
+                                                                        10.0),
+                                                            child:
+                                                                TextFormField(
+                                                              controller: _bagsController,
+                                                              // initialValue: (_addEventController
+                                                              //                   .dspAvailableQty ==
+                                                              //               null || _addEventController
+                                                              //           .dspAvailableQty == "null")
+                                                              //           ? ""
+                                                              //           : _addEventController
+                                                              //               .dspAvailableQty,
+                                                              onChanged: (_) {
+                                                                setState(() {
+                                                                  if (_bagsController
+                                                                              .text ==
+                                                                          null ||
+                                                                      _bagsController
+                                                                              .text ==
+                                                                          "") {
+                                                                    _mtController
+                                                                        .clear();
+                                                                  } else {
+                                                                    _mtController
+                                                                        .text = (int.parse(_bagsController.text) /
+                                                                            20)
+                                                                        .toString();
+                                                                  }
+                                                                  _addEventController
+                                                                          .dspAvailableQty = _bagsController.text;
+                                                                });
+                                                              },
+                                                                  style: FormFieldStyle.formFieldTextStyle,
+                                                                  keyboardType: TextInputType.number,
+                                                                  inputFormatters: [
+                                                                    FilteringTextInputFormatter.allow(
+                                                                        RegExp(r"[0-9.]")),
+                                                                    TextInputFormatter.withFunction(
+                                                                            (oldValue, newValue) {
+                                                                          try {
+                                                                            final text = newValue.text;
+                                                                            if (text.isNotEmpty)
+                                                                              double.parse(text);
+                                                                            return newValue;
+                                                                          } catch (e) {}
+                                                                          return oldValue;
+                                                                        }),
+                                                                  ],
+                                                              validator:
+                                                                  (value) {
+                                                                if (value
+                                                                    .isEmpty) {
+                                                                  return 'Please enter Bags ';
+                                                                }
+
+                                                                return null;
+                                                              },
+
+
+                                                              decoration:
+                                                                  FormFieldStyle
+                                                                      .buildInputDecoration(
+                                                                labelText:
+                                                                    "Bags",
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 10.0),
+                                                            child:
+                                                                TextFormField(
+                                                              controller:
+                                                                  _mtController,
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  if (_mtController
+                                                                              .text ==
+                                                                          null ||
+                                                                      _mtController
+                                                                              .text ==
+                                                                          "") {
+                                                                    _bagsController
+                                                                        .clear();
+                                                                  } else {
+                                                                    _bagsController
+                                                                        .text = (double.parse(_mtController.text) *
+                                                                            20)
+                                                                        .toInt()
+                                                                        .toString();
+                                                                    _addEventController.dspAvailableQty = _bagsController.text;
+                                                                  }
+                                                                });
+                                                              },
+                                                              validator:
+                                                                  (value) {
+                                                                if (value
+                                                                    .isEmpty) {
+                                                                  return 'Please enter MT ';
+                                                                }
+
+                                                                return null;
+                                                              },
+                                                                  style: FormFieldStyle.formFieldTextStyle,
+                                                                  keyboardType: TextInputType.number,
+                                                                  inputFormatters: [
+                                                                    FilteringTextInputFormatter.allow(
+                                                                        RegExp(r"[0-9.]")),
+                                                                    TextInputFormatter.withFunction(
+                                                                            (oldValue, newValue) {
+                                                                          try {
+                                                                            final text = newValue.text;
+                                                                            if (text.isNotEmpty)
+                                                                              double.parse(text);
+                                                                            return newValue;
+                                                                          } catch (e) {}
+                                                                          return oldValue;
+                                                                        }),
+                                                                  ],
+                                                              decoration:
+                                                                  FormFieldStyle
+                                                                      .buildInputDecoration(
+                                                                labelText: "MT",
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ],
-                                                  decoration: FormFieldStyle
-                                                      .buildInputDecoration(
-                                                    labelText:
-                                                        "DSP Availble Quantity*",
-                                                  ),
                                                 ),
+                                                // TextFormField(
+                                                //   // key: Key(_addEventController
+                                                //   //     .dspAvailableQty),
+                                                //   initialValue: (_addEventController
+                                                //               .dspAvailableQty ==
+                                                //           null || _addEventController
+                                                //       .dspAvailableQty == "null")
+                                                //       ? ""
+                                                //       : _addEventController
+                                                //           .dspAvailableQty,
+                                                //   validator: (value) {
+                                                //     if (value.isEmpty) {
+                                                //       return 'Please enter DSP availble quantity';
+                                                //     }
+                                                //     return null;
+                                                //   },
+                                                //   onChanged: (_) {
+                                                //     _addEventController
+                                                //             .dspAvailableQty =
+                                                //         _.toString();
+                                                //   },
+                                                //   style: FormFieldStyle
+                                                //       .formFieldTextStyle,
+                                                //   keyboardType: TextInputType
+                                                //       .numberWithOptions(
+                                                //           signed: true,
+                                                //           decimal: false),
+                                                //   inputFormatters: <
+                                                //       TextInputFormatter>[
+                                                //     FilteringTextInputFormatter
+                                                //         .digitsOnly
+                                                //   ],
+                                                //   decoration: FormFieldStyle
+                                                //       .buildInputDecoration(
+                                                //     labelText:
+                                                //         "DSP Availble Quantity*",
+                                                //   ),
+                                                // ),
                                               ),
                                               SizedBox(height: 16),
                                             ],
