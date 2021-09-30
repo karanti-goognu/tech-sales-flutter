@@ -57,12 +57,17 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   @override
   void initState() {
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
+    setState(() {
+
+
     _bagsController.text = _addEventController.dspAvailableQty;
-    if (_bagsController.text == null || _bagsController.text == "") {
+    print("_bagsController${_bagsController.text}");
+    if (_bagsController.text == null || _bagsController.text == "" || _bagsController.text == "null") {
       _mtController.clear();
     } else {
       _mtController.text = (int.parse(_bagsController.text) / 20).toString();
     }
+    });
 
     super.initState();
   }
@@ -343,50 +348,36 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                         10.0),
                                                             child:
                                                                 TextFormField(
-                                                              controller: _bagsController,
-                                                              // initialValue: (_addEventController
-                                                              //                   .dspAvailableQty ==
-                                                              //               null || _addEventController
-                                                              //           .dspAvailableQty == "null")
-                                                              //           ? ""
-                                                              //           : _addEventController
-                                                              //               .dspAvailableQty,
+                                                              initialValue: (_addEventController
+                                                                                .dspAvailableQty ==
+                                                                            null || _addEventController
+                                                                        .dspAvailableQty == "null")
+                                                                        ? ""
+                                                                        : _addEventController
+                                                                            .dspAvailableQty,
                                                               onChanged: (_) {
                                                                 setState(() {
-                                                                  if (_bagsController
-                                                                              .text ==
-                                                                          null ||
-                                                                      _bagsController
-                                                                              .text ==
-                                                                          "") {
-                                                                    _mtController
-                                                                        .clear();
+                                                                  // if (_bagsController.text == null || _bagsController.text == "") {
+                                                                  //   _mtController.clear();
+                                                                  // } else {
+                                                                  //   _mtController.text = (int.parse(_bagsController.text) / 20).toString();
+                                                                  // }
+                                                                  if (_ == null || _ == "") {
+                                                                    _addEventController.isDspAvailablePt = "";
                                                                   } else {
-                                                                    _mtController
-                                                                        .text = (int.parse(_bagsController.text) /
-                                                                            20)
-                                                                        .toString();
+                                                                    _addEventController.isDspAvailablePt = (int.parse(_) / 20).toString();
                                                                   }
-                                                                  _addEventController
-                                                                          .dspAvailableQty = _bagsController.text;
+                                                                  _addEventController.dspAvailableQty = _.toString();
                                                                 });
                                                               },
-                                                                  style: FormFieldStyle.formFieldTextStyle,
-                                                                  keyboardType: TextInputType.number,
-                                                                  inputFormatters: [
-                                                                    FilteringTextInputFormatter.allow(
-                                                                        RegExp(r"[0-9.]")),
-                                                                    TextInputFormatter.withFunction(
-                                                                            (oldValue, newValue) {
-                                                                          try {
-                                                                            final text = newValue.text;
-                                                                            if (text.isNotEmpty)
-                                                                              double.parse(text);
-                                                                            return newValue;
-                                                                          } catch (e) {}
-                                                                          return oldValue;
-                                                                        }),
-                                                                  ],
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .phone,
+                                                              inputFormatters: <
+                                                                  TextInputFormatter>[
+                                                                FilteringTextInputFormatter
+                                                                    .digitsOnly
+                                                              ],
                                                               validator:
                                                                   (value) {
                                                                 if (value
@@ -397,7 +388,13 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                 return null;
                                                               },
 
-
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  color: ColorConstants
+                                                                      .inputBoxHintColor,
+                                                                  fontFamily:
+                                                                      "Muli"),
+                                                              // keyboardType: TextInputType.text,
                                                               decoration:
                                                                   FormFieldStyle
                                                                       .buildInputDecoration(
@@ -415,26 +412,19 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                     left: 10.0),
                                                             child:
                                                                 TextFormField(
-                                                              controller:
-                                                                  _mtController,
+                                                                  initialValue: _addEventController.isDspAvailablePt,
+                                                              // controller:
+                                                              //     _mtController,
                                                               onChanged:
                                                                   (value) {
                                                                 setState(() {
-                                                                  if (_mtController
-                                                                              .text ==
-                                                                          null ||
-                                                                      _mtController
-                                                                              .text ==
-                                                                          "") {
-                                                                    _bagsController
-                                                                        .clear();
+                                                                  if (value == null || value == "") {
+                                                                    //_bagsController.clear();
+                                                                    _addEventController.dspAvailableQty = "";
                                                                   } else {
-                                                                    _bagsController
-                                                                        .text = (double.parse(_mtController.text) *
-                                                                            20)
-                                                                        .toInt()
-                                                                        .toString();
-                                                                    _addEventController.dspAvailableQty = _bagsController.text;
+                                                                    //_bagsController.text = (double.parse(_mtController.text) * 20).toInt().toString();
+                                                                    _addEventController.dspAvailableQty = (double.parse(value) * 20).toInt().toString();
+                                                                    //_addEventController.dspAvailableQty = _bagsController.text;
                                                                   }
                                                                 });
                                                               },
@@ -447,22 +437,16 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
                                                                 return null;
                                                               },
-                                                                  style: FormFieldStyle.formFieldTextStyle,
-                                                                  keyboardType: TextInputType.number,
-                                                                  inputFormatters: [
-                                                                    FilteringTextInputFormatter.allow(
-                                                                        RegExp(r"[0-9.]")),
-                                                                    TextInputFormatter.withFunction(
-                                                                            (oldValue, newValue) {
-                                                                          try {
-                                                                            final text = newValue.text;
-                                                                            if (text.isNotEmpty)
-                                                                              double.parse(text);
-                                                                            return newValue;
-                                                                          } catch (e) {}
-                                                                          return oldValue;
-                                                                        }),
-                                                                  ],
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  color: ColorConstants
+                                                                      .inputBoxHintColor,
+                                                                  fontFamily:
+                                                                      "Muli"),
+                                                              keyboardType: TextInputType
+                                                                  .numberWithOptions(
+                                                                      decimal:
+                                                                          true),
                                                               decoration:
                                                                   FormFieldStyle
                                                                       .buildInputDecoration(

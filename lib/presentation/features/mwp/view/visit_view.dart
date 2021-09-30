@@ -235,9 +235,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                         },
                         onChanged: (_) {
                           //_addEventController.visitSiteId = _.toString();
-                          setState(() {
                             apiCallForGetInf(_);
-                          });
 
                         },
                         maxLength: _addEventController.siteIdText ==
@@ -259,6 +257,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                             "${_addEventController.siteIdText}", false),
                       ),
                 SizedBox(height: 16),
+    // Obx(
+    // () =>
                 Visibility(
                   visible: _isVisibleContact,
                   child: Column(
@@ -280,6 +280,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     ],
                   ),
                 ),
+                    //),
                 Obx(
                   () => TextFormField(
                     decoration: FormFieldStyle.buildInputDecoration(

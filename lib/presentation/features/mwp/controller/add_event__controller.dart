@@ -78,6 +78,7 @@ class AddEventController extends GetxController {
   final _meetInitiatorName = StringConstants.empty.obs;
   final _dspAvailableQty = StringConstants.empty.obs;
   final _isDspAvailable = StringConstants.empty.obs;
+  final _isDspAvailablePt = StringConstants.empty.obs;
 
   get isLoading => this._isLoading.value;
 
@@ -160,6 +161,8 @@ class AddEventController extends GetxController {
 
   get isDspAvailable => this._isDspAvailable.value;
 
+  get isDspAvailablePt => this._isDspAvailablePt.value;
+
   set isLoading(value) => this._isLoading.value = value;
 
   set siteIdText(value) => this._siteIdText.value = value;
@@ -241,6 +244,8 @@ class AddEventController extends GetxController {
   set dspAvailableQty(value) => this._dspAvailableQty.value = value;
 
   set isDspAvailable(value) => this._isDspAvailable.value = value;
+
+  set isDspAvailablePt(value) => this._isDspAvailablePt.value = value;
 
   saveVisit(String accessKey) {
     Future.delayed(Duration.zero,
@@ -442,6 +447,7 @@ class AddEventController extends GetxController {
           this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
           this.dspAvailableQty = this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString();
           this.isDspAvailable = this.visitResponseModel.mwpVisitModel.isDspAvailable.toString();
+          this.isDspAvailablePt = (this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString() != null || this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString() != "null")?((int.parse(this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString()) / 20).toString()):null;
         }
       });
     });
