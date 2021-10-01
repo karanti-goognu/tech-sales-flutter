@@ -222,8 +222,9 @@ class MyApiClientEvent {
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(saveEventFormModel),
       );
+      print("URL: ${UrlConstants.saveEvent}");
       var data = json.decode(response.body);
-      //print("__---$data");
+      print("__---$data");
       if (response.statusCode == 200) {
         Get.back();
       if(data["resp_code"] == "DM1005"){

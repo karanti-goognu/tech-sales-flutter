@@ -44,6 +44,7 @@ class SaveEventController extends GetxController {
         await repository.saveEventForm(accessKey, userSecurityKey, saveEventFormModel)
             .then((value) {
           //Get.back();
+          print(")))))))${value}");
            if (value.respCode == 'DM1002') {
             Get.dialog(
                 CustomDialogs().showDialogSubmitEvent(value.respMsg.toString()),
