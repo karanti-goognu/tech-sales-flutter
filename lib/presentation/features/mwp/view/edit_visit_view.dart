@@ -265,8 +265,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                         ),
                                                   ),
                                                   child:
-                                                      /*
-                                                  (_addEventController.visitResponseModel.mwpVisitModel.visitEndTime != null) ?
+                                                  Obx(
+                                                        () =>
+                                                    (_addEventController.visitResponseModel.mwpVisitModel.visitEndTime != null) ?
                                                   CheckboxListTile(
                                                     title: Text(
                                                       "DSP Available",
@@ -280,23 +281,11 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                         "Y")
                                                         ? true
                                                         : false,
-                                                    // onChanged: (newValue) {
-                                                    //   setState(() {
-                                                    //     if (newValue == true) {
-                                                    //       _addEventController
-                                                    //           .isDspAvailable =
-                                                    //       "Y";
-                                                    //     } else {
-                                                    //       _addEventController
-                                                    //           .isDspAvailable =
-                                                    //       "N";
-                                                    //     }
-                                                    //   });
-                                                    // },
+
                                                     controlAffinity:
                                                     ListTileControlAffinity
                                                         .leading, //  <-- leading Checkbox
-                                                  ):*/
+                                                  ):
                                                   CheckboxListTile(
                                                     title: Text(
                                                       "DSP Available",
@@ -321,6 +310,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                   .isDspAvailable =
                                                               "N";
                                                           _addEventController.dspAvailableQty = null;
+                                                          print("******${_addEventController.dspAvailableQty}");
 
                                                         }
                                                       });
@@ -328,7 +318,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                     controlAffinity:
                                                         ListTileControlAffinity
                                                             .leading, //  <-- leading Checkbox
-                                                  )),
+                                                  )),),
                                               SizedBox(height: 16),
                                               Visibility(
                                                 visible: (_addEventController
@@ -368,7 +358,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                     right:
                                                                         10.0),
                                                             child:
-                                                                /*
+                                                            Obx(
+                                                                  () =>
                                                             (_addEventController.visitResponseModel.mwpVisitModel.visitEndTime != null)?
                                                             TextFormField(
                                                               controller: _addEventController.bagsController,
@@ -387,16 +378,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                 labelText:
                                                                 "Bags",
                                                               ),
-                                                            ):*/
+                                                            ):
                                                               TextFormField(
                                                                   controller: _addEventController.bagsController,
-                                                              // initialValue: (_addEventController
-                                                              //                   .dspAvailableQty ==
-                                                              //               null || _addEventController
-                                                              //           .dspAvailableQty == "null")
-                                                              //           ? ""
-                                                              //           : _addEventController
-                                                              //               .dspAvailableQty,
                                                               onChanged: (_) {
                                                                 setState(() {
                                                                   if (_addEventController.bagsController.text == null || _addEventController.bagsController.text == "") {
@@ -438,7 +422,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                 labelText:
                                                                     "Bags",
                                                               ),
-                                                            ),
+                                                            ),),
                                                           ),
                                                         ),
                                                         Expanded(
@@ -447,10 +431,10 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                 const EdgeInsets
                                                                         .only(
                                                                     left: 10.0),
-                                                            child:
-                                                            /*(_addEventController.visitResponseModel.mwpVisitModel.visitEndTime != null)?
+                                                            child:Obx(
+                                                                  () =>
+                                                            (_addEventController.visitResponseModel.mwpVisitModel.visitEndTime != null)?
                                                             TextFormField(
-                                                              //   initialValue: _addEventController.isDspAvailablePt,
                                                               controller: _addEventController.mtController,
                                                               readOnly: true,
                                                               style: TextStyle(
@@ -465,22 +449,18 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                   .buildInputDecoration(
                                                                 labelText: "MT",
                                                               ),
-                                                            ):*/
+                                                            ):
                                                                  TextFormField(
-                                                                //   initialValue: _addEventController.isDspAvailablePt,
                                                               controller: _addEventController.mtController,
                                                               onChanged:
                                                                   (value) {
                                                                 setState(() {
                                                                   if (value == null || value == "") {
-                                                                    //_bagsController.clear();
                                                                     _addEventController.bagsController.clear();
                                                                     _addEventController.dspAvailableQty = "";
                                                                   } else {
-                                                                    //_bagsController.text = (double.parse(_mtController.text) * 20).toInt().toString();
                                                                     _addEventController.dspAvailableQty = (double.parse(value) * 20).toInt().toString();
                                                                     _addEventController.bagsController.text = (double.parse(value) * 20).toInt().toString();
-                                                                    //_addEventController.dspAvailableQty = _bagsController.text;
                                                                   }
                                                                 });
                                                               },
@@ -509,50 +489,12 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                 labelText: "MT",
                                                               ),
                                                             ),
-                                                          ),
+                                                          ),),
                                                         ),
                                                       ],
                                                     ),
                                                   ],
                                                 ),
-                                                // TextFormField(
-                                                //   // key: Key(_addEventController
-                                                //   //     .dspAvailableQty),
-                                                //   initialValue: (_addEventController
-                                                //               .dspAvailableQty ==
-                                                //           null || _addEventController
-                                                //       .dspAvailableQty == "null")
-                                                //       ? ""
-                                                //       : _addEventController
-                                                //           .dspAvailableQty,
-                                                //   validator: (value) {
-                                                //     if (value.isEmpty) {
-                                                //       return 'Please enter DSP availble quantity';
-                                                //     }
-                                                //     return null;
-                                                //   },
-                                                //   onChanged: (_) {
-                                                //     _addEventController
-                                                //             .dspAvailableQty =
-                                                //         _.toString();
-                                                //   },
-                                                //   style: FormFieldStyle
-                                                //       .formFieldTextStyle,
-                                                //   keyboardType: TextInputType
-                                                //       .numberWithOptions(
-                                                //           signed: true,
-                                                //           decimal: false),
-                                                //   inputFormatters: <
-                                                //       TextInputFormatter>[
-                                                //     FilteringTextInputFormatter
-                                                //         .digitsOnly
-                                                //   ],
-                                                //   decoration: FormFieldStyle
-                                                //       .buildInputDecoration(
-                                                //     labelText:
-                                                //         "DSP Availble Quantity*",
-                                                //   ),
-                                                // ),
                                               ),
                                               SizedBox(height: 16),
                                             ],
