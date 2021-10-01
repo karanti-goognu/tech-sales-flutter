@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -829,6 +831,7 @@ class _FormAddEventState extends State<FormAddEvent> {
         SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
             mwpeventFormRequest: _mwpeventFormRequest,
             eventDealersModelList: _save.eventDealersModelList);
+        print("Request: ${json.encode(_saveEventFormModel)}");
 
         internetChecking().then((result) => {
               if (result == true)

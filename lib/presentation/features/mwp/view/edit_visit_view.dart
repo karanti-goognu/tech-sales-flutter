@@ -32,9 +32,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
 
-  TextEditingController _remarks = new TextEditingController();
-  TextEditingController _bagsController = new TextEditingController();
-  TextEditingController _mtController = new TextEditingController();
+  //TextEditingController _remarks = new TextEditingController();
 
   VisitResponseModel visitResponseModel;
 
@@ -57,18 +55,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   @override
   void initState() {
     _appController.getAccessKey(RequestIds.VIEW_VISIT);
-    setState(() {
-
-
-    _bagsController.text = _addEventController.dspAvailableQty;
-    print("_bagsController${_bagsController.text}");
-    if (_bagsController.text == null || _bagsController.text == "" || _bagsController.text == "null") {
-      _mtController.clear();
-    } else {
-      _mtController.text = (int.parse(_bagsController.text) / 20).toString();
-    }
-    });
-
     super.initState();
   }
 
@@ -278,7 +264,29 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                             5.0) //                 <--- border radius here
                                                         ),
                                                   ),
-                                                  child: CheckboxListTile(
+                                                  child:
+                                                  Obx(
+                                                        () =>
+                                                    (_addEventController.visitResponseModel.mwpVisitModel.visitEndTime != null) ?
+                                                  CheckboxListTile(
+                                                    title: Text(
+                                                      "DSP Available",
+                                                      style: TextStyles
+                                                          .formfieldLabelText,
+                                                    ),
+                                                    activeColor: Colors.black,
+                                                    dense: true,
+                                                    value: (_addEventController
+                                                        .isDspAvailable ==
+                                                        "Y")
+                                                        ? true
+                                                        : false,
+
+                                                    controlAffinity:
+                                                    ListTileControlAffinity
+                                                        .leading, //  <-- leading Checkbox
+                                                  ):
+                                                  CheckboxListTile(
                                                     title: Text(
                                                       "DSP Available",
                                                       style: TextStyles
@@ -301,13 +309,16 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                           _addEventController
                                                                   .isDspAvailable =
                                                               "N";
+                                                          _addEventController.dspAvailableQty = null;
+                                                          print("******${_addEventController.dspAvailableQty}");
+
                                                         }
                                                       });
                                                     },
                                                     controlAffinity:
                                                         ListTileControlAffinity
                                                             .leading, //  <-- leading Checkbox
-                                                  )),
+                                                  )),),
                                               SizedBox(height: 16),
                                               Visibility(
                                                 visible: (_addEventController
@@ -347,25 +358,35 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                     right:
                                                                         10.0),
                                                             child:
-                                                                TextFormField(
-                                                              initialValue: (_addEventController
-                                                                                .dspAvailableQty ==
-                                                                            null || _addEventController
-                                                                        .dspAvailableQty == "null")
-                                                                        ? ""
-                                                                        : _addEventController
-                                                                            .dspAvailableQty,
+                                                            Obx(
+                                                                  () =>
+                                                            (_addEventController.visitResponseModel.mwpVisitModel.visitEndTime != null)?
+                                                            TextFormField(
+                                                              controller: _addEventController.bagsController,
+                                                              readOnly: true,
+
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  color: ColorConstants
+                                                                      .inputBoxHintColor,
+                                                                  fontFamily:
+                                                                  "Muli"),
+                                                              // keyboardType: TextInputType.text,
+                                                              decoration:
+                                                              FormFieldStyle
+                                                                  .buildInputDecoration(
+                                                                labelText:
+                                                                "Bags",
+                                                              ),
+                                                            ):
+                                                              TextFormField(
+                                                                  controller: _addEventController.bagsController,
                                                               onChanged: (_) {
                                                                 setState(() {
-                                                                  // if (_bagsController.text == null || _bagsController.text == "") {
-                                                                  //   _mtController.clear();
-                                                                  // } else {
-                                                                  //   _mtController.text = (int.parse(_bagsController.text) / 20).toString();
-                                                                  // }
-                                                                  if (_ == null || _ == "") {
-                                                                    _addEventController.isDspAvailablePt = "";
+                                                                  if (_addEventController.bagsController.text == null || _addEventController.bagsController.text == "") {
+                                                                    _addEventController.mtController.clear();
                                                                   } else {
-                                                                    _addEventController.isDspAvailablePt = (int.parse(_) / 20).toString();
+                                                                    _addEventController.mtController.text = (int.parse(_addEventController.bagsController.text) / 20).toString();
                                                                   }
                                                                   _addEventController.dspAvailableQty = _.toString();
                                                                 });
@@ -401,7 +422,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                 labelText:
                                                                     "Bags",
                                                               ),
-                                                            ),
+                                                            ),),
                                                           ),
                                                         ),
                                                         Expanded(
@@ -410,21 +431,36 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                 const EdgeInsets
                                                                         .only(
                                                                     left: 10.0),
-                                                            child:
-                                                                TextFormField(
-                                                                  initialValue: _addEventController.isDspAvailablePt,
-                                                              // controller:
-                                                              //     _mtController,
+                                                            child:Obx(
+                                                                  () =>
+                                                            (_addEventController.visitResponseModel.mwpVisitModel.visitEndTime != null)?
+                                                            TextFormField(
+                                                              controller: _addEventController.mtController,
+                                                              readOnly: true,
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  color: ColorConstants
+                                                                      .inputBoxHintColor,
+                                                                  fontFamily:
+                                                                  "Muli"),
+
+                                                              decoration:
+                                                              FormFieldStyle
+                                                                  .buildInputDecoration(
+                                                                labelText: "MT",
+                                                              ),
+                                                            ):
+                                                                 TextFormField(
+                                                              controller: _addEventController.mtController,
                                                               onChanged:
                                                                   (value) {
                                                                 setState(() {
                                                                   if (value == null || value == "") {
-                                                                    //_bagsController.clear();
+                                                                    _addEventController.bagsController.clear();
                                                                     _addEventController.dspAvailableQty = "";
                                                                   } else {
-                                                                    //_bagsController.text = (double.parse(_mtController.text) * 20).toInt().toString();
                                                                     _addEventController.dspAvailableQty = (double.parse(value) * 20).toInt().toString();
-                                                                    //_addEventController.dspAvailableQty = _bagsController.text;
+                                                                    _addEventController.bagsController.text = (double.parse(value) * 20).toInt().toString();
                                                                   }
                                                                 });
                                                               },
@@ -453,50 +489,12 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                 labelText: "MT",
                                                               ),
                                                             ),
-                                                          ),
+                                                          ),),
                                                         ),
                                                       ],
                                                     ),
                                                   ],
                                                 ),
-                                                // TextFormField(
-                                                //   // key: Key(_addEventController
-                                                //   //     .dspAvailableQty),
-                                                //   initialValue: (_addEventController
-                                                //               .dspAvailableQty ==
-                                                //           null || _addEventController
-                                                //       .dspAvailableQty == "null")
-                                                //       ? ""
-                                                //       : _addEventController
-                                                //           .dspAvailableQty,
-                                                //   validator: (value) {
-                                                //     if (value.isEmpty) {
-                                                //       return 'Please enter DSP availble quantity';
-                                                //     }
-                                                //     return null;
-                                                //   },
-                                                //   onChanged: (_) {
-                                                //     _addEventController
-                                                //             .dspAvailableQty =
-                                                //         _.toString();
-                                                //   },
-                                                //   style: FormFieldStyle
-                                                //       .formFieldTextStyle,
-                                                //   keyboardType: TextInputType
-                                                //       .numberWithOptions(
-                                                //           signed: true,
-                                                //           decimal: false),
-                                                //   inputFormatters: <
-                                                //       TextInputFormatter>[
-                                                //     FilteringTextInputFormatter
-                                                //         .digitsOnly
-                                                //   ],
-                                                //   decoration: FormFieldStyle
-                                                //       .buildInputDecoration(
-                                                //     labelText:
-                                                //         "DSP Availble Quantity*",
-                                                //   ),
-                                                // ),
                                               ),
                                               SizedBox(height: 16),
                                             ],

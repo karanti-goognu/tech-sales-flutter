@@ -1,6 +1,6 @@
 class AddEventModel {
   String respCode;
-  Null respMsg;
+  String respMsg;
   List<EventTypeModels> eventTypeModels;
   List<DealersModels> dealersModels;
   List<StatusEntitieList> statusEntitieList;

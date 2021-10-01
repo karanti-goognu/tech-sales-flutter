@@ -247,6 +247,9 @@ class AddEventController extends GetxController {
 
   set isDspAvailablePt(value) => this._isDspAvailablePt.value = value;
 
+  TextEditingController bagsController = new TextEditingController();
+  TextEditingController mtController = new TextEditingController();
+
   saveVisit(String accessKey) {
     Future.delayed(Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator())));
@@ -447,7 +450,15 @@ class AddEventController extends GetxController {
           this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
           this.dspAvailableQty = this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString();
           this.isDspAvailable = this.visitResponseModel.mwpVisitModel.isDspAvailable.toString();
-          this.isDspAvailablePt = (this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString() != null || this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString() != "null")?((int.parse(this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString()) / 20).toString()):null;
+          if(this.visitResponseModel.mwpVisitModel.dspAvailableQty == null || this.visitResponseModel.mwpVisitModel.dspAvailableQty == "null"){
+            this.bagsController.text = "";
+            this.mtController.text = "";
+          }else {
+            this.bagsController.text =
+                this.visitResponseModel.mwpVisitModel.dspAvailableQty
+                    .toString();
+            this.mtController.text = ((int.parse(this.visitResponseModel.mwpVisitModel.dspAvailableQty) / 20).toString());
+          }
         }
       });
     });
@@ -585,6 +596,7 @@ class AddEventController extends GetxController {
 
         } else {
           //if ((await Geolocator().isLocationServiceEnabled())) {
+
             geolocator
                 .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
                 .then((Position position) {

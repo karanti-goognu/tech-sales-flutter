@@ -52,6 +52,8 @@ class MyApiClient {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
+      print("URL: ${UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId}");
+      //print("Request: ${response.body}")
      var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -74,6 +76,8 @@ class MyApiClient {
       var response = await http.get(Uri.parse(UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId),
           headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey, version));
       requestorDetailsModel = RequestorDetailsModel.fromJson(json.decode(response.body));
+      print("====${UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId}");
+      print("URL: ${json.decode(response.body)}");
     }
     catch(e){
       print("Exception at SR Repo $e");
