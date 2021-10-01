@@ -62,6 +62,8 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   var _bestBeforeDate = new TextEditingController();
   var _mtController = new TextEditingController();
   String _selectedSampleCollected;
+  String _gropuSampleCollected;
+  String _groupDemoConducted;
   String _selectedDemoConducted;
 
   Map<String, bool> values = {
@@ -654,10 +656,11 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   children: [
                                     Radio(
                                         value: 'Yes'.toUpperCase(),
-                                        groupValue: _selectedSampleCollected,
+                                        groupValue: _gropuSampleCollected,
                                         onChanged: (value) {
                                           setState(() {
-                                            _selectedSampleCollected = value;
+                                            _gropuSampleCollected = value;
+                                            _selectedSampleCollected = "Y";
                                           });
                                         }),
                                     Expanded(
@@ -672,10 +675,11 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   children: [
                                     Radio(
                                         value: 'No'.toUpperCase(),
-                                        groupValue: _selectedSampleCollected,
+                                        groupValue: _gropuSampleCollected,
                                         onChanged: (value) {
                                           setState(() {
-                                            _selectedSampleCollected = value;
+                                            _gropuSampleCollected = value;
+                                            _selectedSampleCollected = "N";
                                           });
                                         }),
                                     Expanded(child: Text('No'.toUpperCase()))
@@ -722,10 +726,11 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   children: [
                                     Radio(
                                         value: 'Yes'.toUpperCase(),
-                                        groupValue: _selectedDemoConducted,
+                                        groupValue: _groupDemoConducted,
                                         onChanged: (value) {
                                           setState(() {
-                                            _selectedDemoConducted = value;
+                                            _groupDemoConducted = value;
+                                            _selectedDemoConducted = "Y";
                                           });
                                         }),
                                     Expanded(
@@ -740,10 +745,11 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   children: [
                                     Radio(
                                         value: 'No'.toUpperCase(),
-                                        groupValue: _selectedDemoConducted,
+                                        groupValue: _groupDemoConducted,
                                         onChanged: (value) {
                                           setState(() {
-                                            _selectedDemoConducted = value;
+                                            _groupDemoConducted = value;
+                                            _selectedDemoConducted = "N";
                                           });
                                         }),
                                     Expanded(child: Text('No'.toUpperCase()))
@@ -802,7 +808,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         style: FormFieldStyle.formFieldTextStyle,
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Product Type"),
-                        items: ['DALMIA', 'DSP', 'KONARK']
+                        items: ['DCFT', 'DSP', 'KONARK']
                             .map(
                               (e) => DropdownMenuItem(
                                 child: Text(e),
@@ -987,7 +993,9 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
 
                         "typeOfComplaint": _selectedTypeOfComplain,
                         "productVariety": getCheckboxItems().toString(),
-                        "balanceQtyinBags": _balanceQuantity.text,
+                        "balanceQtyinBags":_balanceQuantity.text.isNotEmpty
+                            ? int.parse(_balanceQuantity.text)
+                            : 0,
                         "billNumber": _billNo.text,
                         "weekNo": _weekNo.text,
                         "bestBeforeDate": _bestBeforeDate.text,

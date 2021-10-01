@@ -478,6 +478,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         setState(() {
           _influencerTypeEntitiesList = value;
           _memberType = _influencerTypeEntitiesList.inflTypeId;
+          print(_memberType.toString());
           if (_memberType == 2 || _memberType == 3 || _memberType == 4
               //_memberType == 'Structural Consultant'
               ) {
@@ -702,7 +703,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     );
 
     Widget engineersFields() {
-      return _memberType == 4
+      return _memberType == 7
           ? Column(
               children: [
                 TextFormField(

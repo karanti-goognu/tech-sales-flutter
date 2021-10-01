@@ -60,6 +60,13 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     }
   }
 
+  void disposeController(BuildContext context){
+//or what you wnat to dispose/clear
+    eventController.offset = 0;
+    eventController?.dispose();
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -75,9 +82,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   @override
   void dispose() {
-    eventController.dispose();
     eventController.offset = 0;
-    print(eventController.offset);
+    eventController.dispose();
     super.dispose();
   }
 
@@ -86,7 +92,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     SizeConfig().init(context);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
@@ -119,7 +124,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           // totalFilters = value.isEmpty ? value[3] : 0;
                           totalFilters = value[3];
                         });
-                        print("------+$totalFilters");
                         eventController.getAccessKey().then((accessKeyModel) {
                           eventController
                               .getSrListDataWithFilters(accessKeyModel.accessKey,

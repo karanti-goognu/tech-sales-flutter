@@ -183,12 +183,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                               productDynamicList[index].brandModelForDB = null;
                               // _siteProductFromLocalDB = null;
                               List<BrandModelforDB>
-                                  _siteProductEntityfromLoaclDB = await db
-                                      .fetchAllDistinctProduct(value.brandName);
+                                  _siteProductEntityfromLoaclDB = await db.fetchAllDistinctProduct(value.brandName);
                               setState(() {
                                 _siteBrandFromLocalDB = value;
                                 siteProductEntityfromLoaclDB =
                                     _siteProductEntityfromLoaclDB;
+                                UpdatedValues.setSiteSelectedDB(_siteBrandFromLocalDB);
+                                UpdatedValues.setProductEntityFromLocalDb(siteProductEntityfromLoaclDB);
                                 // _productSoldVisit.text = _siteBrand.productName;
                                 if (_siteBrandFromLocalDB.brandName
                                         .toLowerCase() ==
@@ -198,6 +199,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                                   _stageStatus.text = "LOST";
                                   visitDataDealer = "";
                                 }
+                                 UpdatedValues.setSiteProgressStageStatus(_stageStatus.text);
                                 _selectedBrand.text = value.brandName;
                               });
                             },
@@ -295,6 +297,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                                         visitDataSubDealer =
                                             subDealerList[0].shipToParty;
                                         _dealerName.text = value.dealerName;
+                                        UpdatedValues.setDealerEntityForDb(_dealerEntityForDb);
+                                        UpdatedValues.setSelectedSubDealer(selectedSubDealer);
+                                        UpdatedValues.setSubDealerList(subDealerList);
                                       });
                                     },
                                     style: FormFieldStyle.formFieldTextStyle,
@@ -417,6 +422,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                                 selectedSubDealer = value;
                                 visitDataSubDealer = value.shipToParty.toString();
                                 availableKittyPoint= selectedSubDealer.availableKittyPoint;
+                                UpdatedValues.setSelectedSubDealer(selectedSubDealer);
                               });
                             },
                             style: FormFieldStyle.formFieldTextStyle,
@@ -825,14 +831,17 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
       }
 
       if(UpdatedValues.getSiteProgressConstructionId()!=null){
+        _selectedConstructionTypeVisit=null;
         _selectedConstructionTypeVisit = UpdatedValues.getSiteProgressConstructionId();
       }
 
       if(UpdatedValues.getConstructionTypeVisitNextStage()!=null){
+        _selectedConstructionTypeVisitNextStage=null;
         _selectedConstructionTypeVisitNextStage = UpdatedValues.getConstructionTypeVisitNextStage();
       }
 
       if(UpdatedValues.getSiteProgressNoOfFloors()!=null){
+        _selectedSiteVisitFloor=null;
         _selectedSiteVisitFloor = siteFloorsEntity.firstWhere((item) => item.id == UpdatedValues.getSiteProgressNoOfFloors().id);
       }
 
@@ -851,6 +860,43 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
       if(UpdatedValues.getAddNextButtonDisable()!=null){
         addNextButtonDisable = UpdatedValues.getAddNextButtonDisable();
       }
+
+      if(UpdatedValues.getProductDynamicList()!=null){
+        productDynamicList = UpdatedValues.getProductDynamicList();
+      }
+
+      if(UpdatedValues.getSiteSelectedDB()!=null){
+        _siteBrandFromLocalDB = UpdatedValues.getSiteSelectedDB();
+        _selectedBrand.text = _siteBrandFromLocalDB.brandName;
+
+
+      }
+
+      if(UpdatedValues.getDealerEntityForDb()!=null){
+        _dealerEntityForDb = UpdatedValues.getDealerEntityForDb();
+        _dealerName.text = _dealerEntityForDb.dealerName;
+      }
+
+      if(UpdatedValues.getProductEntityFromLocalDb()!=null){
+        siteProductEntityfromLoaclDB = UpdatedValues.getProductEntityFromLocalDb();
+      }
+
+      if(UpdatedValues.getSubDealerList()!=null){
+        subDealerList = UpdatedValues.getSubDealerList();
+      }
+
+      if(UpdatedValues.getSelectedSubDealer()!=null){
+      selectedSubDealer = UpdatedValues.getSelectedSubDealer();
+      }
+
+      if(UpdatedValues.getSiteProgressStageStatus()!=null){
+      _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
+      }
+
+      if(UpdatedValues.getSiteProgressDateOfConstruction()!=null){
+        _dateofConstruction.text = UpdatedValues.getSiteProgressDateOfConstruction();
+      }
+
 
 
     });
@@ -2055,6 +2101,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
                   if (picked != null) {
                     final String formattedDate = formatter.format(picked);
                     _dateofConstructionNextStage.text = formattedDate;
+
                   }
                 });
               },

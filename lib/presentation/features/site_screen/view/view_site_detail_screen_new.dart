@@ -79,6 +79,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
         setState(() {
           siteScore = viewSiteDataResponse.sitesModal.siteScore;
           siteStageEntity = viewSiteDataResponse.siteStageEntity;
+
           for (int i = 0; i < siteStageEntity.length; i++) {
             if (viewSiteDataResponse.sitesModal.siteStageId.toString() ==
                 siteStageEntity[i].id.toString()) {
@@ -127,6 +128,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     UpdatedValues.setImageList(_imageList);
     UpdatedValues.setSiteCommentsEntity(null);
     UpdatedValues.setProductDynamicList(prdduct);
+    UpdatedValues.setSiteConstructionId(null);
+    UpdatedValues.setNoOfFloors(null);
+    UpdatedValues.setSiteBuiltArea(null);
+    UpdatedValues.setBathroomCount(null);
+    UpdatedValues.setKitchenCount(null);
+    UpdatedValues.setSiteTotalPotential(null);
+    UpdatedValues.setTotalBalancePotential(null);
+
 
   }
 

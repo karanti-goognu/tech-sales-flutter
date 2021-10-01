@@ -79,7 +79,7 @@ class SrComplaintAction {
 
   String typeOfComplaint;
   String productVariety;
-  String balanceQtyinBags;
+  int balanceQtyinBags;
   String billNumber;
   String weekNo;
   String bestBeforeDate;

@@ -118,6 +118,7 @@ class MyApiClient {
       if (severity.isNotEmpty){
         url=url+'&severity=$severity';
       }
+
       if (typeOfReqId.isNotEmpty){
         url=url+'&typeOfReqId=$typeOfReqId';
       }
@@ -166,6 +167,7 @@ class MyApiClient {
           requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
       print("Request Body/Fields :: " + request.fields.toString());
+      print("Headers "+ json.encode(saveServiceRequest));
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
@@ -200,6 +202,7 @@ class MyApiClient {
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       // print("Request Body/Fields :: " + request.fields.toString());
        //print("Headers"+ request.headers.toString());
+       print( Uri.parse(UrlConstants.updateServiceRequest).toString());
        print("Headers "+ json.encode(updateServiceRequest));
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
@@ -225,7 +228,7 @@ class MyApiClient {
       });
     }
     catch(e){
-      print("Exception at SR Repo $e");
+      print("Exception at SR Repo ${e}");
       return null;
     }
     return json.decode(response.body);

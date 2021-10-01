@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
@@ -29,6 +30,7 @@ class UpdatedValues{
   static String siteDistrict;
   static String siteTaluk;
   static String sitePotentialMt;
+  static String siteTotalBags;
   static String reraNumber;
   static String siteCreationDate;
   static String dealerId;
@@ -72,6 +74,8 @@ class UpdatedValues{
   static List<InfluencerDetail> listInfluencerDetail;
   static List<ProductListModel> productDynamicList;
 
+  static List<BrandModelforDB> siteProductEntityfromLoaclDB;
+
   static List<File> imageList;
   static String empCode;
   static String empName;
@@ -81,10 +85,51 @@ class UpdatedValues{
 
   static String totalSitePotentialAutoCalc;
 
+  static BrandModelforDB siteSelectedDB;
+
+  static DealerForDb dealerEntityForDb;
+
+  static List<CounterListModel> subDealerList;
+  static CounterListModel selectedSubDealer;
+
+
+
   UpdatedValues();
 
 
 
+
+  static  CounterListModel getSelectedSubDealer() {
+    return selectedSubDealer;
+  }
+
+  static  void setSelectedSubDealer(CounterListModel siteSelectedDB) {
+    UpdatedValues.selectedSubDealer = siteSelectedDB;
+  }
+
+  static  List<CounterListModel> getSubDealerList() {
+    return subDealerList;
+  }
+
+  static  void setSubDealerList(List<CounterListModel> subDealerList) {
+    UpdatedValues.subDealerList = subDealerList;
+  }
+
+  static  BrandModelforDB getSiteSelectedDB() {
+    return siteSelectedDB;
+  }
+
+  static  void setSiteSelectedDB(BrandModelforDB siteSelectedDB) {
+    UpdatedValues.siteSelectedDB = siteSelectedDB;
+  }
+
+  static  DealerForDb getDealerEntityForDb() {
+    return dealerEntityForDb;
+  }
+
+  static  void setDealerEntityForDb(DealerForDb dealerEntityForDb) {
+    UpdatedValues.dealerEntityForDb = dealerEntityForDb;
+  }
 
 
   static  String getTotalSitePotentialAutoCalc() {
@@ -100,6 +145,13 @@ class UpdatedValues{
   }
   static  List<ProductListModel> getProductDynamicList() {
     return productDynamicList;
+  }
+
+  static  void setProductEntityFromLocalDb(List<BrandModelforDB> siteProductEntityfromLoaclDB) {
+    UpdatedValues.siteProductEntityfromLoaclDB = siteProductEntityfromLoaclDB;
+  }
+  static  List<BrandModelforDB> getProductEntityFromLocalDb() {
+    return siteProductEntityfromLoaclDB;
   }
 
   static  bool getFromDropDown() {
@@ -276,6 +328,14 @@ class UpdatedValues{
 
   static  void setSitePotentialMt(String sitePotentialMt) {
     UpdatedValues.sitePotentialMt = sitePotentialMt;
+  }
+
+  static  String getSiteTotalPotential() {
+    return siteTotalBags;
+  }
+
+  static  void setSiteTotalPotential(String siteTotalBags) {
+    UpdatedValues.siteTotalBags = siteTotalBags;
   }
 
   static  String getReraNumber() {
@@ -658,20 +718,14 @@ class UpdatedValues{
 
 
 
-  static  void setSiteData(int siteId,ConstructionStageEntity siteConstructionId,String siteBuiltArea,SiteFloorsEntity noOfFloors,TextEditingController bathroomCount,TextEditingController kitchenCount,
-      String productDemo,String productOralBriefing,String sitePotentialMt,String totalBalancePotential,SiteProbabilityWinningEntity siteProbabilityWinningId,SiteCompetitionStatusEntity siteCompetitionId,SiteOpportunityStatusEntity siteOppertunityId,
+  static  void setSiteData(int siteId,
+      String productDemo,String productOralBriefing,String sitePotentialMt,SiteProbabilityWinningEntity siteProbabilityWinningId,SiteCompetitionStatusEntity siteCompetitionId,SiteOpportunityStatusEntity siteOppertunityId,
       String contactName,String contactNumber,String plotNumber,String siteAddress,String sitePincode,String siteState,
       String siteDistrict,String siteTaluk,String reraNumber,String dealerId,String subdealerId,String soCode,String assignedTo,String siteStatusId,String totalSitePotentialAutoCalc,String siteGeotag,double siteGeotagLat,double siteGeotagLong,String siteCreationDate,String siteSegment) {
     UpdatedValues.siteId = siteId;
-    UpdatedValues.siteConstructionId = siteConstructionId;
-    UpdatedValues.siteBuiltArea = siteBuiltArea;
-    UpdatedValues.noOfFloors = noOfFloors;
-    UpdatedValues.bathroomCount = bathroomCount;
-    UpdatedValues.kitchenCount = kitchenCount;
     UpdatedValues.productDemo = productDemo;
     UpdatedValues.productOralBriefing = productOralBriefing;
     UpdatedValues.sitePotentialMt = sitePotentialMt;
-    UpdatedValues.totalBalancePotential = totalBalancePotential;
     UpdatedValues.siteProbabilityWinningId = siteProbabilityWinningId;
     UpdatedValues.siteCompetitionId = siteCompetitionId;
     UpdatedValues.siteOppertunityId = siteOppertunityId;
@@ -780,9 +834,9 @@ class UpdatedValues{
       double balancePT = getTotalBalancePotential() != null ||
           getTotalBalancePotential() == "" ? double.parse(
           getTotalBalancePotential()) : 0.0;
-      double stagePT = getSiteProgressStagePotential() != null ||
-          getSiteProgressStagePotential() == "" ? double.parse(
-          getSiteProgressStagePotential()) : 0.0;
+      double stagePT = getSiteTotalPotential() != null ||
+          getSiteTotalPotential() == "" ? double.parse(
+          getSiteTotalPotential()) : 0.0;
       if (productDynamicList.length > 0) {
         int index = productDynamicList.length - 1;
 
@@ -806,9 +860,9 @@ class UpdatedValues{
               Get.dialog(CustomDialogs().showMessage(
                   "Total Balance Potential can't be negative!"));
               return;
-            } else if (stagePT > balancePT) {
+            } else if (balancePT > stagePT) {
               Get.dialog(CustomDialogs().showMessage(
-                  "Total Site Stage Potential can't be greater than Balance Potential"));
+                  "Total  Balance Potential can't be greater than Total Site Potential"));
               return;
             } else {
               _siteController.updateLeadData(
@@ -818,7 +872,7 @@ class UpdatedValues{
           }
         }
       } else {
-        if ((getSitePotentialMt() != null || getSitePotentialMt() != "") &&
+        if ((getSiteTotalPotential() != null || getSiteTotalPotential() != "") &&
             double.parse(getSitePotentialMt()) < 0.0) {
           Get.dialog(CustomDialogs().showMessage(
               "Site Total Potential can't be negative!"));
@@ -830,11 +884,11 @@ class UpdatedValues{
             Get.dialog(CustomDialogs().showMessage(
                 "Total Balance Potential can't be negative!"));
             return;
-          } else if (stagePT > balancePT) {
+          } else if (balancePT > stagePT) {
             Get.dialog(CustomDialogs().showMessage(
-                "Total Site Stage Potential can't be greater than Balance Potential"));
+                "Total  Balance Potential can't be greater than Total Site Potential"));
             return;
-          } else {
+          }else {
             _siteController.updateLeadData(
                 responseBody, getImageList(), context,
                 UpdatedValues.getSiteId());

@@ -20,10 +20,10 @@ class GlobalMethods{
     }
   }
 
- static dealerValue( List<DealerForDb> dealerEntityForDb,String soldToParty) {
-    for (int i = 0; i < dealerEntityForDb.length; i++) {
-      if (dealerEntityForDb[i].id == soldToParty) {
-        return dealerEntityForDb[i].dealerName;
+ static dealerValue( List<CounterListModel>counterListModel,String soldToParty) {
+    for (int i = 0; i < counterListModel.length; i++) {
+      if (counterListModel[i].soldToParty == soldToParty) {
+        return counterListModel[i].soldToPartyName;
       }
     }
   }

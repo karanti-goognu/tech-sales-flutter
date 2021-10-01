@@ -30,10 +30,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  AppController _appController = Get.find();
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
-  SiteController _siteController = Get.find();
+
   // DashboardController _dashboardController =Get.find();
 
 

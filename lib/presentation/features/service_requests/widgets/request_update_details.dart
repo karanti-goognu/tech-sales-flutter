@@ -21,9 +21,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
 
   setValues() {
     setState(() {
-      updateServiceRequestController.coverBlockProvidedNo.clear();
-      updateServiceRequestController.formwarkRemovalDate.clear();
-
+      print("No Bags ${updateServiceRequestController.coverBlockProvidedNo.text}");
       updateServiceRequestController.complaintID.text = widget.complaintViewModel.id.toString();
       updateServiceRequestController. allocatedToID.text = widget.complaintViewModel.referenceId;
       updateServiceRequestController. allocatedToName.text = widget.complaintViewModel.allocatedToName;
@@ -45,8 +43,22 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
       updateServiceRequestController.taluk.text = widget.complaintViewModel.taluk;
       updateServiceRequestController.pin.text = widget.complaintViewModel.pincode;
 
-      updateServiceRequestController.coverBlockProvidedNo.text = widget.complaintViewModel.coverBlockProvidedNo;
-      updateServiceRequestController.formwarkRemovalDate.text = widget.complaintViewModel.formwarkRemovalDate;
+
+      if(updateServiceRequestController.coverBlockProvidedNo!=null && updateServiceRequestController.coverBlockProvidedNo.text.isEmpty){
+        if(widget.complaintViewModel.coverBlockProvidedNo==null){
+          updateServiceRequestController.coverBlockProvidedNo.text = "";
+        }else{
+          updateServiceRequestController.coverBlockProvidedNo.text = widget.complaintViewModel.coverBlockProvidedNo;
+        }
+      }
+
+      if(updateServiceRequestController.formwarkRemovalDate!=null && updateServiceRequestController.formwarkRemovalDate.text.isEmpty){
+        if(widget.complaintViewModel.formwarkRemovalDate==null){
+          updateServiceRequestController.formwarkRemovalDate.text = "";
+        }else{
+          updateServiceRequestController.formwarkRemovalDate.text = widget.complaintViewModel.formwarkRemovalDate;
+        }
+      }
     });
   }
 

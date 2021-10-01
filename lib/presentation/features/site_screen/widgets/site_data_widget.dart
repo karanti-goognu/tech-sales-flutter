@@ -220,13 +220,58 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           }
         }
       }
-      UpdatedValues.setSiteData(widget.siteId,_selectedConstructionType,siteBuiltupArea.text,_selectedSiteFloor,_totalBathroomCount, _totalKitchenCount,
-           _siteProductDemo.text,_siteProductOralBriefing.text,_siteTotalPt.text,_siteTotalBalanceBags.text,_siteProbabilityWinningEntity,_siteCompetitionStatusEntity,_siteOpportunitStatusEnity,
+
+      UpdatedValues.setSiteData(widget.siteId,
+           _siteProductDemo.text,_siteProductOralBriefing.text,_siteTotalPt.text,_siteProbabilityWinningEntity,_siteCompetitionStatusEntity,_siteOpportunitStatusEnity,
            _ownerName.text,_contactNumber.text, _plotNumber.text,_siteAddress.text,_pincode.text,_state.text,
            _district.text,_taluk.text,_rera.text,sitesModal.siteDealerId, sitesModal.subdealerId,_so.text,sitesModal.assignedTo,sitesModal.siteStatusId.toString(),sitesModal.siteTotalSitePotential.toString(),
       geoTagType,_currentPosition.latitude,_currentPosition.longitude,sitesModal.siteCreationDate,"TRADE");
 
       UpdatedValues.setSiteInfluencerEntity(viewSiteDataResponse.siteInfluencerEntity);
+
+      if(UpdatedValues.getSiteConstructionId()!=null){
+        _selectedConstructionType=null;
+        _selectedConstructionType = UpdatedValues.getSiteConstructionId();
+      }else{
+        UpdatedValues.setSiteConstructionId(_selectedConstructionType);
+      }
+
+      if(UpdatedValues.getNoOfFloors()!=null){
+        _selectedSiteFloor=null;
+        _selectedSiteFloor = UpdatedValues.getNoOfFloors();
+      }else{
+        UpdatedValues.setNoOfFloors(_selectedSiteFloor);
+      }
+
+      if(UpdatedValues.getSiteBuiltArea()!=null){
+        siteBuiltupArea.text= UpdatedValues.getSiteBuiltArea();
+      }else{
+        UpdatedValues.setSiteBuiltArea(siteBuiltupArea.text);
+      }
+
+      if(UpdatedValues.getBathroomCount()!=null){
+        _totalBathroomCount = UpdatedValues.getBathroomCount();
+      }else{
+        UpdatedValues.setBathroomCount(_totalBathroomCount);
+      }
+
+      if(UpdatedValues.getKitchenCount()!=null){
+        _totalKitchenCount = UpdatedValues.getKitchenCount();
+      }else{
+        UpdatedValues.setKitchenCount(_totalKitchenCount);
+      }
+
+      if(UpdatedValues.getSiteTotalPotential()!=null){
+        _siteTotalBags.text = UpdatedValues.getSiteTotalPotential();
+      }else{
+        UpdatedValues.setSiteTotalPotential(_siteTotalBags.text);
+      }
+
+      if(UpdatedValues.getTotalBalancePotential()!=null){
+        _siteTotalBalanceBags.text = UpdatedValues.getTotalBalancePotential();
+      }else{
+        UpdatedValues.setTotalBalancePotential(_siteTotalBalanceBags.text);
+      }
 
     });
   }
@@ -502,8 +547,10 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 TextFormField(
                                   controller: _totalKitchenCount,
                                   onChanged: (String text){
+                                    print("Area--> "+UpdatedValues.getSiteBuiltArea());
                                     setState(() {
                                       UpdatedValues.setKitchenCount(_totalKitchenCount);
+
                                     });
                                   },
                                   style: TextStyle(
@@ -682,6 +729,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                                     .toString();
 
                                                 UpdatedValues.setSitePotentialMt(_siteTotalPt.text);
+                                                UpdatedValues.setSiteTotalPotential(_siteTotalBags.text);
                                               }
                                             });
                                           },
@@ -730,6 +778,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                                     .toInt()
                                                     .toString();
                                                 UpdatedValues.setSitePotentialMt(_siteTotalPt.text);
+                                                UpdatedValues.setSiteTotalPotential(_siteTotalBags.text);
                                               }
                                             });
                                           },
@@ -793,7 +842,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                                         20)
                                                     .toString();
 
-                                                UpdatedValues.setTotalBalancePotential(_siteTotalBalancePt.text);
+                                                UpdatedValues.setTotalBalancePotential(_siteTotalBalanceBags.text);
                                               }
                                             });
                                           },
@@ -845,7 +894,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                                         20)
                                                     .toInt()
                                                     .toString();
-                                                UpdatedValues.setTotalBalancePotential(_siteTotalBalancePt.text);
+                                                UpdatedValues.setTotalBalancePotential(_siteTotalBalanceBags.text);
                                               }
                                             });
                                           },

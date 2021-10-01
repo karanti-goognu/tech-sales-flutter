@@ -413,7 +413,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     );
 
     Widget engineersFields() {
-      return _memberType == 4
+      return _memberType == 7
           ? Column(
               children: [
                 TextFormField(
