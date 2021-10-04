@@ -42,7 +42,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
   NextStageConstructionEntity _selectedNextStageConstructionEntity;
   SiteFloorsEntity _selectedLeadFloorEntity;
   var _noOfBagsSupplied = TextEditingController();
-  String _selectedRadioValue = 'IHB';
+  String _selectedRadioValue = 'I';
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
             child: Row(
               children: [
                 Radio(
-                  value: 'IHB',
+                  value: 'I',
                   groupValue: _selectedRadioValue,
                   onChanged: (value) {
                     setState(() {
@@ -77,7 +77,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
           Row(
             children: [
               Radio(
-                value: 'Commercial',
+                value: 'C',
                 groupValue: _selectedRadioValue,
                 onChanged: (value) {
                   setState(() {
