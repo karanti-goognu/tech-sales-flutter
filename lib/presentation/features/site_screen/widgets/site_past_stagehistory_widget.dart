@@ -58,7 +58,6 @@ class _SitePastStageHistoryWidgetState
       int id = await db.addDealer(DealerForDb(
           counterListModel[i].soldToParty,
           counterListModel[i].soldToPartyName));
-      print("ADDED :  $id");
     }
 
     dealerEntityForDb = await db.fetchAllDistinctDealers();
@@ -405,7 +404,6 @@ class _SitePastStageHistoryWidgetState
 
   Widget getPastHistoryProductDetails(
       SiteSupplyHistorys siteSupplyHistory, int index) {
-    print("Dealer-->"+siteSupplyHistory.soldToParty.toString());
     return ExpandablePanel(
       header: Text(
         "Product " + (index + 1).toString(),

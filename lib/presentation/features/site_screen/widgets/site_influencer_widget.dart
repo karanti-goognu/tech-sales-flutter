@@ -493,7 +493,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                         .ilpIntrested =
                                                     new TextEditingController();
 
-                                                print(inflDetail.inflName);
+                                                // print(inflDetail.inflName);
 
                                                 _listInfluencerDetail[index]
                                                         .inflContact
@@ -647,7 +647,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         });
                                       });
 
-                                      print("Dhawan :: ");
                                     }
                                   }
                                   // setState(() {

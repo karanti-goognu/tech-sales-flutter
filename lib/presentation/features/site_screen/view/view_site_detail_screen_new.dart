@@ -113,6 +113,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
   }
   List<File> _imageList = new List();
   List<ProductListModel> prdduct = new List();
+  List<CounterListModel> subDealerList = new List();
 
   @override
   void initState() {
@@ -135,6 +136,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     UpdatedValues.setKitchenCount(null);
     UpdatedValues.setSiteTotalPotential(null);
     UpdatedValues.setTotalBalancePotential(null);
+    UpdatedValues.setSiteSelectedDB(null);
+    UpdatedValues.setProductEntityFromLocalDb(null);
+    UpdatedValues.setDealerEntityForDb(null);
+    UpdatedValues.setSelectedSubDealer(null);
+    UpdatedValues.setSubDealerList(subDealerList);
 
 
   }
@@ -777,7 +783,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
             body: FutureBuilder(
                 future: _getSiteData,
                 builder: (context, snapshot) {
-                  print(snapshot.data.toString());
+                  // print(snapshot.data.toString());
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     // return Align(
                     //     alignment: Alignment.center,
@@ -804,7 +810,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                               siteId: widget.siteId,
                               viewSiteDataResponse: snapshot.data),
                           SiteProgressWidget(
-                              viewSiteDataResponse: snapshot.data),
+                              viewSiteDataResponse: snapshot.data,tabController:_tabController,tabIndex:selectedTabIndex),
                           SiteInfluencerWidget(
                               viewSiteDataResponse: snapshot.data),
                           SitePastStageHistoryWidget(

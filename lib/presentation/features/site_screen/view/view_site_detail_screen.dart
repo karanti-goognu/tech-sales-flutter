@@ -889,13 +889,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
           int id = await db.addDealer(DealerForDb(
               counterListModel[i].soldToParty,
               counterListModel[i].soldToPartyName));
-          print("ADDED :  $id");
+
         }
 
         // print("list Size");
         siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
         dealerEntityForDb = await db.fetchAllDistinctDealers();
-        dealerEntityForDb.forEach((e) => print(e.toMapForDb().toString()));
+
 
         setState(() {
           addNextButtonDisable = false;

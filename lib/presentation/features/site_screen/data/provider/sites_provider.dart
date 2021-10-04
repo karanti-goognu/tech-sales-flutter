@@ -40,7 +40,7 @@ class MyApiClientSites {
       version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
-      print('Response body is : ${json.decode(response.body)}');
+      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -84,7 +84,7 @@ class MyApiClientSites {
 
       var response = await httpClient.get(UrlConstants.getSecretKey,
           headers: requestHeadersEmpIdAndNo);
-      print('Response body is : ${json.decode(response.body)}');
+      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
@@ -112,7 +112,7 @@ class MyApiClientSites {
         var response = await httpClient.get(UrlConstants.getFilterData,
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey, version));
-        print('Response body is : ${json.decode(response.body)}');
+        // print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -142,7 +142,7 @@ class MyApiClientSites {
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
-        print('Response body is : ${json.decode(response.body)}');
+        // print('Response body is : ${json.decode(response.body)}');
         return sitesListModel;
       } else
         print('error in else');
@@ -161,7 +161,7 @@ class MyApiClientSites {
       //var response = await httpClient.post(UrlConstants.loginCheck);
      // print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-        print('success');
+        // print('success');
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
         //print('Access key Object is :: $loginModel');
@@ -200,7 +200,7 @@ class MyApiClientSites {
 
         // print('@@@@');
         // print(viewSiteDataResponse.counterListModel[0].soldToParty);
-        print('SITE VISIT: ${json.encode(viewSiteDataResponse.mwpVisitModel)}');
+        // print('SITE VISIT: ${json.encode(viewSiteDataResponse.mwpVisitModel)}');
         if (viewSiteDataResponse.respCode == "ST2010") {
           return viewSiteDataResponse;
         } else if (viewSiteDataResponse.respCode == "ST2011") {
@@ -228,9 +228,10 @@ class MyApiClientSites {
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));
-    print(json.encode(updateDataRequest));
 
-    updateDataRequest['siteVisitHistoryEntity'].forEach((e) => print(e));
+    // print(json.encode(updateDataRequest));
+
+    // updateDataRequest['siteVisitHistoryEntity'].forEach((e) => print(e));
 
     for (var file in list) {
       String fileName = file.path.split("/").last;
@@ -342,7 +343,7 @@ class MyApiClientSites {
       // print("Request Body/Fields :: " +
       //     request.fields['siteInfluencerEntity'].toString());
       // print("Files:: " + request.files.toString());
-      log("Site Body--> "+json.encode(updateDataRequest));
+      // log("Site Body--> "+json.encode(updateDataRequest));
       try {
         request
             .send()
@@ -393,7 +394,7 @@ class MyApiClientSites {
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey, version));
-      print('Response body is : ${json.decode(response.body)}');
+      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
@@ -417,8 +418,9 @@ class MyApiClientSites {
       var data = json.decode(response.body);
         siteVisitResponseModel =
             SiteVisitResponseModel.fromJson(json.decode(response.body));
-        print('URL : ${response.request}');
-        print('RESP: ${data}');
+
+        // print('URL : ${response.request}');
+        // print('RESP: ${data}');
 
       //print('RESPONSE : ${json.encode(siteVisitRequestModel)}');
     }
@@ -471,7 +473,7 @@ class MyApiClientSites {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version),
           body: json.encode(jsonData));
-      log(""+json.encode(jsonData));
+      // log(""+json.encode(jsonData));
       if(response.statusCode==200) {
         String data = response.body;
         return json.decode(data);

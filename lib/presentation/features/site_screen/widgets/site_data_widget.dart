@@ -547,7 +547,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 TextFormField(
                                   controller: _totalKitchenCount,
                                   onChanged: (String text){
-                                    print("Area--> "+UpdatedValues.getSiteBuiltArea());
                                     setState(() {
                                       UpdatedValues.setKitchenCount(_totalKitchenCount);
 
