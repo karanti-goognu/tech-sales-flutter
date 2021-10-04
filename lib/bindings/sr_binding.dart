@@ -13,7 +13,7 @@ class SRBinding implements Bindings {
     Get.lazyPut<SrFormDataController>(() {
       return SrFormDataController(
         repository: SrRepository(
-          apiClient: MyApiClient(
+          apiClient: MyApiClientSR(
             httpClient: http.Client(),
           ),
         ),
@@ -22,7 +22,7 @@ class SRBinding implements Bindings {
     Get.lazyPut<SRListController>(() {
       return SRListController(
         repository: SrRepository(
-          apiClient: MyApiClient(
+          apiClient: MyApiClientSR(
             httpClient: http.Client(),
           ),
         ),
@@ -31,7 +31,7 @@ class SRBinding implements Bindings {
     Get.lazyPut<SaveServiceRequestController>(() {
       return SaveServiceRequestController(
         repository: SrRepository(
-          apiClient: MyApiClient(
+          apiClient: MyApiClientSR(
             httpClient: http.Client(),
           ),
         ),
@@ -40,7 +40,7 @@ class SRBinding implements Bindings {
     Get.lazyPut<UpdateServiceRequestController>(() {
       return UpdateServiceRequestController(
         repository: SrRepository(
-          apiClient: MyApiClient(
+          apiClient: MyApiClientSR(
             httpClient: http.Client(),
           )
           ),

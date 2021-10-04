@@ -59,6 +59,8 @@ class MwpplanModel {
   int actualContractorMeetNo;
   int actualMiniContractorMeetNo;
   int actualConsumerMeetNo;
+
+
   String status;
   String createdBy;
   int createdOn;
