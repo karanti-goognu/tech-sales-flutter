@@ -523,6 +523,7 @@ class LeadsEntity {
   String leadSource;
   String leadSourceUser;
   String leadSourcePlatform;
+  String isIhbCommercial;
 
 
 
@@ -565,6 +566,7 @@ class LeadsEntity {
         this.leadSource,
         this.leadSourceUser,
         this.leadSourcePlatform,
+        this.isIhbCommercial
       });
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
@@ -605,6 +607,7 @@ class LeadsEntity {
     leadSource = json['leadSource'];
     leadSourceUser = json['leadSourceUser'];
     leadSourcePlatform = json['leadSourcePlatform'];
+    isIhbCommercial = json['isIhbCommercial'];
 
   }
 
@@ -647,6 +650,7 @@ class LeadsEntity {
     data['leadSource'] = this.leadSource;
     data['leadSourceUser'] = this.leadSourceUser;
     data['leadSourcePlatform'] = this.leadSourcePlatform;
+    data['isIhbCommercial'] = this.isIhbCommercial;
     return data;
   }
 }

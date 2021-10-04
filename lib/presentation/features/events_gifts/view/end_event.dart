@@ -130,7 +130,7 @@ class _EndEventState extends State<EndEvent> {
               displayInfo('Venue Address', mwpEndEventModel.venueAddress),
               displayInfo('Actual Venue Address', mwpEndEventModel.actualVenueAddress),
               displayChipForDealer('Dealer(s) Detail', eventDealersModelList!=null?_eventController.endEventModel.eventDealersModelList:[]),
-              displayChip('Influencer(s) Detail', eventInfluencerModelsList),
+              displayChip('Influencer(s) Detail', eventInfluencerModelsList!=null?_eventController.endEventModel.eventInfluencerModelsList:[]),
               displayInfo('Expected Leads', mwpEndEventModel.expectedLeadsCount),
               displayInfo('Actual Leads', mwpEndEventModel.actualLeadsCount),
               displayInfo('Gift distribution', mwpEndEventModel.giftDistributionCount),
@@ -259,7 +259,7 @@ class _EndEventState extends State<EndEvent> {
               child: ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                children: list
+                children: (list == null)?[]: list
                     .map((e) => Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Chip(
@@ -322,7 +322,7 @@ class _EndEventState extends State<EndEvent> {
               child: ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                children: list
+                children: (list == null)?[]:list
                     .map((e) => Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Chip(

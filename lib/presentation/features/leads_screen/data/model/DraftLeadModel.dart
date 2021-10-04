@@ -32,7 +32,8 @@ class SaveLeadRequestDraftModel {
       this.leadBags,
         this.leadSource,
         this.leadSourceUser,
-        this.leadSourcePlatform
+        this.leadSourcePlatform,
+        this.isIhbCommercial,
       });
 
   // String leadSegmane;
@@ -63,6 +64,7 @@ class SaveLeadRequestDraftModel {
   String leadSource;
   String leadSourceUser;
   String leadSourcePlatform;
+  String isIhbCommercial;
 
   SaveLeadRequestDraftModel.fromJson(Map<String, dynamic> json) {
     siteSubTypeId = json['siteSubTypeId'];
@@ -88,6 +90,7 @@ class SaveLeadRequestDraftModel {
     leadSource = json['leadSource'];
     leadSourceUser = json['leadSourceUser'];
     leadSourcePlatform = json['leadSourcePlatform'];
+    isIhbCommercial = json['isIhbCommercial'];
     // photos = json['photos'];
     if (json['comments'] != null) {
       comments = new List<CommentsDetail>();
@@ -139,6 +142,7 @@ class SaveLeadRequestDraftModel {
     data['leadSource'] = this.leadSource;
     data['leadSourceUser'] = this.leadSourceUser;
     data['leadSourcePlatform'] = this.leadSourcePlatform;
+    data['isIhbCommercial'] = this.isIhbCommercial;
     return data;
   }
 }

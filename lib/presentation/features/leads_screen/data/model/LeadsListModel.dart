@@ -75,6 +75,7 @@ class LeadsEntity {
   String leadSource;
   String leadSourceUser;
   String leadSourcePlatform;
+  String isIhbCommercial;
 
   LeadsEntity(
       {this.leadId,
@@ -112,7 +113,8 @@ class LeadsEntity {
       this.siteDealerId,
       this.leadSource,
       this.leadSourceUser,
-      this.leadSourcePlatform});
+      this.leadSourcePlatform,
+      this.isIhbCommercial});
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
     leadId = json['leadId'];
@@ -151,6 +153,7 @@ class LeadsEntity {
     leadSource = json['leadSource'];
     leadSourceUser = json['leadSourceUser'];
     leadSourcePlatform = json['leadSourcePlatform'];
+    isIhbCommercial = json['isIhbCommercial'];
   }
 
   Map<String, dynamic> toJson() {
@@ -191,6 +194,7 @@ class LeadsEntity {
     data['leadSource'] = this.leadSource;
     data['leadSourceUser'] = this.leadSourceUser;
     data['leadSourcePlatform'] = this.leadSourcePlatform;
+    data['isIhbCommercial'] = this.isIhbCommercial;
     return data;
   }
 }
