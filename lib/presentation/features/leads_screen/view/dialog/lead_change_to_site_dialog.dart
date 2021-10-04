@@ -42,6 +42,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
   NextStageConstructionEntity _selectedNextStageConstructionEntity;
   SiteFloorsEntity _selectedLeadFloorEntity;
   var _noOfBagsSupplied = TextEditingController();
+  String _selectedRadioValue = 'IHB';
 
   @override
   void initState() {
@@ -52,6 +53,45 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
   @override
   Widget build(BuildContext context) {
+
+    final ihbRadio = Row(
+      children: [
+          Expanded(
+            child: Row(
+              children: [
+                Radio(
+                  value: 'IHB',
+                  groupValue: _selectedRadioValue,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedRadioValue = value;
+                    });
+                  },
+                ),
+                Text("IHB")
+              ],
+            ),
+          ),
+    Expanded(
+    child:
+          Row(
+            children: [
+              Radio(
+                value: 'Commercial',
+                groupValue: _selectedRadioValue,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedRadioValue = value;
+                  });
+                },
+              ),
+              Text("Commercial")
+            ],
+          ),
+    )
+      ],
+
+    );
     return Material(
       color: Colors.transparent,
       child: Center(
@@ -64,6 +104,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  ihbRadio,
                   DropdownButtonFormField<NextStageConstructionEntity>(
                     value: _selectedNextStageConstructionEntity,
                     items: nextStageConstructionEntity
@@ -286,7 +327,8 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                                   leadDataDealer,
                                                   leadDataSubDealer,
                                                   _selectedLeadFloorEntity.id,
-                                                  _noOfBagsSupplied.text);
+                                                  _noOfBagsSupplied.text,
+                                                  _selectedRadioValue);
                                         },
                                       ),
                                     ],
@@ -302,7 +344,8 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                 leadDataDealer,
                                 leadDataSubDealer,
                                 _selectedLeadFloorEntity.id,
-                                _noOfBagsSupplied.text);
+                                _noOfBagsSupplied.text,
+                                _selectedRadioValue);
                           }
 
                           //});
@@ -331,5 +374,6 @@ abstract class ChangeLeadToSiteDialogListener {
       String dealerId,
       String subDealerId,
       int siteFloorId,
-      String numOfBagsSupplied);
+      String numOfBagsSupplied,
+      String isIhbCommercial);
 }

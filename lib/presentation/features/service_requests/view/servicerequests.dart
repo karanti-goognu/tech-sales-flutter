@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/sr_list_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
@@ -253,6 +254,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                                   .srComplaintListModal[index]
                                   .srComplaintId),
                           transition: Transition.rightToLeft,
+                          binding: SRBinding(),
                         );
                       },
                       child: Card(

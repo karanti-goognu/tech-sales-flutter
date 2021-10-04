@@ -1125,19 +1125,19 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             ),
                                                           ],
                                                         ),
-                                                        //            GestureDetector(
-                                                        //   child: Icon(
-                                                        //     Icons.delete,
-                                                        //     color: HexColor("#FFCD00"),
-                                                        //   ),
-                                                        //   onTap: () {
-                                                        //    setState(() {
-                                                        //                     controller.imageList
-                                                        //                         .removeAt(
-                                                        //                             index);
-                                                        //                   });
-                                                        //   },
-                                                        // )
+                                                                   GestureDetector(
+                                                          child: Icon(
+                                                            Icons.delete,
+                                                            color: HexColor("#FFCD00"),
+                                                          ),
+                                                          onTap: () {
+                                                           setState(() {
+                                                                            controller.imageList
+                                                                                .removeAt(
+                                                                                    index);
+                                                                          });
+                                                          },
+                                                        )
                                                       ],
                                                     ),
                                                   );
@@ -1978,7 +1978,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   updateStatusForNextStage(BuildContext context, int statusId,
       {String dealerId, String subDealerId,int floorId,
-      String noOfBagSupplied}) {
+      String noOfBagSupplied, String isIhbCommercial}) {
     String empId;
     String mobileNumber;
     String name;
@@ -2093,7 +2093,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'leadSourceUser': _leadSourceUser.text,
         'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform,
         'nosFloors':_floorId,
-        'totalFloorSqftArea':int.parse(_noOfBagSupplied)
+        'totalFloorSqftArea':int.parse(_noOfBagSupplied),
+        'isIhbCommercial': _isIhbCommercial
       };
 
       print("Update Data-->"+"$updateRequestModel");
@@ -2774,6 +2775,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   String selectedDate = "";
   int _floorId;
   String _noOfBagSupplied = "";
+  String _isIhbCommercial = "";
 
   @override
   updateStatusForNextStageAllow(
@@ -2784,7 +2786,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       String dealerId,
       String subDealerId,
       int selectedFloorId,
-      String noOfBagsSupplied) {
+      String noOfBagsSupplied,
+      String isIhbCommercial) {
     // TODO: implement updateStatusForNextStageAllow
     selectedDealerId = dealerId;
     selectedDealerSubId = subDealerId;
@@ -2795,6 +2798,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     _nextDateofConstruction.text = nextStageConstructionPicked;
     _floorId = selectedFloorId;
     _noOfBagSupplied = noOfBagsSupplied;
+    _isIhbCommercial = isIhbCommercial;
+
     print(
         "_selectedNextStageConstructionEntity    ${nextStageConstructionPickedDate}");
 
