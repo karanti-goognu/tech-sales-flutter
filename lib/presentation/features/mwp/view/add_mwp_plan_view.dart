@@ -702,10 +702,11 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
           .actualBlockLevelMeet
           .toString():(index == 20) ? _mwpPlanController
           .getMWPResponse
-          .mwpplanModel.headMasonMeet.toString():
-          (index == 21) ? _mwpPlanController.getMWPResponse
+          .mwpplanModel.actualHeadMasonMeet.toString():
+          (index == 21) ?
+          _mwpPlanController.getMWPResponse
           .mwpplanModel
-          .newInfluencer
+          .actualNewInfluencer
           .toString(): "0";}
     else {
       return "0";
@@ -820,12 +821,12 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                                                     :(index == 20) ? _mwpPlanController
           .getMWPResponse
           .mwpplanModel.headMasonMeet.toString():
-      (index == 21) ? _mwpPlanController.getMWPResponse
+           (index == 21) ?
+           _mwpPlanController.getMWPResponse
           .mwpplanModel
           .newInfluencer
           .toString()
-
-                                                          : "0";
+          : "0";
     } else {
       return "0";
     }

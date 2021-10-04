@@ -22,10 +22,10 @@ import 'package:meta/meta.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MyApiClient {
+class MyApiClientSR {
   final http.Client httpClient;
   String version;
-  MyApiClient({@required this.httpClient});
+  MyApiClientSR({@required this.httpClient});
 
   Future<AccessKeyModel> getAccessKey() async {
     try {

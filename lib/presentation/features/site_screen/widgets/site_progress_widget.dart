@@ -866,6 +866,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
       }
 
       if(UpdatedValues.getSiteSelectedDB()!=null){
+        _siteBrandFromLocalDB = null;
         _siteBrandFromLocalDB = UpdatedValues.getSiteSelectedDB();
         _selectedBrand.text = _siteBrandFromLocalDB.brandName;
 
@@ -873,6 +874,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget> with SingleTick
       }
 
       if(UpdatedValues.getDealerEntityForDb()!=null){
+        _dealerEntityForDb=null;
         _dealerEntityForDb = UpdatedValues.getDealerEntityForDb();
         _dealerName.text = _dealerEntityForDb.dealerName;
       }

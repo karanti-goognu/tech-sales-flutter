@@ -11,7 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/p
 
 class SrRepository{
 
-  final MyApiClient apiClient;
+  final MyApiClientSR apiClient;
   SrRepository({this.apiClient});
 
   Future<AccessKeyModel> getAccessKey(){
