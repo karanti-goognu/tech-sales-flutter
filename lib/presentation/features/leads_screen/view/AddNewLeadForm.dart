@@ -5283,10 +5283,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _listInfluencerDetail[index].createdBy = empId;
               print(_listInfluencerDetail[index].inflName);
 
-
+              print("influencerTypeEntity : ${json.encode(influencerTypeEntity)}");
               for (int i = 0; i < influencerTypeEntity.length; i++) {
-                // print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
-                // print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
+
+                print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
+                print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
                 if (influencerTypeEntity[i].inflTypeId.toString() ==
                     inflDetail.inflTypeId.toString()) {
                   _listInfluencerDetail[index].inflTypeId.text = inflDetail.inflTypeId.toString();
@@ -5297,7 +5298,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   _listInfluencerDetail[index].inflTypeValue.clear();
                 }
               }
-              print(_listInfluencerDetail[index].inflName);
+             // print(_listInfluencerDetail[index].inflName);
               // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
 
               for (int i = 0; i < influencerCategoryEntity.length; i++) {

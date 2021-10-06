@@ -135,18 +135,21 @@ class InfluencerCategoryEntity {
 class InfluencerTypeEntity {
   int inflTypeId;
   String inflTypeDesc;
+  String infRegFlag;
 
-  InfluencerTypeEntity({this.inflTypeId, this.inflTypeDesc});
+  InfluencerTypeEntity({this.inflTypeId, this.inflTypeDesc, this.infRegFlag});
 
   InfluencerTypeEntity.fromJson(Map<String, dynamic> json) {
     inflTypeId = json['inflTypeId'];
     inflTypeDesc = json['inflTypeDesc'];
+    infRegFlag = json['infRegFlag'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['inflTypeId'] = this.inflTypeId;
     data['inflTypeDesc'] = this.inflTypeDesc;
+    data['infRegFlag'] = this.infRegFlag;
     return data;
   }
 }

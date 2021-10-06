@@ -150,7 +150,7 @@ class SplashController extends GetxController {
           // print('VERSION: ${this.splashDataModel.versionUpdateModel}');
           versionUpdateModel = this.splashDataModel.versionUpdateModel;
           if (versionUpdateModel != null && versionUpdateModel.length > 0) {
-            print("In If");
+            //print("In If");
             for (int i = 0; i < versionUpdateModel.length; i++) {
               if (versionUpdateModel[i].platform == "ANDROID") {
                 if (versionUpdateModel[i].oldVersion !=
