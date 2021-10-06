@@ -5268,8 +5268,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _listInfluencerDetail[index].inflContact.text =
                   inflDetail.inflContact;
               _listInfluencerDetail[index].inflName.text = inflDetail.inflName;
-              _listInfluencerDetail[index].inflTypeValue.text = "GOVE.Eng";
-                  //inflDetail.influencerTypeText;
+              _listInfluencerDetail[index].inflTypeValue.text = inflDetail.influencerTypeText;
               _listInfluencerDetail[index].id.text = inflDetail.inflId.toString();
               _listInfluencerDetail[index].ilpIntrested.text =
                   inflDetail.ilpRegFlag;
@@ -5286,25 +5285,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
 
               for (int i = 0; i < influencerTypeEntity.length; i++) {
+                // print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
+                // print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
                 if (influencerTypeEntity[i].inflTypeId.toString() ==
                     inflDetail.inflTypeId.toString()) {
-                  _listInfluencerDetail[index].inflTypeId.text =
-                      inflDetail.inflTypeId.toString();
-                  //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                  //  _listInfluencerDetail[index].inflTypeValue.text =
-                  //      influencerTypeEntity[influencerTypeEntity[i].inflTypeId - 1].inflTypeDesc;
-                 // print("inflTypeValue1 : ${inflDetail.influencerTypeText}");
+                  _listInfluencerDetail[index].inflTypeId.text = inflDetail.inflTypeId.toString();
                   _listInfluencerDetail[index].inflTypeValue.text = inflDetail.influencerTypeText.toString();
                   break;
                 } else {
-                  // _listInfluencerDetail[
-                  // index]
-                  //     .inflContact
-                  //     .clear();
-                  // _listInfluencerDetail[
-                  // index]
-                  //     .inflName
-                  //     .clear();
                   _listInfluencerDetail[index].inflTypeId.clear();
                   _listInfluencerDetail[index].inflTypeValue.clear();
                 }

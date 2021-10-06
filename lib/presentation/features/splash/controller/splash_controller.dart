@@ -146,10 +146,11 @@ class SplashController extends GetxController {
           debugPrint('Leads Data Response is null');
         } else {
           this.splashDataModel = data;
-           log('data: ${json.encode(this.splashDataModel)}');
+          // log('data: ${json.encode(this.splashDataModel)}');
           // print('VERSION: ${this.splashDataModel.versionUpdateModel}');
           versionUpdateModel = this.splashDataModel.versionUpdateModel;
-          if (versionUpdateModel != null || versionUpdateModel != []) {
+          if (versionUpdateModel != null && versionUpdateModel.length > 0) {
+            print("In If");
             for (int i = 0; i < versionUpdateModel.length; i++) {
               if (versionUpdateModel[i].platform == "ANDROID") {
                 if (versionUpdateModel[i].oldVersion !=
@@ -198,17 +199,20 @@ class SplashController extends GetxController {
                 }
               }
             }
+            var journeyDate = splashDataModel.journeyDetails.journeyDate;
+            var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
+            prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+            prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
           }
-         // else {
-         //   print("In else");
+         else {
+           print("In else");
             var journeyDate = splashDataModel.journeyDetails.journeyDate;
             var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
             prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
             prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
             if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH)
               openNextPage();
-          // }
-          // print("InIn");
+          }
 
           // var journeyDate = splashDataModel.journeyDetails.journeyDate;
           // var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
