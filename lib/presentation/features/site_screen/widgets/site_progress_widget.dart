@@ -2162,7 +2162,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     if (siteStagePotentialEntity1 != null) {
       double potentialPercentage =
           siteStagePotentialEntity1.potentialPercentage;
-      stagePt = (((siteTotalSitePotential * potentialPercentage) / 100).round())
+      stagePt = ((((siteTotalSitePotential * 20) * potentialPercentage) / 100).round())
           .toString();
       UpdatedValues.setSiteProgressStagePotential(stagePt);
       UpdatedValues.setSiteProgressStagePotentialAuto(stagePt);

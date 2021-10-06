@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
@@ -143,29 +145,26 @@ class SplashController extends GetxController {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
-          // if(data["resp_code"] == "DM1005"){
-          //   Get.dialog(CustomDialogs().appUserInactiveDialog(
-          //       data["resp_msg"]), barrierDismissible: false);
-          // }
           this.splashDataModel = data;
-          print('VERSION: ${splashDataModel.versionUpdateModel}');
-          versionUpdateModel = splashDataModel.versionUpdateModel;
-          if (versionUpdateModel != null) {
+           log('data: ${json.encode(this.splashDataModel)}');
+          // print('VERSION: ${this.splashDataModel.versionUpdateModel}');
+          versionUpdateModel = this.splashDataModel.versionUpdateModel;
+          if (versionUpdateModel != null || versionUpdateModel != []) {
             for (int i = 0; i < versionUpdateModel.length; i++) {
               if (versionUpdateModel[i].platform == "ANDROID") {
                 if (versionUpdateModel[i].oldVersion !=
-                        versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].newVersion &&
                     versionUpdateModel[i].updateType == "SOFT") {
                   print("in android");
                   Get.dialog(
-                          CustomDialogs().appUpdateDialog(
-                              versionUpdateModel[i].versionUpdateText,
-                              versionUpdateModel[i].appId,
-                              "ANDROID"),
-                          barrierDismissible: true)
+                      CustomDialogs().appUpdateDialog(
+                          versionUpdateModel[i].versionUpdateText,
+                          versionUpdateModel[i].appId,
+                          "ANDROID"),
+                      barrierDismissible: true)
                       .then((value) => openNextPage());
                 } else if (versionUpdateModel[i].oldVersion !=
-                        versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].newVersion &&
                     versionUpdateModel[i].updateType == "HARD") {
                   Get.dialog(
                       CustomDialogs().appForceUpdateDialog(
@@ -177,18 +176,18 @@ class SplashController extends GetxController {
               }
               if (versionUpdateModel[i].platform == "IOS") {
                 if (versionUpdateModel[i].oldVersion !=
-                        versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].newVersion &&
                     versionUpdateModel[i].updateType == "SOFT") {
                   print("in ios");
                   Get.dialog(
-                          CustomDialogs().appUpdateDialog(
-                              versionUpdateModel[i].versionUpdateText,
-                              versionUpdateModel[i].appId,
-                              "IOS"),
-                          barrierDismissible: true)
+                      CustomDialogs().appUpdateDialog(
+                          versionUpdateModel[i].versionUpdateText,
+                          versionUpdateModel[i].appId,
+                          "IOS"),
+                      barrierDismissible: true)
                       .then((value) => openNextPage());
                 } else if (versionUpdateModel[i].oldVersion !=
-                        versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].newVersion &&
                     versionUpdateModel[i].updateType == "HARD") {
                   Get.dialog(
                       CustomDialogs().appForceUpdateDialog(
@@ -199,29 +198,17 @@ class SplashController extends GetxController {
                 }
               }
             }
-
-            //    if (splashDataModel.versionUpdateModel.oldVersion !=
-            //        splashDataModel.versionUpdateModel.newVersion &&
-            //        splashDataModel.versionUpdateModel.updateType == "SOFT") {
-            //      print("inin");
-            //      Get.dialog(CustomDialogs().appUpdateDialog(
-            //          splashDataModel.versionUpdateModel.versionUpdateText),
-            //          barrierDismissible: true).then((value) => openNextPage());
-            //    } else if (splashDataModel.versionUpdateModel.oldVersion !=
-            //        splashDataModel.versionUpdateModel.newVersion &&
-            //        splashDataModel.versionUpdateModel.updateType == "HARD") {
-            //      Get.dialog(CustomDialogs().appForceUpdateDialog(
-            //          splashDataModel.versionUpdateModel.versionUpdateText),
-            //          barrierDismissible: false);
-            //    }
-
-          } else {
+          }
+         // else {
+         //   print("In else");
             var journeyDate = splashDataModel.journeyDetails.journeyDate;
             var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
             prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
             prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
-            if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH) openNextPage();
-          }
+            if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH)
+              openNextPage();
+          // }
+          // print("InIn");
 
           // var journeyDate = splashDataModel.journeyDetails.journeyDate;
           // var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
@@ -229,7 +216,7 @@ class SplashController extends GetxController {
           // prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
 
           // if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
-           openNextPage();
+         //  openNextPage();
 
         }
       });
@@ -277,3 +264,17 @@ class SplashController extends GetxController {
 //    }
 //  }
 }
+//    if (splashDataModel.versionUpdateModel.oldVersion !=
+//        splashDataModel.versionUpdateModel.newVersion &&
+//        splashDataModel.versionUpdateModel.updateType == "SOFT") {
+//      print("inin");
+//      Get.dialog(CustomDialogs().appUpdateDialog(
+//          splashDataModel.versionUpdateModel.versionUpdateText),
+//          barrierDismissible: true).then((value) => openNextPage());
+//    } else if (splashDataModel.versionUpdateModel.oldVersion !=
+//        splashDataModel.versionUpdateModel.newVersion &&
+//        splashDataModel.versionUpdateModel.updateType == "HARD") {
+//      Get.dialog(CustomDialogs().appForceUpdateDialog(
+//          splashDataModel.versionUpdateModel.versionUpdateText),
+//          barrierDismissible: false);
+//    }

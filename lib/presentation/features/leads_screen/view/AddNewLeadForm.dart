@@ -5196,6 +5196,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   controller: _listInfluencerDetail[index].inflTypeValue,
                   style: FormFieldStyle.formFieldTextStyle,
                   keyboardType: TextInputType.text,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z. ]")),
+                  ],
                   decoration: FormFieldStyle.buildInputDecoration(
                     labelText: "Type",
                   ),
@@ -5260,20 +5263,22 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               new TextEditingController();
 
               print(inflDetail.inflName);
+              print("inflTypeValue : ${inflDetail.influencerTypeText}");
 
               _listInfluencerDetail[index].inflContact.text =
                   inflDetail.inflContact;
               _listInfluencerDetail[index].inflName.text = inflDetail.inflName;
-              _listInfluencerDetail[index].id.text =
-                  inflDetail.inflId.toString();
+              _listInfluencerDetail[index].inflTypeValue.text = "GOVE.Eng";
+                  //inflDetail.influencerTypeText;
+              _listInfluencerDetail[index].id.text = inflDetail.inflId.toString();
               _listInfluencerDetail[index].ilpIntrested.text =
                   inflDetail.ilpRegFlag;
               // _listInfluencerDetail[
               //             index]
               //         .createdOn =
               //     inflDetail.createdOn;
-              _listInfluencerDetail[index].inflTypeValue.text =
-                  inflDetail.influencerTypeText;
+
+
               _listInfluencerDetail[index].inflCatValue.text =
                   inflDetail.influencerCategoryText;
               _listInfluencerDetail[index].createdBy = empId;
@@ -5288,6 +5293,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                   //  _listInfluencerDetail[index].inflTypeValue.text =
                   //      influencerTypeEntity[influencerTypeEntity[i].inflTypeId - 1].inflTypeDesc;
+                 // print("inflTypeValue1 : ${inflDetail.influencerTypeText}");
                   _listInfluencerDetail[index].inflTypeValue.text = inflDetail.influencerTypeText.toString();
                   break;
                 } else {

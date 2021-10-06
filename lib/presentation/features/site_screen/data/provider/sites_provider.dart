@@ -184,7 +184,7 @@ class MyApiClientSites {
         headers: requestHeadersWithAccessKeyAndSecretKey(
             accessKey, userSecurityKey, version),
       );
-
+print("URL:$url ");
       // print(
       //     'Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
       if (response.statusCode == 200) {
@@ -339,11 +339,11 @@ class MyApiClientSites {
       request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
-      // print("Request headers :: " + request.headers.toString());
-      // print("Request Body/Fields :: " +
-      //     request.fields['siteInfluencerEntity'].toString());
-      // print("Files:: " + request.files.toString());
-      // log("Site Body--> "+json.encode(updateDataRequest));
+      print("Request headers :: " + request.headers.toString());
+      print("Request Body/Fields :: " +
+          request.fields['siteInfluencerEntity'].toString());
+      print("Files:: " + request.files.toString());
+      log("Site Body--> "+json.encode(updateDataRequest));
       try {
         request
             .send()

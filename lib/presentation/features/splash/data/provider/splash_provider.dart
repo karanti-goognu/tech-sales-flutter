@@ -88,7 +88,7 @@ class MyApiClientSplash {
         print("data['employee-details']   $data");
         print(data['employee-details']);
         print("-------------");
-        print(data['versionUpdateModel']);
+        print("versionUpdateModel: ${data['versionUpdateModel']}");
         SplashDataModel splashDataModel = SplashDataModel.fromJson(data);
         print(splashDataModel.employeeDetails);
         //print('Access key Object is :: $accessKeyModel');

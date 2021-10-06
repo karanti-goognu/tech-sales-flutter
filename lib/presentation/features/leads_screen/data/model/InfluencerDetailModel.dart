@@ -44,6 +44,7 @@ class InfluencerDetail {
     this.isExpanded = false;
     this.isPrimarybool = json['isPrimary'].toString() == "Y" ? true : false;
     this.isPrimary = json['isPrimary'].toString();
+    //this.inflTypeValue.text = json['influencer_type_text'].toString();
   }
 
   Map<String, dynamic> toJson() {
