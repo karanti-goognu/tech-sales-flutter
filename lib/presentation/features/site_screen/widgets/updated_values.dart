@@ -864,6 +864,15 @@ class UpdatedValues{
               Get.dialog(CustomDialogs().showMessage(
                   "Total  Balance Potential can't be greater than Total Site Potential"));
               return;
+            }else if (UpdatedValues
+                .getSiteProgressNoOfFloors()!=null &&(UpdatedValues
+                .getSiteProgressNoOfFloors()
+                .id > UpdatedValues
+                .getNoOfFloors()
+                .id)){
+              Get.dialog(CustomDialogs().showMessage(
+                  "Site Progress floor can't be greater than Site Floor"));
+              return;
             } else {
               _siteController.updateLeadData(
                   responseBody, getImageList(), context,
@@ -888,7 +897,16 @@ class UpdatedValues{
             Get.dialog(CustomDialogs().showMessage(
                 "Total  Balance Potential can't be greater than Total Site Potential"));
             return;
-          }else {
+          } else if (UpdatedValues
+              .getSiteProgressNoOfFloors()!=null &&(UpdatedValues
+              .getSiteProgressNoOfFloors()
+              .id > UpdatedValues
+              .getNoOfFloors()
+              .id)){
+            Get.dialog(CustomDialogs().showMessage(
+                "Site Progress floor can't be greater than Site Floor"));
+          return;
+        } else {
             _siteController.updateLeadData(
                 responseBody, getImageList(), context,
                 UpdatedValues.getSiteId());
