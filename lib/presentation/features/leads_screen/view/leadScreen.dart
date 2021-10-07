@@ -736,7 +736,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                       () => Row(
                                                         children: [
                                                           Visibility(
-                                                            visible: (_leadsFilterController.leadsListResponse.leadsEntity[index].leadSource == "CALL CENTER")? true:false,
+                                                            visible: (_leadsFilterController.leadsListResponse.leadsEntity[index].leadSourcePlatform == "CALL CENTER")? true:false,
                                                               child: Container(
                                                                 width: 15,
                                                                 height: 15,

@@ -4118,62 +4118,62 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         ),
                         SizedBox(height: 16),
 
-                        Center(
-                          child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                side: BorderSide(color: Colors.black26)),
-                            color: Colors.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 5, bottom: 8, top: 5),
-                              child: Text(
-                                "ADD MORE INFLUENCER",
-                                style: TextStyle(
-                                    color: HexColor("#1C99D4"),
-                                    fontWeight: FontWeight.bold,
-                                    // letterSpacing: 2,
-                                    fontSize: 17),
-                              ),
-                            ),
-                            onPressed: () async {
-                              // //  print(_listInfluencerDetail[
-                              //   _listInfluencerDetail.length - 1]
-                              //       .inflName);
-                              if (_listInfluencerDetail[
-                              _listInfluencerDetail.length - 1]
-                                  .inflName !=
-                                  null &&
-                                  _listInfluencerDetail[
-                                  _listInfluencerDetail.length - 1]
-                                      .inflName !=
-                                      "null" &&
-                                  !_listInfluencerDetail[
-                                  _listInfluencerDetail.length - 1]
-                                      .inflName
-                                      .text
-                                      .isNullOrBlank) {
-                                InfluencerDetail infl = new InfluencerDetail(
-                                    isExpanded: true, isPrimarybool: false);
-
-                                // Item item = new Item(
-                                //     headerValue: "agx ", expandedValue: "dnxcx");
-                                setState(() {
-                                  // _data.add(item);
-                                  _listInfluencerDetail[
-                                  _listInfluencerDetail.length - 1]
-                                      .isExpanded = false;
-                                  _listInfluencerDetail.add(infl);
-                                });
-                              } else {
-                                print(
-                                    "Error : Please fill previous influencer first");
-                                Get.dialog(CustomDialogs().errorDialog(
-                                    "Please fill previous influencer first"));
-                              }
-                            },
-                          ),
-                        ),
+                        // Center(
+                        //   child: FlatButton(
+                        //     shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(0),
+                        //         side: BorderSide(color: Colors.black26)),
+                        //     color: Colors.transparent,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.only(
+                        //           right: 5, bottom: 8, top: 5),
+                        //       child: Text(
+                        //         "ADD MORE INFLUENCER",
+                        //         style: TextStyle(
+                        //             color: HexColor("#1C99D4"),
+                        //             fontWeight: FontWeight.bold,
+                        //             // letterSpacing: 2,
+                        //             fontSize: 17),
+                        //       ),
+                        //     ),
+                        //     onPressed: () async {
+                        //       // //  print(_listInfluencerDetail[
+                        //       //   _listInfluencerDetail.length - 1]
+                        //       //       .inflName);
+                        //       if (_listInfluencerDetail[
+                        //       _listInfluencerDetail.length - 1]
+                        //           .inflName !=
+                        //           null &&
+                        //           _listInfluencerDetail[
+                        //           _listInfluencerDetail.length - 1]
+                        //               .inflName !=
+                        //               "null" &&
+                        //           !_listInfluencerDetail[
+                        //           _listInfluencerDetail.length - 1]
+                        //               .inflName
+                        //               .text
+                        //               .isNullOrBlank) {
+                        //         InfluencerDetail infl = new InfluencerDetail(
+                        //             isExpanded: true, isPrimarybool: false);
+                        //
+                        //         // Item item = new Item(
+                        //         //     headerValue: "agx ", expandedValue: "dnxcx");
+                        //         setState(() {
+                        //           // _data.add(item);
+                        //           _listInfluencerDetail[
+                        //           _listInfluencerDetail.length - 1]
+                        //               .isExpanded = false;
+                        //           _listInfluencerDetail.add(infl);
+                        //         });
+                        //       } else {
+                        //         print(
+                        //             "Error : Please fill previous influencer first");
+                        //         Get.dialog(CustomDialogs().errorDialog(
+                        //             "Please fill previous influencer first"));
+                        //       }
+                        //     },
+                        //   ),
+                        // ),
 
                         Divider(
                           color: Colors.black26,
@@ -4943,189 +4943,190 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         physics: NeverScrollableScrollPhysics(),
         itemCount: _listInfluencerDetail.length,
         itemBuilder: (BuildContext context, int index) {
-          if (!_listInfluencerDetail[index].isExpanded) {
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Influencer Details ${(index + 1)} ",
-                      style: TextStyles.mulliBold18,
-                    ),
-                    Switch(
-                      onChanged: (value) {
-                        setState(() {
-                          if (value) {
-                            for (int i = 0;
-                            i < _listInfluencerDetail.length;
-                            i++) {
-                              if (i == index) {
-                                _listInfluencerDetail[i].isPrimarybool = value;
-                              } else {
-                                _listInfluencerDetail[i].isPrimarybool = !value;
-                              }
-                            }
-                          } else {
-                            Get.dialog(CustomDialogs().errorDialog(
-                                "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-                          }
-                        });
-                      },
-                      value: _listInfluencerDetail[index].isPrimarybool,
-                      activeColor: HexColor("#009688"),
-                      activeTrackColor: HexColor("#009688").withOpacity(0.5),
-                      inactiveThumbColor: HexColor("#F1F1F1"),
-                      inactiveTrackColor: Colors.black26,
-                    ),
-                    _listInfluencerDetail[index].isExpanded
-                        ? FlatButton.icon(
-                      color: Colors.transparent,
-                      icon: Icon(
-                        Icons.remove,
-                        color: ColorConstants.btnOrange,
-                        size: 18,
-                      ),
-                      label: Text(
-                        "COLLAPSE",
-                        style: TextStyles.muliBoldOrange17,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _listInfluencerDetail[index].isExpanded =
-                          !_listInfluencerDetail[index].isExpanded;
-                        });
-                      },
-                    )
-                        : FlatButton.icon(
-                      color: Colors.transparent,
-                      icon: Icon(
-                        Icons.add,
-                        color: ColorConstants.btnOrange,
-                        size: 18,
-                      ),
-                      label: Text(
-                        "EXPAND",
-                        style: TextStyles.muliBoldOrange17,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _listInfluencerDetail[index].isExpanded =
-                          !_listInfluencerDetail[index].isExpanded;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            );
-          } else {
+          // if (!_listInfluencerDetail[index].isExpanded) {
+          //   return Column(
+          //     children: [
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           Text(
+          //             "Influencer Details ${(index + 1)} ",
+          //             style: TextStyles.mulliBold18,
+          //           ),
+          //           Switch(
+          //             onChanged: (value) {
+          //               setState(() {
+          //                 if (value) {
+          //                   for (int i = 0;
+          //                   i < _listInfluencerDetail.length;
+          //                   i++) {
+          //                     if (i == index) {
+          //                       _listInfluencerDetail[i].isPrimarybool = value;
+          //                     } else {
+          //                       _listInfluencerDetail[i].isPrimarybool = !value;
+          //                     }
+          //                   }
+          //                 } else {
+          //                   Get.dialog(CustomDialogs().errorDialog(
+          //                       "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+          //                 }
+          //               });
+          //             },
+          //             value: _listInfluencerDetail[index].isPrimarybool,
+          //             activeColor: HexColor("#009688"),
+          //             activeTrackColor: HexColor("#009688").withOpacity(0.5),
+          //             inactiveThumbColor: HexColor("#F1F1F1"),
+          //             inactiveTrackColor: Colors.black26,
+          //           ),
+          //           _listInfluencerDetail[index].isExpanded
+          //               ? FlatButton.icon(
+          //             color: Colors.transparent,
+          //             icon: Icon(
+          //               Icons.remove,
+          //               color: ColorConstants.btnOrange,
+          //               size: 18,
+          //             ),
+          //             label: Text(
+          //               "COLLAPSE",
+          //               style: TextStyles.muliBoldOrange17,
+          //             ),
+          //             onPressed: () {
+          //               setState(() {
+          //                 _listInfluencerDetail[index].isExpanded =
+          //                 !_listInfluencerDetail[index].isExpanded;
+          //               });
+          //             },
+          //           )
+          //               : FlatButton.icon(
+          //             color: Colors.transparent,
+          //             icon: Icon(
+          //               Icons.add,
+          //               color: ColorConstants.btnOrange,
+          //               size: 18,
+          //             ),
+          //             label: Text(
+          //               "EXPAND",
+          //               style: TextStyles.muliBoldOrange17,
+          //             ),
+          //             onPressed: () {
+          //               setState(() {
+          //                 _listInfluencerDetail[index].isExpanded =
+          //                 !_listInfluencerDetail[index].isExpanded;
+          //               });
+          //             },
+          //           ),
+          //         ],
+          //       ),
+          //     ],
+          //   );
+          // } else {
             return Column(
               children: [
                 FittedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      (index == 0)
-                          ? Text(
+                      // (index == 0)
+                      //     ?
+                      Text(
                         "Influencer Details",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
-                      )
-                          : Text(
-                        "Influencer Details ${(index + 1)} ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-                      _listInfluencerDetail[index].isExpanded
-                          ? FlatButton.icon(
-                        color: Colors.transparent,
-                        icon: Icon(
-                          Icons.remove,
-                          color: ColorConstants.btnOrange,
-                          size: 18,
-                        ),
-                        label: Text(
-                          "COLLAPSE",
-                          style: TextStyles.muliBoldOrange17,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _listInfluencerDetail[index].isExpanded =
-                            !_listInfluencerDetail[index].isExpanded;
-                          });
-                        },
-                      )
-                          : FlatButton.icon(
-                        color: Colors.transparent,
-                        icon: Icon(
-                          Icons.add,
-                          color: ColorConstants.btnOrange,
-                          size: 18,
-                        ),
-                        label: Text(
-                          "EXPAND",
-                          style: TextStyles.muliBoldOrange17,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _listInfluencerDetail[index].isExpanded =
-                            !_listInfluencerDetail[index].isExpanded;
-                          });
-                        },
-                      ),
+                      //     : Text(
+                      //   "Influencer Details ${(index + 1)} ",
+                      //   style: TextStyle(
+                      //       fontWeight: FontWeight.bold, fontSize: 18),
+                      // ),
+                      // _listInfluencerDetail[index].isExpanded
+                      //     ? FlatButton.icon(
+                      //   color: Colors.transparent,
+                      //   icon: Icon(
+                      //     Icons.remove,
+                      //     color: ColorConstants.btnOrange,
+                      //     size: 18,
+                      //   ),
+                      //   label: Text(
+                      //     "COLLAPSE",
+                      //     style: TextStyles.muliBoldOrange17,
+                      //   ),
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       _listInfluencerDetail[index].isExpanded =
+                      //       !_listInfluencerDetail[index].isExpanded;
+                      //     });
+                      //   },
+                      // )
+                      //     : FlatButton.icon(
+                      //   color: Colors.transparent,
+                      //   icon: Icon(
+                      //     Icons.add,
+                      //     color: ColorConstants.btnOrange,
+                      //     size: 18,
+                      //   ),
+                      //   label: Text(
+                      //     "EXPAND",
+                      //     style: TextStyles.muliBoldOrange17,
+                      //   ),
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       _listInfluencerDetail[index].isExpanded =
+                      //       !_listInfluencerDetail[index].isExpanded;
+                      //     });
+                      //   },
+                      // ),
                     ],
                   ),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Secondary",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          // color: HexColor("#000000DE"),
-                          fontFamily: "Muli"),
-                    ),
-                    Switch(
-                      onChanged: (value) {
-                        setState(() {
-                          if (value) {
-                            for (int i = 0;
-                            i < _listInfluencerDetail.length;
-                            i++) {
-                              if (i == index) {
-                                _listInfluencerDetail[i].isPrimarybool = value;
-                              } else {
-                                _listInfluencerDetail[i].isPrimarybool = !value;
-                              }
-                            }
-                          } else {
-                            Get.dialog(CustomDialogs().errorDialog(
-                                "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-                          }
-                        });
-                      },
-                      value: _listInfluencerDetail[index].isPrimarybool,
-                      activeColor: HexColor("#009688"),
-                      activeTrackColor: HexColor("#009688").withOpacity(0.5),
-                      inactiveThumbColor: HexColor("#F1F1F1"),
-                      inactiveTrackColor: Colors.black26,
-                    ),
-                    Text(
-                      "Primary",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: _listInfluencerDetail[index].isPrimarybool
-                              ? HexColor("#009688")
-                              : Colors.black,
-                          fontFamily: "Muli"),
-                    ),
-                  ],
-                ),
+                 ),
+               // SizedBox(height: 10),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Text(
+                //       "Secondary",
+                //       style: TextStyle(
+                //           fontWeight: FontWeight.bold,
+                //           fontSize: 18,
+                //           // color: HexColor("#000000DE"),
+                //           fontFamily: "Muli"),
+                //     ),
+                //     Switch(
+                //       onChanged: (value) {
+                //         setState(() {
+                //           if (value) {
+                //             for (int i = 0;
+                //             i < _listInfluencerDetail.length;
+                //             i++) {
+                //               if (i == index) {
+                //                 _listInfluencerDetail[i].isPrimarybool = value;
+                //               } else {
+                //                 _listInfluencerDetail[i].isPrimarybool = !value;
+                //               }
+                //             }
+                //           } else {
+                //             Get.dialog(CustomDialogs().errorDialog(
+                //                 "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                //           }
+                //         });
+                //       },
+                //       value: _listInfluencerDetail[index].isPrimarybool,
+                //       activeColor: HexColor("#009688"),
+                //       activeTrackColor: HexColor("#009688").withOpacity(0.5),
+                //       inactiveThumbColor: HexColor("#F1F1F1"),
+                //       inactiveTrackColor: Colors.black26,
+                //     ),
+                //     Text(
+                //       "Primary",
+                //       style: TextStyle(
+                //           fontWeight: FontWeight.bold,
+                //           fontSize: 18,
+                //           color: _listInfluencerDetail[index].isPrimarybool
+                //               ? HexColor("#009688")
+                //               : Colors.black,
+                //           fontFamily: "Muli"),
+                //     ),
+                //   ],
+                // ),
                 TextFormField(
                   controller: _listInfluencerDetail[index].inflContact,
                   maxLength: 10,
@@ -5214,7 +5215,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 ),
               ],
             );
-          }
+         // }
+
         });
   }
 
