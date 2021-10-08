@@ -3574,7 +3574,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
     final name = TextFormField(
       initialValue: _contactName,
-      focusNode: myFocusNode,
+      //focusNode: myFocusNode,
       validator: (value) {
         if (value.isEmpty ||
             value.length <= 0 ||
@@ -4093,14 +4093,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         )
                             : Container(),
 
-                        SizedBox(height: 16),
+                        //SizedBox(height: 16),
                         Divider(
                           color: Colors.black26,
                           thickness: 1,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 10.0, bottom: 20, left: 5),
+                              top: 10.0, bottom: 0.0, left: 5),
                           child: Text(
                             "Influencer Details",
                             style: TextStyles.muliBold25,
@@ -4109,13 +4109,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         // Container(
                         //   child: _buildPanel(),
                         // ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: influencer(),
-                            ),
-                          ],
-                        ),
+                        influencer(),
+                        // Row(
+                        //   children: [
+                        //     Expanded(
+                        //       child: influencer(),
+                        //     ),
+                        //   ],
+                        // ),
                         SizedBox(height: 16),
 
                         // Center(
@@ -5022,17 +5023,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           // } else {
             return Column(
               children: [
-                FittedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                // FittedBox(
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
                       // (index == 0)
                       //     ?
-                      Text(
-                        "Influencer Details",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
+                      // Text(
+                      //   "Influencer Details",
+                      //   style: TextStyle(
+                      //       fontWeight: FontWeight.bold, fontSize: 18),
+                      // ),
                       //     : Text(
                       //   "Influencer Details ${(index + 1)} ",
                       //   style: TextStyle(
@@ -5075,9 +5076,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       //     });
                       //   },
                       // ),
-                    ],
-                  ),
-                 ),
+                 //    ],
+                 //  ),
+                 // ),
                // SizedBox(height: 10),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
@@ -5186,6 +5187,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _listInfluencerDetail[index].inflName,
+                  readOnly: true,
                   style: FormFieldStyle.formFieldTextStyle,
                   keyboardType: TextInputType.text,
                   decoration: FormFieldStyle.buildInputDecoration(
@@ -5195,6 +5197,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _listInfluencerDetail[index].inflTypeValue,
+                  readOnly: true,
                   style: FormFieldStyle.formFieldTextStyle,
                   keyboardType: TextInputType.text,
                   inputFormatters: [
@@ -5207,6 +5210,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _listInfluencerDetail[index].inflCatValue,
+                  readOnly: true,
                   style: FormFieldStyle.formFieldTextStyle,
                   keyboardType: TextInputType.text,
                   decoration: FormFieldStyle.buildInputDecoration(
@@ -5285,11 +5289,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _listInfluencerDetail[index].createdBy = empId;
               print(_listInfluencerDetail[index].inflName);
 
-              print("influencerTypeEntity : ${json.encode(influencerTypeEntity)}");
+              //print("influencerTypeEntity : ${json.encode(influencerTypeEntity)}");
               for (int i = 0; i < influencerTypeEntity.length; i++) {
 
-                print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
-                print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
+                // print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
+                // print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
                 if (influencerTypeEntity[i].inflTypeId.toString() ==
                     inflDetail.inflTypeId.toString()) {
                   _listInfluencerDetail[index].inflTypeId.text = inflDetail.inflTypeId.toString();
