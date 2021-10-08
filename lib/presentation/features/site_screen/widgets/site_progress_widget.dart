@@ -1084,18 +1084,25 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         viewSiteDataResponse.siteStagePotentialEntity.length >
                             0) {
                       int siteTotalSitePotential = viewSiteDataResponse
-                                  .sitesModal.siteTotalSitePotential !=
-                              null
+                          .sitesModal.siteTotalSitePotential !=
+                          null
                           ? int.parse(viewSiteDataResponse
-                              .sitesModal.siteTotalSitePotential)
+                          .sitesModal.siteTotalSitePotential)
                           : 0;
                       _stagePotentialVisit.clear();
-                      _stagePotentialVisit.text = calculateStagePotential(
-                              siteTotalSitePotential,
-                              viewSiteDataResponse.siteStagePotentialEntity,
-                              _selectedConstructionTypeVisit.id,
-                              _selectedSiteVisitFloor.id)
-                          .toString();
+                      if ((siteTotalSitePotential != null ||
+                          !siteTotalSitePotential.isBlank) &&
+                          (_selectedConstructionTypeVisit.id != null ||
+                              !_selectedConstructionTypeVisit.id.isBlank) &&
+                          (_selectedSiteVisitFloor.id != null || !_selectedSiteVisitFloor.id.isBlank)
+                      ) {
+                        _stagePotentialVisit.text = calculateStagePotential(
+                            siteTotalSitePotential,
+                            viewSiteDataResponse.siteStagePotentialEntity,
+                            _selectedConstructionTypeVisit.id,
+                            _selectedSiteVisitFloor.id)
+                            .toString();
+                      }
                     }
                   });
                 },
@@ -2152,20 +2159,26 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
       int selectedConstructionStageId,
       int selectedFloorId) {
     String stagePt = "";
-    SiteStagePotentialEntity siteStagePotentialEntity1 =
-        siteStagePotentialEntity.firstWhere(
-            (item) =>
-                (item.constructionStageId == selectedConstructionStageId &&
-                    item.nosFloors == selectedFloorId),
-            orElse: () => null);
+    if((siteTotalSitePotential != null || !siteTotalSitePotential.isBlank) &&
+        (selectedConstructionStageId != null || !selectedConstructionStageId.isBlank) &&
+        (selectedFloorId != null || !selectedFloorId.isBlank)
+    ) {
+      SiteStagePotentialEntity siteStagePotentialEntity1 =
+      siteStagePotentialEntity.firstWhere(
+              (item) =>
+          (item.constructionStageId == selectedConstructionStageId &&
+              item.nosFloors == selectedFloorId),
+          orElse: () => null);
 
-    if (siteStagePotentialEntity1 != null) {
-      double potentialPercentage =
-          siteStagePotentialEntity1.potentialPercentage;
-      stagePt = ((((siteTotalSitePotential * 20) * potentialPercentage) / 100).round())
-          .toString();
-      UpdatedValues.setSiteProgressStagePotential(stagePt);
-      UpdatedValues.setSiteProgressStagePotentialAuto(stagePt);
+      if (siteStagePotentialEntity1 != null) {
+        double potentialPercentage =
+            siteStagePotentialEntity1.potentialPercentage;
+        stagePt = ((((siteTotalSitePotential * 20) * potentialPercentage) / 100)
+            .round())
+            .toString();
+        UpdatedValues.setSiteProgressStagePotential(stagePt);
+        UpdatedValues.setSiteProgressStagePotentialAuto(stagePt);
+      }
     }
     return stagePt;
   }
