@@ -1030,7 +1030,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           id: siteFloorsEntity[0].id,
                           siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
                     } else {
-                      for (int i = 1; i < siteFloorsEntity.length; i++) {
+                      for (int i = 0; i < siteFloorsEntity.length; i++) {
                         siteFloorsEntityNew.add(new SiteFloorsEntity(
                             id: siteFloorsEntity[i].id,
                             siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
