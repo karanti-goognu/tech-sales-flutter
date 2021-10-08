@@ -1598,7 +1598,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                   ],
                                 ),
                                 SizedBox(height: _height),
-                                btnAddMoreInf,
+                                Visibility(
+                                  visible: (_listInfluencerDetail.length == 0)?true:false,
+                                    child: btnAddMoreInf),
                                 SizedBox(height: _height),
                                 Divider(
                                   color: Colors.black26,
