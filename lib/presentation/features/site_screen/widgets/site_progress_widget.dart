@@ -1020,7 +1020,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   setState(() {
                     FocusScope.of(context).requestFocus(new FocusNode());
                     _selectedConstructionTypeVisit = value;
-                    print(_selectedConstructionTypeVisit.id);
                     siteFloorsEntityNew = new List();
                     _selectedSiteVisitFloor = null;
                     if (_selectedConstructionTypeVisit.id == 1 ||
@@ -1092,9 +1091,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       _stagePotentialVisit.clear();
                       if ((siteTotalSitePotential != null ||
                           !siteTotalSitePotential.isBlank) &&
-                          (_selectedConstructionTypeVisit.id != null ||
-                              !_selectedConstructionTypeVisit.id.isBlank) &&
-                          (_selectedSiteVisitFloor.id != null || !_selectedSiteVisitFloor.id.isBlank)
+                          (_selectedConstructionTypeVisit!=null &&(_selectedConstructionTypeVisit.id != null ||
+                              !_selectedConstructionTypeVisit.id.isBlank)) &&
+                          (_selectedSiteVisitFloor!=null && (_selectedSiteVisitFloor.id != null || !_selectedSiteVisitFloor.id.isBlank))
                       ) {
                         _stagePotentialVisit.text = calculateStagePotential(
                             siteTotalSitePotential,

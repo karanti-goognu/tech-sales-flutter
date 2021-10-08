@@ -127,8 +127,8 @@ class UpdateServiceRequestController extends GetxController {
             confirm: MaterialButton(
               onPressed: () {
                   Get.back();
-                  Get.offAll(HomeScreen());
-                  // Get.toNamed(Routes.HOME_SCREEN);
+                  Get.offAll(() => HomeScreen());
+                  // Get.offAll(HomeScreen());
                   },
               child: Text('OK'),
             ),
