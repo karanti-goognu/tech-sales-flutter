@@ -1082,10 +1082,11 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     if (viewSiteDataResponse.siteStagePotentialEntity != null &&
                         viewSiteDataResponse.siteStagePotentialEntity.length >
                             0) {
-                      int siteTotalSitePotential = viewSiteDataResponse
+                      double siteTotalSitePotential = viewSiteDataResponse
                           .sitesModal.siteTotalSitePotential !=
                           null
-                          ? int.parse(viewSiteDataResponse
+                          ? double.parse(
+                          viewSiteDataResponse
                           .sitesModal.siteTotalSitePotential)
                           : 0;
                       _stagePotentialVisit.clear();
@@ -2153,7 +2154,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   }
 
   String calculateStagePotential(
-      int siteTotalSitePotential,
+      double siteTotalSitePotential,
       List<SiteStagePotentialEntity> siteStagePotentialEntity,
       int selectedConstructionStageId,
       int selectedFloorId) {
@@ -2177,6 +2178,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             .toString();
         UpdatedValues.setSiteProgressStagePotential(stagePt);
         UpdatedValues.setSiteProgressStagePotentialAuto(stagePt);
+        print("stagePt:${stagePt}");
       }
     }
     return stagePt;

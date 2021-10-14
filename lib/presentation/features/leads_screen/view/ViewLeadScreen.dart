@@ -319,7 +319,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   checkStatus() {
     leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
     LeadStatusEntity list;
-    print(viewLeadDataResponse.leadsEntity.leadStatusId);
+   // print(viewLeadDataResponse.leadsEntity.leadStatusId);
 
     for (int i = 0; i < leadStatusEntity.length; i++) {
       if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
