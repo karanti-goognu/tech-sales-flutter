@@ -769,7 +769,7 @@ class UpdatedValues{
       "siteDistrict":UpdatedValues.siteDistrict,
       "siteTaluk":UpdatedValues.siteTaluk,
       "sitePotentialMt":UpdatedValues.sitePotentialMt,
-      "totalSitePotentialAutoCalc":"",
+      "totalSitePotentialAutoCalc":totalSitePotentialAutoCalc!=null && totalSitePotentialAutoCalc.isNotEmpty?totalSitePotentialAutoCalc:"",
       "reraNumber":UpdatedValues.reraNumber,
       "siteCreationDate":UpdatedValues.siteCreationDate,
       "dealerId":UpdatedValues.dealerId,
