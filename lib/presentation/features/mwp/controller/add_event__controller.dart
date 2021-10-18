@@ -44,7 +44,7 @@ class AddEventController extends GetxController {
   final _selectedVenueTypeMeet = "BOOKED".obs;
   final _selectedMonth = "January".obs;
   final _phoneNumber = "8860080067".obs;
-  final _siteIdText = "Site Id".obs;
+  final _siteIdText = "Lead Id".obs;
   final _empId = "_empty".obs;
   final _otpCode = "_empty".obs;
   final _visitId = 0.obs;

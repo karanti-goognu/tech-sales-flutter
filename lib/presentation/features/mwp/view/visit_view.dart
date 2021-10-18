@@ -234,7 +234,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                           return null;
                         },
                         onChanged: (_) {
-                          //_addEventController.visitSiteId = _.toString();
+                          _addEventController.visitSiteId = _.toString();
                             apiCallForGetInf(_);
 
                         },
