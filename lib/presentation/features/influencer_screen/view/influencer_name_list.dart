@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -465,7 +466,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                 Navigator.push(
                     context, new CupertinoPageRoute(
                     builder: (BuildContext context) =>
-                        ViewSiteScreen(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
+                        ViewSiteScreenNew(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
                 );
               },
               child: Card(

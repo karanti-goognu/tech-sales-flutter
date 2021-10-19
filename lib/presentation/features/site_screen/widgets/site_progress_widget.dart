@@ -181,6 +181,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   .requestFocus(new FocusNode());
                               siteProductEntityfromLoaclDB = new List();
                               productDynamicList[index].brandModelForDB = null;
+                              _dealerEntityForDb = null;
                               // _siteProductFromLocalDB = null;
                               List<BrandModelforDB>
                                   _siteProductEntityfromLoaclDB = await db
@@ -825,8 +826,25 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
 
   setSiteProgressData() async {
+    await db.clearTable();
+    for (int i = 0; i < widget.viewSiteDataResponse.siteBrandEntity.length; i++) {
+      await db.addBrandName(new BrandModelforDB(widget.viewSiteDataResponse.siteBrandEntity[i].id,
+          widget.viewSiteDataResponse.siteBrandEntity[i].brandName, widget.viewSiteDataResponse.siteBrandEntity[i].productName));
+    }
+
+    for (int i = 0; i < widget.viewSiteDataResponse.counterListModel.length; i++) {
+      int id = await db.addDealer(DealerForDb(widget.viewSiteDataResponse.counterListModel[i].soldToParty,
+          widget.viewSiteDataResponse.counterListModel[i].soldToPartyName));
+    }
+
+    // print("list Size");fetchAllDistinctDealers
+    List<BrandModelforDB> siteBrandEntityfromLoaclDB1 = await db.fetchAllDistinctBrand();
+    List<DealerForDb> dealerEntityForDb1 = await db.fetchAllDistinctDealers();
+
     setState(() {
       viewSiteDataResponse = widget.viewSiteDataResponse;
+      siteBrandEntityfromLoaclDB = siteBrandEntityfromLoaclDB1;
+      dealerEntityForDb = dealerEntityForDb1;
       siteBrandEntity = viewSiteDataResponse != null
           ? viewSiteDataResponse.siteBrandEntity
           : new List();
@@ -859,6 +877,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             UpdatedValues.getConstructionTypeVisitNextStage();
       }
 
+
       if (UpdatedValues.getSiteProgressNoOfFloors() != null) {
         _selectedSiteVisitFloor = null;
         _selectedSiteVisitFloor = siteFloorsEntity.firstWhere(
@@ -879,29 +898,31 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             UpdatedValues.getSiteProgressDateOfConstruction();
       }
 
+
       if (UpdatedValues.getAddNextButtonDisable() != null) {
         addNextButtonDisable = UpdatedValues.getAddNextButtonDisable();
       }
 
 
-      if (UpdatedValues.getDealerEntityForDb() != null) {
+      if (UpdatedValues.getDealerEntityForDb() != null && _siteBrandFromLocalDB!=null) {
         _dealerEntityForDb = null;
         _dealerEntityForDb = UpdatedValues.getDealerEntityForDb();
         _dealerName.text = _dealerEntityForDb.dealerName;
         visitDataDealer = _dealerEntityForDb.id;
       }
 
-      if (UpdatedValues.getProductEntityFromLocalDb() != null) {
+      if (UpdatedValues.getProductEntityFromLocalDb() != null && _siteBrandFromLocalDB!=null) {
+        siteProductEntityfromLoaclDB = new List();
         siteProductEntityfromLoaclDB =
             UpdatedValues.getProductEntityFromLocalDb();
       }
 
 
-      if (UpdatedValues.getSubDealerList() != null) {
+      if (UpdatedValues.getSubDealerList() != null && _siteBrandFromLocalDB!=null ) {
         subDealerList = UpdatedValues.getSubDealerList();
       }
 
-      if (UpdatedValues.getSelectedSubDealer() != null) {
+      if (UpdatedValues.getSelectedSubDealer() != null && _siteBrandFromLocalDB!=null) {
         selectedSubDealer = UpdatedValues.getSelectedSubDealer();
         visitDataSubDealer = selectedSubDealer.shipToParty;
       }
@@ -925,25 +946,33 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         _siteBrandFromLocalDBNextStage = null;
         _siteBrandFromLocalDBNextStage = UpdatedValues.getSiteBrandFromLocalDBNextStage();
       }
+
     });
 
-    await db.clearTable();
-    for (int i = 0; i < siteBrandEntity.length; i++) {
-      await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
-          siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
-    }
-
-    for (int i = 0; i < counterListModel.length; i++) {
-      int id = await db.addDealer(DealerForDb(counterListModel[i].soldToParty,
-          counterListModel[i].soldToPartyName));
-    }
-
-    // print("list Size");fetchAllDistinctDealers
-    siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
-    dealerEntityForDb = await db.fetchAllDistinctDealers();
-
+   //  await db.clearTable();
+   //  for (int i = 0; i < siteBrandEntity.length; i++) {
+   //    await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
+   //        siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
+   //  }
+   //
+   //  for (int i = 0; i < counterListModel.length; i++) {
+   //    int id = await db.addDealer(DealerForDb(counterListModel[i].soldToParty,
+   //        counterListModel[i].soldToPartyName));
+   //  }
+   //
+   //  // print("list Size");fetchAllDistinctDealers
+   // var siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
+   // var dealerEntityForDb = await db.fetchAllDistinctDealers();
+   //  setBrandData(siteBrandEntityfromLoaclDB,dealerEntityForDb);
 
     // UpdatedValues.setSiteProgressData(null,null,_stagePotentialVisit.text,_stageStatus.text,_dateofConstruction.text);
+  }
+
+  void setBrandData(var siteBrandEntityfromLoaclDB1,var dealerList){
+    setState(() {
+      siteBrandEntityfromLoaclDB = siteBrandEntityfromLoaclDB1;
+      dealerEntityForDb = dealerList;
+    });
   }
 
   @override
@@ -1840,6 +1869,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   _siteBrandFromLocalDBNextStage);
               UpdatedValues.setSiteProductEntityFromLocalDBNextStage(
                   siteProductEntityfromLoaclDBNextStage);
+              print("BrandId-->"+value.brandName.toString());
               // _productSoldVisit.text = _siteBrand.productName;
               if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
                   "dalmia") {

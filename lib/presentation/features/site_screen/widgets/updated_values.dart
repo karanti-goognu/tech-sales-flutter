@@ -189,12 +189,13 @@ class UpdatedValues{
 
   static  List<SiteNextStageEntity> getSiteNextStageEntity() {
     List<SiteNextStageEntity> siteNextStageEntity = new List();
-    if ( constructionTypeVisitNextStage!= null && getSiteBrandFromLocalDBNextStage()!=null) {
+    if ( constructionTypeVisitNextStage!= null && siteBrandFromLocalDBNextStage!=null) {
       siteNextStageEntity.add(new SiteNextStageEntity(
         siteId: siteId,
         constructionStageId: constructionTypeVisitNextStage.id ?? 1,
         stagePotential: getStagePotentialVisitNextStage(),
-        brandId: getSiteBrandFromLocalDBNextStage().id,
+        brandId: siteBrandFromLocalDBNextStage!=null?siteBrandFromLocalDBNextStage.id:null,
+        floorId: siteFloorsEntityNextStage!=null?siteFloorsEntityNextStage.id.toString():null,
         brandPrice: getBrandPriceVisitNextStage(),
         stageStatus: getStageStatusNextStage(),
         constructionStartDt: getDateOfConstructionNextStage(),
@@ -816,7 +817,6 @@ class UpdatedValues{
     UpdatedValues.siteProgressStageStatus = siteProgressStageStatus;
     UpdatedValues.siteProgressDateOfConstruction = siteProgressDateOfConstruction;
   }
-
 
 
   static  void setSiteData(int siteId,
