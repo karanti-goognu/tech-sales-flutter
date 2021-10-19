@@ -852,6 +852,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             UpdatedValues.getSiteProgressConstructionId();
       }
 
+
       if (UpdatedValues.getConstructionTypeVisitNextStage() != null) {
         _selectedConstructionTypeVisitNextStage = null;
         _selectedConstructionTypeVisitNextStage =
@@ -882,16 +883,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         addNextButtonDisable = UpdatedValues.getAddNextButtonDisable();
       }
 
-      if (UpdatedValues.getProductDynamicList() != null) {
-        productDynamicList = UpdatedValues.getProductDynamicList();
-        updateSiteSupplyHistory();
-      }
-
-      if (UpdatedValues.getSiteSelectedDB() != null) {
-        _siteBrandFromLocalDB = null;
-        _siteBrandFromLocalDB = UpdatedValues.getSiteSelectedDB();
-        _selectedBrand.text = _siteBrandFromLocalDB.brandName;
-      }
 
       if (UpdatedValues.getDealerEntityForDb() != null) {
         _dealerEntityForDb = null;
@@ -904,6 +895,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         siteProductEntityfromLoaclDB =
             UpdatedValues.getProductEntityFromLocalDb();
       }
+
 
       if (UpdatedValues.getSubDealerList() != null) {
         subDealerList = UpdatedValues.getSubDealerList();
@@ -921,6 +913,17 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
       if (UpdatedValues.getSiteProgressDateOfConstruction() != null) {
         _dateofConstruction.text =
             UpdatedValues.getSiteProgressDateOfConstruction();
+      }
+
+      if (UpdatedValues.getProductDynamicList() != null) {
+        productDynamicList = UpdatedValues.getProductDynamicList();
+        updateSiteSupplyHistory();
+      }
+
+
+      if (UpdatedValues.getSiteBrandFromLocalDBNextStage() != null) {
+        _siteBrandFromLocalDBNextStage = null;
+        _siteBrandFromLocalDBNextStage = UpdatedValues.getSiteBrandFromLocalDBNextStage();
       }
     });
 
@@ -946,7 +949,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   @override
   void initState() {
     setSiteProgressData();
-    updateSiteSupplyHistory();
+    // updateSiteSupplyHistory();
     super.initState();
   }
 
@@ -1725,6 +1728,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           onChanged: (value) {
             setState(() {
               _selectedSiteVisitFloorNextStage = value;
+              UpdatedValues.setSiteFloorsEntityNextStage(
+                  _selectedSiteVisitFloorNextStage);
             });
           },
           decoration: InputDecoration(
@@ -1768,10 +1773,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           controller: _stagePotentialVisitNextStage,
           validator: (value) {
             if (value.isEmpty) {
-              return 'Please enter Site Built-Up Area ';
+              return 'Please enter Site Stage Potential ';
             }
 
             return null;
+          },
+          onChanged: (String data) {
+            UpdatedValues.setStagePotentialVisitNextStage(data);
           },
           style: TextStyle(
               fontSize: 18,
@@ -1825,9 +1833,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 await db.fetchAllDistinctProduct(value.brandName);
             setState(() {
               _siteBrandFromLocalDBNextStage = value;
-
               siteProductEntityfromLoaclDBNextStage =
                   _siteProductEntityfromLoaclDB;
+
+              UpdatedValues.setSiteBrandFromLocalDBNextStage(
+                  _siteBrandFromLocalDBNextStage);
+              UpdatedValues.setSiteProductEntityFromLocalDBNextStage(
+                  siteProductEntityfromLoaclDBNextStage);
               // _productSoldVisit.text = _siteBrand.productName;
               if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
                   "dalmia") {
@@ -1835,6 +1847,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               } else {
                 _stageStatusNextStage.text = "LOST";
               }
+              UpdatedValues.setStageStatusNextStage(_stageStatusNextStage.text);
             });
           },
           decoration:
@@ -1860,6 +1873,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             }
 
             return null;
+          },
+          onChanged: (String data) {
+            UpdatedValues.setBrandPriceVisitNextStage(data);
           },
           style: TextStyle(
               fontSize: 18,
@@ -2005,6 +2021,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             final String formattedDate =
                                 formatter.format(picked);
                             _dateOfBagSuppliedNextStage.text = formattedDate;
+                            UpdatedValues.setDateOfBagSuppliedNextStage(_dateOfBagSuppliedNextStage.text);
                           }
                         });
                       },
@@ -2033,9 +2050,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     }
                     return null;
                   },
-                  onChanged: (v) {
-                    print(v);
-                    print('hi');
+                  onChanged: (String v) {
+                    UpdatedValues.setSiteCurrentTotalBagsNextStage(v);
                   },
                   style: TextStyle(
                       fontSize: 18,
@@ -2143,6 +2159,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   if (picked != null) {
                     final String formattedDate = formatter.format(picked);
                     _dateofConstructionNextStage.text = formattedDate;
+                    UpdatedValues.setDateOfConstructionNextStage(_dateofConstructionNextStage.text);
                   }
                 });
               },

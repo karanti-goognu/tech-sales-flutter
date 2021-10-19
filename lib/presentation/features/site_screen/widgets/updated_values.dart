@@ -65,7 +65,6 @@ class UpdatedValues{
   static List<SiteSupplyHistorys> siteSupplyHistory ;
 
   static ConstructionStageEntity siteProgressConstructionId;
-  static ConstructionStageEntity constructionTypeVisitNextStage;
   static SiteFloorsEntity siteProgressnoOfFloors;
   static String siteProgressStagePotential;
   static String siteProgressStagePotentialAuto;
@@ -92,12 +91,124 @@ class UpdatedValues{
   static List<CounterListModel> subDealerList;
   static CounterListModel selectedSubDealer;
 
+  static ConstructionStageEntity constructionTypeVisitNextStage;
+  static SiteFloorsEntity siteFloorsEntityNextStage;
+  static String stagePotentialVisitNextStage;
+  static BrandModelforDB siteBrandFromLocalDBNextStage;
+  static BrandModelforDB siteProductFromLocalDBNextStage;
+  static String brandPriceVisitNextStage;
+  static String dateOfBagSuppliedNextStage;
+  static String siteCurrentTotalBagsNextStage;
+  static String stageStatusNextStage;
+  static String dateOfConstructionNextStage;
+  static List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage;
 
 
   UpdatedValues();
 
 
+  static  SiteFloorsEntity getSiteFloorsEntityNextStage() {
+    return siteFloorsEntityNextStage;
+  }
 
+  static  void setSiteFloorsEntityNextStage(SiteFloorsEntity siteFloorsEntityNextStage) {
+    UpdatedValues.siteFloorsEntityNextStage = siteFloorsEntityNextStage;
+  }
+
+  static  String getStagePotentialVisitNextStage() {
+    return stagePotentialVisitNextStage;
+  }
+
+  static  void setStagePotentialVisitNextStage(String stagePotentialVisitNextStage) {
+    UpdatedValues.stagePotentialVisitNextStage = stagePotentialVisitNextStage;
+  }
+
+  static  BrandModelforDB getSiteBrandFromLocalDBNextStage() {
+    return siteBrandFromLocalDBNextStage;
+  }
+
+  static  void setSiteBrandFromLocalDBNextStage(BrandModelforDB siteBrandFromLocalDBNextStage) {
+    UpdatedValues.siteBrandFromLocalDBNextStage = siteBrandFromLocalDBNextStage;
+  }
+
+  static  BrandModelforDB getSiteProductFromLocalDBNextStage() {
+    return siteProductFromLocalDBNextStage;
+  }
+
+  static  void setSiteProductFromLocalDBNextStage(BrandModelforDB siteProductFromLocalDBNextStage) {
+    UpdatedValues.siteProductFromLocalDBNextStage = siteProductFromLocalDBNextStage;
+  }
+
+  static  String getBrandPriceVisitNextStage() {
+    return brandPriceVisitNextStage;
+  }
+
+  static  void setBrandPriceVisitNextStage(String brandPriceVisitNextStage) {
+    UpdatedValues.brandPriceVisitNextStage = brandPriceVisitNextStage;
+  }
+
+  static  String getDateOfBagSuppliedNextStage() {
+    return dateOfBagSuppliedNextStage;
+  }
+
+  static  void setDateOfBagSuppliedNextStage(String dateOfBagSuppliedNextStage) {
+    UpdatedValues.dateOfBagSuppliedNextStage = dateOfBagSuppliedNextStage;
+  }
+
+  static  String getSiteCurrentTotalBagsNextStage() {
+    return siteCurrentTotalBagsNextStage;
+  }
+
+  static  void setSiteCurrentTotalBagsNextStage(String siteCurrentTotalBagsNextStage) {
+    UpdatedValues.siteCurrentTotalBagsNextStage = siteCurrentTotalBagsNextStage;
+  }
+
+  static  String getStageStatusNextStage() {
+    return stageStatusNextStage;
+  }
+
+  static  void setStageStatusNextStage(String stageStatusNextStage) {
+    UpdatedValues.stageStatusNextStage = stageStatusNextStage;
+  }
+
+  static  String getDateOfConstructionNextStage() {
+    return dateOfConstructionNextStage;
+  }
+
+  static  void setDateOfConstructionNextStage(String dateOfConstructionNextStage) {
+    UpdatedValues.dateOfConstructionNextStage = dateOfConstructionNextStage;
+  }
+
+  static  void setSiteProductEntityFromLocalDBNextStage(List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage) {
+    UpdatedValues.siteProductEntityfromLoaclDBNextStage = siteProductEntityfromLoaclDBNextStage;
+  }
+  static  List<BrandModelforDB> getSiteProductEntityFromLocalDBNextStage() {
+    return siteProductEntityfromLoaclDBNextStage;
+  }
+
+
+  static  List<SiteNextStageEntity> getSiteNextStageEntity() {
+    List<SiteNextStageEntity> siteNextStageEntity = new List();
+    if ( constructionTypeVisitNextStage!= null && getSiteBrandFromLocalDBNextStage()!=null) {
+      siteNextStageEntity.add(new SiteNextStageEntity(
+        siteId: siteId,
+        constructionStageId: constructionTypeVisitNextStage.id ?? 1,
+        stagePotential: getStagePotentialVisitNextStage(),
+        brandId: getSiteBrandFromLocalDBNextStage().id,
+        brandPrice: getBrandPriceVisitNextStage(),
+        stageStatus: getStageStatusNextStage(),
+        constructionStartDt: getDateOfConstructionNextStage(),
+        nextStageSupplyDate: getDateOfBagSuppliedNextStage(),
+        nextStageSupplyQty: getSiteCurrentTotalBagsNextStage(),
+        createdBy: empCode,
+      ));
+    }
+    return siteNextStageEntity;
+  }
+
+  static  void setSiteNextStageEntity(List<SiteNextStageEntity> siteNextStageEntity) {
+    UpdatedValues.siteNextStageEntity = siteNextStageEntity;
+  }
 
   static  CounterListModel getSelectedSubDealer() {
     return selectedSubDealer;
@@ -153,6 +264,7 @@ class UpdatedValues{
   static  List<BrandModelforDB> getProductEntityFromLocalDb() {
     return siteProductEntityfromLoaclDB;
   }
+
 
   static  bool getFromDropDown() {
     return fromDropDown;
@@ -499,9 +611,6 @@ class UpdatedValues{
   }
 
 
-
-
-
   static  SiteProbabilityWinningEntity getSiteProbabilityWinningId() {
     return siteProbabilityWinningId;
   }
@@ -534,14 +643,6 @@ class UpdatedValues{
     UpdatedValues.siteConstructionId = siteConstructionId;
   }
 
-  static  List<SiteNextStageEntity> getSiteNextStageEntity() {
-    List<SiteNextStageEntity> siteNextStageEntity = new List();
-    return siteNextStageEntity;
-  }
-
-  static  void setSiteNextStageEntity(List<SiteNextStageEntity> siteNextStageEntity) {
-    UpdatedValues.siteNextStageEntity = siteNextStageEntity;
-  }
 
   static  List<SitephotosEntity> getSitePhotosEntity() {
     List<SitephotosEntity> newSitePhotoEntity = new List();
@@ -775,8 +876,8 @@ class UpdatedValues{
       "dealerId":UpdatedValues.dealerId,
       "siteBuiltArea":UpdatedValues.siteBuiltArea,
       'noOfFloors':UpdatedValues.getNoOfFloors()!=null?UpdatedValues.getNoOfFloors().id:null,
-      "productDemo":UpdatedValues.productDemo,
-      "productOralBriefing":UpdatedValues.productOralBriefing,
+      "productDemo":UpdatedValues.getProductDemo(),
+      "productOralBriefing":UpdatedValues.getProductOralBriefing(),
       'soCode':UpdatedValues.soCode,
       "plotNumber":UpdatedValues.plotNumber,
       "inactiveReasonText":UpdatedValues.inactiveReasonText,
@@ -816,10 +917,17 @@ class UpdatedValues{
         UpdatedValues.siteBuiltArea == "null") {
       Get.dialog(CustomDialogs()
           .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
-    }
-
-    else if (UpdatedValues.getAddNextButtonDisable() &&
+    } else if (UpdatedValues.getAddNextButtonDisable() &&
         (UpdatedValues.getConstructionTypeVisitNextStage() == null
+            || UpdatedValues.getSiteBrandFromLocalDBNextStage() == null
+            || UpdatedValues.getSiteFloorsEntityNextStage() == null
+            || UpdatedValues.getStagePotentialVisitNextStage() == null
+            || UpdatedValues.getStagePotentialVisitNextStage() == ""
+            || UpdatedValues.getBrandPriceVisitNextStage() == null
+            || UpdatedValues.getBrandPriceVisitNextStage() == ""
+            || UpdatedValues.getDateOfBagSuppliedNextStage() == null
+            || UpdatedValues.getSiteCurrentTotalBagsNextStage() == null
+            || UpdatedValues.getSiteCurrentTotalBagsNextStage() == ""
         )) {
       Get.dialog(CustomDialogs().showMessage(
           "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));

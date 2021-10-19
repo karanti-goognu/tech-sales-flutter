@@ -111,7 +111,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         _siteTotalBags.text =
             (double.parse(_siteTotalPt.text) * 20).round().toString();
       }
-      print("sads->"+ sitesModal.totalBalancePotential);
+
       _siteTotalBalanceBags.text = sitesModal.totalBalancePotential;
       if (_siteTotalBalanceBags.text == null ||
           _siteTotalBalanceBags.text == "") {
@@ -1731,12 +1731,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       setState(() {
         isSwitchedsiteProductDemo = true;
         _siteProductDemo.text = "Y";
+        UpdatedValues.setProductDemo(_siteProductDemo.text);
         // textValue = 'Switch Button is ON';
       });
     } else {
       setState(() {
         isSwitchedsiteProductDemo = false;
         _siteProductDemo.text = "N";
+        UpdatedValues.setProductDemo(_siteProductDemo.text);
         // textValue = 'Switch Button is OFF';
       });
     }
@@ -1747,12 +1749,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       setState(() {
         isSwitchedsiteProductOralBriefing = true;
         _siteProductOralBriefing.text = "Y";
+        UpdatedValues.setProductOralBriefing(_siteProductOralBriefing.text);
         // textValue = 'Switch Button is ON';
       });
     } else {
       setState(() {
         isSwitchedsiteProductOralBriefing = false;
         _siteProductOralBriefing.text = "N";
+        UpdatedValues.setProductOralBriefing(_siteProductOralBriefing.text);
         // textValue = 'Switch Button is OFF';
       });
     }

@@ -141,6 +141,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     UpdatedValues.setDealerEntityForDb(null);
     UpdatedValues.setSelectedSubDealer(null);
     UpdatedValues.setSubDealerList(subDealerList);
+    UpdatedValues.setConstructionTypeVisitNextStage(null);
+    UpdatedValues.setSiteBrandFromLocalDBNextStage(null);
 
 
   }
