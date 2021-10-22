@@ -87,6 +87,8 @@ class SiteController extends GetxController {
   final _selectedSiteInfluencerCat = StringConstants.empty.obs;
   final _selectedSiteInfluencerCatValue = StringConstants.empty.obs;
 
+  final _infName = StringConstants.empty.obs;
+
   get selectedFilterCount => this._selectedFilterCount.value;
 
   get accessKeyResponse => this._accessKeyResponse.value;
@@ -121,6 +123,8 @@ class SiteController extends GetxController {
 
   get selectedSiteInfluencerCatValue =>
       this._selectedSiteInfluencerCatValue.value;
+
+  get infname => this._infName.value;
 
   set selectedFilterCount(value) => this._selectedFilterCount.value = value;
 
@@ -167,6 +171,8 @@ class SiteController extends GetxController {
       this._selectedSiteInfluencerCatValue.value = value;
 
   set sitesListResponse(value) => this._sitesListResponse.value = value;
+
+  set infName(value) => this._infName.value = value;
 
   final _isFilterApplied = false.obs;
 
@@ -601,7 +607,7 @@ class SiteController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
       String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
-
+      print("URL: ${url}");
       repository.getPendingSupplyDetails(accessKey, userSecurityKey, url).then((data) {
         Get.back();
         if (data == null) {

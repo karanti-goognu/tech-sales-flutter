@@ -32,7 +32,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     with SingleTickerProviderStateMixin {
   String geoTagType;
 
-  String siteCreationDate, visitRemarks;
+  String siteCreationDate, visitRemarks, infName = "";
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
 
 
@@ -81,24 +81,34 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
 //            resizeToAvoidBottomInset: true,
       resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        toolbarHeight: 60,
-        titleSpacing: 0,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 20.0, bottom: 10, left: 15),
-          child: Text(
-            "Influencer Name ",
-            style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 20,
-                color: HexColor("#006838"),
-                fontFamily: "Muli"),
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   automaticallyImplyLeading: false,
+      //   backgroundColor: Colors.white,
+      //   toolbarHeight: 60,
+      //   titleSpacing: 0,
+        // title: Padding(
+        //   padding: const EdgeInsets.only(top: 20.0, bottom: 10, left: 15),
+        //   child:
+        //   Obx(() => (_siteController != null || _siteController.pendingSupplyDetailsResponse != null || _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel != null)?
+        //   Text(_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.influencerName,
+        //     //"Influencer Name ",
+        //     style: TextStyle(
+        //         fontWeight: FontWeight.normal,
+        //         fontSize: 20,
+        //         color: HexColor("#006838"),
+        //         fontFamily: "Muli"),
+        //   ):Text("",
+        //     //"Influencer Name ",
+        //     style: TextStyle(
+        //         fontWeight: FontWeight.normal,
+        //         fontSize: 20,
+        //         color: HexColor("#006838"),
+        //         fontFamily: "Muli"),
+        // ),
+        // ),
+        // ),
+     // ),
       body:supplyDetailsDataView()
     );
   }
@@ -130,6 +140,19 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                      Obx(() =>Padding(
+                        padding: const EdgeInsets.only(top: 50.0, bottom: 20, left: 0),
+                        child: Center(
+                          child: Text(_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.influencerName ?? "",
+                              //"Influencer Name ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 20,
+                                  color: HexColor("#006838"),
+                                  fontFamily: "Muli"),
+                            ),
+                        ),
+                      ),),
                         Text(
                           "Site ID: " + widget.siteId.toString(),
                           style: TextStyle(

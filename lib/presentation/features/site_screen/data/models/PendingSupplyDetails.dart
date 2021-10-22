@@ -71,6 +71,7 @@ class PendingSuppliesDetailsModel {
   String shipToPartyName;
   String isAuthorised;
   String supplyCreatedOn;
+  String influencerName;
 
   PendingSuppliesDetailsModel(
       {this.siteId,
@@ -94,7 +95,8 @@ class PendingSuppliesDetailsModel {
         this.shipToParty,
         this.shipToPartyName,
         this.isAuthorised,
-        this.supplyCreatedOn});
+        this.supplyCreatedOn,
+      this.influencerName});
 
   PendingSuppliesDetailsModel.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -119,6 +121,7 @@ class PendingSuppliesDetailsModel {
     shipToPartyName = json['shipToPartyName'];
     isAuthorised = json['isAuthorised'];
     supplyCreatedOn = json['supplyCreatedOn'];
+    influencerName = json['influencerName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -145,6 +148,7 @@ class PendingSuppliesDetailsModel {
     data['shipToPartyName'] = this.shipToPartyName;
     data['isAuthorised'] = this.isAuthorised;
     data['supplyCreatedOn'] = this.supplyCreatedOn;
+    data['influencerName'] = this.influencerName;
     return data;
   }
 }
