@@ -973,6 +973,12 @@ class UpdatedValues{
                   "Total  Balance Potential can't be greater than Total Site Potential"));
               return;
             }else if (UpdatedValues
+                .getNoOfFloors()==null && UpdatedValues
+                .getSiteProgressNoOfFloors()!=null){
+              Get.dialog(CustomDialogs().showMessage(
+                  "Site Progress floor can't be greater than Site Floor"));
+              return;
+            } else if (UpdatedValues
                 .getSiteProgressNoOfFloors()!=null &&(UpdatedValues
                 .getSiteProgressNoOfFloors()
                 .id > UpdatedValues
@@ -1006,6 +1012,12 @@ class UpdatedValues{
                 "Total  Balance Potential can't be greater than Total Site Potential"));
             return;
           } else if (UpdatedValues
+              .getNoOfFloors()==null && UpdatedValues
+              .getSiteProgressNoOfFloors()!=null){
+            Get.dialog(CustomDialogs().showMessage(
+                "Site Progress floor can't be greater than Site Floor"));
+            return;
+          }else if (UpdatedValues
               .getSiteProgressNoOfFloors()!=null &&(UpdatedValues
               .getSiteProgressNoOfFloors()
               .id > UpdatedValues
