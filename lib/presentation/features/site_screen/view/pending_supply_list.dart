@@ -71,11 +71,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
     internetChecking().then((result) => {
           if (result == true)
             {
-              // _appController.getAccessKey(RequestIds.GET_SITES_LIST),
-              //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
                getPendingSupplyData(),
               _siteController.offset = 0,
-              // storeOfflineSiteData()
             }
           else
             {
@@ -475,7 +472,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                                       left:
                                                                           3.0),
                                                                   child: Text(
-                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].approvedQty}",
+                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].approvedQty!=null?_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].approvedQty:""}",
                                                                     style: TextStyle(
                                                                         fontFamily:
                                                                             "Muli",
@@ -518,7 +515,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                                       left:
                                                                           3.0),
                                                                   child: Text(
-                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].pendingQty}",
+                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].pendingQty!=null?_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].pendingQty:""}",
                                                                     style: TextStyle(
                                                                         fontFamily:
                                                                             "Muli",
@@ -584,21 +581,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                           );
                         }));
   }
-
-  void _settingModalBottomSheet(context) {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext bc) {
-          return SiteFilterWidget();
-        });
-    //     .whenComplete(() {
-    //
-    // });
-  }
-
-  Widget SiteFilter() {}
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(

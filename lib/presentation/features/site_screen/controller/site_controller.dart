@@ -638,6 +638,8 @@ class SiteController extends GetxController {
     _prefs.then((SharedPreferences prefs) {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       String url = "${UrlConstants.updatePendingSupply}";
+      // print("Url-->"+url);
+      // print("Body-->"+jsonData.toString());
       repository.updatePendingSupplyDetails(accessKey, userSecurityKey, url,jsonData).then((data) {
         Get.back();
         if (data == null) {
