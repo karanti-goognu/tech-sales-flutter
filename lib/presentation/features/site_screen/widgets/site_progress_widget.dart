@@ -841,113 +841,123 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     List<BrandModelforDB> siteBrandEntityfromLoaclDB1 = await db.fetchAllDistinctBrand();
     List<DealerForDb> dealerEntityForDb1 = await db.fetchAllDistinctDealers();
 
-    setState(() {
-      viewSiteDataResponse = widget.viewSiteDataResponse;
-      siteBrandEntityfromLoaclDB = siteBrandEntityfromLoaclDB1;
-      dealerEntityForDb = dealerEntityForDb1;
-      siteBrandEntity = viewSiteDataResponse != null
-          ? viewSiteDataResponse.siteBrandEntity
-          : new List();
-      counterListModel = viewSiteDataResponse.counterListModel;
-      constructionStageEntityNewNextStage =
-          viewSiteDataResponse.constructionStageEntity;
-      constructionStageEntityNew = viewSiteDataResponse.constructionStageEntity;
-      addNextButtonDisable = false;
-      siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
-      siteFloorsEntityNew = viewSiteDataResponse.siteFloorsEntity;
-      siteFloorsEntityNewNextStage = viewSiteDataResponse.siteFloorsEntity;
-      siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
-      sitephotosEntity = viewSiteDataResponse.sitephotosEntity;
-      if (viewSiteDataResponse.siteStageHistorys != null) {
-        siteStageHistorys = viewSiteDataResponse.siteStageHistorys;
-      } else {
-        siteStageHistorys = [];
-      }
+    if (this.mounted) {
+      setState(() {
+        viewSiteDataResponse = widget.viewSiteDataResponse;
+        siteBrandEntityfromLoaclDB = siteBrandEntityfromLoaclDB1;
+        dealerEntityForDb = dealerEntityForDb1;
+        siteBrandEntity = viewSiteDataResponse != null
+            ? viewSiteDataResponse.siteBrandEntity
+            : new List();
+        counterListModel = viewSiteDataResponse.counterListModel;
+        constructionStageEntityNewNextStage =
+            viewSiteDataResponse.constructionStageEntity;
+        constructionStageEntityNew =
+            viewSiteDataResponse.constructionStageEntity;
+        addNextButtonDisable = false;
+        siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
+        siteFloorsEntityNew = viewSiteDataResponse.siteFloorsEntity;
+        siteFloorsEntityNewNextStage = viewSiteDataResponse.siteFloorsEntity;
+        siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
+        sitephotosEntity = viewSiteDataResponse.sitephotosEntity;
+        if (viewSiteDataResponse.siteStageHistorys != null) {
+          siteStageHistorys = viewSiteDataResponse.siteStageHistorys;
+        } else {
+          siteStageHistorys = [];
+        }
 
-      if (UpdatedValues.getSiteProgressConstructionId() != null) {
-        _selectedConstructionTypeVisit = null;
-        _selectedConstructionTypeVisit =
-            UpdatedValues.getSiteProgressConstructionId();
-      }
-
-
-      if (UpdatedValues.getConstructionTypeVisitNextStage() != null) {
-        _selectedConstructionTypeVisitNextStage = null;
-        _selectedConstructionTypeVisitNextStage =
-            UpdatedValues.getConstructionTypeVisitNextStage();
-      }
+        if (UpdatedValues.getSiteProgressConstructionId() != null) {
+          _selectedConstructionTypeVisit = null;
+          _selectedConstructionTypeVisit =
+              UpdatedValues.getSiteProgressConstructionId();
+        }
 
 
-      if (UpdatedValues.getSiteProgressNoOfFloors() != null) {
-        _selectedSiteVisitFloor = null;
-        _selectedSiteVisitFloor = siteFloorsEntity.firstWhere(
-            (item) => item.id == UpdatedValues.getSiteProgressNoOfFloors().id);
-      }
-
-      if (UpdatedValues.getSiteProgressStagePotential() != null) {
-        _stagePotentialVisit.text =
-            UpdatedValues.getSiteProgressStagePotential();
-      }
-
-      if (UpdatedValues.getSiteProgressStageStatus() != null) {
-        _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
-      }
-
-      if (UpdatedValues.getSiteProgressDateOfConstruction() != null) {
-        _dateofConstruction.text =
-            UpdatedValues.getSiteProgressDateOfConstruction();
-      }
+        if (UpdatedValues.getConstructionTypeVisitNextStage() != null) {
+          _selectedConstructionTypeVisitNextStage = null;
+          _selectedConstructionTypeVisitNextStage =
+              UpdatedValues.getConstructionTypeVisitNextStage();
+        }
 
 
-      if (UpdatedValues.getAddNextButtonDisable() != null) {
-        addNextButtonDisable = UpdatedValues.getAddNextButtonDisable();
-      }
+        if (UpdatedValues.getSiteProgressNoOfFloors() != null) {
+          _selectedSiteVisitFloor = null;
+          _selectedSiteVisitFloor = siteFloorsEntity.firstWhere(
+                  (item) =>
+              item.id == UpdatedValues
+                  .getSiteProgressNoOfFloors()
+                  .id);
+        }
+
+        if (UpdatedValues.getSiteProgressStagePotential() != null) {
+          _stagePotentialVisit.text =
+              UpdatedValues.getSiteProgressStagePotential();
+        }
+
+        if (UpdatedValues.getSiteProgressStageStatus() != null) {
+          _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
+        }
+
+        if (UpdatedValues.getSiteProgressDateOfConstruction() != null) {
+          _dateofConstruction.text =
+              UpdatedValues.getSiteProgressDateOfConstruction();
+        }
 
 
-      if (UpdatedValues.getDealerEntityForDb() != null && _siteBrandFromLocalDB!=null) {
-        _dealerEntityForDb = null;
-        _dealerEntityForDb = UpdatedValues.getDealerEntityForDb();
-        _dealerName.text = _dealerEntityForDb.dealerName;
-        visitDataDealer = _dealerEntityForDb.id;
-      }
-
-      if (UpdatedValues.getProductEntityFromLocalDb() != null && _siteBrandFromLocalDB!=null) {
-        siteProductEntityfromLoaclDB = new List();
-        siteProductEntityfromLoaclDB =
-            UpdatedValues.getProductEntityFromLocalDb();
-      }
+        if (UpdatedValues.getAddNextButtonDisable() != null) {
+          addNextButtonDisable = UpdatedValues.getAddNextButtonDisable();
+        }
 
 
-      if (UpdatedValues.getSubDealerList() != null && _siteBrandFromLocalDB!=null ) {
-        subDealerList = UpdatedValues.getSubDealerList();
-      }
+        if (UpdatedValues.getDealerEntityForDb() != null &&
+            _siteBrandFromLocalDB != null) {
+          _dealerEntityForDb = null;
+          _dealerEntityForDb = UpdatedValues.getDealerEntityForDb();
+          _dealerName.text = _dealerEntityForDb.dealerName;
+          visitDataDealer = _dealerEntityForDb.id;
+        }
 
-      if (UpdatedValues.getSelectedSubDealer() != null && _siteBrandFromLocalDB!=null) {
-        selectedSubDealer = UpdatedValues.getSelectedSubDealer();
-        visitDataSubDealer = selectedSubDealer.shipToParty;
-      }
-
-      if (UpdatedValues.getSiteProgressStageStatus() != null) {
-        _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
-      }
-
-      if (UpdatedValues.getSiteProgressDateOfConstruction() != null) {
-        _dateofConstruction.text =
-            UpdatedValues.getSiteProgressDateOfConstruction();
-      }
-
-      if (UpdatedValues.getProductDynamicList() != null) {
-        productDynamicList = UpdatedValues.getProductDynamicList();
-        updateSiteSupplyHistory();
-      }
+        if (UpdatedValues.getProductEntityFromLocalDb() != null &&
+            _siteBrandFromLocalDB != null) {
+          siteProductEntityfromLoaclDB = new List();
+          siteProductEntityfromLoaclDB =
+              UpdatedValues.getProductEntityFromLocalDb();
+        }
 
 
-      if (UpdatedValues.getSiteBrandFromLocalDBNextStage() != null) {
-        _siteBrandFromLocalDBNextStage = null;
-        _siteBrandFromLocalDBNextStage = UpdatedValues.getSiteBrandFromLocalDBNextStage();
-      }
+        if (UpdatedValues.getSubDealerList() != null &&
+            _siteBrandFromLocalDB != null) {
+          subDealerList = UpdatedValues.getSubDealerList();
+        }
 
-    });
+        if (UpdatedValues.getSelectedSubDealer() != null &&
+            _siteBrandFromLocalDB != null) {
+          selectedSubDealer = UpdatedValues.getSelectedSubDealer();
+          visitDataSubDealer = selectedSubDealer.shipToParty;
+        }
+
+        if (UpdatedValues.getSiteProgressStageStatus() != null) {
+          _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
+        }
+
+        if (UpdatedValues.getSiteProgressDateOfConstruction() != null) {
+          _dateofConstruction.text =
+              UpdatedValues.getSiteProgressDateOfConstruction();
+        }
+
+        if (UpdatedValues.getProductDynamicList() != null) {
+          productDynamicList = UpdatedValues.getProductDynamicList();
+          updateSiteSupplyHistory();
+        }
+
+
+        if (UpdatedValues.getSiteBrandFromLocalDBNextStage() != null) {
+          _siteBrandFromLocalDBNextStage = null;
+          _siteBrandFromLocalDBNextStage =
+              UpdatedValues.getSiteBrandFromLocalDBNextStage();
+        }
+      });
+    }
 
    //  await db.clearTable();
    //  for (int i = 0; i < siteBrandEntity.length; i++) {

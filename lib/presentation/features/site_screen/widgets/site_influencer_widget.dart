@@ -100,6 +100,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
         }
         initialInfluencerLength = viewSiteDataResponse.influencerEntity.length;
       }
+
+      if(UpdatedValues.getSiteInfluencerDetails()!=null && UpdatedValues.getSiteInfluencerDetails().length>0 && (UpdatedValues.getSiteInfluencerDetails().length>=_listInfluencerDetail.length )){
+        _listInfluencerDetail = UpdatedValues.getSiteInfluencerDetails();
+      }
     });
   }
 
@@ -137,6 +141,9 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: _listInfluencerDetail.length,
                       itemBuilder: (BuildContext context, int index) {
+                        if (_listInfluencerDetail!= null && index>=_listInfluencerDetail.length) {
+                          return const Offstage ();
+                        }else{
                         if (!_listInfluencerDetail[index].isExpanded) {
                           return Column(
                             // mainAxisAlignment:
@@ -249,77 +256,77 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Influencer Details ${(index + 1)} ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize:
-                                            SizeConfig.safeBlockHorizontal *
-                                                4.8),
+                                        SizeConfig.safeBlockHorizontal *
+                                            4.8),
                                   ),
                                   _listInfluencerDetail[index].isExpanded
                                       ? FlatButton.icon(
-                                          // shape: RoundedRectangleBorder(
-                                          //     borderRadius: BorderRadius.circular(0),
-                                          //     side: BorderSide(color: Colors.black26)),
-                                          color: Colors.transparent,
-                                          icon: Icon(
-                                            Icons.remove,
-                                            color: HexColor("#F9A61A"),
-                                            size:
-                                                SizeConfig.safeBlockHorizontal *
-                                                    4,
-                                          ),
-                                          label: Text(
-                                            "COLLAPSE",
-                                            style: TextStyle(
-                                                color: HexColor("#F9A61A"),
-                                                fontWeight: FontWeight.bold,
-                                                // letterSpacing: 2,
-                                                fontSize: SizeConfig
-                                                        .safeBlockHorizontal *
-                                                    4.5),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              _listInfluencerDetail[index]
-                                                      .isExpanded =
-                                                  !_listInfluencerDetail[index]
-                                                      .isExpanded;
-                                            });
-                                            // _getCurrentLocation();
-                                          },
-                                        )
+                                    // shape: RoundedRectangleBorder(
+                                    //     borderRadius: BorderRadius.circular(0),
+                                    //     side: BorderSide(color: Colors.black26)),
+                                    color: Colors.transparent,
+                                    icon: Icon(
+                                      Icons.remove,
+                                      color: HexColor("#F9A61A"),
+                                      size:
+                                      SizeConfig.safeBlockHorizontal *
+                                          4,
+                                    ),
+                                    label: Text(
+                                      "COLLAPSE",
+                                      style: TextStyle(
+                                          color: HexColor("#F9A61A"),
+                                          fontWeight: FontWeight.bold,
+                                          // letterSpacing: 2,
+                                          fontSize: SizeConfig
+                                              .safeBlockHorizontal *
+                                              4.5),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _listInfluencerDetail[index]
+                                            .isExpanded =
+                                        !_listInfluencerDetail[index]
+                                            .isExpanded;
+                                      });
+                                      // _getCurrentLocation();
+                                    },
+                                  )
                                       : FlatButton.icon(
-                                          // shape: RoundedRectangleBorder(
-                                          //     borderRadius: BorderRadius.circular(0),
-                                          //     side: BorderSide(color: Colors.black26)),
-                                          color: Colors.transparent,
-                                          icon: Icon(
-                                            Icons.add,
-                                            color: HexColor("#F9A61A"),
-                                            size: 18,
-                                          ),
-                                          label: Text(
-                                            "EXPAND",
-                                            style: TextStyle(
-                                                color: HexColor("#F9A61A"),
-                                                fontWeight: FontWeight.bold,
-                                                // letterSpacing: 2,
-                                                fontSize: 17),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              _listInfluencerDetail[index]
-                                                      .isExpanded =
-                                                  !_listInfluencerDetail[index]
-                                                      .isExpanded;
-                                            });
-                                            // _getCurrentLocation();
-                                          },
-                                        ),
+                                    // shape: RoundedRectangleBorder(
+                                    //     borderRadius: BorderRadius.circular(0),
+                                    //     side: BorderSide(color: Colors.black26)),
+                                    color: Colors.transparent,
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: HexColor("#F9A61A"),
+                                      size: 18,
+                                    ),
+                                    label: Text(
+                                      "EXPAND",
+                                      style: TextStyle(
+                                          color: HexColor("#F9A61A"),
+                                          fontWeight: FontWeight.bold,
+                                          // letterSpacing: 2,
+                                          fontSize: 17),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _listInfluencerDetail[index]
+                                            .isExpanded =
+                                        !_listInfluencerDetail[index]
+                                            .isExpanded;
+                                      });
+                                      // _getCurrentLocation();
+                                    },
+                                  ),
                                 ],
                               ),
                               SizedBox(height: 16),
@@ -339,8 +346,8 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                       setState(() {
                                         if (value) {
                                           for (int i = 0;
-                                              i < _listInfluencerDetail.length;
-                                              i++) {
+                                          i < _listInfluencerDetail.length;
+                                          i++) {
                                             if (i == index) {
                                               _listInfluencerDetail[i]
                                                   .isPrimarybool = value;
@@ -350,8 +357,9 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             }
                                           }
                                         } else {
-                                          Get.dialog(CustomDialogs().showMessage(
-                                              "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                          Get.dialog(
+                                              CustomDialogs().showMessage(
+                                                  "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                         }
                                       });
                                     },
@@ -359,7 +367,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         .isPrimarybool,
                                     activeColor: HexColor("#009688"),
                                     activeTrackColor:
-                                        HexColor("#009688").withOpacity(0.5),
+                                    HexColor("#009688").withOpacity(0.5),
                                     inactiveThumbColor: HexColor("#F1F1F1"),
                                     inactiveTrackColor: Colors.black26,
                                   ),
@@ -369,7 +377,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                         color: _listInfluencerDetail[index]
-                                                .isPrimarybool
+                                            .isPrimarybool
                                             ? HexColor("#009688")
                                             : Colors.black,
                                         // color: HexColor("#000000DE"),
@@ -379,7 +387,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                               ),
                               TextFormField(
                                 controller:
-                                    _listInfluencerDetail[index].inflContact,
+                                _listInfluencerDetail[index].inflContact,
                                 maxLength: 10,
                                 onChanged: (value) async {
                                   bool match = false;
@@ -407,8 +415,8 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     };
 
                                     for (int i = 0;
-                                        i < _listInfluencerDetail.length - 1;
-                                        i++) {
+                                    i < _listInfluencerDetail.length - 1;
+                                    i++) {
                                       if (value ==
                                           _listInfluencerDetail[i]
                                               .inflContact
@@ -427,24 +435,24 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                       String mobileNumber;
                                       String name;
                                       Future<SharedPreferences> _prefs =
-                                          SharedPreferences.getInstance();
+                                      SharedPreferences.getInstance();
                                       await _prefs
                                           .then((SharedPreferences prefs) {
                                         empId = prefs.getString(
-                                                StringConstants.employeeId) ??
+                                            StringConstants.employeeId) ??
                                             "empty";
                                         mobileNumber = prefs.getString(
-                                                StringConstants.mobileNumber) ??
+                                            StringConstants.mobileNumber) ??
                                             "empty";
                                         name = prefs.getString(
-                                                StringConstants.employeeName) ??
+                                            StringConstants.employeeName) ??
                                             "empty";
                                       });
                                       AddLeadsController _addLeadsController =
-                                          Get.find();
+                                      Get.find();
                                       _addLeadsController.phoneNumber = value;
                                       AccessKeyModel accessKeyModel =
-                                          new AccessKeyModel();
+                                      new AccessKeyModel();
                                       await _addLeadsController
                                           .getAccessKeyOnly()
                                           .then((data) async {
@@ -453,10 +461,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             accessKeyModel.accessKey);
                                         await _addLeadsController
                                             .getInfNewData(
-                                                accessKeyModel.accessKey)
+                                            accessKeyModel.accessKey)
                                             .then((data) {
                                           InfluencerDetailModel
-                                              _infDetailModel = data;
+                                          _infDetailModel = data;
                                           if (_infDetailModel.respCode ==
                                               "DM1002") {
                                             InfluencerModel inflDetail =
@@ -466,63 +474,63 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                               if (inflDetail.inflName !=
                                                   "null") {
                                                 _listInfluencerDetail[index]
-                                                        .inflContact =
-                                                    new TextEditingController();
+                                                    .inflContact =
+                                                new TextEditingController();
                                                 _listInfluencerDetail[index]
-                                                        .inflName =
-                                                    new TextEditingController();
+                                                    .inflName =
+                                                new TextEditingController();
                                                 FocusScope.of(context)
                                                     .unfocus();
                                                 //  print(inflDetail.inflName.text);
                                                 _listInfluencerDetail[index]
-                                                        .inflTypeId =
-                                                    new TextEditingController();
+                                                    .inflTypeId =
+                                                new TextEditingController();
                                                 _listInfluencerDetail[index]
-                                                        .inflCatId =
-                                                    new TextEditingController();
+                                                    .inflCatId =
+                                                new TextEditingController();
                                                 _listInfluencerDetail[index]
-                                                        .inflTypeValue =
-                                                    new TextEditingController();
+                                                    .inflTypeValue =
+                                                new TextEditingController();
                                                 _listInfluencerDetail[index]
-                                                        .inflCatValue =
-                                                    new TextEditingController();
+                                                    .inflCatValue =
+                                                new TextEditingController();
                                                 _listInfluencerDetail[index]
-                                                        .id =
-                                                    new TextEditingController();
+                                                    .id =
+                                                new TextEditingController();
                                                 _listInfluencerDetail[index]
-                                                        .ilpIntrested =
-                                                    new TextEditingController();
+                                                    .ilpIntrested =
+                                                new TextEditingController();
 
                                                 // print(inflDetail.inflName);
 
                                                 _listInfluencerDetail[index]
-                                                        .inflContact
-                                                        .text =
+                                                    .inflContact
+                                                    .text =
                                                     inflDetail.inflContact;
                                                 _listInfluencerDetail[index]
                                                     .inflName
                                                     .text = inflDetail.inflName;
                                                 _listInfluencerDetail[index]
-                                                        .id
-                                                        .text =
+                                                    .id
+                                                    .text =
                                                     inflDetail.inflId
                                                         .toString();
                                                 _listInfluencerDetail[index]
-                                                        .ilpIntrested
-                                                        .text =
+                                                    .ilpIntrested
+                                                    .text =
                                                     inflDetail.ilpRegFlag;
                                                 // _listInfluencerDetail[
                                                 //             index]
                                                 //         .createdOn =
                                                 //     inflDetail.createdOn;
                                                 _listInfluencerDetail[index]
-                                                        .inflTypeValue
-                                                        .text =
+                                                    .inflTypeValue
+                                                    .text =
                                                     inflDetail
                                                         .influencerTypeText;
                                                 _listInfluencerDetail[index]
-                                                        .inflCatValue
-                                                        .text =
+                                                    .inflCatValue
+                                                    .text =
                                                     inflDetail
                                                         .influencerCategoryText;
                                                 _listInfluencerDetail[index]
@@ -531,29 +539,30 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                     _listInfluencerDetail[index]
                                                         .inflName);
                                                 for (int i = 0;
-                                                    i <
-                                                        influencerTypeEntity
-                                                            .length;
-                                                    i++) {
+                                                i <
+                                                    influencerTypeEntity
+                                                        .length;
+                                                i++) {
                                                   if (influencerTypeEntity[i]
-                                                          .inflTypeId
-                                                          .toString() ==
+                                                      .inflTypeId
+                                                      .toString() ==
                                                       inflDetail.inflTypeId
                                                           .toString()) {
                                                     _listInfluencerDetail[index]
-                                                            .inflTypeId
-                                                            .text =
+                                                        .inflTypeId
+                                                        .text =
                                                         inflDetail.inflTypeId
                                                             .toString();
                                                     //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                                                     _listInfluencerDetail[index]
                                                         .inflTypeValue
-                                                        .text = influencerTypeEntity[
-                                                            influencerTypeEntity[
-                                                                        i]
-                                                                    .inflTypeId -
-                                                                1]
-                                                        .inflTypeDesc;
+                                                        .text =
+                                                        influencerTypeEntity[
+                                                        influencerTypeEntity[
+                                                        i]
+                                                            .inflTypeId -
+                                                            1]
+                                                            .inflTypeDesc;
                                                     break;
                                                   } else {
                                                     // _listInfluencerDetail[
@@ -578,30 +587,31 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                 // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
 
                                                 for (int i = 0;
-                                                    i <
-                                                        influencerCategoryEntity
-                                                            .length;
-                                                    i++) {
+                                                i <
+                                                    influencerCategoryEntity
+                                                        .length;
+                                                i++) {
                                                   if (influencerCategoryEntity[
-                                                              i]
-                                                          .inflCatId
-                                                          .toString() ==
+                                                  i]
+                                                      .inflCatId
+                                                      .toString() ==
                                                       inflDetail.inflCatId
                                                           .toString()) {
                                                     _listInfluencerDetail[index]
-                                                            .inflCatId
-                                                            .text =
+                                                        .inflCatId
+                                                        .text =
                                                         inflDetail.inflCatId
                                                             .toString();
                                                     //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                                                     _listInfluencerDetail[index]
                                                         .inflCatValue
-                                                        .text = influencerCategoryEntity[
-                                                            influencerCategoryEntity[
-                                                                        i]
-                                                                    .inflCatId -
-                                                                1]
-                                                        .inflCatDesc;
+                                                        .text =
+                                                        influencerCategoryEntity[
+                                                        influencerCategoryEntity[
+                                                        i]
+                                                            .inflCatId -
+                                                            1]
+                                                            .inflCatDesc;
                                                     break;
                                                   } else {
                                                     _listInfluencerDetail[index]
@@ -614,7 +624,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                 }
                                               } else {
                                                 if (_listInfluencerDetail[index]
-                                                        .inflContact !=
+                                                    .inflContact !=
                                                     null) {
                                                   _listInfluencerDetail[index]
                                                       .inflContact
@@ -630,7 +640,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             });
                                           } else {
                                             if (_listInfluencerDetail[index]
-                                                    .inflContact !=
+                                                .inflContact !=
                                                 null) {
                                               _listInfluencerDetail[index]
                                                   .inflContact
@@ -641,12 +651,11 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             }
                                             return Get.dialog(CustomDialogs()
                                                 .showDialog(
-                                                    _infDetailModel.respMsg));
+                                                _infDetailModel.respMsg));
                                           }
                                           Get.back();
                                         });
                                       });
-
                                     }
                                   }
                                   // setState(() {
@@ -672,7 +681,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color:
-                                            ColorConstants.backgroundColorBlue,
+                                        ColorConstants.backgroundColorBlue,
                                         //color: HexColor("#0000001F"),
                                         width: 1.0),
                                   ),
@@ -692,7 +701,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   labelStyle: TextStyle(
                                       fontFamily: "Muli",
                                       color:
-                                          ColorConstants.inputBoxHintColorDark,
+                                      ColorConstants.inputBoxHintColorDark,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 16.0),
                                   fillColor: ColorConstants.backgroundColor,
@@ -702,7 +711,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                               TextFormField(
                                 //  initialValue: _listInfluencerDetail[index].inflName,
                                 controller:
-                                    _listInfluencerDetail[index].inflName,
+                                _listInfluencerDetail[index].inflName,
 
                                 // validator: (value) {
                                 //   if (value.isEmpty) {
@@ -720,7 +729,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color:
-                                            ColorConstants.backgroundColorBlue,
+                                        ColorConstants.backgroundColorBlue,
                                         //color: HexColor("#0000001F"),
                                         width: 1.0),
                                   ),
@@ -747,7 +756,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   labelStyle: TextStyle(
                                       fontFamily: "Muli",
                                       color:
-                                          ColorConstants.inputBoxHintColorDark,
+                                      ColorConstants.inputBoxHintColorDark,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 16.0),
                                   fillColor: ColorConstants.backgroundColor,
@@ -756,7 +765,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                               SizedBox(height: 16),
                               TextFormField(
                                 controller:
-                                    _listInfluencerDetail[index].inflTypeValue,
+                                _listInfluencerDetail[index].inflTypeValue,
                                 // validator: (value) {
                                 //   if (value.isEmpty) {
                                 //     return 'Please enter Influencer Number ';
@@ -773,7 +782,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color:
-                                            ColorConstants.backgroundColorBlue,
+                                        ColorConstants.backgroundColorBlue,
                                         //color: HexColor("#0000001F"),
                                         width: 1.0),
                                   ),
@@ -800,7 +809,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   labelStyle: TextStyle(
                                       fontFamily: "Muli",
                                       color:
-                                          ColorConstants.inputBoxHintColorDark,
+                                      ColorConstants.inputBoxHintColorDark,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 16.0),
                                   fillColor: ColorConstants.backgroundColor,
@@ -809,7 +818,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                               SizedBox(height: 16),
                               TextFormField(
                                 controller:
-                                    _listInfluencerDetail[index].inflCatValue,
+                                _listInfluencerDetail[index].inflCatValue,
                                 // validator: (value) {
                                 //   if (value.isEmpty) {
                                 //     return 'Please enter Influencer Number ';
@@ -826,7 +835,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color:
-                                            ColorConstants.backgroundColorBlue,
+                                        ColorConstants.backgroundColorBlue,
                                         //color: HexColor("#0000001F"),
                                         width: 1.0),
                                   ),
@@ -853,7 +862,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   labelStyle: TextStyle(
                                       fontFamily: "Muli",
                                       color:
-                                          ColorConstants.inputBoxHintColorDark,
+                                      ColorConstants.inputBoxHintColorDark,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 16.0),
                                   fillColor: ColorConstants.backgroundColor,
@@ -861,6 +870,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                               ),
                             ],
                           );
+                        }
                         }
                       }),
                 ),
