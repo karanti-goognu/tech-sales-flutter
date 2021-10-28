@@ -367,6 +367,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 10.0),
                                 child: Obx(() =>TextFormField(
+                                   readOnly: true,
                                    controller:_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.supplyQty,
                                   validator: (value) {
                                     if (value.isEmpty) {
