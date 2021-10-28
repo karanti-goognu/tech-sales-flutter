@@ -11,6 +11,8 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -109,6 +111,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
         // ),
         // ),
      // ),
+        floatingActionButton: BackFloatingButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: BottomNavigatorWithoutDraftsAndSearch(),
       body:supplyDetailsDataView()
     );
   }
@@ -140,6 +145,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                       Obx(() =>Padding(
                         padding: const EdgeInsets.only(top: 50.0, bottom: 20, left: 0),
                         child: Center(
@@ -368,6 +374,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                 padding: const EdgeInsets.only(right: 10.0),
                                 child: Obx(() =>TextFormField(
                                    controller:_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.supplyQty,
+                                  readOnly: true,
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       return 'Please enter Bags ';
