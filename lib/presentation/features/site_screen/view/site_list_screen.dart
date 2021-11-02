@@ -7,9 +7,7 @@ import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -97,16 +95,18 @@ class _SiteListScreenState extends State<SiteListScreen> {
   }
   _getRequests()async{
     _siteController.sitesListResponse.sitesEntity = null;
+    _siteController.offset = 0;
     // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     await _siteController.getAccessKey().then((value) async {
       await _siteController.getSitesData(value.accessKey,"");
     });
-    _siteController.offset = 0;
+    // _siteController.offset = 0;
   }
   @override
   void initState() {
     super.initState();
     _siteController.sitesListResponse.sitesEntity = null;
+    _siteController.offset = 0;
     // clearFilterSelection();
     internetChecking().then((result) => {
       if (result == true)
@@ -117,7 +117,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
           }),
           //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
 
-          _siteController.offset = 0,
+          // _siteController.offset = 0,
           // storeOfflineSiteData()
         }
       else
