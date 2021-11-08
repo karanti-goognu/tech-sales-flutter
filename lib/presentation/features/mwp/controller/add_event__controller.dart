@@ -378,10 +378,11 @@ class AddEventController extends GetxController {
           debugPrint("Data: ${json.encode(data)}");
           this.dealerListResponse = data;
           this.isLoading = false;
-          if (this.dealerListResponse.dealerList.length != 0) {
+          if (this.dealerListResponse.dealerList.length != 0 && this.dealerList.length == 0) {
             for (int i = 0;
                 i < this.dealerListResponse.dealerList.length;
                 i++) {
+
               this.dealerList.add(new DealerModel(
                   dealerListResponse.dealerList[i].dealerId,
                   dealerListResponse.dealerList[i].dealerName,

@@ -68,7 +68,7 @@ class AppPages {
     GetPage(
         name: Routes.HOME_SCREEN,
         page: () => HomeScreen(),
-        bindings: [HomeScreenBinding(), SRBinding()]),
+        bindings: [AppBinding(), HomeScreenBinding(), SRBinding()]),
     GetPage(
         name: Routes.VERIFY_OTP,
         page: () => LoginOtpScreen(),
