@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/bindings/home_binding.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
@@ -127,7 +128,7 @@ class UpdateServiceRequestController extends GetxController {
             confirm: MaterialButton(
               onPressed: () {
                   Get.back();
-                  Get.offAll(() => HomeScreen());
+                  Get.offAll(() => HomeScreen(), binding: HomeScreenBinding());
                   // Get.offAll(HomeScreen());
                   },
               child: Text('OK'),
