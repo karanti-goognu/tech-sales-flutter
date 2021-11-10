@@ -807,6 +807,12 @@ class _RequestCreationState extends State<RequestCreation> {
                             // if (!checkedValues.contains(true) ||
                             //     checkedValues[index] == true) {
                             setState(() {
+                              if(requestId==1){
+                                selectedRequestSubtypeSeverity = [];
+                                selectedRequestSubtypeObjectList = [];
+                                selectedRequestSubtype = [];
+                                // checkedValues=[];
+                              }
                               selectedRequestSubtype.contains(
                                       requestSubtype[index]
                                           .serviceRequestTypeText)
