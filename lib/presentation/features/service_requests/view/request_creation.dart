@@ -118,7 +118,9 @@ class _RequestCreationState extends State<RequestCreation> {
     // _connectivity.myStream.listen((source) {
     //   setState(() => _source = source);
     // });
+
     getDropdownData();
+    UploadImageBottomSheet.image = null;
     super.initState();
   }
 
@@ -539,9 +541,11 @@ class _RequestCreationState extends State<RequestCreation> {
                                                               ),
                                                               onTap: () {
                                                                 setState(() {
-                                                                  controller.imageList
-                                                                      .removeAt(
-                                                                          index);
+                                                                  UploadImageBottomSheet.image = null;
+                                                                  controller. updateImageAfterDelete(index);
+                                                                  // controller.imageList
+                                                                  //     .removeAt(
+                                                                  //         index);
                                                                 });
                                                               },
                                                             )

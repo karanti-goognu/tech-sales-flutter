@@ -88,6 +88,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   void initState() {
     // TODO: implement initState
     varietyTmpArray = [];
+    UploadImageBottomSheet.image = null;
     super.initState();
   }
 
@@ -204,6 +205,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     // });
                   }),
             ),
+
             controller.imageList != null
                 ? Row(
                     children: [
@@ -253,8 +255,10 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                         color: HexColor("#FFCD00"),
                                       ),
                                       onTap: () {
-                                        setState(() {
-                                          controller.imageList.removeAt(index);
+                                        setState(()  {
+                                           controller. updateImageAfterDelete(index);
+                                           UploadImageBottomSheet.image = null;
+                                           // controller.imageList.removeAt(index);
                                         });
                                       },
                                     )
