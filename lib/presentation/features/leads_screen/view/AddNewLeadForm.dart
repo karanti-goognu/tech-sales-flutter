@@ -4079,8 +4079,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             ),
                                             onTap: () {
                                               setState(() {
-                                                controller.imageList
-                                                    .removeAt(index);
+                                                UploadImageBottomSheet.image = null;
+                                                controller. updateImageAfterDelete(index);
+
+                                                // controller.imageList
+                                                //     .removeAt(index);
                                               });
                                             },
                                           )

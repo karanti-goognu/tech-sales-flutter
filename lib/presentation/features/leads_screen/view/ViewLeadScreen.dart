@@ -133,6 +133,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   @override
   void initState() {
     super.initState();
+    UploadImageBottomSheet.image = null;
     myFocusNode = FocusNode();
     getData();
   }
@@ -1133,9 +1134,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                           ),
                                                           onTap: () {
                                                            setState(() {
-                                                                            controller.imageList
-                                                                                .removeAt(
-                                                                                    index);
+                                                                            //controller.imageList.removeAt(index);
+                                                             controller. updateImageAfterDelete(index);
+                                                             UploadImageBottomSheet.image = null;
                                                                           });
                                                           },
                                                         )
