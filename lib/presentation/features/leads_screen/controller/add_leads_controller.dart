@@ -21,9 +21,11 @@ class AddLeadsController extends GetxController {
   List<File> imageList = List<File>();
 
   updateImageList(File value) {
-    imageList.add(value);
-    print(imageList.length);
-    print(":::::::::::::::");
+    if(value != null) {
+      imageList.add(value);
+      print(imageList.length);
+      print(":::::::::::::::");
+    }
     update();
   }
 

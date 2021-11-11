@@ -27,9 +27,11 @@ class UpdateServiceRequestController extends GetxController {
   // List<File> get imageList => _imageList;
 
    updateImageList(File value) {
-    imageList.add(value);
-    print(imageList.length);
-    print(":::::::::::::::");
+    if(value != null) {
+      imageList.add(value);
+      print(imageList.length);
+      print(":::::::::::::::");
+    }
     update();
   }
 
